@@ -1,0 +1,21 @@
+{
+  "schema": "hiraia.card-retirements/v1",
+  "policy": "Append-only. Reserve retired card IDs permanently; retirement applies to the whole card and all languages. Corrected replacement content requires a new card ID and its own review.",
+  "retirements": [
+    {
+      "card_id": "dcard-09952",
+      "fact_id": "making-disinfectant-g7",
+      "original_english_sha256": "1267864a3240eacb306652c6fd8d8633285617aad736d08244a237d219acf6d9",
+      "original_card": {
+        "file": "card-retirements/dcard-09952/original-card.json",
+        "sha256": "45dd571ef4af0e0f75ba09b4aac64022d75e29ae09285bfc14faa5a4617f1c48",
+        "bytes": 1464
+      },
+      "tombstone": {
+        "file": "card-retirements/dcard-09952/tombstone.json",
+        "sha256": "0eeaa908fec8fba28d8fc695dd244770a15b5f8d9830bfdde89b7d16853317dc",
+        "bytes": 5086
+      }
+    }
+  ]
+}

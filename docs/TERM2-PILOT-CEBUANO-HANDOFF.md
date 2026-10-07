@@ -1,5 +1,11 @@
 # Cebuano translation audit handoff — Term 2 pilot changes
 
+7 October follow-up: [local Cebuano alignment is complete](CEBUANO-CURRICULUM-ALIGNMENT-20261007.md)
+on `codex/cebuano-curriculum-alignment-20261007`. It includes the explicit source
+re-review for `ha-g5-0043` requested below. Historical publication filenames in this
+document describe earlier releases; the latest aligned vectors are prepared but
+unpublished. Native-language certification remains pending.
+
 5 October 2026. This handoff concerns Grades 3–10, Term 2, all blocks overlapping weeks 4–9. Read `docs/TERM2-PILOT-AUDIT.md` and `docs/term2-pilot-audit.json` for curriculum scope and exact selected IDs. **New/changed Cebuano is a draft for your review, not certified native usage.** Tagalog also needs language review; the English scientific distinctions below are the intended meaning.
 
 ## Coordination and source of truth

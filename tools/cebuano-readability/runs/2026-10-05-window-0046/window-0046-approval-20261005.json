@@ -1,0 +1,2922 @@
+{
+  "schema": "hiraia.cebuano-readability-reviewed-edits/v1",
+  "status": "reviewed_for_local_application",
+  "created_at": "2026-10-05T02:06:06.399584+00:00",
+  "reviewer": "GPT-6.1 SOL completion owner root, separate from historical Claude assessments",
+  "window_id": "window-0046",
+  "input_pins": [
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/window46-preview-replay-comparison-001.json",
+      "sha256": "6ce3e353bc705eb5be3fdfc6838d4ff868b9c5911be24bac7f11f58a8dfdc531",
+      "bytes": 16210
+    },
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/window46-preview-001/root-reading-decisions-001.json",
+      "sha256": "7d8e8242990d4a8f0e4f2e2c897019a4751ae83139191917ec704120fae30df5",
+      "bytes": 20185
+    },
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/window46-preview-001/root-source-lexical-checks-001.json",
+      "sha256": "28ad86ece1cd8c36e15fb437bf66042d5860d60126d704656e61b62796e39ed2",
+      "bytes": 4787
+    },
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/adjudication-20261002/window-0046/report.json",
+      "sha256": "1c33220483269c415b1bd1f3757962b90f676e75badc046cdd84295b11ce58ea",
+      "bytes": 59450141
+    },
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/adjudication-20261002/window-0046/clean-agreement.jsonl",
+      "sha256": "b3c61135c38ee1df3e57a43200c4196fb75e581b75fcb254d739a4e75d35e7af",
+      "bytes": 946516
+    },
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/adjudication-20261002/window-0046/non-priority.jsonl",
+      "sha256": "d6655312f3958aef1c470ec3a9449fe15c53fc7602ba9805675b219b65a3ed1e",
+      "bytes": 20613163
+    },
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-gutenberg-40074.txt",
+      "sha256": "f80b888b24dd4ca7f5cb16276b4a53f9d22129a496b9ffb7f7efe17d3b9a1504",
+      "bytes": 5699379
+    },
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/review-window46-001.py",
+      "sha256": "2f8276c62a52d366e88a788d5fe4358bf38dffb9365dc178404d509d783baf8f",
+      "bytes": 4754
+    }
+  ],
+  "current_pool_before_application": {
+    "path": "/Users/luis/Code/hiraia/rag/pipeline/cardsPool.app.json",
+    "sha256": "18834dd4b2d457e57795863a1dc246e5c02d289a3577ef8d39f2ab19736bc3f9",
+    "bytes": 50653329
+  },
+  "accepted": [
+    {
+      "card_id": "ffct-35195",
+      "source_card_sha256": "c6f630cc5f535258a144c9c7b06e596557d6d3adfdf05fbcec020ea96a36b234",
+      "candidate_card_sha256": "d92e5956420acabd8e2202a57ff3175ce5338ee981e414f356a3030b92bb334d",
+      "before_card": {
+        "id": "ffct-35195",
+        "factId": "fwg-typhoons-659",
+        "domain": "EARTH_SPACE",
+        "topic": "Typhoons",
+        "terms": [
+          "typhoons",
+          "pagasa",
+          "names",
+          "tropical",
+          "cyclones",
+          "entering",
+          "philippine",
+          "area",
+          "responsibility",
+          "like"
+        ],
+        "fact": {
+          "en": "PAGASA gives names to tropical cyclones entering the Philippine Area of Responsibility, like Typhoon Odette that heavily damaged Siargao Island in 2021!",
+          "tl": "Binibigyan ng pangalan ng PAGASA ang mga tropical cyclones na pumasok sa Philippine Area of Responsibility, tulad ng Typhoon Odette na malubhang nagwasak sa Siargao Island noong 2021!",
+          "bis": "Gingalanan sa PAGASA ang mga tropical cyclones nga mosulod sa Philippine Area of Responsibility, sama sa Typhoon Odette nga grabe kaayong nagdaot sa Siargao Island sa 2021!"
+        },
+        "slug": "ffct-35195",
+        "source": "original",
+        "title": {
+          "tl": "Odette sa Siargao 2021",
+          "en": "Odette Siargao 2021",
+          "bis": "Odette sa Siargao 2021"
+        },
+        "cats": [
+          "weather"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-35195",
+        "factId": "fwg-typhoons-659",
+        "domain": "EARTH_SPACE",
+        "topic": "Typhoons",
+        "terms": [
+          "typhoons",
+          "pagasa",
+          "names",
+          "tropical",
+          "cyclones",
+          "entering",
+          "philippine",
+          "area",
+          "responsibility",
+          "like"
+        ],
+        "fact": {
+          "en": "PAGASA gives names to tropical cyclones entering the Philippine Area of Responsibility, like Typhoon Odette that heavily damaged Siargao Island in 2021!",
+          "tl": "Binibigyan ng pangalan ng PAGASA ang mga tropical cyclones na pumasok sa Philippine Area of Responsibility, tulad ng Typhoon Odette na malubhang nagwasak sa Siargao Island noong 2021!",
+          "bis": "Gihatagan sa PAGASA og ngalan ang mga tropical cyclones nga mosulod sa Philippine Area of Responsibility. Usa niini ang Typhoon Odette, nga grabe kaayong nakadaot sa Siargao Island niadtong 2021!"
+        },
+        "slug": "ffct-35195",
+        "source": "original",
+        "title": {
+          "tl": "Odette sa Siargao 2021",
+          "en": "Odette Siargao 2021",
+          "bis": "Odette sa Siargao 2021"
+        },
+        "cats": [
+          "weather"
+        ]
+      },
+      "formal_item_id": "c548b7bf402944f09d7c9ff91b7a7d9a4",
+      "reason": "PAGASA naming and 2021 Odette example separated; explicit name-giving. No reliance on the proposer dialect claim about gingalanan.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35244",
+      "source_card_sha256": "8a8afa62d5ffb34eb0b304842f5fd46cee0129156e8a61df1e646ede694004d2",
+      "candidate_card_sha256": "fd887eb3ee9a3d13d4bf4946d90e282db878873d1b21a9773b5567c67cee4b74",
+      "before_card": {
+        "id": "ffct-35244",
+        "factId": "fwg-tropical-climate-545",
+        "domain": "EARTH_SPACE",
+        "topic": "Tropical Climate",
+        "terms": [
+          "tropical",
+          "climate",
+          "average",
+          "annual",
+          "temperature",
+          "philippines",
+          "degrees",
+          "celsius"
+        ],
+        "fact": {
+          "en": "The Philippines has a tropical climate with an average annual temperature of about 27 degrees Celsius!",
+          "tl": "Ang Pilipinas ay may tropikal na klima na may karaniwang taunang temperatura na mga 27°C!",
+          "bis": "Ang Pilipinas adunay tropikal nga klima nga adunay kasagarang tinuig nga temperatura nga mga 27°C!"
+        },
+        "slug": "ffct-35244",
+        "source": "original",
+        "title": {
+          "tl": "Tropikal na Klima",
+          "en": "Tropical Climate",
+          "bis": "Tropikal nga Klima"
+        },
+        "cats": [
+          "climate"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-35244",
+        "factId": "fwg-tropical-climate-545",
+        "domain": "EARTH_SPACE",
+        "topic": "Tropical Climate",
+        "terms": [
+          "tropical",
+          "climate",
+          "average",
+          "annual",
+          "temperature",
+          "philippines",
+          "degrees",
+          "celsius"
+        ],
+        "fact": {
+          "en": "The Philippines has a tropical climate with an average annual temperature of about 27 degrees Celsius!",
+          "tl": "Ang Pilipinas ay may tropikal na klima na may karaniwang taunang temperatura na mga 27°C!",
+          "bis": "Ang Pilipinas adunay tropikal nga klima. Ang kasagarang temperatura niini sa tibuok tuig mga 27°C!"
+        },
+        "slug": "ffct-35244",
+        "source": "original",
+        "title": {
+          "tl": "Tropikal na Klima",
+          "en": "Tropical Climate",
+          "bis": "Tropikal nga Klima"
+        },
+        "cats": [
+          "climate"
+        ]
+      },
+      "formal_item_id": "cb372ebd95b2d6a53631df2e51d318837",
+      "reason": "Climate and annual approximate27°C average separated, retaining average over year rather than a daily guarantee.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35249",
+      "source_card_sha256": "73eb04ac8146fe053c5903d6b375f917a1afc99d8045f03c4e2a02e45344331e",
+      "candidate_card_sha256": "a7731dff1f5eaff332a74018a360b3f082cee1f28094b95ebc071c6f8d03155b",
+      "before_card": {
+        "id": "ffct-35249",
+        "factId": "fwg-valley-fault-system-685",
+        "domain": "EARTH_SPACE",
+        "topic": "Valley Fault System",
+        "terms": [
+          "valley",
+          "fault",
+          "system",
+          "philippines",
+          "consists",
+          "east",
+          "west",
+          "faults",
+          "generate",
+          "strong"
+        ],
+        "fact": {
+          "en": "What makes up the Valley Fault System in the Philippines?\n\nIt consists of the East Valley and West Valley faults, which can generate strong earthquakes!",
+          "tl": "Ano ang bumubuo sa Valley Fault System sa Pilipinas?\n\nBinubuo ito ng East Valley at West Valley faults, na maaaring magdulot ng malalakas na lindol!",
+          "bis": "Unsa ang naglangkob sa Valley Fault System sa Pilipinas?\n\nNaglangkob kini sa East Valley ug West Valley faults, nga makapahimo og kusog nga linog!"
+        },
+        "slug": "ffct-35249",
+        "source": "original",
+        "title": {
+          "tl": "East at West Valley Fault",
+          "en": "East and West Valley Faults",
+          "bis": "East West Valley"
+        },
+        "cats": [
+          "earthquakes"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-35249",
+        "factId": "fwg-valley-fault-system-685",
+        "domain": "EARTH_SPACE",
+        "topic": "Valley Fault System",
+        "terms": [
+          "valley",
+          "fault",
+          "system",
+          "philippines",
+          "consists",
+          "east",
+          "west",
+          "faults",
+          "generate",
+          "strong"
+        ],
+        "fact": {
+          "en": "What makes up the Valley Fault System in the Philippines?\n\nIt consists of the East Valley and West Valley faults, which can generate strong earthquakes!",
+          "tl": "Ano ang bumubuo sa Valley Fault System sa Pilipinas?\n\nBinubuo ito ng East Valley at West Valley faults, na maaaring magdulot ng malalakas na lindol!",
+          "bis": "Unsa ang naglangkob sa Valley Fault System sa Pilipinas?\n\nNaglangkob kini sa East Valley ug West Valley faults. Kini nga mga fault makapahinabo og kusog nga linog!"
+        },
+        "slug": "ffct-35249",
+        "source": "original",
+        "title": {
+          "tl": "East at West Valley Fault",
+          "en": "East and West Valley Faults",
+          "bis": "East ug West Valley Faults"
+        },
+        "cats": [
+          "earthquakes"
+        ]
+      },
+      "formal_item_id": "c7e3856891f96f9f129e155aa74d35786",
+      "reason": "Fault constituent list and possible earthquake effect separated; fault referent explicit; East/West names unchanged. Check causative hinabu authority.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35256",
+      "source_card_sha256": "4532768c71ea25ee8d4d9af21d885861e09b9bd5934eeba7b0ce56faf5ce9e98",
+      "candidate_card_sha256": "bca08fb4eb6e62d0dde7ddc577f75981e957dc0540899d4aee63b6d7ad8f4efe",
+      "before_card": {
+        "id": "ffct-35256",
+        "factId": "fwg-jupiter-size-400",
+        "domain": "EARTH_SPACE",
+        "topic": "Jupiter size",
+        "terms": [
+          "jupiter",
+          "size",
+          "largest",
+          "planet",
+          "solar",
+          "system",
+          "mass",
+          "times",
+          "earth"
+        ],
+        "fact": {
+          "en": "Jupiter is the largest planet in our solar system, with a mass more than 300 times that of Earth!",
+          "tl": "Ang Jupiter ang pinakamalaking planeta sa ating solar system, na may mass na higit sa 300 beses kaysa sa Earth!",
+          "bis": "Ang Jupiter mao ang pinakadako nga planeta sa atong solar system, nga adunay mass nga sobra sa 300 ka beses kaysa sa Earth!"
+        },
+        "slug": "ffct-35429",
+        "title": {
+          "en": "Jupiter",
+          "tl": "Jupiter",
+          "bis": "Jupiter"
+        },
+        "cats": [
+          "planets",
+          "solar-system"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "300 beses"
+          ],
+          "en": [
+            "300 times"
+          ],
+          "bis": [
+            "300 ka beses"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-35256",
+        "factId": "fwg-jupiter-size-400",
+        "domain": "EARTH_SPACE",
+        "topic": "Jupiter size",
+        "terms": [
+          "jupiter",
+          "size",
+          "largest",
+          "planet",
+          "solar",
+          "system",
+          "mass",
+          "times",
+          "earth"
+        ],
+        "fact": {
+          "en": "Jupiter is the largest planet in our solar system, with a mass more than 300 times that of Earth!",
+          "tl": "Ang Jupiter ang pinakamalaking planeta sa ating solar system, na may mass na higit sa 300 beses kaysa sa Earth!",
+          "bis": "Ang Jupiter mao ang pinakadako nga planeta sa atong solar system. Ang mass niini sobra sa 300 ka beses sa mass sa Earth!"
+        },
+        "slug": "ffct-35429",
+        "title": {
+          "en": "Jupiter",
+          "tl": "Jupiter",
+          "bis": "Jupiter"
+        },
+        "cats": [
+          "planets",
+          "solar-system"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "300 beses"
+          ],
+          "en": [
+            "300 times"
+          ],
+          "bis": [
+            "300 ka beses"
+          ]
+        },
+        "poster": true
+      },
+      "formal_item_id": "c8e804c926b7890af48f4065f3ad790f1",
+      "reason": "Largest planet and greater-than300 Earth-mass comparison separated; exact numerical relation and emphasis retained.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35291",
+      "source_card_sha256": "0dee3ef67bfb70726bf6c20b022e53f67de89eee86e58f5d16ef5983018f17aa",
+      "candidate_card_sha256": "580b7bdfa9b26c7ad4cb227cef954a85b92bc642daf9c11855df1d7307ad4820",
+      "before_card": {
+        "id": "ffct-35291",
+        "factId": "fwg-solar-system-health-382",
+        "domain": "EARTH_SPACE",
+        "topic": "Solar System Health",
+        "terms": [
+          "solar",
+          "system",
+          "health",
+          "earth",
+          "atmosphere",
+          "blocks",
+          "harmful",
+          "radiation",
+          "still",
+          "need"
+        ],
+        "fact": {
+          "en": "Earth's atmosphere blocks most harmful solar radiation, but you still need sunscreen to protect your skin from the Sun's ultraviolet rays!",
+          "tl": "Ang atmospera ng Earth ay humaharang sa karamihan ng mapanganib na solar radiation, pero kailangan mo pa rin ng sunscreen para protektahan ang balat sa ultraviolet rays ng araw!",
+          "bis": "Ang atmospera sa Earth nag-block sa kadaghanan sa dautang solar radiation, pero kinahanglan gihapon ka mag-sunscreen aron maprotektahan ang panit gikan sa ultraviolet rays sa adlaw!"
+        },
+        "slug": "ffct-36128",
+        "title": {
+          "en": "Sun Protection",
+          "tl": "Proteksyon sa Araw",
+          "bis": "Proteksyon sa Adlaw"
+        },
+        "cats": [
+          "health",
+          "space"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "solar radiation"
+          ],
+          "en": [
+            "solar radiation"
+          ],
+          "bis": [
+            "solar radiation"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-35291",
+        "factId": "fwg-solar-system-health-382",
+        "domain": "EARTH_SPACE",
+        "topic": "Solar System Health",
+        "terms": [
+          "solar",
+          "system",
+          "health",
+          "earth",
+          "atmosphere",
+          "blocks",
+          "harmful",
+          "radiation",
+          "still",
+          "need"
+        ],
+        "fact": {
+          "en": "Earth's atmosphere blocks most harmful solar radiation, but you still need sunscreen to protect your skin from the Sun's ultraviolet rays!",
+          "tl": "Ang atmospera ng Earth ay humaharang sa karamihan ng mapanganib na solar radiation, pero kailangan mo pa rin ng sunscreen para protektahan ang balat sa ultraviolet rays ng araw!",
+          "bis": "Ang atmospera sa Earth nag-block sa kadaghanan sa dautang solar radiation. Pero kinahanglan gihapon ka mag-sunscreen aron maprotektahan ang imong panit gikan sa ultraviolet rays sa adlaw!"
+        },
+        "slug": "ffct-36128",
+        "title": {
+          "en": "Sun Protection",
+          "tl": "Proteksyon sa Araw",
+          "bis": "Proteksyon sa Adlaw"
+        },
+        "cats": [
+          "health",
+          "space"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "solar radiation"
+          ],
+          "en": [
+            "solar radiation"
+          ],
+          "bis": [
+            "solar radiation"
+          ]
+        },
+        "poster": true
+      },
+      "formal_item_id": "c3999726eda677740c80382ac0ae863ed",
+      "reason": "Radiation and sunscreen clauses separated with explicit skin referent; retained dautan requires bad-in-effect dictionary sense.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35295",
+      "source_card_sha256": "d2f6882144fdc571defc8ca6e42d5a32adcc2f2e7b8530117712d9c6407d60eb",
+      "candidate_card_sha256": "fa6f11694df9c7e42a9f613e84addb8a0fce7844cc6137dae110501116e21dd8",
+      "before_card": {
+        "id": "ffct-35295",
+        "factId": "fwg-earthquake-record-71",
+        "domain": "EARTH_SPACE",
+        "topic": "Earthquake Record",
+        "terms": [
+          "earthquake",
+          "record",
+          "valdivia",
+          "chile",
+          "powerful",
+          "ever",
+          "recorded",
+          "measuring",
+          "massive",
+          "magnitude"
+        ],
+        "fact": {
+          "en": "What is the most powerful earthquake ever recorded?\n\nThe 1960 Valdivia earthquake in Chile is the most powerful ever recorded, measuring a massive 9.5 magnitude!",
+          "tl": "Ano ang pinakamalakas na lindol na naitala?\n\nAng lindol sa Valdivia noong 1960 sa Chile ang pinakamalakas na naitala, may magnitude na 9.5!",
+          "bis": "Unsa ang pinakakusog nga linog nga narecord?\n\nAng linog sa Valdivia niadtong 1960 sa Chile maoy pinakakusog nga narecord, nga may magnitude nga 9.5!"
+        },
+        "slug": "ffct-35295",
+        "source": "original",
+        "title": {
+          "tl": "Valdivia 9.5 noong 1960",
+          "en": "Valdivia 9.5 in 1960",
+          "bis": "Valdivia 9.5 1960"
+        },
+        "cats": [
+          "earthquakes"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-35295",
+        "factId": "fwg-earthquake-record-71",
+        "domain": "EARTH_SPACE",
+        "topic": "Earthquake Record",
+        "terms": [
+          "earthquake",
+          "record",
+          "valdivia",
+          "chile",
+          "powerful",
+          "ever",
+          "recorded",
+          "measuring",
+          "massive",
+          "magnitude"
+        ],
+        "fact": {
+          "en": "What is the most powerful earthquake ever recorded?\n\nThe 1960 Valdivia earthquake in Chile is the most powerful ever recorded, measuring a massive 9.5 magnitude!",
+          "tl": "Ano ang pinakamalakas na lindol na naitala?\n\nAng lindol sa Valdivia noong 1960 sa Chile ang pinakamalakas na naitala, may magnitude na 9.5!",
+          "bis": "Unsa ang pinakakusog nga linog nga narecord?\n\nAng linog sa Valdivia niadtong 1960 sa Chile maoy pinakakusog nga narecord, nga may magnitude nga 9.5!"
+        },
+        "slug": "ffct-35295",
+        "source": "original",
+        "title": {
+          "tl": "Valdivia 9.5 noong 1960",
+          "en": "Valdivia 9.5 in 1960",
+          "bis": "Valdivia 9.5 niadtong 1960"
+        },
+        "cats": [
+          "earthquakes"
+        ]
+      },
+      "formal_item_id": "c65587e183d8ca30c36f43c082e5a630a",
+      "reason": "Full title distinguishes year1960 from magnitude9.5; complete body unchanged. No independent body-improvement claim.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35311",
+      "source_card_sha256": "dad0b8262b94fe8350a1f9a73038f31469e675db3e6fae76da1a4f9343f7bf0b",
+      "candidate_card_sha256": "c0618bad82c9531380587757df7e652696105440bba6de6972f253b5842af613",
+      "before_card": {
+        "id": "ffct-35311",
+        "factId": "fwg-water-cycle-477",
+        "domain": "EARTH_SPACE",
+        "topic": "Water Cycle",
+        "terms": [
+          "water",
+          "cycle",
+          "just",
+          "evaporation",
+          "rain",
+          "includes",
+          "transpiration",
+          "where",
+          "plants",
+          "release"
+        ],
+        "fact": {
+          "en": "Do plants help make it rain?\n\nThe water cycle includes transpiration, where plants release water vapor from their leaves, not just evaporation and rain!",
+          "tl": "Nakakatulong ba ang mga halaman para umulan?\n\nAng water cycle ay hindi lang evaporation at ulan, kasama ang transpiration kung saan ang halaman naglalabas ng water vapor mula sa dahon!",
+          "bis": "Makatabang ba ang mga tanom para muulan?\n\nAng water cycle dili lang evaporation ug ulan, apil ang transpiration diin ang mga tanom nagpagawas ug water vapor gikan sa dahon!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Transpiration",
+          "tl": "Transpirasyon",
+          "bis": "Transpirasyon"
+        },
+        "cats": [
+          "water-cycle",
+          "plants"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "transpiration"
+          ],
+          "en": [
+            "transpiration"
+          ],
+          "bis": [
+            "transpiration"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-35311",
+        "factId": "fwg-water-cycle-477",
+        "domain": "EARTH_SPACE",
+        "topic": "Water Cycle",
+        "terms": [
+          "water",
+          "cycle",
+          "just",
+          "evaporation",
+          "rain",
+          "includes",
+          "transpiration",
+          "where",
+          "plants",
+          "release"
+        ],
+        "fact": {
+          "en": "Do plants help make it rain?\n\nThe water cycle includes transpiration, where plants release water vapor from their leaves, not just evaporation and rain!",
+          "tl": "Nakakatulong ba ang mga halaman para umulan?\n\nAng water cycle ay hindi lang evaporation at ulan, kasama ang transpiration kung saan ang halaman naglalabas ng water vapor mula sa dahon!",
+          "bis": "Makatabang ba ang mga tanom para muulan?\n\nAng water cycle dili lang evaporation ug ulan. Apil usab niini ang transpiration, diin ang mga tanom nagpagawas ug water vapor gikan sa ilang mga dahon!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Transpiration",
+          "tl": "Transpirasyon",
+          "bis": "Transpirasyon"
+        },
+        "cats": [
+          "water-cycle",
+          "plants"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "transpiration"
+          ],
+          "en": [
+            "transpiration"
+          ],
+          "bis": [
+            "transpiration"
+          ]
+        }
+      },
+      "formal_item_id": "ca3902bdf231b17e4393c90a95d627b0f",
+      "reason": "Transpiration definition separated from cycle scope; leaves belong to the plants; exact emphasized scientific term retained.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35357",
+      "source_card_sha256": "cfd6603042498eddd4652dfc540d26c36423abaf0c72d13e920a1e02e6fe0d5a",
+      "candidate_card_sha256": "f47c0547f251f15d36532d0e9fbdc0609fca8a0881f9d76061f733249dd048f6",
+      "before_card": {
+        "id": "ffct-35357",
+        "factId": "fwg-igneous-rock-formation-234",
+        "domain": "EARTH_SPACE",
+        "topic": "Igneous rock formation",
+        "terms": [
+          "igneous",
+          "rock",
+          "formation",
+          "magma",
+          "cools",
+          "solidifies",
+          "beneath",
+          "earth",
+          "surface",
+          "decreasing"
+        ],
+        "fact": {
+          "en": "When magma cools and solidifies beneath Earth's surface, the decreasing temperature causes it to crystallize into intrusive igneous rocks like granite!",
+          "tl": "Kapag lumamig at nag-solidify ang magma sa ilalim ng lupa, ang decreasing temperature ay nagiging sanhi ng pag-crystallize nito sa intrusive igneous rocks tulad ng granite!",
+          "bis": "Kung mobugnaw ug mo-solidify ang magma ilawom sa yuta, ang decreasing temperature hinungdan sa pag-crystallize niini ug mahimong intrusive igneous rocks sama sa granite!"
+        },
+        "slug": "qa-ffct-35357",
+        "title": {
+          "en": "Igneous Rocks",
+          "tl": "Mga Bato ng Magma",
+          "bis": "Mga Bato sa Magma"
+        },
+        "cats": [
+          "rocks",
+          "geology"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "intrusive igneous rocks"
+          ],
+          "en": [
+            "intrusive igneous rocks"
+          ],
+          "bis": [
+            "intrusive igneous rocks"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-35357",
+        "factId": "fwg-igneous-rock-formation-234",
+        "domain": "EARTH_SPACE",
+        "topic": "Igneous rock formation",
+        "terms": [
+          "igneous",
+          "rock",
+          "formation",
+          "magma",
+          "cools",
+          "solidifies",
+          "beneath",
+          "earth",
+          "surface",
+          "decreasing"
+        ],
+        "fact": {
+          "en": "When magma cools and solidifies beneath Earth's surface, the decreasing temperature causes it to crystallize into intrusive igneous rocks like granite!",
+          "tl": "Kapag lumamig at nag-solidify ang magma sa ilalim ng lupa, ang decreasing temperature ay nagiging sanhi ng pag-crystallize nito sa intrusive igneous rocks tulad ng granite!",
+          "bis": "Kung mobugnaw ug mo-solidify ang magma ilawom sa yuta, ang pagkunhod sa temperatura maoy hinungdan nga mo-crystallize kini. Busa mahimo kini nga intrusive igneous rocks sama sa granite!"
+        },
+        "slug": "qa-ffct-35357",
+        "title": {
+          "en": "Igneous Rocks",
+          "tl": "Mga Bato ng Magma",
+          "bis": "Mga Bato sa Magma"
+        },
+        "cats": [
+          "rocks",
+          "geology"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "intrusive igneous rocks"
+          ],
+          "en": [
+            "intrusive igneous rocks"
+          ],
+          "bis": [
+            "intrusive igneous rocks"
+          ]
+        },
+        "poster": true
+      },
+      "formal_item_id": "c01b2adaafff2f35a2b900b362b0d340b",
+      "reason": "Explicit cooling/crystallization/result clauses preserve process; kunhud decrease sense requires dictionary corroboration.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35389",
+      "source_card_sha256": "2f93abac77095fd9b219325b9a07de73c3bdfd37dfebe01604d5c4e517af0a9e",
+      "candidate_card_sha256": "e3105dd9477cc8e07fa283ecc7b545a6ad961826a69ce53165a34108e3ce58e9",
+      "before_card": {
+        "id": "ffct-35389",
+        "factId": "fwg-soil-organisms-13",
+        "domain": "EARTH_SPACE",
+        "topic": "Soil Organisms",
+        "terms": [
+          "soil",
+          "organisms",
+          "single",
+          "handful",
+          "healthy",
+          "contains",
+          "living",
+          "total",
+          "number",
+          "humans"
+        ],
+        "fact": {
+          "en": "A single handful of healthy soil holds more living organisms than all the people on Earth combined!",
+          "tl": "Isang dakot lang ng malusog na lupa ay may mas maraming buhay na organismo kaysa sa kabuuang bilang ng tao sa buong mundo!",
+          "bis": "Usa ka dakot nga himsog nga yuta adunay mas daghan nga buhing organismo kaysa sa total nga ihap sa mga tawo sa tibuok kalibutan!"
+        },
+        "slug": "ffct-35389",
+        "source": "original",
+        "title": {
+          "tl": "Buhay sa Isang Dakot",
+          "en": "Life in a Handful",
+          "bis": "Kinabuhi Dakot Yuta"
+        },
+        "cats": [
+          "soil",
+          "microorganisms"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-35389",
+        "factId": "fwg-soil-organisms-13",
+        "domain": "EARTH_SPACE",
+        "topic": "Soil Organisms",
+        "terms": [
+          "soil",
+          "organisms",
+          "single",
+          "handful",
+          "healthy",
+          "contains",
+          "living",
+          "total",
+          "number",
+          "humans"
+        ],
+        "fact": {
+          "en": "A single handful of healthy soil holds more living organisms than all the people on Earth combined!",
+          "tl": "Isang dakot lang ng malusog na lupa ay may mas maraming buhay na organismo kaysa sa kabuuang bilang ng tao sa buong mundo!",
+          "bis": "Ang usa lang ka dakot sa himsog nga yuta adunay mas daghang buhing organismo kaysa sa tanang tawo sa tibuok kalibutan!"
+        },
+        "slug": "ffct-35389",
+        "source": "original",
+        "title": {
+          "tl": "Buhay sa Isang Dakot",
+          "en": "Life in a Handful",
+          "bis": "Kinabuhi sa Usa ka Dakot"
+        },
+        "cats": [
+          "soil",
+          "microorganisms"
+        ]
+      },
+      "formal_item_id": "cf54fd7b9b74db84911d0fe7bbfadf6b5",
+      "reason": "Handful of healthy soil and all-people numerical comparison made explicit; no approval merely from shorter phrasing.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35399",
+      "source_card_sha256": "7884cf8b2a7c7d163e45800521a812caf427c17c677ee759d7eeb71d04897be2",
+      "candidate_card_sha256": "024a5334acca5bdd44bbca55e50b361688a4cd0cab2439fe2d4bb76ee77bb6b4",
+      "before_card": {
+        "id": "ffct-35399",
+        "factId": "fwg-water-cycle-518",
+        "domain": "EARTH_SPACE",
+        "topic": "water_cycle",
+        "terms": [
+          "water",
+          "cycle",
+          "heats",
+          "ocean",
+          "causing",
+          "liquid",
+          "evaporate",
+          "invisible",
+          "vapor",
+          "rises"
+        ],
+        "fact": {
+          "en": "What happens to ocean water when the sun heats it?\n\nThe sun heats the ocean, causing liquid water to evaporate into invisible water vapor that rises into the cooler atmosphere!",
+          "tl": "Ano ang nangyayari sa tubig sa dagat kapag pinainit ng araw?\n\nPinapainit ng araw ang dagat, kaya nagiging invisible water vapor ang likidong tubig at umaakyat sa malamig na atmospera!",
+          "bis": "Unsay mahitabo sa tubig sa dagat kung mainitan kini sa adlaw?\n\nAng adlaw nagpainit sa dagat, hinungdan nga ang liquid water mo-evaporate ngadto sa invisible water vapor nga mosaka sa mas bugnaw nga atmosphere!"
+        },
+        "slug": "qa-ffct-35399",
+        "title": {
+          "en": "Water Cycle",
+          "tl": "Siklo ng Tubig",
+          "bis": "Siklo sa Tubig"
+        },
+        "cats": [
+          "water-cycle",
+          "states-of-matter"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "invisible water vapor"
+          ],
+          "en": [
+            "invisible water vapor"
+          ],
+          "bis": [
+            "invisible water vapor"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-35399",
+        "factId": "fwg-water-cycle-518",
+        "domain": "EARTH_SPACE",
+        "topic": "water_cycle",
+        "terms": [
+          "water",
+          "cycle",
+          "heats",
+          "ocean",
+          "causing",
+          "liquid",
+          "evaporate",
+          "invisible",
+          "vapor",
+          "rises"
+        ],
+        "fact": {
+          "en": "What happens to ocean water when the sun heats it?\n\nThe sun heats the ocean, causing liquid water to evaporate into invisible water vapor that rises into the cooler atmosphere!",
+          "tl": "Ano ang nangyayari sa tubig sa dagat kapag pinainit ng araw?\n\nPinapainit ng araw ang dagat, kaya nagiging invisible water vapor ang likidong tubig at umaakyat sa malamig na atmospera!",
+          "bis": "Unsay mahitabo sa tubig sa dagat kung mainitan kini sa adlaw?\n\nAng adlaw nagpainit sa dagat. Tungod niini, ang liquid water mo-evaporate ug mahimong invisible water vapor. Kini nga vapor mosaka ngadto sa mas bugnaw nga atmosphere!"
+        },
+        "slug": "qa-ffct-35399",
+        "title": {
+          "en": "Water Cycle",
+          "tl": "Siklo ng Tubig",
+          "bis": "Siklo sa Tubig"
+        },
+        "cats": [
+          "water-cycle",
+          "states-of-matter"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "invisible water vapor"
+          ],
+          "en": [
+            "invisible water vapor"
+          ],
+          "bis": [
+            "invisible water vapor"
+          ]
+        }
+      },
+      "formal_item_id": "ccd3b4c855efef23b1dcf0980bfad0fab",
+      "reason": "Heating, invisible vapor and rising/cooling sequence separated without removing any physical step or emphasis.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35435",
+      "source_card_sha256": "fb25f4008acaef5162fcb529bb9ceb84f70e81e32326c730f03217fc9a555be7",
+      "candidate_card_sha256": "660bc0ff2f94c6133e5060c0a6b0dd767ac9055315260e66491607d262cb5cf1",
+      "before_card": {
+        "id": "ffct-35435",
+        "factId": "fwg-volcanic-ash-131",
+        "domain": "EARTH_SPACE",
+        "topic": "volcanic ash",
+        "terms": [
+          "volcanic",
+          "mayon",
+          "volcano",
+          "contains",
+          "tiny",
+          "rock",
+          "particles",
+          "damage",
+          "lungs",
+          "wearing"
+        ],
+        "fact": {
+          "en": "Volcanic ash from Mayon Volcano has tiny rock particles that can damage lungs, so wear an N95 mask to protect your health during an eruption!",
+          "tl": "Ang volcanic ash mula sa Mayon Volcano ay may maliliit na rock particles na makakasira ng baga, kaya magsuot ng N95 mask para protektahan ang kalusugan mo habang nagpuputok!",
+          "bis": "Ang volcanic ash gikan sa Mayon Volcano naay gagmay nga rock particles nga makadaot sa baga, mao nga magsul-ob og N95 mask para maprotektahan ang imong kahimsog panahon sa eruption!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Volcanic Ash",
+          "tl": "Abo ng Bulkan",
+          "bis": "Abo sa Bulkan"
+        },
+        "cats": [
+          "volcanoes",
+          "health"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "N95 mask"
+          ],
+          "en": [
+            "N95 mask"
+          ],
+          "bis": [
+            "N95 mask"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-35435",
+        "factId": "fwg-volcanic-ash-131",
+        "domain": "EARTH_SPACE",
+        "topic": "volcanic ash",
+        "terms": [
+          "volcanic",
+          "mayon",
+          "volcano",
+          "contains",
+          "tiny",
+          "rock",
+          "particles",
+          "damage",
+          "lungs",
+          "wearing"
+        ],
+        "fact": {
+          "en": "Volcanic ash from Mayon Volcano has tiny rock particles that can damage lungs, so wear an N95 mask to protect your health during an eruption!",
+          "tl": "Ang volcanic ash mula sa Mayon Volcano ay may maliliit na rock particles na makakasira ng baga, kaya magsuot ng N95 mask para protektahan ang kalusugan mo habang nagpuputok!",
+          "bis": "Ang volcanic ash gikan sa Mayon Volcano naay gagmay nga rock particles nga makadaot sa baga. Mao nga magsul-ob og N95 mask para maprotektahan ang imong kahimsog panahon sa eruption!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Volcanic Ash",
+          "tl": "Abo ng Bulkan",
+          "bis": "Abo sa Bulkan"
+        },
+        "cats": [
+          "volcanoes",
+          "health"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "N95 mask"
+          ],
+          "en": [
+            "N95 mask"
+          ],
+          "bis": [
+            "N95 mask"
+          ]
+        }
+      },
+      "formal_item_id": "cfa786a1ac4e3638bd04cb58781a5814c",
+      "reason": "Punctuation-only ash/N95 cause-advice split; complete claim preserved. Primary ash respirator guidance must be checked.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35436",
+      "source_card_sha256": "7d50212f16a9c3fb4e3e5a3414e187e04724cfaef96c572883b91017dc6f8421",
+      "candidate_card_sha256": "0c7919cfb299ff6e63f0e213c79b63d5da967baee0b97a1cf1c07293efa6634e",
+      "before_card": {
+        "id": "ffct-35436",
+        "factId": "fwg-soil-316",
+        "domain": "EARTH_SPACE",
+        "topic": "Soil",
+        "terms": [
+          "soil",
+          "uniform",
+          "underground",
+          "distinct",
+          "layers",
+          "called",
+          "horizons",
+          "including",
+          "topsoil",
+          "rich"
+        ],
+        "fact": {
+          "en": "Is all soil underground exactly the same?\n\nNope! Soil has distinct layers called horizons. It includes topsoil rich in humus and subsoil rich in clay!",
+          "tl": "Pare-pareho ba ang lahat ng lupa sa ilalim?\n\nHindi! Ang lupa ay may hiwalay na layers na tinatawag na horizons, kasama ang topsoil na mayaman sa humus at subsoil na maraming clay!",
+          "bis": "Pareho ba tanan nga soil sa ilawom?\n\nDili! Ang soil naay lain-lain nga layers nga gitawag ug horizons, apil ang topsoil nga rich in humus ug subsoil nga rich in clay!"
+        },
+        "slug": "soil-layers-profile",
+        "title": {
+          "en": "Soil Layers",
+          "tl": "Mga Patong ng Lupa",
+          "bis": "Mga Sapaw sa Yuta"
+        },
+        "cats": [
+          "soil",
+          "geology"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "horizons"
+          ],
+          "en": [
+            "horizons"
+          ],
+          "bis": [
+            "horizons"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-35436",
+        "factId": "fwg-soil-316",
+        "domain": "EARTH_SPACE",
+        "topic": "Soil",
+        "terms": [
+          "soil",
+          "uniform",
+          "underground",
+          "distinct",
+          "layers",
+          "called",
+          "horizons",
+          "including",
+          "topsoil",
+          "rich"
+        ],
+        "fact": {
+          "en": "Is all soil underground exactly the same?\n\nNope! Soil has distinct layers called horizons. It includes topsoil rich in humus and subsoil rich in clay!",
+          "tl": "Pare-pareho ba ang lahat ng lupa sa ilalim?\n\nHindi! Ang lupa ay may hiwalay na layers na tinatawag na horizons, kasama ang topsoil na mayaman sa humus at subsoil na maraming clay!",
+          "bis": "Pareho gyud ba ang tanang soil sa ilawom?\n\nDili! Ang soil naay lain-lain nga layers nga gitawag ug horizons. Apil niini ang topsoil nga daghan og humus ug ang subsoil nga daghan og clay!"
+        },
+        "slug": "soil-layers-profile",
+        "title": {
+          "en": "Soil Layers",
+          "tl": "Mga Patong ng Lupa",
+          "bis": "Mga Sapaw sa Yuta"
+        },
+        "cats": [
+          "soil",
+          "geology"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "horizons"
+          ],
+          "en": [
+            "horizons"
+          ],
+          "bis": [
+            "horizons"
+          ]
+        },
+        "poster": true
+      },
+      "formal_item_id": "ce206b0b9754115b8dcf8046b75121b56",
+      "reason": "Exactly restored by gyud, definition and examples separated; rich-in humus/clay rendered as abundance; horizon emphasis exact.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35438",
+      "source_card_sha256": "81d8958f1a66fa323f170eb642a0368dd126afd4518191ec9f85406e0a2ab56b",
+      "candidate_card_sha256": "c5e565b5b8fda63b3656123229046d5278db1fde94a11aeccef69d9060f1eec1",
+      "before_card": {
+        "id": "ffct-35438",
+        "factId": "fwg-rain-shadow-641",
+        "domain": "EARTH_SPACE",
+        "topic": "rain shadow",
+        "terms": [
+          "rain",
+          "shadow",
+          "moist",
+          "ocean",
+          "forced",
+          "mountain",
+          "cools",
+          "condenses",
+          "dropping",
+          "heavy"
+        ],
+        "fact": {
+          "en": "Why does one side of a mountain get heavy rain while the other stays dry?\n\nMoist ocean air forced up the mountain cools and condenses, dropping heavy rain on the windward side and leaving the leeward side dry!",
+          "tl": "Bakit malakas ang ulan sa isang bahagi ng bundok habang tuyo ang kabilang bahagi?\n\nAng moist na hangin mula sa dagat na tinataas ng bundok ay lumalamig at nagkokondensa, bumabagsak ang malakas na ulan sa windward side habang ang leeward side ay nananatiling tuyo!",
+          "bis": "Nganong kusog ang ulan sa usa ka bahin sa bukid samtang uga ang pikas?\n\nAng moist nga hangin gikan sa dagat nga gi-pataas sa bukid mo-cool down ug mo-condense, mag-buhat og daghang ulan sa windward side samtang ang leeward side magpabiling uga!"
+        },
+        "slug": "ffct-35438",
+        "source": "original",
+        "title": {
+          "tl": "Ulan sa Windward Side",
+          "en": "Rain on Windward Side",
+          "bis": "Ulan sa Windward Side"
+        },
+        "cats": [
+          "climate",
+          "landforms"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-35438",
+        "factId": "fwg-rain-shadow-641",
+        "domain": "EARTH_SPACE",
+        "topic": "rain shadow",
+        "terms": [
+          "rain",
+          "shadow",
+          "moist",
+          "ocean",
+          "forced",
+          "mountain",
+          "cools",
+          "condenses",
+          "dropping",
+          "heavy"
+        ],
+        "fact": {
+          "en": "Why does one side of a mountain get heavy rain while the other stays dry?\n\nMoist ocean air forced up the mountain cools and condenses, dropping heavy rain on the windward side and leaving the leeward side dry!",
+          "tl": "Bakit malakas ang ulan sa isang bahagi ng bundok habang tuyo ang kabilang bahagi?\n\nAng moist na hangin mula sa dagat na tinataas ng bundok ay lumalamig at nagkokondensa, bumabagsak ang malakas na ulan sa windward side habang ang leeward side ay nananatiling tuyo!",
+          "bis": "Nganong kusog ang ulan sa usa ka bahin sa bukid samtang uga ang pikas?\n\nAng moist nga hangin gikan sa dagat mapugos pagsaka sa bukid. Mobugnaw kini ug mo-condense. Mao nga kusog ang ulan sa windward side, ug magpabiling uga ang leeward side!"
+        },
+        "slug": "ffct-35438",
+        "source": "original",
+        "title": {
+          "tl": "Ulan sa Windward Side",
+          "en": "Rain on Windward Side",
+          "bis": "Ulan sa Windward Side"
+        },
+        "cats": [
+          "climate",
+          "landforms"
+        ]
+      },
+      "formal_item_id": "c1ea60686865cab562d5e3a78318b687b",
+      "reason": "Moist sea air forced upward, cooling and condensation retain mechanism and sides; no broad seasonal dryness assertion added.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35459",
+      "source_card_sha256": "fb8579cecefeabc156dd856851296834955c924702a34c43cf873bc92273f726",
+      "candidate_card_sha256": "f2cf2e913dc642219a3e049430e5834c4c4da141b71b4b472223aec55e57d0d4",
+      "before_card": {
+        "id": "ffct-35459",
+        "factId": "fwg-space-exploration-101",
+        "domain": "EARTH_SPACE",
+        "topic": "Space Exploration",
+        "terms": [
+          "space",
+          "exploration",
+          "nasa",
+          "magellan",
+          "spacecraft",
+          "used",
+          "radar",
+          "ninety",
+          "eight",
+          "percent"
+        ],
+        "fact": {
+          "en": "NASA's Magellan spacecraft used radar to map 98% of Venus's surface between 1990 and 1994!",
+          "tl": "Gumamit ang Magellan spacecraft ng NASA ng radar para i-map ang 98% ng ibabaw ng Venus mula 1990 hanggang 1994!",
+          "bis": "Gigamit sa Magellan spacecraft sa NASA ang radar aron i-map ang 98% sa nawong sa Venus gikan 1990 hangtod 1994!"
+        },
+        "slug": "ffct-35459",
+        "source": "original",
+        "title": {
+          "tl": "Magellan Radar sa Venus",
+          "en": "Magellan Maps Venus",
+          "bis": "Magellan Venus"
+        },
+        "cats": [
+          "space-exploration"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-35459",
+        "factId": "fwg-space-exploration-101",
+        "domain": "EARTH_SPACE",
+        "topic": "Space Exploration",
+        "terms": [
+          "space",
+          "exploration",
+          "nasa",
+          "magellan",
+          "spacecraft",
+          "used",
+          "radar",
+          "ninety",
+          "eight",
+          "percent"
+        ],
+        "fact": {
+          "en": "NASA's Magellan spacecraft used radar to map 98% of Venus's surface between 1990 and 1994!",
+          "tl": "Gumamit ang Magellan spacecraft ng NASA ng radar para i-map ang 98% ng ibabaw ng Venus mula 1990 hanggang 1994!",
+          "bis": "Gigamit sa Magellan spacecraft sa NASA ang radar aron i-map ang 98% sa nawong sa Venus gikan 1990 hangtod 1994!"
+        },
+        "slug": "ffct-35459",
+        "source": "original",
+        "title": {
+          "tl": "Magellan Radar sa Venus",
+          "en": "Magellan Maps Venus",
+          "bis": "Gi-map sa Magellan ang Venus"
+        },
+        "cats": [
+          "space-exploration"
+        ]
+      },
+      "formal_item_id": "c711bf4eb0a65f1f62f76bf642fd934a2",
+      "reason": "Magellan title names Venus maps; body unchanged including98% and1990–94. Surface sense of nawung corroborated in prior dictionary review.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35485",
+      "source_card_sha256": "99fb28f91ba4b18281375c05667728644906a847a0eaed63c049a90909998a64",
+      "candidate_card_sha256": "74404797e27fc67dbb09f3444348e1f99f124c9f5e6ad46172cffb8fc9a9bab8",
+      "before_card": {
+        "id": "ffct-35485",
+        "factId": "fwg-cloud-composition-407",
+        "domain": "EARTH_SPACE",
+        "topic": "cloud composition",
+        "terms": [
+          "cloud",
+          "composition",
+          "unlike",
+          "invisible",
+          "water",
+          "vapor",
+          "visible",
+          "clouds",
+          "consist",
+          "tiny"
+        ],
+        "fact": {
+          "en": "What are visible clouds made of?\n\nUnlike invisible water vapor, visible clouds consist of tiny liquid water droplets or solid ice crystals!",
+          "tl": "Ano ang binubuo ng visible clouds?\n\nHindi tulad ng invisible water vapor, ang visible clouds ay binubuo ng maliliit na liquid water droplets o solid ice crystals!",
+          "bis": "Unsa ang gilangkuban sa visible clouds?\n\nDili sama sa invisible nga water vapor, ang visible clouds gilangkuban og gagmay nga liquid water droplets o solid ice crystals!"
+        },
+        "slug": "ffct-35485",
+        "source": "original",
+        "title": {
+          "tl": "Ulap na Droplet Yelo",
+          "en": "Clouds: Drops, Crystals",
+          "bis": "Panganod Droplet"
+        },
+        "cats": [
+          "clouds"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-35485",
+        "factId": "fwg-cloud-composition-407",
+        "domain": "EARTH_SPACE",
+        "topic": "cloud composition",
+        "terms": [
+          "cloud",
+          "composition",
+          "unlike",
+          "invisible",
+          "water",
+          "vapor",
+          "visible",
+          "clouds",
+          "consist",
+          "tiny"
+        ],
+        "fact": {
+          "en": "What are visible clouds made of?\n\nUnlike invisible water vapor, visible clouds consist of tiny liquid water droplets or solid ice crystals!",
+          "tl": "Ano ang binubuo ng visible clouds?\n\nHindi tulad ng invisible water vapor, ang visible clouds ay binubuo ng maliliit na liquid water droplets o solid ice crystals!",
+          "bis": "Unsa ang gilangkuban sa visible clouds?\n\nDili sama sa invisible nga water vapor, ang visible clouds gilangkuban og gagmay nga liquid water droplets o solid ice crystals!"
+        },
+        "slug": "ffct-35485",
+        "source": "original",
+        "title": {
+          "tl": "Ulap na Droplet Yelo",
+          "en": "Clouds: Drops, Crystals",
+          "bis": "Panganod: Droplets ug Crystals"
+        },
+        "cats": [
+          "clouds"
+        ]
+      },
+      "formal_item_id": "c27ab685ac43aac9052288cdd410897b4",
+      "reason": "Title names droplets and ice crystals while unchanged body retains the alternative construction.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35510",
+      "source_card_sha256": "aceae88f80265452c5353be9caa13ccb2919ebb9e20f528cbf7539e4b0c08c1a",
+      "candidate_card_sha256": "843dd6a75cf28e8f3c42194231cb2ee7a365fbd6cc4529a3fe63f8d0db2dbeea",
+      "before_card": {
+        "id": "ffct-35510",
+        "factId": "fwg2-asin-minerals-889",
+        "domain": "EARTH_SPACE",
+        "topic": "Asin minerals",
+        "terms": [
+          "asin",
+          "minerals",
+          "traditional",
+          "salt",
+          "farms",
+          "ilocos",
+          "produce",
+          "evaporating",
+          "seawater",
+          "leaving"
+        ],
+        "fact": {
+          "en": "How do traditional salt farms in Ilocos make asin?\n\nThey produce asin by evaporating seawater, leaving behind halite, which is the mineral name for sodium chloride!",
+          "tl": "Paano gumagawa ng asin ang mga tradisyonal na salt farms sa Ilocos?\n\nGumagawa sila ng asin sa pamamagitan ng pag-evaporate ng seawater, na nag-iiwan ng halite, ang mineral name para sa sodium chloride!",
+          "bis": "Giunsa paghimo og asin sa tradisyonal nga salt farms sa Ilocos?\n\nNag-produce sila og asin pinaagi sa pag-evaporate sa seawater, nga nagbilin og halite, nga mao ang mineral name para sa sodium chloride!"
+        },
+        "slug": "ffct-35510",
+        "source": "original",
+        "title": {
+          "tl": "Salt Farm sa Ilocos",
+          "en": "Ilocos Salt Farms",
+          "bis": "Salt Farm sa Ilocos"
+        },
+        "cats": [
+          "minerals"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-35510",
+        "factId": "fwg2-asin-minerals-889",
+        "domain": "EARTH_SPACE",
+        "topic": "Asin minerals",
+        "terms": [
+          "asin",
+          "minerals",
+          "traditional",
+          "salt",
+          "farms",
+          "ilocos",
+          "produce",
+          "evaporating",
+          "seawater",
+          "leaving"
+        ],
+        "fact": {
+          "en": "How do traditional salt farms in Ilocos make asin?\n\nThey produce asin by evaporating seawater, leaving behind halite, which is the mineral name for sodium chloride!",
+          "tl": "Paano gumagawa ng asin ang mga tradisyonal na salt farms sa Ilocos?\n\nGumagawa sila ng asin sa pamamagitan ng pag-evaporate ng seawater, na nag-iiwan ng halite, ang mineral name para sa sodium chloride!",
+          "bis": "Giunsa paghimo og asin sa tradisyonal nga salt farms sa Ilocos?\n\nNaghimo sila og asin pinaagi sa pag-evaporate sa seawater. Ang mabilin mao ang halite, ang mineral name sa sodium chloride!"
+        },
+        "slug": "ffct-35510",
+        "source": "original",
+        "title": {
+          "tl": "Salt Farm sa Ilocos",
+          "en": "Ilocos Salt Farms",
+          "bis": "Salt Farm sa Ilocos"
+        },
+        "cats": [
+          "minerals"
+        ]
+      },
+      "formal_item_id": "c54a3cc0657f21769d8c536339db62fe2",
+      "reason": "Salt farms and seawater evaporation stated separately; halite/sodium-chloride identity unchanged.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35551",
+      "source_card_sha256": "d19452c53053c41bf86751ed51703ccf43074e27d11e37b96939b3bb11ab4fda",
+      "candidate_card_sha256": "7cebff6670db9c855e4bff60bd3f5adc793dd69587058e766b7e26849e9e609f",
+      "before_card": {
+        "id": "ffct-35551",
+        "factId": "fwg2-water-cycle-glaciers-578",
+        "domain": "EARTH_SPACE",
+        "topic": "water-cycle-glaciers",
+        "terms": [
+          "water",
+          "cycle",
+          "glaciers",
+          "massive",
+          "lock",
+          "percent",
+          "fresh",
+          "planet",
+          "earth"
+        ],
+        "fact": {
+          "en": "Where is most of Earth's fresh water hidden?\n\nMassive glaciers lock up about 69 percent of all the fresh water on planet Earth!",
+          "tl": "Saan nakatago ang karamihan ng fresh water sa mundo?\n\nHinahawak ng napakalaking mga glacier ang halos 69% ng lahat ng fresh water sa mundo!",
+          "bis": "Asa nakatago ang kadaghanan sa fresh water sa kalibutan?\n\nNag-lock up ang dagkong mga glacier og mga 69% sa tanang fresh water sa kalibutan!"
+        },
+        "slug": "iceberg-tip-and-underwater-mass",
+        "title": {
+          "en": "Glaciers",
+          "tl": "Mga Glacier",
+          "bis": "Mga Glacier"
+        },
+        "cats": [
+          "water",
+          "water-cycle"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "69%"
+          ],
+          "en": [
+            "69 percent"
+          ],
+          "bis": [
+            "69%"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-35551",
+        "factId": "fwg2-water-cycle-glaciers-578",
+        "domain": "EARTH_SPACE",
+        "topic": "water-cycle-glaciers",
+        "terms": [
+          "water",
+          "cycle",
+          "glaciers",
+          "massive",
+          "lock",
+          "percent",
+          "fresh",
+          "planet",
+          "earth"
+        ],
+        "fact": {
+          "en": "Where is most of Earth's fresh water hidden?\n\nMassive glaciers lock up about 69 percent of all the fresh water on planet Earth!",
+          "tl": "Saan nakatago ang karamihan ng fresh water sa mundo?\n\nHinahawak ng napakalaking mga glacier ang halos 69% ng lahat ng fresh water sa mundo!",
+          "bis": "Asa nakatago ang kadaghanan sa fresh water sa kalibutan?\n\nAng dagkong mga glacier nagtipig og mga 69% sa tanang fresh water sa kalibutan!"
+        },
+        "slug": "iceberg-tip-and-underwater-mass",
+        "title": {
+          "en": "Glaciers",
+          "tl": "Mga Glacier",
+          "bis": "Mga Glacier"
+        },
+        "cats": [
+          "water",
+          "water-cycle"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "69%"
+          ],
+          "en": [
+            "69 percent"
+          ],
+          "bis": [
+            "69%"
+          ]
+        },
+        "poster": true
+      },
+      "formal_item_id": "cc63cf50232f20566424d1452ccd34cf5",
+      "reason": "Storage relation and approximate69% preserved; tipig store sense requires lexical corroboration.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35572",
+      "source_card_sha256": "6ecdece48cdfcf1d84be5ac44fa0a676dca9fc9253a57831870eedb2646e90c4",
+      "candidate_card_sha256": "721ae2af3212efd8f5b73347fd76b93bfd5031a0bb263d74cb497f5e2d116336",
+      "before_card": {
+        "id": "ffct-35572",
+        "factId": "fwg2-asteroid-belt-576",
+        "domain": "EARTH_SPACE",
+        "topic": "Asteroid Belt",
+        "terms": [
+          "asteroid",
+          "belt",
+          "jupiter",
+          "immense",
+          "gravitational",
+          "pull",
+          "constantly",
+          "disrupts",
+          "orbits",
+          "rocky"
+        ],
+        "fact": {
+          "en": "Why didn't the asteroid belt become a planet?\n\nJupiter's immense gravitational pull constantly disrupts the orbits of rocky debris, preventing these asteroids from clumping together to form a planet.",
+          "tl": "Bakit hindi naging planeta ang asteroid belt?\n\nAng napakalakas na gravitational pull ng Jupiter ay palaging binabago ang mga orbit ng mga batong debris, kaya hindi nagkakabuo-buo ang mga asteroid para maging isang planeta.",
+          "bis": "Ngano nga ang asteroid belt wala mahimong planeta?\n\nAng dako kaayo nga gravitational pull sa Jupiter kanunay nga nagbag-o sa mga orbit sa mga bato, mao nga dili maghiusa ang mga asteroid aron mahimong usa ka planeta."
+        },
+        "slug": "asteroid-belt",
+        "title": {
+          "en": "Asteroid Belt",
+          "tl": "Sinturon ng Asteroid",
+          "bis": "Sinturon sa Asteroyd"
+        },
+        "cats": [
+          "space",
+          "solar-system"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "gravitational pull"
+          ],
+          "en": [
+            "gravitational pull"
+          ],
+          "bis": [
+            "gravitational pull"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-35572",
+        "factId": "fwg2-asteroid-belt-576",
+        "domain": "EARTH_SPACE",
+        "topic": "Asteroid Belt",
+        "terms": [
+          "asteroid",
+          "belt",
+          "jupiter",
+          "immense",
+          "gravitational",
+          "pull",
+          "constantly",
+          "disrupts",
+          "orbits",
+          "rocky"
+        ],
+        "fact": {
+          "en": "Why didn't the asteroid belt become a planet?\n\nJupiter's immense gravitational pull constantly disrupts the orbits of rocky debris, preventing these asteroids from clumping together to form a planet.",
+          "tl": "Bakit hindi naging planeta ang asteroid belt?\n\nAng napakalakas na gravitational pull ng Jupiter ay palaging binabago ang mga orbit ng mga batong debris, kaya hindi nagkakabuo-buo ang mga asteroid para maging isang planeta.",
+          "bis": "Ngano nga wala mahimong planeta ang asteroid belt?\n\nDako kaayo ang gravitational pull sa Jupiter. Kanunay kini nga nagbag-o sa mga orbit sa mga bato. Mao nga dili maghiusa ang mga asteroid aron mahimong usa ka planeta."
+        },
+        "slug": "asteroid-belt",
+        "title": {
+          "en": "Asteroid Belt",
+          "tl": "Sinturon ng Asteroid",
+          "bis": "Sinturon sa Asteroyd"
+        },
+        "cats": [
+          "space",
+          "solar-system"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "gravitational pull"
+          ],
+          "en": [
+            "gravitational pull"
+          ],
+          "bis": [
+            "gravitational pull"
+          ]
+        },
+        "poster": true
+      },
+      "formal_item_id": "ce40c6c9cec373c56574770dd9c7c9174",
+      "reason": "Jupiter gravity, continuous orbital disturbance and prevention of clumping retain causal scope. No inference from model agreement alone.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35682",
+      "source_card_sha256": "2210036d584a8573cdd88fa9dcfef2f8a0462ab3f05c4a856e7cd453fad57b02",
+      "candidate_card_sha256": "19c6c8996c7bc53d12d0b3332a7242b2570af63d5689e69451dd6a7db5feb30e",
+      "before_card": {
+        "id": "ffct-35682",
+        "factId": "earth-asthenosphere-plates-ride-g9",
+        "domain": "EARTH_SPACE",
+        "topic": "asthenosphere lets plates move",
+        "terms": [
+          "asthenosphere",
+          "astenospera",
+          "malambot na sapaw",
+          "humok nga sapaw",
+          "bahagyang tunaw",
+          "medyo natunaw",
+          "partially molten",
+          "deformable",
+          "gumagalaw na mantle",
+          "naglihok nga mantle",
+          "kinalalagyan ng plate",
+          "gisakyan sa plate",
+          "plates ride",
+          "nakapatong ang plate",
+          "nagdaganay ang plate",
+          "ductile"
+        ],
+        "fact": {
+          "en": "What lies beneath the lithosphere?\n\nThe asthenosphere! It is a hotter, softer part of the mantle where the tectonic plates above slowly slide.",
+          "tl": "Ano ang nasa ilalim ng lithosphere?\n\nAng asthenosphere! Ito ay mas mainit at malambot na bahagi ng mantle kung saan dahan-dahang umuusad ang mga plate sa ibabaw.",
+          "bis": "Unsa ang naa sa ilalom sa lithosphere?\n\nAng asthenosphere! Kini mas init ug mas humok nga bahin sa mantle diin hinay nga naglihok ang mga plate sa ibabaw niini."
+        },
+        "slug": "ffct-35682",
+        "source": "original",
+        "title": {
+          "tl": "Asthenosphere Ilalim",
+          "en": "Below: Asthenosphere",
+          "bis": "Asthenosphere"
+        },
+        "cats": [
+          "geology"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-35682",
+        "factId": "earth-asthenosphere-plates-ride-g9",
+        "domain": "EARTH_SPACE",
+        "topic": "asthenosphere lets plates move",
+        "terms": [
+          "asthenosphere",
+          "astenospera",
+          "malambot na sapaw",
+          "humok nga sapaw",
+          "bahagyang tunaw",
+          "medyo natunaw",
+          "partially molten",
+          "deformable",
+          "gumagalaw na mantle",
+          "naglihok nga mantle",
+          "kinalalagyan ng plate",
+          "gisakyan sa plate",
+          "plates ride",
+          "nakapatong ang plate",
+          "nagdaganay ang plate",
+          "ductile"
+        ],
+        "fact": {
+          "en": "What lies beneath the lithosphere?\n\nThe asthenosphere! It is a hotter, softer part of the mantle where the tectonic plates above slowly slide.",
+          "tl": "Ano ang nasa ilalim ng lithosphere?\n\nAng asthenosphere! Ito ay mas mainit at malambot na bahagi ng mantle kung saan dahan-dahang umuusad ang mga plate sa ibabaw.",
+          "bis": "Unsa ang naa sa ilalom sa lithosphere?\n\nAng asthenosphere! Kini usa ka mas init ug mas humok nga bahin sa mantle. Dinhi hinay nga naglihok ang mga plate nga naa sa ibabaw niini."
+        },
+        "slug": "ffct-35682",
+        "source": "original",
+        "title": {
+          "tl": "Asthenosphere Ilalim",
+          "en": "Below: Asthenosphere",
+          "bis": "Asthenosphere"
+        },
+        "cats": [
+          "geology"
+        ]
+      },
+      "formal_item_id": "cf3a7b18782c3294e42d1c5e065ea6d7a",
+      "reason": "Asthenosphere location and movement of plates above it separated; broad move wording does not introduce a different layer.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35692",
+      "source_card_sha256": "e5f23b33ef659e5a930a517dd128cff08658ef84348fc2a233dba65e7a35efd3",
+      "candidate_card_sha256": "c4c50f345dda823e061f194d3d2bf27a222087add9d266c10dd6f4e5135bd005",
+      "before_card": {
+        "id": "ffct-35692",
+        "factId": "fwg2-streak-plate-173",
+        "domain": "EARTH_SPACE",
+        "topic": "Streak plate",
+        "terms": [
+          "streak",
+          "plate",
+          "ceramic",
+          "tile",
+          "used",
+          "geology",
+          "identify",
+          "minerals",
+          "color",
+          "powder"
+        ],
+        "fact": {
+          "en": "A streak plate is a ceramic tile that helps geologists identify minerals by the color of powder they leave when scratched!",
+          "tl": "Ang streak plate ay isang ceramic tile na tumutulong sa mga geologist na kilalanin ang mga mineral sa kulay ng pulbos na naiwan kapag kiniskis!",
+          "bis": "Ang streak plate usa ka ceramic tile nga nagtabang sa mga geologist nga maila ang mga mineral pinaagi sa kolor sa pulbos nga nabilin kung gikiskis!"
+        },
+        "slug": "mineral-streak-on-tile",
+        "title": {
+          "en": "Mineral Streak Test",
+          "tl": "Pagsusuri ng Mineral",
+          "bis": "Pagsulay sa Mineral"
+        },
+        "cats": [
+          "minerals",
+          "geology"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "streak plate"
+          ],
+          "en": [
+            "streak plate"
+          ],
+          "bis": [
+            "streak plate"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-35692",
+        "factId": "fwg2-streak-plate-173",
+        "domain": "EARTH_SPACE",
+        "topic": "Streak plate",
+        "terms": [
+          "streak",
+          "plate",
+          "ceramic",
+          "tile",
+          "used",
+          "geology",
+          "identify",
+          "minerals",
+          "color",
+          "powder"
+        ],
+        "fact": {
+          "en": "A streak plate is a ceramic tile that helps geologists identify minerals by the color of powder they leave when scratched!",
+          "tl": "Ang streak plate ay isang ceramic tile na tumutulong sa mga geologist na kilalanin ang mga mineral sa kulay ng pulbos na naiwan kapag kiniskis!",
+          "bis": "Ang streak plate usa ka ceramic tile. Nagtabang kini sa mga geologist nga maila ang mga mineral pinaagi sa kolor sa pulbos nga nabilin kung gikiskis!"
+        },
+        "slug": "mineral-streak-on-tile",
+        "title": {
+          "en": "Mineral Streak Test",
+          "tl": "Pagsusuri ng Mineral",
+          "bis": "Pagsulay sa Mineral"
+        },
+        "cats": [
+          "minerals",
+          "geology"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "streak plate"
+          ],
+          "en": [
+            "streak plate"
+          ],
+          "bis": [
+            "streak plate"
+          ]
+        },
+        "poster": true
+      },
+      "formal_item_id": "c31db361cd98549577a31efdbf20373a2",
+      "reason": "Streak-plate ceramic definition and powder-color function separated; scientific diagnostic relation retained.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35695",
+      "source_card_sha256": "31b85a85e003d76593198fbfd89e786a61141d693bbc439d2fd977b387dc3a90",
+      "candidate_card_sha256": "37b2806a683026b70b06e4f66d9b0647128fae35ddbcb67510fc1761d97c0d7f",
+      "before_card": {
+        "id": "ffct-35695",
+        "factId": "fwg2-landslide-risks-796",
+        "domain": "EARTH_SPACE",
+        "topic": "landslide risks",
+        "terms": [
+          "landslide",
+          "risks",
+          "saturated",
+          "soil",
+          "becomes",
+          "heavy",
+          "unstable",
+          "after",
+          "continuous",
+          "rain"
+        ],
+        "fact": {
+          "en": "Continuous heavy rain makes soil saturated, heavy, and unstable, increasing the risk of landslides in mountainous areas!",
+          "tl": "Ang tuloy-tuloy na malakas na ulan ay nagpapabasa at nagpapabigat sa lupa, kaya nagiging hindi matatag at tumataas ang panganib ng landslide sa bundok!",
+          "bis": "Ang padayon nga kusog nga ulan mopabasa ug mopabug-at sa yuta hangtod ma-saturated, mao nga dili stable ug mosaka ang risgo sa landslide sa bukid!"
+        },
+        "slug": "ffct-35695",
+        "source": "original",
+        "title": {
+          "tl": "Basang Lupa, Landslide",
+          "en": "Saturated Soil Slides",
+          "bis": "Basang Yuta Landslide"
+        },
+        "cats": [
+          "natural-disasters"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-35695",
+        "factId": "fwg2-landslide-risks-796",
+        "domain": "EARTH_SPACE",
+        "topic": "landslide risks",
+        "terms": [
+          "landslide",
+          "risks",
+          "saturated",
+          "soil",
+          "becomes",
+          "heavy",
+          "unstable",
+          "after",
+          "continuous",
+          "rain"
+        ],
+        "fact": {
+          "en": "Continuous heavy rain makes soil saturated, heavy, and unstable, increasing the risk of landslides in mountainous areas!",
+          "tl": "Ang tuloy-tuloy na malakas na ulan ay nagpapabasa at nagpapabigat sa lupa, kaya nagiging hindi matatag at tumataas ang panganib ng landslide sa bundok!",
+          "bis": "Ang padayon nga kusog nga ulan mopabasa sa yuta hangtod ma-saturated. Mobug-at ug mahimong dili stable ang yuta. Tungod niini, mosaka ang risgo sa landslide sa kabukiran!"
+        },
+        "slug": "ffct-35695",
+        "source": "original",
+        "title": {
+          "tl": "Basang Lupa, Landslide",
+          "en": "Saturated Soil Slides",
+          "bis": "Basang Yuta ug Landslide"
+        },
+        "cats": [
+          "natural-disasters"
+        ]
+      },
+      "formal_item_id": "c918e2ea174c8a5a0c348624985bdd1d8",
+      "reason": "Rain saturation and heavy unstable soil linked explicitly, retaining landslide risk rather than certainty.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35753",
+      "source_card_sha256": "9f00f7725e0340fde3c94bd365d59440011580ad9684546683b7a36c93dabac3",
+      "candidate_card_sha256": "2132f4575ea6c7976061ea1160861e7b475e41a0392ad78f0bd9ab39004591da",
+      "before_card": {
+        "id": "ffct-35753",
+        "factId": "fwg2-pumice-176",
+        "domain": "EARTH_SPACE",
+        "topic": "Pumice",
+        "terms": [
+          "pumice",
+          "highly",
+          "vesicular",
+          "volcanic",
+          "rock",
+          "material",
+          "used",
+          "construction",
+          "make",
+          "lightweight"
+        ],
+        "fact": {
+          "en": "Pumice is a highly vesicular volcanic rock used in construction to make lightweight concrete and in skincare as an exfoliant!",
+          "tl": "Ang pumice ay isang highly vesicular volcanic rock na ginagamit sa construction para gumawa ng lightweight concrete at sa skincare bilang exfoliant!",
+          "bis": "Ang pumice kay usa ka highly vesicular volcanic rock nga gigamit sa construction aron paghimo og lightweight concrete ug sa skincare isip exfoliant!"
+        },
+        "slug": "ffct-35753",
+        "source": "original",
+        "title": {
+          "tl": "Pumice na Bato",
+          "en": "Pumice the Volcanic Rock",
+          "bis": "Pumice nga Bato"
+        },
+        "cats": [
+          "rocks",
+          "volcanoes"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-35753",
+        "factId": "fwg2-pumice-176",
+        "domain": "EARTH_SPACE",
+        "topic": "Pumice",
+        "terms": [
+          "pumice",
+          "highly",
+          "vesicular",
+          "volcanic",
+          "rock",
+          "material",
+          "used",
+          "construction",
+          "make",
+          "lightweight"
+        ],
+        "fact": {
+          "en": "Pumice is a highly vesicular volcanic rock used in construction to make lightweight concrete and in skincare as an exfoliant!",
+          "tl": "Ang pumice ay isang highly vesicular volcanic rock na ginagamit sa construction para gumawa ng lightweight concrete at sa skincare bilang exfoliant!",
+          "bis": "Ang pumice usa ka highly vesicular volcanic rock. Gigamit kini sa construction aron paghimo og lightweight concrete, ug sa skincare isip exfoliant!"
+        },
+        "slug": "ffct-35753",
+        "source": "original",
+        "title": {
+          "tl": "Pumice na Bato",
+          "en": "Pumice the Volcanic Rock",
+          "bis": "Pumice nga Bato"
+        },
+        "cats": [
+          "rocks",
+          "volcanoes"
+        ]
+      },
+      "formal_item_id": "c24c9c4375b68a4e455e0d97b4f159b4b",
+      "reason": "Pumice definition and lightweight-concrete/exfoliant uses separated; classroom scientific terms retained.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35788",
+      "source_card_sha256": "7e4416a2aad3af75322aab0fe2d7ea471bec1a42a854fbff4645ffb3f1e8d6fa",
+      "candidate_card_sha256": "d2985534bc756f6e76b0464953905f2195fbdf9901f6eda21f2b4e17ac432a5c",
+      "before_card": {
+        "id": "ffct-35788",
+        "factId": "fwg2-rocks-633",
+        "domain": "EARTH_SPACE",
+        "topic": "Rocks",
+        "terms": [
+          "rocks",
+          "sink",
+          "igneous",
+          "rock",
+          "pumice",
+          "contains",
+          "many",
+          "bubbles",
+          "floats",
+          "water"
+        ],
+        "fact": {
+          "en": "Not all rocks sink! The igneous rock pumice contains so many gas bubbles inside that it actually floats on water.",
+          "tl": "Hindi lahat ng bato ay lumulubog! Ang igneous rock na pumice ay may napakaraming gas bubbles kaya ito ay lumulutang sa tubig.",
+          "bis": "Dili tanan nga bato malunod! Ang igneous rock nga pumice daghan kaayo og gas bubbles mao nga molutaw kini sa tubig."
+        },
+        "slug": "",
+        "title": {
+          "en": "Floating Pumice",
+          "tl": "Lutang na Pumice",
+          "bis": "Lutaw nga Pumice"
+        },
+        "cats": [
+          "rocks",
+          "buoyancy"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "pumice"
+          ],
+          "en": [
+            "pumice"
+          ],
+          "bis": [
+            "pumice"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-35788",
+        "factId": "fwg2-rocks-633",
+        "domain": "EARTH_SPACE",
+        "topic": "Rocks",
+        "terms": [
+          "rocks",
+          "sink",
+          "igneous",
+          "rock",
+          "pumice",
+          "contains",
+          "many",
+          "bubbles",
+          "floats",
+          "water"
+        ],
+        "fact": {
+          "en": "Not all rocks sink! The igneous rock pumice contains so many gas bubbles inside that it actually floats on water.",
+          "tl": "Hindi lahat ng bato ay lumulubog! Ang igneous rock na pumice ay may napakaraming gas bubbles kaya ito ay lumulutang sa tubig.",
+          "bis": "Dili tanan nga bato malunod! Ang igneous rock nga pumice daghan kaayo og gas bubbles sa sulod. Mao nga molutaw gyud kini sa tubig."
+        },
+        "slug": "",
+        "title": {
+          "en": "Floating Pumice",
+          "tl": "Lutang na Pumice",
+          "bis": "Lutaw nga Pumice"
+        },
+        "cats": [
+          "rocks",
+          "buoyancy"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "pumice"
+          ],
+          "en": [
+            "pumice"
+          ],
+          "bis": [
+            "pumice"
+          ]
+        }
+      },
+      "formal_item_id": "cba179d2856b0162a8497fdd4979f07ed",
+      "reason": "Gas bubbles explicitly inside pumice and actual floating claim retained; cause/result sentence split.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35800",
+      "source_card_sha256": "4a7d135fe2a8ec2a0d3ff36889a2c86dbca2ca063db6a9a590ce4ea1cbcc9205",
+      "candidate_card_sha256": "127aa854d412710d03382c73e0afd540decc93c8c833a5ad2f8db37656e7b7cb",
+      "before_card": {
+        "id": "ffct-35800",
+        "factId": "fwg2-abaca-and-volcanic-soil-438",
+        "domain": "EARTH_SPACE",
+        "topic": "Abaca and Volcanic Soil",
+        "terms": [
+          "abaca",
+          "volcanic",
+          "soil",
+          "plants",
+          "native",
+          "philippines",
+          "thrive",
+          "nutrient",
+          "rich",
+          "well"
+        ],
+        "fact": {
+          "en": "Abaca plants, native to the Philippines, thrive in nutrient-rich, well-drained volcanic soils! You can find them in regions like the Bicol peninsula.",
+          "tl": "Ang Abaca plants, na native sa Pilipinas, ay yumayabong sa nutrient-rich, well-drained volcanic soils! Makikita sila sa mga rehiyon tulad ng Bicol peninsula.",
+          "bis": "Ang Abaca plants, nga native sa Pilipinas, naglambo sa nutrient-rich, well-drained volcanic soils! Makita kini sa mga rehiyon sama sa Bicol peninsula."
+        },
+        "slug": "volcanic-slope-ecosystem",
+        "title": {
+          "en": "Abaca & Volcano Soil",
+          "tl": "Abaka at Lupa Bulkan",
+          "bis": "Abaka ug Yuta Bulkan"
+        },
+        "cats": [
+          "plants",
+          "soil"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "Abaca plants"
+          ],
+          "en": [
+            "Abaca plants"
+          ],
+          "bis": [
+            "Abaca plants"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-35800",
+        "factId": "fwg2-abaca-and-volcanic-soil-438",
+        "domain": "EARTH_SPACE",
+        "topic": "Abaca and Volcanic Soil",
+        "terms": [
+          "abaca",
+          "volcanic",
+          "soil",
+          "plants",
+          "native",
+          "philippines",
+          "thrive",
+          "nutrient",
+          "rich",
+          "well"
+        ],
+        "fact": {
+          "en": "Abaca plants, native to the Philippines, thrive in nutrient-rich, well-drained volcanic soils! You can find them in regions like the Bicol peninsula.",
+          "tl": "Ang Abaca plants, na native sa Pilipinas, ay yumayabong sa nutrient-rich, well-drained volcanic soils! Makikita sila sa mga rehiyon tulad ng Bicol peninsula.",
+          "bis": "Ang Abaca plants, nga native sa Pilipinas, naglambo sa nutrient-rich, well-drained volcanic soils! Makita kini sa mga rehiyon sama sa Bicol peninsula."
+        },
+        "slug": "volcanic-slope-ecosystem",
+        "title": {
+          "en": "Abaca & Volcano Soil",
+          "tl": "Abaka at Lupa Bulkan",
+          "bis": "Abaka ug Yuta sa Bulkan"
+        },
+        "cats": [
+          "plants",
+          "soil"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "Abaca plants"
+          ],
+          "en": [
+            "Abaca plants"
+          ],
+          "bis": [
+            "Abaca plants"
+          ]
+        }
+      },
+      "formal_item_id": "cc8f9c0ec3fad4f8461ef09471dfecb8e",
+      "reason": "Abaca volcanic-soil title remains consistent with unchanged nutrient-rich well-drained Bicol body.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35855",
+      "source_card_sha256": "51512fbf0d6e484735d85534227c0610bb70ae452a1d6486c316fb453a2da770",
+      "candidate_card_sha256": "3aaa56d8061f262002e826035533f4437a3829fa09f82de9de82f0db9e6f4dce",
+      "before_card": {
+        "id": "ffct-35855",
+        "factId": "earth-geodynamo-moving-iron-g10",
+        "domain": "EARTH_SPACE",
+        "topic": "the geodynamo of the outer core",
+        "terms": [
+          "geodynamo",
+          "dynamo",
+          "dinamo",
+          "gumagalaw na bakal",
+          "naglihok nga puthaw",
+          "moving molten iron",
+          "umiikot na metal",
+          "nagtuyok nga metal",
+          "convection sa core",
+          "init at pag-ikot",
+          "init ug pagtuyok",
+          "gumagawa ng magnetic field",
+          "naghimo sa magnetikong natad",
+          "nagliligtas sa pag-ikot",
+          "spinning earth",
+          "pag-ikot ng daigdig"
+        ],
+        "fact": {
+          "en": "Hot liquid iron constantly flows and swirls in Earth's outer core, creating our magnetic field through a process called the geodynamo!",
+          "tl": "Ang mainit na likidong bakal ay patuloy na umaagos at umiikot sa outer core ng Daigdig, lumilikha ng ating magnetikong larangan sa proseso na tinatawag na geodynamo!",
+          "bis": "Ang init nga likido nga puthaw kanunay nga nag-agos ug nagtuyok sa outer core sa Kalibutan, naghimo sa atong magnetikong natad pinaagi sa proseso nga gitawag nga geodynamo!"
+        },
+        "slug": "ffct-35855",
+        "source": "original",
+        "title": {
+          "tl": "Geodynamo sa Outer Core",
+          "en": "The Geodynamo Effect",
+          "bis": "Geodynamo Core"
+        },
+        "cats": [
+          "earth"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-35855",
+        "factId": "earth-geodynamo-moving-iron-g10",
+        "domain": "EARTH_SPACE",
+        "topic": "the geodynamo of the outer core",
+        "terms": [
+          "geodynamo",
+          "dynamo",
+          "dinamo",
+          "gumagalaw na bakal",
+          "naglihok nga puthaw",
+          "moving molten iron",
+          "umiikot na metal",
+          "nagtuyok nga metal",
+          "convection sa core",
+          "init at pag-ikot",
+          "init ug pagtuyok",
+          "gumagawa ng magnetic field",
+          "naghimo sa magnetikong natad",
+          "nagliligtas sa pag-ikot",
+          "spinning earth",
+          "pag-ikot ng daigdig"
+        ],
+        "fact": {
+          "en": "Hot liquid iron constantly flows and swirls in Earth's outer core, creating our magnetic field through a process called the geodynamo!",
+          "tl": "Ang mainit na likidong bakal ay patuloy na umaagos at umiikot sa outer core ng Daigdig, lumilikha ng ating magnetikong larangan sa proseso na tinatawag na geodynamo!",
+          "bis": "Sa outer core sa Kalibutan, ang init nga likido nga puthaw kanunay nga nag-agos ug nagtuyok. Kini ang naghimo sa atong magnetikong natad pinaagi sa proseso nga gitawag og geodynamo!"
+        },
+        "slug": "ffct-35855",
+        "source": "original",
+        "title": {
+          "tl": "Geodynamo sa Outer Core",
+          "en": "The Geodynamo Effect",
+          "bis": "Geodynamo sa Outer Core"
+        },
+        "cats": [
+          "earth"
+        ]
+      },
+      "formal_item_id": "cc85ea8c330c471d51c013d9ecefe5017",
+      "reason": "Geodynamo location then liquid-iron motion and field creation separated; exact outer-core scope retained.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35856",
+      "source_card_sha256": "a7352631d004c0acac868761fd4544aa353ba9218088ca51687927b311c17c20",
+      "candidate_card_sha256": "cc2c88f24e3916b4a651ee37cf1c7d115a363c13fc1241c465b785b82cbf3192",
+      "before_card": {
+        "id": "ffct-35856",
+        "factId": "earth-magnetic-field-shields-g9",
+        "domain": "EARTH_SPACE",
+        "topic": "magnetic field shields Earth from solar wind",
+        "terms": [
+          "magnetic shield",
+          "panangga sa init",
+          "taming sa kalibutan",
+          "nagsasanggalang",
+          "nagpanalipod",
+          "solar wind",
+          "hangin ng araw",
+          "hangin sa adlaw",
+          "nakakapinsalang radiation",
+          "makadaot nga radiation",
+          "pinoprotektahan ang buhay",
+          "gipanalipdan ang kinabuhi",
+          "harmful particles",
+          "mapanganib na partikulo",
+          "magnetosphere"
+        ],
+        "fact": {
+          "en": "Earth's magnetic field works like a shield, catching harmful particles from the Sun's solar wind and keeping life on the surface safe!",
+          "tl": "Ang magnetikong larangan ng Daigdig ay gumagana tulad ng taming, sumasalo sa mga nakakapinsalang partikulo mula sa solar wind ng Araw at pinoprotektahan ang buhay sa ibabaw!",
+          "bis": "Ang magnetikong natad sa Kalibutan nagtrabaho sama sa taming, nagsalo sa mga makadaot nga partikulo gikan sa solar wind sa Adlaw ug nagpanalipod sa kinabuhi sa ibabaw!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Magnetic Shield",
+          "tl": "Panangga ng Magnet",
+          "bis": "Taming sa Magnet"
+        },
+        "cats": [
+          "magnetism",
+          "space"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "taming"
+          ],
+          "en": [
+            "shield"
+          ],
+          "bis": [
+            "taming"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-35856",
+        "factId": "earth-magnetic-field-shields-g9",
+        "domain": "EARTH_SPACE",
+        "topic": "magnetic field shields Earth from solar wind",
+        "terms": [
+          "magnetic shield",
+          "panangga sa init",
+          "taming sa kalibutan",
+          "nagsasanggalang",
+          "nagpanalipod",
+          "solar wind",
+          "hangin ng araw",
+          "hangin sa adlaw",
+          "nakakapinsalang radiation",
+          "makadaot nga radiation",
+          "pinoprotektahan ang buhay",
+          "gipanalipdan ang kinabuhi",
+          "harmful particles",
+          "mapanganib na partikulo",
+          "magnetosphere"
+        ],
+        "fact": {
+          "en": "Earth's magnetic field works like a shield, catching harmful particles from the Sun's solar wind and keeping life on the surface safe!",
+          "tl": "Ang magnetikong larangan ng Daigdig ay gumagana tulad ng taming, sumasalo sa mga nakakapinsalang partikulo mula sa solar wind ng Araw at pinoprotektahan ang buhay sa ibabaw!",
+          "bis": "Ang magnetikong natad sa Kalibutan molihok sama sa taming. Gisalo niini ang mga makadaot nga partikulo gikan sa solar wind sa Adlaw, ug gipanalipdan niini ang kinabuhi sa ibabaw!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Magnetic Shield",
+          "tl": "Panangga ng Magnet",
+          "bis": "Taming sa Magnet"
+        },
+        "cats": [
+          "magnetism",
+          "space"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "taming"
+          ],
+          "en": [
+            "shield"
+          ],
+          "bis": [
+            "taming"
+          ]
+        },
+        "poster": true
+      },
+      "formal_item_id": "c294e9498e61332bd76b0ac9c134ce29b",
+      "reason": "Magnetic field action and protection clauses separated; source catch/shield metaphor unchanged. No source repair invented.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35889",
+      "source_card_sha256": "63595e5efab24902e0461a78658987c87e6fe240478525751687cfd709d3ca98",
+      "candidate_card_sha256": "d370764ad3f0ee4383528b5e2e48290f974322a6b1576c2cfe14ebd19fb9c615",
+      "before_card": {
+        "id": "ffct-35889",
+        "factId": "fwg2-the-water-cycle-916",
+        "domain": "EARTH_SPACE",
+        "topic": "The Water Cycle",
+        "terms": [
+          "water",
+          "cycle",
+          "dipterocarp",
+          "trees",
+          "philippine",
+          "forests",
+          "release",
+          "vapor",
+          "through",
+          "transpiration"
+        ],
+        "fact": {
+          "en": "Dipterocarp trees in Philippine forests release water vapor into the air through transpiration, directly contributing to the local water cycle!",
+          "tl": "Naglalabas ang mga dipterocarp tree sa kagubatan ng Pilipinas ng water vapor sa hangin sa pamamagitan ng transpiration, na tumutulong sa local water cycle!",
+          "bis": "Ang mga dipterocarp tree sa kagubatan sa Pilipinas nagpagawas og water vapor sa hangin pinaagi sa transpiration, nga direkta nga nakatampo sa local water cycle!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Transpiration",
+          "tl": "Transpirasyon",
+          "bis": "Transpirasyon"
+        },
+        "cats": [
+          "water-cycle",
+          "plants"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "transpiration"
+          ],
+          "en": [
+            "transpiration"
+          ],
+          "bis": [
+            "transpiration"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-35889",
+        "factId": "fwg2-the-water-cycle-916",
+        "domain": "EARTH_SPACE",
+        "topic": "The Water Cycle",
+        "terms": [
+          "water",
+          "cycle",
+          "dipterocarp",
+          "trees",
+          "philippine",
+          "forests",
+          "release",
+          "vapor",
+          "through",
+          "transpiration"
+        ],
+        "fact": {
+          "en": "Dipterocarp trees in Philippine forests release water vapor into the air through transpiration, directly contributing to the local water cycle!",
+          "tl": "Naglalabas ang mga dipterocarp tree sa kagubatan ng Pilipinas ng water vapor sa hangin sa pamamagitan ng transpiration, na tumutulong sa local water cycle!",
+          "bis": "Ang mga dipterocarp tree sa kagubatan sa Pilipinas nagpagawas og water vapor sa hangin pinaagi sa transpiration. Direkta kini nga nakatampo sa local water cycle!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Transpiration",
+          "tl": "Transpirasyon",
+          "bis": "Transpirasyon"
+        },
+        "cats": [
+          "water-cycle",
+          "plants"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "transpiration"
+          ],
+          "en": [
+            "transpiration"
+          ],
+          "bis": [
+            "transpiration"
+          ]
+        },
+        "poster": true
+      },
+      "formal_item_id": "cf764adb1d751e134454109dbeb72ccae",
+      "reason": "Transpiration and direct local-cycle contribution separated with kini referent to preceding process; exact scientific emphasis retained.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    },
+    {
+      "card_id": "ffct-35896",
+      "source_card_sha256": "009b63769ec8557c58f51d20f9a096a2538733bb328bf993cd4327f77ff082ba",
+      "candidate_card_sha256": "dc34bce7917614797b027ed0a1974f2839b5b5278d0bc9981c4d29ab8ea2eb69",
+      "before_card": {
+        "id": "ffct-35896",
+        "factId": "fwg2-soil-iron-and-blood-824",
+        "domain": "EARTH_SPACE",
+        "topic": "Soil Iron and Blood",
+        "terms": [
+          "soil",
+          "iron",
+          "blood",
+          "plants",
+          "absorb",
+          "humans",
+          "eating",
+          "build",
+          "hemoglobin",
+          "cells"
+        ],
+        "fact": {
+          "en": "Plants absorb iron from the soil, and when we eat them, our bodies use that iron to build hemoglobin in red blood cells!",
+          "tl": "Ang mga halaman ay sumisipsip ng iron mula sa lupa, at kapag kinain natin sila, ginagamit ng katawan ang iron para gumawa ng hemoglobin sa red blood cells!",
+          "bis": "Ang mga tanom moabsorb ug iron gikan sa yuta, ug kung kaonon nato sila, gamiton sa lawas ang iron aron maghimo ug hemoglobin sa red blood cells!"
+        },
+        "slug": "",
+        "source": "original",
+        "title": {
+          "tl": "Iron ng Halaman sa Dugo",
+          "en": "Plant Iron Makes Blood",
+          "bis": "Iron sa Tanum ngadto sa Dugo"
+        },
+        "cats": [
+          "nutrition",
+          "soil"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-35896",
+        "factId": "fwg2-soil-iron-and-blood-824",
+        "domain": "EARTH_SPACE",
+        "topic": "Soil Iron and Blood",
+        "terms": [
+          "soil",
+          "iron",
+          "blood",
+          "plants",
+          "absorb",
+          "humans",
+          "eating",
+          "build",
+          "hemoglobin",
+          "cells"
+        ],
+        "fact": {
+          "en": "Plants absorb iron from the soil, and when we eat them, our bodies use that iron to build hemoglobin in red blood cells!",
+          "tl": "Ang mga halaman ay sumisipsip ng iron mula sa lupa, at kapag kinain natin sila, ginagamit ng katawan ang iron para gumawa ng hemoglobin sa red blood cells!",
+          "bis": "Ang mga tanom mosuyop og iron gikan sa yuta. Kung kaonon nato ang mga tanom, gamiton sa atong lawas ang maong iron aron maghimo og hemoglobin sa red blood cells!"
+        },
+        "slug": "",
+        "source": "original",
+        "title": {
+          "tl": "Iron ng Halaman sa Dugo",
+          "en": "Plant Iron Makes Blood",
+          "bis": "Iron sa Tanum ngadto sa Dugo"
+        },
+        "cats": [
+          "nutrition",
+          "soil"
+        ]
+      },
+      "formal_item_id": "c3d6bc0cdea4a02be6d956181f00f248f",
+      "reason": "Plants absorb then bodies use that iron to make hemoglobin separated; plants and iron referents explicit. Suyup absorption sense requires dictionary corroboration.",
+      "decision": "apply_reviewed_cebuano_edit",
+      "readability_resolution": "Root independently read the complete source/candidate, titles, emphasis, proposal notes, backtranslation, fidelity and both blind observations. All32 full dossiers exactly matched the successful unchanged V18 replay. Pinned dictionary/source checks completed; exact full candidate only, no title/body splicing or native certification."
+    }
+  ],
+  "held": [
+    {
+      "card_id": "ffct-35218",
+      "source_card_sha256": "ed1a6cad9c4b3c809f16c741327871c2c5285c196eb34bb1794f46aa18210cc8",
+      "candidate_card_sha256": "9398e8a16b9937e70a2fdf2626f2aa151f5c6594b2fcbcdbacbc6f54a2a62535",
+      "before_card": {
+        "id": "ffct-35218",
+        "factId": "fwg-topography-and-weather-336",
+        "domain": "EARTH_SPACE",
+        "topic": "Topography and Weather",
+        "terms": [
+          "topography",
+          "weather",
+          "sierra",
+          "madre",
+          "mountains",
+          "block",
+          "pacific",
+          "moisture",
+          "creating",
+          "drier"
+        ],
+        "fact": {
+          "en": "Why is Central Luzon drier?\n\nThe Sierra Madre mountains block Pacific moisture! This creates a drier rain shadow climate across the Central Luzon plains.",
+          "tl": "Bakit mas tuyo ang Central Luzon?\n\nAng Sierra Madre mountains ay humaharang sa Pacific moisture! Lumilikha ito ng mas tuyong rain shadow climate sa mga kapatagan ng Central Luzon.",
+          "bis": "Ngano nga mas uga ang Central Luzon?\n\nAng Sierra Madre mountains nag-block sa Pacific moisture! Naghimo kini og mas uga nga rain shadow climate sa Central Luzon plains."
+        },
+        "slug": "ffct-35218",
+        "source": "original",
+        "title": {
+          "tl": "Rain Shadow ng Sierra Madre",
+          "en": "Sierra Madre Rain Shadow",
+          "bis": "Rain Shadow sa Sierra Madre"
+        },
+        "cats": [
+          "climate",
+          "landforms"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-35218",
+        "factId": "fwg-topography-and-weather-336",
+        "domain": "EARTH_SPACE",
+        "topic": "Topography and Weather",
+        "terms": [
+          "topography",
+          "weather",
+          "sierra",
+          "madre",
+          "mountains",
+          "block",
+          "pacific",
+          "moisture",
+          "creating",
+          "drier"
+        ],
+        "fact": {
+          "en": "Why is Central Luzon drier?\n\nThe Sierra Madre mountains block Pacific moisture! This creates a drier rain shadow climate across the Central Luzon plains.",
+          "tl": "Bakit mas tuyo ang Central Luzon?\n\nAng Sierra Madre mountains ay humaharang sa Pacific moisture! Lumilikha ito ng mas tuyong rain shadow climate sa mga kapatagan ng Central Luzon.",
+          "bis": "Ngano nga mas uga ang Central Luzon?\n\nAng Sierra Madre mountains mobabag sa Pacific moisture! Tungod niini, ang Central Luzon plains adunay mas uga nga rain shadow climate."
+        },
+        "slug": "ffct-35218",
+        "source": "original",
+        "title": {
+          "tl": "Rain Shadow ng Sierra Madre",
+          "en": "Sierra Madre Rain Shadow",
+          "bis": "Rain Shadow sa Sierra Madre"
+        },
+        "cats": [
+          "climate",
+          "landforms"
+        ]
+      },
+      "formal_item_id": "c67f5019e03696027599c5c24010fcade",
+      "reason": "Hold: blanket Central Luzon dryness/Pacific moisture claim lacks season and comparison scope. Source review cannot silently add a qualification.",
+      "decision": "hold_unchanged",
+      "kind": "source_review"
+    },
+    {
+      "card_id": "ffct-35490",
+      "source_card_sha256": "8d2d501640f5cd1c430f5d6b037731b579660af72766f8db297cbc01260e2718",
+      "candidate_card_sha256": "3fdf7a0486232c9f6410e7c141a3f68939a455baa7d4034a1e7a7558939b6617",
+      "before_card": {
+        "id": "ffct-35490",
+        "factId": "fwg-galena-mineral-605",
+        "domain": "EARTH_SPACE",
+        "topic": "Galena Mineral",
+        "terms": [
+          "galena",
+          "mineral",
+          "shiny",
+          "silver",
+          "colored",
+          "metallic",
+          "serves",
+          "primary",
+          "mined",
+          "globally"
+        ],
+        "fact": {
+          "en": "What mineral is mined globally to extract elemental lead?\n\nGalena is a shiny, silver-colored metallic mineral that serves as the primary ore mined globally for extracting elemental lead!",
+          "tl": "Anong mineral ang mined globally para kunin ang elemental lead?\n\nAng galena ay isang shiny, silver-colored metallic mineral na nagsisilbing primary ore na mined globally para sa extracting ng elemental lead!",
+          "bis": "Unong mineral ang gi-mined globally aron makuha ang elemental lead?\n\nAng galena kay usa ka shiny, silver-colored metallic mineral nga nagsilbi isip primary ore nga gi-mined globally para sa extracting sa elemental lead!"
+        },
+        "slug": "ffct-35490",
+        "source": "original",
+        "title": {
+          "tl": "Galena Lead Ore",
+          "en": "Galena Lead Ore",
+          "bis": "Galena Lead Ore"
+        },
+        "cats": [
+          "minerals"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-35490",
+        "factId": "fwg-galena-mineral-605",
+        "domain": "EARTH_SPACE",
+        "topic": "Galena Mineral",
+        "terms": [
+          "galena",
+          "mineral",
+          "shiny",
+          "silver",
+          "colored",
+          "metallic",
+          "serves",
+          "primary",
+          "mined",
+          "globally"
+        ],
+        "fact": {
+          "en": "What mineral is mined globally to extract elemental lead?\n\nGalena is a shiny, silver-colored metallic mineral that serves as the primary ore mined globally for extracting elemental lead!",
+          "tl": "Anong mineral ang mined globally para kunin ang elemental lead?\n\nAng galena ay isang shiny, silver-colored metallic mineral na nagsisilbing primary ore na mined globally para sa extracting ng elemental lead!",
+          "bis": "Unong mineral ang gi-mined globally aron makuha ang elemental lead?\n\nAng galena usa ka shiny, silver-colored metallic mineral. Kini ang primary ore nga gi-mined sa tibuok kalibutan aron makuha ang elemental lead!"
+        },
+        "slug": "ffct-35490",
+        "source": "original",
+        "title": {
+          "tl": "Galena Lead Ore",
+          "en": "Galena Lead Ore",
+          "bis": "Galena Lead Ore"
+        },
+        "cats": [
+          "minerals"
+        ]
+      },
+      "formal_item_id": "c4d42e61659dd246f38c6412c532f3652",
+      "reason": "Hold: retained interrogative Unong has no established question-word authority here. Absence of authority is not a defect claim.",
+      "decision": "hold_unchanged",
+      "kind": "lexical_review"
+    },
+    {
+      "card_id": "ffct-35495",
+      "source_card_sha256": "11dcb3c168128576b5c540d25cd1a0c743c16d72b2cb2b359d35b89f41e53b84",
+      "candidate_card_sha256": "e9e39cd2ee425aa0ef4d20051c2edeecf212dbad4bce96a3ce6ebebb37eee3c6",
+      "before_card": {
+        "id": "ffct-35495",
+        "factId": "fwg2-rainwater-harvesting-73",
+        "domain": "EARTH_SPACE",
+        "topic": "Rainwater Harvesting",
+        "terms": [
+          "rainwater",
+          "harvesting",
+          "collecting",
+          "clean",
+          "covered",
+          "containers",
+          "during",
+          "season",
+          "provides",
+          "safe"
+        ],
+        "fact": {
+          "en": "Collecting rainwater in clean, covered containers during the wet season provides a safe backup water supply during dry spells!",
+          "tl": "Ang pag-imbak ng ulan sa malinis at taklob na lalagyan tuwing tag-ulan ay nagbibigay ng ligtas na backup na tubig kapag tuyo!",
+          "bis": "Ang pagkuha og ulan sa limpyo, taklob nga sudlanan panahon sa ting-ulan makatabang nga maghatag ug luwas nga backup nga tubig kung uga!"
+        },
+        "slug": "rain-barrel-under-roof-edge",
+        "title": {
+          "en": "Rainwater Harvesting",
+          "tl": "Pag-imbak ng Ulan",
+          "bis": "Pagtipig sa Ulan"
+        },
+        "cats": [
+          "water",
+          "environment"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "backup na tubig"
+          ],
+          "en": [
+            "backup water supply"
+          ],
+          "bis": [
+            "backup nga tubig"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-35495",
+        "factId": "fwg2-rainwater-harvesting-73",
+        "domain": "EARTH_SPACE",
+        "topic": "Rainwater Harvesting",
+        "terms": [
+          "rainwater",
+          "harvesting",
+          "collecting",
+          "clean",
+          "covered",
+          "containers",
+          "during",
+          "season",
+          "provides",
+          "safe"
+        ],
+        "fact": {
+          "en": "Collecting rainwater in clean, covered containers during the wet season provides a safe backup water supply during dry spells!",
+          "tl": "Ang pag-imbak ng ulan sa malinis at taklob na lalagyan tuwing tag-ulan ay nagbibigay ng ligtas na backup na tubig kapag tuyo!",
+          "bis": "Sa ting-ulan, makatigum kita og tubig-ulan sa limpyo ug may taklob nga sudlanan. Makahatag kini kanato og luwas nga backup nga tubig kung uga ang panahon!"
+        },
+        "slug": "rain-barrel-under-roof-edge",
+        "title": {
+          "en": "Rainwater Harvesting",
+          "tl": "Pag-imbak ng Ulan",
+          "bis": "Pagtipig sa Ulan"
+        },
+        "cats": [
+          "water",
+          "environment"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "backup na tubig"
+          ],
+          "en": [
+            "backup water supply"
+          ],
+          "bis": [
+            "backup nga tubig"
+          ]
+        }
+      },
+      "formal_item_id": "c28707007cb1f227a23c3f1f08ba7280f",
+      "reason": "Hold: clean covered rainwater described as safe backup without intended-use/treatment scope. Clarity cannot repair source safety ambiguity.",
+      "decision": "hold_unchanged",
+      "kind": "source_review"
+    },
+    {
+      "card_id": "ffct-35801",
+      "source_card_sha256": "0951cbcac657dbf5c31a9d68294a17be274a0b2e0058c0958881bc800b373bb1",
+      "candidate_card_sha256": "5c692efd50dd83279614b50d2f5550f5471648b0943b3cccca81cea06725a521",
+      "before_card": {
+        "id": "ffct-35801",
+        "factId": "fwg2-water-cycle-536",
+        "domain": "EARTH_SPACE",
+        "topic": "Water Cycle",
+        "terms": [
+          "water",
+          "cycle",
+          "shaved",
+          "filipino",
+          "dessert",
+          "halo",
+          "represents",
+          "frozen",
+          "precipitation",
+          "melts"
+        ],
+        "fact": {
+          "en": "What does the shaved ice in halo-halo represent?\n\nIt represents frozen precipitation! It melts into liquid runoff just like snow and ice in the Earth's water cycle.",
+          "tl": "Ano ang kinakatawan ng ginayat na yelo sa halo-halo?\n\nKumakatawan ito ng frozen precipitation! Natutunaw ito sa liquid runoff katulad ng snow at ice sa Earth's water cycle.",
+          "bis": "Unsa ang girepresentahan sa ginayat nga yelo sa halo-halo?\n\nNagrepresenta kini sa frozen precipitation! Nagkatunaw kini ngadto sa liquid runoff sama sa snow ug ice sa Earth's water cycle."
+        },
+        "slug": "ice-melting-halo-halo",
+        "title": {
+          "en": "Halo-Halo & Water",
+          "tl": "Halo-Halo at Tubig",
+          "bis": "Halo-Halo ug Tubig"
+        },
+        "cats": [
+          "water-cycle",
+          "water"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "frozen precipitation"
+          ],
+          "en": [
+            "frozen precipitation"
+          ],
+          "bis": [
+            "frozen precipitation"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-35801",
+        "factId": "fwg2-water-cycle-536",
+        "domain": "EARTH_SPACE",
+        "topic": "Water Cycle",
+        "terms": [
+          "water",
+          "cycle",
+          "shaved",
+          "filipino",
+          "dessert",
+          "halo",
+          "represents",
+          "frozen",
+          "precipitation",
+          "melts"
+        ],
+        "fact": {
+          "en": "What does the shaved ice in halo-halo represent?\n\nIt represents frozen precipitation! It melts into liquid runoff just like snow and ice in the Earth's water cycle.",
+          "tl": "Ano ang kinakatawan ng ginayat na yelo sa halo-halo?\n\nKumakatawan ito ng frozen precipitation! Natutunaw ito sa liquid runoff katulad ng snow at ice sa Earth's water cycle.",
+          "bis": "Unsa ang girepresentahan sa ginayat nga yelo sa halo-halo?\n\nNagrepresenta kini sa frozen precipitation! Matunaw kini ug mahimong liquid runoff, sama sa snow ug ice sa Earth's water cycle."
+        },
+        "slug": "ice-melting-halo-halo",
+        "title": {
+          "en": "Halo-Halo & Water",
+          "tl": "Halo-Halo at Tubig",
+          "bis": "Halo-Halo ug Tubig"
+        },
+        "cats": [
+          "water-cycle",
+          "water"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "frozen precipitation"
+          ],
+          "en": [
+            "frozen precipitation"
+          ],
+          "bis": [
+            "frozen precipitation"
+          ]
+        },
+        "poster": true
+      },
+      "formal_item_id": "c4be47b1c4e2f9796af02395e7810f21e",
+      "reason": "Hold: retained ginayat shaved-ice sense unresolved; proposer native uncertainty remains. Do not splice a different word into candidate.",
+      "decision": "hold_unchanged",
+      "kind": "lexical_review"
+    }
+  ],
+  "window_accounting": {
+    "source_cards": 768,
+    "accepted": 28,
+    "priority_holds": 4,
+    "preexisting_holds": 655,
+    "total_holds": 659,
+    "keeps": 81
+  },
+  "scope": "Exact reviewed full Cebuano cards; all preexisting holds and keeps unchanged.",
+  "prior_mandatory_missing_judgment_holds": [
+    "ffct-15686",
+    "ffct-24823",
+    "ffct-24184"
+  ],
+  "prior_mandatory_invalid_evidence_holds": [
+    "ffct-08459",
+    "ffct-09018",
+    "ffct-10152",
+    "ffct-18958",
+    "ffct-34595"
+  ],
+  "native_verified": false,
+  "science_verified": false,
+  "released": false
+}

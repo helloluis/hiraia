@@ -1,0 +1,3873 @@
+{
+  "schema": "hiraia.cebuano-readability-reviewed-edits/v1",
+  "status": "reviewed_for_local_application",
+  "created_at": "2026-10-03T07:22:07.335138+00:00",
+  "reviewer": "Codex root, independent of Claude proposal/backtranslation/fidelity/readability calls; no separate Codex reviewer used for this window",
+  "scope": "Window 17: 32 individually reviewed exact Cebuano edits and nine priority holds. Windows 1–16 were previously adjudicated. No score-only approval, native verification, exhaustive science certification or release permission. Prior mandatory ffct-08459, ffct-09018 and ffct-10152 evidence holds remain unchanged in their respective windows.",
+  "window_id": "window-0017",
+  "window_accounting": {
+    "source_cards": 768,
+    "approved_exact_edits": 32,
+    "unchanged_keeps": 121,
+    "held": 615,
+    "held_from_priority_set": 9,
+    "preexisting_nonpriority_holds": 606
+  },
+  "input_pins": [
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0017/report.json",
+      "sha256": "69a5a5a4dd17e1d8c457126a3571231e827a1217c41e5841e762ae60993b1d51",
+      "bytes": 21278384
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0017/clean-agreement.jsonl",
+      "sha256": "20050cec1660633fa9a46228ea7047cd7d76ad7e2a83129d32b6fe34e7c2f6c7",
+      "bytes": 1046854
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0017/root-decisions.json",
+      "sha256": "6b9197ff4f357ce1fb8186bcc1018d5787d58583c558668cea4108da4a0ae0bc",
+      "bytes": 17970
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0017/corpus-lexical-evidence.json",
+      "sha256": "8c48f6c72e3be5ad7206065018413bc520d557ad07f90246a36205ab819c957d",
+      "bytes": 101888
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0017/dictionary-entries.json",
+      "sha256": "206c66d7c2b90c973164a077180d6218d6dad4bec922cedbafa8006902e9438d",
+      "bytes": 65654
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0017/dictionary-cross-references.json",
+      "sha256": "e2922bf5414b7ad1f35e6d78acd198510a91e3b3fd32d6b56adfc7dd2c4c8a1d",
+      "bytes": 27444
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0017/dictionary-supplement-001.json",
+      "sha256": "a8f71ba972573f7699a836cadaf6765cfe9a86ba4acad6ae13cb3f6158aed6ad",
+      "bytes": 8127
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0017/lexical-source-review.json",
+      "sha256": "10a157189cba6934dfc4474e196e0d69bc9c88f97a3d95a831ca4f16f0c74070",
+      "bytes": 22355
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-gutenberg-40074.txt",
+      "sha256": "f80b888b24dd4ca7f5cb16276b4a53f9d22129a496b9ffb7f7efe17d3b9a1504",
+      "bytes": 5699379
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-retrieval.json",
+      "sha256": "bd713c5adf21541a0e7fd9c49f75fb6b9d4157fb88d41151a245165b8955b7da",
+      "bytes": 502
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0017/collect-evidence-001.py",
+      "sha256": "4aaf401283240f9fcb6054b54d3c3aaf2a3022a7f699aa52cb1aba024d9bd9b5",
+      "bytes": 6186
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0017/collect-cross-references-001.py",
+      "sha256": "78d94505b9adb48e58ea8ec9f604f9a729889845c2058edee12c0d0f9236d738",
+      "bytes": 1992
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0017/show-review-dossiers.py",
+      "sha256": "9dd57c73bcce0b47f4ac376bd133eb2f02f7dcaf67f93da34acdc65459f6ca08",
+      "bytes": 1874
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0017/write-root-records.py",
+      "sha256": "a7875600cddc7557660fc84cb23d550a6a283543727fffc348ca05ac1333e07f",
+      "bytes": 23872
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0017/create-root-approval.py",
+      "sha256": "5dac977cecbd2a14a061edde99a87116c47ae86de5b4247e377f524d3ee8f342",
+      "bytes": 5196
+    }
+  ],
+  "current_pool_before_application": {
+    "path": "rag/pipeline/cardsPool.app.json",
+    "sha256": "8ec5155b3784de5f16e0560362ad8c96fa90e790c1e2681cae7a1a804146bc51",
+    "bytes": 50641225
+  },
+  "accepted": [
+    {
+      "card_id": "ffct-12561",
+      "source_card_sha256": "26b85ff63add3651809058546b51949237e4f484e5a095105edfecee042f0783",
+      "candidate_card_sha256": "ebc8e7c49bc4dff62bd6f46348e82856eda5f3e66386c68c7821fad19917b4ac",
+      "before_card": {
+        "id": "ffct-12561",
+        "factId": "plant-storage-roots-g5",
+        "domain": "LIVING_THINGS",
+        "topic": "some roots store food",
+        "terms": [
+          "ugat",
+          "roots",
+          "gamot",
+          "kamote",
+          "sweet potato",
+          "labanos",
+          "karot",
+          "carrot",
+          "nag-iimbak",
+          "tinipon",
+          "nagtigom",
+          "pagkain",
+          "pagkaon",
+          "food",
+          "sustansya",
+          "starch",
+          "almirol"
+        ],
+        "fact": {
+          "en": "Sweet potato, carrot, and radish roots grow big and fat because they're packed with food the plant stored inside them!",
+          "tl": "Lumalaki at tumataba ang ugat ng kamote, karot, at labanos dahil punong-puno ito ng pagkaing itinago ng halaman!",
+          "bis": "Modako ug motambok ang gamot sa kamote, karot, ug labanos kay puno kini sa pagkaon nga gitipigan sa tanom!"
+        },
+        "slug": "carrot-karot",
+        "title": {
+          "en": "Roots Store Food",
+          "tl": "Ugat na Nag-iimbak",
+          "bis": "Gamot nga Nagtipig"
+        },
+        "cats": [
+          "plants"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "ugat"
+          ],
+          "en": [
+            "roots"
+          ],
+          "bis": [
+            "gamot"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-12561",
+        "factId": "plant-storage-roots-g5",
+        "domain": "LIVING_THINGS",
+        "topic": "some roots store food",
+        "terms": [
+          "ugat",
+          "roots",
+          "gamot",
+          "kamote",
+          "sweet potato",
+          "labanos",
+          "karot",
+          "carrot",
+          "nag-iimbak",
+          "tinipon",
+          "nagtigom",
+          "pagkain",
+          "pagkaon",
+          "food",
+          "sustansya",
+          "starch",
+          "almirol"
+        ],
+        "fact": {
+          "en": "Sweet potato, carrot, and radish roots grow big and fat because they're packed with food the plant stored inside them!",
+          "tl": "Lumalaki at tumataba ang ugat ng kamote, karot, at labanos dahil punong-puno ito ng pagkaing itinago ng halaman!",
+          "bis": "Modako ug motambok ang gamot sa kamote, karot, ug labanos kay puno kini sa pagkaon nga gitipigan sa tanom!"
+        },
+        "slug": "carrot-karot",
+        "title": {
+          "en": "Roots Store Food",
+          "tl": "Ugat na Nag-iimbak",
+          "bis": "Gamot nga Nagtipig og Pagkaon"
+        },
+        "cats": [
+          "plants"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "ugat"
+          ],
+          "en": [
+            "roots"
+          ],
+          "bis": [
+            "gamot"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title names food as what the roots store, making the same storage relationship explicit. Gamut and tipig are attested roots. The unchanged sweet-potato/carrot/radish examples illustrate swollen food-storing underground parts; this heading adds no claim that every part of the swollen radish is root tissue.",
+      "formal_item_id": "cf34daf70d317bb79866bc8cec0fae403",
+      "fidelity_item_id": "md31edac6e4848abc53d2ee51",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-12620",
+      "source_card_sha256": "bae78ea40cc458f849dc308fa266f43e68b8dfa1564715995b009482b083c4d4",
+      "candidate_card_sha256": "ce77d61e8388c8f70840aa95c4184cf34d57c0760754e40118ba8b1d5ada81f1",
+      "before_card": {
+        "id": "ffct-12620",
+        "factId": "crab-arthropod-keeps-shore-clean-g5",
+        "domain": "LIVING_THINGS",
+        "topic": "crabs help keep the shore healthy",
+        "terms": [
+          "alimango",
+          "crab",
+          "tabing-dagat",
+          "shore",
+          "naglilinis",
+          "cleans",
+          "bangkay",
+          "dead",
+          "scavenger",
+          "lungga",
+          "burrow",
+          "humuhukay",
+          "digs",
+          "hangin",
+          "lupa",
+          "soil",
+          "ecosystem",
+          "tulong",
+          "helps",
+          "bakit mahalaga ang alimango",
+          "balanse",
+          "recycle"
+        ],
+        "fact": {
+          "en": "Crabs keep the shore healthy — by eating dead, rotting stuff they clean the beach, and by digging burrows they let air and nutrients reach the sand and mud.",
+          "tl": "Tumutulong ang alimango sa kalusugan ng tabing-dagat — kumakain ito ng bangkay at nabubulok na bagay kaya nalilinis ang dalampasigan, at ang paghuhukay nito ng lungga ay nagpapapasok ng hangin at sustansya sa buhangin at putik.",
+          "bis": "Motabang ang alimango sa kahimsog sa baybayon — mokaon kini og patay ug nadunot nga butang mao nga malimpyohan ang baybay, ug ang pagkalot niini og lungag mopasulod og hangin ug sustansya sa balas ug lapok."
+        },
+        "slug": "crab-alimango",
+        "title": {
+          "en": "Shore-Cleaning Crabs",
+          "tl": "Alimango sa Baybayin",
+          "bis": "Alimango sa Baybay"
+        },
+        "cats": [
+          "marine-animals",
+          "ecosystems"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "alimango"
+          ],
+          "en": [
+            "Crabs"
+          ],
+          "bis": [
+            "alimango"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-12620",
+        "factId": "crab-arthropod-keeps-shore-clean-g5",
+        "domain": "LIVING_THINGS",
+        "topic": "crabs help keep the shore healthy",
+        "terms": [
+          "alimango",
+          "crab",
+          "tabing-dagat",
+          "shore",
+          "naglilinis",
+          "cleans",
+          "bangkay",
+          "dead",
+          "scavenger",
+          "lungga",
+          "burrow",
+          "humuhukay",
+          "digs",
+          "hangin",
+          "lupa",
+          "soil",
+          "ecosystem",
+          "tulong",
+          "helps",
+          "bakit mahalaga ang alimango",
+          "balanse",
+          "recycle"
+        ],
+        "fact": {
+          "en": "Crabs keep the shore healthy — by eating dead, rotting stuff they clean the beach, and by digging burrows they let air and nutrients reach the sand and mud.",
+          "tl": "Tumutulong ang alimango sa kalusugan ng tabing-dagat — kumakain ito ng bangkay at nabubulok na bagay kaya nalilinis ang dalampasigan, at ang paghuhukay nito ng lungga ay nagpapapasok ng hangin at sustansya sa buhangin at putik.",
+          "bis": "Motabang ang alimango aron mahimsog ang baybayon. Mokaon kini og patay ug nadunot nga mga butang, busa malimpyo ang baybay. Mokalot usab kini og lungag, busa makaabot ang hangin ug sustansya sa balas ug lapok."
+        },
+        "slug": "crab-alimango",
+        "title": {
+          "en": "Shore-Cleaning Crabs",
+          "tl": "Alimango sa Baybayin",
+          "bis": "Alimango sa Baybay"
+        },
+        "cats": [
+          "marine-animals",
+          "ecosystems"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "alimango"
+          ],
+          "en": [
+            "Crabs"
+          ],
+          "bis": [
+            "alimango"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Three sentences separate shore-crab scavenging, burrowing, and the air/nutrient consequence; explicit kini refers to the digging. Wolff alimangu is an edible tidal-swamp crab, consistent with this shoreline example, and kalut/dunut/balas/lapuk support digging/decay/sand/mud. The change does not broaden the title into a species identification or quantify ecosystem effects.",
+      "formal_item_id": "cb663d99238d37921e2577a521dc660b6",
+      "fidelity_item_id": "m36ac52d70a1602cd49513f56",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-12654",
+      "source_card_sha256": "d17fbf57082870bfbe802c3a1a640291114c7979b8ec20d1e6bfa2f5bd52c788",
+      "candidate_card_sha256": "1ab8adf2af0e1ea58893d798b44fcebe9d4985e4e8b277f8cf42e763a1e5216a",
+      "before_card": {
+        "id": "ffct-12654",
+        "factId": "togue-bean-sprouts-g4",
+        "domain": "LIVING_THINGS",
+        "topic": "mung bean sprouts (togue)",
+        "terms": [
+          "togue",
+          "ugat",
+          "mung",
+          "munggo",
+          "sibol",
+          "usbong",
+          "toge",
+          "turok sa munggo",
+          "bean sprouts",
+          "germination",
+          "seed"
+        ],
+        "fact": {
+          "en": "Togue is a sprouted mung bean seed — it grows long and white when it germinates in the dark, and it's cooked as a fresh vegetable.",
+          "tl": "Ang togue ay sumisibol na buto ng munggo — humahaba at pumuputi ito kapag pinatubo sa madilim na lugar, at ito'y niluluto bilang sariwang gulay.",
+          "bis": "Ang togue mao ang nagaturok nga liso sa munggo — motaas ug mamuti kini kung patuboon sa ngitngit nga dapit, ug ginaluto isip presko nga utan."
+        },
+        "slug": "mung-bean-sprouting",
+        "title": {
+          "en": "Mung Bean Sprouts",
+          "tl": "Togue na Munggo",
+          "bis": "Togue"
+        },
+        "cats": [
+          "plants",
+          "food"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "sumisibol na buto"
+          ],
+          "en": [
+            "sprouted mung bean seed"
+          ],
+          "bis": [
+            "nagaturok nga liso"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-12654",
+        "factId": "togue-bean-sprouts-g4",
+        "domain": "LIVING_THINGS",
+        "topic": "mung bean sprouts (togue)",
+        "terms": [
+          "togue",
+          "ugat",
+          "mung",
+          "munggo",
+          "sibol",
+          "usbong",
+          "toge",
+          "turok sa munggo",
+          "bean sprouts",
+          "germination",
+          "seed"
+        ],
+        "fact": {
+          "en": "Togue is a sprouted mung bean seed — it grows long and white when it germinates in the dark, and it's cooked as a fresh vegetable.",
+          "tl": "Ang togue ay sumisibol na buto ng munggo — humahaba at pumuputi ito kapag pinatubo sa madilim na lugar, at ito'y niluluto bilang sariwang gulay.",
+          "bis": "Ang togue mao ang nagaturok nga liso sa munggo. Motaas ug mamuti kini kung patuboon sa ngitngit nga dapit. Ginaluto kini isip presko nga utan."
+        },
+        "slug": "mung-bean-sprouting",
+        "title": {
+          "en": "Mung Bean Sprouts",
+          "tl": "Togue na Munggo",
+          "bis": "Togue"
+        },
+        "cats": [
+          "plants",
+          "food"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "sumisibol na buto"
+          ],
+          "en": [
+            "sprouted mung bean seed"
+          ],
+          "bis": [
+            "nagaturok nga liso"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Three sentences separate sprout identity, growth in darkness and cooking, with kini as the same sprout. Turuk, ngitngit and utan support the meanings. Existing nagaturok and ginaluto, including emphasis, stay exact; this is not an unrequested prefix-normalization pass.",
+      "formal_item_id": "c7d6a6d76b3cdb91bc2d2d8125c435c64",
+      "fidelity_item_id": "m85e6e581c378c08a365eb5cb",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-12674",
+      "source_card_sha256": "a9e7329f9f6f19d3a32b4c0244a232a120c059986b958af885a93096724607ef",
+      "candidate_card_sha256": "13a7ce74bfb575f7b1508a12b5f64959b39623cadf3ef7540eee94cbd22f2351",
+      "before_card": {
+        "id": "ffct-12674",
+        "factId": "lanzones-bitter-seed-sweet-flesh-g4",
+        "domain": "LIVING_THINGS",
+        "topic": "lanzones seed tastes bitter",
+        "terms": [
+          "lanzones",
+          "lansones",
+          "buto",
+          "liso",
+          "seed",
+          "mapait",
+          "pait",
+          "bitter",
+          "matamis",
+          "tam-is",
+          "laman",
+          "unod"
+        ],
+        "fact": {
+          "en": "The flesh of lanzones is sweet, but the seed hidden inside tastes bitter.",
+          "tl": "Matamis ang laman ng lanzones, pero mapait naman ang buto sa loob nito.",
+          "bis": "Tam-is ang unod sa lanzones, apan mapait ang liso sa sulod niini."
+        },
+        "slug": "ffct-12674",
+        "source": "original",
+        "title": {
+          "tl": "Mapait na Buto ng Lanzones",
+          "en": "Bitter Lanzones Seed",
+          "bis": "Pait Liso Lanzones"
+        },
+        "cats": [
+          "fruits"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-12674",
+        "factId": "lanzones-bitter-seed-sweet-flesh-g4",
+        "domain": "LIVING_THINGS",
+        "topic": "lanzones seed tastes bitter",
+        "terms": [
+          "lanzones",
+          "lansones",
+          "buto",
+          "liso",
+          "seed",
+          "mapait",
+          "pait",
+          "bitter",
+          "matamis",
+          "tam-is",
+          "laman",
+          "unod"
+        ],
+        "fact": {
+          "en": "The flesh of lanzones is sweet, but the seed hidden inside tastes bitter.",
+          "tl": "Matamis ang laman ng lanzones, pero mapait naman ang buto sa loob nito.",
+          "bis": "Tam-is ang unod sa lanzones, apan mapait ang liso sa sulod niini."
+        },
+        "slug": "ffct-12674",
+        "source": "original",
+        "title": {
+          "tl": "Mapait na Buto ng Lanzones",
+          "en": "Bitter Lanzones Seed",
+          "bis": "Mapait nga Liso sa Lanzones"
+        },
+        "cats": [
+          "fruits"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title becomes a connected seed-of-lanzones phrase using the body adjective. Wolff pait means bitter and ma-_2 explicitly includes mapait. Its marked/literary register does not make it non-Cebuano; the gain is the explicit relation, not a blanket preference for this adjective or a claim that the old root was wrong.",
+      "formal_item_id": "c995331b5ab98f2ef704914fb234b12b4",
+      "fidelity_item_id": "m8e41e19ab4a74503e96978cc",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-12685",
+      "source_card_sha256": "bdaee03eed3ba51b2e49422a453dcbbfa27330bd24df1a7fcdcf8322de138467",
+      "candidate_card_sha256": "83d5102a070db524235c32fdb02a398751b76d077a97e31fd8ba1ddd17954a5a",
+      "before_card": {
+        "id": "ffct-12685",
+        "factId": "astigmatism-uneven-eye-exam-test-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "how an eye doctor tests for astigmatism",
+        "terms": [
+          "astigmatism",
+          "eye test",
+          "eksamen",
+          "exam",
+          "optometrist",
+          "doktor sa mata",
+          "chart",
+          "letra",
+          "blurry",
+          "paano malalaman",
+          "unsaon pagkahibalo",
+          "check",
+          "linya",
+          "lens",
+          "screening"
+        ],
+        "fact": {
+          "en": "An eye doctor checks for astigmatism using a letter chart and special lenses, asking which lines look clearer to find the right strength and direction for your glasses.",
+          "tl": "Sinusuri ng doktor ng mata ang astigmatism gamit ang chart ng mga letra at espesyal na lente, tinatanong kung aling linya ang mas malinaw para malaman ang tamang lakas at direksyon ng salamin mo.",
+          "bis": "Ang doktor sa mata mosusi sa astigmatism gamit ang chart sa mga letra ug espesyal nga lente, mangutana kung asa nga linya ang mas klaro aron mahibaloan ang husto nga kusog ug direksyon sa imong antiyohos."
+        },
+        "slug": "ffct-12685",
+        "source": "original",
+        "title": {
+          "tl": "Chart ng Doktor sa Astigmatism",
+          "en": "Testing for Astigmatism",
+          "bis": "Chart sa Doktor sa Astigmatism"
+        },
+        "cats": [
+          "senses",
+          "health"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-12685",
+        "factId": "astigmatism-uneven-eye-exam-test-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "how an eye doctor tests for astigmatism",
+        "terms": [
+          "astigmatism",
+          "eye test",
+          "eksamen",
+          "exam",
+          "optometrist",
+          "doktor sa mata",
+          "chart",
+          "letra",
+          "blurry",
+          "paano malalaman",
+          "unsaon pagkahibalo",
+          "check",
+          "linya",
+          "lens",
+          "screening"
+        ],
+        "fact": {
+          "en": "An eye doctor checks for astigmatism using a letter chart and special lenses, asking which lines look clearer to find the right strength and direction for your glasses.",
+          "tl": "Sinusuri ng doktor ng mata ang astigmatism gamit ang chart ng mga letra at espesyal na lente, tinatanong kung aling linya ang mas malinaw para malaman ang tamang lakas at direksyon ng salamin mo.",
+          "bis": "Ang doktor sa mata mosusi sa astigmatism gamit ang chart sa mga letra ug espesyal nga lente. Mangutana siya kung asa nga linya ang mas klaro aron mahibaloan ang husto nga kusog ug direksyon sa imong antiyohos."
+        },
+        "slug": "ffct-12685",
+        "source": "original",
+        "title": {
+          "tl": "Chart ng Doktor sa Astigmatism",
+          "en": "Testing for Astigmatism",
+          "bis": "Pagsusi sa Astigmatism"
+        },
+        "cats": [
+          "senses",
+          "health"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The separate second sentence names the doctor as siya, retaining the patient clarity comparison and lens strength/direction. NEI supports refraction assessment and AAO-authored cross-cylinder guidance describes chart-based patient comparisons for power and axis. Wolff antiuhus/antiyuhus confirms eyeglasses; no prescription or diagnostic advice is added.",
+      "formal_item_id": "ca5ae08e0a59cb02bbf13503dd50d4135",
+      "fidelity_item_id": "m647e17804ba443ec071cf4df",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-12695",
+      "source_card_sha256": "4b7282cc0df20e216b29e03a06863d54628207868fc0227f678c1c9bc6bd4ea5",
+      "candidate_card_sha256": "9747b5deb898943f58d79b3bfc3ebc35ceaa2d976f2a9926c28e77335856da71",
+      "before_card": {
+        "id": "ffct-12695",
+        "factId": "wash-fruits-ph-palengke-context-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "Washing market produce in the Philippines",
+        "terms": [
+          "palengke",
+          "pilipinas",
+          "prutas",
+          "gulay",
+          "hugas",
+          "mangga",
+          "saging",
+          "mamili",
+          "tindahan",
+          "bago kainin",
+          "ph",
+          "kamay",
+          "palengkero",
+          "hugasan"
+        ],
+        "fact": {
+          "en": "In the Philippines, fruits and vegetables pass through many hands at the palengke before reaching home — so always wash the mango, banana, or tomato you bought before eating or cooking.",
+          "tl": "Sa Pilipinas, dumadaan ang prutas at gulay sa maraming kamay mula sa palengke bago dumating sa bahay — kaya laging hugasan ang binili mong mangga, saging, o kamatis bago kainin o lutuin.",
+          "bis": "Sa Pilipinas, ang prutas ug utanon muagi sa daghang kamot gikan sa merkado sa dili pa muabot sa balay — mao nga kanunay hugasi ang imong gipalit nga mangga, saging, o kamatis sa dili pa kan-on o lutoon."
+        },
+        "slug": "",
+        "title": {
+          "en": "Wash Market Produce",
+          "tl": "Paghuhugas ng Prutas",
+          "bis": "Hugasi ang Prutas"
+        },
+        "cats": [
+          "health",
+          "germs"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "hugasan"
+          ],
+          "en": [
+            "wash"
+          ],
+          "bis": [
+            "hugasi"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-12695",
+        "factId": "wash-fruits-ph-palengke-context-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "Washing market produce in the Philippines",
+        "terms": [
+          "palengke",
+          "pilipinas",
+          "prutas",
+          "gulay",
+          "hugas",
+          "mangga",
+          "saging",
+          "mamili",
+          "tindahan",
+          "bago kainin",
+          "ph",
+          "kamay",
+          "palengkero",
+          "hugasan"
+        ],
+        "fact": {
+          "en": "In the Philippines, fruits and vegetables pass through many hands at the palengke before reaching home — so always wash the mango, banana, or tomato you bought before eating or cooking.",
+          "tl": "Sa Pilipinas, dumadaan ang prutas at gulay sa maraming kamay mula sa palengke bago dumating sa bahay — kaya laging hugasan ang binili mong mangga, saging, o kamatis bago kainin o lutuin.",
+          "bis": "Sa Pilipinas, ang prutas ug utanon muagi sa daghang kamot gikan sa merkado sa dili pa muabot sa balay. Mao nga kanunay hugasi ang imong gipalit nga mangga, saging, o kamatis sa dili pa kini kan-on o lutoon."
+        },
+        "slug": "",
+        "title": {
+          "en": "Wash Market Produce",
+          "tl": "Paghuhugas ng Prutas",
+          "bis": "Hugasi ang Prutas"
+        },
+        "cats": [
+          "health",
+          "germs"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "hugasan"
+          ],
+          "en": [
+            "wash"
+          ],
+          "bis": [
+            "hugasi"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "A sentence break and kini clarify the wash-before-eating/cooking instruction, retaining the market examples. FDA produce guidance explicitly recommends rinsing before peeling even when the skin is not eaten, resolving the banana example. No soap, chemical wash or guarantee of sterilization is added.",
+      "formal_item_id": "cde552cefd939e1de598d20845ef2638c",
+      "fidelity_item_id": "m64350e706de7467aa768d8c0",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-12696",
+      "source_card_sha256": "83884e16fa8dc72e5452bbc73c549fdb825069dff29db49a12f53274a80e33be",
+      "candidate_card_sha256": "ca252105a9e559337fd50c68f7bb6676b870aa58c87c5d52af1f0952d3af6bb3",
+      "before_card": {
+        "id": "ffct-12696",
+        "factId": "five-senses-illusions-trick-g8",
+        "domain": "LIVING_THINGS",
+        "topic": "Senses can be tricked by illusions",
+        "terms": [
+          "optical illusion",
+          "nadadaya ang pandama",
+          "illusion",
+          "naglilliwanag",
+          "mata nadadaya",
+          "bakit nagkakamali",
+          "guhit na pantay",
+          "trick",
+          "kumikislap",
+          "nalimbongan",
+          "magic trick",
+          "mata nagkakamali",
+          "saltik sa mata",
+          "fooled",
+          "panan-aw limbong"
+        ],
+        "fact": {
+          "en": "Can your eyes ever be wrong?\n\nOur senses aren't always right. Optical illusions can trick the eyes into thinking two equal lines are different lengths, because the brain sometimes guesses wrong about what it sees.",
+          "tl": "Puwede bang magkamali ang mata mo?\n\nHindi laging tama ang sinasabi ng ating pandama. May mga optical illusion na nagpapaniwala sa mata na magkaiba ang haba ng dalawang pantay na guhit, dahil minsan mali ang hula ng utak.",
+          "bis": "Mahimo bang masayop ang imong mata?\n\nDili kanunay sakto ang gisulti sa atong igbalati. Adunay mga optical illusion nga molingla sa mata nga lahi og gitas-on ang duha ka managsama nga linya, kay usahay sayop ang banabana sa utok."
+        },
+        "slug": "qa-ffct-12696",
+        "source": "original",
+        "title": {
+          "tl": "Optical Illusion Mata Mali",
+          "en": "Eyes Can Be Fooled",
+          "bis": "Illusion sa Mata"
+        },
+        "cats": [
+          "senses"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-12696",
+        "factId": "five-senses-illusions-trick-g8",
+        "domain": "LIVING_THINGS",
+        "topic": "Senses can be tricked by illusions",
+        "terms": [
+          "optical illusion",
+          "nadadaya ang pandama",
+          "illusion",
+          "naglilliwanag",
+          "mata nadadaya",
+          "bakit nagkakamali",
+          "guhit na pantay",
+          "trick",
+          "kumikislap",
+          "nalimbongan",
+          "magic trick",
+          "mata nagkakamali",
+          "saltik sa mata",
+          "fooled",
+          "panan-aw limbong"
+        ],
+        "fact": {
+          "en": "Can your eyes ever be wrong?\n\nOur senses aren't always right. Optical illusions can trick the eyes into thinking two equal lines are different lengths, because the brain sometimes guesses wrong about what it sees.",
+          "tl": "Puwede bang magkamali ang mata mo?\n\nHindi laging tama ang sinasabi ng ating pandama. May mga optical illusion na nagpapaniwala sa mata na magkaiba ang haba ng dalawang pantay na guhit, dahil minsan mali ang hula ng utak.",
+          "bis": "Mahimo bang masayop ang imong mata?\n\nDili kanunay sakto ang gisulti sa atong igbalati. Adunay mga optical illusion nga makalingla sa mata. Tungod niini, morag lahi og gitas-on ang duha ka managsama nga linya. Nahitabo kini kay usahay masayop ang banabana sa utok bahin sa iyang nakita."
+        },
+        "slug": "qa-ffct-12696",
+        "source": "original",
+        "title": {
+          "tl": "Optical Illusion Mata Mali",
+          "en": "Eyes Can Be Fooled",
+          "bis": "Illusion sa Mata"
+        },
+        "cats": [
+          "senses"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Separate statements distinguish the illusion, apparent unequal lengths and the brain estimate. Makalingla preserves can and morag marks appearance rather than an actual length change. Wolff lingla and bana/banabana support deception and estimating; the question and exact emphasis remain.",
+      "formal_item_id": "c0ddaa8d244ba5fee8389725df26a1b34",
+      "fidelity_item_id": "m6e13f41d6c7de9979206ada8",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-12714",
+      "source_card_sha256": "0864e4c34bff8840823c87b0024d77a03c5d8b41d966590c9d8aa22d622ad547",
+      "candidate_card_sha256": "f30b54833b027144fb935b01c1c79594350a8fb51a100c5d421713f8e81fbf66",
+      "before_card": {
+        "id": "ffct-12714",
+        "factId": "ant-tend-aphids-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "ants farm aphids for honeydew",
+        "terms": [
+          "langgam",
+          "ant",
+          "hulmigas",
+          "aphid",
+          "kuto ng halaman",
+          "kutokuto",
+          "honeydew",
+          "matamis na katas",
+          "tam-is nga duga",
+          "inaalagaan",
+          "pinoprotektahan",
+          "giatiman",
+          "symbiosis",
+          "kapwa-kapakinabangan",
+          "magkatulong",
+          "gatasan"
+        ],
+        "fact": {
+          "en": "Some ants tend tiny insects called aphids like farm animals, protecting them in exchange for the sweet liquid, honeydew, that the aphids release.",
+          "tl": "May mga langgam na nag-aalaga ng maliliit na insektong aphid na parang alagang hayop, pinoprotektahan ito kapalit ng matamis na katas na honeydew na inilalabas ng aphid.",
+          "bis": "Adunay mga hulmigas nga moatiman sa gagmayng insekto nga aphid sama sa binuhing hayop, panalipdan kini baylo sa tam-is nga duga nga honeydew nga gipagawas sa aphid."
+        },
+        "slug": "ant-tending-aphid",
+        "title": {
+          "en": "Ants & Aphids",
+          "tl": "Langgam at Aphids",
+          "bis": "Hulmigas ug Aphids"
+        },
+        "cats": [
+          "insects",
+          "animal-behavior"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "aphid"
+          ],
+          "en": [
+            "aphids"
+          ],
+          "bis": [
+            "aphid"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-12714",
+        "factId": "ant-tend-aphids-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "ants farm aphids for honeydew",
+        "terms": [
+          "langgam",
+          "ant",
+          "hulmigas",
+          "aphid",
+          "kuto ng halaman",
+          "kutokuto",
+          "honeydew",
+          "matamis na katas",
+          "tam-is nga duga",
+          "inaalagaan",
+          "pinoprotektahan",
+          "giatiman",
+          "symbiosis",
+          "kapwa-kapakinabangan",
+          "magkatulong",
+          "gatasan"
+        ],
+        "fact": {
+          "en": "Some ants tend tiny insects called aphids like farm animals, protecting them in exchange for the sweet liquid, honeydew, that the aphids release.",
+          "tl": "May mga langgam na nag-aalaga ng maliliit na insektong aphid na parang alagang hayop, pinoprotektahan ito kapalit ng matamis na katas na honeydew na inilalabas ng aphid.",
+          "bis": "Adunay mga hulmigas nga moatiman sa gagmayng insekto nga aphid, sama sa binuhing hayop. Panalipdan nila ang aphid. Baylo niini, makakuha sila og tam-is nga duga nga gipagawas sa aphid, nga gitawag og honeydew."
+        },
+        "slug": "ant-tending-aphid",
+        "title": {
+          "en": "Ants & Aphids",
+          "tl": "Langgam at Aphids",
+          "bis": "Hulmigas ug Aphids"
+        },
+        "cats": [
+          "insects",
+          "animal-behavior"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "aphid"
+          ],
+          "en": [
+            "aphids"
+          ],
+          "bis": [
+            "aphid"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Three sentences make ants the protectors, aphids the protected animals and honeydew the exchanged liquid. Some remains explicit. Wolff hulmigas, atiman, buhi and duga support ant/care/domestic-animal/liquid senses; the farm comparison is retained as an analogy, not literal human agriculture.",
+      "formal_item_id": "c4cfa94c2b3bd78ce583990a45ea19cb4",
+      "fidelity_item_id": "m490c60b992d0d9b7e5916bf2",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-12746",
+      "source_card_sha256": "b2f13f06083b98c5bde67c3085372500eb8d886c947dd5263992e07231339971",
+      "candidate_card_sha256": "c2292668550f8e43022c1d8e6079a0e6a7c1be0a93e0b084e60e7a584db4933a",
+      "before_card": {
+        "id": "ffct-12746",
+        "factId": "nutrients-runoff-trigger-bloom-g8",
+        "domain": "LIVING_THINGS",
+        "topic": "nutrient runoff feeds blooms",
+        "terms": [
+          "sustansya",
+          "sustansiya",
+          "nutrients",
+          "abono",
+          "fertilizer",
+          "runoff",
+          "agos",
+          "baha",
+          "tubig",
+          "blooms",
+          "pagdami",
+          "polusyon"
+        ],
+        "fact": {
+          "en": "Extra fertilizer and waste washed into the sea can fuel giant plankton blooms — including the dangerous red tide!",
+          "tl": "Ang sobrang abono at dumi na inaanod sa dagat ay maaaring magpalaki ng plankton bloom, kabilang na ang mapanganib na red tide!",
+          "bis": "Ang sobrang abono ug hugaw nga maanod ngadto sa dagat makapadako sa plankton bloom, lakip na ang peligroso nga red tide!"
+        },
+        "slug": "ffct-12746",
+        "source": "original",
+        "title": {
+          "tl": "Runoff ng Nutrient sa Bloom",
+          "en": "Runoff Feeds Plankton Blooms",
+          "bis": "Runoff sa Bloom"
+        },
+        "cats": [
+          "pollution"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-12746",
+        "factId": "nutrients-runoff-trigger-bloom-g8",
+        "domain": "LIVING_THINGS",
+        "topic": "nutrient runoff feeds blooms",
+        "terms": [
+          "sustansya",
+          "sustansiya",
+          "nutrients",
+          "abono",
+          "fertilizer",
+          "runoff",
+          "agos",
+          "baha",
+          "tubig",
+          "blooms",
+          "pagdami",
+          "polusyon"
+        ],
+        "fact": {
+          "en": "Extra fertilizer and waste washed into the sea can fuel giant plankton blooms — including the dangerous red tide!",
+          "tl": "Ang sobrang abono at dumi na inaanod sa dagat ay maaaring magpalaki ng plankton bloom, kabilang na ang mapanganib na red tide!",
+          "bis": "Ang sobrang abono ug hugaw nga maanod ngadto sa dagat makapadako sa plankton bloom, lakip na ang peligroso nga red tide!"
+        },
+        "slug": "ffct-12746",
+        "source": "original",
+        "title": {
+          "tl": "Runoff ng Nutrient sa Bloom",
+          "en": "Runoff Feeds Plankton Blooms",
+          "bis": "Naanod nga Abono ug Plankton Bloom"
+        },
+        "cats": [
+          "pollution"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title makes washed-away fertilizer and bloom explicit, matching the unchanged body. Anud supports being carried by water. NOAA describes excess fertilizer nutrients promoting algal growth and intensifying harmful blooms; can remains, rather than making runoff necessary for every red tide.",
+      "formal_item_id": "ca8bedbb7537c99c54f04876ec8a63b66",
+      "fidelity_item_id": "mbbe9cf5af659dca93a7c2764",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-12755",
+      "source_card_sha256": "68f233d875e747b7492addff456149c45a4924916730abe039fe37eb744a0685",
+      "candidate_card_sha256": "da01e197c6a4020a26ace95b0aa1d3583856644fc4be7e57732b1b8f069f6eeb",
+      "before_card": {
+        "id": "ffct-12755",
+        "factId": "cuttlefish-cuttlebone-not-eaten-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "The cuttlebone is removed before cooking cuttlefish",
+        "terms": [
+          "cuttlebone",
+          "luto",
+          "cooking",
+          "kain",
+          "eat",
+          "tinatanggal",
+          "alisin",
+          "hugot",
+          "hindi kinakain",
+          "ulam",
+          "seafood",
+          "palengke",
+          "prepare",
+          "cuttlefish",
+          "kuhaon",
+          "dili kaonon"
+        ],
+        "fact": {
+          "en": "Before cooking cuttlefish, the hard cuttlebone inside is pulled out first because it can't be eaten — only the soft flesh is food!",
+          "tl": "Bago lutuin ang cuttlefish, tinatanggal muna ang matigas na cuttlebone sa loob dahil hindi ito makakain — ang malambot na laman lang ang ulam!",
+          "bis": "Ayha lutoon ang cuttlefish, kuhaon una ang gahi nga cuttlebone sa sulod kay dili kini makaon — ang humok nga unod lang ang sud-an!"
+        },
+        "slug": "ffct-12755",
+        "source": "original",
+        "title": {
+          "tl": "Cuttlebone Hindi Kainin",
+          "en": "Cuttlebone Not for Eating",
+          "bis": "Cuttlebone Dili Kaon"
+        },
+        "cats": [
+          "food",
+          "mollusks"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-12755",
+        "factId": "cuttlefish-cuttlebone-not-eaten-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "The cuttlebone is removed before cooking cuttlefish",
+        "terms": [
+          "cuttlebone",
+          "luto",
+          "cooking",
+          "kain",
+          "eat",
+          "tinatanggal",
+          "alisin",
+          "hugot",
+          "hindi kinakain",
+          "ulam",
+          "seafood",
+          "palengke",
+          "prepare",
+          "cuttlefish",
+          "kuhaon",
+          "dili kaonon"
+        ],
+        "fact": {
+          "en": "Before cooking cuttlefish, the hard cuttlebone inside is pulled out first because it can't be eaten — only the soft flesh is food!",
+          "tl": "Bago lutuin ang cuttlefish, tinatanggal muna ang matigas na cuttlebone sa loob dahil hindi ito makakain — ang malambot na laman lang ang ulam!",
+          "bis": "Ayha lutoon ang cuttlefish, kuhaon una ang gahi nga cuttlebone sa sulod kay dili kini makaon — ang humok nga unod lang ang sud-an!"
+        },
+        "slug": "ffct-12755",
+        "source": "original",
+        "title": {
+          "tl": "Cuttlebone Hindi Kainin",
+          "en": "Cuttlebone Not for Eating",
+          "bis": "Dili Makaon ang Cuttlebone"
+        },
+        "cats": [
+          "food",
+          "mollusks"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only title becomes a complete cannot-be-eaten clause. Sydney Fish Market preparation instructions explicitly remove and discard the cuttlebone while retaining the soft tube, arms and tentacles. The unchanged body concerns ordinary cooking of whole cuttlefish, not industrially processed calcium products.",
+      "formal_item_id": "c8f7ac8408da7f7999a12707abaf2c14a",
+      "fidelity_item_id": "mdf1d719054e541ca396852e7",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-12792",
+      "source_card_sha256": "7da831398d917c9b9240729a96aba85f41f31326f1929d521a7cc31bb8701c50",
+      "candidate_card_sha256": "a2afc7cfa094142224eaf6879cf386558a77ff0abbb6eae87cb3a023a9c60085",
+      "before_card": {
+        "id": "ffct-12792",
+        "factId": "gecko-tuko-tail-regrow-g5",
+        "domain": "LIVING_THINGS",
+        "topic": "Philippine gecko tail regrowth",
+        "terms": [
+          "tuko",
+          "gecko",
+          "tiki",
+          "house gecko",
+          "butiki sa bahay",
+          "buntot",
+          "ikog",
+          "tail",
+          "pilipinas",
+          "pinas",
+          "tumubo muli",
+          "motubo pag-usab"
+        ],
+        "fact": {
+          "en": "The tuko and house geckos in Philippine homes can drop their tail when threatened, and it grows back.",
+          "tl": "Ang tuko at ang mga tiki sa bahay sa Pilipinas ay kayang iputol ang buntot kapag nanganganib, at tutubo ito muli.",
+          "bis": "Ang tuko ug ang mga tiki sa balay sa Pilipinas makahimo sa pagputol sa ilang ikog kon nameligro, ug motubo kini pag-usab."
+        },
+        "slug": "lizard-dropping-tail",
+        "title": {
+          "en": "Gecko Tail Regrowth",
+          "tl": "Buntot ng Tuko",
+          "bis": "Ikog sa Tuko"
+        },
+        "cats": [
+          "reptiles",
+          "animal-adaptations"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "buntot"
+          ],
+          "en": [
+            "tail"
+          ],
+          "bis": [
+            "ikog"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-12792",
+        "factId": "gecko-tuko-tail-regrow-g5",
+        "domain": "LIVING_THINGS",
+        "topic": "Philippine gecko tail regrowth",
+        "terms": [
+          "tuko",
+          "gecko",
+          "tiki",
+          "house gecko",
+          "butiki sa bahay",
+          "buntot",
+          "ikog",
+          "tail",
+          "pilipinas",
+          "pinas",
+          "tumubo muli",
+          "motubo pag-usab"
+        ],
+        "fact": {
+          "en": "The tuko and house geckos in Philippine homes can drop their tail when threatened, and it grows back.",
+          "tl": "Ang tuko at ang mga tiki sa bahay sa Pilipinas ay kayang iputol ang buntot kapag nanganganib, at tutubo ito muli.",
+          "bis": "Ang tuko ug ang mga tiki sa mga balay sa Pilipinas makaputol sa ilang ikog kon nameligro sila. Unya motubo pag-usab ang ikog."
+        },
+        "slug": "lizard-dropping-tail",
+        "title": {
+          "en": "Gecko Tail Regrowth",
+          "tl": "Buntot ng Tuko",
+          "bis": "Ikog sa Tuko"
+        },
+        "cats": [
+          "reptiles",
+          "animal-adaptations"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "buntot"
+          ],
+          "en": [
+            "tail"
+          ],
+          "bis": [
+            "ikog"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Direct makaputol and explicit sila shorten the ability statement, and repeating ikog makes regrowth refer unambiguously to the tail. Wolff tuku/tiki and putul/ikug support gecko and tail-cutting senses. Can and threatened remain; this does not say every lost-tail reptile regrows it.",
+      "formal_item_id": "c792c91e9f0582e76dea8d6fe262b0332",
+      "fidelity_item_id": "m117d445fdef8acfd2fbaf722",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-12798",
+      "source_card_sha256": "3b8dd6af2a818099ccd7074c2d9f92c613a0e631262b23e1a88e51c5e0d99976",
+      "candidate_card_sha256": "5464ad86041e069d411e9a82c35948691819b585d2742959379359ef18b03d8c",
+      "before_card": {
+        "id": "ffct-12798",
+        "factId": "daga-tail-balance-g4",
+        "domain": "LIVING_THINGS",
+        "topic": "rat tail helps balance",
+        "terms": [
+          "daga",
+          "buntot",
+          "ikog",
+          "tail",
+          "balanse",
+          "balance",
+          "magbalanse",
+          "umaakyat",
+          "nagsaka",
+          "ilaga"
+        ],
+        "fact": {
+          "en": "Rats use their long tail to keep their balance while climbing.",
+          "tl": "Ginagamit ng daga ang mahabang buntot nito para mapanatili ang balanse habang umaakyat.",
+          "bis": "Gamiton sa ilaga ang taas nga ikog aron magbalanse samtang nagsaka."
+        },
+        "slug": "ffct-12798",
+        "source": "original",
+        "title": {
+          "tl": "Buntot ng Daga Bilang Balanse",
+          "en": "Rat Tail Balance",
+          "bis": "Ikog Ilaga Balanse"
+        },
+        "cats": [
+          "mammals",
+          "animal-adaptations"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-12798",
+        "factId": "daga-tail-balance-g4",
+        "domain": "LIVING_THINGS",
+        "topic": "rat tail helps balance",
+        "terms": [
+          "daga",
+          "buntot",
+          "ikog",
+          "tail",
+          "balanse",
+          "balance",
+          "magbalanse",
+          "umaakyat",
+          "nagsaka",
+          "ilaga"
+        ],
+        "fact": {
+          "en": "Rats use their long tail to keep their balance while climbing.",
+          "tl": "Ginagamit ng daga ang mahabang buntot nito para mapanatili ang balanse habang umaakyat.",
+          "bis": "Gamiton sa ilaga ang iyang taas nga ikog aron magbalanse samtang nagsaka kini."
+        },
+        "slug": "ffct-12798",
+        "source": "original",
+        "title": {
+          "tl": "Buntot ng Daga Bilang Balanse",
+          "en": "Rat Tail Balance",
+          "bis": "Ikog sa Ilaga para sa Balanse"
+        },
+        "cats": [
+          "mammals",
+          "animal-adaptations"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Iyang identifies the rat as owner of the tail, and kini keeps climbing attached to the animal. The title explicitly links tail with balance. Ilaga and ikug are dictionary-attested; no new locomotion mechanism or claim about all tailed animals is introduced.",
+      "formal_item_id": "c4295ce58c732213a74f4e0a169c05c51",
+      "fidelity_item_id": "m77995bfe67a30f5513f2b326",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-12835",
+      "source_card_sha256": "b7d0650788f4b0b1e7cfa145b676259966fec5ef5ce60b2030ec08c97e1fa0fe",
+      "candidate_card_sha256": "832ac795979c6557b4f8d6529bccfc16107cfedbe10027309ba8d60a3f97bfdf",
+      "before_card": {
+        "id": "ffct-12835",
+        "factId": "vitamin-d-needs-fat-absorb-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "fat helps absorb some vitamins",
+        "terms": [
+          "taba",
+          "bitamina",
+          "sipsip",
+          "absorb",
+          "natutunaw",
+          "a d e k",
+          "tambok",
+          "lawas",
+          "fat-soluble",
+          "absorption",
+          "needs fat",
+          "suyop"
+        ],
+        "fact": {
+          "en": "Vitamins A, D, E, and K get absorbed more easily by the body when there's a little fat in the food you eat.",
+          "tl": "Ang mga bitaminang A, D, E, at K ay mas madaling nasisipsip ng katawan kapag may kasamang kaunting taba sa pagkain.",
+          "bis": "Ang mga bitamina A, D, E, ug K mas dali masuyop sa lawas kon adunay gamay nga tambok sa pagkaon."
+        },
+        "slug": "ffct-12835",
+        "source": "original",
+        "title": {
+          "tl": "Taba sa Pagserema ng Vitamins",
+          "en": "Fat Helps Vitamin Uptake",
+          "bis": "Tambok sa Vitamins"
+        },
+        "cats": [
+          "nutrition"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-12835",
+        "factId": "vitamin-d-needs-fat-absorb-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "fat helps absorb some vitamins",
+        "terms": [
+          "taba",
+          "bitamina",
+          "sipsip",
+          "absorb",
+          "natutunaw",
+          "a d e k",
+          "tambok",
+          "lawas",
+          "fat-soluble",
+          "absorption",
+          "needs fat",
+          "suyop"
+        ],
+        "fact": {
+          "en": "Vitamins A, D, E, and K get absorbed more easily by the body when there's a little fat in the food you eat.",
+          "tl": "Ang mga bitaminang A, D, E, at K ay mas madaling nasisipsip ng katawan kapag may kasamang kaunting taba sa pagkain.",
+          "bis": "Ang mga bitamina A, D, E, ug K mas dali masuyop sa lawas kon adunay gamay nga tambok sa pagkaon."
+        },
+        "slug": "ffct-12835",
+        "source": "original",
+        "title": {
+          "tl": "Taba sa Pagserema ng Vitamins",
+          "en": "Fat Helps Vitamin Uptake",
+          "bis": "Motabang ang Tambok sa Bitamina"
+        },
+        "cats": [
+          "nutrition"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only title explicitly states fat helps with vitamins, matching the unchanged absorption claim. USDA nutrition authors describe dietary fat carrying vitamins A/D/E/K; NIH ODS and a randomized absorption study support improved vitamin D absorption with a fat-containing meal. This does not prescribe supplementation or say fat-free meals allow no absorption.",
+      "formal_item_id": "cde7cd9a6e320fb334a4c5468e853b567",
+      "fidelity_item_id": "m72a1211a929993735ae84e8d",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-12841",
+      "source_card_sha256": "e64a4aeee4d9b9328c00502be3ae810f28e1e2a3eaaf19f464a9a5917201a5d2",
+      "candidate_card_sha256": "9a15a49ba59ba2835845b5e3fa05a134db6f637e0e9cf0d81d2b45f347fe98b6",
+      "before_card": {
+        "id": "ffct-12841",
+        "factId": "enamel-hardest-tissue-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "tooth enamel",
+        "terms": [
+          "enamel",
+          "hardest",
+          "tooth",
+          "tissue",
+          "enamel ng ngipin",
+          "pinakamatigas",
+          "ngipin",
+          "labing gahi",
+          "ngipon",
+          "matigas",
+          "substansya",
+          "panit sa ngipon"
+        ],
+        "fact": {
+          "en": "Tooth enamel is the hardest substance in your whole body — a tough shield that protects the inside of every tooth.",
+          "tl": "Ang enamel ang pinakamatigas na bahagi ng katawan ng tao — parang matibay na pananggalang na nagpoprotekta sa loob ng bawat ngipin.",
+          "bis": "Ang enamel mao ang labing gahi nga bahin sa lawas sa tawo — sama sa lig-on nga taming nga nagpanalipod sa sulod sa matag ngipon."
+        },
+        "slug": "ffct-12841",
+        "source": "original",
+        "title": {
+          "tl": "Enamel na Pinakamatigas",
+          "en": "Enamel, Hardest Substance",
+          "bis": "Enamel nga Kinatig-a"
+        },
+        "cats": [
+          "body"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-12841",
+        "factId": "enamel-hardest-tissue-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "tooth enamel",
+        "terms": [
+          "enamel",
+          "hardest",
+          "tooth",
+          "tissue",
+          "enamel ng ngipin",
+          "pinakamatigas",
+          "ngipin",
+          "labing gahi",
+          "ngipon",
+          "matigas",
+          "substansya",
+          "panit sa ngipon"
+        ],
+        "fact": {
+          "en": "Tooth enamel is the hardest substance in your whole body — a tough shield that protects the inside of every tooth.",
+          "tl": "Ang enamel ang pinakamatigas na bahagi ng katawan ng tao — parang matibay na pananggalang na nagpoprotekta sa loob ng bawat ngipin.",
+          "bis": "Ang enamel sa ngipon mao ang labing gahi nga bahin sa tibuok nimong lawas. Sama kini sa lig-on nga taming nga nanalipod sa sulod sa matag ngipon."
+        },
+        "slug": "ffct-12841",
+        "source": "original",
+        "title": {
+          "tl": "Enamel na Pinakamatigas",
+          "en": "Enamel, Hardest Substance",
+          "bis": "Enamel nga Kinatig-a"
+        },
+        "cats": [
+          "body"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Two sentences identify tooth enamel, restore the whole-body/your scope and keep the protective shield analogy. NIDCR identifies enamel as the hardest material and protective covering. Wolff taming and tig-a/gahi resolve shield and hardness; the existing title is unchanged, with no new hardness ranking.",
+      "formal_item_id": "ce6b4f2803f1414b25a31945ef7c8d5c1",
+      "fidelity_item_id": "m75bc3209bfaedc0055df7a47",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-12857",
+      "source_card_sha256": "51c96bc2aeb4b0bafbdede4fd43ef14e88c8f66a76c94cd4d0419f286bdad5d0",
+      "candidate_card_sha256": "08d184550d9717468d28704cfc0f066c9482767423649886b02e74cf65943784",
+      "before_card": {
+        "id": "ffct-12857",
+        "factId": "banaba-tree-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "banaba tree, native Philippine flowering tree",
+        "terms": [
+          "banaba",
+          "punong banaba",
+          "lila na bulaklak",
+          "halamang gamot",
+          "kahoy nga banaba",
+          "bulak nga lila",
+          "lagerstroemia",
+          "purple flowers",
+          "medicinal tree",
+          "native tree"
+        ],
+        "fact": {
+          "en": "The banaba is a native Philippine tree known for its beautiful purple flowers — and for ages, its leaves have been brewed into a medicinal tea.",
+          "tl": "Ang banaba ay katutubong punong Pilipino na kilala sa magagandang lilang bulaklak — at matagal nang ginagawang panlunas na tsaa ang mga dahon nito.",
+          "bis": "Ang banaba usa ka lumad nga kahoy sa Pilipinas nga inila sa nindot nga lila nga bulak — ug dugay na ning gigamit isip tambal nga tsa ang mga dahon niini."
+        },
+        "slug": "",
+        "title": {
+          "en": "Banaba Tree",
+          "tl": "Punong Banaba",
+          "bis": "Kahoy nga Banaba"
+        },
+        "cats": [
+          "trees",
+          "plants"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "banaba"
+          ],
+          "en": [
+            "banaba"
+          ],
+          "bis": [
+            "banaba"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-12857",
+        "factId": "banaba-tree-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "banaba tree, native Philippine flowering tree",
+        "terms": [
+          "banaba",
+          "punong banaba",
+          "lila na bulaklak",
+          "halamang gamot",
+          "kahoy nga banaba",
+          "bulak nga lila",
+          "lagerstroemia",
+          "purple flowers",
+          "medicinal tree",
+          "native tree"
+        ],
+        "fact": {
+          "en": "The banaba is a native Philippine tree known for its beautiful purple flowers — and for ages, its leaves have been brewed into a medicinal tea.",
+          "tl": "Ang banaba ay katutubong punong Pilipino na kilala sa magagandang lilang bulaklak — at matagal nang ginagawang panlunas na tsaa ang mga dahon nito.",
+          "bis": "Ang banaba usa ka lumad nga kahoy sa Pilipinas. Inila kini sa nindot ug lila nga mga bulak niini. Dugay na nga gihimong tambal nga tsa ang mga dahon niini."
+        },
+        "slug": "",
+        "title": {
+          "en": "Banaba Tree",
+          "tl": "Punong Banaba",
+          "bis": "Kahoy nga Banaba"
+        },
+        "cats": [
+          "trees",
+          "plants"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "banaba"
+          ],
+          "en": [
+            "banaba"
+          ],
+          "bis": [
+            "banaba"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Three sentences separate native identity, flowers and historical leaf-tea use. Philippine NPDC identifies the indigenous tree, DENR records its purple flowers, and Singapore NParks documents traditional banaba tea. The wording describes traditional use rather than establishing efficacy, dosage or a treatment recommendation.",
+      "formal_item_id": "c4a2ee26105de65967da749dc3e4542b2",
+      "fidelity_item_id": "m2ed23271557c06cdcd9e751d",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-12862",
+      "source_card_sha256": "6f6092c38384aa7d2fe1c9698b1f3bc544f45b152e95092ddacba48e5f29e5b9",
+      "candidate_card_sha256": "26f989732123dc9065260d404bf7945ecefeaef2fb130163ed0051dbfe18e934",
+      "before_card": {
+        "id": "ffct-12862",
+        "factId": "venom-becomes-medicine-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "venom used to make medicine",
+        "terms": [
+          "kamandag",
+          "gamot",
+          "siyensya",
+          "sakit",
+          "venom",
+          "medicine",
+          "research",
+          "saliksik",
+          "tambal",
+          "pananaliksik",
+          "panambal",
+          "pagtuon"
+        ],
+        "fact": {
+          "en": "Scientists study animal venom because it holds substances that can be turned into medicine for human illnesses.",
+          "tl": "Pinag-aaralan ng mga siyentista ang kamandag ng mga hayop dahil may mga sangkap ito na maaaring gawing gamot sa sakit ng tao.",
+          "bis": "Gitun-an sa mga siyentista ang kamandag sa mga hayop kay adunay sulod niini nga mahimong tambal sa sakit sa tawo."
+        },
+        "slug": "ffct-12862",
+        "source": "original",
+        "title": {
+          "tl": "Venom sa Paggawa ng Gamot",
+          "en": "Venom Becomes Medicine",
+          "bis": "Venom sa Tambal"
+        },
+        "cats": [
+          "animal-adaptations",
+          "health"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-12862",
+        "factId": "venom-becomes-medicine-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "venom used to make medicine",
+        "terms": [
+          "kamandag",
+          "gamot",
+          "siyensya",
+          "sakit",
+          "venom",
+          "medicine",
+          "research",
+          "saliksik",
+          "tambal",
+          "pananaliksik",
+          "panambal",
+          "pagtuon"
+        ],
+        "fact": {
+          "en": "Scientists study animal venom because it holds substances that can be turned into medicine for human illnesses.",
+          "tl": "Pinag-aaralan ng mga siyentista ang kamandag ng mga hayop dahil may mga sangkap ito na maaaring gawing gamot sa sakit ng tao.",
+          "bis": "Gitun-an sa mga siyentista ang kamandag sa mga hayop kay adunay sulod niini nga mahimong tambal sa sakit sa tawo."
+        },
+        "slug": "ffct-12862",
+        "source": "original",
+        "title": {
+          "tl": "Venom sa Paggawa ng Gamot",
+          "en": "Venom Becomes Medicine",
+          "bis": "Kamandag nga Mahimong Tambal"
+        },
+        "cats": [
+          "animal-adaptations",
+          "health"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title names venom and its potential medicinal use, while the unchanged body retains study and can-become scope. Wolff kamandag explicitly includes poison/venom after its unrelated first sense, and sulud covers contents, resolving the unspecified substance expression in context. This is not advice to consume venom or a claim every venom is a medicine.",
+      "formal_item_id": "c32000835bcff4ceb270b05a9338643fc",
+      "fidelity_item_id": "m49b5e1aa74b5bb67ab419ed9",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-12911",
+      "source_card_sha256": "2a84a96c0352bd5f44555a21e465795a8bcde05943063dc75703df4b63b29d52",
+      "candidate_card_sha256": "c0d4a74e08e34f5e09b08b7d40ef51b70386a4b8d3e0935a569f1da70e1e8de9",
+      "before_card": {
+        "id": "ffct-12911",
+        "factId": "durian-strong-smell-g3",
+        "domain": "LIVING_THINGS",
+        "topic": "durian has a very strong smell",
+        "terms": [
+          "durian",
+          "amoy",
+          "mabaho",
+          "baho",
+          "smell",
+          "odor",
+          "mahalimuyok",
+          "kabaho",
+          "scent"
+        ],
+        "fact": {
+          "en": "The durian has such a strong smell that people can notice it from far away.",
+          "tl": "Ang durian ay may napakalakas na amoy na maaaring maamoy mula sa malayo.",
+          "bis": "Ang durian adunay kusog kaayo nga baho nga masimhotan bisan sa layo."
+        },
+        "slug": "ffct-12911",
+        "source": "original",
+        "title": {
+          "tl": "Durian Amoy Malayo Lakas",
+          "en": "Durian Strong Smell",
+          "bis": "Durian Baho Layo"
+        },
+        "cats": [
+          "fruits"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-12911",
+        "factId": "durian-strong-smell-g3",
+        "domain": "LIVING_THINGS",
+        "topic": "durian has a very strong smell",
+        "terms": [
+          "durian",
+          "amoy",
+          "mabaho",
+          "baho",
+          "smell",
+          "odor",
+          "mahalimuyok",
+          "kabaho",
+          "scent"
+        ],
+        "fact": {
+          "en": "The durian has such a strong smell that people can notice it from far away.",
+          "tl": "Ang durian ay may napakalakas na amoy na maaaring maamoy mula sa malayo.",
+          "bis": "Ang durian adunay kusog kaayo nga baho nga masimhotan bisan sa layo."
+        },
+        "slug": "ffct-12911",
+        "source": "original",
+        "title": {
+          "tl": "Durian Amoy Malayo Lakas",
+          "en": "Durian Strong Smell",
+          "bis": "Kusog nga Baho sa Durian"
+        },
+        "cats": [
+          "fruits"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only title becomes an explicit strong-smell-of-durian phrase. Wolff bahu includes smell/odor, with an example of an odor reaching a distance. The unchanged body keeps far-away detectability; the title does not introduce a numerical range or a judgment that every person dislikes it.",
+      "formal_item_id": "c868d2edd31c3db62e11e3a7e54941b2f",
+      "fidelity_item_id": "mbd5798698b9d02afed731a67",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-12949",
+      "source_card_sha256": "54e6e6f612fcc4f40d6fc89458da1fa9a4d30c7e762241edbcf726e2377fd8ac",
+      "candidate_card_sha256": "8717bc67eb8aabd070f9399152efc8c8837fe116928c6fb88a257023f380d791",
+      "before_card": {
+        "id": "ffct-12949",
+        "factId": "tamaraw-mammal-warm-blood-g4",
+        "domain": "LIVING_THINGS",
+        "topic": "tamaraw is a mammal",
+        "terms": [
+          "tamaraw",
+          "mamalya",
+          "mammal",
+          "hayop",
+          "gatas",
+          "milk",
+          "sumususo",
+          "nagpapasuso",
+          "mosuso",
+          "mananap",
+          "nati"
+        ],
+        "fact": {
+          "en": "The tamaraw is a mammal that feeds its young with milk.",
+          "tl": "Ang tamaraw ay isang mamalya na nagpapasuso ng gatas sa mga anak nito.",
+          "bis": "Ang tamaraw usa ka mammal nga nagpasuso og gatas sa iyang mga anak."
+        },
+        "slug": "ffct-12949",
+        "source": "original",
+        "title": {
+          "tl": "Tamaraw Mammal Gatas Pasuso Anak",
+          "en": "Tamaraw Mammal Milk Feeding",
+          "bis": "Tamaraw Mammal Gatas Anak"
+        },
+        "cats": [
+          "mammals"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-12949",
+        "factId": "tamaraw-mammal-warm-blood-g4",
+        "domain": "LIVING_THINGS",
+        "topic": "tamaraw is a mammal",
+        "terms": [
+          "tamaraw",
+          "mamalya",
+          "mammal",
+          "hayop",
+          "gatas",
+          "milk",
+          "sumususo",
+          "nagpapasuso",
+          "mosuso",
+          "mananap",
+          "nati"
+        ],
+        "fact": {
+          "en": "The tamaraw is a mammal that feeds its young with milk.",
+          "tl": "Ang tamaraw ay isang mamalya na nagpapasuso ng gatas sa mga anak nito.",
+          "bis": "Ang tamaraw usa ka mammal nga nagpasuso og gatas sa iyang mga anak."
+        },
+        "slug": "ffct-12949",
+        "source": "original",
+        "title": {
+          "tl": "Tamaraw Mammal Gatas Pasuso Anak",
+          "en": "Tamaraw Mammal Milk Feeding",
+          "bis": "Tamaraw, Usa ka Mammal"
+        },
+        "cats": [
+          "mammals"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only title links tamaraw with mammal classification; unchanged body retains nursing offspring. This is a kind-level mammalian characteristic, not a claim that each male nurses. English mammal remains acceptable classroom vocabulary.",
+      "formal_item_id": "ca7edd02bfb04d95ff261e06bd8c9814a",
+      "fidelity_item_id": "mb95b5656280f22a73ec1d103",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-12993",
+      "source_card_sha256": "b82b92e69d1a6489f9fb8507255964498b339d690442e1645434047f0f83fb33",
+      "candidate_card_sha256": "6779519fad14ef36eedb6fe70826e5775661abe3095a99623af1055e8519ac96",
+      "before_card": {
+        "id": "ffct-12993",
+        "factId": "malunggay-pods-seed-oil-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "Oil pressed from malunggay pod seeds",
+        "terms": [
+          "langis",
+          "seed oil",
+          "buto langis",
+          "ben oil",
+          "lana",
+          "pisain",
+          "press oil",
+          "gamit langis",
+          "sabon",
+          "unsa buhaton sa liso",
+          "real use",
+          "extract",
+          "oil from seed",
+          "produkto",
+          "industriya"
+        ],
+        "fact": {
+          "en": "Oil can be pressed from the seeds inside mature malunggay pods — this oil goes into products like cosmetics and some soaps.",
+          "tl": "Mula sa mga buto sa loob ng matandang malunggay pod, maaaring pigain ang langis — ginagamit ito sa pampaganda at ilang sabon.",
+          "bis": "Gikan sa mga liso sa sulod sa tigulang nga malunggay pod, mahimong pug-on ang lana — gigamit kini sa pangpaanyag ug pipila ka sabon."
+        },
+        "slug": "ffct-12993",
+        "source": "original",
+        "title": {
+          "tl": "Langis mula sa Buto ng Malunggay",
+          "en": "Malunggay Seed Oil",
+          "bis": "Lana Liso Malunggay"
+        },
+        "cats": [
+          "plants"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-12993",
+        "factId": "malunggay-pods-seed-oil-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "Oil pressed from malunggay pod seeds",
+        "terms": [
+          "langis",
+          "seed oil",
+          "buto langis",
+          "ben oil",
+          "lana",
+          "pisain",
+          "press oil",
+          "gamit langis",
+          "sabon",
+          "unsa buhaton sa liso",
+          "real use",
+          "extract",
+          "oil from seed",
+          "produkto",
+          "industriya"
+        ],
+        "fact": {
+          "en": "Oil can be pressed from the seeds inside mature malunggay pods — this oil goes into products like cosmetics and some soaps.",
+          "tl": "Mula sa mga buto sa loob ng matandang malunggay pod, maaaring pigain ang langis — ginagamit ito sa pampaganda at ilang sabon.",
+          "bis": "Mahimong pug-on ang lana gikan sa mga liso nga anaa sa sulod sa mga tigulang nga malunggay pod. Gigamit kini nga lana sa mga produkto sama sa pangpaanyag ug sa pipila ka sabon."
+        },
+        "slug": "ffct-12993",
+        "source": "original",
+        "title": {
+          "tl": "Langis mula sa Buto ng Malunggay",
+          "en": "Malunggay Seed Oil",
+          "bis": "Lana gikan sa Liso sa Malunggay"
+        },
+        "cats": [
+          "plants"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Two sentences identify seed oil and its uses, restoring product examples and plural pods. Wolff lana means oil, puga supports pressing, and gulang includes fruit maturity while tigulang marks age. The retained mature-pod context is unchanged. Primary moringa oil/soap studies document the uses; no medicinal efficacy or extraction recipe is added.",
+      "formal_item_id": "ccb9fbe2652431b76b0539369193e8193",
+      "fidelity_item_id": "m99594a81b2c723b56e89dbd4",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-12996",
+      "source_card_sha256": "5a5f58ae782019a7568c17f9a8fd0f1bfa700ee2dd6820c49420e01684bb701e",
+      "candidate_card_sha256": "b47c8ddf13f001988cc26614312b52b10bacaeed79f2c1096bbd0cedb802bff2",
+      "before_card": {
+        "id": "ffct-12996",
+        "factId": "pufferfish-deflates-g3",
+        "domain": "LIVING_THINGS",
+        "topic": "pufferfish returns to normal size",
+        "terms": [
+          "butete",
+          "pufferfish",
+          "lumiliit",
+          "tubig",
+          "inilalabas",
+          "ipagawas",
+          "normal",
+          "naandan",
+          "panganib",
+          "kakuyaw"
+        ],
+        "fact": {
+          "en": "Once the danger passes, the pufferfish lets the water back out and shrinks back down to its normal size.",
+          "tl": "Kapag wala nang panganib, inilalabas ng butete ang tubig sa katawan nito at bumabalik sa normal na laki.",
+          "bis": "Kon wala nay kakuyaw, ipagawas sa butete ang tubig ug mobalik sa naandan nga gidak-on."
+        },
+        "slug": "ffct-12996",
+        "source": "original",
+        "title": {
+          "tl": "Pagbabalik ng Butete sa Normal",
+          "en": "Pufferfish Shrinks Back",
+          "bis": "Balik Butete Normal"
+        },
+        "cats": [
+          "fish",
+          "animal-adaptations"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-12996",
+        "factId": "pufferfish-deflates-g3",
+        "domain": "LIVING_THINGS",
+        "topic": "pufferfish returns to normal size",
+        "terms": [
+          "butete",
+          "pufferfish",
+          "lumiliit",
+          "tubig",
+          "inilalabas",
+          "ipagawas",
+          "normal",
+          "naandan",
+          "panganib",
+          "kakuyaw"
+        ],
+        "fact": {
+          "en": "Once the danger passes, the pufferfish lets the water back out and shrinks back down to its normal size.",
+          "tl": "Kapag wala nang panganib, inilalabas ng butete ang tubig sa katawan nito at bumabalik sa normal na laki.",
+          "bis": "Kon wala nay kakuyaw, ipagawas sa butete ang tubig ug mobalik sa naandan nga gidak-on."
+        },
+        "slug": "ffct-12996",
+        "source": "original",
+        "title": {
+          "tl": "Pagbabalik ng Butete sa Normal",
+          "en": "Pufferfish Shrinks Back",
+          "bis": "Mogamay Balik ang Butete"
+        },
+        "cats": [
+          "fish",
+          "animal-adaptations"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title states that the fish becomes smaller again, consistent with expelling water after the threat. Wolff butiti explicitly names pufferfishes, resolving the false-friend risk from other Philippine languages. The body and normal-size condition stay exact.",
+      "formal_item_id": "c81e397036c9d615a8c666d427188464d",
+      "fidelity_item_id": "m3696179410f892bcdf939948",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-13006",
+      "source_card_sha256": "fac029dd02decffd14af0278113c4d9033c3f9149f69c170ecdffc785876dfb9",
+      "candidate_card_sha256": "23f2333c6a5862629a7a102df746ee7f4114481221150690f02d37233e755eb5",
+      "before_card": {
+        "id": "ffct-13006",
+        "factId": "goat-grazing-young-learn-from-mother-g3",
+        "domain": "LIVING_THINGS",
+        "topic": "baby goats learn grazing from their mother",
+        "terms": [
+          "kambing",
+          "kanding",
+          "goat",
+          "anak",
+          "nati",
+          "batang kambing",
+          "kid",
+          "natututo",
+          "natuto",
+          "nanay",
+          "inahan",
+          "ginagaya",
+          "paano natututo",
+          "manginain",
+          "damo",
+          "gatas papuntang damo"
+        ],
+        "fact": {
+          "en": "A baby goat starts out drinking only milk, then copies its mother to learn how to graze on grass until it can eat on its own.",
+          "tl": "Sa simula, gatas lang ang iniinom ng batang kambing, pero ginagaya nito ang nanay para matutong manginain ng damo hanggang matuto itong kumain mag-isa.",
+          "bis": "Sa sinugdan, gatas ra ang giinom sa nati nga kanding, apan ginasundog niini ang inahan aron makakat-on mosibsib og sagbot hangtod makakaon na kini nga mag-inusara."
+        },
+        "slug": "goat-grazing-backyard",
+        "title": {
+          "en": "Baby Goats Learn",
+          "tl": "Kambing Natutong",
+          "bis": "Kanding Nakakat-on"
+        },
+        "cats": [
+          "farm-animals",
+          "animal-behavior"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "ginagaya"
+          ],
+          "en": [
+            "copies"
+          ],
+          "bis": [
+            "ginasundog"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-13006",
+        "factId": "goat-grazing-young-learn-from-mother-g3",
+        "domain": "LIVING_THINGS",
+        "topic": "baby goats learn grazing from their mother",
+        "terms": [
+          "kambing",
+          "kanding",
+          "goat",
+          "anak",
+          "nati",
+          "batang kambing",
+          "kid",
+          "natututo",
+          "natuto",
+          "nanay",
+          "inahan",
+          "ginagaya",
+          "paano natututo",
+          "manginain",
+          "damo",
+          "gatas papuntang damo"
+        ],
+        "fact": {
+          "en": "A baby goat starts out drinking only milk, then copies its mother to learn how to graze on grass until it can eat on its own.",
+          "tl": "Sa simula, gatas lang ang iniinom ng batang kambing, pero ginagaya nito ang nanay para matutong manginain ng damo hanggang matuto itong kumain mag-isa.",
+          "bis": "Sa sinugdan, gatas ra ang giinom sa nati nga kanding. Unya, ginasundog niini ang iyang inahan aron makakat-on mosibsib og sagbot, hangtod makakaon na kini nga mag-inusara."
+        },
+        "slug": "goat-grazing-backyard",
+        "title": {
+          "en": "Baby Goats Learn",
+          "tl": "Kambing Natutong",
+          "bis": "Nagkat-on ang Nati nga Kanding"
+        },
+        "cats": [
+          "farm-animals",
+          "animal-behavior"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "ginagaya"
+          ],
+          "en": [
+            "copies"
+          ],
+          "bis": [
+            "ginasundog"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The first feeding stage gets its own sentence and unya restores the English then sequence; iyang identifies the mother. Nati explicitly covers a calf or kid, with sundug and sibsib supporting imitation and grazing. Existing ginasundog is retained; the passage does not become a universal account of all grazing skill acquisition.",
+      "formal_item_id": "c02a337a017b2b4f75a6263734a5564c5",
+      "fidelity_item_id": "m2e2575d2a9fa778d31b2357e",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-13012",
+      "source_card_sha256": "89d4d85bb926168a8dfb05d22a9afb0787d30b9d1b399ce6e9a602ef7487e9ac",
+      "candidate_card_sha256": "401da895a955fcc35709da90033bf4d8eef85d7a6c58cebc09654e092bbb193a",
+      "before_card": {
+        "id": "ffct-13012",
+        "factId": "phloem-carries-food-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "inner bark carries food",
+        "terms": [
+          "phloem",
+          "pagkain",
+          "dahon",
+          "balat",
+          "pagkaon",
+          "panit",
+          "inner bark",
+          "sugar",
+          "sap",
+          "floem",
+          "dala"
+        ],
+        "fact": {
+          "en": "What is phloem in a tree?\n\nJust inside the bark is a layer called phloem, which carries the food made in the leaves to the rest of the tree.",
+          "tl": "Ano ang phloem sa puno?\n\nSa loob ng balat ng puno ay may bahaging tinatawag na phloem na nagdadala ng pagkaing gawa sa dahon papunta sa ibang bahagi ng puno.",
+          "bis": "Unsa ang phloem sa kahoy?\n\nSa sulod sa panit sa kahoy adunay bahin nga gitawag phloem nga nagdala sa pagkaon nga hinimo sa dahon ngadto sa ubang bahin sa kahoy."
+        },
+        "slug": "ffct-13012",
+        "source": "original",
+        "title": {
+          "tl": "Phloem sa Loob na Balat",
+          "en": "Phloem, the Food Layer",
+          "bis": "Phloem sa Kahoy"
+        },
+        "cats": [
+          "trees"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-13012",
+        "factId": "phloem-carries-food-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "inner bark carries food",
+        "terms": [
+          "phloem",
+          "pagkain",
+          "dahon",
+          "balat",
+          "pagkaon",
+          "panit",
+          "inner bark",
+          "sugar",
+          "sap",
+          "floem",
+          "dala"
+        ],
+        "fact": {
+          "en": "What is phloem in a tree?\n\nJust inside the bark is a layer called phloem, which carries the food made in the leaves to the rest of the tree.",
+          "tl": "Ano ang phloem sa puno?\n\nSa loob ng balat ng puno ay may bahaging tinatawag na phloem na nagdadala ng pagkaing gawa sa dahon papunta sa ibang bahagi ng puno.",
+          "bis": "Unsa ang phloem sa kahoy?\n\nSa sulod ra sa panit sa kahoy, adunay sapaw nga gitawag og phloem. Kini ang nagdala sa pagkaon nga hinimo sa mga dahon ngadto sa ubang bahin sa kahoy."
+        },
+        "slug": "ffct-13012",
+        "source": "original",
+        "title": {
+          "tl": "Phloem sa Loob na Balat",
+          "en": "Phloem, the Food Layer",
+          "bis": "Phloem sa Kahoy"
+        },
+        "cats": [
+          "trees"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The question stays intact, followed by a layer definition and an explicit transport sentence. Wolff sapaw includes a layer, especially cloth but not restricted to cloth; panit covers the covering/bark context. This resolves the proposer lexical doubt about layer. English phloem is retained, and the food direction is unchanged.",
+      "formal_item_id": "c5dfddb25a49157c800b3cec218c6484b",
+      "fidelity_item_id": "m0bd80482b9a948e6fd107a90",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-13141",
+      "source_card_sha256": "2516b96b76aec663afe0d14dd697ab96ce92c468b67817a9c1da2f2a1d6f52b6",
+      "candidate_card_sha256": "e6e604d9874a3314f6bccb4e81af100158da15ced8255bfdef2ba3e19ef5e5d5",
+      "before_card": {
+        "id": "ffct-13141",
+        "factId": "pancreas-digestive-enzymes-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "pancreas makes digestive enzymes",
+        "terms": [
+          "pancreas",
+          "lapay",
+          "pankreas",
+          "enzyme",
+          "ensima",
+          "tunaw",
+          "digestion",
+          "panunaw",
+          "hilis",
+          "small intestine"
+        ],
+        "fact": {
+          "en": "The pancreas makes digestive enzymes that help break down food once it reaches the small intestine.",
+          "tl": "Gumagawa ang pancreas ng mga enzyme na tumutulong tunawin ang pagkain pagdating nito sa maliit na bituka.",
+          "bis": "Ang pancreas naghimo og mga enzyme nga motabang sa paghilis sa pagkaon kung moabot na kini sa gamay nga tinai."
+        },
+        "slug": "ffct-13141",
+        "source": "original",
+        "title": {
+          "tl": "Enzyme ng Pancreas sa Bituka",
+          "en": "Pancreas Digestive Enzymes",
+          "bis": "Enzyme Pancreas Tinai"
+        },
+        "cats": [
+          "digestive-system"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-13141",
+        "factId": "pancreas-digestive-enzymes-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "pancreas makes digestive enzymes",
+        "terms": [
+          "pancreas",
+          "lapay",
+          "pankreas",
+          "enzyme",
+          "ensima",
+          "tunaw",
+          "digestion",
+          "panunaw",
+          "hilis",
+          "small intestine"
+        ],
+        "fact": {
+          "en": "The pancreas makes digestive enzymes that help break down food once it reaches the small intestine.",
+          "tl": "Gumagawa ang pancreas ng mga enzyme na tumutulong tunawin ang pagkain pagdating nito sa maliit na bituka.",
+          "bis": "Ang pancreas naghimo og mga enzyme nga motabang sa paghilis sa pagkaon kung moabot na kini sa gamay nga tinai."
+        },
+        "slug": "ffct-13141",
+        "source": "original",
+        "title": {
+          "tl": "Enzyme ng Pancreas sa Bituka",
+          "en": "Pancreas Digestive Enzymes",
+          "bis": "Enzyme sa Pancreas"
+        },
+        "cats": [
+          "digestive-system"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title links enzyme and pancreas using sa. NIDDK confirms pancreatic enzyme-containing digestive juice is delivered to the small intestine. The unchanged body does not imply that digestion begins only there or that the pancreas is located inside the intestine.",
+      "formal_item_id": "c18948376a98ba372ff7cdf79fab3477e",
+      "fidelity_item_id": "ma1d14c6b75181a163d2ba2f3",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-13145",
+      "source_card_sha256": "19ceb858bfe4944e1d6cd8a850558399e060ba683cc4367bf49c1faf0bf341b7",
+      "candidate_card_sha256": "6c2319c0cc98e46f175423b95fdde13e2709f4cd2d77f61365cccddb9f94b62c",
+      "before_card": {
+        "id": "ffct-13145",
+        "factId": "fwg2-bones-2128",
+        "domain": "LIVING_THINGS",
+        "topic": "Bones",
+        "terms": [
+          "bones",
+          "human",
+          "contain",
+          "living",
+          "cells",
+          "bone",
+          "marrow",
+          "responsible",
+          "producing",
+          "blood"
+        ],
+        "fact": {
+          "en": "Human bones are alive! They contain living cells and bone marrow, which makes new red blood cells.",
+          "tl": "Buhay ang buto ng tao! May buhay itong selula at bone marrow, na gumagawa ng mga bagong pulang selula ng dugo.",
+          "bis": "Buhi ang mga bukog sa tawo! Adunay buhi nga mga selula ug bone marrow, nga naghimo ug bag-ong pula nga selula sa dugo."
+        },
+        "slug": "ffct-13145",
+        "source": "original",
+        "title": {
+          "tl": "Buhay na Buto at Bone Marrow",
+          "en": "Living Bones Marrow",
+          "bis": "Buhing Bukog Marrow"
+        },
+        "cats": [
+          "body"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-13145",
+        "factId": "fwg2-bones-2128",
+        "domain": "LIVING_THINGS",
+        "topic": "Bones",
+        "terms": [
+          "bones",
+          "human",
+          "contain",
+          "living",
+          "cells",
+          "bone",
+          "marrow",
+          "responsible",
+          "producing",
+          "blood"
+        ],
+        "fact": {
+          "en": "Human bones are alive! They contain living cells and bone marrow, which makes new red blood cells.",
+          "tl": "Buhay ang buto ng tao! May buhay itong selula at bone marrow, na gumagawa ng mga bagong pulang selula ng dugo.",
+          "bis": "Buhi ang mga bukog sa tawo! Aduna kini'y buhi nga mga selula ug bone marrow. Ang bone marrow maoy naghimo ug bag-ong pula nga selula sa dugo."
+        },
+        "slug": "ffct-13145",
+        "source": "original",
+        "title": {
+          "tl": "Buhay na Buto at Bone Marrow",
+          "en": "Living Bones Marrow",
+          "bis": "Buhing Bukog ug Bone Marrow"
+        },
+        "cats": [
+          "body"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Three sentences identify bone as containing living cells and marrow, then name marrow as making red blood cells. This resolves the original loose referent; buhi/bukug retain living/bone meanings. The account describes marrow function, not a claim that every region of every bone actively makes cells at every age.",
+      "formal_item_id": "cc09e5768d3d165af468f61dc65860f12",
+      "fidelity_item_id": "m545e304b45a388cd91f027cd",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-13167",
+      "source_card_sha256": "82f535e92ee6dce1d8c4a02e16a3241af5d88b189afd587eba859eeef31c2489",
+      "candidate_card_sha256": "4554eea8b906e37a31c99d8e1c2abf546c38b7fab0c12051874b1440fdf310d5",
+      "before_card": {
+        "id": "ffct-13167",
+        "factId": "penguin-swims-underwater-fast-g4",
+        "domain": "LIVING_THINGS",
+        "topic": "penguins are fast strong swimmers underwater",
+        "terms": [
+          "penguin",
+          "pingwino",
+          "lumalangoy",
+          "naglangoy",
+          "tubig",
+          "ilalim ng tubig",
+          "underwater",
+          "swimmer",
+          "mabilis",
+          "paspas",
+          "swim"
+        ],
+        "fact": {
+          "en": "Can a flightless penguin swim fast?\n\nYes! Penguins can't fly, but underwater they are strong, fast swimmers.",
+          "tl": "Kahit di makalipad, mabilis ba lumangoy ang penguin?\n\nOo! Hindi nga makalipad ang penguin, pero mahusay at mabilis itong lumangoy sa ilalim ng tubig.",
+          "bis": "Bisan dili makalupad, paspas ba molangoy ang pingwino?\n\nOo! Dili makalupad ang pingwino, apan kusgan ug paspas kini molangoy ilawom sa tubig."
+        },
+        "slug": "ffct-13167",
+        "source": "original",
+        "title": {
+          "tl": "Penguin na Mabilis Langoy",
+          "en": "Fast-Swimming Penguins",
+          "bis": "Penguin Paspas Langoy"
+        },
+        "cats": [
+          "birds"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-13167",
+        "factId": "penguin-swims-underwater-fast-g4",
+        "domain": "LIVING_THINGS",
+        "topic": "penguins are fast strong swimmers underwater",
+        "terms": [
+          "penguin",
+          "pingwino",
+          "lumalangoy",
+          "naglangoy",
+          "tubig",
+          "ilalim ng tubig",
+          "underwater",
+          "swimmer",
+          "mabilis",
+          "paspas",
+          "swim"
+        ],
+        "fact": {
+          "en": "Can a flightless penguin swim fast?\n\nYes! Penguins can't fly, but underwater they are strong, fast swimmers.",
+          "tl": "Kahit di makalipad, mabilis ba lumangoy ang penguin?\n\nOo! Hindi nga makalipad ang penguin, pero mahusay at mabilis itong lumangoy sa ilalim ng tubig.",
+          "bis": "Bisan dili makalupad, paspas ba molangoy ang pingwino?\n\nOo! Dili makalupad ang pingwino, apan kusgan ug paspas kini molangoy ilawom sa tubig."
+        },
+        "slug": "ffct-13167",
+        "source": "original",
+        "title": {
+          "tl": "Penguin na Mabilis Langoy",
+          "en": "Fast-Swimming Penguins",
+          "bis": "Paspas Molangoy ang Penguin"
+        },
+        "cats": [
+          "birds"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only title becomes a full fast-swimming clause. Wolff languy explicitly means swim. The unchanged body preserves the flightless versus underwater contrast; English penguin and the body variant pingwino do not need to be forcibly made identical.",
+      "formal_item_id": "ca6b7b0f56af808d4287c0d9d4cdc2298",
+      "fidelity_item_id": "mdc6ec67e2a2bcf080757a35c",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-13169",
+      "source_card_sha256": "030f15f8ee2fe9191efcffb6bd20cc2fc33b9caac66202595e1c241d69769351",
+      "candidate_card_sha256": "249ab607a4ef7214e1a08b79a2771976112d624b65e86a49dd3446ab076273e5",
+      "before_card": {
+        "id": "ffct-13169",
+        "factId": "living-ecosystem-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "ecosystem",
+        "terms": [
+          "ecosystem",
+          "biotic",
+          "abiotic",
+          "environment",
+          "uugnayan",
+          "pagpakig",
+          "kausaban",
+          "microorganism",
+          "nakakaapekto",
+          "makaapekto",
+          "magkakaugnay",
+          "pagbabago",
+          "magkadugtong",
+          "tanan"
+        ],
+        "fact": {
+          "en": "What exactly is an ecosystem?\n\nAn ecosystem is all the living things — plants, animals, microbes — and nonliving things — water, air, soil, sunlight — in one place, all interacting so a change in one affects the rest.",
+          "tl": "Ano talaga ang ecosystem?\n\nAng ecosystem ay ang lahat ng buhay na bagay — halaman, hayop, microorganism — at di-buhay na bagay — tubig, hangin, lupa, init ng araw — sa isang lugar na magkakaugnay; ang pagbabago sa isa ay nakakaapekto sa iba.",
+          "bis": "Unsa gyud ang ecosystem?\n\nAng ecosystem mao ang tanang buhi — tanom, hayop, microorganism — ug dili-buhi nga butang — tubig, hangin, yuta, kahayag sa adlaw — sa usa ka dapit nga nagkadugtong; ang kausaban sa usa makaapekto sa uban."
+        },
+        "slug": "biotic-vs-abiotic",
+        "title": {
+          "en": "Ecosystem",
+          "tl": "Ekosistema",
+          "bis": "Ekosistema"
+        },
+        "cats": [
+          "ecosystems"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "ecosystem"
+          ],
+          "en": [
+            "ecosystem"
+          ],
+          "bis": [
+            "ecosystem"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-13169",
+        "factId": "living-ecosystem-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "ecosystem",
+        "terms": [
+          "ecosystem",
+          "biotic",
+          "abiotic",
+          "environment",
+          "uugnayan",
+          "pagpakig",
+          "kausaban",
+          "microorganism",
+          "nakakaapekto",
+          "makaapekto",
+          "magkakaugnay",
+          "pagbabago",
+          "magkadugtong",
+          "tanan"
+        ],
+        "fact": {
+          "en": "What exactly is an ecosystem?\n\nAn ecosystem is all the living things — plants, animals, microbes — and nonliving things — water, air, soil, sunlight — in one place, all interacting so a change in one affects the rest.",
+          "tl": "Ano talaga ang ecosystem?\n\nAng ecosystem ay ang lahat ng buhay na bagay — halaman, hayop, microorganism — at di-buhay na bagay — tubig, hangin, lupa, init ng araw — sa isang lugar na magkakaugnay; ang pagbabago sa isa ay nakakaapekto sa iba.",
+          "bis": "Unsa gyud ang ecosystem?\n\nAng ecosystem mao ang tanang buhing butang — tanom, hayop, microorganism — ug dili buhing butang — tubig, hangin, yuta, kahayag sa adlaw — sa usa ka dapit. Nagkadugtong kining tanan, mao nga ang kausaban sa usa makaapekto sa uban."
+        },
+        "slug": "biotic-vs-abiotic",
+        "title": {
+          "en": "Ecosystem",
+          "tl": "Ekosistema",
+          "bis": "Ekosistema"
+        },
+        "cats": [
+          "ecosystems"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "ecosystem"
+          ],
+          "en": [
+            "ecosystem"
+          ],
+          "bis": [
+            "ecosystem"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Two sentences separate ecosystem membership from interactions, making kining tanan refer to living and nonliving components together. Dugtung supports connection; every example is retained, and makaapekto retains possible effects rather than deterministic equal change in every component.",
+      "formal_item_id": "c7e19c2534d34d7d3277a7866d6fed478",
+      "fidelity_item_id": "m26c9aa7bbc88fda37cd653dc",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-13190",
+      "source_card_sha256": "9f4da0eb44122acc1fcfbb25c7f215cd6ea17dba313a87f45f7649d7280716f1",
+      "candidate_card_sha256": "2432dfdade7ec73df3011d3cf6e500f315ff60a35d3dcec5077bc761b4a6e147",
+      "before_card": {
+        "id": "ffct-13190",
+        "factId": "tamaraw-scientific-name-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "tamaraw scientific name Bubalus mindorensis",
+        "terms": [
+          "tamaraw",
+          "bubalus mindorensis",
+          "siyentipikong pangalan",
+          "scientific name",
+          "ngalan",
+          "espesye",
+          "species",
+          "klasipikasyon",
+          "latin",
+          "syentipiko",
+          "kalabaw"
+        ],
+        "fact": {
+          "en": "The tamaraw's scientific name is Bubalus mindorensis, which shows it's related to the water buffalo.",
+          "tl": "Ang siyentipikong pangalan ng tamaraw ay Bubalus mindorensis, na nagpapakita na kamag-anak ito ng kalabaw.",
+          "bis": "Ang siyentipikong ngalan sa tamaraw mao ang Bubalus mindorensis, nga nagpakita nga paryente kini sa kalabaw."
+        },
+        "slug": "ffct-13190",
+        "source": "original",
+        "title": {
+          "tl": "Bubalus mindorensis na Tamaraw",
+          "en": "The Tamaraw's Scientific Name",
+          "bis": "Bubalus mindorensis"
+        },
+        "cats": [
+          "mammals"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-13190",
+        "factId": "tamaraw-scientific-name-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "tamaraw scientific name Bubalus mindorensis",
+        "terms": [
+          "tamaraw",
+          "bubalus mindorensis",
+          "siyentipikong pangalan",
+          "scientific name",
+          "ngalan",
+          "espesye",
+          "species",
+          "klasipikasyon",
+          "latin",
+          "syentipiko",
+          "kalabaw"
+        ],
+        "fact": {
+          "en": "The tamaraw's scientific name is Bubalus mindorensis, which shows it's related to the water buffalo.",
+          "tl": "Ang siyentipikong pangalan ng tamaraw ay Bubalus mindorensis, na nagpapakita na kamag-anak ito ng kalabaw.",
+          "bis": "Ang siyentipikong ngalan sa tamaraw mao ang Bubalus mindorensis, nga nagpakita nga paryente kini sa kalabaw."
+        },
+        "slug": "ffct-13190",
+        "source": "original",
+        "title": {
+          "tl": "Bubalus mindorensis na Tamaraw",
+          "en": "The Tamaraw's Scientific Name",
+          "bis": "Siyentipikong Ngalan sa Tamaraw"
+        },
+        "cats": [
+          "mammals"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only title identifies the scientific-name topic; Bubalus mindorensis stays exact in the body. Wolff paryinti supports relatedness, and the shared buffalo genus explains the comparison. A Latin title is not inherently defective; the gain is subject context.",
+      "formal_item_id": "c78d81193e972de1d2fc7436c537ce666",
+      "fidelity_item_id": "md49da3fc08782424b8386a38",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-13217",
+      "source_card_sha256": "23cb9db07ca6ca9d4ec8b9672b67a761edc7b5dca749bf11621591294aae06b7",
+      "candidate_card_sha256": "2a2c7702167db59bc242b46f656b85f5a5dd472c85eb678e083d15aaf28a0b28",
+      "before_card": {
+        "id": "ffct-13217",
+        "factId": "ecological-niche-definition-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "ecological niche definition",
+        "terms": [
+          "ecological niche",
+          "niche",
+          "papel ng organismo",
+          "role in ecosystem",
+          "espesipikong papel",
+          "papel sa ekosistema"
+        ],
+        "fact": {
+          "en": "What is an ecological niche?\n\nAn ecological niche is an organism's specific role in its ecosystem — what it eats, where it lives, and when it's active.",
+          "tl": "Ano ang ecological niche?\n\nAng ecological niche ay ang espesipikong papel ng isang organismo sa ekosistema — ang kinakain nito, tirahan, at oras ng pagiging aktibo.",
+          "bis": "Unsa ang ecological niche?\n\nAng ecological niche mao ang espesipikong papel sa usa ka organismo sa ekosistema — ang iyang kaonon, puy-anan, ug takna sa pagkaaktibo."
+        },
+        "slug": "qa-ffct-13217",
+        "source": "original",
+        "title": {
+          "tl": "Ecological Niche na Papel",
+          "en": "What a Niche Is",
+          "bis": "Ecological Niche nga Papel"
+        },
+        "cats": [
+          "ecology",
+          "ecosystems"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-13217",
+        "factId": "ecological-niche-definition-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "ecological niche definition",
+        "terms": [
+          "ecological niche",
+          "niche",
+          "papel ng organismo",
+          "role in ecosystem",
+          "espesipikong papel",
+          "papel sa ekosistema"
+        ],
+        "fact": {
+          "en": "What is an ecological niche?\n\nAn ecological niche is an organism's specific role in its ecosystem — what it eats, where it lives, and when it's active.",
+          "tl": "Ano ang ecological niche?\n\nAng ecological niche ay ang espesipikong papel ng isang organismo sa ekosistema — ang kinakain nito, tirahan, at oras ng pagiging aktibo.",
+          "bis": "Unsa ang ecological niche?\n\nAng ecological niche mao ang espesipikong papel sa usa ka organismo sa iyang ekosistema — unsa ang gikaon niini, asa kini nagpuyo, ug kanus-a kini aktibo."
+        },
+        "slug": "qa-ffct-13217",
+        "source": "original",
+        "title": {
+          "tl": "Ecological Niche na Papel",
+          "en": "What a Niche Is",
+          "bis": "Ang Ecological Niche"
+        },
+        "cats": [
+          "ecology",
+          "ecosystems"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Parallel unsa/asa/kanus-a clauses expand the compact role examples without adding new dimensions. Wolff papil includes role and puyu living in a place. The title names the topic directly; takna is not declared wrong, rare words are not blanket defects, and English ecological niche is preserved.",
+      "formal_item_id": "c88dc7d47785a1a76409427d29da0e6ae",
+      "fidelity_item_id": "m3acdb38847d2a93f21e50677",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-13230",
+      "source_card_sha256": "9b14efbcf613a507af63dd53676313ba98de2e4b6212b33efcf716127fa3f35d",
+      "candidate_card_sha256": "222a19c7bc86743dc20ef07741996c6b4a91024e7ecae7263a29a6413bf4d6e9",
+      "before_card": {
+        "id": "ffct-13230",
+        "factId": "yogurt-named-bacteria-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "specific yogurt bacteria species",
+        "terms": [
+          "yogurt",
+          "lactobacillus",
+          "streptococcus",
+          "bakterya",
+          "bacteria",
+          "uri",
+          "species",
+          "gatas",
+          "milk",
+          "kultura",
+          "culture"
+        ],
+        "fact": {
+          "en": "What bacteria turn milk into yogurt?\n\nTwo kinds of bacteria, Lactobacillus and Streptococcus, are commonly used to turn milk into yogurt.",
+          "tl": "Anong bacteria ang gumagawa ng yogurt?\n\nDalawang uri ng bacteria, ang Lactobacillus at Streptococcus, ang karaniwang ginagamit para gawing yogurt ang gatas.",
+          "bis": "Unsang bakterya ang naghimo og yogurt?\n\nDuha ka klase nga bakterya, ang Lactobacillus ug Streptococcus, ang kasagarang gigamit aron mahimong yogurt ang gatas."
+        },
+        "slug": "ffct-13230",
+        "source": "original",
+        "title": {
+          "tl": "Bacteria ng Yogurt",
+          "en": "Yogurt Bacteria Duo",
+          "bis": "Bakterya Yogurt"
+        },
+        "cats": [
+          "microorganisms",
+          "food"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-13230",
+        "factId": "yogurt-named-bacteria-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "specific yogurt bacteria species",
+        "terms": [
+          "yogurt",
+          "lactobacillus",
+          "streptococcus",
+          "bakterya",
+          "bacteria",
+          "uri",
+          "species",
+          "gatas",
+          "milk",
+          "kultura",
+          "culture"
+        ],
+        "fact": {
+          "en": "What bacteria turn milk into yogurt?\n\nTwo kinds of bacteria, Lactobacillus and Streptococcus, are commonly used to turn milk into yogurt.",
+          "tl": "Anong bacteria ang gumagawa ng yogurt?\n\nDalawang uri ng bacteria, ang Lactobacillus at Streptococcus, ang karaniwang ginagamit para gawing yogurt ang gatas.",
+          "bis": "Unsang bakterya ang naghimo og yogurt?\n\nDuha ka klase nga bakterya, ang Lactobacillus ug Streptococcus, ang kasagarang gigamit aron mahimong yogurt ang gatas."
+        },
+        "slug": "ffct-13230",
+        "source": "original",
+        "title": {
+          "tl": "Bacteria ng Yogurt",
+          "en": "Yogurt Bacteria Duo",
+          "bis": "Bakterya sa Yogurt"
+        },
+        "cats": [
+          "microorganisms",
+          "food"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only sa links bacteria with yogurt. The unchanged text retains commonly and names Lactobacillus and Streptococcus as broad kinds, not complete species names. No instruction for unsafe home culturing or assertion that all species in either genus make yogurt is introduced.",
+      "formal_item_id": "ca851378ed0a5c27801682fc6ffe666de",
+      "fidelity_item_id": "m0cf7f9a0398aa0f85b8d4681",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-13232",
+      "source_card_sha256": "dafb6c415ee9e7614314fbea5f1b9e11b5deecbd45e66044e213a26ccf74dd61",
+      "candidate_card_sha256": "384929d86cba5549ed5c0ddb6516f558dbd9b012c05c2ce70a4f110948bf06cb",
+      "before_card": {
+        "id": "ffct-13232",
+        "factId": "fats-energy-dense-g8",
+        "domain": "LIVING_THINGS",
+        "topic": "fats give most energy per gram",
+        "terms": [
+          "taba",
+          "tambok",
+          "enerhiya",
+          "calorie",
+          "kaloriya",
+          "gramo",
+          "gram",
+          "fats",
+          "pinakadaghan",
+          "kusog",
+          "doble",
+          "mas-daghan"
+        ],
+        "fact": {
+          "en": "Fats give the most energy per gram — more than double what carbohydrates or protein provide.",
+          "tl": "Ang taba ang nagbibigay ng pinakamaraming enerhiya kada gramo — mahigit doble ng karbohaydrat o protina.",
+          "bis": "Ang tambok maoy naghatag sa pinakadaghang kusog kada gramo — kapin sa doble sa karbohaydrat o protina."
+        },
+        "slug": "ffct-13232",
+        "source": "original",
+        "title": {
+          "tl": "Taba Pinakamaraming Enerhiya",
+          "en": "Fats Pack Most Energy",
+          "bis": "Tambok Pinakadaghan nga Enerhiya"
+        },
+        "cats": [
+          "nutrition"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-13232",
+        "factId": "fats-energy-dense-g8",
+        "domain": "LIVING_THINGS",
+        "topic": "fats give most energy per gram",
+        "terms": [
+          "taba",
+          "tambok",
+          "enerhiya",
+          "calorie",
+          "kaloriya",
+          "gramo",
+          "gram",
+          "fats",
+          "pinakadaghan",
+          "kusog",
+          "doble",
+          "mas-daghan"
+        ],
+        "fact": {
+          "en": "Fats give the most energy per gram — more than double what carbohydrates or protein provide.",
+          "tl": "Ang taba ang nagbibigay ng pinakamaraming enerhiya kada gramo — mahigit doble ng karbohaydrat o protina.",
+          "bis": "Ang tambok maoy naghatag sa pinakadaghang kusog kada gramo — kapin sa doble sa karbohaydrat o protina."
+        },
+        "slug": "ffct-13232",
+        "source": "original",
+        "title": {
+          "tl": "Taba Pinakamaraming Enerhiya",
+          "en": "Fats Pack Most Energy",
+          "bis": "Pinakadaghang Enerhiya gikan sa Tambok"
+        },
+        "cats": [
+          "nutrition"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only title gains an explicit from-fat relation, interpreted with the unchanged per-gram comparison. The standard food-energy values are about 9 kcal/g fat versus 4 for carbohydrate/protein. Kapin preserves more than double; this is not advice that fat should supply most daily calories.",
+      "formal_item_id": "cc7fc71d0531b4ba638767b1968bbb9fa",
+      "fidelity_item_id": "maf3fc2e0b336b6cf9363462c",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-13283",
+      "source_card_sha256": "067ff2e2c759128e0d8314a04f675fa3103759627be892076f5837953f6cd20e",
+      "candidate_card_sha256": "26a7f1854794428ede1dc0a98951f710cad148669c0f24e0cd25bc5caadb1d6d",
+      "before_card": {
+        "id": "ffct-13283",
+        "factId": "philippine-crocodile-bony-snout-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "Philippine crocodile snout shape",
+        "terms": [
+          "buwaya",
+          "philippine crocodile",
+          "buaya",
+          "nguso",
+          "simod",
+          "snout",
+          "maikli",
+          "mubo",
+          "broad",
+          "lapad",
+          "bukog",
+          "bony"
+        ],
+        "fact": {
+          "en": "What's special about the Philippine crocodile's snout?\n\nIt has a short, broad snout — that's what makes it look different from the saltwater crocodile!",
+          "tl": "Ano ang natatangi sa nguso ng buwayang Pilipino?\n\nMay maikli at malapad itong nguso, kaya iba ang itsura nito kumpara sa buwaya ng dagat!",
+          "bis": "Unsay talagsaon sa simod sa buaya nga Pilipino?\n\nAdunay mubo ug lapad kini nga simod, mao nga lahi ang panagway niini kaysa buaya sa dagat!"
+        },
+        "slug": "philippine-crocodile",
+        "title": {
+          "en": "Crocodile Snout",
+          "tl": "Nguso ng Buwaya",
+          "bis": "Simod sa Buaya"
+        },
+        "cats": [
+          "reptiles"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "nguso"
+          ],
+          "en": [
+            "snout"
+          ],
+          "bis": [
+            "simod"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-13283",
+        "factId": "philippine-crocodile-bony-snout-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "Philippine crocodile snout shape",
+        "terms": [
+          "buwaya",
+          "philippine crocodile",
+          "buaya",
+          "nguso",
+          "simod",
+          "snout",
+          "maikli",
+          "mubo",
+          "broad",
+          "lapad",
+          "bukog",
+          "bony"
+        ],
+        "fact": {
+          "en": "What's special about the Philippine crocodile's snout?\n\nIt has a short, broad snout — that's what makes it look different from the saltwater crocodile!",
+          "tl": "Ano ang natatangi sa nguso ng buwayang Pilipino?\n\nMay maikli at malapad itong nguso, kaya iba ang itsura nito kumpara sa buwaya ng dagat!",
+          "bis": "Unsay talagsaon sa simod sa buaya nga Pilipino?\n\nMubo ug lapad ang simod niini. Mao kana ang hinungdan nga lahi ang panagway niini kaysa buaya sa dagat!"
+        },
+        "slug": "philippine-crocodile",
+        "title": {
+          "en": "Crocodile Snout",
+          "tl": "Nguso ng Buwaya",
+          "bis": "Simod sa Buaya"
+        },
+        "cats": [
+          "reptiles"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "nguso"
+          ],
+          "en": [
+            "snout"
+          ],
+          "bis": [
+            "simod"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "A direct short/broad-snout sentence and explicit consequence retain the English morphology comparison. Wolff simud explicitly means animal snout; Smithsonian describes the Philippine crocodile broad snout. This is a descriptive difference, not a claim that snout alone is a definitive field identification test.",
+      "formal_item_id": "c7c0af5035396747cbea2b71a48781304",
+      "fidelity_item_id": "m4a9c7c0362dc2fc408e3776e",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-13285",
+      "source_card_sha256": "0ef1f5cd4fc4f339ad3da2ebf867c2e38f5bcaa45954b87bf42a34238ac13fe2",
+      "candidate_card_sha256": "0eb3549b58d1c12a62c4480f21e6c816df2a75a99213a8db40f6e69917e72d50",
+      "before_card": {
+        "id": "ffct-13285",
+        "factId": "horseshoe-crab-blue-blood-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "horseshoe crab has blue blood",
+        "terms": [
+          "asul na dugo",
+          "blue blood",
+          "asul nga dugo",
+          "copper",
+          "tanso",
+          "tumbaga",
+          "dugo",
+          "blood",
+          "hemocyanin",
+          "oxygen",
+          "oksiheno"
+        ],
+        "fact": {
+          "en": "Why is horseshoe crab blood blue?\n\nIt uses copper instead of iron to carry oxygen!",
+          "tl": "Bakit asul ang dugo ng horseshoe crab?\n\nGumagamit ito ng tanso (copper) sa halip na bakal para magdala ng oksiheno!",
+          "bis": "Ngano asul ang dugo sa horseshoe crab?\n\nNaggamit kini og tumbaga imbis puthaw aron magdala og oksiheno!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Horseshoe Crab Blood",
+          "tl": "Dugo ng Horseshoe",
+          "bis": "Dugo sa Horseshoe"
+        },
+        "cats": [
+          "marine-animals",
+          "invertebrates"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "tanso"
+          ],
+          "en": [
+            "copper"
+          ],
+          "bis": [
+            "tumbaga"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-13285",
+        "factId": "horseshoe-crab-blue-blood-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "horseshoe crab has blue blood",
+        "terms": [
+          "asul na dugo",
+          "blue blood",
+          "asul nga dugo",
+          "copper",
+          "tanso",
+          "tumbaga",
+          "dugo",
+          "blood",
+          "hemocyanin",
+          "oxygen",
+          "oksiheno"
+        ],
+        "fact": {
+          "en": "Why is horseshoe crab blood blue?\n\nIt uses copper instead of iron to carry oxygen!",
+          "tl": "Bakit asul ang dugo ng horseshoe crab?\n\nGumagamit ito ng tanso (copper) sa halip na bakal para magdala ng oksiheno!",
+          "bis": "Ngano asul ang dugo sa horseshoe crab?\n\nNaggamit kini og tumbaga imbis puthaw aron magdala og oksiheno!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Horseshoe Crab Blood",
+          "tl": "Dugo ng Horseshoe",
+          "bis": "Dugo sa Horseshoe Crab"
+        },
+        "cats": [
+          "marine-animals",
+          "invertebrates"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "tanso"
+          ],
+          "en": [
+            "copper"
+          ],
+          "bis": [
+            "tumbaga"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title restores the complete horseshoe crab name, avoiding an incomplete subject. Wolff tumbaga includes copper and puthaw iron; NOAA documents blue copper-based blood. The body retains the oxygen-carrying comparison, without making a claim about every blood constituent or oxygenation state.",
+      "formal_item_id": "c5a4527f4f0cbb422b6a519d6c0588cbf",
+      "fidelity_item_id": "mf4a8c98398f091611a34cccd",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    }
+  ],
+  "held": [
+    {
+      "card_id": "ffct-12671",
+      "source_card_sha256": "95cbed8216820b8f278c4ff74baa5ddd871c801f7c4a441e7a6c447ec896d6ca",
+      "candidate_card_sha256": "ecee8ffbc4d770d70e1f1bb8d3e2513dc7e69be146bf532b917f05f4249a024c",
+      "before_card": {
+        "id": "ffct-12671",
+        "factId": "coral-polyp-body-parts-g5",
+        "domain": "LIVING_THINGS",
+        "topic": "the body parts of a coral polyp",
+        "terms": [
+          "coral polyp",
+          "parte sa lawas",
+          "mga parte",
+          "tentacles",
+          "galamay",
+          "bibig",
+          "mouth",
+          "tiyan",
+          "stomach",
+          "polip",
+          "ano ang hitsura",
+          "anyo",
+          "lawas",
+          "katawan",
+          "saco",
+          "body parts"
+        ],
+        "fact": {
+          "en": "A coral polyp is like a tiny sac — it has a mouth in the middle ringed by little tentacles, and a hollow space inside works as its stomach.",
+          "tl": "Ang isang coral polyp ay parang maliit na sako — may bibig sa gitna na napapaligiran ng maliliit na galamay, at ang loob nito ay isang lukob na siyang tiyan.",
+          "bis": "Ang usa ka coral polyp morag gamay nga sudlanan — adunay baba sa tunga nga gilibutan og gagmay nga galamay, ug ang sulod niini usa ka lungag nga maoy tiyan."
+        },
+        "slug": "coral-polyp-zooxanthellae-symbiosis",
+        "title": {
+          "en": "Coral Polyp Parts",
+          "tl": "Polyp ng Coral",
+          "bis": "Polyp sa Koral"
+        },
+        "cats": [
+          "marine-animals",
+          "invertebrates"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "coral polyp"
+          ],
+          "en": [
+            "coral polyp"
+          ],
+          "bis": [
+            "coral polyp"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-12671",
+        "factId": "coral-polyp-body-parts-g5",
+        "domain": "LIVING_THINGS",
+        "topic": "the body parts of a coral polyp",
+        "terms": [
+          "coral polyp",
+          "parte sa lawas",
+          "mga parte",
+          "tentacles",
+          "galamay",
+          "bibig",
+          "mouth",
+          "tiyan",
+          "stomach",
+          "polip",
+          "ano ang hitsura",
+          "anyo",
+          "lawas",
+          "katawan",
+          "saco",
+          "body parts"
+        ],
+        "fact": {
+          "en": "A coral polyp is like a tiny sac — it has a mouth in the middle ringed by little tentacles, and a hollow space inside works as its stomach.",
+          "tl": "Ang isang coral polyp ay parang maliit na sako — may bibig sa gitna na napapaligiran ng maliliit na galamay, at ang loob nito ay isang lukob na siyang tiyan.",
+          "bis": "Ang usa ka coral polyp morag gamay nga sudlanan. Aduna kini baba sa tunga nga gilibutan og gagmay nga galamay. Ang sulod niini usa ka lungag nga maoy nagsilbing tiyan niini."
+        },
+        "slug": "coral-polyp-zooxanthellae-symbiosis",
+        "title": {
+          "en": "Coral Polyp Parts",
+          "tl": "Polyp ng Coral",
+          "bis": "Polyp sa Koral"
+        },
+        "cats": [
+          "marine-animals",
+          "invertebrates"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "coral polyp"
+          ],
+          "en": [
+            "coral polyp"
+          ],
+          "bis": [
+            "coral polyp"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Sulud explicitly supplies sudlanan (container), resolving that part of the sac analogy. Retained galamay remains unresolved as a Cebuano tentacle term: 38 topical body examples are machine translations, Wolff did not establish the intended sense, and the targeted Binisaya page was inaccessible. Hold the exact proposal; an unavailable page or absent headword does not establish that a loanword is invalid.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c0b0f508f1b3ced127fc8c89cec01b46e"
+    },
+    {
+      "card_id": "ffct-12786",
+      "source_card_sha256": "b604ffd09fa556ae1297aefcbc6f59fb0976d71e8fdf8b88ca8fbf2d01cd319a",
+      "candidate_card_sha256": "60cc928ea8333463de18b28e3db13db6ee08765be475397ca171b5b41a20db4c",
+      "before_card": {
+        "id": "ffct-12786",
+        "factId": "cockroach-can-spread-germs-g4",
+        "domain": "LIVING_THINGS",
+        "topic": "cockroaches can spread germs",
+        "terms": [
+          "ipis",
+          "cockroach",
+          "mikrobyo",
+          "germs",
+          "sakit",
+          "disease",
+          "marumi",
+          "dirty",
+          "kalusugan",
+          "health",
+          "kagaw",
+          "hugaw",
+          "balatian",
+          "basura",
+          "trash"
+        ],
+        "fact": {
+          "en": "Cockroaches walk through dirty places like trash and drains, so they can carry germs onto food — that's why a clean home matters.",
+          "tl": "Naglalakad ang ipis sa maruruming lugar tulad ng basura at alkantarilya, kaya nakakadala ito ng mikrobyo sa pagkain — kaya mahalaga ang kalinisan sa bahay.",
+          "bis": "Molakaw ang ipis sa hugaw nga mga dapit sama sa basura ug kanal, mao nga makadala kini og kagaw sa pagkaon — mao nga importante ang kalimpyo sa balay."
+        },
+        "slug": "cockroach-ipis-large",
+        "title": {
+          "en": "Cockroach Germs",
+          "tl": "Ipis at Mikrobyo",
+          "bis": "Ipis ug Kagaw"
+        },
+        "cats": [
+          "insects",
+          "germs"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "mikrobyo"
+          ],
+          "en": [
+            "germs"
+          ],
+          "bis": [
+            "kagaw"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-12786",
+        "factId": "cockroach-can-spread-germs-g4",
+        "domain": "LIVING_THINGS",
+        "topic": "cockroaches can spread germs",
+        "terms": [
+          "ipis",
+          "cockroach",
+          "mikrobyo",
+          "germs",
+          "sakit",
+          "disease",
+          "marumi",
+          "dirty",
+          "kalusugan",
+          "health",
+          "kagaw",
+          "hugaw",
+          "balatian",
+          "basura",
+          "trash"
+        ],
+        "fact": {
+          "en": "Cockroaches walk through dirty places like trash and drains, so they can carry germs onto food — that's why a clean home matters.",
+          "tl": "Naglalakad ang ipis sa maruruming lugar tulad ng basura at alkantarilya, kaya nakakadala ito ng mikrobyo sa pagkain — kaya mahalaga ang kalinisan sa bahay.",
+          "bis": "Molakaw ang ipis sa hugaw nga mga dapit sama sa basura ug kanal. Busa makadala kini og kagaw ngadto sa pagkaon. Mao kana nga importante ang kalimpyo sa balay."
+        },
+        "slug": "cockroach-ipis-large",
+        "title": {
+          "en": "Cockroach Germs",
+          "tl": "Ipis at Mikrobyo",
+          "bis": "Ipis ug Kagaw"
+        },
+        "cats": [
+          "insects",
+          "germs"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "mikrobyo"
+          ],
+          "en": [
+            "germs"
+          ],
+          "bis": [
+            "kagaw"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The sentence breaks and explicit food destination preserve the hygiene claim. However, retained ipis as cockroach is not resolved by the lexical evidence: Wolff and Binisaya give pouring/decanting, while the Austronesian Comparative Dictionary documents Cebuano ipus as a small cockroach. The 27 topical machine translations cannot resolve contemporary borrowing. Hold without declaring every ipis use wrong or silently changing the insect name.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c7a9be2b8616f18f60db4ab5f14e1082e"
+    },
+    {
+      "card_id": "ffct-12801",
+      "source_card_sha256": "fa28c34cf7632b8f1b955b864184f64b8efe73d4b998772730fd851c509043b8",
+      "candidate_card_sha256": "2b036a79bb6b32cecdd8c977720bf1da4a6b4438f117b02f2cb104fecccb7c72",
+      "before_card": {
+        "id": "ffct-12801",
+        "factId": "seaweed-not-a-plant-algae-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "seaweed is algae not a true plant",
+        "terms": [
+          "seaweed",
+          "damong-dagat",
+          "sagbot sa dagat",
+          "lumot sa dagat",
+          "algae",
+          "halaman ng dagat",
+          "hindi tunay na halaman",
+          "dili tinuod nga tanom",
+          "walang ugat",
+          "walay gamot",
+          "no roots",
+          "walang dahon",
+          "walay dahon",
+          "lumulutang",
+          "molutaw",
+          "guso",
+          "gulaman",
+          "tanom sa dagat",
+          "sinipsip ang sustansya"
+        ],
+        "fact": {
+          "en": "Is seaweed really a plant?\n\nSurprise — seaweed is actually algae, not a true plant! It has no real roots, stems, or leaves, and it soaks up nutrients straight from seawater.",
+          "tl": "Halaman ba talaga ang damong-dagat?\n\nGulat ka ba? Ang damong-dagat ay algae, hindi tunay na halaman! Wala itong tunay na ugat, tangkay, o dahon, at sumisipsip ito ng sustansya direkta sa tubig-dagat.",
+          "bis": "Tinuod ba nga tanom ang sagbot sa dagat?\n\nNakurat ka ba? Ang sagbot sa dagat kay algae diay, dili tinuod nga tanom! Walay tinuod nga gamot, punoan, o dahon, ug mosuyop kini og sustansya direkta gikan sa tubig-dagat."
+        },
+        "slug": "gulaman-agar-seaweed",
+        "title": {
+          "en": "Seaweed Is Algae",
+          "tl": "Algae, Hindi Halaman",
+          "bis": "Algae, Dili Tanom"
+        },
+        "cats": [
+          "oceans",
+          "plants"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "algae"
+          ],
+          "en": [
+            "algae"
+          ],
+          "bis": [
+            "algae"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-12801",
+        "factId": "seaweed-not-a-plant-algae-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "seaweed is algae not a true plant",
+        "terms": [
+          "seaweed",
+          "damong-dagat",
+          "sagbot sa dagat",
+          "lumot sa dagat",
+          "algae",
+          "halaman ng dagat",
+          "hindi tunay na halaman",
+          "dili tinuod nga tanom",
+          "walang ugat",
+          "walay gamot",
+          "no roots",
+          "walang dahon",
+          "walay dahon",
+          "lumulutang",
+          "molutaw",
+          "guso",
+          "gulaman",
+          "tanom sa dagat",
+          "sinipsip ang sustansya"
+        ],
+        "fact": {
+          "en": "Is seaweed really a plant?\n\nSurprise — seaweed is actually algae, not a true plant! It has no real roots, stems, or leaves, and it soaks up nutrients straight from seawater.",
+          "tl": "Halaman ba talaga ang damong-dagat?\n\nGulat ka ba? Ang damong-dagat ay algae, hindi tunay na halaman! Wala itong tunay na ugat, tangkay, o dahon, at sumisipsip ito ng sustansya direkta sa tubig-dagat.",
+          "bis": "Tinuod ba nga tanom ang sagbot sa dagat?\n\nNakurat ka ba? Ang sagbot sa dagat kay algae diay, dili tinuod nga tanom! Kini walay tinuod nga gamot, punoan, o dahon. Mosuyop kini og sustansya direkta gikan sa tubig-dagat."
+        },
+        "slug": "gulaman-agar-seaweed",
+        "title": {
+          "en": "Seaweed Is Algae",
+          "tl": "Algae, Hindi Halaman",
+          "bis": "Algae, Dili Tanom"
+        },
+        "cats": [
+          "oceans",
+          "plants"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "algae"
+          ],
+          "en": [
+            "algae"
+          ],
+          "bis": [
+            "algae"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "NOAA K–5 seaweed material explicitly uses the true-plant distinction in an anatomical teaching context; broader NOAA/Smithsonian plant classifications also exist, so this is not a universal taxonomic ruling. The retained punoan still has unresolved general-stem scope: Wolff punu/punuan establishes tree trunk or main stem, not all plant stems in this comparison. Hold this complete candidate for lexical clarification, consistent with the earlier stem-scope hold.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "cb54c5f7fca497214b7a46e7c9e845649"
+    },
+    {
+      "card_id": "ffct-12898",
+      "source_card_sha256": "43cf7d31081a2e0518c44d2149b78bafaefb0360eae56a545f0eea139ea801b4",
+      "candidate_card_sha256": "d512f4c66f12147a27624be159f49773e2f9c473b24475d7505e001d7651a423",
+      "before_card": {
+        "id": "ffct-12898",
+        "factId": "go-foods-energy-units-warmth-g5",
+        "domain": "LIVING_THINGS",
+        "topic": "Go foods also help keep the body warm",
+        "terms": [
+          "go foods",
+          "init",
+          "warm",
+          "kainit",
+          "temperatura",
+          "body heat",
+          "lamig",
+          "cold",
+          "bugnaw",
+          "lakas",
+          "energy",
+          "bakit umiinit",
+          "katawan",
+          "hindi lang galaw",
+          "warmth",
+          "sunog na lakas"
+        ],
+        "fact": {
+          "en": "Go foods do more than give you energy to move — they also help keep your body warm, so eating well means shivering less when it's cold.",
+          "tl": "Ang go food ay hindi lang nagbibigay ng lakas para gumalaw — tumutulong din itong magpainit sa katawan, kaya kapag malamig, mas kaunti ang panginginig kapag masustansya ang kinakain.",
+          "bis": "Ang go food dili lang maghatag og kusog para molihok — motabang usab kini sa pagpainit sa lawas, mao nga kon bugnaw, dili kaayo ta mokurog kon maayo ang kaon."
+        },
+        "slug": "go-foods-energy-group",
+        "title": {
+          "en": "Go Foods Warmth",
+          "tl": "Go Foods Init",
+          "bis": "Go Foods Init"
+        },
+        "cats": [
+          "nutrition",
+          "food"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "go food"
+          ],
+          "en": [
+            "Go foods"
+          ],
+          "bis": [
+            "go food"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-12898",
+        "factId": "go-foods-energy-units-warmth-g5",
+        "domain": "LIVING_THINGS",
+        "topic": "Go foods also help keep the body warm",
+        "terms": [
+          "go foods",
+          "init",
+          "warm",
+          "kainit",
+          "temperatura",
+          "body heat",
+          "lamig",
+          "cold",
+          "bugnaw",
+          "lakas",
+          "energy",
+          "bakit umiinit",
+          "katawan",
+          "hindi lang galaw",
+          "warmth",
+          "sunog na lakas"
+        ],
+        "fact": {
+          "en": "Go foods do more than give you energy to move — they also help keep your body warm, so eating well means shivering less when it's cold.",
+          "tl": "Ang go food ay hindi lang nagbibigay ng lakas para gumalaw — tumutulong din itong magpainit sa katawan, kaya kapag malamig, mas kaunti ang panginginig kapag masustansya ang kinakain.",
+          "bis": "Ang go food dili lang maghatag og kusog para molihok. Motabang usab kini sa pagpainit sa atong lawas. Mao nga kon bugnaw, dili kaayo ta mokurog basta maayo ang atong kaon."
+        },
+        "slug": "go-foods-energy-group",
+        "title": {
+          "en": "Go Foods Warmth",
+          "tl": "Go Foods Init",
+          "bis": "Go Foods ug Init sa Lawas"
+        },
+        "cats": [
+          "nutrition",
+          "food"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "go food"
+          ],
+          "en": [
+            "Go foods"
+          ],
+          "bis": [
+            "go food"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Food supplies fuel for heat production, including shivering, but the English inference that eating well means shivering less is too broad. The inspected primary cold-exposure study measures glucose use and fuel sparing during sustained shivering; it does not establish that general promise. The new basta also retains a strong condition. Hold for coordinated English-source review; do not invent a Cebuano-only physiological correction or claim the study directly disproves every dietary effect on shivering.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c27d71198b4fd51997ff7646d76a3e05b"
+    },
+    {
+      "card_id": "ffct-13024",
+      "source_card_sha256": "a8bd09ca0155f8293cf5265fa8030d6baac3f6763b0bb10a41abc20afa0ab7a1",
+      "candidate_card_sha256": "ac4db7022aa9210d193e9648c8247ead97763148a5db1cb547b02a1e6724cca3",
+      "before_card": {
+        "id": "ffct-13024",
+        "factId": "fwg2-human-respiration-1990",
+        "domain": "LIVING_THINGS",
+        "topic": "Human Respiration",
+        "terms": [
+          "human",
+          "respiration",
+          "lungs",
+          "oxygen",
+          "passes",
+          "alveoli",
+          "blood",
+          "while",
+          "carbon",
+          "dioxide"
+        ],
+        "fact": {
+          "en": "What happens to air in your lungs?\n\nIn your lungs, oxygen moves from tiny air sacs called alveoli into your blood, while carbon dioxide moves out.",
+          "tl": "Ano ang nangyayari sa hangin sa baga natin?\n\nSa baga, ang oxygen ay lumilipat mula sa maliliit na alveoli papunta sa dugo, habang ang carbon dioxide naman ay lumalabas.",
+          "bis": "Unsay mahitabo sa hangin sa atong baga?\n\nSa baga, ang oxygen mobalhin gikan sa gagmayng alveoli ngadto sa dugo, samtang ang carbon dioxide mogawas."
+        },
+        "slug": "gas-exchange-alveolus",
+        "title": {
+          "en": "Lungs and Breathing",
+          "tl": "Baga at Paghinga",
+          "bis": "Baga ug Pagginhawa"
+        },
+        "cats": [
+          "human-body"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "alveoli"
+          ],
+          "en": [
+            "alveoli"
+          ],
+          "bis": [
+            "alveoli"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-13024",
+        "factId": "fwg2-human-respiration-1990",
+        "domain": "LIVING_THINGS",
+        "topic": "Human Respiration",
+        "terms": [
+          "human",
+          "respiration",
+          "lungs",
+          "oxygen",
+          "passes",
+          "alveoli",
+          "blood",
+          "while",
+          "carbon",
+          "dioxide"
+        ],
+        "fact": {
+          "en": "What happens to air in your lungs?\n\nIn your lungs, oxygen moves from tiny air sacs called alveoli into your blood, while carbon dioxide moves out.",
+          "tl": "Ano ang nangyayari sa hangin sa baga natin?\n\nSa baga, ang oxygen ay lumilipat mula sa maliliit na alveoli papunta sa dugo, habang ang carbon dioxide naman ay lumalabas.",
+          "bis": "Unsay mahitabo sa hangin sa atong baga?\n\nSa atong baga, adunay gagmayng sako sa hangin nga gitawag og alveoli. Gikan sa alveoli, mobalhin ang oxygen ngadto sa dugo, samtang mogawas ang carbon dioxide."
+        },
+        "slug": "gas-exchange-alveolus",
+        "title": {
+          "en": "Lungs and Breathing",
+          "tl": "Baga at Paghinga",
+          "bis": "Baga ug Pagginhawa"
+        },
+        "cats": [
+          "human-body"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "alveoli"
+          ],
+          "en": [
+            "alveoli"
+          ],
+          "bis": [
+            "alveoli"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "NHLBI supports gas exchange, and the proposed definition restores the English air-sac description. The proposer explicitly requests review of sako sa hangin. Wolff establishes a cloth sack/sackful, and the corpus matches include literal sacks as well as translated anatomy. Whether this exact new anatomical analogy is natural and unambiguous for children remains unresolved. Hold the exact proposal without treating all productive metaphors as invalid or silently dropping the definition.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "ca3bdcf10d3e13fbde6d15c0ce64bdf7b"
+    },
+    {
+      "card_id": "ffct-13037",
+      "source_card_sha256": "12ad269d0671506ca067749d02f79173ebb89791a4d493e3d421254b34db867a",
+      "candidate_card_sha256": "d115873ff27e4d583ac8ab9c94ce414ee546a8129397525c4318116c0cf1ad31",
+      "before_card": {
+        "id": "ffct-13037",
+        "factId": "immune-vaccine-cold-chain-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "vaccines must be kept cold",
+        "terms": [
+          "cold chain",
+          "malamig",
+          "kinahanglan bugnaw",
+          "refrigerator",
+          "ref",
+          "yelo",
+          "ice",
+          "sira",
+          "mapanghina",
+          "mawalan ng bisa",
+          "mawad-an og bisa",
+          "transport",
+          "dala",
+          "health worker",
+          "bakit malamig",
+          "ngano bugnaw",
+          "tamang temperatura"
+        ],
+        "fact": {
+          "en": "Why must vaccines be kept cold?\n\nVaccines must stay cold all the way from the factory to the health center — called the cold chain — because getting warm can spoil them and make them lose their power.",
+          "tl": "Bakit dapat panatilihing malamig ang bakuna?\n\nDapat manatiling malamig ang bakuna mula sa pabrika hanggang sa health center — tinatawag itong cold chain — dahil kapag uminit, maaari itong masira at mawalan ng bisa.",
+          "bis": "Nganong kinahanglan magpabilin nga bugnaw ang bakuna?\n\nKinahanglan magpabilin nga bugnaw ang bakuna gikan sa pabrika hangtod sa health center — gitawag kini cold chain — kay kung moinit, mahimong madaot kini ug mawad-an og bisa."
+        },
+        "slug": "qa-ffct-13037",
+        "source": "original",
+        "title": {
+          "tl": "Bakuna na Lamig mula Pactorya",
+          "en": "Vaccines Stay Cold",
+          "bis": "Bakuna sa Tugnaw"
+        },
+        "cats": [
+          "health"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-13037",
+        "factId": "immune-vaccine-cold-chain-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "vaccines must be kept cold",
+        "terms": [
+          "cold chain",
+          "malamig",
+          "kinahanglan bugnaw",
+          "refrigerator",
+          "ref",
+          "yelo",
+          "ice",
+          "sira",
+          "mapanghina",
+          "mawalan ng bisa",
+          "mawad-an og bisa",
+          "transport",
+          "dala",
+          "health worker",
+          "bakit malamig",
+          "ngano bugnaw",
+          "tamang temperatura"
+        ],
+        "fact": {
+          "en": "Why must vaccines be kept cold?\n\nVaccines must stay cold all the way from the factory to the health center — called the cold chain — because getting warm can spoil them and make them lose their power.",
+          "tl": "Bakit dapat panatilihing malamig ang bakuna?\n\nDapat manatiling malamig ang bakuna mula sa pabrika hanggang sa health center — tinatawag itong cold chain — dahil kapag uminit, maaari itong masira at mawalan ng bisa.",
+          "bis": "Nganong kinahanglan magpabilin nga bugnaw ang bakuna?\n\nKinahanglan magpabilin nga bugnaw ang bakuna gikan sa pabrika hangtod sa health center — gitawag kini nga cold chain. Kay kung moinit ang bakuna, mahimong madaot kini ug mawad-an og bisa."
+        },
+        "slug": "qa-ffct-13037",
+        "source": "original",
+        "title": {
+          "tl": "Bakuna na Lamig mula Pactorya",
+          "en": "Vaccines Stay Cold",
+          "bis": "Kinahanglang Bugnaw ang Bakuna"
+        },
+        "cats": [
+          "health"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "WHO describes almost all program vaccines as requiring the traditional cold chain, while separately recognizing specifically licensed and monitored controlled-temperature excursions. The source says vaccines must stay cold all the way without that scope. Hold for consistent source wording that preserves routine cold-chain safety and acknowledges product-specific rules; do not turn the exception into advice to warm vaccines or revise Cebuano alone.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c7fbf01ab484c9aae766671621acfac19"
+    },
+    {
+      "card_id": "ffct-13045",
+      "source_card_sha256": "a6c447270715d935a48a374f1b3ffc104f4a10eb05d641bfc7db803b1c915123",
+      "candidate_card_sha256": "c762dafe23535b60bad7ef291881ff932f75f703800eb66aa5a7d950a148e3f3",
+      "before_card": {
+        "id": "ffct-13045",
+        "factId": "barnacle-glues-stick-to-each-other-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "barnacles can glue on top of each other",
+        "terms": [
+          "barnacle",
+          "barnaclo",
+          "pandikit",
+          "magkapatong",
+          "patong-patong",
+          "tumpok",
+          "nagdidikit sa isa't isa",
+          "mopilit sa usag-usa",
+          "stack",
+          "marami",
+          "daghan",
+          "kapwa",
+          "isigka",
+          "nagsisiksikan",
+          "puno na ang bato"
+        ],
+        "fact": {
+          "en": "Can barnacles stick to other barnacles?\n\nYes! When a rock gets crowded, young barnacles simply glue themselves right on top of older ones using the very same cement.",
+          "tl": "Pwede bang dumikit ang barnacle sa kapwa barnacle?\n\nOo! Kapag puno na ang bato, dumidikit na lamang ang mga batang barnacle sa ibabaw ng matatandang barnacle gamit ang parehong pandikit.",
+          "bis": "Pwede ba mopilit ang barnacle sa laing barnacle?\n\nOo! Kon puno na ang bato, mopilit na lang ang mga batan-ong barnacle sa ibabaw sa mga tigulang gamit ang samang pandikit."
+        },
+        "slug": "ffct-13045",
+        "source": "original",
+        "title": {
+          "tl": "Barnacle na Dumidikit sa Kapwa",
+          "en": "Barnacles Stack on Barnacles",
+          "bis": "Barnacle sa Barnacle"
+        },
+        "cats": [
+          "crustaceans",
+          "animal-behavior"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-13045",
+        "factId": "barnacle-glues-stick-to-each-other-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "barnacles can glue on top of each other",
+        "terms": [
+          "barnacle",
+          "barnaclo",
+          "pandikit",
+          "magkapatong",
+          "patong-patong",
+          "tumpok",
+          "nagdidikit sa isa't isa",
+          "mopilit sa usag-usa",
+          "stack",
+          "marami",
+          "daghan",
+          "kapwa",
+          "isigka",
+          "nagsisiksikan",
+          "puno na ang bato"
+        ],
+        "fact": {
+          "en": "Can barnacles stick to other barnacles?\n\nYes! When a rock gets crowded, young barnacles simply glue themselves right on top of older ones using the very same cement.",
+          "tl": "Pwede bang dumikit ang barnacle sa kapwa barnacle?\n\nOo! Kapag puno na ang bato, dumidikit na lamang ang mga batang barnacle sa ibabaw ng matatandang barnacle gamit ang parehong pandikit.",
+          "bis": "Pwede ba mopilit ang barnacle sa laing barnacle?\n\nOo! Kon puno na ang bato, mopilit na lang ang mga batan-ong barnacle sa ibabaw sa mga tigulang gamit ang samang pandikit."
+        },
+        "slug": "ffct-13045",
+        "source": "original",
+        "title": {
+          "tl": "Barnacle na Dumidikit sa Kapwa",
+          "en": "Barnacles Stack on Barnacles",
+          "bis": "Barnacle sa Ibabaw sa Barnacle"
+        },
+        "cats": [
+          "crustaceans",
+          "animal-behavior"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The title clearly adds the English on-top relationship, but retained pandikit has not been resolved by a Cebuano dictionary. Thirty glue/cement body examples are machine translations; Wolff lookup did not locate the sense and the targeted Binisaya page was inaccessible. Hold without concluding that the loan is nonexistent or replacing it with an unreviewed word.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c86f443340992456280b99cc2a152b185"
+    },
+    {
+      "card_id": "ffct-13077",
+      "source_card_sha256": "2b015857dad68980716a214aaaf3557a8259a79edf030f8f116c029d9cccc747",
+      "candidate_card_sha256": "084e69368233b328d42f82b03a96f04a942b6223463e4660118c3e2426450eb0",
+      "before_card": {
+        "id": "ffct-13077",
+        "factId": "eel-breathe-through-skin-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "eels can take in some air through moist skin",
+        "terms": [
+          "igat",
+          "palos",
+          "balat",
+          "panit",
+          "hangin",
+          "moist skin",
+          "basang balat",
+          "basa nga panit",
+          "humihinga",
+          "gawas sa tubig"
+        ],
+        "fact": {
+          "en": "Can an eel survive out of water?\n\nFor a little while, yes! Some eels take in a bit of air through their moist skin, letting them survive briefly out of water.",
+          "tl": "Kaya bang mabuhay ng igat sa labas ng tubig?\n\nSa kaunting sandali, oo! Ang ilang igat ay nakakakuha ng kaunting hangin sa basang balat kaya nabubuhay sila nang ilang sandali sa labas ng tubig.",
+          "bis": "Makabuhi ba ang igat gawas sa tubig?\n\nSa mubo nga panahon, oo! Ang ubang igat makakuha og gamay nga hangin pinaagi sa basa nga panit mao nga mabuhi sila og hamubo nga panahon gawas sa tubig."
+        },
+        "slug": "freshwater-eel-palos",
+        "title": {
+          "en": "Eels & Air",
+          "tl": "Mga Igat at Hangin",
+          "bis": "Mga Igat ug Hangin"
+        },
+        "cats": [
+          "fish",
+          "animal-adaptations"
+        ],
+        "source": "original"
+      },
+      "after_card": {
+        "id": "ffct-13077",
+        "factId": "eel-breathe-through-skin-g7",
+        "domain": "LIVING_THINGS",
+        "topic": "eels can take in some air through moist skin",
+        "terms": [
+          "igat",
+          "palos",
+          "balat",
+          "panit",
+          "hangin",
+          "moist skin",
+          "basang balat",
+          "basa nga panit",
+          "humihinga",
+          "gawas sa tubig"
+        ],
+        "fact": {
+          "en": "Can an eel survive out of water?\n\nFor a little while, yes! Some eels take in a bit of air through their moist skin, letting them survive briefly out of water.",
+          "tl": "Kaya bang mabuhay ng igat sa labas ng tubig?\n\nSa kaunting sandali, oo! Ang ilang igat ay nakakakuha ng kaunting hangin sa basang balat kaya nabubuhay sila nang ilang sandali sa labas ng tubig.",
+          "bis": "Makabuhi ba ang igat gawas sa tubig?\n\nSa mubo nga panahon, oo! Ang ubang igat makakuha og gamay nga hangin pinaagi sa ilang basa nga panit. Mao nga mabuhi sila og hamubo nga panahon gawas sa tubig."
+        },
+        "slug": "freshwater-eel-palos",
+        "title": {
+          "en": "Eels & Air",
+          "tl": "Mga Igat at Hangin",
+          "bis": "Mga Igat ug Hangin"
+        },
+        "cats": [
+          "fish",
+          "animal-adaptations"
+        ],
+        "source": "original"
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The explicit ilang and sentence break preserve some eels and brief survival. The proposer separately flags igat/kasili and Makabuhi/Mabuhi. Wolff and Binisaya igat entries do not establish eel, while buhi distinguishes living from setting free/escaping. Fifteen machine-translated eel examples cannot settle the exact question wording. Hold both doubts for lexical review, without silently substituting another species or verb.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c2404f42b91b07f02edc730635590deb2"
+    },
+    {
+      "card_id": "ffct-13250",
+      "source_card_sha256": "6d9e6054f370810c162167af771dc59fc7674743f541068d67959dc1c3867cfc",
+      "candidate_card_sha256": "9f05c119b493dc71605ccf587439c4fed37e608484e8829402bc60288a5b03c6",
+      "before_card": {
+        "id": "ffct-13250",
+        "factId": "calcium-bones-not-only-spine-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "Calcium strengthens all bones not just spine",
+        "terms": [
+          "calcium",
+          "kaltsyum",
+          "lahat ng buto",
+          "all bones",
+          "hindi lang gulugod",
+          "spine",
+          "braso",
+          "binti",
+          "skull",
+          "ngipin",
+          "every bone",
+          "buong katawan",
+          "tanan bukog",
+          "misconception",
+          "mali"
+        ],
+        "fact": {
+          "en": "Does calcium only strengthen your spine?\n\nNo — it strengthens every bone in your body, like your arms, legs, and skull too.",
+          "tl": "Ang kalsyum ba ay pampalakas lang ng gulugod?\n\nHindi — pinapalakas nito ang lahat ng buto mo, kasama ang braso, binti, at bungo.",
+          "bis": "Ang kalsyum ba nagpalig-on lang sa gulugod?\n\nDili — gipalig-on niini ang tanan nimong bukog, apil ang bukton, paa, ug bagolbagol."
+        },
+        "slug": "ffct-13250",
+        "source": "original",
+        "title": {
+          "tl": "Kalsyum Lahat Buto Braso Binti",
+          "en": "Calcium All Bones",
+          "bis": "Kalsyum Tanan Bukog"
+        },
+        "cats": [
+          "nutrition",
+          "human-body"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-13250",
+        "factId": "calcium-bones-not-only-spine-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "Calcium strengthens all bones not just spine",
+        "terms": [
+          "calcium",
+          "kaltsyum",
+          "lahat ng buto",
+          "all bones",
+          "hindi lang gulugod",
+          "spine",
+          "braso",
+          "binti",
+          "skull",
+          "ngipin",
+          "every bone",
+          "buong katawan",
+          "tanan bukog",
+          "misconception",
+          "mali"
+        ],
+        "fact": {
+          "en": "Does calcium only strengthen your spine?\n\nNo — it strengthens every bone in your body, like your arms, legs, and skull too.",
+          "tl": "Ang kalsyum ba ay pampalakas lang ng gulugod?\n\nHindi — pinapalakas nito ang lahat ng buto mo, kasama ang braso, binti, at bungo.",
+          "bis": "Ang kalsyum ba nagpalig-on lang sa gulugod?\n\nDili — gipalig-on niini ang tanan nimong bukog, apil ang bukton, paa, ug bagolbagol."
+        },
+        "slug": "ffct-13250",
+        "source": "original",
+        "title": {
+          "tl": "Kalsyum Lahat Buto Braso Binti",
+          "en": "Calcium All Bones",
+          "bis": "Kalsyum para sa Tanang Bukog"
+        },
+        "cats": [
+          "nutrition",
+          "human-body"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Wolff bagul explicitly supplies bagulbagul (skull), resolving that root; paa denotes the upper leg, which is compatible with a nonexhaustive bone example. The retained gulugod spine term is not resolved by the inspected Cebuano entries or targeted lookup. A Tagalog definition cannot authenticate Cebuano use. Hold the exact title-only proposal pending lexical authority, not because calcium only affects the spine.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "cccee0474033378d4153c50288fcb3f7e"
+    }
+  ],
+  "native_verified": false,
+  "science_verified": false,
+  "released": false,
+  "source_precision_holds_require_cross_language_review": [
+    "ffct-12898",
+    "ffct-13037"
+  ],
+  "lexical_holds": [
+    "ffct-12671",
+    "ffct-12786",
+    "ffct-12801",
+    "ffct-13024",
+    "ffct-13045",
+    "ffct-13077",
+    "ffct-13250"
+  ],
+  "fidelity_holds": [],
+  "readability_holds": []
+}

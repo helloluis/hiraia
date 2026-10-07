@@ -1,0 +1,1295 @@
+{
+  "schema": "hiraia.cebuano-readability-reviewed-edits/v1",
+  "status": "reviewed_for_local_application",
+  "created_at": "2026-10-02T05:47:00.741943+00:00",
+  "reviewer": "Codex root, independent of Claude proposal and blind reviews; separate Codex review corroborates these exact eight cases",
+  "scope": "Eight individually adjudicated source-context resolutions. No automatic acceptance rule, raw hold deletion, native certification or release permission.",
+  "input_pins": [
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-02-pilot/readability-supplemental-twentyone-resolutions.proposed.json",
+      "sha256": "76ed5ed4cf7b94f6b44e8660b77e407d7ef9129be3fd58b2c03ee6434ec1a3e9",
+      "bytes": 740630
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-02-pilot/lexical-triage.proposed.json",
+      "sha256": "cb7327970012f2c8a7e39739e8c22418fd9973a41d3d88c56cdd822d9be134f8",
+      "bytes": 41140
+    },
+    {
+      "path": "build/cebuano-readability/pilot-20261002-v2/readability-both-validated-001/report.json",
+      "sha256": "0c64d5a0e221258f096d3963f3adec3b12cfa06a5d2d614c1dbf242e7cf25576",
+      "bytes": 106047
+    },
+    {
+      "path": "build/cebuano-readability/pilot-20261002-v2/fidelity-validated-001/judgments.jsonl",
+      "sha256": "edc0cc8b08c58ed65c1aa7101f0ab4393170f9671abdba37563b7f7e00963a32",
+      "bytes": 118457
+    }
+  ],
+  "primary_source_checks": [
+    {
+      "card_id": "ffct-14884",
+      "url": "https://www.training.seer.cancer.gov/anatomy/digestive/regions/pharynx.html",
+      "title": "NIH/NCI SEER: Pharynx and Esophagus",
+      "checked_date": "2026-10-02",
+      "scope": "Swallowing routes food away from the larynx into the esophagus, which leads to the stomach."
+    },
+    {
+      "card_id": "dcard-10513",
+      "url": "https://www.acs.org/education/celebrating-chemistry-editions/science-safety-tips.html",
+      "title": "ACS: Science Safety Tips",
+      "checked_date": "2026-10-02",
+      "scope": "Children should use activity-specified eye protection/PPE and wash hands afterward."
+    },
+    {
+      "card_id": "dcard-10513",
+      "url": "https://www.acs.org/content/dam/pldp/center/lab-safety/publications/safety-in-academic-chemistry-laboratories-faculty.pdf",
+      "title": "ACS: Safety in Academic Chemistry Laboratories, Appendix2",
+      "checked_date": "2026-10-02",
+      "scope": "Goggles, lab coat/apron, handwashing with soap and water."
+    },
+    {
+      "card_id": "ffct-33254",
+      "url": "https://science.nasa.gov/mission/hubble/science/science-behind-the-discoveries/hubble-quasars/",
+      "title": "NASA: Hubble Quasars",
+      "checked_date": "2026-10-02",
+      "scope": "Extremely bright active galactic core powered by infalling matter around a supermassive black hole."
+    }
+  ],
+  "accepted": [
+    {
+      "card_id": "dcard-04676",
+      "decision": "apply_reviewed_cebuano_edit",
+      "source_card_sha256": "865c6deda08f6ffa3da00d3e1727570e02ba64abff910be72d2058497c81f23e",
+      "candidate_card_sha256": "a453b7493405cafb3818d26c8b05b0e13f142f1ad196ea9a5b118e39a156d785",
+      "before_card": {
+        "id": "dcard-04676",
+        "factId": "clear-survey-questions-g4",
+        "domain": "MATTER",
+        "topic": "Clear and Concise Questions",
+        "terms": [
+          "clear questions",
+          "concise questions",
+          "malinaw na tanong",
+          "klaro nga pangutana",
+          "survey questionnaire"
+        ],
+        "fact": {
+          "en": "Why do some survey questions confuse me?\n\nA good survey questionnaire has clear and concise questions, which means they are short and easy to understand.",
+          "tl": "Bakit may mga tanong sa survey na nakakalito?\n\nAng magandang survey questionnaire ay may malinaw at maikling mga tanong, ibig sabihin madali silang maintindihan.",
+          "bis": "Ngano naay mga pangutana sa survey nga makalibog?\n\nAng maayong survey questionnaire adunay klaro ug mubo nga mga pangutana, buot ipasabot sayon sila masabtan."
+        },
+        "title": {
+          "en": "Clear Survey Questions",
+          "tl": "Malinaw na Tanong sa Survey",
+          "bis": "Klaro nga Pangutana sa Survey"
+        },
+        "cats": [
+          "g4-matter-environmental-problems-and-solutions"
+        ],
+        "grade": 4,
+        "quarter": 1,
+        "competency": null,
+        "source_module": "1LuEZ1gKjBKEASf0hjJyUgkW8ASbF473j",
+        "source": "deped",
+        "emphasis": {
+          "tl": [
+            "malinaw at maikling"
+          ],
+          "en": [
+            "clear and concise"
+          ],
+          "bis": [
+            "klaro ug mubo"
+          ]
+        },
+        "poster": true,
+        "slug": "dcard-04676"
+      },
+      "after_card": {
+        "id": "dcard-04676",
+        "factId": "clear-survey-questions-g4",
+        "domain": "MATTER",
+        "topic": "Clear and Concise Questions",
+        "terms": [
+          "clear questions",
+          "concise questions",
+          "malinaw na tanong",
+          "klaro nga pangutana",
+          "survey questionnaire"
+        ],
+        "fact": {
+          "en": "Why do some survey questions confuse me?\n\nA good survey questionnaire has clear and concise questions, which means they are short and easy to understand.",
+          "tl": "Bakit may mga tanong sa survey na nakakalito?\n\nAng magandang survey questionnaire ay may malinaw at maikling mga tanong, ibig sabihin madali silang maintindihan.",
+          "bis": "Ngano naay mga pangutana sa survey nga makalibog?\n\nAng maayong survey questionnaire adunay klaro ug mubo nga mga pangutana. Buot ipasabot, mubo ug sayon masabtan ang mga pangutana."
+        },
+        "title": {
+          "en": "Clear Survey Questions",
+          "tl": "Malinaw na Tanong sa Survey",
+          "bis": "Klaro nga Pangutana sa Survey"
+        },
+        "cats": [
+          "g4-matter-environmental-problems-and-solutions"
+        ],
+        "grade": 4,
+        "quarter": 1,
+        "competency": null,
+        "source_module": "1LuEZ1gKjBKEASf0hjJyUgkW8ASbF473j",
+        "source": "deped",
+        "emphasis": {
+          "tl": [
+            "malinaw at maikling"
+          ],
+          "en": [
+            "clear and concise"
+          ],
+          "bis": [
+            "klaro ug mubo"
+          ]
+        },
+        "poster": true,
+        "slug": "dcard-04676"
+      },
+      "reason": "The new explanation explicitly repeats short and easy to understand, exactly as English does. The other uncertainty refers only to old sila. Naming the questions and splitting the definition preserves the intended referent; no claim is made that sila is inherently wrong.",
+      "readability_resolution": {
+        "judge-one": {
+          "item_id": "pd31e5cf3534824d193c1077f9b0f1025",
+          "original_holds": [
+            {
+              "code": "model_language_or_meaning_uncertainty"
+            }
+          ],
+          "exact_uncertainties": [
+            {
+              "end_codepoint": 148,
+              "end_token_exclusive": 23,
+              "exact_text": "sila",
+              "explanation": "I'm unsure how natural 'sila' sounds for inanimate questions in classroom Cebu Cebuano. It may be perfectly acceptable in speech, so my preference is mild.",
+              "field": "body_bis",
+              "kind": "lexical",
+              "source_ref": "s2b34ec64020f0999966f0ec376d33218aa3fd06f27bf4c1da5ca1dd9e97e8737",
+              "start_codepoint": 144,
+              "start_token": 22,
+              "text_sha256": "dd7a272475537fe727d909585a72d9664582f16c7de7909e44d5808b24d690a7",
+              "variant": "B"
+            }
+          ],
+          "resolution": "Root source-context review resolves these exact observations only; original receipts are preserved."
+        },
+        "judge-two": {
+          "item_id": "p0416971d73636733f8847bc923909c47",
+          "original_holds": [
+            {
+              "code": "model_language_or_meaning_uncertainty"
+            }
+          ],
+          "exact_uncertainties": [
+            {
+              "end_codepoint": 161,
+              "end_token_exclusive": 25,
+              "exact_text": "Buot ipasabot, mubo ug sayon masabtan",
+              "explanation": "B restates the point as 'short and easy to understand' instead of linking 'clear and short' to 'easy to understand'. This is a small change in what is being explained.",
+              "field": "body_bis",
+              "kind": "meaning",
+              "source_ref": "sd6e53ba8c19bbaa8da8317953c81d6002d863717d413af9e42a545cd7552d63b",
+              "start_codepoint": 124,
+              "start_token": 19,
+              "text_sha256": "1b45d04acbdbbeecb9f97d1dff70442267c530348bda17acc3d2cd92619fd0f6",
+              "variant": "B"
+            }
+          ],
+          "resolution": "Root source-context review resolves these exact observations only; original receipts are preserved."
+        }
+      },
+      "fidelity_item_id": "m386fae99d03b973104f4ac05"
+    },
+    {
+      "card_id": "dcard-10513",
+      "decision": "apply_reviewed_cebuano_edit",
+      "source_card_sha256": "60b886e1f95ee6cea495642148ac010b00531e4217ef79a65c183321d4a7cf08",
+      "candidate_card_sha256": "72c3cc7b96f86f95c7b33b0cafcdf8441e44574f19a5e556d883671dfc38bdff",
+      "before_card": {
+        "id": "dcard-10513",
+        "factId": "lab-safety-gear-g7",
+        "domain": "MATTER",
+        "topic": "Safety Gear",
+        "terms": [
+          "safety goggles",
+          "lab coat",
+          "apron",
+          "wash hands",
+          "safety"
+        ],
+        "fact": {
+          "en": "Wear safety goggles and a lab coat or apron during experiments, and always wash your hands with soap and water after you finish.",
+          "tl": "Magsuot ng safety goggles at lab coat o apron habang nag-eeksperimento, at laging maghugas ng kamay gamit ang sabon at tubig pagkatapos.",
+          "bis": "Pagsul-ob ug safety goggles ug lab coat o apron samtang nag-eksperimento, ug kanunay paghugas sa kamot gamit ang sabon ug tubig pagkahuman."
+        },
+        "title": {
+          "en": "Lab Safety Gear",
+          "tl": "Kagamitang Pangkaligtasan sa Lab",
+          "bis": "Gamit sa Kaluwasan sa Lab"
+        },
+        "cats": [
+          "g7-matter-laboratory-equipment-and-safety"
+        ],
+        "grade": 7,
+        "quarter": 1,
+        "competency": null,
+        "source_module": "1scCmnhkNxjEIO525Iui1n81WbSvzlqik",
+        "source": "deped",
+        "emphasis": {
+          "tl": [
+            "safety goggles"
+          ],
+          "en": [
+            "safety goggles"
+          ],
+          "bis": [
+            "safety goggles"
+          ]
+        },
+        "slug": "ffct-34832"
+      },
+      "after_card": {
+        "id": "dcard-10513",
+        "factId": "lab-safety-gear-g7",
+        "domain": "MATTER",
+        "topic": "Safety Gear",
+        "terms": [
+          "safety goggles",
+          "lab coat",
+          "apron",
+          "wash hands",
+          "safety"
+        ],
+        "fact": {
+          "en": "Wear safety goggles and a lab coat or apron during experiments, and always wash your hands with soap and water after you finish.",
+          "tl": "Magsuot ng safety goggles at lab coat o apron habang nag-eeksperimento, at laging maghugas ng kamay gamit ang sabon at tubig pagkatapos.",
+          "bis": "Pagsul-ob og safety goggles ug lab coat o apron samtang nag-eksperimento. Kung mahuman na ka, kanunay hugasi ang imong kamot gamit ang sabon ug tubig."
+        },
+        "title": {
+          "en": "Lab Safety Gear",
+          "tl": "Kagamitang Pangkaligtasan sa Lab",
+          "bis": "Gamit sa Kaluwasan sa Lab"
+        },
+        "cats": [
+          "g7-matter-laboratory-equipment-and-safety"
+        ],
+        "grade": 7,
+        "quarter": 1,
+        "competency": null,
+        "source_module": "1scCmnhkNxjEIO525Iui1n81WbSvzlqik",
+        "source": "deped",
+        "emphasis": {
+          "tl": [
+            "safety goggles"
+          ],
+          "en": [
+            "safety goggles"
+          ],
+          "bis": [
+            "safety goggles"
+          ]
+        },
+        "slug": "ffct-34832"
+      },
+      "reason": "The only uncertainty is old ug versus og; this is an acceptable spelling variation, not a grammar finding. The approved benefit is separating the gear instruction and after-experiment handwashing instruction, retaining always, soap and water. Hugasi is attested in42 original card bodies.",
+      "readability_resolution": {
+        "judge-one": {
+          "item_id": "p4fabf6ee6a548e1efea2245a5f332cb3",
+          "original_holds": [
+            {
+              "code": "model_language_or_meaning_uncertainty"
+            }
+          ],
+          "exact_uncertainties": [
+            {
+              "end_codepoint": 12,
+              "end_token_exclusive": 2,
+              "exact_text": "ug",
+              "explanation": "Writers vary in using 'ug' or 'og' as the object marker. I am not treating A's 'ug' as an error, only as a little less clear here.",
+              "field": "body_bis",
+              "kind": "dialect",
+              "source_ref": "s985a94ed5d32903305fd186e0677a5434d22d78b0d55310436711103a518c38f",
+              "start_codepoint": 10,
+              "start_token": 1,
+              "text_sha256": "15eca77b16ba4b66fb45ce30e1a46d2e0823da6e9d6a635b3843a83dd0b0bf0a",
+              "variant": "A"
+            }
+          ],
+          "resolution": "Root source-context review resolves these exact observations only; original receipts are preserved."
+        },
+        "judge-two": {
+          "item_id": "p20693fac4dc9abfd824f1d1ed6f72e6d",
+          "original_holds": [],
+          "exact_uncertainties": [],
+          "resolution": "Root source-context review resolves these exact observations only; original receipts are preserved."
+        }
+      },
+      "fidelity_item_id": "m18e173879b5cc750a0b89384"
+    },
+    {
+      "card_id": "ffct-14884",
+      "decision": "apply_reviewed_cebuano_edit",
+      "source_card_sha256": "2b53dd049fc2ee2d79c45b940927bd673dcd6b17551342e8c90926a71f99d2af",
+      "candidate_card_sha256": "dab995265ab9aa4e62c3fe12de5872c9c1b0f5c5313f640914ea7ed44da71218",
+      "before_card": {
+        "id": "ffct-14884",
+        "factId": "epiglottis-covers-larynx-swallow-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "epiglottis covers larynx when swallowing",
+        "terms": [
+          "epiglottis",
+          "takip",
+          "pagtakip",
+          "lunok",
+          "paglunok",
+          "pagtulon",
+          "pagkain",
+          "windpipe",
+          "trachea",
+          "larynx",
+          "nabilaukan",
+          "choking"
+        ],
+        "fact": {
+          "en": "What stops food going into your lungs?\n\nWhen you swallow, a flap called the epiglottis closes over your larynx so food doesn't go down into your lungs instead of your stomach.",
+          "tl": "Ano ang tumatakip para di masamid pagkain?\n\nKapag lumulunok tayo, may takip na tinatawag na epiglottis na nagsasara sa larynx para hindi mapunta ang pagkain sa baga.",
+          "bis": "Unsa ang motakob para dili masulod ang pagkaon sa baga?\n\nKon motulon ta, adunay taklob nga gitawag og epiglottis nga motakob sa larynx aron dili masulod ang pagkaon sa baga."
+        },
+        "slug": "ffct-14884",
+        "source": "original",
+        "title": {
+          "tl": "Epiglottis na Takip sa Lunok",
+          "en": "Epiglottis Covers Larynx",
+          "bis": "Epiglottis Takip Lunok"
+        },
+        "cats": [
+          "body"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-14884",
+        "factId": "epiglottis-covers-larynx-swallow-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "epiglottis covers larynx when swallowing",
+        "terms": [
+          "epiglottis",
+          "takip",
+          "pagtakip",
+          "lunok",
+          "paglunok",
+          "pagtulon",
+          "pagkain",
+          "windpipe",
+          "trachea",
+          "larynx",
+          "nabilaukan",
+          "choking"
+        ],
+        "fact": {
+          "en": "What stops food going into your lungs?\n\nWhen you swallow, a flap called the epiglottis closes over your larynx so food doesn't go down into your lungs instead of your stomach.",
+          "tl": "Ano ang tumatakip para di masamid pagkain?\n\nKapag lumulunok tayo, may takip na tinatawag na epiglottis na nagsasara sa larynx para hindi mapunta ang pagkain sa baga.",
+          "bis": "Unsa ang motakob para dili masulod ang pagkaon sa baga?\n\nKon motulon ta, ang usa ka taklob nga gitawag og epiglottis motakob sa larynx. Busa ang pagkaon moadto sa tiyan, dili sa baga."
+        },
+        "slug": "ffct-14884",
+        "source": "original",
+        "title": {
+          "tl": "Epiglottis na Takip sa Lunok",
+          "en": "Epiglottis Covers Larynx",
+          "bis": "Ang Epiglottis Motakob sa Larynx"
+        },
+        "cats": [
+          "body"
+        ]
+      },
+      "reason": "Both reviewers flag the added stomach destination, which is explicit in the English instead-of-your-stomach clause. Their remaining lexical concerns concern only the removed title. The new title reuses epiglottis/motakob/larynx from the complete original body. NIH/NCI corroborates the elementary swallowing explanation.",
+      "readability_resolution": {
+        "judge-one": {
+          "item_id": "p69d9e736635d2d2702f33302d83b941a",
+          "original_holds": [
+            {
+              "code": "model_language_or_meaning_uncertainty"
+            }
+          ],
+          "exact_uncertainties": [
+            {
+              "end_codepoint": 183,
+              "end_token_exclusive": 33,
+              "exact_text": "Busa ang pagkaon moadto sa tiyan, dili sa baga.",
+              "explanation": "B adds that food goes to the stomach ('moadto sa tiyan'), which A doesn't state. This is a small change in content, and there is no reference text to check which is intended.",
+              "field": "body_bis",
+              "kind": "meaning",
+              "source_ref": "sa758e022acf662fd735f9bdaea06291bfb51ffe5eff5dbf10cce44a478ac998e",
+              "start_codepoint": 136,
+              "start_token": 24,
+              "text_sha256": "3811011f3a7a04c527f00237046be58a1e688e65e3aa461134c898615590cf70",
+              "variant": "B"
+            },
+            {
+              "end_codepoint": 16,
+              "end_token_exclusive": 2,
+              "exact_text": "Takip",
+              "explanation": "I'm unsure how familiar 'takip' is to Cebu readers compared with the body's 'taklob'.",
+              "field": "title_bis",
+              "kind": "lexical",
+              "source_ref": "s65cb3c782e4337fb5959f1ebc41751b5c22f25844b549231b458183451e33e6c",
+              "start_codepoint": 11,
+              "start_token": 1,
+              "text_sha256": "c9264470ae8957e6df28795cdda3ffab1d1b1d7774bc6b63def3fb9b513b44a0",
+              "variant": "A"
+            }
+          ],
+          "resolution": "Root source-context review resolves these exact observations only; original receipts are preserved."
+        },
+        "judge-two": {
+          "item_id": "pad719d6fc8b9adf819bf5507bb453907",
+          "original_holds": [
+            {
+              "code": "model_language_or_meaning_uncertainty"
+            }
+          ],
+          "exact_uncertainties": [
+            {
+              "end_codepoint": 22,
+              "end_token_exclusive": 3,
+              "exact_text": "Takip Lunok",
+              "explanation": "'Takip' and 'lunok' look Tagalog-leaning. The body uses 'taklob' and 'motulon'. I am not sure how familiar these words are in Cebu Cebuano.",
+              "field": "title_bis",
+              "kind": "lexical",
+              "source_ref": "s2e7433a557800b8ab601e9b2e9b7720f133652dd07268b6f4d98d31768c72e98",
+              "start_codepoint": 11,
+              "start_token": 1,
+              "text_sha256": "c9264470ae8957e6df28795cdda3ffab1d1b1d7774bc6b63def3fb9b513b44a0",
+              "variant": "B"
+            },
+            {
+              "end_codepoint": 183,
+              "end_token_exclusive": 33,
+              "exact_text": "Busa ang pagkaon moadto sa tiyan, dili sa baga.",
+              "explanation": "A adds that the food goes to the stomach, which B does not say.",
+              "field": "body_bis",
+              "kind": "meaning",
+              "source_ref": "sffe17fe7887be3d05e4846cee707907237ed9ff5b7554d0e05663af668f6fa4f",
+              "start_codepoint": 136,
+              "start_token": 24,
+              "text_sha256": "3811011f3a7a04c527f00237046be58a1e688e65e3aa461134c898615590cf70",
+              "variant": "A"
+            }
+          ],
+          "resolution": "Root source-context review resolves these exact observations only; original receipts are preserved."
+        }
+      },
+      "fidelity_item_id": "m53778adfa91d4d3b353c740c"
+    },
+    {
+      "card_id": "ffct-20135",
+      "decision": "apply_reviewed_cebuano_edit",
+      "source_card_sha256": "d55e5ed1ce45afa2943799f4739a3daa4609b31b7ba13c1c6f63e23d40d36e0e",
+      "candidate_card_sha256": "48381dcfdd85686f49ef5e6dbb13a3274e4d7300880948ac374284cf5bbc91c6",
+      "before_card": {
+        "id": "ffct-20135",
+        "factId": "fwg-condensation-3312",
+        "domain": "MATTER",
+        "topic": "Condensation",
+        "terms": [
+          "condensation",
+          "water",
+          "vapor",
+          "condensing",
+          "cold",
+          "glass",
+          "windows",
+          "manila",
+          "train",
+          "undergoes"
+        ],
+        "fact": {
+          "en": "Why do MRT train windows fog up in Manila?\n\nWater vapor condensing on the cold glass windows of a Manila MRT train undergoes a physical state change from gas to liquid!",
+          "tl": "Bakit nagfo-fog ang mga bintana ng MRT sa Manila?\n\nAng water vapor na nagko-condensa sa malamig na salamin ng bintana ng MRT sa Manila ay nagbabago ng anyo mula gas papuntang likido!",
+          "bis": "Ngano nga nagfog ang mga bintana sa MRT sa Manila?\n\nAng water vapor nga nag-condense sa bugnaw nga bintana sa MRT sa Manila kay nag-usab og estado gikan sa gas paingon sa likido!"
+        },
+        "slug": "condensation-on-cold-glass",
+        "title": {
+          "en": "Condensation",
+          "tl": "Paghalay",
+          "bis": "Kondensasyon"
+        },
+        "cats": [
+          "states-of-matter",
+          "water-cycle"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "water vapor"
+          ],
+          "en": [
+            "Water vapor"
+          ],
+          "bis": [
+            "water vapor"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-20135",
+        "factId": "fwg-condensation-3312",
+        "domain": "MATTER",
+        "topic": "Condensation",
+        "terms": [
+          "condensation",
+          "water",
+          "vapor",
+          "condensing",
+          "cold",
+          "glass",
+          "windows",
+          "manila",
+          "train",
+          "undergoes"
+        ],
+        "fact": {
+          "en": "Why do MRT train windows fog up in Manila?\n\nWater vapor condensing on the cold glass windows of a Manila MRT train undergoes a physical state change from gas to liquid!",
+          "tl": "Bakit nagfo-fog ang mga bintana ng MRT sa Manila?\n\nAng water vapor na nagko-condensa sa malamig na salamin ng bintana ng MRT sa Manila ay nagbabago ng anyo mula gas papuntang likido!",
+          "bis": "Ngano nga nagfog ang mga bintana sa MRT sa Manila?\n\nAng water vapor nga mo-condense sa bugnaw nga bildo sa bintana sa MRT sa Manila mausab gikan sa gas ngadto sa likido. Usa kini ka pisikal nga pagbag-o sa estado!"
+        },
+        "slug": "condensation-on-cold-glass",
+        "title": {
+          "en": "Condensation",
+          "tl": "Paghalay",
+          "bis": "Kondensasyon"
+        },
+        "cats": [
+          "states-of-matter",
+          "water-cycle"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "water vapor"
+          ],
+          "en": [
+            "Water vapor"
+          ],
+          "bis": [
+            "water vapor"
+          ]
+        }
+      },
+      "reason": "The added physical-change statement and glass material are explicit in English, so the blind difference is a repair of omitted meaning. The only other flag is old paingon, not a candidate lexical defect. The pinned dictionary review supports bildo as material glass; no purist rejection of paingon is made.",
+      "readability_resolution": {
+        "judge-one": {
+          "item_id": "p69a8045e433411338b6edaccb664cc3f",
+          "original_holds": [
+            {
+              "code": "model_language_or_meaning_uncertainty"
+            }
+          ],
+          "exact_uncertainties": [
+            {
+              "end_codepoint": 178,
+              "end_token_exclusive": 33,
+              "exact_text": "kay nag-usab og estado gikan sa gas paingon sa likido!",
+              "explanation": "B leaves out A's statement that this is a physical change of state, so the two versions may differ in meaning.",
+              "field": "body_bis",
+              "kind": "meaning",
+              "source_ref": "s256d3d7cb3a7ac79d02406179f897f1327b4cf70b67a0be19ed2bd7dcc7caa0b",
+              "start_codepoint": 124,
+              "start_token": 23,
+              "text_sha256": "99b439c1286f01899cd633eb5e8b7b8e69052a2744388493c8ca282f6af04fb2",
+              "variant": "B"
+            }
+          ],
+          "resolution": "Root source-context review resolves these exact observations only; original receipts are preserved."
+        },
+        "judge-two": {
+          "item_id": "p9b01720aae646cb514761398b43e3dd1",
+          "original_holds": [
+            {
+              "code": "model_language_or_meaning_uncertainty"
+            }
+          ],
+          "exact_uncertainties": [
+            {
+              "end_codepoint": 213,
+              "end_token_exclusive": 40,
+              "exact_text": "Usa kini ka pisikal nga pagbag-o sa estado!",
+              "explanation": "A adds that this is a physical change of state, which B does not state. The versions differ in content, not only in readability.",
+              "field": "body_bis",
+              "kind": "meaning",
+              "source_ref": "s06f9ea5ecb5f5c6363c19aae2c4903f0e64ef2528521a442e167209bf7bd39e9",
+              "start_codepoint": 170,
+              "start_token": 32,
+              "text_sha256": "a2403471f54a3abbb6cdf66ef9118b45e7dd30fe90bf1c3e577fc603049967dc",
+              "variant": "A"
+            },
+            {
+              "end_codepoint": 167,
+              "end_token_exclusive": 31,
+              "exact_text": "paingon",
+              "explanation": "'paingon' for a state change may be acceptable to some Cebu speakers. My judgment that it is less natural than 'ngadto' is not native-verified.",
+              "field": "body_bis",
+              "kind": "lexical",
+              "source_ref": "s6425eefff61d884a6a48b9cc574be2e28e227162370ee1c63b062581b687793e",
+              "start_codepoint": 160,
+              "start_token": 30,
+              "text_sha256": "99b439c1286f01899cd633eb5e8b7b8e69052a2744388493c8ca282f6af04fb2",
+              "variant": "B"
+            }
+          ],
+          "resolution": "Root source-context review resolves these exact observations only; original receipts are preserved."
+        }
+      },
+      "fidelity_item_id": "m900a55305fcfd0ece24a067f"
+    },
+    {
+      "card_id": "ffct-32220",
+      "decision": "apply_reviewed_cebuano_edit",
+      "source_card_sha256": "fb26a137a9dac4580811a44f6f816ec06ad1d49c7f73e4970390607f9ebea41a",
+      "candidate_card_sha256": "7351a26fd9a1609479d6b4fb19c3ae64b288f53c072500486f4ff391a412b843",
+      "before_card": {
+        "id": "ffct-32220",
+        "factId": "geocentric-vs-heliocentric-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "Earth orbits the Sun not the other way",
+        "terms": [
+          "heliocentric",
+          "araw ang sentro",
+          "adlaw ang sentro",
+          "sun centered",
+          "geocentric",
+          "akala dati",
+          "kanhi gituohan",
+          "earth ang sentro",
+          "umiikot sa araw",
+          "molibot sa adlaw",
+          "copernicus",
+          "galileo",
+          "hindi ang araw ang umiikot",
+          "dili ang adlaw ang molibot"
+        ],
+        "fact": {
+          "en": "Did people always know Earth orbits the Sun?\n\nNo! Long ago, people thought the Sun went around Earth. Today, thanks to Copernicus and Galileo, we know Earth actually orbits the Sun!",
+          "tl": "Alam ba palagi ng mga tao na umiikot ang Earth sa Araw?\n\nHindi! Noong una, akala nila ang Araw ang umiikot sa Earth. Ngayon, alam na natin na ang Earth ang umiikot sa Araw, ideya nina Copernicus at Galileo!",
+          "bis": "Nahibalo ba kanunay sa mga tawo nga ang Earth molibot sa Adlaw?\n\nDili! Kaniadto, gituohan nga ang Adlaw molibot sa Earth. Karon, nahibalo na ta nga ang Earth maoy molibot sa Adlaw, ideya nila Copernicus ug Galileo!"
+        },
+        "slug": "sun-earth-moon-model",
+        "title": {
+          "en": "Earth Orbits Sun",
+          "tl": "Mundo Umikot sa Araw",
+          "bis": "Yuta Libot sa Adlaw"
+        },
+        "cats": [
+          "space",
+          "solar-system"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "umiikot"
+          ],
+          "en": [
+            "orbits"
+          ],
+          "bis": [
+            "molibot"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-32220",
+        "factId": "geocentric-vs-heliocentric-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "Earth orbits the Sun not the other way",
+        "terms": [
+          "heliocentric",
+          "araw ang sentro",
+          "adlaw ang sentro",
+          "sun centered",
+          "geocentric",
+          "akala dati",
+          "kanhi gituohan",
+          "earth ang sentro",
+          "umiikot sa araw",
+          "molibot sa adlaw",
+          "copernicus",
+          "galileo",
+          "hindi ang araw ang umiikot",
+          "dili ang adlaw ang molibot"
+        ],
+        "fact": {
+          "en": "Did people always know Earth orbits the Sun?\n\nNo! Long ago, people thought the Sun went around Earth. Today, thanks to Copernicus and Galileo, we know Earth actually orbits the Sun!",
+          "tl": "Alam ba palagi ng mga tao na umiikot ang Earth sa Araw?\n\nHindi! Noong una, akala nila ang Araw ang umiikot sa Earth. Ngayon, alam na natin na ang Earth ang umiikot sa Araw, ideya nina Copernicus at Galileo!",
+          "bis": "Nahibalo ba kanunay ang mga tawo nga ang Earth molibot sa Adlaw?\n\nDili! Kaniadto, nagtuo ang mga tawo nga ang Adlaw ang molibot sa Earth. Karon, tungod sa gibuhat ni Copernicus ug ni Galileo, nahibalo na kita nga ang Earth gyud ang molibot sa Adlaw!"
+        },
+        "slug": "sun-earth-moon-model",
+        "title": {
+          "en": "Earth Orbits Sun",
+          "tl": "Mundo Umikot sa Araw",
+          "bis": "Ang Yuta Molibot sa Adlaw"
+        },
+        "cats": [
+          "space",
+          "solar-system"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "umiikot"
+          ],
+          "en": [
+            "orbits"
+          ],
+          "bis": [
+            "molibot"
+          ]
+        },
+        "poster": true
+      },
+      "reason": "English says thanks to Copernicus and Galileo, supporting attribution to their work rather than asserting an idea originated with them. Both remaining wording flags concern old sa mga tawo. New sentences name the people as subject and preserve the Earth/Sun relation and negation.",
+      "readability_resolution": {
+        "judge-one": {
+          "item_id": "pa73e257f68c7bc77b84102d2c0c3ce0d",
+          "original_holds": [
+            {
+              "code": "model_language_or_meaning_uncertainty"
+            }
+          ],
+          "exact_uncertainties": [
+            {
+              "end_codepoint": 214,
+              "end_token_exclusive": 37,
+              "exact_text": "ideya nila Copernicus ug Galileo!",
+              "explanation": "'ideya' (idea) may present the work of Copernicus and Galileo differently from A's 'gibuhat' (what they did), so the meaning may differ.",
+              "field": "body_bis",
+              "kind": "meaning",
+              "source_ref": "s5ab9249a47bcdda19f0d9494a9c68ea9c6757bab0b121dae8f4b3679c5715858",
+              "start_codepoint": 181,
+              "start_token": 32,
+              "text_sha256": "5767584fb151cb135299f281ec4812af469a11b578331ef4622a7e943fbb40c1",
+              "variant": "B"
+            },
+            {
+              "end_codepoint": 31,
+              "end_token_exclusive": 6,
+              "exact_text": "Nahibalo ba kanunay sa mga tawo",
+              "explanation": "I am not sure whether 'Nahibalo ba kanunay sa mga tawo' reads naturally in Cebu Cebuano, compared with A's 'ang mga tawo'.",
+              "field": "body_bis",
+              "kind": "lexical",
+              "source_ref": "s5ab9249a47bcdda19f0d9494a9c68ea9c6757bab0b121dae8f4b3679c5715858",
+              "start_codepoint": 0,
+              "start_token": 0,
+              "text_sha256": "5767584fb151cb135299f281ec4812af469a11b578331ef4622a7e943fbb40c1",
+              "variant": "B"
+            }
+          ],
+          "resolution": "Root source-context review resolves these exact observations only; original receipts are preserved."
+        },
+        "judge-two": {
+          "item_id": "pb345deeac3d249ba1a451c96a52fd71a",
+          "original_holds": [
+            {
+              "code": "model_language_or_meaning_uncertainty"
+            }
+          ],
+          "exact_uncertainties": [
+            {
+              "end_codepoint": 214,
+              "end_token_exclusive": 37,
+              "exact_text": "ideya nila Copernicus ug Galileo!",
+              "explanation": "A says 'ideya nila' (their idea) and B says 'tungod sa gibuhat ni' (because of the work of). The attributions differ somewhat in meaning, and I cannot verify which matches the source.",
+              "field": "body_bis",
+              "kind": "meaning",
+              "source_ref": "s1347589a3aa555dd8338f754df05b14a7870b6c1aef5c4af323fda9a6d0b49df",
+              "start_codepoint": 181,
+              "start_token": 32,
+              "text_sha256": "5767584fb151cb135299f281ec4812af469a11b578331ef4622a7e943fbb40c1",
+              "variant": "A"
+            },
+            {
+              "end_codepoint": 31,
+              "end_token_exclusive": 6,
+              "exact_text": "sa mga tawo",
+              "explanation": "'sa mga tawo' as the knower reads less clearly to me than 'ang mga tawo'. I am not certifying it as ungrammatical in Cebu usage.",
+              "field": "body_bis",
+              "kind": "dialect",
+              "source_ref": "s1347589a3aa555dd8338f754df05b14a7870b6c1aef5c4af323fda9a6d0b49df",
+              "start_codepoint": 20,
+              "start_token": 3,
+              "text_sha256": "5767584fb151cb135299f281ec4812af469a11b578331ef4622a7e943fbb40c1",
+              "variant": "A"
+            }
+          ],
+          "resolution": "Root source-context review resolves these exact observations only; original receipts are preserved."
+        }
+      },
+      "fidelity_item_id": "m151ad523eb99fa8b6614afe0"
+    },
+    {
+      "card_id": "ffct-33254",
+      "decision": "apply_reviewed_cebuano_edit",
+      "source_card_sha256": "9d8370656d1db2ee2a580e3359a47408430357c6e91e1a3903699c144e267aee",
+      "candidate_card_sha256": "01338e2575211761937b44740f1269ec3863b83168622e0507ef6d4a41b8d3e1",
+      "before_card": {
+        "id": "ffct-33254",
+        "factId": "quasar-bright-galactic-core-g9",
+        "domain": "EARTH_SPACE",
+        "topic": "quasars are extremely bright galactic cores",
+        "terms": [
+          "quasar",
+          "quasi-stellar object",
+          "active galactic nucleus",
+          "supermassive black hole",
+          "extremely bright",
+          "distant galaxy",
+          "redshift",
+          "accretion disk",
+          "early universe",
+          "powerful jets"
+        ],
+        "fact": {
+          "en": "What is a quasar?\n\nA quasar is the super bright core of a faraway galaxy where a supermassive black hole gobbles up matter, releasing more light than the rest of the galaxy — billions of times brighter than our Sun!",
+          "tl": "Ano ang quasar?\n\nAng quasar ay ang napakaliwanag na core ng malayong galaxy kung saan ang supermassive black hole ay lumalamon ng matter, naglalabas ng mas maraming liwanag kaysa sa buong galaxy — bilyun-bilyong beses na mas maliwanag kaysa sa Araw!",
+          "bis": "Unsa ang quasar?\n\nAng quasar mao ang grabe ka hayag nga core sa layo nga galaxy diin ang supermassive black hole naglamoy og daghang matter, nagpagawas og suga nga labing hayag kaysa sa tibuok galaxy — bilyun-bilyon ka beses nga mas hayag kaysa sa Adlaw!"
+        },
+        "slug": "ffct-33254",
+        "source": "original",
+        "title": {
+          "tl": "Quasar na Maliwanag na Core",
+          "en": "Bright Quasar Cores",
+          "bis": "Quasar nga Core"
+        },
+        "cats": [
+          "space"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-33254",
+        "factId": "quasar-bright-galactic-core-g9",
+        "domain": "EARTH_SPACE",
+        "topic": "quasars are extremely bright galactic cores",
+        "terms": [
+          "quasar",
+          "quasi-stellar object",
+          "active galactic nucleus",
+          "supermassive black hole",
+          "extremely bright",
+          "distant galaxy",
+          "redshift",
+          "accretion disk",
+          "early universe",
+          "powerful jets"
+        ],
+        "fact": {
+          "en": "What is a quasar?\n\nA quasar is the super bright core of a faraway galaxy where a supermassive black hole gobbles up matter, releasing more light than the rest of the galaxy — billions of times brighter than our Sun!",
+          "tl": "Ano ang quasar?\n\nAng quasar ay ang napakaliwanag na core ng malayong galaxy kung saan ang supermassive black hole ay lumalamon ng matter, naglalabas ng mas maraming liwanag kaysa sa buong galaxy — bilyun-bilyong beses na mas maliwanag kaysa sa Araw!",
+          "bis": "Unsa ang quasar?\n\nAng quasar mao ang grabe ka hayag nga core sa usa ka layo nga galaxy. Niini nga core, ang supermassive black hole naglamoy og daghang matter. Ang quasar nagpagawas og mas daghang suga kaysa sa tanang ubang bahin sa galaxy — bilyun-bilyon ka beses nga mas hayag kaysa sa atong Adlaw!"
+        },
+        "slug": "ffct-33254",
+        "source": "original",
+        "title": {
+          "tl": "Quasar na Maliwanag na Core",
+          "en": "Bright Quasar Cores",
+          "bis": "Quasar nga Core"
+        },
+        "cats": [
+          "space"
+        ]
+      },
+      "reason": "English explicitly compares quasar light to the rest of the galaxy; the proposed tanang ubang bahin restores that comparator instead of the entire galaxy including the core. Both blind objections identify this same repair. Three sentences keep core, galaxy, supermassive black hole, matter and brightness comparison distinct.",
+      "readability_resolution": {
+        "judge-one": {
+          "item_id": "p93122fe3175ff6257459da59192094f1",
+          "original_holds": [
+            {
+              "code": "model_language_or_meaning_uncertainty"
+            }
+          ],
+          "exact_uncertainties": [
+            {
+              "end_codepoint": 199,
+              "end_token_exclusive": 35,
+              "exact_text": "nagpagawas og suga nga labing hayag kaysa sa tibuok galaxy",
+              "explanation": "A says the light is brighter than the entire galaxy ('tibuok galaxy'). This may differ materially from B's comparison.",
+              "field": "body_bis",
+              "kind": "meaning",
+              "source_ref": "s15e4fa3e5e27ab440a2f40c6c4f092bb6ebb30a61abfbe43df860add119f7353",
+              "start_codepoint": 141,
+              "start_token": 25,
+              "text_sha256": "56c20002da829e6c4ef8402bf2207ae0d0f99ce9766d5547f568070aab5534f8",
+              "variant": "A"
+            },
+            {
+              "end_codepoint": 239,
+              "end_token_exclusive": 43,
+              "exact_text": "Ang quasar nagpagawas og mas daghang suga kaysa sa tanang ubang bahin sa galaxy",
+              "explanation": "B says the quasar gives off more light than all the other parts of the galaxy. This differs from A's comparison and may be a material change in meaning. Not verified against a reference.",
+              "field": "body_bis",
+              "kind": "meaning",
+              "source_ref": "se356034799bffd45f60bc1482ca591a1f52c6063aac068fab7d0a62e76d3c501",
+              "start_codepoint": 160,
+              "start_token": 29,
+              "text_sha256": "77a1f73f2019905b2341321c3e2c953e407f07e298093e730b0aa38f3fcf24e4",
+              "variant": "B"
+            }
+          ],
+          "resolution": "Root source-context review resolves these exact observations only; original receipts are preserved."
+        },
+        "judge-two": {
+          "item_id": "p8cf7aeecf00839993f791a0b98aa9b4d",
+          "original_holds": [
+            {
+              "code": "model_language_or_meaning_uncertainty"
+            }
+          ],
+          "exact_uncertainties": [
+            {
+              "end_codepoint": 199,
+              "end_token_exclusive": 35,
+              "exact_text": "labing hayag kaysa sa tibuok galaxy",
+              "explanation": "A says the quasar is brighter than the whole galaxy. B says it gives off more light than all other parts of the galaxy. These may not mean the same thing.",
+              "field": "body_bis",
+              "kind": "meaning",
+              "source_ref": "sd1892e508f1c0800553baffc67fe4888521b1828105718b21a1039d342f6d320",
+              "start_codepoint": 164,
+              "start_token": 29,
+              "text_sha256": "56c20002da829e6c4ef8402bf2207ae0d0f99ce9766d5547f568070aab5534f8",
+              "variant": "A"
+            }
+          ],
+          "resolution": "Root source-context review resolves these exact observations only; original receipts are preserved."
+        }
+      },
+      "fidelity_item_id": "mb0d52ead28f7a467cfd4bfd3"
+    },
+    {
+      "card_id": "ffct-36555",
+      "decision": "apply_reviewed_cebuano_edit",
+      "source_card_sha256": "2ae9740d621907df6d44eed649c1355e427352930b29696d899ea0e81adbdb8d",
+      "candidate_card_sha256": "678f8f6eee524ce7ad7c0525aca89091a23ddd7893dd1e2afabf5c2cf473fd3e",
+      "before_card": {
+        "id": "ffct-36555",
+        "factId": "whale-song-water-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "whale song water",
+        "terms": [
+          "whale",
+          "ocean",
+          "longitudinal",
+          "sound in water",
+          "balyena",
+          "dagat",
+          "tunog",
+          "awit",
+          "tubig",
+          "longitudinal wave",
+          "back‑and‑forth",
+          "compression wave",
+          "nagdaloy",
+          "nag‑agpas",
+          "song",
+          "water",
+          "traveling",
+          "through",
+          "wave",
+          "example",
+          "sound"
+        ],
+        "fact": {
+          "en": "Is whale song in the ocean a longitudinal wave?\n\nYes! Whale song traveling through ocean water is a longitudinal wave, because sound in water is still a back-and-forth compression wave.",
+          "tl": "Ang awit ba ng balyena sa dagat ay isang longitudinal wave?\n\nOo! Ang awit ng balyena sa tubig-dagat ay isang longitudinal wave, dahil ang tunog sa tubig ay back-and-forth compression wave.",
+          "bis": "Ang kanta ba sa balyena sa dagat kay usa ka longitudinal wave?\n\nOo! Ang kanta sa balyena sa tubig-dagat kay usa ka longitudinal wave, kay ang tunog sa tubig kay back-and-forth compression wave."
+        },
+        "slug": "ffct-36555",
+        "source": "original",
+        "title": {
+          "tl": "Awit Balyena Wave",
+          "en": "Whale Song Waves",
+          "bis": "Awit Balyena"
+        },
+        "cats": [
+          "sound",
+          "marine-animals"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-36555",
+        "factId": "whale-song-water-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "whale song water",
+        "terms": [
+          "whale",
+          "ocean",
+          "longitudinal",
+          "sound in water",
+          "balyena",
+          "dagat",
+          "tunog",
+          "awit",
+          "tubig",
+          "longitudinal wave",
+          "back‑and‑forth",
+          "compression wave",
+          "nagdaloy",
+          "nag‑agpas",
+          "song",
+          "water",
+          "traveling",
+          "through",
+          "wave",
+          "example",
+          "sound"
+        ],
+        "fact": {
+          "en": "Is whale song in the ocean a longitudinal wave?\n\nYes! Whale song traveling through ocean water is a longitudinal wave, because sound in water is still a back-and-forth compression wave.",
+          "tl": "Ang awit ba ng balyena sa dagat ay isang longitudinal wave?\n\nOo! Ang awit ng balyena sa tubig-dagat ay isang longitudinal wave, dahil ang tunog sa tubig ay back-and-forth compression wave.",
+          "bis": "Ang kanta ba sa balyena sa dagat usa ka longitudinal wave?\n\nOo! Ang kanta sa balyena sa tubig-dagat usa ka longitudinal wave, tungod kay ang tunog sa tubig back-and-forth compression wave gihapon."
+        },
+        "slug": "ffct-36555",
+        "source": "original",
+        "title": {
+          "tl": "Awit Balyena Wave",
+          "en": "Whale Song Waves",
+          "bis": "Kanta sa Balyena"
+        },
+        "cats": [
+          "sound",
+          "marine-animals"
+        ]
+      },
+      "reason": "English explicitly says still; gihapon restores it. The old-title awit and repeated copular kay comments are not candidate errors. The title now uses the original body phrase kanta sa balyena. No claim is made that awit or copular kay is ungrammatical.",
+      "readability_resolution": {
+        "judge-one": {
+          "item_id": "p02c3812c3ee6ba92978703660d3e5104",
+          "original_holds": [
+            {
+              "code": "model_language_or_meaning_uncertainty"
+            }
+          ],
+          "exact_uncertainties": [
+            {
+              "end_codepoint": 196,
+              "end_token_exclusive": 32,
+              "exact_text": "gihapon.",
+              "explanation": "A ends with 'gihapon' ('still/also'), which B does not have. This is a small difference in meaning that I cannot check against a reference.",
+              "field": "body_bis",
+              "kind": "meaning",
+              "source_ref": "sd42e625c3cafc21b77700df8fb79406da017e3520e1153487333e0d495bb1e69",
+              "start_codepoint": 188,
+              "start_token": 31,
+              "text_sha256": "61cf5e20b577bc9e09a5e803278911ebbb420851310b217e729ca4f8c1c54ae8",
+              "variant": "A"
+            },
+            {
+              "end_codepoint": 4,
+              "end_token_exclusive": 1,
+              "exact_text": "Awit",
+              "explanation": "'Awit' may read as more formal or Tagalog-leaning than 'kanta' in everyday Cebu Cebuano. This judgement is tentative.",
+              "field": "title_bis",
+              "kind": "dialect",
+              "source_ref": "s596e88aa64f480b2bc5f839e7b01c6606ba31dfba7d9681351e30d2d333828bf",
+              "start_codepoint": 0,
+              "start_token": 0,
+              "text_sha256": "8e685ba3fa668252aba3574d3780a444ff4260428a79f0c23d69d1431ff26eae",
+              "variant": "B"
+            }
+          ],
+          "resolution": "Root source-context review resolves these exact observations only; original receipts are preserved."
+        },
+        "judge-two": {
+          "item_id": "p0cc7240d7f77a999f9f57c0220858a9d",
+          "original_holds": [
+            {
+              "code": "model_language_or_meaning_uncertainty"
+            }
+          ],
+          "exact_uncertainties": [
+            {
+              "end_codepoint": 196,
+              "end_token_exclusive": 32,
+              "exact_text": "gihapon.",
+              "explanation": "B adds 'gihapon' ('still/also'), a small shade of meaning that A does not have.",
+              "field": "body_bis",
+              "kind": "meaning",
+              "source_ref": "sa513f6ae41b48f451489bd252967788ae2352db87cd14a0b165f4b731a33ecab",
+              "start_codepoint": 188,
+              "start_token": 31,
+              "text_sha256": "61cf5e20b577bc9e09a5e803278911ebbb420851310b217e729ca4f8c1c54ae8",
+              "variant": "B"
+            },
+            {
+              "end_codepoint": 36,
+              "end_token_exclusive": 8,
+              "exact_text": "kay",
+              "explanation": "Copular 'kay' is common in colloquial Cebu speech, so this use alone is not an error. The problem is how many times it piles up.",
+              "field": "body_bis",
+              "kind": "dialect",
+              "source_ref": "s94f2476561c6ed10874f6559a0b7a42c9392accd882db20358ef7dc98f503614",
+              "start_codepoint": 33,
+              "start_token": 7,
+              "text_sha256": "e6e4a6ca96dcafc5ba3b80b4b7b1cd958bfcb1a19d5d2c313129e93515786bb4",
+              "variant": "A"
+            }
+          ],
+          "resolution": "Root source-context review resolves these exact observations only; original receipts are preserved."
+        }
+      },
+      "fidelity_item_id": "mdd62242cb710429c3691710a"
+    },
+    {
+      "card_id": "ffct-37233",
+      "decision": "apply_reviewed_cebuano_edit",
+      "source_card_sha256": "9ce772b172b7edaa2bdd3e8f616119f1af047c4a453499185a9fcacf42c63af8",
+      "candidate_card_sha256": "6a119fd2426c508a4675d8d3dc37746899fb89d52e0dbab2f93b44b40a5010b5",
+      "before_card": {
+        "id": "ffct-37233",
+        "factId": "rice-terraces-as-habitat-g4",
+        "domain": "LIVING_THINGS",
+        "topic": "rice terraces as habitat",
+        "terms": [
+          "rice terraces",
+          "palay",
+          "fish",
+          "snails",
+          "philippines",
+          "humay",
+          "payyo",
+          "tubig",
+          "pilipinas",
+          "habitat",
+          "nagtatanim",
+          "nagtanom",
+          "magsasaka",
+          "mag-uuma",
+          "isda",
+          "nakatira",
+          "nagpuyo",
+          "rice",
+          "terraces",
+          "habitats",
+          "farmers",
+          "grow"
+        ],
+        "fact": {
+          "en": "Who lives in the water of the rice terraces in the Philippines?\n\nThey are habitats where farmers grow palay, and fish and snails live in the water!",
+          "tl": "Sino ang nakatira sa tubig ng mga rice terraces sa Pilipinas?\n\nSila ay mga habitat kung saan nagtatanim ng palay ang mga magsasaka, at nakatira ang mga isda at snails sa tubig!",
+          "bis": "Kinsa ang nagpuyo sa tubig sa mga rice terraces sa Pilipinas?\n\nMao na ang mga habitat diin ang mga mag-uuma nagtanom ug palay, ug nagpuyo ang mga isda ug snails sa tubig!"
+        },
+        "slug": "ffct-37233",
+        "source": "original",
+        "title": {
+          "en": "Rice Terrace Habitat",
+          "tl": "Palayan sa Hagdan",
+          "bis": "Palayan sa Hagdan"
+        },
+        "cats": [
+          "ecosystems",
+          "water"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-37233",
+        "factId": "rice-terraces-as-habitat-g4",
+        "domain": "LIVING_THINGS",
+        "topic": "rice terraces as habitat",
+        "terms": [
+          "rice terraces",
+          "palay",
+          "fish",
+          "snails",
+          "philippines",
+          "humay",
+          "payyo",
+          "tubig",
+          "pilipinas",
+          "habitat",
+          "nagtatanim",
+          "nagtanom",
+          "magsasaka",
+          "mag-uuma",
+          "isda",
+          "nakatira",
+          "nagpuyo",
+          "rice",
+          "terraces",
+          "habitats",
+          "farmers",
+          "grow"
+        ],
+        "fact": {
+          "en": "Who lives in the water of the rice terraces in the Philippines?\n\nThey are habitats where farmers grow palay, and fish and snails live in the water!",
+          "tl": "Sino ang nakatira sa tubig ng mga rice terraces sa Pilipinas?\n\nSila ay mga habitat kung saan nagtatanim ng palay ang mga magsasaka, at nakatira ang mga isda at snails sa tubig!",
+          "bis": "Kinsa ang nagpuyo sa tubig sa mga rice terraces sa Pilipinas?\n\nAng mga rice terraces mga habitat diin nagtanom ug palay ang mga mag-uuma, ug nagpuyo ang mga isda ug snails sa tubig!"
+        },
+        "slug": "ffct-37233",
+        "source": "original",
+        "title": {
+          "en": "Rice Terrace Habitat",
+          "tl": "Palayan sa Hagdan",
+          "bis": "Habitat sa Rice Terraces"
+        },
+        "cats": [
+          "ecosystems",
+          "water"
+        ]
+      },
+      "reason": "Both uncertainty records concern only old title Palayan. The new Habitat sa Rice Terraces uses words already in the full body and matches the English title. Naming the rice terraces in the answer resolves the vague old opening while preserving farmers, palay, fish, snails and water.",
+      "readability_resolution": {
+        "judge-one": {
+          "item_id": "p0cdbf5667451d4972d04794c70c328e3",
+          "original_holds": [
+            {
+              "code": "model_language_or_meaning_uncertainty"
+            }
+          ],
+          "exact_uncertainties": [
+            {
+              "end_codepoint": 7,
+              "end_token_exclusive": 1,
+              "exact_text": "Palayan",
+              "explanation": "I'm unsure whether 'Palayan' (compare 'humayan') reads naturally to Cebu Grade 5 readers or reads as Tagalog.",
+              "field": "title_bis",
+              "kind": "dialect",
+              "source_ref": "s2dbebfe4c9589ccd5b29ad952d6074d9a6ae445d138c63c4a0245c827a80d11b",
+              "start_codepoint": 0,
+              "start_token": 0,
+              "text_sha256": "194cc96058b1e23cefc84682618fef697df5a6748ff25dd2db8f94d58bc844c6",
+              "variant": "A"
+            }
+          ],
+          "resolution": "Root source-context review resolves these exact observations only; original receipts are preserved."
+        },
+        "judge-two": {
+          "item_id": "p070e9bb010f77680c06efc511bb410a1",
+          "original_holds": [
+            {
+              "code": "model_language_or_meaning_uncertainty"
+            }
+          ],
+          "exact_uncertainties": [
+            {
+              "end_codepoint": 7,
+              "end_token_exclusive": 1,
+              "exact_text": "Palayan",
+              "explanation": "'Palayan' may be more Tagalog than Cebu Cebuano (where 'humayan' or 'basakan' are common). The degree of familiarity is uncertain.",
+              "field": "title_bis",
+              "kind": "lexical",
+              "source_ref": "s82037b4b232b6690e23cb9e36022e24caeb7ecc38c259b236529fa2522926a9d",
+              "start_codepoint": 0,
+              "start_token": 0,
+              "text_sha256": "194cc96058b1e23cefc84682618fef697df5a6748ff25dd2db8f94d58bc844c6",
+              "variant": "A"
+            }
+          ],
+          "resolution": "Root source-context review resolves these exact observations only; original receipts are preserved."
+        }
+      },
+      "fidelity_item_id": "m48a27dc9249da95f9a5434d1"
+    }
+  ],
+  "native_verified": false,
+  "released": false
+}

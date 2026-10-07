@@ -1,0 +1,26 @@
+{
+  "command": [
+    "pnpm",
+    "--filter",
+    "@hiraia/mobile",
+    "exec",
+    "tsx",
+    "--test",
+    "--test-concurrency=1",
+    "scripts/assessment-foundation.test.mts",
+    "scripts/assessment-reporting.test.mts",
+    "scripts/assessment-rotation.test.mts",
+    "scripts/assessment-settings.test.mts",
+    "scripts/assessment-ui.test.mts",
+    "scripts/assessment.test.mts",
+    "src/assessment/historyRepository.test.ts",
+    "scripts/tala-assessment.test.mts"
+  ],
+  "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007",
+  "started_at": "2026-10-07T04:11:36.778072+00:00",
+  "finished_at": "2026-10-07T04:11:43.649719+00:00",
+  "actual_exit_code": 1,
+  "parent_nice": 10,
+  "output_sha256": "800b08a010a530b458e449acdc8253c30573e78ba1b500d88df5f7ee757707d9",
+  "output_bytes": 12646
+}

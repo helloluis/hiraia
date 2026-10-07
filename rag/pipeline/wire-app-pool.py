@@ -17,6 +17,9 @@ to treat as a repeated illustration.
 """
 import json, os, re, collections
 from content_corrections import correct_cards
+from card_retirement import exclude_retired_cards
+from card_presentation_patches import apply_presentation_patches
+from card_language_patches import apply_patches as apply_language_patches
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
@@ -26,6 +29,7 @@ SRC = os.path.join(HERE, 'cardsPool.merged.json')
 ED = os.environ.get('EDITORIAL') or os.path.join(HERE, 'editorial.json')
 ART = os.path.join(HERE, 'original-art-chosen.json')
 IMAGEMAP = os.path.join(ROOT, 'packages/mobile/src/generated/imageMap.ts')
+ART_SHARDS = os.path.join(HERE, 'art-shards/index.json')
 OUT = os.path.join(ROOT, 'rag/pipeline/cardsPool.app.json')
 
 # Fields the app's CardFact contract reads, plus the DepEd provenance worth carrying: it is
@@ -37,9 +41,30 @@ KEEP = ('id', 'factId', 'domain', 'topic', 'terms', 'fact', 'slug', 'title', 'ca
 SEP = '\n\n'
 
 
+def available_art(bundled, index_path=ART_SHARDS):
+    """The bundle is only the head of the art pack; retain downloadable slugs."""
+    available = set(bundled)
+    if os.path.exists(index_path):
+        with open(index_path) as stream:
+            index = json.load(stream)
+        for shard in index['shards']:
+            with open(os.path.join(os.path.dirname(index_path), shard['file'])) as stream:
+                manifest = json.load(stream)
+            if len(manifest['images']) != shard['images']:
+                raise ValueError(f"art shard count mismatch: {shard['file']}")
+            available.update(row['slug'] for row in manifest['images'])
+    return available
+
+
 def main():
     pool = json.load(open(SRC))
+    # Retire against the source identity before an editorial rewrite can hide it.
+    try:
+        active_cards = exclude_retired_cards(pool['cards'])
+    except ValueError as exc:
+        raise SystemExit(f'wire-app-pool: {exc}') from exc
     bundled = set(re.findall(r'"([^"]+)":\s*require', open(IMAGEMAP).read()))
+    available = available_art(bundled)
     print(f'  bundled slugs in IMAGE_MAP: {len(bundled):,}')
 
     # The editorial pass is applied HERE rather than as a later step over the finished file,
@@ -58,13 +83,14 @@ def main():
     print(f'  re-matched illustrations: {len(art):,}')
 
     out, stat = [], collections.Counter()
-    for c in pool['cards']:
+    for c in active_cards:
         if c['id'] in art:
             new_ref = art[c['id']]
             if new_ref != c.get('slug'):
                 stat['art replaced' if new_ref else 'art dropped'] += 1
             c['slug'] = new_ref or ''
-            c.pop('image', None) if not new_ref else None
+            if not new_ref:
+                c.pop('image', None)
         e = ed.get(c['id'])
         if e:
             con = e.get('concise')
@@ -99,14 +125,14 @@ def main():
         # typographic. Card ids (ffct-/dcard-) are NOT cleared even when unbundled: their art
         # exists and is queued, and keeping the ref is what lets it light up on the next
         # image-map run with no edit here.
-        if slug and slug not in bundled and not CARD_ID.match(slug):
+        if slug and slug not in available and not CARD_ID.match(slug):
             slug = ''
         # An illustration GENERATED for this card is filed under the card's own id, because
         # nothing else names it — it was drawn from the card's own one-sentence description
         # and belongs to it alone. So a card with no slug adopts its own id the moment that
         # file lands in cards-png. This is what makes collecting a batch a two-step job (drop
         # the files in, re-run this) rather than an edit anywhere.
-        if not slug and c['id'] in bundled:
+        if not slug and c['id'] in available and not (c['id'] in art and not art[c['id']]):
             slug = c['id']
 
         card = {k: c[k] for k in KEEP if k in c}
@@ -135,7 +161,15 @@ def main():
     print(f'  structure check: every card has a domain and a topic'
           + (f'; {len(noterms)} with NO terms (no deep edge): ' + ', '.join(noterms[:10]) if noterms else ''))
 
+    # Scientific corrections remain authoritative. Apply approved language edits
+    # last, so changed English or emphasis fails before the previous pool is touched.
     correct_cards(out)
+    try:
+        out, presentation_counts = apply_presentation_patches(out)
+        out = apply_language_patches(out)
+    except ValueError as exc:
+        raise SystemExit(f'wire-app-pool: {exc}') from exc
+    print(f'  presentation backfill: {presentation_counts}')
     json.dump({'cards': out, 'taxonomy': pool.get('taxonomy') or []},
               open(OUT, 'w'), ensure_ascii=False)
 

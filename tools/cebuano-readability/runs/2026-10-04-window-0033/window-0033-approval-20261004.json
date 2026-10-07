@@ -1,0 +1,3009 @@
+{
+  "schema": "hiraia.cebuano-readability-reviewed-edits/v1",
+  "status": "reviewed_for_local_application",
+  "created_at": "2026-10-04T06:20:26.855415+00:00",
+  "reviewer": "Codex root, independent of Claude proposal/backtranslation/fidelity/readability calls; no separate Codex reviewer used for this window",
+  "scope": "Window 33: 26 individually reviewed exact Cebuano edits and 9 priority holds. Windows 1–32 were previously adjudicated. No score-only approval, native verification, exhaustive science certification or release permission. Invalid-evidence holds ffct-08459, ffct-09018, ffct-10152 and ffct-18958 remain mandatory. Missing-fidelity cards ffct-15686, ffct-24823 and ffct-24184 remain held without a synthesized judgment or repeated call.",
+  "window_id": "window-0033",
+  "window_accounting": {
+    "source_cards": 768,
+    "completed_assessments": 768,
+    "missing_fidelity_holds": 0,
+    "approved_exact_edits": 26,
+    "unchanged_keeps": 75,
+    "held": 667,
+    "held_from_priority_set": 9,
+    "preexisting_nonpriority_holds": 658
+  },
+  "input_pins": [
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0033/report.json",
+      "sha256": "e904753352639f80be17d1e90df1f659e54da6368a13da1559eccd8ad957ec3a",
+      "bytes": 42188881
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0033/clean-agreement.jsonl",
+      "sha256": "e4afc4f58310d63f7df5ca7c099a60a9c389d453e9c7d02bd6adc732fa035367",
+      "bytes": 883168
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0033/replay/fidelity/judgments.jsonl",
+      "sha256": "66eddc1af536e9a9c8c61a814d3d9bfd9500eeef682c99a0783e84bf828725cf",
+      "bytes": 787919
+    },
+    {
+      "path": "build/cebuano-readability/campaign-20261002-v1/windows/window-0033/fidelity-inputs/private-map.json",
+      "sha256": "405e31344629b9c23688b005409657a0794e81747a3e35d239fb2a5846b3b20c",
+      "bytes": 763293
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0033/root-decisions.json",
+      "sha256": "2a86b60603628b0dd74d619c3adb89e36f389534ffd9451ad6e1eb6aa6ed949e",
+      "bytes": 19552
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0033/corpus-lexical-evidence.json",
+      "sha256": "d7d5435c42262fa6105e6f2d41183349d8012f4e45f6a9257615166606ca9d89",
+      "bytes": 21341
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0033/dictionary-entries.json",
+      "sha256": "46accbc58b055ab3c99ea397f8b51f05bd289381b2fad1be31b85893be29faf4",
+      "bytes": 17357
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0033/lexical-source-review.json",
+      "sha256": "7e8bf9b973ac9a00b8110bcd5319606bd976e645c6b138bfc07008275024daa4",
+      "bytes": 10343
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0033/lexical-supplement-001.json",
+      "sha256": "2659a9c2bbc226b85a5454af79b18447a014ce5a2444b5516752d426995ba5c6",
+      "bytes": 6495
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0033/source-evidence-001.json",
+      "sha256": "591035ccc04c10bfb4d8f6e81c883f6d05188248f1ab637e86a7e2e82b6d81bc",
+      "bytes": 10480
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0033/root-notes-final-001.json",
+      "sha256": "19fa569d2e435438adabf778cb75f25786e73c2f2c5c6e146ca093997f4b4a96",
+      "bytes": 18032
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-gutenberg-40074.txt",
+      "sha256": "f80b888b24dd4ca7f5cb16276b4a53f9d22129a496b9ffb7f7efe17d3b9a1504",
+      "bytes": 5699379
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-retrieval.json",
+      "sha256": "bd713c5adf21541a0e7fd9c49f75fb6b9d4157fb88d41151a245165b8955b7da",
+      "bytes": 502
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0033/collect-evidence-001.py",
+      "sha256": "6a2c23444e156313c5394ac3aacfd806d30b26ecc361a3f859329b8528039b7e",
+      "bytes": 4497
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0033/collect-supplement-001.py",
+      "sha256": "93ed96f70e0c1def43549a8ccb0e2739b0e9bdc67b0c71b8af169c93ca336a03",
+      "bytes": 1643
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/show-dossiers-d17ce591.py",
+      "sha256": "b5857656b3e2e6343220b3c66bf17bb560556572462874cb7534d9e6a51efba8",
+      "bytes": 2081
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0033/write-root-records.py",
+      "sha256": "024d5fad2100556ec183b802edb20e68dd4838a493df7bf45f6f5facdadefdef",
+      "bytes": 3089
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0033/create-root-approval.py",
+      "sha256": "9ae560fd860e257b15d05311b4b5969bf6010cc3406100b873934b474d11363b",
+      "bytes": 7166
+    }
+  ],
+  "current_pool_before_application": {
+    "path": "rag/pipeline/cardsPool.app.json",
+    "sha256": "3b40ce12b403c53e03be104b14c3c0e2259268c46f44318544f92ce90a2bde0e",
+    "bytes": 50648425
+  },
+  "accepted": [
+    {
+      "card_id": "ffct-25038",
+      "source_card_sha256": "7d5ac1662440a915b6401bf9a6cc3f8067efc853ff2cee19a2b702b8f5b59280",
+      "candidate_card_sha256": "494ac7716cf5b8bd8ff17a6b7390d56ad154c371bc93cffe3871b6a3d5b0325e",
+      "before_card": {
+        "id": "ffct-25038",
+        "factId": "static-charge-conservation-rubbing-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "charge is conserved when objects are rubbed",
+        "terms": [
+          "charge conservation",
+          "pag-iingat",
+          "elektron",
+          "electron",
+          "kabuuang karga",
+          "total charge",
+          "neutral",
+          "positive",
+          "negative"
+        ],
+        "fact": {
+          "en": "When two objects are rubbed together, the total charge doesn't change! Electrons simply move from one object to the other, making one positive and the other negative.",
+          "tl": "Kapag nagkukuskos ng dalawang bagay, hindi nagbabago ang total charge! Ang mga electrons ay lumilipat lamang mula sa isang bagay patungo sa isa, kaya ang isa ay positive at ang isa ay negative.",
+          "bis": "Inig kuskos sa duha ka butang, ang total charge dili mausab! Ang mga elektron molipat lamang gikan sa usa paingon sa lain, ang usa mahimong positive ug ang usa negative."
+        },
+        "slug": "ffct-25038",
+        "source": "original",
+        "title": {
+          "tl": "Kuskos, Electron Lumilipat",
+          "en": "Rubbing Moves Electrons",
+          "bis": "Kuskos Electron"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25038",
+        "factId": "static-charge-conservation-rubbing-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "charge is conserved when objects are rubbed",
+        "terms": [
+          "charge conservation",
+          "pag-iingat",
+          "elektron",
+          "electron",
+          "kabuuang karga",
+          "total charge",
+          "neutral",
+          "positive",
+          "negative"
+        ],
+        "fact": {
+          "en": "When two objects are rubbed together, the total charge doesn't change! Electrons simply move from one object to the other, making one positive and the other negative.",
+          "tl": "Kapag nagkukuskos ng dalawang bagay, hindi nagbabago ang total charge! Ang mga electrons ay lumilipat lamang mula sa isang bagay patungo sa isa, kaya ang isa ay positive at ang isa ay negative.",
+          "bis": "Kon kuskoson ang duha ka butang, dili mausab ang total charge! Ang mga elektron mobalhin lang gikan sa usa ka butang ngadto sa lain. Busa, ang usa mahimong positive ug ang lain mahimong negative."
+        },
+        "slug": "ffct-25038",
+        "source": "original",
+        "title": {
+          "tl": "Kuskos, Electron Lumilipat",
+          "en": "Rubbing Moves Electrons",
+          "bis": "Kuskos ug Pagbalhin sa Elektron"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The new text keeps total charge unchanged and describes electrons moving between the same two rubbed objects, followed by opposite signs. Balhin is independently attested for transfer/movement and Wolff supports that sense. Busa makes the stated result explicit; the title names the rubbing and electron transfer. Both full blind observations favor each changed field and the independent backtranslation/fidelity agree. This is an exact local clarity change, not a ruling that molipat or English Electron is inherently wrong.",
+      "formal_item_id": "c4a86f5b20a8acce3b1df5ba2c48c9b7b",
+      "fidelity_item_id": "m47751fbc31b21d3d8fe5ec62",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25071",
+      "source_card_sha256": "972c1bfc17fce231e4a5f651d8defac7cc6a95053fb68fe759e4a2608a47c36d",
+      "candidate_card_sha256": "d03216d7b69f8c9d2bd446b07c47b157a8073f12ebd5728cbba3a9a8d0152f8e",
+      "before_card": {
+        "id": "ffct-25071",
+        "factId": "battery-chemical-to-electrical-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "batteries convert chemical energy to electrical energy",
+        "terms": [
+          "baterya",
+          "battery",
+          "chemical energy",
+          "kemikal na enerhiya",
+          "electrical energy",
+          "kuryente",
+          "convert",
+          "ginagawang",
+          "reaction",
+          "reaksyon",
+          "electron flow"
+        ],
+        "fact": {
+          "en": "How does a battery make electricity?\n\nA battery turns chemical energy from reactions inside it into electrical energy — this drives the current that powers devices in a circuit!",
+          "tl": "Paano gumagawa ng kuryente ang baterya?\n\nAng baterya ay nagko-convert ng chemical energy mula sa mga reaksyon sa loob nito patungong electrical energy — ito ang nagpapatakbo ng kuryente na nagpapagana sa mga device sa circuit!",
+          "bis": "Unsaon paghimo sa baterya og kuryente?\n\nAng baterya nag-convert sa chemical energy gikan sa mga reaksyon sulod niini paingon sa electrical energy — kini ang nagpadagan sa kuryente nga nagpagana sa mga device sa circuit!"
+        },
+        "slug": "ffct-25071",
+        "source": "original",
+        "title": {
+          "tl": "Baterya Kemikal sa Kuryente",
+          "en": "Battery Chemical to Electric",
+          "bis": "Baterya Kemikal sa Kuryente"
+        },
+        "cats": [
+          "electricity",
+          "chemical-reactions"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25071",
+        "factId": "battery-chemical-to-electrical-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "batteries convert chemical energy to electrical energy",
+        "terms": [
+          "baterya",
+          "battery",
+          "chemical energy",
+          "kemikal na enerhiya",
+          "electrical energy",
+          "kuryente",
+          "convert",
+          "ginagawang",
+          "reaction",
+          "reaksyon",
+          "electron flow"
+        ],
+        "fact": {
+          "en": "How does a battery make electricity?\n\nA battery turns chemical energy from reactions inside it into electrical energy — this drives the current that powers devices in a circuit!",
+          "tl": "Paano gumagawa ng kuryente ang baterya?\n\nAng baterya ay nagko-convert ng chemical energy mula sa mga reaksyon sa loob nito patungong electrical energy — ito ang nagpapatakbo ng kuryente na nagpapagana sa mga device sa circuit!",
+          "bis": "Unsaon paghimo sa baterya og kuryente?\n\nAng baterya nag-convert sa chemical energy gikan sa mga reaksyon sa sulod niini ngadto sa electrical energy. Kini ang nagpadagan sa kuryente nga nagpagana sa mga device sa circuit!"
+        },
+        "slug": "ffct-25071",
+        "source": "original",
+        "title": {
+          "tl": "Baterya Kemikal sa Kuryente",
+          "en": "Battery Chemical to Electric",
+          "bis": "Baterya Kemikal sa Kuryente"
+        },
+        "cats": [
+          "electricity",
+          "chemical-reactions"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Splitting the conversion explanation from its electrical consequence leaves chemical reactions inside the battery, chemical-to-electrical energy and the circuit devices intact. Kini refers to the electrical energy just named; the conversion destination is explicit. Both blind body judgments favor the candidate with unchanged-title ties, clear backtranslation and equivalent fidelity. No broader claim that paingon is incorrect is made.",
+      "formal_item_id": "c7267dfc1d8145a573d134d87f3f10011",
+      "fidelity_item_id": "m5a2bf3f86d00c5c43d6b8fa2",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25321",
+      "source_card_sha256": "57a707d07419071632ce17bd424f6c359af8c7d11268a28c8a2ed5ee3dadad2f",
+      "candidate_card_sha256": "77991a4d73860bc8bb664b9e3eac0fdc31543f18c55d1c6a28c00fd5272df9de",
+      "before_card": {
+        "id": "ffct-25321",
+        "factId": "why-metals-conduct-electricity-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "why metals conduct electricity",
+        "terms": [
+          "metal",
+          "bakal",
+          "kuryente",
+          "electricity",
+          "conductor",
+          "daloy",
+          "electron",
+          "libre",
+          "charge",
+          "kawad",
+          "wire"
+        ],
+        "fact": {
+          "en": "Why do metals conduct electricity so well?\n\nMetals have free electrons that move easily! These moving electrons carry the electric charge right through the metal.",
+          "tl": "Bakit mahusay magdaloy ng kuryente ang mga metal?\n\nMay mga 'malayang electron' ang mga metal na madaling gumalaw! Sila ang nagdadala ng singil ng kuryente sa metal.",
+          "bis": "Nganong maayong modaloy og kuryente ang mga metal?\n\nAduna silay 'gawasnong electron' nga sayon molihok! Kining naglihok nga electron maoy nagdala sa kuryente nga charge latas sa metal."
+        },
+        "slug": "ffct-25321",
+        "source": "original",
+        "title": {
+          "tl": "Free Electrons Metal",
+          "en": "Free Electrons Conduct",
+          "bis": "Free Electrons Metal"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25321",
+        "factId": "why-metals-conduct-electricity-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "why metals conduct electricity",
+        "terms": [
+          "metal",
+          "bakal",
+          "kuryente",
+          "electricity",
+          "conductor",
+          "daloy",
+          "electron",
+          "libre",
+          "charge",
+          "kawad",
+          "wire"
+        ],
+        "fact": {
+          "en": "Why do metals conduct electricity so well?\n\nMetals have free electrons that move easily! These moving electrons carry the electric charge right through the metal.",
+          "tl": "Bakit mahusay magdaloy ng kuryente ang mga metal?\n\nMay mga 'malayang electron' ang mga metal na madaling gumalaw! Sila ang nagdadala ng singil ng kuryente sa metal.",
+          "bis": "Nganong maayong modaloy og kuryente ang mga metal?\n\nAduna silay 'gawasnong electron' nga sayon molihok! Kining naglihok nga electron maoy nagdala sa kuryente nga charge latas sa metal."
+        },
+        "slug": "ffct-25321",
+        "source": "original",
+        "title": {
+          "tl": "Free Electrons Metal",
+          "en": "Free Electrons Conduct",
+          "bis": "Gawasnong Electron sa Metal"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title changes. The new title identifies the free electrons in metal using the same body term and a clear sa relationship. Wolff gawas includes freedom and its -nun form; independent body usage corroborates it. The metal/electron/charge explanation is byte-identical, both blind body judgments tie and both title judgments favor the candidate. Approval rests on the explicit relationship, not a ban on English science terms.",
+      "formal_item_id": "c651552e197577e1bcc87f671dd0318dc",
+      "fidelity_item_id": "m580b43b5d06163905d2169ca",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25329",
+      "source_card_sha256": "eee72591750f6720c9c1f29f1f31f998c4d2e74c51f55af3cc097d06e7f4b0b6",
+      "candidate_card_sha256": "ed3d2dc7f93d13e75ed4aba4951034f9e461b196426ab18f9059e009cc04c92a",
+      "before_card": {
+        "id": "ffct-25329",
+        "factId": "patintero-game-motion-g4",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "patintero running game motion",
+        "terms": [
+          "patintero",
+          "laro",
+          "dula",
+          "takbo",
+          "tumakbo",
+          "dagan",
+          "midagan",
+          "iwas",
+          "lihay",
+          "bilis",
+          "speed",
+          "run",
+          "dodge",
+          "motion",
+          "galaw",
+          "lihok"
+        ],
+        "fact": {
+          "en": "In patintero, kids run fast and dodge! They use speed and sudden changes of direction to avoid being tagged.",
+          "tl": "Sa larong patintero, mabilis na tumatakbo at lumilihis ang mga bata! Gumagamit sila ng bilis at pabago-bagong direksyon para maiwasang mahuli.",
+          "bis": "Sa dula nga patintero, kusog nga magdagan ug molihay ang mga bata! Gamit ang katulin ug kalit nga pagbag-o sa direksyon aron dili madakpan."
+        },
+        "slug": "kids-playing-patintero-scene",
+        "title": {
+          "en": "Patintero",
+          "tl": "Patintero",
+          "bis": "Patintero"
+        },
+        "cats": [
+          "motion"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "bilis"
+          ],
+          "en": [
+            "speed"
+          ],
+          "bis": [
+            "katulin"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-25329",
+        "factId": "patintero-game-motion-g4",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "patintero running game motion",
+        "terms": [
+          "patintero",
+          "laro",
+          "dula",
+          "takbo",
+          "tumakbo",
+          "dagan",
+          "midagan",
+          "iwas",
+          "lihay",
+          "bilis",
+          "speed",
+          "run",
+          "dodge",
+          "motion",
+          "galaw",
+          "lihok"
+        ],
+        "fact": {
+          "en": "In patintero, kids run fast and dodge! They use speed and sudden changes of direction to avoid being tagged.",
+          "tl": "Sa larong patintero, mabilis na tumatakbo at lumilihis ang mga bata! Gumagamit sila ng bilis at pabago-bagong direksyon para maiwasang mahuli.",
+          "bis": "Sa dula nga patintero, kusog nga magdagan ug molihay ang mga bata! Gigamit nila ang katulin ug ang kalit nga pagbag-o sa direksyon aron dili sila madakpan."
+        },
+        "slug": "kids-playing-patintero-scene",
+        "title": {
+          "en": "Patintero",
+          "tl": "Patintero",
+          "bis": "Patintero"
+        },
+        "cats": [
+          "motion"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "bilis"
+          ],
+          "en": [
+            "speed"
+          ],
+          "bis": [
+            "katulin"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The new second sentence explicitly identifies the children as using speed and sudden direction changes to avoid being caught, which the English already states. The first sentence, patintero title and exact katulin emphasis are retained. Both complete blind observations favor the clearer actor/reference chain and fidelity/backtranslation preserve the action. This local expansion does not classify every subjectless Cebuano expression as ungrammatical.",
+      "formal_item_id": "c09864af3cbe854dfffee3bd92e5f16cb",
+      "fidelity_item_id": "m6e17d6a1b0c7c296fb50dc7a",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25380",
+      "source_card_sha256": "44fed47116d5af32932635ebddde1945c502b70d83bed03180a3eff607cf8d46",
+      "candidate_card_sha256": "52324e177d3beb562d4a205348e6cdb48f3609c5ee3120d0ffb4ebce58c06547",
+      "before_card": {
+        "id": "ffct-25380",
+        "factId": "cochlea-converts-vibration-nerve-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "cochlea converts sound vibrations to electrical nerve signals",
+        "terms": [
+          "cochlea",
+          "inner ear",
+          "nerve",
+          "vibration",
+          "hair cells",
+          "convert",
+          "tainga",
+          "pandungog",
+          "electrical signal",
+          "hearing"
+        ],
+        "fact": {
+          "en": "The cochlea is a spiral organ in the inner ear with tiny hair cells. When they vibrate, they send electrical signals to the brain as sound!",
+          "tl": "Ang cochlea ay isang spiral na organ sa inner ear na may maliliit na hair cells. Kapag nagvivibrate sila, nagpapadala sila ng electrical signals sa utak bilang tunog!",
+          "bis": "Ang cochlea usa ka spiral nga organ sa inner ear nga adunay gagmayng hair cells. Kung mokurog sila, nagpadala sila og electrical signals sa utok ingon tunog!"
+        },
+        "slug": "ffct-25380",
+        "source": "original",
+        "title": {
+          "tl": "Cochlea sa Nerve Signal",
+          "en": "The Cochlea Converts",
+          "bis": "Cochlea sa Signal"
+        },
+        "cats": [
+          "senses"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25380",
+        "factId": "cochlea-converts-vibration-nerve-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "cochlea converts sound vibrations to electrical nerve signals",
+        "terms": [
+          "cochlea",
+          "inner ear",
+          "nerve",
+          "vibration",
+          "hair cells",
+          "convert",
+          "tainga",
+          "pandungog",
+          "electrical signal",
+          "hearing"
+        ],
+        "fact": {
+          "en": "The cochlea is a spiral organ in the inner ear with tiny hair cells. When they vibrate, they send electrical signals to the brain as sound!",
+          "tl": "Ang cochlea ay isang spiral na organ sa inner ear na may maliliit na hair cells. Kapag nagvivibrate sila, nagpapadala sila ng electrical signals sa utak bilang tunog!",
+          "bis": "Ang cochlea usa ka spiral nga organ sa inner ear nga adunay gagmayng hair cells. Kung mokurog sila, nagpadala sila og electrical signals sa utok ingon tunog!"
+        },
+        "slug": "ffct-25380",
+        "source": "original",
+        "title": {
+          "tl": "Cochlea sa Nerve Signal",
+          "en": "The Cochlea Converts",
+          "bis": "Ang Cochlea ug mga Signal"
+        },
+        "cats": [
+          "senses"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title changes from an unclear cochlea/signal relationship to a coordinated topic. The unchanged body retains the inner-ear spiral, hair-cell motion and electrical signals. NIDCD describes moving hair cells, bent stereocilia, electrical signaling and the auditory nerve to the brain, supporting the elementary summary; it does not mean literal airborne sound travels down the nerve. Both blind title preferences favor the new phrase, with identical-body ties and clean fidelity.",
+      "formal_item_id": "cabb28b357c1699e75b0867acfd39534a",
+      "fidelity_item_id": "mfbc73e68b198c8c16c8e02ec",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25452",
+      "source_card_sha256": "0fdbed47e175ae79ab06dac5da19c14d20960b9c30266915af72342ed88a1198",
+      "candidate_card_sha256": "0a6e5a35c7b0ee56538c334eefaf94f0cb798a0df3e80d3a591b2dab18fafb80",
+      "before_card": {
+        "id": "ffct-25452",
+        "factId": "thermistor-electronic-temperature-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "thermistor resistance changes with temperature for electronic sensing",
+        "terms": [
+          "thermistor",
+          "resistance",
+          "temperature",
+          "thermometer",
+          "mobile phone",
+          "digital",
+          "temperatura"
+        ],
+        "fact": {
+          "en": "A thermistor is a semiconductor whose resistance changes with temperature — used in digital thermometers, smartphones, and air conditioners to measure temperature electronically!",
+          "tl": "Ang thermistor ay isang semiconductor na nagbabago ang resistansya kapag nagbabago ang temperatura — ginagamit sa digital thermometer, cellphone, at aircon para sukatin ang temperatura electronically!",
+          "bis": "Ang thermistor usa ka semiconductor nga nagbag-o ang resistensya kung magbag-o ang temperatura — gigamit sa digital thermometer, smartphone, ug aircon sa pagsukod sa temperatura electronically!"
+        },
+        "slug": "ffct-25452",
+        "source": "original",
+        "title": {
+          "tl": "Thermistor Digital Sukat",
+          "en": "Thermistor Resistance Temp",
+          "bis": "Thermistor Digital Sukat"
+        },
+        "cats": [
+          "heat",
+          "measurement"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25452",
+        "factId": "thermistor-electronic-temperature-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "thermistor resistance changes with temperature for electronic sensing",
+        "terms": [
+          "thermistor",
+          "resistance",
+          "temperature",
+          "thermometer",
+          "mobile phone",
+          "digital",
+          "temperatura"
+        ],
+        "fact": {
+          "en": "A thermistor is a semiconductor whose resistance changes with temperature — used in digital thermometers, smartphones, and air conditioners to measure temperature electronically!",
+          "tl": "Ang thermistor ay isang semiconductor na nagbabago ang resistansya kapag nagbabago ang temperatura — ginagamit sa digital thermometer, cellphone, at aircon para sukatin ang temperatura electronically!",
+          "bis": "Ang thermistor usa ka semiconductor nga nagbag-o ang resistensya kung magbag-o ang temperatura. Gigamit kini sa digital thermometer, smartphone, ug aircon aron sukdon ang temperatura electronically!"
+        },
+        "slug": "ffct-25452",
+        "source": "original",
+        "title": {
+          "tl": "Thermistor Digital Sukat",
+          "en": "Thermistor Resistance Temp",
+          "bis": "Thermistor ug Temperatura"
+        },
+        "cats": [
+          "heat",
+          "measurement"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate separates the temperature-dependent resistance definition from uses, with Gigamit kini retaining the thermistor referent and aron sukdon retaining measurement purpose. Semiconductor, thermistor and all three device examples remain. The new title explicitly relates thermistor and temperature. Both blind observations favor both changed fields; clear backtranslation and equivalent fidelity show no loss of the dependence or applications. Retained English technical vocabulary is acceptable.",
+      "formal_item_id": "c003d98a4b8e29e83a5c475c502c84afa",
+      "fidelity_item_id": "m17efb73311baf42e4101a481",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25464",
+      "source_card_sha256": "8306826ae65c9a103539d3e648faf909c9852dc99b6bea60e46aeba613c43a8e",
+      "candidate_card_sha256": "9158489dbe60c43dd28b968ab4bb8afa73f5edd8fe589be7fdebad0a11f1e5a8",
+      "before_card": {
+        "id": "ffct-25464",
+        "factId": "building-materials-heat-mass-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "thermal mass concrete stone slow temperature swings in buildings",
+        "terms": [
+          "thermal mass",
+          "concrete",
+          "bato",
+          "stone",
+          "temperature",
+          "init",
+          "heat storage",
+          "mainit",
+          "malamig"
+        ],
+        "fact": {
+          "en": "Stone and concrete have high thermal mass! They soak up heat all day, then slowly release it at night to keep rooms comfy.",
+          "tl": "Ang bato at concrete ay may mataas na thermal mass! Sumisipsip sila ng init buong araw, tapos dahan-dahang naglalabas sa gabi para komportable ang loob.",
+          "bis": "Ang bato ug konkreto adunay taas nga thermal mass! Nagsipsip sila og init tibuok adlaw, dayon hinay-hinay nagagawas sa gabii para komportable ang sulod."
+        },
+        "slug": "ffct-25464",
+        "source": "original",
+        "title": {
+          "tl": "Bato Thermal Mass Init",
+          "en": "Stone Thermal Mass Heat",
+          "bis": "Bato Thermal Mass Init"
+        },
+        "cats": [
+          "heat"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25464",
+        "factId": "building-materials-heat-mass-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "thermal mass concrete stone slow temperature swings in buildings",
+        "terms": [
+          "thermal mass",
+          "concrete",
+          "bato",
+          "stone",
+          "temperature",
+          "init",
+          "heat storage",
+          "mainit",
+          "malamig"
+        ],
+        "fact": {
+          "en": "Stone and concrete have high thermal mass! They soak up heat all day, then slowly release it at night to keep rooms comfy.",
+          "tl": "Ang bato at concrete ay may mataas na thermal mass! Sumisipsip sila ng init buong araw, tapos dahan-dahang naglalabas sa gabi para komportable ang loob.",
+          "bis": "Ang bato ug konkreto adunay taas nga thermal mass! Nagsipsip sila og init tibuok adlaw. Dayon, hinay-hinay nila kining buhian sa gabii aron komportable ang sulod sa mga kwarto."
+        },
+        "slug": "ffct-25464",
+        "source": "original",
+        "title": {
+          "tl": "Bato Thermal Mass Init",
+          "en": "Stone Thermal Mass Heat",
+          "bis": "Thermal Mass sa Bato"
+        },
+        "cats": [
+          "heat"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate keeps stone and concrete, high thermal mass, daytime absorption and slow night release, while naming the released heat and rooms explicitly. Wolff buhi_2 supports release, distinct from the alive/raising-animal homograph, with independent thermal examples recorded separately. Both blind observations identify the clearer agent/object and title. The draft preserves the card's passive-heating example and does not claim that all buildings stay comfortable in every climate.",
+      "formal_item_id": "c6706b7517ae38c0f2c04cd8183bf459c",
+      "fidelity_item_id": "md823b6d6a279ed6c73411a7c",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25486",
+      "source_card_sha256": "b45f595e13d359702aeed0936dbf9deb71899ba41ecee1200ec3aaeb4d16b8ed",
+      "candidate_card_sha256": "a00ac54a35922603f5c7c81794db997c982c27fe62b6ec9cc90c1f1898eb9566",
+      "before_card": {
+        "id": "ffct-25486",
+        "factId": "annular-eclipse-ring-of-fire-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "annular eclipse ring of fire Moon too far to fully cover Sun",
+        "terms": [
+          "annular eclipse",
+          "ring of fire",
+          "solar eclipse",
+          "buwan",
+          "araw",
+          "distance",
+          "moon",
+          "sun",
+          "anino",
+          "singsing"
+        ],
+        "fact": {
+          "en": "What is an annular eclipse?\n\nIn an annular eclipse, the Moon is farther from Earth and doesn't fully cover the Sun — a bright ring of sunlight called the ring of fire glows around the Moon!",
+          "tl": "Ano ang annular eclipse?\n\nSa annular eclipse, mas malayo ang Buwan sa Mundo kaya hindi nito ganap na natatakpan ang Araw — may maliwanag na singsing ng liwanag na nakikita sa paligid ng Buwan, tinatawag na ring of fire!",
+          "bis": "Unsa ang annular eclipse?\n\nSa annular eclipse, mas layo ang Buwan sa Yuta ug dili hingpit masakop ang Adlaw — usa ka hayag nga singsing sa kahayag sa Adlaw ang makita sa palibot sa Buwan, gitawag ring of fire!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Annular Eclipse",
+          "tl": "Singsing na Eclipse",
+          "bis": "Singsing nga Eklipse"
+        },
+        "cats": [
+          "eclipses",
+          "the-moon"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "annular eclipse"
+          ],
+          "en": [
+            "annular eclipse"
+          ],
+          "bis": [
+            "annular eclipse"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-25486",
+        "factId": "annular-eclipse-ring-of-fire-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "annular eclipse ring of fire Moon too far to fully cover Sun",
+        "terms": [
+          "annular eclipse",
+          "ring of fire",
+          "solar eclipse",
+          "buwan",
+          "araw",
+          "distance",
+          "moon",
+          "sun",
+          "anino",
+          "singsing"
+        ],
+        "fact": {
+          "en": "What is an annular eclipse?\n\nIn an annular eclipse, the Moon is farther from Earth and doesn't fully cover the Sun — a bright ring of sunlight called the ring of fire glows around the Moon!",
+          "tl": "Ano ang annular eclipse?\n\nSa annular eclipse, mas malayo ang Buwan sa Mundo kaya hindi nito ganap na natatakpan ang Araw — may maliwanag na singsing ng liwanag na nakikita sa paligid ng Buwan, tinatawag na ring of fire!",
+          "bis": "Unsa ang annular eclipse?\n\nSa annular eclipse, mas layo ang Buwan sa Yuta, ug dili niini hingpit nga matabonan ang Adlaw. Makita ang usa ka hayag nga singsing sa kahayag sa Adlaw sa palibot sa Buwan. Gitawag kini og ring of fire!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Annular Eclipse",
+          "tl": "Singsing na Eclipse",
+          "bis": "Singsing nga Eklipse"
+        },
+        "cats": [
+          "eclipses",
+          "the-moon"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "annular eclipse"
+          ],
+          "en": [
+            "annular eclipse"
+          ],
+          "bis": [
+            "annular eclipse"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The new sentences preserve the Moon's greater distance, incomplete solar cover and visible sunlight ring. Niini resolves the Moon's action and Gitawag kini og makes the naming explicit. Wolff tabun supports covering and independent corpus examples support that root; NASA supports the annular geometry. The exact annular eclipse emphasis remains. Both blind body judgments favor the change and title ties/fidelity are clean.",
+      "formal_item_id": "c93f4ffa7cf9e5728189ebcb0c046466f",
+      "fidelity_item_id": "m538aaf08dc7d91cc900b0687",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25492",
+      "source_card_sha256": "06fce4afcce9306ee2ef85df4488fae52296c588f456fc2d15727638d5dba747",
+      "candidate_card_sha256": "c4b1b1d044d243ffe93afd89067dc9c247b45a58e3c7b2298a0f960134bfa6a2",
+      "before_card": {
+        "id": "ffct-25492",
+        "factId": "wave-period-reciprocal-frequency-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "wave period is reciprocal of frequency",
+        "terms": [
+          "period",
+          "frequency",
+          "reciprocal",
+          "hertz",
+          "second",
+          "alon",
+          "wave",
+          "t",
+          "f",
+          "vibration"
+        ],
+        "fact": {
+          "en": "The period of a wave is the time for one complete wave to pass! It equals the reciprocal of frequency: T = 1/f. High frequency means a short period!",
+          "tl": "Ang period ng isang alon ay ang oras para sa isang buong alon na lumipas! Katumbas ito ng reciprocal ng frequency: T = 1/f. Mataas na frequency means maikling period!",
+          "bis": "Ang period sa usa ka alon mao ang oras para sa usa ka kompleto nga alon! Katumbas kini sa reciprocal sa frequency: T = 1/f. Taas nga frequency, mubo nga period!"
+        },
+        "slug": "ffct-25492",
+        "source": "original",
+        "title": {
+          "tl": "Period T = 1/f Reciprocal",
+          "en": "Period Reciprocal Frequency",
+          "bis": "Period T = 1/f Reciprocal"
+        },
+        "cats": [
+          "sound"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25492",
+        "factId": "wave-period-reciprocal-frequency-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "wave period is reciprocal of frequency",
+        "terms": [
+          "period",
+          "frequency",
+          "reciprocal",
+          "hertz",
+          "second",
+          "alon",
+          "wave",
+          "t",
+          "f",
+          "vibration"
+        ],
+        "fact": {
+          "en": "The period of a wave is the time for one complete wave to pass! It equals the reciprocal of frequency: T = 1/f. High frequency means a short period!",
+          "tl": "Ang period ng isang alon ay ang oras para sa isang buong alon na lumipas! Katumbas ito ng reciprocal ng frequency: T = 1/f. Mataas na frequency means maikling period!",
+          "bis": "Ang period sa usa ka alon mao ang oras nga gikinahanglan aron moagi ang usa ka kompleto nga alon! Katumbas kini sa reciprocal sa frequency: T = 1/f. Kung taas ang frequency, mubo ang period!"
+        },
+        "slug": "ffct-25492",
+        "source": "original",
+        "title": {
+          "tl": "Period T = 1/f Reciprocal",
+          "en": "Period Reciprocal Frequency",
+          "bis": "Period sa Alon: T = 1/f"
+        },
+        "cats": [
+          "sound"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Aron moagi restores the English definition's passage of one complete wave, which the original left implicit. The high-frequency/short-period relation is a complete conditional and the formula T = 1/f is unchanged in body and retained in the new topic/formula title. Both blind observations favor each changed field and the English proxy is equivalent. No approximation, variable case or inverse relation changes.",
+      "formal_item_id": "c66bb9b64d9f36ad6d59f2048b6796570",
+      "fidelity_item_id": "m44072bcfe035242a4b627316",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25494",
+      "source_card_sha256": "735095dcbdd03a84bd477175c844609fafddf308757189f1100096094a38a63b",
+      "candidate_card_sha256": "dd3b10e4c718cfa45d7087c047e374b2f6065c22b0b8ea8360da83403ce1e096",
+      "before_card": {
+        "id": "ffct-25494",
+        "factId": "tidal-wave-versus-tsunami-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "tsunami not a tidal wave caused by underwater disturbance",
+        "terms": [
+          "tsunami",
+          "tidal wave",
+          "misconception",
+          "alon",
+          "lindol",
+          "earthquake",
+          "dagat",
+          "ocean",
+          "wave",
+          "seismic"
+        ],
+        "fact": {
+          "en": "A tsunami is not a tidal wave! It starts from a large underwater disturbance like an earthquake or landslide, not from tidal forces caused by the Moon.",
+          "tl": "Ang tsunami ay hindi tidal wave! Nagsisimula ito sa malaking underwater disturbance tulad ng earthquake o landslide, hindi sa tidal forces na galing sa Buwan.",
+          "bis": "Ang tsunami dili tidal wave! Nagsugod kini gikan sa dako nga underwater disturbance sama sa earthquake o landslide, dili gikan sa tidal forces tungod sa Buwan."
+        },
+        "slug": "ffct-25494",
+        "source": "original",
+        "title": {
+          "tl": "Tsunami Hindi Tidal Wave",
+          "en": "Tsunami Not Tidal Wave",
+          "bis": "Tsunami dili Tide"
+        },
+        "cats": [
+          "oceans",
+          "natural-disasters"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25494",
+        "factId": "tidal-wave-versus-tsunami-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "tsunami not a tidal wave caused by underwater disturbance",
+        "terms": [
+          "tsunami",
+          "tidal wave",
+          "misconception",
+          "alon",
+          "lindol",
+          "earthquake",
+          "dagat",
+          "ocean",
+          "wave",
+          "seismic"
+        ],
+        "fact": {
+          "en": "A tsunami is not a tidal wave! It starts from a large underwater disturbance like an earthquake or landslide, not from tidal forces caused by the Moon.",
+          "tl": "Ang tsunami ay hindi tidal wave! Nagsisimula ito sa malaking underwater disturbance tulad ng earthquake o landslide, hindi sa tidal forces na galing sa Buwan.",
+          "bis": "Ang tsunami dili tidal wave! Nagsugod kini gikan sa dako nga underwater disturbance sama sa earthquake o landslide, dili gikan sa tidal forces tungod sa Buwan."
+        },
+        "slug": "ffct-25494",
+        "source": "original",
+        "title": {
+          "tl": "Tsunami Hindi Tidal Wave",
+          "en": "Tsunami Not Tidal Wave",
+          "bis": "Tsunami Dili Tidal Wave"
+        },
+        "cats": [
+          "oceans",
+          "natural-disasters"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title changes. It now repeats the English and body contrast with tidal wave rather than the different term tide. The underwater disturbance, earthquake/landslide examples and exclusion of lunar tidal forces remain byte-identical. Both blind title judgments prefer the exact topical match, body judgments tie, and fidelity/backtranslation preserve the distinction.",
+      "formal_item_id": "cf5e506eb65ffcd1b84e1da5c9e61bce6",
+      "fidelity_item_id": "mcd0a18dd160ca97de58277fc",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25624",
+      "source_card_sha256": "a01662f0b1b8ada37dfbde784872e4ef721357219718cb6a8cd1c14a3276d872",
+      "candidate_card_sha256": "6734893a79cb504880c6323a76ef1e252ebdee7ea1f16a6d4ae583472b5ee464",
+      "before_card": {
+        "id": "ffct-25624",
+        "factId": "battery-volta-invented-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who invented the first battery",
+        "terms": [
+          "volta",
+          "alessandro volta",
+          "battery",
+          "baterya",
+          "sino gumawa ng baterya",
+          "kinsa nag-imbento sa baterya",
+          "voltaic pile",
+          "who invented battery",
+          "unang baterya"
+        ],
+        "fact": {
+          "en": "Did you know Alessandro Volta invented the very first true battery? He called his awesome invention the voltaic pile!",
+          "tl": "Alam mo bang si Alessandro Volta ang gumawa ng unang tunay na baterya? Tinawag niya itong voltaic pile!",
+          "bis": "Nahibaw-an ba nimo nga si Alessandro Volta ang naghimo sa unang tinuod nga baterya? Gitawag niya kini nga voltaic pile!"
+        },
+        "slug": "ffct-25624",
+        "source": "original",
+        "title": {
+          "tl": "Si Volta Voltaic Pile Baterya",
+          "en": "Volta First Battery",
+          "bis": "Si Volta Voltaic Pile Baterya"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25624",
+        "factId": "battery-volta-invented-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who invented the first battery",
+        "terms": [
+          "volta",
+          "alessandro volta",
+          "battery",
+          "baterya",
+          "sino gumawa ng baterya",
+          "kinsa nag-imbento sa baterya",
+          "voltaic pile",
+          "who invented battery",
+          "unang baterya"
+        ],
+        "fact": {
+          "en": "Did you know Alessandro Volta invented the very first true battery? He called his awesome invention the voltaic pile!",
+          "tl": "Alam mo bang si Alessandro Volta ang gumawa ng unang tunay na baterya? Tinawag niya itong voltaic pile!",
+          "bis": "Nahibaw-an ba nimo nga si Alessandro Volta ang naghimo sa unang tinuod nga baterya? Gitawag niya kini nga voltaic pile!"
+        },
+        "slug": "ffct-25624",
+        "source": "original",
+        "title": {
+          "tl": "Si Volta Voltaic Pile Baterya",
+          "en": "Volta First Battery",
+          "bis": "Ang Unang Baterya ni Volta"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title changes into a clear Volta/first-battery phrase. The full body retains Alessandro Volta, first true battery and voltaic pile; no discovery date, new inventor or broader science claim is introduced. Both full blind observations favor the title with identical-body ties, and the clear independent backtranslation/fidelity agree. The existing nahibaw-an spelling is left intact rather than normalized by frequency.",
+      "formal_item_id": "ce3738e5347d967b61a828c5f4321bc54",
+      "fidelity_item_id": "mb9d36ddcb61da528771cd2cd",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25637",
+      "source_card_sha256": "393bcefe613d56795634ff27ec10ffe37946eb383c6d7dc2c383dc363b5518a1",
+      "candidate_card_sha256": "dc41451ec45e28361bffba1dab6dd59648d1f21152eeef4e85d438c4825218b1",
+      "before_card": {
+        "id": "ffct-25637",
+        "factId": "lightbulb-edison-year-1879-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what year did Edison make the light bulb",
+        "terms": [
+          "edison",
+          "1879",
+          "light bulb",
+          "bombilya",
+          "kailan ginawa ang bombilya",
+          "kanus-a",
+          "year light bulb",
+          "taon ng bombilya",
+          "incandescent 1879"
+        ],
+        "fact": {
+          "en": "Thomas Edison created his awesome practical light bulb in the year 1879, bringing light to the night!",
+          "tl": "Ginawa ni Thomas Edison ang kanyang astig na praktikal na bombilya noong 1879, nagdala ng liwanag sa gabi!",
+          "bis": "Gihimo ni Thomas Edison ang iyang astig nga praktikal nga bombilya niadtong 1879, nagdala og kahayag sa gabii!"
+        },
+        "slug": "ffct-25637",
+        "source": "original",
+        "title": {
+          "tl": "Edison 1879 Light Bulb Ilaw",
+          "en": "Edison's 1879 Bulb",
+          "bis": "Edison 1879 Light Bulb"
+        },
+        "cats": [
+          "electricity",
+          "light"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25637",
+        "factId": "lightbulb-edison-year-1879-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what year did Edison make the light bulb",
+        "terms": [
+          "edison",
+          "1879",
+          "light bulb",
+          "bombilya",
+          "kailan ginawa ang bombilya",
+          "kanus-a",
+          "year light bulb",
+          "taon ng bombilya",
+          "incandescent 1879"
+        ],
+        "fact": {
+          "en": "Thomas Edison created his awesome practical light bulb in the year 1879, bringing light to the night!",
+          "tl": "Ginawa ni Thomas Edison ang kanyang astig na praktikal na bombilya noong 1879, nagdala ng liwanag sa gabi!",
+          "bis": "Gihimo ni Thomas Edison ang iyang astig nga praktikal nga bombilya niadtong 1879, nagdala og kahayag sa gabii!"
+        },
+        "slug": "ffct-25637",
+        "source": "original",
+        "title": {
+          "tl": "Edison 1879 Light Bulb Ilaw",
+          "en": "Edison's 1879 Bulb",
+          "bis": "Bombilya ni Edison sa 1879"
+        },
+        "cats": [
+          "electricity",
+          "light"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title now relates the bulb, Edison and 1879 through ni and sa, while the entire practical-bulb body and year remain unchanged. Wolff bumbilya and independent bombilya body examples support the bulb term; this is not an objection to Light Bulb being English. Both blind title preferences and body ties are clean, with equivalent fidelity. No claim that Edison invented every earlier lamp is added.",
+      "formal_item_id": "cb4e17192c9f8bfe5ceabf12b64a74ed4",
+      "fidelity_item_id": "m919a2ccf5cdbcbda0fbb1585",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25643",
+      "source_card_sha256": "4869aba5655d88042fe112ef862b44c920f2ec7338e086d64f63efb102c48f1d",
+      "candidate_card_sha256": "dca0abd67b0b1080d0db31b55f4b4fa08a33a143d0d51e69c5d95f0f463cd7f3",
+      "before_card": {
+        "id": "ffct-25643",
+        "factId": "unit-ohm-georg-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what unit is named after Ohm",
+        "terms": [
+          "ohm",
+          "georg ohm",
+          "resistance",
+          "resistensya",
+          "anong yunit kay ohm",
+          "unsa nga unit kang ohm",
+          "unit of resistance",
+          "ohm unit",
+          "yunit ng resistensya"
+        ],
+        "fact": {
+          "en": "The 'ohm' is the unit that measures electrical resistance, and it's named after Georg Ohm!",
+          "tl": "Ang 'ohm' ang yunit na sumusukat ng electrical resistance, at ito ay ipinangalan kay Georg Ohm!",
+          "bis": "Ang 'ohm' mao ang unit nga nagsukod sa electrical resistance, ug kini ginganlan kang Georg Ohm!"
+        },
+        "slug": "ffct-25643",
+        "source": "original",
+        "title": {
+          "tl": "Ohm na Yunit ng Resistance",
+          "en": "The Ohm Unit",
+          "bis": "Ohm Yunit"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25643",
+        "factId": "unit-ohm-georg-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what unit is named after Ohm",
+        "terms": [
+          "ohm",
+          "georg ohm",
+          "resistance",
+          "resistensya",
+          "anong yunit kay ohm",
+          "unsa nga unit kang ohm",
+          "unit of resistance",
+          "ohm unit",
+          "yunit ng resistensya"
+        ],
+        "fact": {
+          "en": "The 'ohm' is the unit that measures electrical resistance, and it's named after Georg Ohm!",
+          "tl": "Ang 'ohm' ang yunit na sumusukat ng electrical resistance, at ito ay ipinangalan kay Georg Ohm!",
+          "bis": "Ang 'ohm' mao ang unit nga nagsukod sa electrical resistance, ug kini ginganlan kang Georg Ohm!"
+        },
+        "slug": "ffct-25643",
+        "source": "original",
+        "title": {
+          "tl": "Ohm na Yunit ng Resistance",
+          "en": "The Ohm Unit",
+          "bis": "Ang Yunit nga Ohm"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title changes into a linked noun phrase naming the ohm unit. The electrical-resistance definition and Georg Ohm attribution stay byte-identical, as do both other languages. Both blind observations favor the title and tie the body, while clear backtranslation and compatible fidelity preserve the unit/quantity relationship. Unit and yunit are not treated as competing errors.",
+      "formal_item_id": "c62953b632e563d19e0e95bcd1aa6e7e9",
+      "fidelity_item_id": "m1eb98063526b48c987f6efba",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25649",
+      "source_card_sha256": "631a262e57f0f6df4d954f17b46adc46925e48706524ad9d5bd39d2b4cfc5a5e",
+      "candidate_card_sha256": "1a7e1b22e4a0b346ea3b8cfd0d0e4b2a186524bf0bf1bc573e431c65b1158f0b",
+      "before_card": {
+        "id": "ffct-25649",
+        "factId": "ohm-unit-resistance-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what unit is named after Ohm (electrical resistance)",
+        "terms": [
+          "ohm",
+          "georg ohm",
+          "georg simon ohm",
+          "ohm",
+          "resistance",
+          "resistensya",
+          "paglaban sa kuryente",
+          "yunit",
+          "unit",
+          "sino si ohm",
+          "omega",
+          "sukat ng resistensya"
+        ],
+        "fact": {
+          "en": "The unit of electrical resistance is the ohm! It gets its cool name from Georg Ohm.",
+          "tl": "Ang yunit ng electrical resistance ay ang ohm! Nakuha niya ang pangalan nito kay Georg Ohm.",
+          "bis": "Ang yunit sa electrical resistance mao ang ohm! Nakuha niini ang ngalan gikan kang Georg Ohm."
+        },
+        "slug": "ffct-25649",
+        "source": "original",
+        "title": {
+          "tl": "Ohm ni Georg Ohm",
+          "en": "Ohm From Georg Ohm",
+          "bis": "Ohm Georg"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25649",
+        "factId": "ohm-unit-resistance-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what unit is named after Ohm (electrical resistance)",
+        "terms": [
+          "ohm",
+          "georg ohm",
+          "georg simon ohm",
+          "ohm",
+          "resistance",
+          "resistensya",
+          "paglaban sa kuryente",
+          "yunit",
+          "unit",
+          "sino si ohm",
+          "omega",
+          "sukat ng resistensya"
+        ],
+        "fact": {
+          "en": "The unit of electrical resistance is the ohm! It gets its cool name from Georg Ohm.",
+          "tl": "Ang yunit ng electrical resistance ay ang ohm! Nakuha niya ang pangalan nito kay Georg Ohm.",
+          "bis": "Ang yunit sa electrical resistance mao ang ohm! Nakuha niini ang ngalan gikan kang Georg Ohm."
+        },
+        "slug": "ffct-25649",
+        "source": "original",
+        "title": {
+          "tl": "Ohm ni Georg Ohm",
+          "en": "Ohm From Georg Ohm",
+          "bis": "Ohm gikan kang Georg Ohm"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The new title explicitly states the unit-name relationship to Georg Ohm that the English title and unchanged body already express. Gikan kang makes the person connection clear without changing resistance or any symbol. Both complete blind observations favor the title with identical-body ties and the English comparison is clean; approval is for that explicit relation, not an invented grammar rule about all short headings.",
+      "formal_item_id": "ca7c6dca05b730cc47e05cc8ad02ceb8d",
+      "fidelity_item_id": "mfb891a87813e8483dbd49636",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25692",
+      "source_card_sha256": "89f892603f6c95fd85bfdf760ee67869e6c6c148ba9134fef14f16d684b54571",
+      "candidate_card_sha256": "180180d927811d4b4023aff178a65d82a3ef9db146dca3bd08b176446a1540e0",
+      "before_card": {
+        "id": "ffct-25692",
+        "factId": "newton-who-isaac-newton-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who made the laws of motion",
+        "terms": [
+          "who made laws of motion",
+          "isaac newton",
+          "sino gumawa ng batas ng galaw",
+          "kinsa naghimo sa balaod sa lihok",
+          "scientist",
+          "siyentipiko",
+          "newton",
+          "laws of motion",
+          "sino si newton",
+          "kinsa si newton"
+        ],
+        "fact": {
+          "en": "Who created the three laws of motion?\n\nThe three laws of motion were made by the English scientist Isaac Newton!",
+          "tl": "Sino ang gumawa ng tatlong batas ng galaw?\n\nAng tatlong batas ng galaw ay ginawa ng English na siyentipikong si Isaac Newton!",
+          "bis": "Kinsa ang naghimo sa tulo ka balaod sa paglihok?\n\nAng tulo ka balaod sa paglihok gihimo sa English nga siyentipiko nga si Isaac Newton!"
+        },
+        "slug": "ffct-25692",
+        "source": "original",
+        "title": {
+          "tl": "Si Isaac Newton Tatlong Batas",
+          "en": "Newton's Laws Author",
+          "bis": "Si Isaac Newton Tulo ka Balaod"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25692",
+        "factId": "newton-who-isaac-newton-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who made the laws of motion",
+        "terms": [
+          "who made laws of motion",
+          "isaac newton",
+          "sino gumawa ng batas ng galaw",
+          "kinsa naghimo sa balaod sa lihok",
+          "scientist",
+          "siyentipiko",
+          "newton",
+          "laws of motion",
+          "sino si newton",
+          "kinsa si newton"
+        ],
+        "fact": {
+          "en": "Who created the three laws of motion?\n\nThe three laws of motion were made by the English scientist Isaac Newton!",
+          "tl": "Sino ang gumawa ng tatlong batas ng galaw?\n\nAng tatlong batas ng galaw ay ginawa ng English na siyentipikong si Isaac Newton!",
+          "bis": "Kinsa ang naghimo sa tulo ka balaod sa paglihok?\n\nAng tulo ka balaod sa paglihok gihimo sa English nga siyentipiko nga si Isaac Newton!"
+        },
+        "slug": "ffct-25692",
+        "source": "original",
+        "title": {
+          "tl": "Si Isaac Newton Tatlong Batas",
+          "en": "Newton's Laws Author",
+          "bis": "Si Isaac Newton ug ang Tulo ka Balaod"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only ug ang is added to link Isaac Newton and the three laws in the title. The question/answer, attribution, number three and laws-of-motion body are unchanged. Both blind title observations favor the explicit coordination and both body preferences tie; backtranslation/fidelity agree. No extra law, date or interpretation of the scientific laws is inserted.",
+      "formal_item_id": "c7bd56d15decfc8e313f9bb918c47085b",
+      "fidelity_item_id": "m550235f3c8aad825520de90e",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25696",
+      "source_card_sha256": "d37b0dc73c6d61ccb00398dce2dad66e4a1ad3f4824ee40cc419c6eec0ebbf91",
+      "candidate_card_sha256": "c74f25631ea224f4966cd4769d3c317eb0ee39b26940aa52ec0b5f605f2c1b58",
+      "before_card": {
+        "id": "ffct-25696",
+        "factId": "newton-first-law-keyword-inertia-meaning-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is inertia",
+        "terms": [
+          "inertia",
+          "inersya",
+          "law of inertia",
+          "resistance to change motion",
+          "ayaw magbago ng galaw",
+          "dili gusto mausab ang lihok",
+          "newton first law",
+          "ano ang inersya",
+          "unsa ang inertia",
+          "inertia meaning"
+        ],
+        "fact": {
+          "en": "Inertia is an object's resistance to a change in its motion, and it is the basis of Newton's first law!",
+          "tl": "Ang inersya (inertia) ay ang pagtutol ng isang bagay na magbago ang galaw nito; ito ang batayan ng unang batas ni Newton!",
+          "bis": "Ang inertia (inersya) mao ang pagsukol sa usa ka butang nga mausab ang paglihok niini; mao kini ang basihan sa unang balaod ni Newton!"
+        },
+        "slug": "newtons-first-law",
+        "title": {
+          "en": "Inertia",
+          "tl": "Inertia",
+          "bis": "Inertia"
+        },
+        "cats": [
+          "forces",
+          "motion"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "inersya"
+          ],
+          "en": [
+            "Inertia"
+          ],
+          "bis": [
+            "inertia"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-25696",
+        "factId": "newton-first-law-keyword-inertia-meaning-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is inertia",
+        "terms": [
+          "inertia",
+          "inersya",
+          "law of inertia",
+          "resistance to change motion",
+          "ayaw magbago ng galaw",
+          "dili gusto mausab ang lihok",
+          "newton first law",
+          "ano ang inersya",
+          "unsa ang inertia",
+          "inertia meaning"
+        ],
+        "fact": {
+          "en": "Inertia is an object's resistance to a change in its motion, and it is the basis of Newton's first law!",
+          "tl": "Ang inersya (inertia) ay ang pagtutol ng isang bagay na magbago ang galaw nito; ito ang batayan ng unang batas ni Newton!",
+          "bis": "Ang inertia (inersya) mao ang pagsukol sa usa ka butang nga mausab ang paglihok niini. Kini ang basihan sa unang balaod ni Newton!"
+        },
+        "slug": "newtons-first-law",
+        "title": {
+          "en": "Inertia",
+          "tl": "Inertia",
+          "bis": "Inertia"
+        },
+        "cats": [
+          "forces",
+          "motion"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "inersya"
+          ],
+          "en": [
+            "Inertia"
+          ],
+          "bis": [
+            "inertia"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The period separates inertia's resistance definition from its link to Newton's first law, while Kini retains the same referent. The title and exact inertia emphasis are unchanged. Both blind observations describe a small, local readability improvement, not a grammar failure, with equivalent English fidelity and no uncertainty. The basihan spelling is preserved and no new force or motion claim is added.",
+      "formal_item_id": "c62e25b9609d5ebebae2319d6f22c65bd",
+      "fidelity_item_id": "m1f55fa636417bcf8b2483974",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25699",
+      "source_card_sha256": "1887464185fb43ae2d7d9331e33a114dedf1f1285066ac312fca9e801551f830",
+      "candidate_card_sha256": "f662b01d8f4301c2b114898f93c6a889afd800b5d7e241670822c7a3d83d4acc",
+      "before_card": {
+        "id": "ffct-25699",
+        "factId": "steam-engine-watt-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who improved the steam engine",
+        "terms": [
+          "sino gumawa ng steam engine",
+          "kinsa nagpauswag sa steam engine",
+          "who improved the steam engine",
+          "james watt",
+          "steam engine",
+          "makinang singaw",
+          "makina sa alisngaw",
+          "scotland",
+          "watt"
+        ],
+        "fact": {
+          "en": "James Watt of Scotland greatly improved the steam engine!",
+          "tl": "Si James Watt ng Scotland ang nagpahusay nang husto sa makinang de-singaw (steam engine)!",
+          "bis": "Si James Watt sa Scotland ang nakapauswag pag-ayo sa makina nga de-alisngaw (steam engine)!"
+        },
+        "slug": "qa-ffct-25699",
+        "source": "original",
+        "title": {
+          "tl": "Si James Watt Steam Engine",
+          "en": "Watt Improved Steam Engine",
+          "bis": "Si James Watt Steam Engine"
+        },
+        "cats": [
+          "heat"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25699",
+        "factId": "steam-engine-watt-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who improved the steam engine",
+        "terms": [
+          "sino gumawa ng steam engine",
+          "kinsa nagpauswag sa steam engine",
+          "who improved the steam engine",
+          "james watt",
+          "steam engine",
+          "makinang singaw",
+          "makina sa alisngaw",
+          "scotland",
+          "watt"
+        ],
+        "fact": {
+          "en": "James Watt of Scotland greatly improved the steam engine!",
+          "tl": "Si James Watt ng Scotland ang nagpahusay nang husto sa makinang de-singaw (steam engine)!",
+          "bis": "Si James Watt sa Scotland ang nakapauswag pag-ayo sa makina nga de-alisngaw (steam engine)!"
+        },
+        "slug": "qa-ffct-25699",
+        "source": "original",
+        "title": {
+          "tl": "Si James Watt Steam Engine",
+          "en": "Watt Improved Steam Engine",
+          "bis": "Gipauswag ni Watt ang Steam Engine"
+        },
+        "cats": [
+          "heat"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title now states Watt's improvement of the steam engine, exactly the relation in the English title and unchanged body. Wolff uswag includes improve/progress and independent body examples support the root. The Scotland attribution and degree pag-ayo remain in the body. Both title preferences are candidate with body ties and clear fidelity; no invention-first claim replaces improvement.",
+      "formal_item_id": "ccc76ca3a92aae8ac7698a0f5d8666ce6",
+      "fidelity_item_id": "m3470cf135f5e02bc84b3b77e",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25731",
+      "source_card_sha256": "75e7f01f4851f66c054a448415f0a3a97e6d616b7bdcaed4ef558208328c85a9",
+      "candidate_card_sha256": "65fb50320fba7029776c43e6a8bcfc288c26b3fbf09941d3cf3f7ac108220647",
+      "before_card": {
+        "id": "ffct-25731",
+        "factId": "si-base-unit-mass-kilogram-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "SI base unit for mass",
+        "terms": [
+          "kilogram",
+          "kilogramo",
+          "mass",
+          "masa",
+          "bigat",
+          "kabug-aton",
+          "si unit ng masa",
+          "yunit ng bigat",
+          "kg",
+          "timbang"
+        ],
+        "fact": {
+          "en": "The kilogram (kg) is the official SI base unit we use to measure mass!",
+          "tl": "Ang kilogramo (kg) ang SI base unit na ginagamit para sukatin ang masa!",
+          "bis": "Ang kilogramo (kg) mao ang SI base unit nga gigamit sa pagsukod sa masa!"
+        },
+        "slug": "ffct-25731",
+        "source": "original",
+        "title": {
+          "tl": "Kilogramo SI Unit Masa",
+          "en": "Kilogram SI Mass Unit",
+          "bis": "Kilogramo SI Masa"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25731",
+        "factId": "si-base-unit-mass-kilogram-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "SI base unit for mass",
+        "terms": [
+          "kilogram",
+          "kilogramo",
+          "mass",
+          "masa",
+          "bigat",
+          "kabug-aton",
+          "si unit ng masa",
+          "yunit ng bigat",
+          "kg",
+          "timbang"
+        ],
+        "fact": {
+          "en": "The kilogram (kg) is the official SI base unit we use to measure mass!",
+          "tl": "Ang kilogramo (kg) ang SI base unit na ginagamit para sukatin ang masa!",
+          "bis": "Ang kilogramo (kg) mao ang SI base unit nga gigamit sa pagsukod sa masa!"
+        },
+        "slug": "ffct-25731",
+        "source": "original",
+        "title": {
+          "tl": "Kilogramo SI Unit Masa",
+          "en": "Kilogram SI Mass Unit",
+          "bis": "Kilogramo, SI Unit sa Masa"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title's comma and Unit sa Masa make the kilogram/mass relationship explicit. The unchanged body retains kilogramo, kg and SI base unit; BIPM confirms the mass unit. Both blind title judgments prefer the linked phrase and both body judgments tie. The title does not need to repeat every qualification in the body, and no measurement symbol is changed.",
+      "formal_item_id": "ca7f2c01df877ea81bbfcaf3534a5dc6a",
+      "fidelity_item_id": "mb81fafd07f4f8280baf3665d",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25733",
+      "source_card_sha256": "d2310423469d2e6fd1cb1865ddd8e5df0bb54ea1dbf736e59276090e186117c2",
+      "candidate_card_sha256": "54b57c8a40a282e53502933432cd709330a24971df061ad8f63607cdd6dc1e40",
+      "before_card": {
+        "id": "ffct-25733",
+        "factId": "si-base-unit-current-ampere-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "SI base unit for electric current",
+        "terms": [
+          "ampere",
+          "ampyer",
+          "electric current",
+          "agos ng kuryente",
+          "elektrikong agos",
+          "sulog sa kuryente",
+          "si unit ng kuryente",
+          "a",
+          "current",
+          "kuryente"
+        ],
+        "fact": {
+          "en": "The ampere (A) is the official SI base unit used to measure electric current!",
+          "tl": "Ang ampere (A) ang SI base unit na ginagamit para sukatin ang agos ng kuryente o electric current!",
+          "bis": "Ang ampere (A) mao ang SI base unit nga gigamit sa pagsukod sa sulog sa kuryente o electric current!"
+        },
+        "slug": "ffct-25733",
+        "source": "original",
+        "title": {
+          "tl": "Ampere SI Unit Kuryente",
+          "en": "Ampere Current Unit",
+          "bis": "Ampere SI Kuryente"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25733",
+        "factId": "si-base-unit-current-ampere-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "SI base unit for electric current",
+        "terms": [
+          "ampere",
+          "ampyer",
+          "electric current",
+          "agos ng kuryente",
+          "elektrikong agos",
+          "sulog sa kuryente",
+          "si unit ng kuryente",
+          "a",
+          "current",
+          "kuryente"
+        ],
+        "fact": {
+          "en": "The ampere (A) is the official SI base unit used to measure electric current!",
+          "tl": "Ang ampere (A) ang SI base unit na ginagamit para sukatin ang agos ng kuryente o electric current!",
+          "bis": "Ang ampere (A) mao ang SI base unit nga gigamit sa pagsukod sa sulog sa kuryente o electric current!"
+        },
+        "slug": "ffct-25733",
+        "source": "original",
+        "title": {
+          "tl": "Ampere SI Unit Kuryente",
+          "en": "Ampere Current Unit",
+          "bis": "Ampere, Unit sa Sulog sa Kuryente"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The new title says the ampere measures current using the body's sulog sa kuryente, rather than the broader electricity label alone. Wolff sulug supports current; Binisaya's sulog entry explicitly includes electric current, and sa kuryente plus the unchanged English body gloss disambiguate it. The independent electric-current corpus query returned zero, so no such attestation is claimed. BIPM confirms ampere/A for current. Both blind title preferences and body ties are clean, with SI base-unit status retained.",
+      "formal_item_id": "ccf474899f2a1ad48cfe9531448804977",
+      "fidelity_item_id": "m87db68674e9bd8a41bfd8d22",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25734",
+      "source_card_sha256": "fefdbdebf9b3fd82372ab87ef1d7471859f222264f1cc49a83afa4a9e543c2a2",
+      "candidate_card_sha256": "04bf509ee8ff7145e4c6e2da40ff9af49952f355d8b83b829c75e41e4a0bd4b1",
+      "before_card": {
+        "id": "ffct-25734",
+        "factId": "si-base-unit-temperature-kelvin-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "SI base unit for temperature",
+        "terms": [
+          "kelvin",
+          "temperature",
+          "temperatura",
+          "init",
+          "kainitan",
+          "si unit ng temperatura",
+          "k",
+          "thermodynamic temperature",
+          "yunit ng temperatura",
+          "sukat ng init"
+        ],
+        "fact": {
+          "en": "The kelvin (K) is the official SI base unit used to measure temperature!",
+          "tl": "Ang kelvin (K) ang SI base unit na ginagamit para sukatin ang temperatura!",
+          "bis": "Ang kelvin (K) mao ang SI base unit nga gigamit sa pagsukod sa temperatura!"
+        },
+        "slug": "qa-ffct-25734",
+        "source": "original",
+        "title": {
+          "tl": "Kelvin SI Base Unit Temperatura",
+          "en": "The Kelvin, SI Temp Unit",
+          "bis": "Kelvin SI Unit Temperatura"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25734",
+        "factId": "si-base-unit-temperature-kelvin-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "SI base unit for temperature",
+        "terms": [
+          "kelvin",
+          "temperature",
+          "temperatura",
+          "init",
+          "kainitan",
+          "si unit ng temperatura",
+          "k",
+          "thermodynamic temperature",
+          "yunit ng temperatura",
+          "sukat ng init"
+        ],
+        "fact": {
+          "en": "The kelvin (K) is the official SI base unit used to measure temperature!",
+          "tl": "Ang kelvin (K) ang SI base unit na ginagamit para sukatin ang temperatura!",
+          "bis": "Ang kelvin (K) mao ang SI base unit nga gigamit sa pagsukod sa temperatura!"
+        },
+        "slug": "qa-ffct-25734",
+        "source": "original",
+        "title": {
+          "tl": "Kelvin SI Base Unit Temperatura",
+          "en": "The Kelvin, SI Temp Unit",
+          "bis": "Kelvin, SI Unit sa Temperatura"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only punctuation and sa link the Kelvin unit to temperature in the title. The unchanged body retains kelvin, K and SI base unit, matching BIPM. Both blind observations prefer the title and tie the body, and fidelity is equivalent/compatible. No Celsius relationship, conversion or symbol case is changed.",
+      "formal_item_id": "c7eeb5015446302fac074bfdc4c5c6a35",
+      "fidelity_item_id": "mb8c2284ecb3a444ac9b9e7d0",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25737",
+      "source_card_sha256": "ce1dc9e36ac1bb24dd8537856ebd29a074741e2581ec6ce5a3dee4337e0ee13a",
+      "candidate_card_sha256": "c5190ddbf19c1dd38b153a94792aa41e9ea5869ec4c1828ea6a359be846fb537",
+      "before_card": {
+        "id": "ffct-25737",
+        "factId": "si-base-units-count-seven-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "how many SI base units there are",
+        "terms": [
+          "how many si base units",
+          "ilan ang si base units",
+          "pito",
+          "seven",
+          "7 base units",
+          "pila ka si base units",
+          "si base units",
+          "bilang ng yunit",
+          "ihap sa yunit",
+          "metric units"
+        ],
+        "fact": {
+          "en": "There are exactly seven (7) SI base units in science: meter, kilogram, second, ampere, kelvin, mole, and candela!",
+          "tl": "May pito (7) na SI base units sa siyensya: metro, kilogramo, segundo, ampere, kelvin, mole, at candela!",
+          "bis": "Adunay pito (7) ka SI base units sa siyensya: metro, kilogramo, segundo, ampere, kelvin, mole, ug candela!"
+        },
+        "slug": "ffct-25737",
+        "source": "original",
+        "title": {
+          "tl": "Pitong SI Base Units Siyensya",
+          "en": "The Seven SI Base Units",
+          "bis": "Pito SI Base Units"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25737",
+        "factId": "si-base-units-count-seven-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "how many SI base units there are",
+        "terms": [
+          "how many si base units",
+          "ilan ang si base units",
+          "pito",
+          "seven",
+          "7 base units",
+          "pila ka si base units",
+          "si base units",
+          "bilang ng yunit",
+          "ihap sa yunit",
+          "metric units"
+        ],
+        "fact": {
+          "en": "There are exactly seven (7) SI base units in science: meter, kilogram, second, ampere, kelvin, mole, and candela!",
+          "tl": "May pito (7) na SI base units sa siyensya: metro, kilogramo, segundo, ampere, kelvin, mole, at candela!",
+          "bis": "Adunay pito (7) ka SI base units sa siyensya: metro, kilogramo, segundo, ampere, kelvin, mole, ug candela!"
+        },
+        "slug": "ffct-25737",
+        "source": "original",
+        "title": {
+          "tl": "Pitong SI Base Units Siyensya",
+          "en": "The Seven SI Base Units",
+          "bis": "Ang Pito ka SI Base Units"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title gains Ang and numeral classifier ka, matching the body's pito (7) ka. All seven names and the numeral remain byte-identical in the body; BIPM confirms the seven-unit set. Both blind title judgments favor the counting phrase and body judgments tie, with clear fidelity. The count remains exact without adding a new adverb.",
+      "formal_item_id": "c2f9e0da8c889d3e3447c8decf2cf6aed",
+      "fidelity_item_id": "m3fe5078ccc0d6ab68950ad60",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25745",
+      "source_card_sha256": "6ab235514a37448934d6468d5d77312602b04add0e96edf371e3c14db7071fa6",
+      "candidate_card_sha256": "3f2d380f72ac20d0244c76c04d6632a26c1a502d2fcc088f2f39ed2e6dc418fe",
+      "before_card": {
+        "id": "ffct-25745",
+        "factId": "kelvin-scale-inventor-william-thomson-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who invented the Kelvin scale",
+        "terms": [
+          "who invented kelvin",
+          "sino gumawa ng kelvin",
+          "kinsa nag-imbento sa kelvin",
+          "william thomson",
+          "lord kelvin",
+          "kelvin scale",
+          "kelvin",
+          "absolute temperature",
+          "physicist",
+          "temperatura"
+        ],
+        "fact": {
+          "en": "William Thomson, also known as Lord Kelvin, created the Kelvin temperature scale!",
+          "tl": "Si William Thomson, na kilala bilang Lord Kelvin, ang gumawa ng Kelvin temperature scale!",
+          "bis": "Si William Thomson, nga nailhan nga Lord Kelvin, mao ang naghimo sa Kelvin temperature scale!"
+        },
+        "slug": "ffct-25745",
+        "source": "original",
+        "title": {
+          "tl": "Si Lord Kelvin William Thomson",
+          "en": "Lord Kelvin Scale Maker",
+          "bis": "Si Lord Kelvin William Thomson"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25745",
+        "factId": "kelvin-scale-inventor-william-thomson-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who invented the Kelvin scale",
+        "terms": [
+          "who invented kelvin",
+          "sino gumawa ng kelvin",
+          "kinsa nag-imbento sa kelvin",
+          "william thomson",
+          "lord kelvin",
+          "kelvin scale",
+          "kelvin",
+          "absolute temperature",
+          "physicist",
+          "temperatura"
+        ],
+        "fact": {
+          "en": "William Thomson, also known as Lord Kelvin, created the Kelvin temperature scale!",
+          "tl": "Si William Thomson, na kilala bilang Lord Kelvin, ang gumawa ng Kelvin temperature scale!",
+          "bis": "Si William Thomson, nga nailhan nga Lord Kelvin, mao ang naghimo sa Kelvin temperature scale!"
+        },
+        "slug": "ffct-25745",
+        "source": "original",
+        "title": {
+          "tl": "Si Lord Kelvin William Thomson",
+          "en": "Lord Kelvin Scale Maker",
+          "bis": "Lord Kelvin ug ang Kelvin Scale"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title explicitly coordinates Lord Kelvin and the scale instead of running two names together. The full unchanged body still identifies William Thomson as Lord Kelvin and attributes the Kelvin temperature scale to him. Both blind title observations favor the relation with identical-body ties, and the English comparison is clean. No alternate identity, new unit or revised date is introduced.",
+      "formal_item_id": "cb83c51c79a553727cd2191ed983b2df6",
+      "fidelity_item_id": "m58a811b0934e84cc4fe06e09",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25749",
+      "source_card_sha256": "eb2bceb37d378490ed604a80080df430d55bff9be34dea7c037ae6393188de7e",
+      "candidate_card_sha256": "774bfeaaea1f7cd6269bbfef65d72689980e265803d5472cc4dd6690a52c0227",
+      "before_card": {
+        "id": "ffct-25749",
+        "factId": "si-abbreviation-meaning-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what SI stands for",
+        "terms": [
+          "what does si stand for",
+          "ano ang ibig sabihin ng si",
+          "unsa ang si",
+          "international system of units",
+          "si",
+          "systeme international",
+          "metric system",
+          "sistema ng sukat",
+          "sistema sa sukod",
+          "metric"
+        ],
+        "fact": {
+          "en": "What does SI stand for in science?\n\nIt stands for the International System of Units, the worldwide system of measurement!",
+          "tl": "Ano ang ibig sabihin ng SI sa agham?\n\nIbig sabihin ay International System of Units, ang pandaigdigang sistema ng pagsukat!",
+          "bis": "Unsa ang pasabot sa SI sa siyensya?\n\nNagpasabot kini sa International System of Units, ang tibuok-kalibutan nga sistema sa pagsukod!"
+        },
+        "slug": "ffct-25749",
+        "source": "original",
+        "title": {
+          "tl": "SI International System Units",
+          "en": "What SI Stands For",
+          "bis": "SI International System Units"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25749",
+        "factId": "si-abbreviation-meaning-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what SI stands for",
+        "terms": [
+          "what does si stand for",
+          "ano ang ibig sabihin ng si",
+          "unsa ang si",
+          "international system of units",
+          "si",
+          "systeme international",
+          "metric system",
+          "sistema ng sukat",
+          "sistema sa sukod",
+          "metric"
+        ],
+        "fact": {
+          "en": "What does SI stand for in science?\n\nIt stands for the International System of Units, the worldwide system of measurement!",
+          "tl": "Ano ang ibig sabihin ng SI sa agham?\n\nIbig sabihin ay International System of Units, ang pandaigdigang sistema ng pagsukat!",
+          "bis": "Unsa ang pasabot sa SI sa siyensya?\n\nNagpasabot kini sa International System of Units, ang tibuok-kalibutan nga sistema sa pagsukod!"
+        },
+        "slug": "ffct-25749",
+        "source": "original",
+        "title": {
+          "tl": "SI International System Units",
+          "en": "What SI Stands For",
+          "bis": "Ang Pasabot sa SI"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The new title is the card's question topic, Ang Pasabot sa SI, rather than an incomplete English expansion. The unchanged body keeps the full International System of Units name and worldwide measurement-system description, consistent with BIPM. Both blind title judgments favor the phrase and body judgments tie. The title change does not reinterpret SI as English initials or alter the official name.",
+      "formal_item_id": "cdb7132f0b531f961182d335ea384e1ca",
+      "fidelity_item_id": "mc3ce840807b5e02d67edfa43",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25753",
+      "source_card_sha256": "fb9bf72b1649c41a4809fe6de7d5577a20cf45a667e9c943a73ce1606bfd9af7",
+      "candidate_card_sha256": "81bcc32316bf8b29d2cd660e0be0e5ae4cbb7f43c708d48f3cf7ee9096cd83e3",
+      "before_card": {
+        "id": "ffct-25753",
+        "factId": "energy-unit-joule-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "SI unit for energy",
+        "terms": [
+          "unit of energy",
+          "yunit ng enerhiya",
+          "yunit sa enerhiya",
+          "joule",
+          "j",
+          "energy",
+          "enerhiya",
+          "james joule",
+          "work",
+          "si unit ng enerhiya"
+        ],
+        "fact": {
+          "en": "The SI unit of energy and work is the joule (J)! It is named after the scientist James Joule.",
+          "tl": "Ang SI unit ng enerhiya at trabaho (work) ay joule (J)! Ipinangalan ito sa siyentipikong si James Joule.",
+          "bis": "Ang SI unit sa enerhiya ug trabaho (work) kay joule (J)! Ginganlan kini sa siyentipiko nga si James Joule."
+        },
+        "slug": "ffct-25753",
+        "source": "original",
+        "title": {
+          "tl": "SI Joule Yunit Enerhiya",
+          "en": "SI Unit of Energy",
+          "bis": "SI Joule Yunit Enerhiya"
+        },
+        "cats": [
+          "measurement",
+          "energy"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25753",
+        "factId": "energy-unit-joule-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "SI unit for energy",
+        "terms": [
+          "unit of energy",
+          "yunit ng enerhiya",
+          "yunit sa enerhiya",
+          "joule",
+          "j",
+          "energy",
+          "enerhiya",
+          "james joule",
+          "work",
+          "si unit ng enerhiya"
+        ],
+        "fact": {
+          "en": "The SI unit of energy and work is the joule (J)! It is named after the scientist James Joule.",
+          "tl": "Ang SI unit ng enerhiya at trabaho (work) ay joule (J)! Ipinangalan ito sa siyentipikong si James Joule.",
+          "bis": "Ang SI unit sa enerhiya ug trabaho (work) kay joule (J)! Ginganlan kini sa siyentipiko nga si James Joule."
+        },
+        "slug": "ffct-25753",
+        "source": "original",
+        "title": {
+          "tl": "SI Joule Yunit Enerhiya",
+          "en": "SI Unit of Energy",
+          "bis": "SI Unit sa Enerhiya"
+        },
+        "cats": [
+          "measurement",
+          "energy"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title now links SI Unit and Enerhiya and matches the English title exactly in meaning. The unchanged body retains energy and work, joule (J) and James Joule. Both blind observations prefer the grammatical relationship with identical-body ties, and fidelity/backtranslation are clean. Removing Joule from the heading does not remove it from the teaching text or change its unit.",
+      "formal_item_id": "c5384286ffe63a2263eb7cd06b1ef47b1",
+      "fidelity_item_id": "mb18e4735ec101329527c1196",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25754",
+      "source_card_sha256": "863080610a3ae5d474abd3561fa85a8d885bbf32cf083a54472e1457370a3786",
+      "candidate_card_sha256": "b7c4942e4f9e34966b1703bf373db87d401124716bf33db5a363b6c61d3aa5e8",
+      "before_card": {
+        "id": "ffct-25754",
+        "factId": "frequency-unit-hertz-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "SI unit for frequency",
+        "terms": [
+          "unit of frequency",
+          "yunit ng frequency",
+          "yunit sa frequency",
+          "hertz",
+          "hz",
+          "frequency",
+          "dalas",
+          "heinrich hertz",
+          "cycles per second",
+          "si unit ng dalas"
+        ],
+        "fact": {
+          "en": "What do we use to measure frequency?\n\nThe SI unit of frequency is the hertz (Hz)! It is named after the scientist Heinrich Hertz.",
+          "tl": "Ano ang ginagamit natin para sukatin ang frequency?\n\nAng SI unit ng frequency ay hertz (Hz)! Ipinangalan ito sa siyentipikong si Heinrich Hertz.",
+          "bis": "Unsay atong gigamit aron sukdon ang frequency?\n\nAng SI unit sa frequency kay hertz (Hz)! Ginganlan kini sa siyentipiko nga si Heinrich Hertz."
+        },
+        "slug": "ffct-25754",
+        "source": "original",
+        "title": {
+          "tl": "SI Hertz Yunit Frequency",
+          "en": "SI Unit of Frequency",
+          "bis": "SI Hertz Yunit Frequency"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25754",
+        "factId": "frequency-unit-hertz-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "SI unit for frequency",
+        "terms": [
+          "unit of frequency",
+          "yunit ng frequency",
+          "yunit sa frequency",
+          "hertz",
+          "hz",
+          "frequency",
+          "dalas",
+          "heinrich hertz",
+          "cycles per second",
+          "si unit ng dalas"
+        ],
+        "fact": {
+          "en": "What do we use to measure frequency?\n\nThe SI unit of frequency is the hertz (Hz)! It is named after the scientist Heinrich Hertz.",
+          "tl": "Ano ang ginagamit natin para sukatin ang frequency?\n\nAng SI unit ng frequency ay hertz (Hz)! Ipinangalan ito sa siyentipikong si Heinrich Hertz.",
+          "bis": "Unsay atong gigamit aron sukdon ang frequency?\n\nAng SI unit sa frequency kay hertz (Hz)! Ginganlan kini sa siyentipiko nga si Heinrich Hertz."
+        },
+        "slug": "ffct-25754",
+        "source": "original",
+        "title": {
+          "tl": "SI Hertz Yunit Frequency",
+          "en": "SI Unit of Frequency",
+          "bis": "SI Unit sa Frequency"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title becomes the linked topic SI Unit sa Frequency, matching English. The question, hertz (Hz) and Heinrich Hertz attribution are unchanged. Both blind title judgments favor the clear relationship and body judgments tie. Approval does not adopt the judge's unsupported idea that a factual-card title must avoid giving the answer or that yunit is inherently incorrect.",
+      "formal_item_id": "cd7eaec7591761107a18a580ac89b7827",
+      "fidelity_item_id": "m7a61d5f5a7b8d74dee39075a",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-25755",
+      "source_card_sha256": "c288834a8499c3d2aac5dc0dd2cc694233f955d03d4af19fb831ad0c64144d9c",
+      "candidate_card_sha256": "c8265882e4f5738b1d87a85f9bad314a15b6a99688970f95c91f2f1c5e13c832",
+      "before_card": {
+        "id": "ffct-25755",
+        "factId": "voltage-unit-volt-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "SI unit for voltage",
+        "terms": [
+          "unit of voltage",
+          "yunit ng boltahe",
+          "yunit sa boltahe",
+          "volt",
+          "v",
+          "voltage",
+          "boltahe",
+          "alessandro volta",
+          "electric potential",
+          "si unit ng boltahe"
+        ],
+        "fact": {
+          "en": "The SI unit of voltage is the volt (V)! It is named after the scientist Alessandro Volta.",
+          "tl": "Ang SI unit ng boltahe (voltage) ay volt (V)! Ipinangalan ito sa siyentipikong si Alessandro Volta.",
+          "bis": "Ang SI unit sa boltahe (voltage) kay volt (V)! Ginganlan kini sa siyentipiko nga si Alessandro Volta."
+        },
+        "slug": "ffct-25755",
+        "source": "original",
+        "title": {
+          "tl": "SI Volt Yunit Boltahe",
+          "en": "SI Unit of Voltage",
+          "bis": "SI Volt Yunit Boltahe"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25755",
+        "factId": "voltage-unit-volt-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "SI unit for voltage",
+        "terms": [
+          "unit of voltage",
+          "yunit ng boltahe",
+          "yunit sa boltahe",
+          "volt",
+          "v",
+          "voltage",
+          "boltahe",
+          "alessandro volta",
+          "electric potential",
+          "si unit ng boltahe"
+        ],
+        "fact": {
+          "en": "The SI unit of voltage is the volt (V)! It is named after the scientist Alessandro Volta.",
+          "tl": "Ang SI unit ng boltahe (voltage) ay volt (V)! Ipinangalan ito sa siyentipikong si Alessandro Volta.",
+          "bis": "Ang SI unit sa boltahe (voltage) kay volt (V)! Ginganlan kini sa siyentipiko nga si Alessandro Volta."
+        },
+        "slug": "ffct-25755",
+        "source": "original",
+        "title": {
+          "tl": "SI Volt Yunit Boltahe",
+          "en": "SI Unit of Voltage",
+          "bis": "SI Unit sa Boltahe"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title's sa states the voltage-unit relationship that the English heading and unchanged body express. Volt (V), boltahe (voltage) and Alessandro Volta remain in the body. Both blind title observations prefer the linked phrase with identical-body ties and clear fidelity. Volt and voltage are different concepts, so approval does not adopt a judge's claim that they are redundant synonyms.",
+      "formal_item_id": "cf32fa6b7bd088487d07caa6e155a152e",
+      "fidelity_item_id": "m21901f830c05880510844eab",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    }
+  ],
+  "held": [
+    {
+      "card_id": "ffct-25046",
+      "source_card_sha256": "1835630117a231acfeeae69114a0d41c7eb2532658c4e2696f895be8559701aa",
+      "candidate_card_sha256": "aa851cd5bd09ca2aa4674fdef413c97ed64bb83ae4dce9472571768fe83a82d2",
+      "before_card": {
+        "id": "ffct-25046",
+        "factId": "circuit-series-current-same-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "current is the same throughout a series circuit",
+        "terms": [
+          "series circuit",
+          "serye",
+          "current",
+          "kuryente",
+          "same",
+          "pareho",
+          "everywhere",
+          "lahat ng dako",
+          "single path",
+          "iisang daan",
+          "ammeter"
+        ],
+        "fact": {
+          "en": "In a series circuit, the current is the same at every point — because there is only one path for electrons to flow, the same amount of current passes through every component.",
+          "tl": "Sa isang series circuit, ang kuryente ay pareho sa lahat ng dako — dahil iisa lamang ang daan ng electrons, parehong dami ng kuryente ang dumadaan sa bawat bahagi.",
+          "bis": "Sa usa ka series circuit, ang kuryente pareho sa tanan nga bahin — tungod kay usa lamang ang agianan alang sa mga electrons, mao rang dami sa kuryente ang moagi sa matag parte."
+        },
+        "slug": "circuit-series-parallel",
+        "title": {
+          "en": "Series Current",
+          "tl": "Kuryente sa Serye",
+          "bis": "Kuryente sa Serye"
+        },
+        "cats": [
+          "circuits",
+          "electricity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "series circuit"
+          ],
+          "en": [
+            "series circuit"
+          ],
+          "bis": [
+            "series circuit"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-25046",
+        "factId": "circuit-series-current-same-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "current is the same throughout a series circuit",
+        "terms": [
+          "series circuit",
+          "serye",
+          "current",
+          "kuryente",
+          "same",
+          "pareho",
+          "everywhere",
+          "lahat ng dako",
+          "single path",
+          "iisang daan",
+          "ammeter"
+        ],
+        "fact": {
+          "en": "In a series circuit, the current is the same at every point — because there is only one path for electrons to flow, the same amount of current passes through every component.",
+          "tl": "Sa isang series circuit, ang kuryente ay pareho sa lahat ng dako — dahil iisa lamang ang daan ng electrons, parehong dami ng kuryente ang dumadaan sa bawat bahagi.",
+          "bis": "Sa usa ka series circuit, ang kuryente pareho sa tanan nga bahin. Tungod kay usa lamang ang agianan alang sa mga electrons, mao rang dami sa kuryente ang moagi sa matag parte."
+        },
+        "slug": "circuit-series-parallel",
+        "title": {
+          "en": "Series Current",
+          "tl": "Kuryente sa Serye",
+          "bis": "Kuryente sa Serye"
+        },
+        "cats": [
+          "circuits",
+          "electricity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "series circuit"
+          ],
+          "en": [
+            "series circuit"
+          ],
+          "bis": [
+            "series circuit"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The punctuation split is small and both observations prefer it, but the unchanged dami in the current definition remains unresolved. The frozen corpus has only two relevant amount examples, and the inspected Wolff lookup has no entry; Binisaya retrieval failed. Neither model agreement nor a failed dictionary request establishes the intended Cebuano sense. Hold the exact candidate pending lexical evidence; do not substitute another word or declare the loan invalid.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "cb24e3db72e75361bf9d4c567d8b4b994"
+    },
+    {
+      "card_id": "ffct-25068",
+      "source_card_sha256": "7eaaedaf1f000082c9b0540a7f8eea368896da855a0ce253b0309590f2ece205",
+      "candidate_card_sha256": "1b62db31df06a3380c1924a9da326fe30ab8fb2ef9160f30e267d96fcef99be8",
+      "before_card": {
+        "id": "ffct-25068",
+        "factId": "battery-dry-cell-parts-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "parts of a dry cell battery",
+        "terms": [
+          "dry cell",
+          "baterya",
+          "carbon rod",
+          "zinc case",
+          "electrolyte",
+          "pasta",
+          "terminal",
+          "positibo",
+          "negatibo",
+          "aa battery",
+          "penlight"
+        ],
+        "fact": {
+          "en": "What's inside a dry cell battery?\n\nA carbon rod in the center (positive terminal), a zinc outer casing (negative terminal), and a paste electrolyte between them that allows the chemical reaction!",
+          "tl": "Ano ang nasa loob ng dry cell battery?\n\nIsang carbon na baras sa gitna (positibong terminal), zinc na panlabas na balot (negatibong terminal), at isang pasta na electrolyte sa pagitan na nagpapahintulot ng chemical reaction!",
+          "bis": "Unsa ang sulod sa dry cell battery?\n\nUsa ka carbon nga baras sa tunga (positibong terminal), zinc nga gawas nga balat (negatibong terminal), ug pasta nga electrolyte sa taliwala nga nagtugot sa chemical reaction!"
+        },
+        "slug": "ffct-25068",
+        "source": "original",
+        "title": {
+          "tl": "Dry Cell Carbon Zinc Electrolyte",
+          "en": "Dry Cell Battery Parts",
+          "bis": "Dry Cell Carbon Zinc Electrolyte"
+        },
+        "cats": [
+          "circuits"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25068",
+        "factId": "battery-dry-cell-parts-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "parts of a dry cell battery",
+        "terms": [
+          "dry cell",
+          "baterya",
+          "carbon rod",
+          "zinc case",
+          "electrolyte",
+          "pasta",
+          "terminal",
+          "positibo",
+          "negatibo",
+          "aa battery",
+          "penlight"
+        ],
+        "fact": {
+          "en": "What's inside a dry cell battery?\n\nA carbon rod in the center (positive terminal), a zinc outer casing (negative terminal), and a paste electrolyte between them that allows the chemical reaction!",
+          "tl": "Ano ang nasa loob ng dry cell battery?\n\nIsang carbon na baras sa gitna (positibong terminal), zinc na panlabas na balot (negatibong terminal), at isang pasta na electrolyte sa pagitan na nagpapahintulot ng chemical reaction!",
+          "bis": "Unsa ang sulod sa dry cell battery?\n\nSa tunga, adunay carbon nga baras (positibong terminal). Sa gawas, adunay zinc nga balat (negatibong terminal). Sa taliwala nila, adunay pasta nga electrolyte nga nagtugot sa chemical reaction!"
+        },
+        "slug": "ffct-25068",
+        "source": "original",
+        "title": {
+          "tl": "Dry Cell Carbon Zinc Electrolyte",
+          "en": "Dry Cell Battery Parts",
+          "bis": "Mga Bahin sa Dry Cell Battery"
+        },
+        "cats": [
+          "circuits"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The spatial sentence split preserves the candidate's carbon rod, zinc case and paste, but generic dry cell needs a zinc-carbon/manganese qualification: Panasonic distinguishes alkaline dry batteries with another design, while OpenStax uses dry cell narrowly for zinc-carbon. Resolve the English scope across languages before approving this exact draft. Separately, retained balat for casing is not established by the inspected Wolff entry, whose sense is sea cucumber; substring corpus hits include unrelated igbalati.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c234308892e79be2e1cb91083f3ff4335"
+    },
+    {
+      "card_id": "ffct-25151",
+      "source_card_sha256": "8b1a98cb18846ab909d6f956017269f49195d3793f293551668ca99ff764b9a9",
+      "candidate_card_sha256": "c3a44dc715683a326ae0ce2e7367ed9742e689a16b5c6a5ceb9a0c95f9dca37d",
+      "before_card": {
+        "id": "ffct-25151",
+        "factId": "octavina-instrument-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "string instrument makes sound from vibrating strings",
+        "terms": [
+          "octavina",
+          "instrumento",
+          "string instrument",
+          "kwerdas",
+          "string",
+          "rondalla",
+          "tunog",
+          "sound",
+          "vibration",
+          "panginig",
+          "pitch",
+          "tono",
+          "musika",
+          "kahoy"
+        ],
+        "fact": {
+          "en": "The octavina is a stringed instrument used in the rondalla! Its sound comes from strings that vibrate when plucked.",
+          "tl": "Ang octavina ay isang instrumentong may kwerdas na ginagamit sa rondalla! Ang tunog nito ay nagmumula sa kwerdas na nanginginig kapag kinakalbit.",
+          "bis": "Ang octavina usa ka instrumento nga adunay kwerdas nga gamiton sa rondalla! Ang tingog niini gikan sa nagkurog nga kwerdas kon kalboton."
+        },
+        "slug": "",
+        "title": {
+          "en": "Octavina",
+          "tl": "Octavina",
+          "bis": "Octavina"
+        },
+        "cats": [
+          "sound"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "octavina"
+          ],
+          "en": [
+            "octavina"
+          ],
+          "bis": [
+            "octavina"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-25151",
+        "factId": "octavina-instrument-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "string instrument makes sound from vibrating strings",
+        "terms": [
+          "octavina",
+          "instrumento",
+          "string instrument",
+          "kwerdas",
+          "string",
+          "rondalla",
+          "tunog",
+          "sound",
+          "vibration",
+          "panginig",
+          "pitch",
+          "tono",
+          "musika",
+          "kahoy"
+        ],
+        "fact": {
+          "en": "The octavina is a stringed instrument used in the rondalla! Its sound comes from strings that vibrate when plucked.",
+          "tl": "Ang octavina ay isang instrumentong may kwerdas na ginagamit sa rondalla! Ang tunog nito ay nagmumula sa kwerdas na nanginginig kapag kinakalbit.",
+          "bis": "Ang octavina usa ka instrumento nga adunay kwerdas. Gigamit kini sa rondalla! Ang tingog niini gikan sa nagkurog nga kwerdas kon kalboton."
+        },
+        "slug": "",
+        "title": {
+          "en": "Octavina",
+          "tl": "Octavina",
+          "bis": "Octavina"
+        },
+        "cats": [
+          "sound"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "octavina"
+          ],
+          "en": [
+            "octavina"
+          ],
+          "bis": [
+            "octavina"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "NCCA supports octavina as a plucked rondalla string instrument. The proposer explicitly left kalboton for review; that plucking sense has no other frozen-body root example after all priority cards are excluded and no matching inspected Wolff entry. Binisaya kalbot/kalbut/kalbit retrievals failed. A shorter definition cannot settle that lexical uncertainty, so hold the exact candidate without replacing kalboton from an LLM's ear.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "cd9a355f570bc6c884bc03bcb4fa0124f"
+    },
+    {
+      "card_id": "ffct-25242",
+      "source_card_sha256": "d1e4bf68116627a3fa561d01e625edfea41241adef2da8c4dd4a5fa21a0f70e0",
+      "candidate_card_sha256": "06cb5d56abfa74824f98a4bcf64e607fc29efbc63c3442fcc0957c19bc34918b",
+      "before_card": {
+        "id": "ffct-25242",
+        "factId": "magnet-bar-magnet-shape-g4",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "a bar magnet is long and rectangular with poles at each end",
+        "terms": [
+          "bar magnet",
+          "bar magneto",
+          "north pole",
+          "south pole",
+          "poles",
+          "polos",
+          "rectangular",
+          "pahaba",
+          "strongest at ends",
+          "pinakamalakas sa dulo",
+          "weakest at center",
+          "pinakamahina sa gitna"
+        ],
+        "fact": {
+          "en": "What does a bar magnet look like?\n\nA bar magnet is long and rectangular with a north pole at one end and a south pole at the other. Its magnetic force is strongest at the ends and weakest at the centre!",
+          "tl": "Ano ang itsura ng bar magnet?\n\nAng bar magnet ay pahaba at parihaba na may north pole sa isang dulo at south pole sa kabilang dulo. Ang magnetic force nito ay pinakamalakas sa mga dulo at pinakamahina sa gitna!",
+          "bis": "Unsay dagway sa bar magnet?\n\nAng bar magnet taas ug parihaba nga adunay north pole sa usa ka tumoy ug south pole sa lain. Ang iyang magnetic force pinakamabaskog sa mga tumoy ug pinakamaluya sa tunga!"
+        },
+        "slug": "ffct-25242",
+        "source": "original",
+        "title": {
+          "tl": "Bar Magnet na Parihaba",
+          "en": "The Bar Magnet Shape",
+          "bis": "Bar Magnet sa Porma"
+        },
+        "cats": [
+          "magnets"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25242",
+        "factId": "magnet-bar-magnet-shape-g4",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "a bar magnet is long and rectangular with poles at each end",
+        "terms": [
+          "bar magnet",
+          "bar magneto",
+          "north pole",
+          "south pole",
+          "poles",
+          "polos",
+          "rectangular",
+          "pahaba",
+          "strongest at ends",
+          "pinakamalakas sa dulo",
+          "weakest at center",
+          "pinakamahina sa gitna"
+        ],
+        "fact": {
+          "en": "What does a bar magnet look like?\n\nA bar magnet is long and rectangular with a north pole at one end and a south pole at the other. Its magnetic force is strongest at the ends and weakest at the centre!",
+          "tl": "Ano ang itsura ng bar magnet?\n\nAng bar magnet ay pahaba at parihaba na may north pole sa isang dulo at south pole sa kabilang dulo. Ang magnetic force nito ay pinakamalakas sa mga dulo at pinakamahina sa gitna!",
+          "bis": "Unsay dagway sa bar magnet?\n\nAng bar magnet taas ug parihaba. Kini adunay north pole sa usa ka tumoy ug south pole sa pikas nga tumoy. Ang iyang magnetic force pinakamabaskog sa mga tumoy ug pinakamaluya sa tunga!"
+        },
+        "slug": "ffct-25242",
+        "source": "original",
+        "title": {
+          "tl": "Bar Magnet na Parihaba",
+          "en": "The Bar Magnet Shape",
+          "bis": "Porma sa Bar Magnet"
+        },
+        "cats": [
+          "magnets"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The split and explicit pikas nga tumoy clarify the two poles, but retained parihaba is unresolved in the target variety: only one other rectangle example in the machine corpus, no inspected Wolff entry, and unavailable Binisaya retrieval. Baskug is attested for strength, so it is not rejected as a false friend. Hold this complete candidate pending evidence for parihaba; scarcity or a failed lookup is not a declaration of incorrectness.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "ce947fc31ca4e4cce694defea83398e03"
+    },
+    {
+      "card_id": "ffct-25407",
+      "source_card_sha256": "795362876cf34c06fce666871c897f07f6a4a48ae44184903f25497551326961",
+      "candidate_card_sha256": "5f3e273af801410c5fdee31acfee8d727534ee429886ff5a032438ae54626a37",
+      "before_card": {
+        "id": "ffct-25407",
+        "factId": "philippine-cave-bats-echolocation-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Philippine cave bats use echolocation in darkness",
+        "terms": [
+          "paniki",
+          "philippine bat",
+          "cave",
+          "yungib",
+          "echolocation",
+          "tunog",
+          "darkness",
+          "palawan",
+          "luzon",
+          "ultrasound"
+        ],
+        "fact": {
+          "en": "Philippine cave bats, like those in Palawan and Luzon, use echolocation to navigate in complete darkness and catch insects in flight!",
+          "tl": "Ang mga Philippine cave bats, tulad ng nasa Palawan at Luzon, ay gumagamit ng echolocation para mag-navigate sa complete darkness at hulihin ang mga insekto habang lumilipad!",
+          "bis": "Ang Philippine cave bats, sama sa naa sa Palawan ug Luzon, naggamit sa echolocation aron mag-navigate sa complete darkness ug makuha ang mga insekto samtang naglupad!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Cave Bats",
+          "tl": "Paniki sa Yungib",
+          "bis": "Kabog sa Langob"
+        },
+        "cats": [
+          "mammals",
+          "animal-adaptations"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "echolocation"
+          ],
+          "en": [
+            "echolocation"
+          ],
+          "bis": [
+            "echolocation"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-25407",
+        "factId": "philippine-cave-bats-echolocation-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Philippine cave bats use echolocation in darkness",
+        "terms": [
+          "paniki",
+          "philippine bat",
+          "cave",
+          "yungib",
+          "echolocation",
+          "tunog",
+          "darkness",
+          "palawan",
+          "luzon",
+          "ultrasound"
+        ],
+        "fact": {
+          "en": "Philippine cave bats, like those in Palawan and Luzon, use echolocation to navigate in complete darkness and catch insects in flight!",
+          "tl": "Ang mga Philippine cave bats, tulad ng nasa Palawan at Luzon, ay gumagamit ng echolocation para mag-navigate sa complete darkness at hulihin ang mga insekto habang lumilipad!",
+          "bis": "Ang mga Philippine cave bats, sama sa naa sa Palawan ug Luzon, naggamit og echolocation aron mag-navigate sa kangitngit nga wala gyuy kahayag. Gamit usab niini, makadakop sila og mga insekto samtang naglupad!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Cave Bats",
+          "tl": "Paniki sa Yungib",
+          "bis": "Kabog sa Langob"
+        },
+        "cats": [
+          "mammals",
+          "animal-adaptations"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "echolocation"
+          ],
+          "en": [
+            "echolocation"
+          ],
+          "bis": [
+            "echolocation"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The candidate improves darkness and catching language, supported by ngitngit and dakup, but the English category Philippine cave bats is too broad for an unqualified insect-catching description. Field Museum evidence includes cave-roosting Philippine fruit bats and distinguishes feeding/echolocation strategies. Clarify the insect-eating group or a named species in English before translating that qualification; do not approve a smoother generalization. The sources are used for the diet distinction, not their obsolete extinction claim.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c445987454b2dd7ab40b4abe9eb53689b"
+    },
+    {
+      "card_id": "ffct-25495",
+      "source_card_sha256": "137806d8324a47373d1e3533f8bab828152d036910ff10b6ffa7d0fccf42b246",
+      "candidate_card_sha256": "45c29fff07560770aa350d7d8040fdebc3a7322c33443f61e4dfdd924cb65fa6",
+      "before_card": {
+        "id": "ffct-25495",
+        "factId": "standing-wave-nodes-antinodes-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "standing waves form nodes and antinodes in strings and pipes",
+        "terms": [
+          "standing wave",
+          "node",
+          "antinode",
+          "string",
+          "pipe",
+          "vibration",
+          "resonance",
+          "alon",
+          "wave",
+          "music"
+        ],
+        "fact": {
+          "en": "How do standing waves form?\n\nThey form when reflected waves combine with incoming waves! Nodes are points of no movement, while antinodes are points of maximum displacement.",
+          "tl": "Paano nabubuo ang standing waves?\n\nNabubuo sila kapag ang reflected waves ay nagsasalubong sa incoming waves! Ang nodes ay mga punto na walang galaw, at ang antinodes ay may maximum displacement.",
+          "bis": "Unsaon pagporma sa standing waves?\n\nNahimo sila kung ang reflected waves magkupon sa incoming waves! Ang nodes mao ang mga punto nga walay lihok, ug ang antinodes mao ang mga punto sa maximum displacement."
+        },
+        "slug": "ffct-25495",
+        "source": "original",
+        "title": {
+          "tl": "Standing Wave Node Antinode",
+          "en": "Standing Waves Nodes",
+          "bis": "Standing Wave Node Antinode"
+        },
+        "cats": [
+          "sound"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25495",
+        "factId": "standing-wave-nodes-antinodes-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "standing waves form nodes and antinodes in strings and pipes",
+        "terms": [
+          "standing wave",
+          "node",
+          "antinode",
+          "string",
+          "pipe",
+          "vibration",
+          "resonance",
+          "alon",
+          "wave",
+          "music"
+        ],
+        "fact": {
+          "en": "How do standing waves form?\n\nThey form when reflected waves combine with incoming waves! Nodes are points of no movement, while antinodes are points of maximum displacement.",
+          "tl": "Paano nabubuo ang standing waves?\n\nNabubuo sila kapag ang reflected waves ay nagsasalubong sa incoming waves! Ang nodes ay mga punto na walang galaw, at ang antinodes ay may maximum displacement.",
+          "bis": "Unsaon pagporma sa standing waves?\n\nNahimo sila kung ang reflected waves magkupon sa incoming waves! Ang nodes mao ang mga punto nga walay lihok, ug ang antinodes mao ang mga punto sa maximum displacement."
+        },
+        "slug": "ffct-25495",
+        "source": "original",
+        "title": {
+          "tl": "Standing Wave Node Antinode",
+          "en": "Standing Waves Nodes",
+          "bis": "Standing Wave: Node ug Antinode"
+        },
+        "cats": [
+          "sound"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The title's colon and conjunction help, but the proposer expressly left magkupon for a language reviewer. The one other relevant machine-corpus wave example does not establish combine; complete Wolff kupun entries and retrieved Binisaya kupon attest coupon, not that verb sense. Hold the exact card pending authoritative evidence or a separately reviewed repair. Do not silently correct the body or infer a new sense from two model outputs.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "cf981a97e71f7fb900be200346afb9cca"
+    },
+    {
+      "card_id": "ffct-25609",
+      "source_card_sha256": "289c9bfe2fcfc37b2fc1f326d606a28ac4eac694ea492d20cbf4b9ee2c5e9064",
+      "candidate_card_sha256": "4c8f156c9d1151a48593a41bce0a93c3ad08d67f0581b78c6b9357c900521b1a",
+      "before_card": {
+        "id": "ffct-25609",
+        "factId": "telegraph-year-1844-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "when was the telegraph first used",
+        "terms": [
+          "telegraph",
+          "telegrapo",
+          "samuel morse",
+          "morse",
+          "1844",
+          "kailan",
+          "anong taon",
+          "kanus-a",
+          "when",
+          "what year",
+          "unang mensahe",
+          "first message",
+          "naunang",
+          "petsa"
+        ],
+        "fact": {
+          "en": "When did Morse send the first public telegraph message?\n\nIn 1844, Samuel Morse sent his first public telegraph message from Washington to Baltimore!",
+          "tl": "Kailan ipinadala ni Morse ang unang publikong mensahe sa telegraph?\n\nNoong 1844, ipinadala ni Samuel Morse ang kanyang unang publikong mensahe sa telegraph mula Washington patungong Baltimore!",
+          "bis": "Kanus-a gipadala ni Morse ang unang publikong mensahe sa telegraph?\n\nNiadtong 1844, gipadala ni Samuel Morse ang iyang unang publikong mensahe sa telegraph gikan sa Washington padulong sa Baltimore!"
+        },
+        "slug": "ffct-25609",
+        "source": "original",
+        "title": {
+          "tl": "Morse Telegraph noong 1844",
+          "en": "Morse Telegraph 1844",
+          "bis": "Morse 1844"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25609",
+        "factId": "telegraph-year-1844-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "when was the telegraph first used",
+        "terms": [
+          "telegraph",
+          "telegrapo",
+          "samuel morse",
+          "morse",
+          "1844",
+          "kailan",
+          "anong taon",
+          "kanus-a",
+          "when",
+          "what year",
+          "unang mensahe",
+          "first message",
+          "naunang",
+          "petsa"
+        ],
+        "fact": {
+          "en": "When did Morse send the first public telegraph message?\n\nIn 1844, Samuel Morse sent his first public telegraph message from Washington to Baltimore!",
+          "tl": "Kailan ipinadala ni Morse ang unang publikong mensahe sa telegraph?\n\nNoong 1844, ipinadala ni Samuel Morse ang kanyang unang publikong mensahe sa telegraph mula Washington patungong Baltimore!",
+          "bis": "Kanus-a gipadala ni Morse ang unang publikong mensahe sa telegraph?\n\nNiadtong 1844, gipadala ni Samuel Morse ang iyang unang publikong mensahe sa telegraph gikan sa Washington padulong sa Baltimore!"
+        },
+        "slug": "ffct-25609",
+        "source": "original",
+        "title": {
+          "tl": "Morse Telegraph noong 1844",
+          "en": "Morse Telegraph 1844",
+          "bis": "Telegraph ni Morse sa 1844"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The route and 1844 event are supported by the Library of Congress, but first public telegraph message overstates the chronology. The National Park Service's Speedwell record documents a public demonstration with a transmitted message in January 1838; LOC also records 1838 demonstrations. The English needs an explicit Washington–Baltimore event scope before this title-only candidate can be approved across languages.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c0f72229f17e044bd2e06a5181718a1bd"
+    },
+    {
+      "card_id": "ffct-25677",
+      "source_card_sha256": "0707d917809460189ed981faf5b13b258d14ae8d568b06c6763597fb60a08ba1",
+      "candidate_card_sha256": "ac1a80b24f1387b5b2d3a2c12144ceac28a55f59ee4c0b1708b7b79692416b90",
+      "before_card": {
+        "id": "ffct-25677",
+        "factId": "bandurria-instrument-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "vibrating strings make sound",
+        "terms": [
+          "bandurria",
+          "kuwerdas",
+          "kwerdas",
+          "vibrate",
+          "nanginginig",
+          "nag-uuyog",
+          "tunog",
+          "tingog",
+          "sound",
+          "vibration",
+          "pitch",
+          "tono",
+          "pluck",
+          "kinudlit",
+          "rondalla",
+          "instrumento",
+          "string instrument"
+        ],
+        "fact": {
+          "en": "The bandurria is a Philippine string instrument whose many strings are plucked so they vibrate and make sound — shorter or tighter strings give a higher pitch!",
+          "tl": "Ang bandurria ay isang Pilipinong instrumentong may maraming kuwerdas na pinipitik upang manginig at gumawa ng tunog — mas maikli o mas higpit na kuwerdas ay mas mataas ang tono!",
+          "bis": "Ang bandurria usa ka Pilipinhong instrumento nga daghag kuwerdas nga gikudlit aron mouyog ug mohimog tingog — mas mubo o mas hugot nga kuwerdas mas taas ang tono!"
+        },
+        "slug": "bandurria-instrument",
+        "title": {
+          "en": "Vibrating Strings",
+          "tl": "Tunog ng Kuwerdas",
+          "bis": "Tunog sa Kuwerdas"
+        },
+        "cats": [
+          "sound"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kuwerdas"
+          ],
+          "en": [
+            "strings"
+          ],
+          "bis": [
+            "kuwerdas"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-25677",
+        "factId": "bandurria-instrument-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "vibrating strings make sound",
+        "terms": [
+          "bandurria",
+          "kuwerdas",
+          "kwerdas",
+          "vibrate",
+          "nanginginig",
+          "nag-uuyog",
+          "tunog",
+          "tingog",
+          "sound",
+          "vibration",
+          "pitch",
+          "tono",
+          "pluck",
+          "kinudlit",
+          "rondalla",
+          "instrumento",
+          "string instrument"
+        ],
+        "fact": {
+          "en": "The bandurria is a Philippine string instrument whose many strings are plucked so they vibrate and make sound — shorter or tighter strings give a higher pitch!",
+          "tl": "Ang bandurria ay isang Pilipinong instrumentong may maraming kuwerdas na pinipitik upang manginig at gumawa ng tunog — mas maikli o mas higpit na kuwerdas ay mas mataas ang tono!",
+          "bis": "Ang bandurria usa ka Pilipinhong instrumento nga daghag kuwerdas. Gikudlit ang mga kuwerdas aron mouyog ug mohimog tingog. Kon mas mubo o mas hugot ang kuwerdas, mas taas ang tono!"
+        },
+        "slug": "bandurria-instrument",
+        "title": {
+          "en": "Vibrating Strings",
+          "tl": "Tunog ng Kuwerdas",
+          "bis": "Tunog sa Kuwerdas"
+        },
+        "cats": [
+          "sound"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kuwerdas"
+          ],
+          "en": [
+            "strings"
+          ],
+          "bis": [
+            "kuwerdas"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "NCCA supports the bandurria/rondalla instrument and Wolff uyug supports vibration. The retained gikudlit plucking sense remains unproven: no independent frozen-body example and inspected Wolff/Binisaya kudlit senses concern marking, scratching or engraving. The three-sentence rewrite and clean model verdicts do not resolve the verb. Hold the exact candidate for lexical review without silently replacing the original.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "ccb37b22cd7811fa453b36cdfba441d0e"
+    },
+    {
+      "card_id": "ffct-25686",
+      "source_card_sha256": "7d47fc38b97c64f8ae7a658f153e9a3b0c557e85224846974ce6b65a66587dd3",
+      "candidate_card_sha256": "d5a02001f6c919b55d1b1985773b0c3fec84ff56beeb5c91380cd956c432bdc8",
+      "before_card": {
+        "id": "ffct-25686",
+        "factId": "newton-fma-m-meaning-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what does m stand for in F=ma",
+        "terms": [
+          "f=ma",
+          "m stands for mass",
+          "ano ang m",
+          "unsa ang m",
+          "masa",
+          "mass",
+          "letrang m",
+          "letter m",
+          "newton second law",
+          "m meaning"
+        ],
+        "fact": {
+          "en": "In the equation F=ma, the letter m stands for mass!",
+          "tl": "Sa F=ma, ang m ay nangangahulugang masa (mass)!",
+          "bis": "Sa F=ma, ang m nagpasabot og masa (mass)!"
+        },
+        "slug": "ffct-25686",
+        "source": "original",
+        "title": {
+          "tl": "M sa F=ma Masa",
+          "en": "M in F=ma Is Mass",
+          "bis": "M sa F=ma Masa"
+        },
+        "cats": [
+          "forces"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-25686",
+        "factId": "newton-fma-m-meaning-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what does m stand for in F=ma",
+        "terms": [
+          "f=ma",
+          "m stands for mass",
+          "ano ang m",
+          "unsa ang m",
+          "masa",
+          "mass",
+          "letrang m",
+          "letter m",
+          "newton second law",
+          "m meaning"
+        ],
+        "fact": {
+          "en": "In the equation F=ma, the letter m stands for mass!",
+          "tl": "Sa F=ma, ang m ay nangangahulugang masa (mass)!",
+          "bis": "Sa ekwasyon nga F=ma, ang letra nga m nagpasabot og masa (mass)!"
+        },
+        "slug": "ffct-25686",
+        "source": "original",
+        "title": {
+          "tl": "M sa F=ma Masa",
+          "en": "M in F=ma Is Mass",
+          "bis": "Ang M sa F=ma Mao ang Masa"
+        },
+        "cats": [
+          "forces"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The body usefully restores equation and letter from English and preserves F=ma. However, the proposed title still asserts capital M in F=ma, whereas the formula and English body use lower-case m; the English title already contains that mismatch. Symbol case must not be treated as cosmetic. Hold for a coordinated title correction, rather than approving the complete candidate or changing its bytes outside the reviewed workflow.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "cc7e73e7e732efd16d9c30dc567a2d6cc"
+    }
+  ],
+  "prior_mandatory_missing_judgment_holds": [
+    "ffct-15686",
+    "ffct-24823",
+    "ffct-24184"
+  ],
+  "native_verified": false,
+  "science_verified": false,
+  "released": false,
+  "source_precision_holds_require_cross_language_review": [
+    "ffct-25068",
+    "ffct-25407",
+    "ffct-25609",
+    "ffct-25686"
+  ],
+  "lexical_holds": [
+    "ffct-25046",
+    "ffct-25151",
+    "ffct-25242",
+    "ffct-25495",
+    "ffct-25677"
+  ],
+  "fidelity_holds": [],
+  "readability_holds": []
+}

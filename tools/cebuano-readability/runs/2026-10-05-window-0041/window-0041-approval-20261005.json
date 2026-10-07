@@ -1,0 +1,2413 @@
+{
+  "schema": "hiraia.cebuano-readability-reviewed-edits/v1",
+  "status": "reviewed_for_local_application",
+  "created_at": "2026-10-04T18:07:11.496149+00:00",
+  "reviewer": "Codex root, independent of Claude proposal/backtranslation/fidelity/readability calls; no separate reviewer used for this window",
+  "scope": "Window 41: 16 individually reviewed exact edits and seven priority holds. Windows 1–40 were previously reviewed. No score-only approval, native verification, exhaustive science certification or release permission. All seven prior missing-fidelity/invalid-evidence holds remain mandatory.",
+  "window_id": "window-0041",
+  "window_accounting": {
+    "source_cards": 768,
+    "completed_assessments": 768,
+    "missing_fidelity_holds": 0,
+    "approved_exact_edits": 16,
+    "unchanged_keeps": 89,
+    "held": 663,
+    "held_from_priority_set": 7,
+    "preexisting_nonpriority_holds": 656
+  },
+  "input_pins": [
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0041/report.json",
+      "sha256": "0ca241fd927c226c51e6789e4f953fb43b408167776b29217b14bdc3f6e13930",
+      "bytes": 55161553
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0041/clean-agreement.jsonl",
+      "sha256": "85e1cacbe82714e90ce103b585269fccdc0aaf4e25f77ff2e247ce1e2b192aac",
+      "bytes": 686277
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0041/replay/fidelity/judgments.jsonl",
+      "sha256": "825371282cf7c57dc0b58d8402511b0b629696ac20819d23aed4d79fa8b3ffa7",
+      "bytes": 879989
+    },
+    {
+      "path": "build/cebuano-readability/campaign-20261002-v1/windows/window-0041/fidelity-inputs/private-map.json",
+      "sha256": "6498887ed8c6d03b89cd7445b617d02a00f12f6df9b21be8c2762cafeb881739",
+      "bytes": 780315
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0041/root-decisions.json",
+      "sha256": "5e4fc62ab4b75895f9b8a482233013365100c20e29c37f896aeb9acf5e9c00e9",
+      "bytes": 16149
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0041/corpus-lexical-evidence.json",
+      "sha256": "58a1b052cbe2e5d0ba647866e3448e74c2563071fba264952aac5530019cfc6f",
+      "bytes": 55855
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0041/dictionary-entries.json",
+      "sha256": "f2cc9d87bfebe384fc1d0b86ba495d277e4e6a68a713fde1d2f938a7e903015d",
+      "bytes": 73166
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0041/lexical-source-review.json",
+      "sha256": "d3ae7e34157cf56d11048d43279ea9c606e6dc3a52ebb19f54fefc4d753ea6c9",
+      "bytes": 2003
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0041/source-evidence-001.json",
+      "sha256": "f22a4685faba76904d6f09f8d6bfa46a4ed8820307bc265f1a30de4695c3d8c7",
+      "bytes": 6552
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0041/preview-replay-comparison.json",
+      "sha256": "3738b67846ecd0ad55656795e935cb22e799040f1e650060e92166bffbba3de9",
+      "bytes": 864
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0041/root-notes-final-001.json",
+      "sha256": "29f3594a172f85ab2aa4c4c9b62933442149c00d285a1cd3ee1ea9668931559b",
+      "bytes": 17892
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-gutenberg-40074.txt",
+      "sha256": "f80b888b24dd4ca7f5cb16276b4a53f9d22129a496b9ffb7f7efe17d3b9a1504",
+      "bytes": 5699379
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-retrieval.json",
+      "sha256": "bd713c5adf21541a0e7fd9c49f75fb6b9d4157fb88d41151a245165b8955b7da",
+      "bytes": 502
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/b241e69a-1b73-4cfd-ad1c-c3fdbde3e4a2/window41-initial-reading-001.json",
+      "sha256": "1c2a627988efd8b778ebac54984854d92e0a30f10a6aca3f084fc06584542ef2",
+      "bytes": 870267
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/b241e69a-1b73-4cfd-ad1c-c3fdbde3e4a2/read-dossiers.py",
+      "sha256": "15d2610c2bc5dc43ecf526c72b12a82498f46f44e8cfe895533a0f02bac5f3be",
+      "bytes": 1382
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/b241e69a-1b73-4cfd-ad1c-c3fdbde3e4a2/collect-window41-evidence-001.py",
+      "sha256": "57fd0549d0f07c33e4d05801b56357ce93ed3505bc5ff14b405e245c6204e9be",
+      "bytes": 6292
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/b241e69a-1b73-4cfd-ad1c-c3fdbde3e4a2/write-window41-root-records-001.py",
+      "sha256": "2d377756067b8f58a7d3201394d241f85ee10ed78458faf58fd9518bb307a24c",
+      "bytes": 21217
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/b241e69a-1b73-4cfd-ad1c-c3fdbde3e4a2/register-reviewed-001.py",
+      "sha256": "91b5098647fb53115516e43e99bd4d7e966c867e726537fac9e83872db630f37",
+      "bytes": 4201
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/b241e69a-1b73-4cfd-ad1c-c3fdbde3e4a2/verify-local-001.py",
+      "sha256": "624e6fbf349daa6ec0cef6f4bbff8a00450eec8ec0c0c0d0397becfbf92d8ddb",
+      "bytes": 7684
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/b241e69a-1b73-4cfd-ad1c-c3fdbde3e4a2/create-window41-root-approval-001.py",
+      "sha256": "607532986c84b88e6299d49c38665d8e0e7afbca89b04adf987e5ebc087e8d39",
+      "bytes": 6644
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0041/dictionary-supplement-001.json",
+      "sha256": "83d45987e8222a9f0331b2734f0c99b0ef730660c5b5638cb9ef8f9c8bf01eda",
+      "bytes": 11734
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/b241e69a-1b73-4cfd-ad1c-c3fdbde3e4a2/collect-dictionary-supplement-001.py",
+      "sha256": "f0f14a1d311aa7ad5ab3d6bfec5255ab468f886065b7c7234787a89e24f4e827",
+      "bytes": 2105
+    }
+  ],
+  "current_pool_before_application": {
+    "path": "rag/pipeline/cardsPool.app.json",
+    "sha256": "93c924e45fae6c8a68f074ff91c055bd3106eb9bea4a2edc9600b254980fe8e4",
+    "bytes": 50651327
+  },
+  "accepted": [
+    {
+      "card_id": "ffct-31423",
+      "source_card_sha256": "33c3b07e3645ede0b20edf2b6c14fec6a077c9e57a25baace333bb6fbabeefaf",
+      "candidate_card_sha256": "4e74188bcdabf93f6c32959afc004bc39462a1759260ad62ff0f914c67b0ff88",
+      "before_card": {
+        "id": "ffct-31423",
+        "factId": "tsunami-from-multiple-waves-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "Tsunamis come as a series of waves",
+        "terms": [
+          "tsunami",
+          "maraming alon",
+          "multiple waves",
+          "series",
+          "sunod-sunod",
+          "hindi isa lang",
+          "not one wave",
+          "balik-balik",
+          "tren",
+          "train",
+          "unsa",
+          "alon",
+          "dili usa ra"
+        ],
+        "fact": {
+          "en": "A tsunami is a series of waves arriving one after another. The second or third wave can be the biggest, so don't return too soon!",
+          "tl": "Ang tsunami ay serye ng sunod-sunod na alon. Minsan ang pangalawa o pangatlo ang pinakamalaki, kaya huwag munang bumalik sa baybayin!",
+          "bis": "Ang tsunami serye sa magsunodsunod nga balod. Usahay ang ikaduha o ikatulo ang pinakadako, maong ayaw pagbalik dayon sa baybayon!"
+        },
+        "slug": "ffct-31423",
+        "source": "original",
+        "title": {
+          "tl": "Tsunami Serye Alon Hindi Isa",
+          "en": "Tsunamis Come in Series",
+          "bis": "Tsunami sa Serye"
+        },
+        "cats": [
+          "oceans",
+          "natural-disasters"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-31423",
+        "factId": "tsunami-from-multiple-waves-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "Tsunamis come as a series of waves",
+        "terms": [
+          "tsunami",
+          "maraming alon",
+          "multiple waves",
+          "series",
+          "sunod-sunod",
+          "hindi isa lang",
+          "not one wave",
+          "balik-balik",
+          "tren",
+          "train",
+          "unsa",
+          "alon",
+          "dili usa ra"
+        ],
+        "fact": {
+          "en": "A tsunami is a series of waves arriving one after another. The second or third wave can be the biggest, so don't return too soon!",
+          "tl": "Ang tsunami ay serye ng sunod-sunod na alon. Minsan ang pangalawa o pangatlo ang pinakamalaki, kaya huwag munang bumalik sa baybayin!",
+          "bis": "Ang tsunami serye sa magsunodsunod nga balod. Usahay ang ikaduha o ikatulo ang pinakadako, maong ayaw pagbalik dayon sa baybayon!"
+        },
+        "slug": "ffct-31423",
+        "source": "original",
+        "title": {
+          "tl": "Tsunami Serye Alon Hindi Isa",
+          "en": "Tsunamis Come in Series",
+          "bis": "Sunodsunod nga Balod sa Tsunami"
+        },
+        "cats": [
+          "oceans",
+          "natural-disasters"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title only: Sunodsunod nga Balod sa Tsunami identifies the succession of tsunami waves already stated in the unchanged body. It retains tsunami and adds no timing, safe-return instruction or severity claim. Both blind readers prefer the title and tie the body; the clear backtranslation and equivalent fidelity agree. The root sunud supports succession and balud supports waves; this is not a native-readability certification.",
+      "formal_item_id": "c356077c697ea0def1b50f35e1fcf3036",
+      "fidelity_item_id": "m95cb443badeb4e937be02d4e",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-31434",
+      "source_card_sha256": "f445c3bf4ee37c5fb352637cf3c475862d9e6872be43e2020cf0d24d474dc027",
+      "candidate_card_sha256": "4489343391b1995f965276902d3df6c88f58d7527846014d0fb551a8dd9f2d8c",
+      "before_card": {
+        "id": "ffct-31434",
+        "factId": "earth-mantle-how-we-know-seismic-waves-g9",
+        "domain": "EARTH_SPACE",
+        "topic": "how we know what the mantle is like",
+        "terms": [
+          "paano nalaman",
+          "giunsa pagkahibalo",
+          "how do we know",
+          "seismic waves",
+          "alon ng lindol",
+          "balod sa linog",
+          "earthquake waves",
+          "bumibilis",
+          "mipaspas",
+          "nagbabago ang bilis",
+          "lindol",
+          "linog",
+          "hindi kayang puntahan",
+          "dili maadtoan",
+          "nahuhulaan",
+          "indirect evidence",
+          "bakit alam"
+        ],
+        "fact": {
+          "en": "How do scientists study the mantle if they can't visit it?\n\nScientists study the mantle using earthquake (seismic) waves! These waves change speed and direction as they pass through Earth, revealing what's inside.",
+          "tl": "Paano pinag-aaralan ng mga siyentipiko ang mantle kung hindi sila makapunta doon?\n\nPinag-aaralan ng mga siyentipiko ang mantle gamit ang mga alon ng lindol (seismic waves)! Nagbabago ang bilis at direksyon ng mga alon habang dumadaan sa Earth, nagpapakita kung ano ang nasa loob.",
+          "bis": "Unsaon pagtuon sa mga siyentipiko sa mantle kung dili sila makaadto didto?\n\nNagtuon ang mga siyentipiko sa mantle gamit ang mga balod sa linog (seismic waves)! Mausab ang katulin ug direksiyon sa mga balod samtang moagi sa Earth, nagpakita kon unsa ang naa sa sulod."
+        },
+        "slug": "",
+        "title": {
+          "en": "Studying the Mantle",
+          "tl": "Pag-aaral ng Mantle",
+          "bis": "Pagtuon sa Mantle"
+        },
+        "cats": [
+          "earth",
+          "earthquakes"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "seismic waves"
+          ],
+          "bis": [
+            "seismic waves"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-31434",
+        "factId": "earth-mantle-how-we-know-seismic-waves-g9",
+        "domain": "EARTH_SPACE",
+        "topic": "how we know what the mantle is like",
+        "terms": [
+          "paano nalaman",
+          "giunsa pagkahibalo",
+          "how do we know",
+          "seismic waves",
+          "alon ng lindol",
+          "balod sa linog",
+          "earthquake waves",
+          "bumibilis",
+          "mipaspas",
+          "nagbabago ang bilis",
+          "lindol",
+          "linog",
+          "hindi kayang puntahan",
+          "dili maadtoan",
+          "nahuhulaan",
+          "indirect evidence",
+          "bakit alam"
+        ],
+        "fact": {
+          "en": "How do scientists study the mantle if they can't visit it?\n\nScientists study the mantle using earthquake (seismic) waves! These waves change speed and direction as they pass through Earth, revealing what's inside.",
+          "tl": "Paano pinag-aaralan ng mga siyentipiko ang mantle kung hindi sila makapunta doon?\n\nPinag-aaralan ng mga siyentipiko ang mantle gamit ang mga alon ng lindol (seismic waves)! Nagbabago ang bilis at direksyon ng mga alon habang dumadaan sa Earth, nagpapakita kung ano ang nasa loob.",
+          "bis": "Unsaon pagtuon sa mga siyentipiko sa mantle kung dili sila makaadto didto?\n\nNagtuon ang mga siyentipiko sa mantle gamit ang mga balod sa linog (seismic waves)! Mausab ang katulin ug direksiyon niini nga mga balod samtang moagi sila sa Earth. Gipakita niini kon unsa ang naa sa sulod."
+        },
+        "slug": "",
+        "title": {
+          "en": "Studying the Mantle",
+          "tl": "Pag-aaral ng Mantle",
+          "bis": "Pagtuon sa Mantle"
+        },
+        "cats": [
+          "earth",
+          "earthquakes"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "seismic waves"
+          ],
+          "bis": [
+            "seismic waves"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The answer now names these waves before the speed/direction changes, then puts what they reveal in a separate sentence. This preserves the seismic-wave method, the question, inside-Earth referent and emphasis. Both readers identify the same structural improvement and the backtranslation/fidelity preserve all claims. Acceptance does not endorse the claim that an omitted Cebuano subject is inherently ungrammatical.",
+      "formal_item_id": "c53d2cd83dc6e9959c9ce40bf0ed53f96",
+      "fidelity_item_id": "md133c216146390b3fdfca6e5",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-31440",
+      "source_card_sha256": "e3be903b92d1cb7c79a4bfc1f1e27eaef0fbe832a60fddb55aaf9dee6a4467fc",
+      "candidate_card_sha256": "cc8e6cc06e2641822a745946468aee0a512e653e7771156c9b611e07c8ee3345",
+      "before_card": {
+        "id": "ffct-31440",
+        "factId": "earth-mantle-vs-core-comparison-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "mantle compared with the core",
+        "terms": [
+          "mantle",
+          "core",
+          "ubod",
+          "pagkakaiba",
+          "kalainan",
+          "difference",
+          "bato vs metal",
+          "bato batok metal",
+          "mantle is rock core is metal",
+          "mas mainit ang core",
+          "mas init ang core",
+          "comparison",
+          "paghahambing",
+          "pagtandi",
+          "silikato vs bakal",
+          "iron vs rock",
+          "alin ang mas mainit"
+        ],
+        "fact": {
+          "en": "The mantle is made of silicate rock. The core beneath it is mostly iron and nickel metal — and it's even hotter!",
+          "tl": "Ang mantle ay gawa sa silicate na bato. Ang core sa ilalim ay karamihan sa metal na iron at nickel — at mas mainit pa!",
+          "bis": "Ang mantle hinimo sa silicate nga bato. Ang core sa ilalom kasagaran sa metal nga iron ug nickel — ug mas init pa!"
+        },
+        "slug": "ffct-31440",
+        "source": "original",
+        "title": {
+          "tl": "Mantle Silicate Core Iron Nikel",
+          "en": "Mantle vs Core Makeup",
+          "bis": "Mantle ug Core"
+        },
+        "cats": [
+          "geology"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-31440",
+        "factId": "earth-mantle-vs-core-comparison-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "mantle compared with the core",
+        "terms": [
+          "mantle",
+          "core",
+          "ubod",
+          "pagkakaiba",
+          "kalainan",
+          "difference",
+          "bato vs metal",
+          "bato batok metal",
+          "mantle is rock core is metal",
+          "mas mainit ang core",
+          "mas init ang core",
+          "comparison",
+          "paghahambing",
+          "pagtandi",
+          "silikato vs bakal",
+          "iron vs rock",
+          "alin ang mas mainit"
+        ],
+        "fact": {
+          "en": "The mantle is made of silicate rock. The core beneath it is mostly iron and nickel metal — and it's even hotter!",
+          "tl": "Ang mantle ay gawa sa silicate na bato. Ang core sa ilalim ay karamihan sa metal na iron at nickel — at mas mainit pa!",
+          "bis": "Ang mantle hinimo sa silicate nga bato. Ang core sa ilalom niini kasagaran hinimo sa metal nga iron ug nickel — ug mas init pa kini!"
+        },
+        "slug": "ffct-31440",
+        "source": "original",
+        "title": {
+          "tl": "Mantle Silicate Core Iron Nikel",
+          "en": "Mantle vs Core Makeup",
+          "bis": "Mantle ug Core"
+        },
+        "cats": [
+          "geology"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Adds hinimo to make the core composition relation explicit and niini to connect below to the mantle; kini keeps the final hotter comparison on the core. Mantle silicate rock, mostly iron/nickel core and hotter remain unchanged. Both blind preferences, clear backtranslation and equivalent fidelity support this exact edit; no new composition or quantitative claim.",
+      "formal_item_id": "c709a7de976e59266801df7ce7824f5d2",
+      "fidelity_item_id": "mc79034958de8c579200d0b44",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-31444",
+      "source_card_sha256": "742e3e51246d70a7e2ae0b7ec92b9ab431950d0ad8ca38b0a58052857803b7d0",
+      "candidate_card_sha256": "737aedbc81f7ed86544c5dce8bf50b0ae42b821b25b9fc5fa1cffea9c86a7416",
+      "before_card": {
+        "id": "ffct-31444",
+        "factId": "faq-why-sea-salty",
+        "domain": "EARTH_SPACE",
+        "topic": "why the sea is salty",
+        "terms": [
+          "sea",
+          "salt",
+          "ocean",
+          "rivers",
+          "naiiwan",
+          "mabilin",
+          "ilog",
+          "suba",
+          "maalat",
+          "parat",
+          "kaunting",
+          "asin",
+          "natunaw",
+          "sumisingaw"
+        ],
+        "fact": {
+          "en": "Why is the sea salty?\n\nRivers carry tiny bits of dissolved salt from rocks and soil into the ocean. When seawater evaporates, the salt stays behind!",
+          "tl": "Bakit maalat ang dagat?\n\nNagdadala ang mga ilog ng kaunting natunaw na asin mula sa bato at lupa papunta sa dagat. Kapag sumisingaw ang tubig-dagat, naiiwan ang asin!",
+          "bis": "Nganong parat ang dagat?\n\nAng mga suba modala og gamay nga natunaw nga asin gikan sa bato ug yuta ngadto sa dagat. Kung mo-alisngaw ang tubig-dagat, mabilin ang asin!"
+        },
+        "slug": "ffct-31444",
+        "source": "original",
+        "title": {
+          "tl": "Ilog Asin Bato Dagat Maalat",
+          "en": "Why the Sea Is Salty",
+          "bis": "Suba sa Asin"
+        },
+        "cats": [
+          "oceans"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-31444",
+        "factId": "faq-why-sea-salty",
+        "domain": "EARTH_SPACE",
+        "topic": "why the sea is salty",
+        "terms": [
+          "sea",
+          "salt",
+          "ocean",
+          "rivers",
+          "naiiwan",
+          "mabilin",
+          "ilog",
+          "suba",
+          "maalat",
+          "parat",
+          "kaunting",
+          "asin",
+          "natunaw",
+          "sumisingaw"
+        ],
+        "fact": {
+          "en": "Why is the sea salty?\n\nRivers carry tiny bits of dissolved salt from rocks and soil into the ocean. When seawater evaporates, the salt stays behind!",
+          "tl": "Bakit maalat ang dagat?\n\nNagdadala ang mga ilog ng kaunting natunaw na asin mula sa bato at lupa papunta sa dagat. Kapag sumisingaw ang tubig-dagat, naiiwan ang asin!",
+          "bis": "Nganong parat ang dagat?\n\nAng mga suba modala og gamay nga natunaw nga asin gikan sa bato ug yuta ngadto sa dagat. Kung mo-alisngaw ang tubig-dagat, mabilin ang asin!"
+        },
+        "slug": "ffct-31444",
+        "source": "original",
+        "title": {
+          "tl": "Ilog Asin Bato Dagat Maalat",
+          "en": "Why the Sea Is Salty",
+          "bis": "Nganong Parat ang Dagat"
+        },
+        "cats": [
+          "oceans"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title only: Nganong Parat ang Dagat directly names the English sea-salinity topic and repeats the unchanged body question. It replaces Suba sa Asin without changing the rivers, dissolved salts or evaporation explanation. Parat has the salty sense; both readers prefer the title and tie the body. No claim that all the ocean salt has only this one source is added.",
+      "formal_item_id": "ca749691a91bcc0b2d6699121e9f04446",
+      "fidelity_item_id": "mb7e5635b4418a49e8fc7e17d",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-31451",
+      "source_card_sha256": "fe146c7993dfaff7bb0459a12e36f6d613053e9af363bf1bcdfd6534d92fad3e",
+      "candidate_card_sha256": "8df360c84438a6eb3ee59cf5340a849dd0cc382ed67d7a800583020bd42fb536",
+      "before_card": {
+        "id": "ffct-31451",
+        "factId": "river-tributaries-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "tributaries join a river",
+        "terms": [
+          "sanga",
+          "sapa",
+          "tributary",
+          "sumasanib",
+          "ilog",
+          "maliit",
+          "stream",
+          "joins",
+          "river",
+          "sangang sapa",
+          "suba",
+          "sapa nga mosulod",
+          "nagbu-bu",
+          "saan galing ang tubig sa ilog",
+          "asa gikan ang tubig sa suba"
+        ],
+        "fact": {
+          "en": "Big rivers gather water from many smaller streams flowing into them. These smaller streams are called tributaries!",
+          "tl": "Kinukuha ng mga malalaking ilog ang tubig mula sa maraming maliliit na sapa na sumasanib dito. Ang mga ito ay tinatawag na tributaries!",
+          "bis": "Ang dagkong suba nagtigom og tubig gikan sa daghang gagmay nga sapa nga mosulod niini. Kini gitawag og tributaries!"
+        },
+        "slug": "ffct-31451",
+        "source": "original",
+        "title": {
+          "tl": "Tributaries ng Ilog",
+          "en": "River Tributaries",
+          "bis": "Tributaries sa Suba"
+        },
+        "cats": [
+          "landforms"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-31451",
+        "factId": "river-tributaries-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "tributaries join a river",
+        "terms": [
+          "sanga",
+          "sapa",
+          "tributary",
+          "sumasanib",
+          "ilog",
+          "maliit",
+          "stream",
+          "joins",
+          "river",
+          "sangang sapa",
+          "suba",
+          "sapa nga mosulod",
+          "nagbu-bu",
+          "saan galing ang tubig sa ilog",
+          "asa gikan ang tubig sa suba"
+        ],
+        "fact": {
+          "en": "Big rivers gather water from many smaller streams flowing into them. These smaller streams are called tributaries!",
+          "tl": "Kinukuha ng mga malalaking ilog ang tubig mula sa maraming maliliit na sapa na sumasanib dito. Ang mga ito ay tinatawag na tributaries!",
+          "bis": "Ang dagkong suba nagtigom og tubig gikan sa daghang gagmay nga sapa nga mosulod niini. Kining gagmay nga mga sapa gitawag og tributaries!"
+        },
+        "slug": "ffct-31451",
+        "source": "original",
+        "title": {
+          "tl": "Tributaries ng Ilog",
+          "en": "River Tributaries",
+          "bis": "Tributaries sa Suba"
+        },
+        "cats": [
+          "landforms"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Kining gagmay nga mga sapa explicitly identifies the smaller streams as tributaries, instead of a bare Kini after mentioning big rivers as well. The gathering-water relationship, technical term, title and emphasis remain exact. Both readers prefer this referent clarification; the backtranslation and fidelity preserve which streams are named.",
+      "formal_item_id": "c7313226eac7cf2e99a066b11eae9dba1",
+      "fidelity_item_id": "m706fb0d23ac6bd31cb1acf92",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-31509",
+      "source_card_sha256": "a31f7f0eb34c5ab03d828059dca5eb1feeba8254ac67e65b0e3c8bfffa4b7292",
+      "candidate_card_sha256": "75d82ecef6166b146cf40b455ef3fca628647b18704b587b9fe6b0905df5f108",
+      "before_card": {
+        "id": "ffct-31509",
+        "factId": "sun-main-causes-day-night-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "the spinning earth makes day and night with the sun",
+        "terms": [
+          "sun",
+          "araw",
+          "adlaw",
+          "day night",
+          "araw gabi",
+          "adlaw gabii",
+          "bakit gabi",
+          "ngano gabii",
+          "umiikot",
+          "nagtuyok",
+          "rotation",
+          "spin",
+          "earth turns",
+          "liwanag",
+          "why dark",
+          "dilim",
+          "mawawala araw"
+        ],
+        "fact": {
+          "en": "Does the sun travel across the sky to give us day and night?\n\nNope, Earth is the one spinning! When our side faces the sun, it’s daytime. When we turn away, it’s night!",
+          "tl": "Naglalakad ba ang araw sa langit para magkaroon tayo ng araw at gabi?\n\nHindi, ang Earth ang umiikot! Kapag nakaharap tayo sa araw, araw; kapag tumalikod tayo, gabi na!",
+          "bis": "Naglakaw ba ang adlaw sa langit para magka-adlaw ug gabii ta?\n\nDili, ang Earth ang nagtuyok! Kung nag-atubang ta sa adlaw, adlaw; kung motalikod ta, gabii na!"
+        },
+        "slug": "day-night-cycle-earth",
+        "title": {
+          "en": "Day and Night",
+          "tl": "Araw at Gabi",
+          "bis": "Adlaw ug Gabii"
+        },
+        "cats": [
+          "space",
+          "earth"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "umiikot"
+          ],
+          "en": [
+            "spinning"
+          ],
+          "bis": [
+            "nagtuyok"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-31509",
+        "factId": "sun-main-causes-day-night-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "the spinning earth makes day and night with the sun",
+        "terms": [
+          "sun",
+          "araw",
+          "adlaw",
+          "day night",
+          "araw gabi",
+          "adlaw gabii",
+          "bakit gabi",
+          "ngano gabii",
+          "umiikot",
+          "nagtuyok",
+          "rotation",
+          "spin",
+          "earth turns",
+          "liwanag",
+          "why dark",
+          "dilim",
+          "mawawala araw"
+        ],
+        "fact": {
+          "en": "Does the sun travel across the sky to give us day and night?\n\nNope, Earth is the one spinning! When our side faces the sun, it’s daytime. When we turn away, it’s night!",
+          "tl": "Naglalakad ba ang araw sa langit para magkaroon tayo ng araw at gabi?\n\nHindi, ang Earth ang umiikot! Kapag nakaharap tayo sa araw, araw; kapag tumalikod tayo, gabi na!",
+          "bis": "Naglakaw ba ang adlaw sa langit para magka-adlaw ug gabii ta?\n\nDili, ang Earth ang nagtuyok! Kung ang atong bahin sa Earth nag-atubang sa adlaw, adlaw kanato. Kung motalikod na kita sa adlaw, gabii na!"
+        },
+        "slug": "day-night-cycle-earth",
+        "title": {
+          "en": "Day and Night",
+          "tl": "Araw at Gabi",
+          "bis": "Adlaw ug Gabii"
+        },
+        "cats": [
+          "space",
+          "earth"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "umiikot"
+          ],
+          "en": [
+            "spinning"
+          ],
+          "bis": [
+            "nagtuyok"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Ang atong bahin sa Earth restores the English our-side-of-Earth subject for daylight, and adlaw kanato states for whom it is day. The rotation answer remains explicit, followed by the turning-away night contrast in that same context. Both readers prefer the clearer referents; backtranslation/fidelity preserve day versus night. The unchanged figurative question about the sun walking is not classified as a literal scientific assertion.",
+      "formal_item_id": "c90dfac5b4beb3d84821d7de17b47bd00",
+      "fidelity_item_id": "m5571638ff2296fa5172a30c4",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-31603",
+      "source_card_sha256": "273bac62ef572bc91deb74c0ac7edb288b62b2759ff7fa55573ce5dfbc738ccd",
+      "candidate_card_sha256": "d964ebec81b7d04f1dd6e62818a1ca4e70fd29845c69fefd719b502118f71357",
+      "before_card": {
+        "id": "ffct-31603",
+        "factId": "energy-fossil-many-everyday-things-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "fossil fuels hidden in everyday products",
+        "terms": [
+          "plastik",
+          "plastic",
+          "gamit",
+          "produkto",
+          "products",
+          "araw-araw",
+          "adlaw-adlaw",
+          "everyday",
+          "krayola",
+          "crayon",
+          "gulong",
+          "tire",
+          "sabon",
+          "pintura",
+          "paint",
+          "gamot",
+          "langis",
+          "fossil fuel",
+          "saan pa"
+        ],
+        "fact": {
+          "en": "Did you know oil makes more than just fuel?\n\nMany everyday things like plastic, tires, crayons, and some soaps are also made from fossil fuels!",
+          "tl": "Alam mo bang hindi lang gatong ang nagagawa sa langis?\n\nMaraming gamit natin araw-araw tulad ng plastic, gulong, krayola, at ilang sabon ay gawa rin mula sa fossil fuels!",
+          "bis": "Nahibaw-an ba nimo nga dili lang gatong ang mahimo sa lana?\n\nDaghan sa atong gamit adlaw-adlaw sama sa plastik, ligid, krayola, ug pipila ka sabon gibuhat usab gikan sa fossil fuels!"
+        },
+        "slug": "ffct-31603",
+        "source": "original",
+        "title": {
+          "tl": "Plastic mula sa Langis",
+          "en": "Plastics from Oil",
+          "bis": "Plastik gikan sa Lana"
+        },
+        "cats": [
+          "fossil-fuels",
+          "materials"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-31603",
+        "factId": "energy-fossil-many-everyday-things-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "fossil fuels hidden in everyday products",
+        "terms": [
+          "plastik",
+          "plastic",
+          "gamit",
+          "produkto",
+          "products",
+          "araw-araw",
+          "adlaw-adlaw",
+          "everyday",
+          "krayola",
+          "crayon",
+          "gulong",
+          "tire",
+          "sabon",
+          "pintura",
+          "paint",
+          "gamot",
+          "langis",
+          "fossil fuel",
+          "saan pa"
+        ],
+        "fact": {
+          "en": "Did you know oil makes more than just fuel?\n\nMany everyday things like plastic, tires, crayons, and some soaps are also made from fossil fuels!",
+          "tl": "Alam mo bang hindi lang gatong ang nagagawa sa langis?\n\nMaraming gamit natin araw-araw tulad ng plastic, gulong, krayola, at ilang sabon ay gawa rin mula sa fossil fuels!",
+          "bis": "Nahibaw-an ba nimo nga dili lang gatong ang mahimo sa lana?\n\nDaghan sa atong gamit adlaw-adlaw ang gibuhat usab gikan sa fossil fuels, sama sa plastik, ligid, krayola, ug pipila ka sabon!"
+        },
+        "slug": "ffct-31603",
+        "source": "original",
+        "title": {
+          "tl": "Plastic mula sa Langis",
+          "en": "Plastics from Oil",
+          "bis": "Plastik gikan sa Lana"
+        },
+        "cats": [
+          "fossil-fuels",
+          "materials"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Places the main fossil-fuel predicate before the four examples, retaining many everyday things and some soaps exactly. Both readers identify the delayed main clause and prefer the candidate; backtranslation/fidelity preserve the restriction some. Wolff restricts its oil sense to plants; Binisaya maps lana to oil and links petrolyo, while a separately published Cebuano Banat column uses lana for petroleum imports, fuel companies and products. The published language evidence resolves this sense without treating an English gloss inventory as independent Cebuano usage. FDA distinguishes common products marketed as soap from its narrower chemical/regulatory definition, and ACS documents petroleum-derived synthetic detergents. The everyday product wording is not treated as a claim that all true fatty-acid soaps are petroleum; no chemistry procedure or ingredient advice is added.",
+      "formal_item_id": "c2d4ad634c78ec524f3ce08cf758b8d7a",
+      "fidelity_item_id": "mea0943eb67a13e2916138990",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-31607",
+      "source_card_sha256": "550dafe01b832fbb530cbab5ae2673ab5b53ccc3a6e153b849b6f3848e52eb76",
+      "candidate_card_sha256": "754e6dc8f07173c35e4c43a635c216dbd5c6713782c9a7dca9ee80ac61553234",
+      "before_card": {
+        "id": "ffct-31607",
+        "factId": "mercury-closest-hot-cold-swing-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "Mercury swings from scorching day to freezing night",
+        "terms": [
+          "mercury",
+          "mainit araw",
+          "init adlaw",
+          "malamig gabi",
+          "bugnaw gabii",
+          "temperatura",
+          "pagbabago",
+          "kausaban",
+          "walang hangin",
+          "walay hangin",
+          "ngano",
+          "init ug bugnaw",
+          "hot and cold"
+        ],
+        "fact": {
+          "en": "What's the temperature like on Mercury?\n\nBlazing hot in the day and freezing cold at night — one of the biggest temperature swings in the Solar System because there's almost no air!",
+          "tl": "Ano ang temperatura sa Mercury?\n\nSobrang init sa araw at sobrang lamig sa gabi — isa sa pinakamalaking pagbabago ng temperatura sa Solar System dahil halos walang hangin!",
+          "bis": "Unsa ang temperatura sa Mercury?\n\nInit kaayo kon adlaw ug bugnaw kaayo kon gabii — usa sa pinakadako nga kausaban sa temperatura sa Solar System kay halos walay hangin!"
+        },
+        "slug": "ffct-33038",
+        "title": {
+          "en": "Mercury Hot and Cold",
+          "tl": "Mercury Mainit-Lamig",
+          "bis": "Mercury Init-Bugnaw"
+        },
+        "cats": [
+          "planets",
+          "space"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "temperatura"
+          ],
+          "en": [
+            "temperature"
+          ],
+          "bis": [
+            "temperatura"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-31607",
+        "factId": "mercury-closest-hot-cold-swing-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "Mercury swings from scorching day to freezing night",
+        "terms": [
+          "mercury",
+          "mainit araw",
+          "init adlaw",
+          "malamig gabi",
+          "bugnaw gabii",
+          "temperatura",
+          "pagbabago",
+          "kausaban",
+          "walang hangin",
+          "walay hangin",
+          "ngano",
+          "init ug bugnaw",
+          "hot and cold"
+        ],
+        "fact": {
+          "en": "What's the temperature like on Mercury?\n\nBlazing hot in the day and freezing cold at night — one of the biggest temperature swings in the Solar System because there's almost no air!",
+          "tl": "Ano ang temperatura sa Mercury?\n\nSobrang init sa araw at sobrang lamig sa gabi — isa sa pinakamalaking pagbabago ng temperatura sa Solar System dahil halos walang hangin!",
+          "bis": "Unsa ang temperatura sa Mercury?\n\nInit kaayo kon adlaw ug bugnaw kaayo kon gabii! Usa kini sa pinakadako nga kausaban sa temperatura sa Solar System, kay halos walay hangin ang Mercury."
+        },
+        "slug": "ffct-33038",
+        "title": {
+          "en": "Mercury Hot and Cold",
+          "tl": "Mercury Mainit-Lamig",
+          "bis": "Init ug Bugnaw sa Mercury"
+        },
+        "cats": [
+          "planets",
+          "space"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "temperatura"
+          ],
+          "en": [
+            "temperature"
+          ],
+          "bis": [
+            "temperatura"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The split answer explicitly re-names Mercury as having almost no air and preserves one of the biggest day/night temperature swings. Init ug Bugnaw sa Mercury connects the existing title terms instead of a clipped keyword pair. Both readers prefer the changed fields; backtranslation and fidelity retain the comparison, causal relationship and almost qualifier. Temperature emphasis remains exact.",
+      "formal_item_id": "c0a71693eb165af5bdfca385c4bc19254",
+      "fidelity_item_id": "mb801418d660806c3483e86c1",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-31716",
+      "source_card_sha256": "9b2914088ebfe25d0eaca11331ad2f733ae4ea93877fc77fdd93240c42cbb5a9",
+      "candidate_card_sha256": "61a2bc2b9878aaa87b85025d0c5f6bcad5fb87235d27402923117ddee0569780",
+      "before_card": {
+        "id": "ffct-31716",
+        "factId": "magnetic-field-maglev-trains-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "strong magnets float and move maglev trains",
+        "terms": [
+          "maglev",
+          "tren",
+          "tren nga naglutaw",
+          "floating train",
+          "lumulutang na tren",
+          "lumulutaw",
+          "levitate",
+          "magnetic field",
+          "magnetikong larangan",
+          "malakas na magnet",
+          "kusog nga magnet",
+          "gamit",
+          "gamit sa",
+          "use",
+          "teknolohiya",
+          "push",
+          "tumutulak",
+          "mabilis na tren"
+        ],
+        "fact": {
+          "en": "How do some trains float above the tracks?\n\nMaglev trains float using strong magnetic fields! Magnets push and guide them, so they zoom super fast and super quiet!",
+          "tl": "Paano lumulutang ang ilang tren sa ibabaw ng riles?\n\nAng mga maglev train ay lumulutang gamit ang malalakas na magnetic fields! Itinutulak at ginagabayan sila ng mga magnet, kaya napakabilis at tahimik!",
+          "bis": "Unsaon paglutaw sa ilang mga tren ibabaw sa riles?\n\nAng mga maglev train naglutaw gamit ang kusog nga magnetic fields! Ang mga magnet motukmod ug mogiya kanila, mao nga paspas kaayo ug hilom!"
+        },
+        "slug": "ffct-31716",
+        "source": "original",
+        "title": {
+          "tl": "Maglev Train na Lumulutang",
+          "en": "Floating Maglev Trains",
+          "bis": "Maglev Train nga Naglutaw"
+        },
+        "cats": [
+          "magnets",
+          "magnetism"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-31716",
+        "factId": "magnetic-field-maglev-trains-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "strong magnets float and move maglev trains",
+        "terms": [
+          "maglev",
+          "tren",
+          "tren nga naglutaw",
+          "floating train",
+          "lumulutang na tren",
+          "lumulutaw",
+          "levitate",
+          "magnetic field",
+          "magnetikong larangan",
+          "malakas na magnet",
+          "kusog nga magnet",
+          "gamit",
+          "gamit sa",
+          "use",
+          "teknolohiya",
+          "push",
+          "tumutulak",
+          "mabilis na tren"
+        ],
+        "fact": {
+          "en": "How do some trains float above the tracks?\n\nMaglev trains float using strong magnetic fields! Magnets push and guide them, so they zoom super fast and super quiet!",
+          "tl": "Paano lumulutang ang ilang tren sa ibabaw ng riles?\n\nAng mga maglev train ay lumulutang gamit ang malalakas na magnetic fields! Itinutulak at ginagabayan sila ng mga magnet, kaya napakabilis at tahimik!",
+          "bis": "Unsaon paglutaw sa pipila ka tren ibabaw sa riles?\n\nAng mga maglev train naglutaw gamit ang kusog nga magnetic fields! Ang mga magnet motukmod ug mogiya kanila, mao nga modagan sila nga paspas kaayo ug hilom kaayo!"
+        },
+        "slug": "ffct-31716",
+        "source": "original",
+        "title": {
+          "tl": "Maglev Train na Lumulutang",
+          "en": "Floating Maglev Trains",
+          "bis": "Maglev Train nga Naglutaw"
+        },
+        "cats": [
+          "magnets",
+          "magnetism"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Pipila ka tren directly expresses English some trains in place of ilang mga tren; the answer adds modagan sila and preserves the explicit very fast and very quiet intensifiers with kaayo. The magnetic field, above-track position, push/guide mechanism, question and title remain intact. Pila/pipila has the few/several sense and sila/ila is separately attested possession; this decision is specific to this sentence, not a blanket ban on every ilang. Both reader judgments and meaning checks support the complete candidate.",
+      "formal_item_id": "c85d181f98a0cfa2dba2a4d9550e8a558",
+      "fidelity_item_id": "m85cbfc023402839d666399c6",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-31742",
+      "source_card_sha256": "75e483cd9d689b9b12fd2b4bf3f151163f31cd941b7b904967376cc78997c6e0",
+      "candidate_card_sha256": "7a98cbffb710ee30095a296edb57a6ce1d4f88908bdc9c8155d2ac8fcfd48afa",
+      "before_card": {
+        "id": "ffct-31742",
+        "factId": "talc-softest-industrial-uses-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "Talc is used in paint, paper, and plastics",
+        "terms": [
+          "talc",
+          "gamit",
+          "industrial uses",
+          "paint",
+          "pintura",
+          "paper",
+          "papel",
+          "plastic",
+          "real-world",
+          "saan ginagamit",
+          "filler",
+          "bakit gamit",
+          "pampalapot",
+          "produkto",
+          "manufacturing"
+        ],
+        "fact": {
+          "en": "Besides powder, Talc is used to make paint, paper, and plastics as a filler! It is cheap and easy to use because it is soft and crushes easily.",
+          "tl": "Bukod sa pulbo, ginagamit ang Talc sa paggawa ng pintura, papel, at plastic bilang pampuno! Mura at madaling gamitin ito dahil malambot at madaling durugin.",
+          "bis": "Gawas sa pulbos, gigamit ang Talc sa paghimo og pintura, papel, ug plastik isip pangpuno! Barato ug sayon gamiton kay humok ug sayon ra dugmokon."
+        },
+        "slug": "",
+        "title": {
+          "en": "Talc Uses",
+          "tl": "Gamit ng Talc",
+          "bis": "Gamit sa Talc"
+        },
+        "cats": [
+          "minerals",
+          "materials"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "Talc"
+          ],
+          "en": [
+            "Talc"
+          ],
+          "bis": [
+            "Talc"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-31742",
+        "factId": "talc-softest-industrial-uses-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "Talc is used in paint, paper, and plastics",
+        "terms": [
+          "talc",
+          "gamit",
+          "industrial uses",
+          "paint",
+          "pintura",
+          "paper",
+          "papel",
+          "plastic",
+          "real-world",
+          "saan ginagamit",
+          "filler",
+          "bakit gamit",
+          "pampalapot",
+          "produkto",
+          "manufacturing"
+        ],
+        "fact": {
+          "en": "Besides powder, Talc is used to make paint, paper, and plastics as a filler! It is cheap and easy to use because it is soft and crushes easily.",
+          "tl": "Bukod sa pulbo, ginagamit ang Talc sa paggawa ng pintura, papel, at plastic bilang pampuno! Mura at madaling gamitin ito dahil malambot at madaling durugin.",
+          "bis": "Gawas sa pulbos, gigamit usab ang Talc isip pangpuno sa pintura, papel, ug plastik! Barato kini ug sayon gamiton kay humok kini ug dali ra madugmok."
+        },
+        "slug": "",
+        "title": {
+          "en": "Talc Uses",
+          "tl": "Gamit ng Talc",
+          "bis": "Gamit sa Talc"
+        },
+        "cats": [
+          "minerals",
+          "materials"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "Talc"
+          ],
+          "en": [
+            "Talc"
+          ],
+          "bis": [
+            "Talc"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The filler role comes before the paint/paper/plastic list; the next sentence explicitly names talc as cheap, easy to use, soft and easily crushed. The same uses, reason, also and technical term remain. Punu, humuk and dugmuk corroborate filling, softness and crushing; both readers prefer the clause order and explicit referent, with clear/equivalent meaning evidence. No extra talc use or health advice is introduced.",
+      "formal_item_id": "ccb20036751d6fbd98ab9fec124b328e4",
+      "fidelity_item_id": "m991cfdf240ecc6e8acddf71d",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-31782",
+      "source_card_sha256": "4ed13a7564d26651e41b7e0499b4054d8b99d86066c0bdd6ff09e88af6afeb58",
+      "candidate_card_sha256": "4ba0220a4825c2bebe154ee3a95e523ca71c3c5ae40d7bdf674c971ea369f075",
+      "before_card": {
+        "id": "ffct-31782",
+        "factId": "plastic-pollution-ocean-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "plastic pollution",
+        "terms": [
+          "plastic",
+          "plastik",
+          "plastic pollution",
+          "polusyon sa plastik",
+          "dagat",
+          "ocean",
+          "isda",
+          "pawikan",
+          "sea turtle",
+          "hayop sa dagat",
+          "basura",
+          "single-use",
+          "supot",
+          "plastic bag",
+          "nalulunod",
+          "nakakain",
+          "delikado"
+        ],
+        "fact": {
+          "en": "Why is plastic in the ocean so dangerous?\n\nA lot of plastic ends up in the ocean, where fish and sea turtles mistake it for food, which can kill them.",
+          "tl": "Bakit delikado ang plastic sa dagat?\n\nMaraming plastic ang napupunta sa dagat, kung saan napagkakamalan itong pagkain ng mga isda at pawikan na maaaring ikamatay nila.",
+          "bis": "Ngano delikado ang plastik sa dagat?\n\nDaghang plastik ang maadto sa dagat, diin ang mga isda ug pawikan magtuo nga pagkaon kini, nga mahimong makapatay kanila."
+        },
+        "slug": "turtle-biting-plastic-bag",
+        "title": {
+          "en": "Plastic Pollution",
+          "tl": "Polusyon sa Plastic",
+          "bis": "Polusyon sa Plastik"
+        },
+        "cats": [
+          "pollution",
+          "environment"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "plastic"
+          ],
+          "en": [
+            "plastic"
+          ],
+          "bis": [
+            "plastik"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-31782",
+        "factId": "plastic-pollution-ocean-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "plastic pollution",
+        "terms": [
+          "plastic",
+          "plastik",
+          "plastic pollution",
+          "polusyon sa plastik",
+          "dagat",
+          "ocean",
+          "isda",
+          "pawikan",
+          "sea turtle",
+          "hayop sa dagat",
+          "basura",
+          "single-use",
+          "supot",
+          "plastic bag",
+          "nalulunod",
+          "nakakain",
+          "delikado"
+        ],
+        "fact": {
+          "en": "Why is plastic in the ocean so dangerous?\n\nA lot of plastic ends up in the ocean, where fish and sea turtles mistake it for food, which can kill them.",
+          "tl": "Bakit delikado ang plastic sa dagat?\n\nMaraming plastic ang napupunta sa dagat, kung saan napagkakamalan itong pagkain ng mga isda at pawikan na maaaring ikamatay nila.",
+          "bis": "Ngano delikado ang plastik sa dagat?\n\nDaghang plastik ang maadto sa dagat. Didto, ang mga isda ug pawikan magtuo nga pagkaon kini. Mahimo kining makapatay kanila."
+        },
+        "slug": "turtle-biting-plastic-bag",
+        "title": {
+          "en": "Plastic Pollution",
+          "tl": "Polusyon sa Plastic",
+          "bis": "Polusyon sa Plastik"
+        },
+        "cats": [
+          "pollution",
+          "environment"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "plastic"
+          ],
+          "en": [
+            "plastic"
+          ],
+          "bis": [
+            "plastik"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Splits the ocean destination, fish/turtle food mistake and possible killing into three sentences with clear references. Mahimo kining makapatay retains can rather than making death inevitable. Wolff tuu supports believing and patay supports killing in this context. The corpus magtuo regex also matched unrelated magtuon (study) and is not positive evidence for believing; the dictionary resolves that distinction. Both blind readers prefer the complete body and tie the unchanged title; backtranslation/fidelity retain all actors and possibility.",
+      "formal_item_id": "c6d63cdf1aa512eca51cbf4a79ea06228",
+      "fidelity_item_id": "m08395c509b24d14fe57600ad",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-31785",
+      "source_card_sha256": "88b0620d93ed833bfaf43ef34453e6769103ac568d88e0fd8463b5b663b544f7",
+      "candidate_card_sha256": "df1df5c72deb78af5c3894db596065bf5bc4132a544224788744b18774fd1d79",
+      "before_card": {
+        "id": "ffct-31785",
+        "factId": "three-rs-reduce-reuse-recycle-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "reduce reuse recycle",
+        "terms": [
+          "reduce",
+          "reuse",
+          "recycle",
+          "tatlong r",
+          "3r",
+          "tulo ka r",
+          "bawasan",
+          "kunhuran",
+          "gamiting muli",
+          "gamiton pag-usab",
+          "basura",
+          "garbage",
+          "magtipid",
+          "less waste",
+          "limit",
+          "tatlong hakbang"
+        ],
+        "fact": {
+          "en": "The \"Three Rs\"—Reduce, Reuse, Recycle—mean to use less, use again, and recycle our things to cut down on trash!",
+          "tl": "Ang \"Tatlong R\"—Reduce, Reuse, Recycle—ay nangangahulugang bawasan, gamiting muli, at i-recycle ang ating mga gamit para mabawasan ang basura!",
+          "bis": "Ang \"Tulo ka R\"—Reduce, Reuse, Recycle—nagpasabot nga kunhuran, gamiton pag-usab, ug i-recycle ang atong mga butang aron makunhuran ang basura!"
+        },
+        "slug": "ffct-31785",
+        "source": "original",
+        "title": {
+          "tl": "Tatlong R Reduce Reuse Recycle",
+          "en": "The Three Rs Explained",
+          "bis": "Tulo R Reduce Reuse Recycle"
+        },
+        "cats": [
+          "recycling"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-31785",
+        "factId": "three-rs-reduce-reuse-recycle-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "reduce reuse recycle",
+        "terms": [
+          "reduce",
+          "reuse",
+          "recycle",
+          "tatlong r",
+          "3r",
+          "tulo ka r",
+          "bawasan",
+          "kunhuran",
+          "gamiting muli",
+          "gamiton pag-usab",
+          "basura",
+          "garbage",
+          "magtipid",
+          "less waste",
+          "limit",
+          "tatlong hakbang"
+        ],
+        "fact": {
+          "en": "The \"Three Rs\"—Reduce, Reuse, Recycle—mean to use less, use again, and recycle our things to cut down on trash!",
+          "tl": "Ang \"Tatlong R\"—Reduce, Reuse, Recycle—ay nangangahulugang bawasan, gamiting muli, at i-recycle ang ating mga gamit para mabawasan ang basura!",
+          "bis": "Ang \"Tulo ka R\"—Reduce, Reuse, Recycle—nagpasabot nga kunhuran, gamiton pag-usab, ug i-recycle ang atong mga butang aron makunhuran ang basura!"
+        },
+        "slug": "ffct-31785",
+        "source": "original",
+        "title": {
+          "tl": "Tatlong R Reduce Reuse Recycle",
+          "en": "The Three Rs Explained",
+          "bis": "Ang Tulo ka R"
+        },
+        "cats": [
+          "recycling"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title only: Ang Tulo ka R supplies the count construction already present in the unchanged body, which explains reduce, reuse and recycle. No step or definition is removed from the card. Both readers prefer the title and tie the body; the clear backtranslation and compatible title verdict match. Tulu supports three; no body-readability gain is claimed.",
+      "formal_item_id": "cafa20f5b7878f307499d8632d128621f",
+      "fidelity_item_id": "m23d997f0d18a9090406b884f",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-31846",
+      "source_card_sha256": "29931bd7540fcc1f21f3d56035e449ffa00427c52b4efeb871b05b33275b5a48",
+      "candidate_card_sha256": "ec481505d74114940629736634bad811c2568b464014b797652430fc8ffd3e00",
+      "before_card": {
+        "id": "ffct-31846",
+        "factId": "ozone-blocks-made-of-oxygen-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "Ozone is made of three oxygen atoms",
+        "terms": [
+          "ozone",
+          "oxygen",
+          "oksiheno",
+          "tatlong atom",
+          "tulo ka atom",
+          "three atoms",
+          "o3",
+          "ano ang ozone",
+          "unsa ang ozone",
+          "parts",
+          "bahagi",
+          "molekula",
+          "hangin",
+          "hininga"
+        ],
+        "fact": {
+          "en": "Ozone is made of three oxygen atoms joined together (O3). The air we breathe has oxygen with only two atoms (O2) — so ozone is different from ordinary oxygen!",
+          "tl": "Ang ozone ay gawa sa tatlong atom ng oxygen na magkakabit (O3). Ang hangin na nilalanghap natin ay may oxygen na dalawang atom lang (O2) — kaya iba ang ozone sa ordinaryong oxygen!",
+          "bis": "Ang ozone hinimo sa tulo ka atom sa oxygen nga nagdugtong (O3). Ang hangin nga atong ginaginhawa adunay oxygen nga duha ra ka atom (O2) — mao nga lahi ang ozone sa ordinaryong oxygen!"
+        },
+        "slug": "ffct-31846",
+        "source": "original",
+        "title": {
+          "tl": "Ozone Tatlong Oxygen O3 Iba O2",
+          "en": "Ozone O3 Three Atoms",
+          "bis": "Ozone Tulo Oxygen Atom O3"
+        },
+        "cats": [
+          "atoms"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-31846",
+        "factId": "ozone-blocks-made-of-oxygen-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "Ozone is made of three oxygen atoms",
+        "terms": [
+          "ozone",
+          "oxygen",
+          "oksiheno",
+          "tatlong atom",
+          "tulo ka atom",
+          "three atoms",
+          "o3",
+          "ano ang ozone",
+          "unsa ang ozone",
+          "parts",
+          "bahagi",
+          "molekula",
+          "hangin",
+          "hininga"
+        ],
+        "fact": {
+          "en": "Ozone is made of three oxygen atoms joined together (O3). The air we breathe has oxygen with only two atoms (O2) — so ozone is different from ordinary oxygen!",
+          "tl": "Ang ozone ay gawa sa tatlong atom ng oxygen na magkakabit (O3). Ang hangin na nilalanghap natin ay may oxygen na dalawang atom lang (O2) — kaya iba ang ozone sa ordinaryong oxygen!",
+          "bis": "Ang ozone hinimo sa tulo ka atom sa oxygen nga nagdugtong (O3). Ang hangin nga atong ginaginhawa adunay oxygen nga duha ra ka atom (O2) — mao nga lahi ang ozone sa ordinaryong oxygen!"
+        },
+        "slug": "ffct-31846",
+        "source": "original",
+        "title": {
+          "tl": "Ozone Tatlong Oxygen O3 Iba O2",
+          "en": "Ozone O3 Three Atoms",
+          "bis": "Ozone: Tulo ka Atom sa Oxygen (O3)"
+        },
+        "cats": [
+          "atoms"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title only: Ozone: Tulo ka Atom sa Oxygen (O3) turns the keyword stack into the exact three-oxygen-atoms relation. O3 and the unchanged body O2 distinction are preserved byte-for-byte; no formula normalization. Ginhawa has an attested breath/breathe family, so the retained body word is not dismissed by a Tagalog-looking surface form. Both readers prefer the title and tie the body, with compatible fidelity.",
+      "formal_item_id": "c138ac96d5c00c0af4f10d7f6b082b83f",
+      "fidelity_item_id": "mb017a3d3b5547e929550fb9e",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-31873",
+      "source_card_sha256": "4db1cc62e4390947032eaad671cb341de44971121966172af03cfc8e87da0726",
+      "candidate_card_sha256": "cb5b92868e70fcf6def8f280137b06c8d57e1171b6c26d782d391cceeed0b6e5",
+      "before_card": {
+        "id": "ffct-31873",
+        "factId": "carbon-cycle-balance-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "carbon and nature balance",
+        "terms": [
+          "carbon",
+          "carbon dioxide",
+          "balanse",
+          "balanse sa kinaiyahan",
+          "puno",
+          "dagat",
+          "ocean",
+          "sumisipsip",
+          "mosuyop",
+          "natural balance",
+          "ekosistema",
+          "ecosystem",
+          "naiipon",
+          "sobra",
+          "labis",
+          "atmospera",
+          "atmospero"
+        ],
+        "fact": {
+          "en": "Carbon dioxide in the air is usually balanced because trees and oceans absorb it, but human activity is now adding too much.",
+          "tl": "Karaniwang balanse ang carbon dioxide sa hangin dahil sinisipsip ito ng mga puno at dagat, ngunit sumosobra na ito dahil sa gawain ng tao.",
+          "bis": "Kasagaran balanse ang carbon dioxide sa hangin kay gisuyop kini sa mga kahoy ug kadagatan, apan sobra na karon tungod sa buhat sa tawo."
+        },
+        "slug": "ffct-17845",
+        "title": {
+          "en": "Carbon and Nature",
+          "tl": "Carbon at Kalikasan",
+          "bis": "Carbon ug Kinaiyahan"
+        },
+        "cats": [
+          "carbon-cycle",
+          "environment"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "carbon dioxide"
+          ],
+          "en": [
+            "Carbon dioxide"
+          ],
+          "bis": [
+            "carbon dioxide"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-31873",
+        "factId": "carbon-cycle-balance-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "carbon and nature balance",
+        "terms": [
+          "carbon",
+          "carbon dioxide",
+          "balanse",
+          "balanse sa kinaiyahan",
+          "puno",
+          "dagat",
+          "ocean",
+          "sumisipsip",
+          "mosuyop",
+          "natural balance",
+          "ekosistema",
+          "ecosystem",
+          "naiipon",
+          "sobra",
+          "labis",
+          "atmospera",
+          "atmospero"
+        ],
+        "fact": {
+          "en": "Carbon dioxide in the air is usually balanced because trees and oceans absorb it, but human activity is now adding too much.",
+          "tl": "Karaniwang balanse ang carbon dioxide sa hangin dahil sinisipsip ito ng mga puno at dagat, ngunit sumosobra na ito dahil sa gawain ng tao.",
+          "bis": "Kasagaran, balanse ang carbon dioxide sa hangin kay gisuyop kini sa mga kahoy ug kadagatan. Apan karon, sobra na kadaghan ang gidugang sa mga buhat sa tawo."
+        },
+        "slug": "ffct-17845",
+        "title": {
+          "en": "Carbon and Nature",
+          "tl": "Carbon at Kalikasan",
+          "bis": "Carbon ug Kinaiyahan"
+        },
+        "cats": [
+          "carbon-cycle",
+          "environment"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "carbon dioxide"
+          ],
+          "en": [
+            "Carbon dioxide"
+          ],
+          "bis": [
+            "carbon dioxide"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Keeps trees/oceans as the absorbers and separates their balancing role from the present human addition. Gidugang explicitly restores adding too much; karon makes the source but-now contrast clear. Both readers prefer the separation, and backtranslation/fidelity preserve the contrast and excess. The original apan conjunction is not inherently a grammar defect, and no numeric carbon balance or claim of present equilibrium is added.",
+      "formal_item_id": "c35e11cedc720f5fda39a018c2304c602",
+      "fidelity_item_id": "m31b8bba085b289c2ca055518",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-31901",
+      "source_card_sha256": "0a75f9a4f06e955a56e62a655c5fc418c829103e6169d804898cc501df90596e",
+      "candidate_card_sha256": "9416d181034d3045697353f7925a89827f3fd41e74031754b8b52422497c9628",
+      "before_card": {
+        "id": "ffct-31901",
+        "factId": "fossil-fuels-coal-mining-extraction-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "How coal is mined from the ground",
+        "terms": [
+          "mina",
+          "mining",
+          "uling",
+          "coal",
+          "hukay",
+          "dig",
+          "lupa",
+          "underground",
+          "paano kinukuha",
+          "giunsa pagkuha",
+          "how extracted",
+          "minero",
+          "semirara",
+          "extract",
+          "ground"
+        ],
+        "fact": {
+          "en": "We get coal by mining! Some sits near the surface, while deep coal needs tunnels. In the Philippines, Semirara Island is famous for its coal mining.",
+          "tl": "Kinukuha namin ang coal sa pamamagitan ng mining! Ang iba ay malapit sa surface, pero ang malalalim ay kailangan ng tunnels. Sa Pilipinas, sikat ang Semirara Island sa coal mining.",
+          "bis": "Makakuha mi og coal pinaagi sa mining! Ang uban duol sa surface, apan ang lawom nanginahanglan og tunnels. Sa Pilipinas, bantog ang Semirara Island sa coal mining."
+        },
+        "slug": "ffct-31901",
+        "source": "original",
+        "title": {
+          "tl": "Coal Mining sa Semirara",
+          "en": "Coal Mining in Semirara",
+          "bis": "Coal Mining sa Semirara"
+        },
+        "cats": [
+          "fossil-fuels",
+          "geology"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-31901",
+        "factId": "fossil-fuels-coal-mining-extraction-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "How coal is mined from the ground",
+        "terms": [
+          "mina",
+          "mining",
+          "uling",
+          "coal",
+          "hukay",
+          "dig",
+          "lupa",
+          "underground",
+          "paano kinukuha",
+          "giunsa pagkuha",
+          "how extracted",
+          "minero",
+          "semirara",
+          "extract",
+          "ground"
+        ],
+        "fact": {
+          "en": "We get coal by mining! Some sits near the surface, while deep coal needs tunnels. In the Philippines, Semirara Island is famous for its coal mining.",
+          "tl": "Kinukuha namin ang coal sa pamamagitan ng mining! Ang iba ay malapit sa surface, pero ang malalalim ay kailangan ng tunnels. Sa Pilipinas, sikat ang Semirara Island sa coal mining.",
+          "bis": "Makuha nato ang coal pinaagi sa mining! Ang uban nga coal duol ra sa surface. Apan ang lawom nga coal kinahanglan og tunnels. Sa Pilipinas, bantog ang Semirara Island sa coal mining."
+        },
+        "slug": "ffct-31901",
+        "source": "original",
+        "title": {
+          "tl": "Coal Mining sa Semirara",
+          "en": "Coal Mining in Semirara",
+          "bis": "Coal Mining sa Semirara"
+        },
+        "cats": [
+          "fossil-fuels",
+          "geology"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Separates near-surface coal from deeper coal needing tunnels and retains the Semirara example. Makuha nato presents the English generic we as an inclusive educational statement, not the narrator belonging to an unstated mining group; the source does not prove exclusive mi is universally wrong. Full kami/kita entries support the distinction. Wolff lalum explicitly includes a lawum depth example; Binisaya gives lawom as deep and kinahanglan as need/require, resolving the empty surface-head lookups without calling them defects. Both readers prefer the complete candidate and the clear backtranslation/fidelity preserve mining, depth contrast and location; no new claim that all coal is mined underground.",
+      "formal_item_id": "c34baca93c04bfc05cea4a15197d32ad8",
+      "fidelity_item_id": "mff6b1f8db47016cc73f11013",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-31980",
+      "source_card_sha256": "2d2425de9aa73b0b393e39d534d8f42c293f48a830f9eea03800f78333fe4580",
+      "candidate_card_sha256": "9bd3a9ae37344dc0e0977cae7713d1da823673a2e4fd7388894f9c4bc9dc91b5",
+      "before_card": {
+        "id": "ffct-31980",
+        "factId": "star-color-tells-distant-temperature-use-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "color lets us measure far star temperatures",
+        "terms": [
+          "gamit",
+          "use",
+          "layo",
+          "far",
+          "sukatin",
+          "measure",
+          "init",
+          "temperature",
+          "hindi",
+          "abot",
+          "makarating",
+          "kulay",
+          "color",
+          "bituin",
+          "bituon",
+          "kahalagahan"
+        ],
+        "fact": {
+          "en": "Why do we care about a star's color?\n\nStars are too far and hot to visit! But by looking at their light's color from Earth, we know their surface heat. Color is our space 'thermometer'!",
+          "tl": "Bakit mahalaga ang kulay ng bituin?\n\nSobrang layo at init para bisitahin! Pero sa pagtingin sa kulay ng liwanag nito mula Earth, alam na natin ang init ng ibabaw nito. Ang kulay ang 'thermometer' natin sa kalawakan!",
+          "bis": "Ngano importante ang kolor sa bituon?\n\nLayo ug init kaayo para bisitahan! Apan sa pagtan-aw sa kolor sa kahayag niini gikan sa Earth, nahibalo na ta sa kainit sa nawong niini. Ang kolor mao ang 'thermometer' sa kawanangan!"
+        },
+        "slug": "ffct-31980",
+        "source": "original",
+        "title": {
+          "tl": "Kulay na Thermometer sa Langit",
+          "en": "Color as Space Thermometer",
+          "bis": "Kolor nga Thermometer"
+        },
+        "cats": [
+          "stars"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-31980",
+        "factId": "star-color-tells-distant-temperature-use-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "color lets us measure far star temperatures",
+        "terms": [
+          "gamit",
+          "use",
+          "layo",
+          "far",
+          "sukatin",
+          "measure",
+          "init",
+          "temperature",
+          "hindi",
+          "abot",
+          "makarating",
+          "kulay",
+          "color",
+          "bituin",
+          "bituon",
+          "kahalagahan"
+        ],
+        "fact": {
+          "en": "Why do we care about a star's color?\n\nStars are too far and hot to visit! But by looking at their light's color from Earth, we know their surface heat. Color is our space 'thermometer'!",
+          "tl": "Bakit mahalaga ang kulay ng bituin?\n\nSobrang layo at init para bisitahin! Pero sa pagtingin sa kulay ng liwanag nito mula Earth, alam na natin ang init ng ibabaw nito. Ang kulay ang 'thermometer' natin sa kalawakan!",
+          "bis": "Ngano importante ang kolor sa bituon?\n\nLayo kaayo ug init kaayo ang mga bituon, mao nga dili nato sila mabisitahan! Apan makita nato ang kolor sa ilang kahayag gikan sa Earth. Pinaagi niini, nahibalo ta sa kainit sa ilang nawong. Ang kolor mao ang atong 'thermometer' sa kawanangan!"
+        },
+        "slug": "ffct-31980",
+        "source": "original",
+        "title": {
+          "tl": "Kulay na Thermometer sa Langit",
+          "en": "Color as Space Thermometer",
+          "bis": "Kolor nga Thermometer"
+        },
+        "cats": [
+          "stars"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Splits the distance/heat barrier from Earth-based color observation, explicitly identifies the stars, and restores our in the thermometer metaphor. Surface heat, color and metaphor remain intact. Wolff wanang gives ka-an outer space with a rocket example and Binisaya confirms kawanangan, resolving the initial lexical doubt; no spelling substitution is justified. Nawung supports face/surface and hibalu knowing. Both reader preferences, clear backtranslation and fidelity agree; the metaphor is not a claim that a literal thermometer reaches stars.",
+      "formal_item_id": "c7edfb97c65d1ff60df601528e70fad8e",
+      "fidelity_item_id": "md9c45ea7da8ead41cb779ce3",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    }
+  ],
+  "held": [
+    {
+      "card_id": "ffct-31468",
+      "source_card_sha256": "5022bb380851917975a2c48f157ee385461102a0e69b6e3bc25e602d9bb65109",
+      "candidate_card_sha256": "d360ce28dcdfe909c5ac3b54497a4c7369f112ce73e1deebff849830133e825f",
+      "before_card": {
+        "id": "ffct-31468",
+        "factId": "mountain-range-rain-shadow-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "why one side of a range is wetter than the other",
+        "terms": [
+          "rain shadow",
+          "ulan",
+          "windward",
+          "leeward",
+          "tuyo",
+          "basa",
+          "pumipigil",
+          "mountain range",
+          "umaakyat",
+          "lumalamig",
+          "panganod",
+          "ulap",
+          "pagkakaiba",
+          "tagaytay"
+        ],
+        "fact": {
+          "en": "Why is one side of a mountain rainy while the other is dry?\n\nMoist air rises up a tall mountain and cools, raining on the windward side. By the time it reaches the leeward side, the air is dry — creating a rain shadow!",
+          "tl": "Bakit sa isang gilid ng bundok maulan, habang sa kabilang gilid tuyo?\n\nAng hanging may halumigmig ay umakyat sa mataas na bundok at lumamig, umuulan sa windward side. Pagdating sa leeward side, tuyo na ang hangin — kaya nabubuo ang rain shadow!",
+          "bis": "Nganong sa usa ka kilid sa bukid moulan, samtang sa pikas kilid uga?\n\nAng hangin nga adunay umog mosaka sa habog nga bukid ug mobugnaw, moulan sa windward side. Pag-abot sa leeward side, uga na ang hangin — busa mabuhat ang rain shadow!"
+        },
+        "slug": "ffct-35438",
+        "title": {
+          "en": "Rain Shadow",
+          "tl": "Anino ng Ulan",
+          "bis": "Landong sa Ulan"
+        },
+        "cats": [
+          "weather",
+          "landforms"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "rain shadow"
+          ],
+          "en": [
+            "rain shadow"
+          ],
+          "bis": [
+            "rain shadow"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-31468",
+        "factId": "mountain-range-rain-shadow-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "why one side of a range is wetter than the other",
+        "terms": [
+          "rain shadow",
+          "ulan",
+          "windward",
+          "leeward",
+          "tuyo",
+          "basa",
+          "pumipigil",
+          "mountain range",
+          "umaakyat",
+          "lumalamig",
+          "panganod",
+          "ulap",
+          "pagkakaiba",
+          "tagaytay"
+        ],
+        "fact": {
+          "en": "Why is one side of a mountain rainy while the other is dry?\n\nMoist air rises up a tall mountain and cools, raining on the windward side. By the time it reaches the leeward side, the air is dry — creating a rain shadow!",
+          "tl": "Bakit sa isang gilid ng bundok maulan, habang sa kabilang gilid tuyo?\n\nAng hanging may halumigmig ay umakyat sa mataas na bundok at lumamig, umuulan sa windward side. Pagdating sa leeward side, tuyo na ang hangin — kaya nabubuo ang rain shadow!",
+          "bis": "Nganong sa usa ka kilid sa bukid moulan, samtang sa pikas kilid uga?\n\nAng hangin nga adunay umog mosaka sa habog nga bukid ug mobugnaw. Unya moulan kini sa windward side. Pag-abot sa leeward side, uga na ang hangin — busa mabuhat ang rain shadow!"
+        },
+        "slug": "ffct-35438",
+        "title": {
+          "en": "Rain Shadow",
+          "tl": "Anino ng Ulan",
+          "bis": "Landong sa Ulan"
+        },
+        "cats": [
+          "weather",
+          "landforms"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "rain shadow"
+          ],
+          "en": [
+            "rain shadow"
+          ],
+          "bis": [
+            "rain shadow"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Hold the exact candidate: both readers specifically praise kini as referring to the air in Unya moulan kini. Wolff attests weather raining and things raining down but does not settle this air-as-subject construction. NOAA describes moisture condensing and falling, not the air itself becoming rainfall. The sentence split may help, but this new explicit referent remains unproven; do not treat model agreement or sparse corpus matches as a Cebuano grammar authority. This is uncertainty, not a declaration that the construction is invalid.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c653eaf26b384fee94377d302a2831788"
+    },
+    {
+      "card_id": "ffct-31472",
+      "source_card_sha256": "043bffb471ef9c39d463eb93fa99510d70289089be02dd7ecccbe3afb6d93018",
+      "candidate_card_sha256": "3d14a3c4bb7fa8491e0415b90a90fe25a43652af1f34a5a213539a7940bb6582",
+      "before_card": {
+        "id": "ffct-31472",
+        "factId": "mountain-range-himalayas-tallest-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "the Himalayas hold Earth's tallest peaks",
+        "terms": [
+          "himalayas",
+          "pinakamataas",
+          "tallest",
+          "mount everest",
+          "asya",
+          "mountain range",
+          "india",
+          "nagbangga",
+          "plato",
+          "halimbawa",
+          "peak",
+          "tuktok",
+          "mundo",
+          "still rising",
+          "tumataas pa"
+        ],
+        "fact": {
+          "en": "The Himalayas in Asia have the world's tallest peaks, including Mount Everest! They formed when India's plate crashed into Asia's plate — and they're still slowly rising today!",
+          "tl": "Ang Himalayas sa Asya ang may pinakamataas na tuktok sa mundo, kasama ang Mount Everest! Nabuo ito nang magbangga ang plato ng India sa plato ng Asya — at dahan-dahan pa ring tumataas!",
+          "bis": "Ang Himalayas sa Asya maoy adunay pinakahabog nga tumoy sa kalibotan, lakip ang Mount Everest! Naporma kini sa dihang nagbangga ang plato sa India sa plato sa Asya — ug hinay-hinay pa kining nagsaka!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Himalayas",
+          "tl": "Himalayas",
+          "bis": "Himalayas"
+        },
+        "cats": [
+          "landforms",
+          "earth"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "Himalayas"
+          ],
+          "en": [
+            "Himalayas"
+          ],
+          "bis": [
+            "Himalayas"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-31472",
+        "factId": "mountain-range-himalayas-tallest-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "the Himalayas hold Earth's tallest peaks",
+        "terms": [
+          "himalayas",
+          "pinakamataas",
+          "tallest",
+          "mount everest",
+          "asya",
+          "mountain range",
+          "india",
+          "nagbangga",
+          "plato",
+          "halimbawa",
+          "peak",
+          "tuktok",
+          "mundo",
+          "still rising",
+          "tumataas pa"
+        ],
+        "fact": {
+          "en": "The Himalayas in Asia have the world's tallest peaks, including Mount Everest! They formed when India's plate crashed into Asia's plate — and they're still slowly rising today!",
+          "tl": "Ang Himalayas sa Asya ang may pinakamataas na tuktok sa mundo, kasama ang Mount Everest! Nabuo ito nang magbangga ang plato ng India sa plato ng Asya — at dahan-dahan pa ring tumataas!",
+          "bis": "Ang Himalayas sa Asya maoy adunay pinakahabog nga tumoy sa kalibotan, lakip ang Mount Everest! Naporma kini sa dihang nagbangga ang plato sa India sa plato sa Asya. Hangtod karon, hinay-hinay pa kining nagsaka!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Himalayas",
+          "tl": "Himalayas",
+          "bis": "Himalayas"
+        },
+        "cats": [
+          "landforms",
+          "earth"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "Himalayas"
+          ],
+          "en": [
+            "Himalayas"
+          ],
+          "bis": [
+            "Himalayas"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The time marker Hangtod karon and sentence split preserve English today, but the candidate retains the proposer-flagged plato sa India / plato sa Asya without establishing the intended Cebuano technical sense. Wolff gives physical plates; Binisaya lists an English crustal-plate gloss under its plate mapping, which is suggestive but is not an independent Cebuano tectonic usage example. Corpus occurrences are machine translations. Hold for lexical authority in this context; do not label plato a false friend merely because it also means a dinner plate.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c735526b6cf44d5a7f9b415fe0bede005"
+    },
+    {
+      "card_id": "ffct-31685",
+      "source_card_sha256": "5e546a360afefbe2960de6da9d212ace3bdddc6278551de9c92c0c1676c2779a",
+      "candidate_card_sha256": "657cb8c892bec4fd4dfaabedc8b2341efb6da41410884ae8a7d97795ce833c43",
+      "before_card": {
+        "id": "ffct-31685",
+        "factId": "rocky-vs-jupiter-example-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "Jupiter the king of the gas giants",
+        "terms": [
+          "jupiter",
+          "gas giant",
+          "pinakamalaki",
+          "kinadako",
+          "largest",
+          "great red spot",
+          "bagyo",
+          "unos",
+          "storm",
+          "bilog",
+          "pula",
+          "halimbawa",
+          "example",
+          "gas",
+          "hydrogen"
+        ],
+        "fact": {
+          "en": "What is Jupiter's giant storm called?\n\nJupiter is the largest gas giant, made of light gases like hydrogen and helium! Its Great Red Spot is a storm bigger than Earth!",
+          "tl": "Ano ang tawag sa higanteng bagyo ng Jupiter?\n\nAng Jupiter ang pinakamalaking gas giant na gawa sa light gases tulad ng hydrogen at helium! Ang Great Red Spot nito ay bagyong mas malaki pa sa Earth!",
+          "bis": "Unsay ngalan sa higanteng bagyo sa Jupiter?\n\nAng Jupiter ang kinadak-ang gas giant nga hinimo sa light gases sama sa hydrogen ug helium! Ang Great Red Spot niini usa ka bagyo nga mas dako pa sa Earth!"
+        },
+        "slug": "ffct-31685",
+        "source": "original",
+        "title": {
+          "tl": "Jupiter Pinakamalaking Gas Giant",
+          "en": "Jupiter King Gas Giants",
+          "bis": "Jupiter Dako Gas Giant Hydrogen"
+        },
+        "cats": [
+          "planets"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-31685",
+        "factId": "rocky-vs-jupiter-example-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "Jupiter the king of the gas giants",
+        "terms": [
+          "jupiter",
+          "gas giant",
+          "pinakamalaki",
+          "kinadako",
+          "largest",
+          "great red spot",
+          "bagyo",
+          "unos",
+          "storm",
+          "bilog",
+          "pula",
+          "halimbawa",
+          "example",
+          "gas",
+          "hydrogen"
+        ],
+        "fact": {
+          "en": "What is Jupiter's giant storm called?\n\nJupiter is the largest gas giant, made of light gases like hydrogen and helium! Its Great Red Spot is a storm bigger than Earth!",
+          "tl": "Ano ang tawag sa higanteng bagyo ng Jupiter?\n\nAng Jupiter ang pinakamalaking gas giant na gawa sa light gases tulad ng hydrogen at helium! Ang Great Red Spot nito ay bagyong mas malaki pa sa Earth!",
+          "bis": "Unsay ngalan sa higanteng bagyo sa Jupiter?\n\nAng Jupiter ang kinadak-ang gas giant nga hinimo sa light gases sama sa hydrogen ug helium! Ang Great Red Spot niini usa ka bagyo nga mas dako pa sa Earth!"
+        },
+        "slug": "ffct-31685",
+        "source": "original",
+        "title": {
+          "tl": "Jupiter Pinakamalaking Gas Giant",
+          "en": "Jupiter King Gas Giants",
+          "bis": "Jupiter, ang Kinadak-ang Gas Giant"
+        },
+        "cats": [
+          "planets"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The proposed title promotes the body superlative to an unqualified largest gas giant. NASA scopes Jupiter as largest in our solar system; this self-contained English card supplies no such domain. The Great Red Spot size is supported and is not the reason for holding. Keep the exact proposal out pending an English-scope correction across languages; fidelity to an underspecified source cannot certify the new title.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c6d57b2981c341b35aa827f5d5aef8868"
+    },
+    {
+      "card_id": "ffct-31849",
+      "source_card_sha256": "f4aa39c3d3f2626d1c6287bb1d07e19db18b4444393dfefb5fa7eeedc35d4dfc",
+      "candidate_card_sha256": "460d967b41d5750ca42e516f49daa1f1c4d77b5e3ea10b3df4661c6ba518ed80",
+      "before_card": {
+        "id": "ffct-31849",
+        "factId": "ozone-blocks-why-uv-harmful-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "Why UV rays are harmful to people",
+        "terms": [
+          "uv",
+          "ultraviolet",
+          "nganong",
+          "why",
+          "masama",
+          "delikado",
+          "sunburn",
+          "paso",
+          "balat",
+          "skin",
+          "mata",
+          "eyes",
+          "cancer",
+          "kanser",
+          "nakakapaso",
+          "harmful"
+        ],
+        "fact": {
+          "en": "Why does ozone need to block UV?\n\nUV rays carry very strong energy! They can burn skin, harm eyes, and in large amounts cause skin cancer — so it's great that ozone blocks them.",
+          "tl": "Bakit kailangan harangin ng ozone ang UV?\n\nAng UV rays ay sobrang lakas ng enerhiya! Nakakapaso ng balat, nakakasama sa mata, at sa sobrang dami pwedeng magdulot ng skin cancer — kaya mabuti na lang at hinaharang ito ng ozone.",
+          "bis": "Nganong kinahanglan babagan sa ozone ang UV?\n\nAng UV rays kusog kaayo og enerhiya! Makapaso sa panit, makadaot sa mata, ug kung sobra ka daghan makahatag og skin cancer — mao nga maayo nga gibabagan kini sa ozone."
+        },
+        "slug": "ffct-31849",
+        "source": "original",
+        "title": {
+          "tl": "UV Rays Paso Balat Mata Cancer",
+          "en": "Why UV Is Harmful",
+          "bis": "UV Kusog Paso Panit Mata Cancer"
+        },
+        "cats": [
+          "health"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-31849",
+        "factId": "ozone-blocks-why-uv-harmful-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "Why UV rays are harmful to people",
+        "terms": [
+          "uv",
+          "ultraviolet",
+          "nganong",
+          "why",
+          "masama",
+          "delikado",
+          "sunburn",
+          "paso",
+          "balat",
+          "skin",
+          "mata",
+          "eyes",
+          "cancer",
+          "kanser",
+          "nakakapaso",
+          "harmful"
+        ],
+        "fact": {
+          "en": "Why does ozone need to block UV?\n\nUV rays carry very strong energy! They can burn skin, harm eyes, and in large amounts cause skin cancer — so it's great that ozone blocks them.",
+          "tl": "Bakit kailangan harangin ng ozone ang UV?\n\nAng UV rays ay sobrang lakas ng enerhiya! Nakakapaso ng balat, nakakasama sa mata, at sa sobrang dami pwedeng magdulot ng skin cancer — kaya mabuti na lang at hinaharang ito ng ozone.",
+          "bis": "Nganong kinahanglan babagan sa ozone ang UV?\n\nAng UV rays kusog kaayo og enerhiya! Makapaso kini sa panit ug makadaot sa mata. Kung sobra ka daghan ang UV, makahatag kini og skin cancer. Mao nga maayo nga gibabagan kini sa ozone."
+        },
+        "slug": "ffct-31849",
+        "source": "original",
+        "title": {
+          "tl": "UV Rays Paso Balat Mata Cancer",
+          "en": "Why UV Is Harmful",
+          "bis": "Nganong Makadaot ang UV"
+        },
+        "cats": [
+          "health"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The clause splits and natural title are plausible, but the complete candidate repeats the unqualified conclusion that ozone blocks UV. WHO explicitly distinguishes nearly unfiltered UVA from the more strongly filtered shorter wavelengths and states that ozone absorbs some UV. This is an unresolved source-precision/safety implication, not a finding that the text explicitly says all: hold for an English qualification before promoting the full rewrite. Skin/eye harms and possible cancer are supported and are not mistranslations.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "cc8e24bc41f78edbbda6ecbecf3a978dc"
+    },
+    {
+      "card_id": "ffct-31870",
+      "source_card_sha256": "6f17a91fa85b8b2da7c1a68810e0b7f9c925f535f5d99c82ba38d054916d0bd5",
+      "candidate_card_sha256": "e2cd4a04c0c14d7e36eeae11d08671f730693140784c0a3a642f926448109640",
+      "before_card": {
+        "id": "ffct-31870",
+        "factId": "protected-areas-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "protected areas",
+        "terms": [
+          "protected area",
+          "protektadong lugar",
+          "gipanalipdan nga lugar",
+          "national park",
+          "marine sanctuary",
+          "santuwaryo",
+          "tubbataha",
+          "reef",
+          "bahura",
+          "gubat",
+          "hayop",
+          "ipreserba",
+          "bawal mangisda",
+          "bawal mangahoy",
+          "kalikasan",
+          "reserba"
+        ],
+        "fact": {
+          "en": "Protected areas like the Tubbataha Reef are special places where hunting and damage are banned to keep nature safe.",
+          "tl": "Ang mga protektadong lugar gaya ng Tubbataha Reef ay espesyal na pook kung saan bawal manghuli o manira para mapangalagaan ang kalikasan.",
+          "bis": "Ang mga gipanalipdan nga lugar sama sa Tubbataha Reef mga espesyal nga dapit diin gidili ang pagpangayam o pagguba aron maamping ang kinaiyahan."
+        },
+        "slug": "tubbataha-reef",
+        "title": {
+          "en": "Protected Areas",
+          "tl": "Protektadong Lugar",
+          "bis": "Protektadong Lugar"
+        },
+        "cats": [
+          "environment",
+          "conservation"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "Tubbataha Reef"
+          ],
+          "en": [
+            "Tubbataha Reef"
+          ],
+          "bis": [
+            "Tubbataha Reef"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-31870",
+        "factId": "protected-areas-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "protected areas",
+        "terms": [
+          "protected area",
+          "protektadong lugar",
+          "gipanalipdan nga lugar",
+          "national park",
+          "marine sanctuary",
+          "santuwaryo",
+          "tubbataha",
+          "reef",
+          "bahura",
+          "gubat",
+          "hayop",
+          "ipreserba",
+          "bawal mangisda",
+          "bawal mangahoy",
+          "kalikasan",
+          "reserba"
+        ],
+        "fact": {
+          "en": "Protected areas like the Tubbataha Reef are special places where hunting and damage are banned to keep nature safe.",
+          "tl": "Ang mga protektadong lugar gaya ng Tubbataha Reef ay espesyal na pook kung saan bawal manghuli o manira para mapangalagaan ang kalikasan.",
+          "bis": "Ang mga gipanalipdan nga lugar sama sa Tubbataha Reef espesyal nga mga dapit. Gidili didto ang pagpangayam o pagguba aron maamping ang kinaiyahan."
+        },
+        "slug": "tubbataha-reef",
+        "title": {
+          "en": "Protected Areas",
+          "tl": "Protektadong Lugar",
+          "bis": "Protektadong Lugar"
+        },
+        "cats": [
+          "environment",
+          "conservation"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "Tubbataha Reef"
+          ],
+          "en": [
+            "Tubbataha Reef"
+          ],
+          "bis": [
+            "Tubbataha Reef"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The two-sentence version clearly carries the same purpose and ban, but the source generalizes from Tubbataha to protected areas. Tubbataha is specifically managed under a no-take policy; the broader Philippine protected-area statute recognizes categories and authorized/exempt taking. A generic universal ban is not established by the example. Hold the full candidate for source scope, not a claim that hunting is permitted in Tubbataha or that the Cebuano split is wrong.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "ccb4543d6342c87222780e5878caf9a0e"
+    },
+    {
+      "card_id": "ffct-31969",
+      "source_card_sha256": "3b15da9d2b1a96d492b6420a20e86b1fc22c1cac106c7f6bccc862b04ca4af0a",
+      "candidate_card_sha256": "05e1ef087197887c8ead7eb05dbec991963f3d80e42cd29ecebce2956781c59a",
+      "before_card": {
+        "id": "ffct-31969",
+        "factId": "star-color-blackbody-mechanism-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "hot glowing objects shift color with heat",
+        "terms": [
+          "nagbabago",
+          "kulay",
+          "init",
+          "glow",
+          "nagbabaga",
+          "color",
+          "mainit",
+          "temperatura",
+          "temperature",
+          "metal",
+          "plantsa",
+          "bituin",
+          "bituon",
+          "nagdilaab"
+        ],
+        "fact": {
+          "en": "Why do stars come in different colors?\n\nBecause heat decides the color! Just like metal glowing red, then orange, then white as it heats up — a star's temperature determines what color of light it gives off!",
+          "tl": "Bakit iba-iba ang kulay ng mga bituin?\n\nDahil ang init ang nagdidikta ng kulay! Tulad ng metal na nagliliwanag na pula, tapos orange, tapos puti habang umiinit — ang temperatura ng bituin ang nagdedesisyon ng kulay ng liwanag nito!",
+          "bis": "Nganong lahi-lahi ang kolor sa mga bituon?\n\nKay ang kainit maoy magdesisyon sa kolor! Sama sa metal nga mosanag nga pula, dayon orange, dayon puti samtang moinit — ang temperatura sa bituon maoy magdesisyon sa kolor sa kahayag niini!"
+        },
+        "slug": "qa-ffct-31969",
+        "title": {
+          "en": "Heat and Color",
+          "tl": "Init at Kulay",
+          "bis": "Init ug Kolor"
+        },
+        "cats": [
+          "heat",
+          "light"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "temperatura"
+          ],
+          "en": [
+            "temperature"
+          ],
+          "bis": [
+            "temperatura"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-31969",
+        "factId": "star-color-blackbody-mechanism-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "hot glowing objects shift color with heat",
+        "terms": [
+          "nagbabago",
+          "kulay",
+          "init",
+          "glow",
+          "nagbabaga",
+          "color",
+          "mainit",
+          "temperatura",
+          "temperature",
+          "metal",
+          "plantsa",
+          "bituin",
+          "bituon",
+          "nagdilaab"
+        ],
+        "fact": {
+          "en": "Why do stars come in different colors?\n\nBecause heat decides the color! Just like metal glowing red, then orange, then white as it heats up — a star's temperature determines what color of light it gives off!",
+          "tl": "Bakit iba-iba ang kulay ng mga bituin?\n\nDahil ang init ang nagdidikta ng kulay! Tulad ng metal na nagliliwanag na pula, tapos orange, tapos puti habang umiinit — ang temperatura ng bituin ang nagdedesisyon ng kulay ng liwanag nito!",
+          "bis": "Nganong lahi-lahi ang kolor sa mga bituon?\n\nKay ang kainit maoy magdesisyon sa kolor! Sama sa metal: mosanag kini nga pula, dayon orange, dayon puti samtang moinit. Ingon usab niana, ang temperatura sa bituon maoy magdesisyon kung unsa nga kolor sa kahayag ang iyang ipagawas!"
+        },
+        "slug": "qa-ffct-31969",
+        "title": {
+          "en": "Heat and Color",
+          "tl": "Init at Kulay",
+          "bis": "Init ug Kolor"
+        },
+        "cats": [
+          "heat",
+          "light"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "temperatura"
+          ],
+          "en": [
+            "temperature"
+          ],
+          "bis": [
+            "temperatura"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The analogy split, likewise connector and emitted-light verb retain English structure, but the exact candidate still uses mosanag for physical glowing. Wolff and Binisaya attest sanag as cheerfulness; Binisaya cross-links hayag without independently settling the physical-glow sense of this form. Machine corpus examples do not resolve that gap. Hold pending stronger lexical authority or native review; do not claim the word is definitively incorrect.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c2a5796e1df430aff74d43b0e1a934000"
+    },
+    {
+      "card_id": "ffct-31993",
+      "source_card_sha256": "126274cba43f27c1460a977971310607238cae8a98521745411e9b752283e4b6",
+      "candidate_card_sha256": "ebc6cf58fd8b143d3e6ca284cfa00f246e4545c145d971d6beb81fbc56fa6e4a",
+      "before_card": {
+        "id": "ffct-31993",
+        "factId": "weathering-makes-weathering-vs-erosion-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "Weathering versus erosion compared",
+        "terms": [
+          "weathering",
+          "erosion",
+          "pagkakaiba",
+          "kaibahan",
+          "difference",
+          "bato",
+          "nadadala",
+          "carried away",
+          "tubig",
+          "hangin",
+          "erosion vs weathering",
+          "natatangay",
+          "nababasag",
+          "unsa kalainan",
+          "sediment"
+        ],
+        "fact": {
+          "en": "Are weathering and erosion the same thing?\n\nNope! Weathering breaks rock right where it sits. Erosion is when water, wind, or ice carries those broken pieces far away!",
+          "tl": "Pareho ba ang weathering at erosion?\n\nHindi! Ang weathering ay nagbabasag ng bato sa kinalalagyan nito. Ang erosion ay pagdadala ng tubig, hangin, o yelo sa mga durog na bato palayo!",
+          "bis": "Managsama ba ang weathering ug erosion?\n\nDili! Ang weathering moguba sa bato sa nahimutangan niini. Ang erosion pagdala sa tubig, hangin, o yelo sa naguba nga mga tipik palayo!"
+        },
+        "slug": "ffct-31993",
+        "source": "original",
+        "title": {
+          "tl": "Weathering laban sa Erosion",
+          "en": "Weathering versus Erosion",
+          "bis": "Weathering batok sa Erosyon"
+        },
+        "cats": [
+          "erosion",
+          "geology"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-31993",
+        "factId": "weathering-makes-weathering-vs-erosion-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "Weathering versus erosion compared",
+        "terms": [
+          "weathering",
+          "erosion",
+          "pagkakaiba",
+          "kaibahan",
+          "difference",
+          "bato",
+          "nadadala",
+          "carried away",
+          "tubig",
+          "hangin",
+          "erosion vs weathering",
+          "natatangay",
+          "nababasag",
+          "unsa kalainan",
+          "sediment"
+        ],
+        "fact": {
+          "en": "Are weathering and erosion the same thing?\n\nNope! Weathering breaks rock right where it sits. Erosion is when water, wind, or ice carries those broken pieces far away!",
+          "tl": "Pareho ba ang weathering at erosion?\n\nHindi! Ang weathering ay nagbabasag ng bato sa kinalalagyan nito. Ang erosion ay pagdadala ng tubig, hangin, o yelo sa mga durog na bato palayo!",
+          "bis": "Managsama ba ang weathering ug erosion?\n\nDili! Ang weathering moguba sa bato diha mismo sa nahimutangan niini. Ang erosion mao kung ang tubig, hangin, o yelo modala niadtong naguba nga mga tipik ngadto sa layo!"
+        },
+        "slug": "ffct-31993",
+        "source": "original",
+        "title": {
+          "tl": "Weathering laban sa Erosion",
+          "en": "Weathering versus Erosion",
+          "bis": "Weathering batok sa Erosyon"
+        },
+        "cats": [
+          "erosion",
+          "geology"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Explicit agents improve the erosion sentence, but ngadto sa layo deliberately strengthens the English far away into a defining requirement. NPS defines erosion by movement and describes wind moving sand only inches at a time. The distance requirement is unnecessary and misleading in a definition. Hold for a cross-language English correction; do not silently substitute a different candidate or normalize the unchanged Erosyon/erosion spelling variant.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c3bc03b67ea1ab5112a87bef08ef6f5d9"
+    }
+  ],
+  "prior_mandatory_missing_judgment_holds": [
+    "ffct-15686",
+    "ffct-24823",
+    "ffct-24184"
+  ],
+  "prior_mandatory_invalid_evidence_holds": [
+    "ffct-08459",
+    "ffct-09018",
+    "ffct-10152",
+    "ffct-18958"
+  ],
+  "native_verified": false,
+  "science_verified": false,
+  "released": false,
+  "source_precision_holds_require_cross_language_review": [
+    "ffct-31685",
+    "ffct-31849",
+    "ffct-31870",
+    "ffct-31993"
+  ],
+  "lexical_holds": [
+    "ffct-31468",
+    "ffct-31472",
+    "ffct-31969"
+  ]
+}

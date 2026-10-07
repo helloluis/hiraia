@@ -1,0 +1,20 @@
+{
+  "command": [
+    "env",
+    "HF_HUB_OFFLINE=1",
+    "TRANSFORMERS_OFFLINE=1",
+    "/Users/luis/Code/hiraia/finetuning/.convert-venv/bin/python3",
+    "rag/scripts/refresh-changed-vectors.py",
+    "--before",
+    "build/cebuano-curriculum-alignment/baseline/rag/bank/science-facts.jsonl",
+    "--report",
+    "tools/cebuano-curriculum-alignment/vector-refresh-001.json"
+  ],
+  "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007",
+  "started_at": "2026-10-07T03:53:19.719039+00:00",
+  "finished_at": "2026-10-07T03:53:28.009741+00:00",
+  "actual_exit_code": 0,
+  "parent_nice": 10,
+  "output_sha256": "1c084a4fdfa42ccceee608bb4003ea58be4e7d6d78412a7ad28b3d89926fac9a",
+  "output_bytes": 850
+}

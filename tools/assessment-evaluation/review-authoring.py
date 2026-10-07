@@ -36,6 +36,11 @@ def load_context(batch):
 def validate_teaching_links(item, ctx, require):
     """Check traceable link evidence, not the author's semantic judgment itself."""
     item_id = item['id']
+    for source in [item['provenance']['primary'], *item['provenance'].get('additional_teaching_cards', [])]:
+        if 'teaching_link_hold' in source:
+            hold = source['teaching_link_hold']
+            require(isinstance(hold, dict) and all(isinstance(hold.get(key), str) and hold[key].strip()
+                    for key in ('reason', 'review_receipt')), f'{item_id}: malformed teaching-link hold')
     primary_ids = item['provenance']['primary']['card_ids']
     links = item['provenance'].get('additional_teaching_cards', [])
     extra_ids = [link.get('card_id') for link in links]

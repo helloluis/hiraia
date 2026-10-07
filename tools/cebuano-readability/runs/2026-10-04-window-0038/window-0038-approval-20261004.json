@@ -1,0 +1,3806 @@
+{
+  "schema": "hiraia.cebuano-readability-reviewed-edits/v1",
+  "status": "reviewed_for_local_application",
+  "created_at": "2026-10-04T12:03:31.352489+00:00",
+  "reviewer": "Codex root, independent of Claude proposal/backtranslation/fidelity/readability calls; no separate Codex reviewer used for this window",
+  "scope": "Window 38: 33 individually reviewed exact edits and six priority holds. Windows 1–36 were previously adjudicated; window 37 remains pending. No score-only approval, native verification, exhaustive science certification or release permission. All seven prior invalid-evidence/missing-fidelity holds remain mandatory.",
+  "window_id": "window-0038",
+  "window_accounting": {
+    "source_cards": 768,
+    "completed_assessments": 768,
+    "missing_fidelity_holds": 0,
+    "approved_exact_edits": 33,
+    "unchanged_keeps": 120,
+    "held": 615,
+    "held_from_priority_set": 6,
+    "preexisting_nonpriority_holds": 609
+  },
+  "input_pins": [
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0038/report.json",
+      "sha256": "8b3ba6e4b6c76af1984eb0a2842688c8794256b3c168c9faa8c22347d8eb039f",
+      "bytes": 49977563
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0038/clean-agreement.jsonl",
+      "sha256": "fc45497ae0a89fe9bfa40a1ee22e9f583942cbb558e85d9fb85a867b8dd3c877",
+      "bytes": 1131289
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0038/replay/fidelity/judgments.jsonl",
+      "sha256": "9f197d700a9570ed9e392d93747ec8757ee7f21608a10075baf71cd5bfff520b",
+      "bytes": 828568
+    },
+    {
+      "path": "build/cebuano-readability/campaign-20261002-v1/windows/window-0038/fidelity-inputs/private-map.json",
+      "sha256": "7daa2f7f2feeaeb0217a463239d2061360a06c2861b3f0f4abcb70979f216afc",
+      "bytes": 758066
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0038/root-decisions.json",
+      "sha256": "ff5cb5a3d1031903f49c0eb3b2e2f34ec2ec98a462c8509bdad6eeb7d31b7b7a",
+      "bytes": 18520
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0038/corpus-lexical-evidence.json",
+      "sha256": "6230f8fbe156ee129c327bc48fdb23b070b98945463e167478c2479ee3e22c53",
+      "bytes": 65287
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0038/dictionary-entries.json",
+      "sha256": "c838c17b49cc58f12d8752d5a90e884c4179e9097c77edeef5f3b1711f353c1c",
+      "bytes": 56384
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0038/lexical-source-review.json",
+      "sha256": "4e5ade79d1db101152a5eea836f586e28ded7eff30e34f7461a1e34037edbc9e",
+      "bytes": 13634
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0038/corpus-supplement-001.json",
+      "sha256": "fce9275bcb0347b972121b9c40465444f25632f31a5222a70279d0de5f7bd474",
+      "bytes": 7910
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0038/dictionary-supplement-001.json",
+      "sha256": "11f0c7f1e6afa03e957ac412abb6b6b8320517aad6dd4a260efcf16ddf0bc010",
+      "bytes": 2999
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0038/source-evidence-001.json",
+      "sha256": "d0d6e0125cf8155be22c2cafd9037482514223017219563ae36a442dea3ff54e",
+      "bytes": 12518
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0038/root-notes-final-001.json",
+      "sha256": "4863b47f42256fd64cda29d4e2623e5abe463d7c1622dafe2fef3cc3051d4c43",
+      "bytes": 17027
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-gutenberg-40074.txt",
+      "sha256": "f80b888b24dd4ca7f5cb16276b4a53f9d22129a496b9ffb7f7efe17d3b9a1504",
+      "bytes": 5699379
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-retrieval.json",
+      "sha256": "bd713c5adf21541a0e7fd9c49f75fb6b9d4157fb88d41151a245165b8955b7da",
+      "bytes": 502
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0038/collect-evidence-001.py",
+      "sha256": "ade70fca3cb82e32eeec5c72bff2ca1b9103c39caface6ae95937a31b7370ed8",
+      "bytes": 5491
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0038/collect-supplement-001.py",
+      "sha256": "f90e1a1a7f75ce6a28a604a8bb82f5ae8ff01a4b974959dbe8b453b41f7ae407",
+      "bytes": 2944
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/show-dossiers-d17ce591.py",
+      "sha256": "b5857656b3e2e6343220b3c66bf17bb560556572462874cb7534d9e6a51efba8",
+      "bytes": 2081
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0038/write-root-records.py",
+      "sha256": "827216fb51d3b2c2401ece8fb7620b9910587f4fbeffbad2dc8163299ef4ca39",
+      "bytes": 25653
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0038/create-root-approval.py",
+      "sha256": "f557f803481fdc571ec539a7662346b7da35d21561250259aaf344ba040e81e0",
+      "bytes": 6860
+    }
+  ],
+  "current_pool_before_application": {
+    "path": "rag/pipeline/cardsPool.app.json",
+    "sha256": "54c2f3ceb87b10855fc27fd8eb45b35b36d164f933f18f0e35492505cf8fc431",
+    "bytes": 50649697
+  },
+  "accepted": [
+    {
+      "card_id": "ffct-28909",
+      "source_card_sha256": "a975cce940376d4f17e14660906e2aaf286d01bc78951c6d80a1c365500e54fd",
+      "candidate_card_sha256": "294c41c93980cde039c2e30159cb0e1ab4fb8cf1d23b0346b62c9986ed4b2321",
+      "before_card": {
+        "id": "ffct-28909",
+        "factId": "voyager-still-talking-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "Voyager signals take many hours to reach Earth",
+        "terms": [
+          "voyager",
+          "signal",
+          "senyas",
+          "hudyat",
+          "radyo",
+          "radio",
+          "interstellar space",
+          "kalawakan",
+          "kawanangan",
+          "labas ng solar system",
+          "gawas sa solar system",
+          "oras",
+          "hours",
+          "layo",
+          "kalayo",
+          "kalayuon",
+          "bilis ng liwanag",
+          "speed of light",
+          "katulin sa kahayag",
+          "umaabot",
+          "moabot",
+          "nakakaabot"
+        ],
+        "fact": {
+          "en": "Voyager 1 is so far away! Even traveling at the speed of light, its radio signal takes more than 20 hours to finally reach Earth.",
+          "tl": "Napakalayo na ng Voyager 1! Kahit kasimbilis ng liwanag ang radyo nitong senyas, umaabot ito ng mahigit 20 oras bago marating ang Earth.",
+          "bis": "Layo na kaayo ang Voyager 1! Bisan sama kapaspas sa kahayag ang radyo niini nga senyas, mokabat kini ug kapin 20 ka oras una makaabot sa Earth."
+        },
+        "slug": "ffct-28909",
+        "source": "original",
+        "title": {
+          "tl": "20+ Oras Signal Voyager",
+          "en": "Voyager's Slow Signals",
+          "bis": "Signal sa Voyager"
+        },
+        "cats": [
+          "space-exploration"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28909",
+        "factId": "voyager-still-talking-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "Voyager signals take many hours to reach Earth",
+        "terms": [
+          "voyager",
+          "signal",
+          "senyas",
+          "hudyat",
+          "radyo",
+          "radio",
+          "interstellar space",
+          "kalawakan",
+          "kawanangan",
+          "labas ng solar system",
+          "gawas sa solar system",
+          "oras",
+          "hours",
+          "layo",
+          "kalayo",
+          "kalayuon",
+          "bilis ng liwanag",
+          "speed of light",
+          "katulin sa kahayag",
+          "umaabot",
+          "moabot",
+          "nakakaabot"
+        ],
+        "fact": {
+          "en": "Voyager 1 is so far away! Even traveling at the speed of light, its radio signal takes more than 20 hours to finally reach Earth.",
+          "tl": "Napakalayo na ng Voyager 1! Kahit kasimbilis ng liwanag ang radyo nitong senyas, umaabot ito ng mahigit 20 oras bago marating ang Earth.",
+          "bis": "Layo na kaayo ang Voyager 1! Ang senyas sa radyo nga gikan niini mobiyahe sama kapaspas sa kahayag. Apan mokabat gihapon kini og kapin 20 ka oras una makaabot sa Earth."
+        },
+        "slug": "ffct-28909",
+        "source": "original",
+        "title": {
+          "tl": "20+ Oras Signal Voyager",
+          "en": "Voyager's Slow Signals",
+          "bis": "Signal sa Voyager"
+        },
+        "cats": [
+          "space-exploration"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Separates the light-speed statement from the still-long travel time, retaining Voyager 1, more than 20 hours and the radio-signal relationship. Wolff byahi and paspas support travel and speed, with independent body use. NASA’s August 2026 mission update places the one-light-day milestone in November, consistent with more than 20 hours now. Both body preferences agree; no round-trip or instant-signal claim is added.",
+      "formal_item_id": "c410e8cdd9e3af2d410a4695ca1be148c",
+      "fidelity_item_id": "mecfaddb452786fb65e1dff33",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-28917",
+      "source_card_sha256": "2183cb76e6263a6e5487dbe09000e9a8521ddeb82a6c91da76ea3f088614211e",
+      "candidate_card_sha256": "cbe0ce130df2d9acca2a4ba6dea1c37bf6430e07dffc6978ac0c8a2c2d14d759",
+      "before_card": {
+        "id": "ffct-28917",
+        "factId": "mars-rover-radio-delay-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "Commands to Mars rovers take minutes to arrive",
+        "terms": [
+          "mars rover",
+          "rover",
+          "utos",
+          "sugo",
+          "command",
+          "signal",
+          "senyas",
+          "minuto",
+          "minutos",
+          "minutes",
+          "antala",
+          "delay",
+          "langan",
+          "layo ng mars",
+          "kalay-o sa mars",
+          "hindi madiskarte agad",
+          "dili dali masugo",
+          "kaya mag-isa",
+          "kaugalingon",
+          "drive alone",
+          "antay",
+          "paghulat"
+        ],
+        "fact": {
+          "en": "Since Mars is so far away, commands from Earth take several minutes to reach a rover. That means you can't drive it live like a video game!",
+          "tl": "Dahil napakalayo ng Mars, umaabot ng ilang minuto ang utos mula sa Earth bago marating ang rover—kaya hindi ito puwedeng i-drive nang live na parang video game!",
+          "bis": "Tungod kay layo kaayo ang Mars, ang sugo gikan sa Earth mokabat ug pipila ka minuto una makaabot sa rover—dili kini madrayb nga live sama sa video game!"
+        },
+        "slug": "mars-rover",
+        "title": {
+          "en": "Mars Rover Commands",
+          "tl": "Utos sa Mars Rover",
+          "bis": "Sugo sa Mars Rover"
+        },
+        "cats": [
+          "space",
+          "space-exploration"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "ilang minuto"
+          ],
+          "en": [
+            "several minutes"
+          ],
+          "bis": [
+            "pipila ka minuto"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-28917",
+        "factId": "mars-rover-radio-delay-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "Commands to Mars rovers take minutes to arrive",
+        "terms": [
+          "mars rover",
+          "rover",
+          "utos",
+          "sugo",
+          "command",
+          "signal",
+          "senyas",
+          "minuto",
+          "minutos",
+          "minutes",
+          "antala",
+          "delay",
+          "langan",
+          "layo ng mars",
+          "kalay-o sa mars",
+          "hindi madiskarte agad",
+          "dili dali masugo",
+          "kaya mag-isa",
+          "kaugalingon",
+          "drive alone",
+          "antay",
+          "paghulat"
+        ],
+        "fact": {
+          "en": "Since Mars is so far away, commands from Earth take several minutes to reach a rover. That means you can't drive it live like a video game!",
+          "tl": "Dahil napakalayo ng Mars, umaabot ng ilang minuto ang utos mula sa Earth bago marating ang rover—kaya hindi ito puwedeng i-drive nang live na parang video game!",
+          "bis": "Tungod kay layo kaayo ang Mars, ang sugo gikan sa Earth mokabat ug pipila ka minuto una makaabot sa rover. Mao nga dili nimo madrayb ang rover nga live sama sa video game!"
+        },
+        "slug": "mars-rover",
+        "title": {
+          "en": "Mars Rover Commands",
+          "tl": "Utos sa Mars Rover",
+          "bis": "Sugo sa Mars Rover"
+        },
+        "cats": [
+          "space",
+          "space-exploration"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "ilang minuto"
+          ],
+          "en": [
+            "several minutes"
+          ],
+          "bis": [
+            "pipila ka minuto"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Names the rover and separates the delay from the resulting driving constraint. Wolff sugu supports commands; the candidate preserves several minutes, the reader-directed question and the exact emphasis. NASA gives a variable several-minute one-way delay. Both changed-field observations and backtranslation agree; no exact fixed Mars distance or real-time control claim is introduced.",
+      "formal_item_id": "c3a2044c9ced726bed91881cca852ee9c",
+      "fidelity_item_id": "m2d7b3ae120a5b70baba9484b",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-28959",
+      "source_card_sha256": "e90c3f72412f85d6d8a0197c3bbb29e3e894172cf9f0264831d4e5383c182c15",
+      "candidate_card_sha256": "3b7144782277913894215721bc75c981987996dd67834d1752f24dbaae0e2c5c",
+      "before_card": {
+        "id": "ffct-28959",
+        "factId": "sun-solar-cycle-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "the solar cycle",
+        "terms": [
+          "solar cycle",
+          "11 years",
+          "more sunspots",
+          "siklo ng araw",
+          "labing-isang taon",
+          "dumarami sunspot",
+          "siklo sa adlaw",
+          "napulo'g usa ka tuig",
+          "why sunspots come and go",
+          "bakit nagbabago dami ng sunspot"
+        ],
+        "fact": {
+          "en": "Sunspots and solar flares change in an 11-year cycle! The Sun's magnetic force shifts, creating busy times with many bursts and quiet times with almost none.",
+          "tl": "Nagbabago ang sunspots at solar flares sa 11-year cycle! Lumilipat ang magnetic force ng Araw, kaya may panahong maraming sabog at panahong halos wala.",
+          "bis": "Nag-usab ang sunspots ug solar flare sa 11-year cycle! Nagbalhin ang magnetic force sa Adlaw, busa adunay panahon nga daghang pagbuto ug panahon nga halos wala."
+        },
+        "slug": "ffct-28959",
+        "source": "original",
+        "title": {
+          "tl": "11-Taong Cycle ng Sunspot",
+          "en": "11-Year Sunspot Cycle",
+          "bis": "11 Tuig Cycle"
+        },
+        "cats": [
+          "stars"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28959",
+        "factId": "sun-solar-cycle-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "the solar cycle",
+        "terms": [
+          "solar cycle",
+          "11 years",
+          "more sunspots",
+          "siklo ng araw",
+          "labing-isang taon",
+          "dumarami sunspot",
+          "siklo sa adlaw",
+          "napulo'g usa ka tuig",
+          "why sunspots come and go",
+          "bakit nagbabago dami ng sunspot"
+        ],
+        "fact": {
+          "en": "Sunspots and solar flares change in an 11-year cycle! The Sun's magnetic force shifts, creating busy times with many bursts and quiet times with almost none.",
+          "tl": "Nagbabago ang sunspots at solar flares sa 11-year cycle! Lumilipat ang magnetic force ng Araw, kaya may panahong maraming sabog at panahong halos wala.",
+          "bis": "Nag-usab ang sunspots ug solar flare sa 11-year cycle! Nagbalhin ang magnetic force sa Adlaw, busa adunay panahon nga daghang pagbuto ug panahon nga halos wala."
+        },
+        "slug": "ffct-28959",
+        "source": "original",
+        "title": {
+          "tl": "11-Taong Cycle ng Sunspot",
+          "en": "11-Year Sunspot Cycle",
+          "bis": "Ang 11 ka Tuig nga Cycle sa Sunspot"
+        },
+        "cats": [
+          "stars"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title links the 11-year cycle explicitly to sunspots; the body is unchanged. Wolff tuig supports years. NASA distinguishes roughly 11-year solar activity from the full 22-year magnetic return, so this sunspot title does not convert the latter into 11 years. Both title preferences agree with body ties; the existing numerical wording is retained.",
+      "formal_item_id": "c3c278c5ed3ad1972226780a7821f8be1",
+      "fidelity_item_id": "mb640daecb1a51a599368f8d0",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29027",
+      "source_card_sha256": "b87ce3f0648cf096f8eba88d3541d510eab17f29755a931f46f92e165d3e5a4a",
+      "candidate_card_sha256": "a3da6fb503002853b1073ae12dccfae6e3fbd7004fa56c2129e6fda2fac4cc1a",
+      "before_card": {
+        "id": "ffct-29027",
+        "factId": "neptune-winds-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "Neptune's strong winds",
+        "terms": [
+          "neptune",
+          "neptuno",
+          "hangin",
+          "winds",
+          "pinakamalakas",
+          "pinakakusog",
+          "tunog",
+          "tingog",
+          "sound"
+        ],
+        "fact": {
+          "en": "Neptune has the strongest winds of any planet, blowing even faster than the speed of sound!",
+          "tl": "Ang Neptune ay may pinakamalakas na hangin sa lahat ng planeta, umiihip nang mas mabilis pa sa bilis ng tunog!",
+          "bis": "Ang Neptune adunay pinakakusog nga hangin sa tanang planeta, mohuros nga mas paspas pa sa katulin sa tingog!"
+        },
+        "slug": "ffct-29027",
+        "source": "original",
+        "title": {
+          "tl": "Neptune Hangin Tunog",
+          "en": "Neptune's Supersonic Winds",
+          "bis": "Neptune Hangin"
+        },
+        "cats": [
+          "planets"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29027",
+        "factId": "neptune-winds-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "Neptune's strong winds",
+        "terms": [
+          "neptune",
+          "neptuno",
+          "hangin",
+          "winds",
+          "pinakamalakas",
+          "pinakakusog",
+          "tunog",
+          "tingog",
+          "sound"
+        ],
+        "fact": {
+          "en": "Neptune has the strongest winds of any planet, blowing even faster than the speed of sound!",
+          "tl": "Ang Neptune ay may pinakamalakas na hangin sa lahat ng planeta, umiihip nang mas mabilis pa sa bilis ng tunog!",
+          "bis": "Ang Neptune adunay pinakakusog nga hangin sa tanang planeta. Ang hangin niini mohuros nga mas paspas pa sa katulin sa tingog!"
+        },
+        "slug": "ffct-29027",
+        "source": "original",
+        "title": {
+          "tl": "Neptune Hangin Tunog",
+          "en": "Neptune's Supersonic Winds",
+          "bis": "Kusog nga Hangin sa Neptune"
+        },
+        "cats": [
+          "planets"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Splits the Neptune wind explanation and names the wind in the title, retaining strongest winds and the supersonic comparison. Wolff hurus supports wind blowing strongly; NASA’s Neptune visualization explicitly describes supersonic winds. Both changed-field preferences agree, with no new numerical speed or Earth-wind substitution.",
+      "formal_item_id": "c7ae122e2530a16a8e49cde90c184ab52",
+      "fidelity_item_id": "m1bb6a028e08c0fdc6db4fa7f",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29033",
+      "source_card_sha256": "876ca51f8f1c6208df516a1616db76943ef96f8b64d1e2e74928f2ff632d42a9",
+      "candidate_card_sha256": "26b8433c983c333453f7c011a8efc5dad2098011f6715ae4d4c7ad265e6ebacd",
+      "before_card": {
+        "id": "ffct-29033",
+        "factId": "moon-no-air-no-sound-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "the Moon has no air",
+        "terms": [
+          "buwan",
+          "moon",
+          "bulan",
+          "hangin",
+          "hangin walay",
+          "walang hangin",
+          "atmosphere",
+          "tunog",
+          "tingog",
+          "huni",
+          "sound",
+          "huminga",
+          "ginhawa",
+          "breathe",
+          "footprint",
+          "yapak",
+          "tunob"
+        ],
+        "fact": {
+          "en": "Can you breathe or hear sounds on the Moon?\n\nThe Moon has no air! Because of this, a person could not breathe there, and sound cannot travel.",
+          "tl": "Pwede bang huminga o makarinig ng tunog sa buwan?\n\nWalang hangin ang buwan! Kaya hindi makakahinga ang tao roon, at hindi rin makakarating ang tunog.",
+          "bis": "Makaginhawa ba o makadungog og tingog sa bulan?\n\nWalay hangin ang bulan! Mao nga dili makaginhawa ang tawo didto, ug dili usab makaabot ang tingog."
+        },
+        "slug": "ffct-34404",
+        "title": {
+          "en": "Airless Moon",
+          "tl": "Buwan Walang Hangin",
+          "bis": "Bulan Walay Hangin"
+        },
+        "cats": [
+          "the-moon",
+          "space"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "hangin"
+          ],
+          "en": [
+            "air"
+          ],
+          "bis": [
+            "hangin"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-29033",
+        "factId": "moon-no-air-no-sound-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "the Moon has no air",
+        "terms": [
+          "buwan",
+          "moon",
+          "bulan",
+          "hangin",
+          "hangin walay",
+          "walang hangin",
+          "atmosphere",
+          "tunog",
+          "tingog",
+          "huni",
+          "sound",
+          "huminga",
+          "ginhawa",
+          "breathe",
+          "footprint",
+          "yapak",
+          "tunob"
+        ],
+        "fact": {
+          "en": "Can you breathe or hear sounds on the Moon?\n\nThe Moon has no air! Because of this, a person could not breathe there, and sound cannot travel.",
+          "tl": "Pwede bang huminga o makarinig ng tunog sa buwan?\n\nWalang hangin ang buwan! Kaya hindi makakahinga ang tao roon, at hindi rin makakarating ang tunog.",
+          "bis": "Makaginhawa ba ka o makadungog og tingog sa bulan?\n\nWalay hangin ang bulan! Mao nga dili makaginhawa ang tawo didto, ug dili usab makaabot ang tingog."
+        },
+        "slug": "ffct-34404",
+        "title": {
+          "en": "Airless Moon",
+          "tl": "Buwan Walang Hangin",
+          "bis": "Bulan Walay Hangin"
+        },
+        "cats": [
+          "the-moon",
+          "space"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "hangin"
+          ],
+          "en": [
+            "air"
+          ],
+          "bis": [
+            "hangin"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Adds ka to address the reader directly in the question; the answer remains unchanged. Wolff ginhawa supports breathing. In the airless lunar setting the absence of ambient sound propagation is consistent with NASA’s lunar engineering discussion. This does not assert that sound cannot travel through a suit, solid material or pressurized space. Both body observations agree.",
+      "formal_item_id": "c201155129250899ec382c6e56a1f1d79",
+      "fidelity_item_id": "mdb5520410a490fde5a55546e",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29034",
+      "source_card_sha256": "c30e2ed39e0105bc8ff9715f446b633a9c1406238a7d7d02585c45d7a9774ae9",
+      "candidate_card_sha256": "73e389455a2e82aa8c5bb1e4f93ea9ec306ddf8ab4c1bf6afb77b16f5421d74a",
+      "before_card": {
+        "id": "ffct-29034",
+        "factId": "moon-formation-giant-impact-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "how the Moon formed",
+        "terms": [
+          "buwan",
+          "moon",
+          "bulan",
+          "nabuo",
+          "naporma",
+          "pagkabuo",
+          "formed",
+          "banggaan",
+          "nagbangga",
+          "pagbangga",
+          "collision",
+          "bato",
+          "tinunaw",
+          "kalawakan",
+          "kawanangan",
+          "naipon",
+          "natipon"
+        ],
+        "fact": {
+          "en": "Scientists think the Moon formed when a huge object smashed into the young Earth, and the flying pieces gathered together in space!",
+          "tl": "Naniniwala ang mga siyentista na nabuo ang buwan noong isang napakalaking bagay ang bumangga sa batang Earth, at ang mga lumipad na piraso ay nagtipon sa kalawakan!",
+          "bis": "Nagtuo ang mga siyentista nga naporma ang bulan dihang usa ka dako kaayo nga butang ang nagbangga sa batan-ong Earth, ug ang mga milupad nga tipik nagtapok sa kawanangan!"
+        },
+        "slug": "ffct-29034",
+        "source": "original",
+        "title": {
+          "tl": "Bangga Buwan Buo",
+          "en": "Moon's Giant Crash",
+          "bis": "Bangga Bulan"
+        },
+        "cats": [
+          "the-moon"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29034",
+        "factId": "moon-formation-giant-impact-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "how the Moon formed",
+        "terms": [
+          "buwan",
+          "moon",
+          "bulan",
+          "nabuo",
+          "naporma",
+          "pagkabuo",
+          "formed",
+          "banggaan",
+          "nagbangga",
+          "pagbangga",
+          "collision",
+          "bato",
+          "tinunaw",
+          "kalawakan",
+          "kawanangan",
+          "naipon",
+          "natipon"
+        ],
+        "fact": {
+          "en": "Scientists think the Moon formed when a huge object smashed into the young Earth, and the flying pieces gathered together in space!",
+          "tl": "Naniniwala ang mga siyentista na nabuo ang buwan noong isang napakalaking bagay ang bumangga sa batang Earth, at ang mga lumipad na piraso ay nagtipon sa kalawakan!",
+          "bis": "Nagtuo ang mga siyentista nga naporma ang bulan dihang usa ka dako kaayo nga butang ang nagbangga sa batan-ong Earth, ug ang mga milupad nga tipik nagtapok sa kawanangan!"
+        },
+        "slug": "ffct-29034",
+        "source": "original",
+        "title": {
+          "tl": "Bangga Buwan Buo",
+          "en": "Moon's Giant Crash",
+          "bis": "Ang Dakong Bangga ug ang Bulan"
+        },
+        "cats": [
+          "the-moon"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Links the giant collision and Moon in the title while preserving the whole body, including Nagtuo and its hypothesis scope. Wolff bangga includes forceful collisions. Both title observations prefer the connected wording; body ties and the backtranslation preserve the origin explanation without turning belief into certainty.",
+      "formal_item_id": "ca5e1a425e8ce1b8d64be43ab293708aa",
+      "fidelity_item_id": "m85513c4a010622f2af243bf1",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29038",
+      "source_card_sha256": "54cbe50b8bb58a14d1c349869b8a6855dc0554c8755af05d69bd8f50da9dec2d",
+      "candidate_card_sha256": "c5da5b5c4d94cfc512bde3d82547511a2d62dbc77f1a46c47ae7d6daa2f022c2",
+      "before_card": {
+        "id": "ffct-29038",
+        "factId": "aurora-colors-from-gases-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "why auroras have different colors",
+        "terms": [
+          "aurora",
+          "hilaga",
+          "northern lights",
+          "kulay",
+          "color",
+          "bulok",
+          "berde",
+          "pula",
+          "green",
+          "red",
+          "oxygen",
+          "oksiheno",
+          "nitrogen",
+          "gas",
+          "kalawakan",
+          "langit",
+          "particle",
+          "sumasalpok",
+          "mosalpok"
+        ],
+        "fact": {
+          "en": "Why do auroras glow in different colors?\n\nDifferent gases make different colors! Green and red come from oxygen, while purple and blue come from nitrogen high in the air.",
+          "tl": "Bakit nag-iiba-iba ang kulay ng aurora?\n\nIba't ibang gases ang gumagawa ng iba't ibang kulay! Ang berde at pula ay galing sa oxygen, ang lila at asul ay galing sa nitrogen sa mataas na hangin.",
+          "bis": "Ngano nga lahi-lahi ang kolor sa aurora?\n\nLain-laing gases ang mohimo og lain-laing kolor! Ang berde ug pula gikan sa oxygen, samtang ang purple ug asul gikan sa nitrogen sa taas nga hangin."
+        },
+        "slug": "ffct-29038",
+        "source": "original",
+        "title": {
+          "tl": "Aurora Kulay Gas",
+          "en": "Aurora Gas Colors",
+          "bis": "Aurora Kolor Gas"
+        },
+        "cats": [
+          "space",
+          "atmosphere"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29038",
+        "factId": "aurora-colors-from-gases-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "why auroras have different colors",
+        "terms": [
+          "aurora",
+          "hilaga",
+          "northern lights",
+          "kulay",
+          "color",
+          "bulok",
+          "berde",
+          "pula",
+          "green",
+          "red",
+          "oxygen",
+          "oksiheno",
+          "nitrogen",
+          "gas",
+          "kalawakan",
+          "langit",
+          "particle",
+          "sumasalpok",
+          "mosalpok"
+        ],
+        "fact": {
+          "en": "Why do auroras glow in different colors?\n\nDifferent gases make different colors! Green and red come from oxygen, while purple and blue come from nitrogen high in the air.",
+          "tl": "Bakit nag-iiba-iba ang kulay ng aurora?\n\nIba't ibang gases ang gumagawa ng iba't ibang kulay! Ang berde at pula ay galing sa oxygen, ang lila at asul ay galing sa nitrogen sa mataas na hangin.",
+          "bis": "Ngano nga lahi-lahi ang kolor sa aurora?\n\nLain-laing gases ang mohimo og lain-laing kolor! Ang berde ug pula gikan sa oxygen, samtang ang purple ug asul gikan sa nitrogen sa taas nga hangin."
+        },
+        "slug": "ffct-29038",
+        "source": "original",
+        "title": {
+          "tl": "Aurora Kulay Gas",
+          "en": "Aurora Gas Colors",
+          "bis": "Mga Gas ug Kolor sa Aurora"
+        },
+        "cats": [
+          "space",
+          "atmosphere"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Makes the title explicitly about gases and aurora colors. The identical body retains oxygen’s red/green and nitrogen’s blue/purple associations. Both title preferences agree with body ties. The English scientific loan gas is retained rather than treated as untranslated prose.",
+      "formal_item_id": "c714b9ae53026d9827990d7b8678c3bc2",
+      "fidelity_item_id": "md55f6b4a543a4376c9316a85",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29080",
+      "source_card_sha256": "4506ae9de5ed01fbc0bd33cbeb3d8c395bfdb69056903f43631633ca2e5cacdc",
+      "candidate_card_sha256": "70e52b0451fd36d16942fd47c3a2e89a1c0404db7e5fd82c94e905fb2458210f",
+      "before_card": {
+        "id": "ffct-29080",
+        "factId": "caspian-largest-lake-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "the world's largest lake",
+        "terms": [
+          "caspian sea",
+          "pinakamalaking lawa",
+          "tinatawag na dagat",
+          "maalat",
+          "labing dako nga linaw",
+          "ginganlan og dagat",
+          "parat",
+          "largest lake",
+          "called a sea",
+          "salty"
+        ],
+        "fact": {
+          "en": "What is the world's largest lake called?\n\nThe Caspian Sea! It's so huge that people call it a sea, but it's really a lake.",
+          "tl": "Ano ang tawag sa pinakamalaking lawa sa mundo?\n\nAng Caspian Sea! Napakalaki kaya tinawag itong dagat, kahit ito ay isang lawa talaga.",
+          "bis": "Unsay ngalan sa labing dako nga linaw sa kalibotan?\n\nAng Caspian Sea! Dako kaayo mao nga gitawag kining dagat, bisan tuod kini usa ka linaw."
+        },
+        "slug": "qa-ffct-29080",
+        "source": "original",
+        "title": {
+          "tl": "Caspian Sea na Lawa",
+          "en": "The Caspian Lake",
+          "bis": "Caspian Sea nga Lanaw"
+        },
+        "cats": [
+          "water"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29080",
+        "factId": "caspian-largest-lake-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "the world's largest lake",
+        "terms": [
+          "caspian sea",
+          "pinakamalaking lawa",
+          "tinatawag na dagat",
+          "maalat",
+          "labing dako nga linaw",
+          "ginganlan og dagat",
+          "parat",
+          "largest lake",
+          "called a sea",
+          "salty"
+        ],
+        "fact": {
+          "en": "What is the world's largest lake called?\n\nThe Caspian Sea! It's so huge that people call it a sea, but it's really a lake.",
+          "tl": "Ano ang tawag sa pinakamalaking lawa sa mundo?\n\nAng Caspian Sea! Napakalaki kaya tinawag itong dagat, kahit ito ay isang lawa talaga.",
+          "bis": "Unsay ngalan sa labing dako nga linaw sa kalibotan?\n\nAng Caspian Sea! Dako kaayo kini, mao nga gitawag kini sa mga tawo nga dagat. Apan linaw gyud kini."
+        },
+        "slug": "qa-ffct-29080",
+        "source": "original",
+        "title": {
+          "tl": "Caspian Sea na Lawa",
+          "en": "The Caspian Lake",
+          "bis": "Caspian Sea nga Lanaw"
+        },
+        "cats": [
+          "water"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Separates the Caspian comparison and its lake classification, naming the people who use the sea name. Wolff linaw explicitly includes lake; lanaw points to danaw. NASA identifies the Caspian as the largest lake. The edit preserves this geographic description without making a legal-boundary claim or normalizing the existing lanaw/linaw variants. Both body preferences agree.",
+      "formal_item_id": "c654c3c4ecc66f2f1faaef57f8bb59f6d",
+      "fidelity_item_id": "ma2be4217931b9a06d6aa0013",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29096",
+      "source_card_sha256": "b50cd78055a2a2d0da2748d575afb1463217863990fb9cf8d3d52545ae0e3f39",
+      "candidate_card_sha256": "4788d0136f45577adb349a9fb9adfd69cb9c819f470e8626e10953e0dd97dcbe",
+      "before_card": {
+        "id": "ffct-29096",
+        "factId": "rainforest-canopy-dark-floor-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "why a rainforest floor is dark",
+        "terms": [
+          "rainforest",
+          "kagubatan",
+          "kalasangan",
+          "canopy",
+          "tuktok ng puno",
+          "tumoy sa kahoy",
+          "dahon",
+          "dahon nga baga",
+          "madilim",
+          "ngitngit",
+          "sahig ng gubat",
+          "salog sa lasang",
+          "sikat ng araw",
+          "kahayag sa adlaw",
+          "sinasala",
+          "ginababagan",
+          "kakaunting halaman",
+          "gamayng tanom",
+          "liwanag"
+        ],
+        "fact": {
+          "en": "Why is the forest floor so dark?\n\nIn a tropical rainforest, the thick canopy of leaves at the top blocks almost all sunlight, making the ground dark!",
+          "tl": "Bakit madilim ang sahig ng gubat?\n\nSa tropical rainforest, napakakapal ng canopy sa itaas kaya halos walang sikat ng araw na umaabot sa sahig, kaya madilim doon!",
+          "bis": "Nganong ngitngit ang salog sa lasang?\n\nSa tropical rainforest, baga kaayo ang canopy sa taas maong halos walay kahayag sa adlaw nga makaabot sa salog, maong ngitngit didto!"
+        },
+        "slug": "ffct-29096",
+        "source": "original",
+        "title": {
+          "tl": "Madilim na Sahig ng Gubat",
+          "en": "Dark Forest Floor",
+          "bis": "Mangitngit nga Yuta"
+        },
+        "cats": [
+          "ecosystems"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29096",
+        "factId": "rainforest-canopy-dark-floor-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "why a rainforest floor is dark",
+        "terms": [
+          "rainforest",
+          "kagubatan",
+          "kalasangan",
+          "canopy",
+          "tuktok ng puno",
+          "tumoy sa kahoy",
+          "dahon",
+          "dahon nga baga",
+          "madilim",
+          "ngitngit",
+          "sahig ng gubat",
+          "salog sa lasang",
+          "sikat ng araw",
+          "kahayag sa adlaw",
+          "sinasala",
+          "ginababagan",
+          "kakaunting halaman",
+          "gamayng tanom",
+          "liwanag"
+        ],
+        "fact": {
+          "en": "Why is the forest floor so dark?\n\nIn a tropical rainforest, the thick canopy of leaves at the top blocks almost all sunlight, making the ground dark!",
+          "tl": "Bakit madilim ang sahig ng gubat?\n\nSa tropical rainforest, napakakapal ng canopy sa itaas kaya halos walang sikat ng araw na umaabot sa sahig, kaya madilim doon!",
+          "bis": "Nganong ngitngit ang salog sa lasang?\n\nSa tropical rainforest, baga kaayo ang canopy sa mga dahon sa taas. Gibabagan niini ang halos tanang kahayag sa adlaw, maong ngitngit ang salog!"
+        },
+        "slug": "ffct-29096",
+        "source": "original",
+        "title": {
+          "tl": "Madilim na Sahig ng Gubat",
+          "en": "Dark Forest Floor",
+          "bis": "Mangitngit nga Yuta"
+        },
+        "cats": [
+          "ecosystems"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Shorter sentences restore the leaves as the canopy’s components and explicitly state what blocks the light. Wolff babag points to balabag, whose barrier senses support the action; independent bodies corroborate it. Halos retains nearly rather than all. Both body readers agree, with no new claim that every rainforest floor gets no light.",
+      "formal_item_id": "ce776dc00926f79ff7202b96d79a38c89",
+      "fidelity_item_id": "mb8b312061a1f83000d3db2ab",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29110",
+      "source_card_sha256": "8822210b1548ebe64a72ce0ef99c4df9bc5370f27578e7298983da0dcde5931d",
+      "candidate_card_sha256": "053de56d458e16eafc4b688ca2bf8b28f4f38b657311b5fc9912a4ce96f51d13",
+      "before_card": {
+        "id": "ffct-29110",
+        "factId": "why-blue-sea-warm-belts-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "warm and cold ocean belts",
+        "terms": [
+          "dagat",
+          "dagat",
+          "ocean",
+          "mainit na dagat",
+          "init nga dagat",
+          "malamig na dagat",
+          "bugnaw nga dagat",
+          "ekwador",
+          "equator",
+          "polo",
+          "poles",
+          "temperatura ng tubig",
+          "temperatura sa tubig",
+          "mas mainit malapit ekwador",
+          "mas init duol ekwador",
+          "banda",
+          "band",
+          "klima",
+          "layo sa ekwador"
+        ],
+        "fact": {
+          "en": "Sea water is warmer near the equator and colder near the poles. Because of this, different sea life lives in each belt—like warm-water corals in the tropics!",
+          "tl": "Mas mainit ang tubig-dagat malapit sa equator at mas malamig malapit sa mga polo. Kaya iba ang buhay-dagat sa bawat banda—tulad ng warm-water corals sa tropics!",
+          "bis": "Mas init ang tubig-dagat duol sa equator ug mas bugnaw duol sa mga polo. Maong lahi ang kinabuhi sa dagat sa matag banda—sama sa warm-water corals sa tropics!"
+        },
+        "slug": "ffct-29110",
+        "source": "original",
+        "title": {
+          "tl": "Tubig Ekwador at Polo",
+          "en": "Equator to Pole Seas",
+          "bis": "Tubig Ekwador Polo"
+        },
+        "cats": [
+          "oceans",
+          "climate"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29110",
+        "factId": "why-blue-sea-warm-belts-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "warm and cold ocean belts",
+        "terms": [
+          "dagat",
+          "dagat",
+          "ocean",
+          "mainit na dagat",
+          "init nga dagat",
+          "malamig na dagat",
+          "bugnaw nga dagat",
+          "ekwador",
+          "equator",
+          "polo",
+          "poles",
+          "temperatura ng tubig",
+          "temperatura sa tubig",
+          "mas mainit malapit ekwador",
+          "mas init duol ekwador",
+          "banda",
+          "band",
+          "klima",
+          "layo sa ekwador"
+        ],
+        "fact": {
+          "en": "Sea water is warmer near the equator and colder near the poles. Because of this, different sea life lives in each belt—like warm-water corals in the tropics!",
+          "tl": "Mas mainit ang tubig-dagat malapit sa equator at mas malamig malapit sa mga polo. Kaya iba ang buhay-dagat sa bawat banda—tulad ng warm-water corals sa tropics!",
+          "bis": "Mas init ang tubig-dagat duol sa equator ug mas bugnaw duol sa mga polo. Maong lahi ang kinabuhi sa dagat sa matag banda—sama sa warm-water corals sa tropics!"
+        },
+        "slug": "ffct-29110",
+        "source": "original",
+        "title": {
+          "tl": "Tubig Ekwador at Polo",
+          "en": "Equator to Pole Seas",
+          "bis": "Dagat sa Ekwador ug sa Polo"
+        },
+        "cats": [
+          "oceans",
+          "climate"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title connects sea, equator and poles instead of stacking labels. The unchanged body keeps the warm-equatorial/cold-polar contrast and warm-water coral context. Wolff dagat supports sea. Both title preferences agree and both bodies tie; no new universal claim about all coral species is added.",
+      "formal_item_id": "c7a6de2a93f00d71f96a2d8b50a10b354",
+      "fidelity_item_id": "m3de91a5199ad5304ec4a8547",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29116",
+      "source_card_sha256": "b2b1c99bb3acd9e2d818a2c1a3f5461dbfaa5d752d6c1fd90ab8db2b17e3d9f6",
+      "candidate_card_sha256": "eea71e7075634545f59b50587b52a9ac6bb8b7982fc91e7d6e06e759505b2a8d",
+      "before_card": {
+        "id": "ffct-29116",
+        "factId": "moon-largest-relative-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "Earth's Moon is large compared to its planet",
+        "terms": [
+          "buwan",
+          "moon",
+          "bulan",
+          "laki",
+          "kadako",
+          "malaki",
+          "dako",
+          "ikalima",
+          "fifth",
+          "pinakamalaki",
+          "kalakihan",
+          "compared",
+          "kumpara",
+          "planeta",
+          "limang",
+          "lima"
+        ],
+        "fact": {
+          "en": "Earth's Moon is the fifth-largest moon in the Solar System! It is super big compared to the size of our Earth.",
+          "tl": "Ang buwan ng Earth ay ang ikalimang pinakamalaking buwan sa Solar System! Napakalaki niya kumpara sa laki ng Earth natin.",
+          "bis": "Ang bulan sa Earth mao ang ikalima nga pinakadako nga bulan sa Solar System! Dako kaayo kini kumpara sa gidak-on sa atong Earth."
+        },
+        "slug": "earth-moon-distance-scale",
+        "title": {
+          "en": "Earth's Large Moon",
+          "tl": "Malaking Buwan",
+          "bis": "Dakong Buwan"
+        },
+        "cats": [
+          "the-moon",
+          "solar-system"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "ikalimang pinakamalaking buwan"
+          ],
+          "en": [
+            "fifth-largest moon"
+          ],
+          "bis": [
+            "ikalima nga pinakadako nga bulan"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-29116",
+        "factId": "moon-largest-relative-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "Earth's Moon is large compared to its planet",
+        "terms": [
+          "buwan",
+          "moon",
+          "bulan",
+          "laki",
+          "kadako",
+          "malaki",
+          "dako",
+          "ikalima",
+          "fifth",
+          "pinakamalaki",
+          "kalakihan",
+          "compared",
+          "kumpara",
+          "planeta",
+          "limang",
+          "lima"
+        ],
+        "fact": {
+          "en": "Earth's Moon is the fifth-largest moon in the Solar System! It is super big compared to the size of our Earth.",
+          "tl": "Ang buwan ng Earth ay ang ikalimang pinakamalaking buwan sa Solar System! Napakalaki niya kumpara sa laki ng Earth natin.",
+          "bis": "Ang bulan sa Earth mao ang ikalima nga pinakadako nga bulan sa Solar System! Dako kaayo kini kumpara sa gidak-on sa atong Earth."
+        },
+        "slug": "earth-moon-distance-scale",
+        "title": {
+          "en": "Earth's Large Moon",
+          "tl": "Malaking Buwan",
+          "bis": "Dakong Bulan"
+        },
+        "cats": [
+          "the-moon",
+          "solar-system"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "ikalimang pinakamalaking buwan"
+          ],
+          "en": [
+            "fifth-largest moon"
+          ],
+          "bis": [
+            "ikalima nga pinakadako nga bulan"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Changes only the title’s Buwan to Bulan, matching the body and Wolff’s explicit moon sense. The unchanged body still gives the fifth-largest ranking. Both title readers prefer the candidate. This approves an attested contextual form, not a claim that an absent spelling is proof of ungrammaticality or a campaign-wide ban on borrowing.",
+      "formal_item_id": "c799aceda13337191acac672d2d33965d",
+      "fidelity_item_id": "m62793f89411c5c12d99e73d1",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29143",
+      "source_card_sha256": "7b48307a5d30ea8a4a4abec8082e113d8a25ebb10b109be0612419ca85844a47",
+      "candidate_card_sha256": "3dd6430e2ed01e869664a41e75a774352990d430aaa355ab17554500e6c81843",
+      "before_card": {
+        "id": "ffct-29143",
+        "factId": "moon-rises-later-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "Moon rises about an hour later each day",
+        "terms": [
+          "pagsikat ng buwan",
+          "huli nang pagsikat",
+          "arawan na pagbabago",
+          "pagsubang sa bulan",
+          "mas ulahi",
+          "moonrise",
+          "rises later",
+          "about 50 minutes later",
+          "each day",
+          "moves in orbit",
+          "sumisikat"
+        ],
+        "fact": {
+          "en": "The Moon rises about an hour later each day because it keeps moving along its orbit around Earth!",
+          "tl": "Sumisikat ang buwan nang mga isang oras nang mas huli araw-araw dahil patuloy itong gumagalaw sa orbita nito paligid ng Daigdig!",
+          "bis": "Mosubang ang bulan mga usa ka oras nga mas ulahi matag adlaw tungod kay padayon kini nga naglihok sa orbita niini palibot sa Yuta!"
+        },
+        "slug": "ffct-29143",
+        "source": "original",
+        "title": {
+          "tl": "Buwan +1 Oras Rise Kada Araw",
+          "en": "Moon Rises Later Daily",
+          "bis": "Bulan sa Oras"
+        },
+        "cats": [
+          "moon"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29143",
+        "factId": "moon-rises-later-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "Moon rises about an hour later each day",
+        "terms": [
+          "pagsikat ng buwan",
+          "huli nang pagsikat",
+          "arawan na pagbabago",
+          "pagsubang sa bulan",
+          "mas ulahi",
+          "moonrise",
+          "rises later",
+          "about 50 minutes later",
+          "each day",
+          "moves in orbit",
+          "sumisikat"
+        ],
+        "fact": {
+          "en": "The Moon rises about an hour later each day because it keeps moving along its orbit around Earth!",
+          "tl": "Sumisikat ang buwan nang mga isang oras nang mas huli araw-araw dahil patuloy itong gumagalaw sa orbita nito paligid ng Daigdig!",
+          "bis": "Matag adlaw, mosubang ang bulan mga usa ka oras nga mas ulahi. Kini tungod kay padayon nga naglihok ang bulan sa orbita niini palibot sa Yuta!"
+        },
+        "slug": "ffct-29143",
+        "source": "original",
+        "title": {
+          "tl": "Buwan +1 Oras Rise Kada Araw",
+          "en": "Moon Rises Later Daily",
+          "bis": "Mas Ulahi Mosubang ang Bulan Matag Adlaw"
+        },
+        "cats": [
+          "moon"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Separates the observation from the explanation and repeats Moon, retaining mga as the approximation marker. Wolff ulahi/subang support later/rise. IOP describes the ordinary about-50-minute moonrise shift; NASA APOD states the average daily sky-position shift and orbital variation. The card’s about-an-hour wording remains a classroom approximation, not a precise timetable for every latitude and date. Both changed-field preferences agree.",
+      "formal_item_id": "c1a614cce150a193d6148930439040933",
+      "fidelity_item_id": "md0d0ed5dcaac5bb0b6146eb1",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29153",
+      "source_card_sha256": "557aa3f6917891892fbffd30b872bfa5e3fb4f25e3b302aaf9210a14e70995dd",
+      "candidate_card_sha256": "90461eaea3349ea8609173f9cbc6f4f4a7151a8a6f864be9eac2a6201dc7d7db",
+      "before_card": {
+        "id": "ffct-29153",
+        "factId": "total-solar-eclipse-day-dark-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "total solar eclipse",
+        "terms": [
+          "total na eklipse",
+          "total solar eclipse",
+          "umaarawang dilim",
+          "moitom ang adlaw",
+          "araw",
+          "adlaw",
+          "buong takip",
+          "bug-os nga eklipse",
+          "dumilim",
+          "mongitngit"
+        ],
+        "fact": {
+          "en": "During a total solar eclipse, the Moon completely covers the Sun and the sky suddenly turns dark — in the middle of the day!",
+          "tl": "Sa total solar eclipse, ganap na natatakpan ng Buwan ang Araw at biglang dumidilim ang langit — sa gitna ng araw!",
+          "bis": "Sa total solar eclipse, hingpit nga matabonan sa Bulan ang Adlaw ug kalit nga mongitngit ang langit — sa tunga sa adlaw!"
+        },
+        "slug": "ffct-28960",
+        "title": {
+          "en": "Total Solar Eclipse",
+          "tl": "Eclipseng Araw Total",
+          "bis": "Eklipse: Total Adlaw"
+        },
+        "cats": [
+          "eclipses",
+          "space"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "total solar eclipse"
+          ],
+          "en": [
+            "total solar eclipse"
+          ],
+          "bis": [
+            "total solar eclipse"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-29153",
+        "factId": "total-solar-eclipse-day-dark-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "total solar eclipse",
+        "terms": [
+          "total na eklipse",
+          "total solar eclipse",
+          "umaarawang dilim",
+          "moitom ang adlaw",
+          "araw",
+          "adlaw",
+          "buong takip",
+          "bug-os nga eklipse",
+          "dumilim",
+          "mongitngit"
+        ],
+        "fact": {
+          "en": "During a total solar eclipse, the Moon completely covers the Sun and the sky suddenly turns dark — in the middle of the day!",
+          "tl": "Sa total solar eclipse, ganap na natatakpan ng Buwan ang Araw at biglang dumidilim ang langit — sa gitna ng araw!",
+          "bis": "Sa total solar eclipse, hingpit nga matabonan sa Bulan ang Adlaw ug kalit nga mongitngit ang langit — sa tunga sa adlaw!"
+        },
+        "slug": "ffct-28960",
+        "title": {
+          "en": "Total Solar Eclipse",
+          "tl": "Eclipseng Araw Total",
+          "bis": "Total nga Eklipse sa Adlaw"
+        },
+        "cats": [
+          "eclipses",
+          "space"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "total solar eclipse"
+          ],
+          "en": [
+            "total solar eclipse"
+          ],
+          "bis": [
+            "total solar eclipse"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The linked title names a total solar eclipse. The body is identical; Wolff hingpit and tabun support completeness and covering. Both title observations agree with body ties. No viewing instruction, filter advice or new eclipse condition is introduced.",
+      "formal_item_id": "c2a1949d61868428f90d51e2f2b4defaf",
+      "fidelity_item_id": "m75f5d8057834bb8056253ca4",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29181",
+      "source_card_sha256": "9c42fc943959abe094208aced445b38a283e1461c2bcd1e246ad06a41ce535ec",
+      "candidate_card_sha256": "f8e459faa2456b2fcb56fde2d1ae6e80818c03c8ab50643a8e6290477ac68814",
+      "before_card": {
+        "id": "ffct-29181",
+        "factId": "asteroid-leftover-formation-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "asteroids are leftover building blocks",
+        "terms": [
+          "asteroid",
+          "natira",
+          "nahabilin",
+          "pagkabuo",
+          "pagkahimo",
+          "solar system",
+          "sistemang solar",
+          "planeta",
+          "planet",
+          "bilyong taon",
+          "bilyon ka tuig",
+          "building blocks",
+          "sangkap"
+        ],
+        "fact": {
+          "en": "What are asteroids, and why do scientists study them?\n\nAsteroids are leftover building blocks from when our solar system first formed billions of years ago! They never became part of a planet, so scientists study them to learn how planets formed.",
+          "tl": "Ano ang asteroid, at bakit pinag-aaralan ng mga siyentista?\n\nAng asteroid ay natirang building blocks mula noong nabuo ang solar system bilyong taon na ang nakakalipas! Hindi sila naging bahagi ng planeta, kaya pinag-aaralan para malaman kung paano nabuo ang mga planeta.",
+          "bis": "Unsa ang asteroid, ug ngano nga gitun-an sa mga siyentista?\n\nAng asteroid nahabiling building blocks gikan sa una nga naporma ang solar system bilyon ka tuig na ang milabay! Wala sila mahimong bahin sa planeta, mao nga gitun-an aron mahibaloan giunsa pagkaporma ang mga planeta."
+        },
+        "slug": "ffct-29181",
+        "source": "original",
+        "title": {
+          "tl": "Natirang Asteroid",
+          "en": "Leftover Asteroids",
+          "bis": "Nabilin nga Asteroid"
+        },
+        "cats": [
+          "solar-system"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29181",
+        "factId": "asteroid-leftover-formation-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "asteroids are leftover building blocks",
+        "terms": [
+          "asteroid",
+          "natira",
+          "nahabilin",
+          "pagkabuo",
+          "pagkahimo",
+          "solar system",
+          "sistemang solar",
+          "planeta",
+          "planet",
+          "bilyong taon",
+          "bilyon ka tuig",
+          "building blocks",
+          "sangkap"
+        ],
+        "fact": {
+          "en": "What are asteroids, and why do scientists study them?\n\nAsteroids are leftover building blocks from when our solar system first formed billions of years ago! They never became part of a planet, so scientists study them to learn how planets formed.",
+          "tl": "Ano ang asteroid, at bakit pinag-aaralan ng mga siyentista?\n\nAng asteroid ay natirang building blocks mula noong nabuo ang solar system bilyong taon na ang nakakalipas! Hindi sila naging bahagi ng planeta, kaya pinag-aaralan para malaman kung paano nabuo ang mga planeta.",
+          "bis": "Unsa ang asteroid, ug ngano nga gitun-an sa mga siyentista?\n\nAng mga asteroid mao ang nahabilin nga building blocks sa atong solar system. Nahabilin sila gikan pa sa unang pagkaporma niini, bilyon ka tuig na ang milabay! Wala sila mahimong bahin sa planeta. Mao nga gitun-an sila sa mga siyentista aron mahibaloan kung giunsa pagkaporma ang mga planeta."
+        },
+        "slug": "ffct-29181",
+        "source": "original",
+        "title": {
+          "tl": "Natirang Asteroid",
+          "en": "Leftover Asteroids",
+          "bis": "Nabilin nga Asteroid"
+        },
+        "cats": [
+          "solar-system"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Four shorter sentences name the asteroids and scientists and restore our, while keeping the early Solar System and billions-of-years framing. NASA describes asteroids as planet-formation remnants. The exact edit does not claim every asteroid is pristine or deny later fragmentation. Both body preferences agree; the leftover-building-block explanation remains unchanged in scope.",
+      "formal_item_id": "c12974e0f51873043ed956f19c8f43ffc",
+      "fidelity_item_id": "m19794bbde3086d80af55149d",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29191",
+      "source_card_sha256": "85993cdfa8a98c822465d25829b1aacb12406176f29456bf54dfa6a2188eee2f",
+      "candidate_card_sha256": "0a1e525c688b00a5913b92c038ffaeb274fbeab9582da7006eb026212b1f969f",
+      "before_card": {
+        "id": "ffct-29191",
+        "factId": "comet-source-kuiper-oort-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "where comets come from",
+        "terms": [
+          "kometa",
+          "comet",
+          "pinagmulan",
+          "gigikanan",
+          "kuiper belt",
+          "oort cloud",
+          "malayo",
+          "halayo",
+          "gilid ng solar system",
+          "tumoy sa solar system",
+          "malamig",
+          "bugnaw",
+          "outer edge"
+        ],
+        "fact": {
+          "en": "Where do comets come from?\n\nMost comets come from very cold places at the edge of our solar system, like the Kuiper Belt and Oort Cloud! Sometimes, they travel toward the Sun.",
+          "tl": "Saan nagmumula ang mga kometa?\n\nKaramihan sa mga kometa ay nagmumula sa napakalamig na lugar sa gilid ng solar system, tulad ng Kuiper Belt at Oort Cloud! Minsan, lumalapit sila sa Araw.",
+          "bis": "Asa naggikan ang mga kometa?\n\nKadaghanan sa mga kometa naggikan sa bugnaw kaayo nga lugar sa kilid sa solar system, sama sa Kuiper Belt ug Oort Cloud! usahay, moduol sila sa Adlaw."
+        },
+        "slug": "ffct-29191",
+        "source": "original",
+        "title": {
+          "tl": "Kuiper at Oort",
+          "en": "Kuiper and Oort Homes",
+          "bis": "Kuiper ug Oort"
+        },
+        "cats": [
+          "solar-system",
+          "space"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29191",
+        "factId": "comet-source-kuiper-oort-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "where comets come from",
+        "terms": [
+          "kometa",
+          "comet",
+          "pinagmulan",
+          "gigikanan",
+          "kuiper belt",
+          "oort cloud",
+          "malayo",
+          "halayo",
+          "gilid ng solar system",
+          "tumoy sa solar system",
+          "malamig",
+          "bugnaw",
+          "outer edge"
+        ],
+        "fact": {
+          "en": "Where do comets come from?\n\nMost comets come from very cold places at the edge of our solar system, like the Kuiper Belt and Oort Cloud! Sometimes, they travel toward the Sun.",
+          "tl": "Saan nagmumula ang mga kometa?\n\nKaramihan sa mga kometa ay nagmumula sa napakalamig na lugar sa gilid ng solar system, tulad ng Kuiper Belt at Oort Cloud! Minsan, lumalapit sila sa Araw.",
+          "bis": "Asa naggikan ang mga kometa?\n\nKadaghanan sa mga kometa naggikan sa bugnaw kaayo nga mga lugar sa kilid sa atong solar system, sama sa Kuiper Belt ug Oort Cloud! Usahay, moduol sila sa Adlaw."
+        },
+        "slug": "ffct-29191",
+        "source": "original",
+        "title": {
+          "tl": "Kuiper at Oort",
+          "en": "Kuiper and Oort Homes",
+          "bis": "Kuiper ug Oort"
+        },
+        "cats": [
+          "solar-system",
+          "space"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Separates the exclamation from the next sentence, supplies explicit plural markers and restores our. Most and sometimes remain Kadaghanan and Usahay; Kuiper Belt and Oort Cloud are unchanged. Both body preferences agree and the backtranslation retains the qualifications, without changing most into all.",
+      "formal_item_id": "c100421a6190a550b7e4105fc510c1574",
+      "fidelity_item_id": "m152d5a36a2781b5ac16dcd1a",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29197",
+      "source_card_sha256": "ccf75407b1762039f24659b9acdc40bd9996e36a122a423e5697050e0b8e1535",
+      "candidate_card_sha256": "ae9460ca6103fbc6c5f1ed259ac02e5665c8f73078eee9ba554c7363ddfbcdc2",
+      "before_card": {
+        "id": "ffct-29197",
+        "factId": "constellation-star-pattern-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "constellations",
+        "terms": [
+          "constellation",
+          "konstelasyon",
+          "pattern",
+          "bituin",
+          "bituon",
+          "star",
+          "larawan",
+          "grupo sa bituon",
+          "pugpong sa bituon",
+          "hugis",
+          "star pattern",
+          "kumpol ng bituin"
+        ],
+        "fact": {
+          "en": "A constellation is a group of stars that forms a picture when you connect them. Long ago, people named them after animals, heroes, or things they saw in the shapes!",
+          "tl": "Ang konstelasyon ay grupo ng mga bituin na gumagawa ng larawan kapag pinagdugtong. Noon, pinangalanan ito ng mga tao ayon sa mga hayop, bayani, o bagay na nakita nila sa mga hugis!",
+          "bis": "Ang konstelasyon mao ang grupo sa mga bituon nga naghimo og hulagway kon isumpay nimo sila. Kaniadto, gihinganlan kini sa mga tawo sumala sa mga hayop, bayani, o butang nga nakita nila sa mga porma!"
+        },
+        "slug": "ffct-29197",
+        "source": "original",
+        "title": {
+          "tl": "Konstelasyon Bituin",
+          "en": "Constellation Pictures",
+          "bis": "Konstelasyon Bituon"
+        },
+        "cats": [
+          "constellations",
+          "stars"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29197",
+        "factId": "constellation-star-pattern-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "constellations",
+        "terms": [
+          "constellation",
+          "konstelasyon",
+          "pattern",
+          "bituin",
+          "bituon",
+          "star",
+          "larawan",
+          "grupo sa bituon",
+          "pugpong sa bituon",
+          "hugis",
+          "star pattern",
+          "kumpol ng bituin"
+        ],
+        "fact": {
+          "en": "A constellation is a group of stars that forms a picture when you connect them. Long ago, people named them after animals, heroes, or things they saw in the shapes!",
+          "tl": "Ang konstelasyon ay grupo ng mga bituin na gumagawa ng larawan kapag pinagdugtong. Noon, pinangalanan ito ng mga tao ayon sa mga hayop, bayani, o bagay na nakita nila sa mga hugis!",
+          "bis": "Ang konstelasyon mao ang grupo sa mga bituon nga naghimo og hulagway kon isumpay nimo sila. Kaniadto, gihinganlan kini sa mga tawo sumala sa mga hayop, bayani, o butang nga nakita nila sa mga porma!"
+        },
+        "slug": "ffct-29197",
+        "source": "original",
+        "title": {
+          "tl": "Konstelasyon Bituin",
+          "en": "Constellation Pictures",
+          "bis": "Hulagway sa mga Bituon"
+        },
+        "cats": [
+          "constellations",
+          "stars"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Hulagway sa mga Bituon connects the title’s pictures and stars. Wolff hulagway supports picture/image. The unchanged body describes visual star patterns and historical naming, not a replacement definition for formal IAU sky regions. Both title preferences agree with body ties.",
+      "formal_item_id": "c455493911f07cd4b32d5d389a6843959",
+      "fidelity_item_id": "m626502488635304e01298a34",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29203",
+      "source_card_sha256": "b1516e41f32f2c5722f392e75b3b105eaf0f7746ae7b7e9e58f3d332667569ae",
+      "candidate_card_sha256": "7d8fa9772c253c712a6595e10d49b827352d351dd20df3defc9f86aed97ca32d",
+      "before_card": {
+        "id": "ffct-29203",
+        "factId": "callisto-cratered-moon-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "Callisto is covered in craters",
+        "terms": [
+          "callisto",
+          "buwan",
+          "moon",
+          "bulan",
+          "crater",
+          "craters",
+          "butas",
+          "lungag",
+          "marami",
+          "daghan",
+          "luma",
+          "karaan",
+          "old",
+          "jupiter",
+          "puno",
+          "pinakamaraming crater"
+        ],
+        "fact": {
+          "en": "Callisto is a moon of Jupiter covered in craters! It has one of the oldest surfaces in the entire Solar System.",
+          "tl": "Ang Callisto ay isang buwan ng Jupiter na puno ng craters! Isa ito sa pinakalumang ibabaw sa buong Solar System.",
+          "bis": "Ang Callisto usa ka bulan sa Jupiter nga puno og craters! Usa kini sa pinakakaraang nawong sa tibuok Solar System."
+        },
+        "slug": "",
+        "title": {
+          "en": "Callisto",
+          "tl": "Callisto",
+          "bis": "Callisto"
+        },
+        "cats": [
+          "space",
+          "solar-system"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "Callisto"
+          ],
+          "en": [
+            "Callisto"
+          ],
+          "bis": [
+            "Callisto"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-29203",
+        "factId": "callisto-cratered-moon-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "Callisto is covered in craters",
+        "terms": [
+          "callisto",
+          "buwan",
+          "moon",
+          "bulan",
+          "crater",
+          "craters",
+          "butas",
+          "lungag",
+          "marami",
+          "daghan",
+          "luma",
+          "karaan",
+          "old",
+          "jupiter",
+          "puno",
+          "pinakamaraming crater"
+        ],
+        "fact": {
+          "en": "Callisto is a moon of Jupiter covered in craters! It has one of the oldest surfaces in the entire Solar System.",
+          "tl": "Ang Callisto ay isang buwan ng Jupiter na puno ng craters! Isa ito sa pinakalumang ibabaw sa buong Solar System.",
+          "bis": "Ang Callisto usa ka bulan sa Jupiter nga puno og craters! Ang nawong niini usa sa pinakakaraan sa tibuok Solar System."
+        },
+        "slug": "",
+        "title": {
+          "en": "Callisto",
+          "tl": "Callisto",
+          "bis": "Callisto"
+        },
+        "cats": [
+          "space",
+          "solar-system"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "Callisto"
+          ],
+          "en": [
+            "Callisto"
+          ],
+          "bis": [
+            "Callisto"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Names Callisto’s surface before saying it is one of the oldest, eliminating an ambiguous pronoun. Wolff nawung includes surface/face senses beyond a human face; independent bodies corroborate surface use. The one-of qualifier and exact Callisto emphasis remain. Both body observations and backtranslation agree; the age claim does not become a unique oldest ranking.",
+      "formal_item_id": "cb3bc649dbe3c36568e4d0c5d7b4061a9",
+      "fidelity_item_id": "mfbf6c4caa3079dcb41348017",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29232",
+      "source_card_sha256": "01914abf1e133da839cdbb1ff6a4593cdd42f497f51ddf4f5355b8edde0dc7fc",
+      "candidate_card_sha256": "730328341a1d474657b06ee8845f42540d9b319f1d44d1298ab5a418de4deebd",
+      "before_card": {
+        "id": "ffct-29232",
+        "factId": "milky-way-star-count-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "number of stars in the Milky Way",
+        "terms": [
+          "bilang ng bituin",
+          "number of stars",
+          "gidaghanon sa bitoon",
+          "bilyon",
+          "billion",
+          "bilyones",
+          "100 bilyon",
+          "hundreds of billions",
+          "daghan kaayo",
+          "milyon-milyong",
+          "napakarami"
+        ],
+        "fact": {
+          "en": "How many stars are in the Milky Way?\n\nDid you know the Milky Way contains an estimated 100 to 400 billion stars? That is a massive amount of stars!",
+          "tl": "Ilang bituin ang nasa Milky Way?\n\nAlam mo ba na ang Milky Way ay naglalaman ng tinatayang 100 hanggang 400 bilyong bituin? Napakarami talaga!",
+          "bis": "Pila ka bitoon ang naa sa Milky Way?\n\nNahibaw-an ba nimo nga ang Milky Way naglangkob ug gibanabana nga 100 ngadto sa 400 ka bilyon nga bitoon? Daghan kaayo!"
+        },
+        "slug": "ffct-29232",
+        "source": "original",
+        "title": {
+          "tl": "100-400 Bilyong Bituin",
+          "en": "100-400 Billion Stars",
+          "bis": "100-400 Bilyon Bituon"
+        },
+        "cats": [
+          "stars",
+          "space"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29232",
+        "factId": "milky-way-star-count-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "number of stars in the Milky Way",
+        "terms": [
+          "bilang ng bituin",
+          "number of stars",
+          "gidaghanon sa bitoon",
+          "bilyon",
+          "billion",
+          "bilyones",
+          "100 bilyon",
+          "hundreds of billions",
+          "daghan kaayo",
+          "milyon-milyong",
+          "napakarami"
+        ],
+        "fact": {
+          "en": "How many stars are in the Milky Way?\n\nDid you know the Milky Way contains an estimated 100 to 400 billion stars? That is a massive amount of stars!",
+          "tl": "Ilang bituin ang nasa Milky Way?\n\nAlam mo ba na ang Milky Way ay naglalaman ng tinatayang 100 hanggang 400 bilyong bituin? Napakarami talaga!",
+          "bis": "Pila ka bitoon ang naa sa Milky Way?\n\nNahibaw-an ba nimo nga ang Milky Way adunay gibanabana nga 100 ngadto sa 400 ka bilyon nga bitoon? Daghan kaayo!"
+        },
+        "slug": "ffct-29232",
+        "source": "original",
+        "title": {
+          "tl": "100-400 Bilyong Bituin",
+          "en": "100-400 Billion Stars",
+          "bis": "100-400 Bilyon Bituon"
+        },
+        "cats": [
+          "stars",
+          "space"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Adunay replaces naglangkob ug without altering the estimated 100–400 billion range. Binisaya directly distinguishes the estimate sense of banabana from the common-law-husband homograph. Both body observations prefer the simpler verb; title ties and backtranslation retain uncertainty and the numbers.",
+      "formal_item_id": "cd66ce0de4c354e72d56e3f9ce2be4d40",
+      "fidelity_item_id": "m16cdb4df3993e9c9f80937e0",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29235",
+      "source_card_sha256": "9ce8e7b86013807684bb2e7a7a8a9a78dfb3375f487ecf9553ca6edb5c90dee9",
+      "candidate_card_sha256": "1b7a71f679852f4875f19e5676086a8b266dc338abd47b2558c27ad096b6c4e7",
+      "before_card": {
+        "id": "ffct-29235",
+        "factId": "light-year-galaxy-distance-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "light-years and galaxy size",
+        "terms": [
+          "light-year",
+          "taong-liwanag",
+          "tuig-kahayag",
+          "distansya",
+          "distance",
+          "gilay-on",
+          "100000",
+          "lapad",
+          "width",
+          "kalapdon",
+          "sukat",
+          "sukod"
+        ],
+        "fact": {
+          "en": "How wide is our Milky Way galaxy?\n\nOur Milky Way is about 100,000 light-years wide! That makes it truly enormous to cross.",
+          "tl": "Gaano kalapad ang ating Milky Way?\n\nAng Milky Way ay tinatayang 100,000 taong-liwanag ang lapad! Kaya napakalaki nito para tawirin.",
+          "bis": "Unsa ang gilapdon sa atong Milky Way?\n\nAng Milky Way mga 100,000 ka tuig-kahayag ang gilapdon! Busa dako kaayo kini aron tabukon."
+        },
+        "slug": "ffct-33177",
+        "title": {
+          "en": "Galaxy Size",
+          "tl": "Laki ng Galaxy",
+          "bis": "Kadako sa Galaxy"
+        },
+        "cats": [
+          "space",
+          "measurement"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "100,000 taong-liwanag"
+          ],
+          "en": [
+            "100,000 light-years"
+          ],
+          "bis": [
+            "100,000 ka tuig-kahayag"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-29235",
+        "factId": "light-year-galaxy-distance-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "light-years and galaxy size",
+        "terms": [
+          "light-year",
+          "taong-liwanag",
+          "tuig-kahayag",
+          "distansya",
+          "distance",
+          "gilay-on",
+          "100000",
+          "lapad",
+          "width",
+          "kalapdon",
+          "sukat",
+          "sukod"
+        ],
+        "fact": {
+          "en": "How wide is our Milky Way galaxy?\n\nOur Milky Way is about 100,000 light-years wide! That makes it truly enormous to cross.",
+          "tl": "Gaano kalapad ang ating Milky Way?\n\nAng Milky Way ay tinatayang 100,000 taong-liwanag ang lapad! Kaya napakalaki nito para tawirin.",
+          "bis": "Unsa ang gilapdon sa atong Milky Way?\n\nAng Milky Way mga 100,000 ka tuig-kahayag ang gilapdon! Busa dako gyud kaayo kini kon tabukon."
+        },
+        "slug": "ffct-33177",
+        "title": {
+          "en": "Galaxy Size",
+          "tl": "Laki ng Galaxy",
+          "bis": "Kadako sa Galaxy"
+        },
+        "cats": [
+          "space",
+          "measurement"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "100,000 taong-liwanag"
+          ],
+          "en": [
+            "100,000 light-years"
+          ],
+          "bis": [
+            "100,000 ka tuig-kahayag"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Kon tabukon expresses the crossing condition instead of an unintended purpose; gyud carries truly. Wolff tabuk and gayud support crossing and emphasis, corroborated by independent bodies. The about-100,000-light-year width and exact emphasis remain unchanged. Both body preferences agree; no travel-speed or practical crossing claim is added.",
+      "formal_item_id": "ca64a0541a0b3f595f34bfca74c9f112d",
+      "fidelity_item_id": "m30be2a90b96b94d4e1a6b5d1",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29287",
+      "source_card_sha256": "7db732647dba4843e0ff8741a727b4687f643db1f468535894a04c6407180c97",
+      "candidate_card_sha256": "6530b0acee114747cf337196c6351ba09fa0f75167a4cb922031728ff42647af",
+      "before_card": {
+        "id": "ffct-29287",
+        "factId": "tsunami-crosses-whole-ocean-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "tsunamis can cross the whole ocean",
+        "terms": [
+          "buong karagatan",
+          "tibuok kadagatan",
+          "whole ocean",
+          "malayong bansa",
+          "layong nasod",
+          "far country",
+          "tumawid",
+          "motabok",
+          "cross",
+          "oras"
+        ],
+        "fact": {
+          "en": "A powerful tsunami can cross an entire ocean and strike coasts far from where it began!",
+          "tl": "Ang isang malakas na tsunami ay maaaring tumawid sa buong karagatan at tumama sa mga baybaying malayo sa pinagmulan!",
+          "bis": "Ang usa ka kusog nga tsunami makatabok sa tibuok kadagatan ug makaigo sa mga baybayon nga layo sa gigikanan!"
+        },
+        "slug": "ffct-29287",
+        "source": "original",
+        "title": {
+          "tl": "Tsunami Karagatan",
+          "en": "Cross-Ocean Tsunamis",
+          "bis": "Tsunami Kadagatan"
+        },
+        "cats": [
+          "earthquakes",
+          "oceans"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29287",
+        "factId": "tsunami-crosses-whole-ocean-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "tsunamis can cross the whole ocean",
+        "terms": [
+          "buong karagatan",
+          "tibuok kadagatan",
+          "whole ocean",
+          "malayong bansa",
+          "layong nasod",
+          "far country",
+          "tumawid",
+          "motabok",
+          "cross",
+          "oras"
+        ],
+        "fact": {
+          "en": "A powerful tsunami can cross an entire ocean and strike coasts far from where it began!",
+          "tl": "Ang isang malakas na tsunami ay maaaring tumawid sa buong karagatan at tumama sa mga baybaying malayo sa pinagmulan!",
+          "bis": "Ang usa ka kusog nga tsunami makatabok sa tibuok kadagatan ug makaigo sa mga baybayon nga layo sa gigikanan!"
+        },
+        "slug": "ffct-29287",
+        "source": "original",
+        "title": {
+          "tl": "Tsunami Karagatan",
+          "en": "Cross-Ocean Tsunamis",
+          "bis": "Tsunami nga Motabok sa Kadagatan"
+        },
+        "cats": [
+          "earthquakes",
+          "oceans"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title connects tsunami, crossing and ocean with a relative clause. Wolff tabuk and dagat support the relation. The identical body retains the possibility expressed by maka- and the far-coast consequence. Both title preferences agree; no claim that every tsunami crosses an entire ocean is introduced.",
+      "formal_item_id": "c475b511eabb4084c21e9d4d7062ef41a",
+      "fidelity_item_id": "m678838efa9caddc8e814bdd3",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29319",
+      "source_card_sha256": "4d7abe809937099afa9d31e0f386dfcb57059ba6d30594b2144e7d94ff8d4f1e",
+      "candidate_card_sha256": "b889ced9f663d2f10e687dd4c859d59328ce6ae7126c3c32700e5c1f21fae860",
+      "before_card": {
+        "id": "ffct-29319",
+        "factId": "volcano-monitoring-tools-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "how volcanoes are monitored",
+        "terms": [
+          "pagbantay",
+          "pagmonitor",
+          "seismometer",
+          "lindol",
+          "linog",
+          "gas",
+          "bukol",
+          "pamaga",
+          "bulkan",
+          "volcano",
+          "phivolcs",
+          "instrumento",
+          "galamiton"
+        ],
+        "fact": {
+          "en": "Scientists watch volcanoes using special instruments! They measure tiny earthquakes with a seismometer, check the gases coming out, and look for ground swelling — signs that magma is getting close.",
+          "tl": "Binabantayan ng mga siyentista ang mga bulkan gamit ang espesyal na instrumento! Sinusukat nila ang munting lindol gamit ang seismometer, tinitingnan ang gas na lumalabas, at naghahanap ng pamamaga ng lupa — senyales na papalapit na ang magma.",
+          "bis": "Gibantayan sa mga siyentista ang mga bulkan gamit ang espesyal nga instrumento! Gisukod nila ang gagmay nga linog pinaagi sa seismometer, gisusi ang gas nga mogawas, ug gitan-aw ang paghubag sa yuta — timailhan nga nagkaduol na ang magma."
+        },
+        "slug": "ffct-29319",
+        "source": "original",
+        "title": {
+          "tl": "Instrumento sa Bulkan",
+          "en": "Volcano Instruments",
+          "bis": "Instrumento sa Bulkan"
+        },
+        "cats": [
+          "volcanoes"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29319",
+        "factId": "volcano-monitoring-tools-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "how volcanoes are monitored",
+        "terms": [
+          "pagbantay",
+          "pagmonitor",
+          "seismometer",
+          "lindol",
+          "linog",
+          "gas",
+          "bukol",
+          "pamaga",
+          "bulkan",
+          "volcano",
+          "phivolcs",
+          "instrumento",
+          "galamiton"
+        ],
+        "fact": {
+          "en": "Scientists watch volcanoes using special instruments! They measure tiny earthquakes with a seismometer, check the gases coming out, and look for ground swelling — signs that magma is getting close.",
+          "tl": "Binabantayan ng mga siyentista ang mga bulkan gamit ang espesyal na instrumento! Sinusukat nila ang munting lindol gamit ang seismometer, tinitingnan ang gas na lumalabas, at naghahanap ng pamamaga ng lupa — senyales na papalapit na ang magma.",
+          "bis": "Gibantayan sa mga siyentista ang mga bulkan gamit ang espesyal nga instrumento! Gisukod nila ang gagmay nga linog pinaagi sa seismometer. Gisusi usab nila ang gas nga mogawas, ug gitan-aw nila ang paghubag sa yuta — timailhan nga nagkaduol na ang magma."
+        },
+        "slug": "ffct-29319",
+        "source": "original",
+        "title": {
+          "tl": "Instrumento sa Bulkan",
+          "en": "Volcano Instruments",
+          "bis": "Instrumento sa Bulkan"
+        },
+        "cats": [
+          "volcanoes"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Splits the long instrument list and repeats nila for each monitoring action. Wolff hubag supports swelling; the seismometer, small earthquakes, gases and ground swelling remain. Both body preferences agree and the title ties. The edit adds no certain eruption prediction or replacement for official monitoring.",
+      "formal_item_id": "c9aab7181ae4fb49e0138ba957397a02d",
+      "fidelity_item_id": "md1564a8af40d62a607cc7a41",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29348",
+      "source_card_sha256": "8ff9a290f7a26d30f0a22b233bef083be968c6fb12075e38095ea78c87b5015f",
+      "candidate_card_sha256": "adeb8e8a490e13aadc71bd4c32b4ad8c9e09518d1d41732144d06caddffc4b3d",
+      "before_card": {
+        "id": "ffct-29348",
+        "factId": "monsoon-habagat-wet-ocean-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "why habagat brings rain",
+        "terms": [
+          "habagat",
+          "ulan",
+          "uwan",
+          "dagat",
+          "kadagatan",
+          "ocean",
+          "sea",
+          "halumigmig",
+          "umog",
+          "alisngaw",
+          "moisture",
+          "tubig",
+          "basa",
+          "evaporation",
+          "singaw"
+        ],
+        "fact": {
+          "en": "The habagat brings lots of rain because its wind passes over the warm ocean, carrying plenty of moisture and water vapor!",
+          "tl": "Nagdadala ng maraming ulan ang habagat dahil dumadaan ang hangin nito sa mainit na dagat, kaya puno ito ng halumigmig at singaw ng tubig!",
+          "bis": "Nagdala og daghang ulan ang habagat tungod kay moagi ang hangin niini sa init nga dagat, busa puno kini og umog ug alisngaw sa tubig!"
+        },
+        "slug": "qa-ffct-29348",
+        "title": {
+          "en": "Habagat Rain",
+          "tl": "Maulan na Habagat",
+          "bis": "Ulan sa Habagat"
+        },
+        "cats": [
+          "weather",
+          "water-cycle"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "habagat"
+          ],
+          "en": [
+            "habagat"
+          ],
+          "bis": [
+            "habagat"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-29348",
+        "factId": "monsoon-habagat-wet-ocean-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "why habagat brings rain",
+        "terms": [
+          "habagat",
+          "ulan",
+          "uwan",
+          "dagat",
+          "kadagatan",
+          "ocean",
+          "sea",
+          "halumigmig",
+          "umog",
+          "alisngaw",
+          "moisture",
+          "tubig",
+          "basa",
+          "evaporation",
+          "singaw"
+        ],
+        "fact": {
+          "en": "The habagat brings lots of rain because its wind passes over the warm ocean, carrying plenty of moisture and water vapor!",
+          "tl": "Nagdadala ng maraming ulan ang habagat dahil dumadaan ang hangin nito sa mainit na dagat, kaya puno ito ng halumigmig at singaw ng tubig!",
+          "bis": "Nagdala og daghang ulan ang habagat tungod kay moagi ang hangin niini sa init nga dagat. Busa, nagdala ang hangin og daghang umog ug alisngaw sa tubig!"
+        },
+        "slug": "qa-ffct-29348",
+        "title": {
+          "en": "Habagat Rain",
+          "tl": "Maulan na Habagat",
+          "bis": "Ulan sa Habagat"
+        },
+        "cats": [
+          "weather",
+          "water-cycle"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "habagat"
+          ],
+          "en": [
+            "habagat"
+          ],
+          "bis": [
+            "habagat"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Separates the warm-sea passage from the moisture carriage and explicitly names the wind. Wolff umug and alisngaw support moisture and vapor/evaporation; independent bodies corroborate the terms. Daghang restores plenty. Both body preferences agree, preserving habagat emphasis and avoiding the old pronoun’s possible reference to the sea.",
+      "formal_item_id": "ccc864d8a7acff6001f4b6e8fbc8b7bd6",
+      "fidelity_item_id": "m2ff4ddf16721fe4c30363ce9",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29359",
+      "source_card_sha256": "7ec1b317873ececaa1f7cc1ddbb52e598d9a67c71833bb830b07be1c1c8c5ca9",
+      "candidate_card_sha256": "a3f344dde701ad677fbbd9b71f5abd4ec2dd0f5af5d43a9c8c9ba08a578b425c",
+      "before_card": {
+        "id": "ffct-29359",
+        "factId": "monsoon-not-every-place-same-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "monsoon affects regions differently",
+        "terms": [
+          "monsoon",
+          "rehiyon",
+          "region",
+          "lugar",
+          "dapit",
+          "bundok",
+          "bukid",
+          "mountain",
+          "silangan",
+          "kanluran",
+          "kasadpan",
+          "sidlakan",
+          "iba",
+          "lahi",
+          "klima"
+        ],
+        "fact": {
+          "en": "Does the monsoon affect the whole Philippines the same way?\n\nNope! Mountains block the wind, so one side gets rainy while the other side stays dry.",
+          "tl": "Pareho ba ang epekto ng monsoon sa buong Pilipinas?\n\nHindi! Humaharang ang mga bundok sa hangin, kaya maulan sa isang side habang tuyo sa kabila.",
+          "bis": "Managsama ba ang epekto sa monsoon sa tibuok Pilipinas?\n\nDili! Mga bukid ang mobabag sa hangin, mao nga maulanon sa usa ka pikas samtang mala sa pikas."
+        },
+        "slug": "ffct-29359",
+        "source": "original",
+        "title": {
+          "tl": "Monsoon sa Magkabilang",
+          "en": "Two Sides of Monsoon",
+          "bis": "Monsoon sa Duha ka Kilid"
+        },
+        "cats": [
+          "climate"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29359",
+        "factId": "monsoon-not-every-place-same-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "monsoon affects regions differently",
+        "terms": [
+          "monsoon",
+          "rehiyon",
+          "region",
+          "lugar",
+          "dapit",
+          "bundok",
+          "bukid",
+          "mountain",
+          "silangan",
+          "kanluran",
+          "kasadpan",
+          "sidlakan",
+          "iba",
+          "lahi",
+          "klima"
+        ],
+        "fact": {
+          "en": "Does the monsoon affect the whole Philippines the same way?\n\nNope! Mountains block the wind, so one side gets rainy while the other side stays dry.",
+          "tl": "Pareho ba ang epekto ng monsoon sa buong Pilipinas?\n\nHindi! Humaharang ang mga bundok sa hangin, kaya maulan sa isang side habang tuyo sa kabila.",
+          "bis": "Managsama ba ang epekto sa monsoon sa tibuok Pilipinas?\n\nDili! Ang mga bukid mobabag sa hangin. Mao nga maulanon ang usa ka kilid, samtang mala ang pikas nga kilid."
+        },
+        "slug": "ffct-29359",
+        "source": "original",
+        "title": {
+          "tl": "Monsoon sa Magkabilang",
+          "en": "Two Sides of Monsoon",
+          "bis": "Monsoon sa Duha ka Kilid"
+        },
+        "cats": [
+          "climate"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Names the mountains as the subject, separates cause and result, and explicitly identifies both sides using kilid. Wolff balabag, kilid and mala support blocking, side and dry. Mala is valid here, not a false friend requiring replacement. Both body preferences agree and the original monsoon/rain-shadow relationship remains.",
+      "formal_item_id": "c2a69e67a32b3c4246c85d23703a4fbab",
+      "fidelity_item_id": "mbc9d3ed76fd03f1be31806eb",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29383",
+      "source_card_sha256": "1118b99cff3b905930463bf78ec3fbc8925152ed70aa1b466ae4022c5b57c11a",
+      "candidate_card_sha256": "7866f758550c89672b335feb465b6b2f5276a673354748397966fb5bdc78db1b",
+      "before_card": {
+        "id": "ffct-29383",
+        "factId": "soil-mix-rock-organic-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "soil is a mix of rock bits and decayed living things",
+        "terms": [
+          "lupa",
+          "halo",
+          "durog na bato",
+          "bulok na halaman",
+          "yuta",
+          "sagol",
+          "gabok sa bato",
+          "dunot",
+          "soil",
+          "minerals",
+          "organic matter",
+          "humus"
+        ],
+        "fact": {
+          "en": "Soil is a cool mix of fine rock bits and decayed plants and animals!",
+          "tl": "Ang lupa ay timpla ng pinong tipik ng bato at mga bulok na halaman at hayop!",
+          "bis": "Ang yuta usa ka sagol sa pino nga tipik sa bato ug nadunot nga tanom ug hayop!"
+        },
+        "slug": "ffct-29383",
+        "source": "original",
+        "title": {
+          "tl": "Lupa Bato at Bulok Mix",
+          "en": "What Soil Mixes",
+          "bis": "Yuta sa Mix"
+        },
+        "cats": [
+          "soil",
+          "mixtures"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29383",
+        "factId": "soil-mix-rock-organic-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "soil is a mix of rock bits and decayed living things",
+        "terms": [
+          "lupa",
+          "halo",
+          "durog na bato",
+          "bulok na halaman",
+          "yuta",
+          "sagol",
+          "gabok sa bato",
+          "dunot",
+          "soil",
+          "minerals",
+          "organic matter",
+          "humus"
+        ],
+        "fact": {
+          "en": "Soil is a cool mix of fine rock bits and decayed plants and animals!",
+          "tl": "Ang lupa ay timpla ng pinong tipik ng bato at mga bulok na halaman at hayop!",
+          "bis": "Ang yuta usa ka sagol sa pino nga tipik sa bato ug nadunot nga tanom ug hayop!"
+        },
+        "slug": "ffct-29383",
+        "source": "original",
+        "title": {
+          "tl": "Lupa Bato at Bulok Mix",
+          "en": "What Soil Mixes",
+          "bis": "Ang Sagol sa Yuta"
+        },
+        "cats": [
+          "soil",
+          "mixtures"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Ang Sagol sa Yuta gives the title a clear relation matching the unchanged soil-mixture body. Wolff sagul includes mixing and the mixed constituents. Both title preferences agree, with body ties. English classroom terms are not banned; this is approval of the exact connected title, not a general code-mixing rule.",
+      "formal_item_id": "c6c8902280ba8baf83703819cce42cfd1",
+      "fidelity_item_id": "mae4d94da3242007c93eb2caa",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29397",
+      "source_card_sha256": "4d7067c7fe1623dbd75c4334ba260919d54b3398d4e26b526938b1d991a406b5",
+      "candidate_card_sha256": "bae856abfae15f9d48dfdf547962f229d11a104b14d5a62ffa7c0988fb214c07",
+      "before_card": {
+        "id": "ffct-29397",
+        "factId": "sandy-soil-drains-fast-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "sandy soil drains water quickly",
+        "terms": [
+          "buhangin",
+          "sandy",
+          "tubig",
+          "mabilis",
+          "tuyo",
+          "balas",
+          "paspas",
+          "mahubsan",
+          "drain fast",
+          "dry",
+          "butas",
+          "yuta nga balason"
+        ],
+        "fact": {
+          "en": "Why does sandy soil dry up so fast?\n\nBecause it has larger particles! This lets water drain through it very quickly.",
+          "tl": "Bakit mabilis matuyo ang sandy soil?\n\nDahil mayroon itong mas malalaking particle! Kaya mabilis dumaloy at maubos ang tubig.",
+          "bis": "Nganong paspas mauga ang sandy soil?\n\nTungod kay aduna kini mas dagko nga particle! Mao nga paspas moagi ang tubig."
+        },
+        "slug": "soil-sandy",
+        "title": {
+          "en": "Sandy Soil",
+          "tl": "Mabuhanging Lupa",
+          "bis": "Balas nga Yuta"
+        },
+        "cats": [
+          "soil",
+          "water"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "particle"
+          ],
+          "en": [
+            "particles"
+          ],
+          "bis": [
+            "particle"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-29397",
+        "factId": "sandy-soil-drains-fast-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "sandy soil drains water quickly",
+        "terms": [
+          "buhangin",
+          "sandy",
+          "tubig",
+          "mabilis",
+          "tuyo",
+          "balas",
+          "paspas",
+          "mahubsan",
+          "drain fast",
+          "dry",
+          "butas",
+          "yuta nga balason"
+        ],
+        "fact": {
+          "en": "Why does sandy soil dry up so fast?\n\nBecause it has larger particles! This lets water drain through it very quickly.",
+          "tl": "Bakit mabilis matuyo ang sandy soil?\n\nDahil mayroon itong mas malalaking particle! Kaya mabilis dumaloy at maubos ang tubig.",
+          "bis": "Nganong paspas mauga ang sandy soil?\n\nTungod kay aduna kini mas dagko nga particle! Mao nga paspas kaayong molusot ang tubig niini."
+        },
+        "slug": "soil-sandy",
+        "title": {
+          "en": "Sandy Soil",
+          "tl": "Mabuhanging Lupa",
+          "bis": "Balas nga Yuta"
+        },
+        "cats": [
+          "soil",
+          "water"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "particle"
+          ],
+          "en": [
+            "particles"
+          ],
+          "bis": [
+            "particle"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Molusot ang tubig niini explicitly locates the water’s passage through soil and paspas kaayo restores very quickly. Wolff lusut and the direct Binisaya entry support passing through; independent pore/gap bodies corroborate it. Larger particles, sandy soil and particle emphasis remain. Both body readers prefer the candidate, one only slightly; no score threshold replaces the exact review.",
+      "formal_item_id": "c32d38d96c271bd279aab85b674ead6a8",
+      "fidelity_item_id": "m801e997ff2455eacb38bf064",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29405",
+      "source_card_sha256": "a6b3a27158d6700a8150dae01dc76755532a83689ad145b3ebe6075aad9bf91a",
+      "candidate_card_sha256": "8e0e4ce242ab16a38ff342d737c12ef213fa1c1f2964463074a7dea989194144",
+      "before_card": {
+        "id": "ffct-29405",
+        "factId": "three-rock-types-overview-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "three main rock types",
+        "terms": [
+          "bato",
+          "uri ng bato",
+          "klase sa bato",
+          "igneous",
+          "sedimentary",
+          "metamorphic",
+          "tatlong uri",
+          "tulo ka matang",
+          "rock types",
+          "batong igneous",
+          "batong sedimentary"
+        ],
+        "fact": {
+          "en": "What are the three main kinds of rock?\n\nThere are three main kinds of rock: igneous, sedimentary, and metamorphic, grouped by how they form!",
+          "tl": "Ano ang tatlong pangunahing uri ng bato?\n\nMay tatlong pangunahing uri ng bato: igneous, sedimentary, at metamorphic, batay sa kung paano sila nabuo!",
+          "bis": "Unsa ang tulo ka nag-unang matang sa bato?\n\nAdunay tulo ka nag-unang matang sa bato: igneous, sedimentary, ug metamorphic, base sa kon giunsa sila pagkahimo!"
+        },
+        "slug": "three-rock-types-comparison",
+        "title": {
+          "en": "Three Rock Types",
+          "tl": "Tatlong Uri ng Bato",
+          "bis": "Tulo ka Matang Bato"
+        },
+        "cats": [
+          "rocks",
+          "geology"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "igneous, sedimentary, at metamorphic"
+          ],
+          "en": [
+            "igneous, sedimentary, and metamorphic"
+          ],
+          "bis": [
+            "igneous, sedimentary, ug metamorphic"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-29405",
+        "factId": "three-rock-types-overview-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "three main rock types",
+        "terms": [
+          "bato",
+          "uri ng bato",
+          "klase sa bato",
+          "igneous",
+          "sedimentary",
+          "metamorphic",
+          "tatlong uri",
+          "tulo ka matang",
+          "rock types",
+          "batong igneous",
+          "batong sedimentary"
+        ],
+        "fact": {
+          "en": "What are the three main kinds of rock?\n\nThere are three main kinds of rock: igneous, sedimentary, and metamorphic, grouped by how they form!",
+          "tl": "Ano ang tatlong pangunahing uri ng bato?\n\nMay tatlong pangunahing uri ng bato: igneous, sedimentary, at metamorphic, batay sa kung paano sila nabuo!",
+          "bis": "Unsa ang tulo ka nag-unang matang sa bato?\n\nAdunay tulo ka nag-unang matang sa bato: igneous, sedimentary, ug metamorphic. Gigrupo sila base sa kon giunsa sila pagkahimo!"
+        },
+        "slug": "three-rock-types-comparison",
+        "title": {
+          "en": "Three Rock Types",
+          "tl": "Tatlong Uri ng Bato",
+          "bis": "Tulo ka Matang sa Bato"
+        },
+        "cats": [
+          "rocks",
+          "geology"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "igneous, sedimentary, at metamorphic"
+          ],
+          "en": [
+            "igneous, sedimentary, and metamorphic"
+          ],
+          "bis": [
+            "igneous, sedimentary, ug metamorphic"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Separates the three-name list from the explicit grouping rule and adds sa in the title. Wolff matang supports kind. Igneous, sedimentary and metamorphic, their formation-based grouping and the full emphasis span are unchanged. Both changed-field preferences agree.",
+      "formal_item_id": "c66fa66111e50d54eb17a5ddf4caef068",
+      "fidelity_item_id": "mf2d6e2074e14d36820e7402f",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29456",
+      "source_card_sha256": "5d43756ed155235ea13fae2875e5d2eab74e5ca6cf70edb32e3fbf7232a7d961",
+      "candidate_card_sha256": "3dbe35d68b2f4aea7ce159ead7c3952b5d383e925cab5584979ba86a2ddef195",
+      "before_card": {
+        "id": "ffct-29456",
+        "factId": "nearest-star-proxima-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "the nearest star after the Sun",
+        "terms": [
+          "pinakamalapit",
+          "pinakaduol",
+          "nearest",
+          "bituin",
+          "bituon",
+          "star",
+          "araw",
+          "adlaw",
+          "sun",
+          "proxima centauri",
+          "light-year",
+          "liwanag",
+          "kahayag",
+          "layo",
+          "gilay-on",
+          "distance",
+          "apat na taon",
+          "upat ka tuig",
+          "next nearest"
+        ],
+        "fact": {
+          "en": "The nearest star after our Sun is Proxima Centauri! It is so far away that its light takes about four years to reach Earth.",
+          "tl": "Ang pinakamalapit na bituin pagkatapos ng Araw ay Proxima Centauri! Napakalayo nito kaya umaabot ng mga apat na taon bago marating ng liwanag nito ang Earth.",
+          "bis": "Ang pinakaduol nga bituon human sa Adlaw mao ang Proxima Centauri! Layo kaayo kini mao nga mga upat ka tuig ang gikinahanglan sa kahayag niini aron makaabot sa Earth."
+        },
+        "slug": "qa-ffct-29456",
+        "source": "original",
+        "title": {
+          "tl": "Bituing Proxima Centauri",
+          "en": "Proxima Centauri",
+          "bis": "Proxima Centauri"
+        },
+        "cats": [
+          "stars"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29456",
+        "factId": "nearest-star-proxima-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "the nearest star after the Sun",
+        "terms": [
+          "pinakamalapit",
+          "pinakaduol",
+          "nearest",
+          "bituin",
+          "bituon",
+          "star",
+          "araw",
+          "adlaw",
+          "sun",
+          "proxima centauri",
+          "light-year",
+          "liwanag",
+          "kahayag",
+          "layo",
+          "gilay-on",
+          "distance",
+          "apat na taon",
+          "upat ka tuig",
+          "next nearest"
+        ],
+        "fact": {
+          "en": "The nearest star after our Sun is Proxima Centauri! It is so far away that its light takes about four years to reach Earth.",
+          "tl": "Ang pinakamalapit na bituin pagkatapos ng Araw ay Proxima Centauri! Napakalayo nito kaya umaabot ng mga apat na taon bago marating ng liwanag nito ang Earth.",
+          "bis": "Ang pinakaduol nga bituon human sa Adlaw mao ang Proxima Centauri! Layo kaayo kini, busa mga upat ka tuig ang gikinahanglan sa kahayag niini aron makaabot sa Earth."
+        },
+        "slug": "qa-ffct-29456",
+        "source": "original",
+        "title": {
+          "tl": "Bituing Proxima Centauri",
+          "en": "Proxima Centauri",
+          "bis": "Proxima Centauri"
+        },
+        "cats": [
+          "stars"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "A comma and busa mark the cause/result boundary while retaining Proxima Centauri, nearest after the Sun and about four years for its light. Wolff tuig supports years; both body preferences agree, one mildly. No exact four-year distance, new unit or title edit is introduced.",
+      "formal_item_id": "c531023a9d2adccca60e110939a584210",
+      "fidelity_item_id": "m2d61fbb096b74b1ffb155de8",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29481",
+      "source_card_sha256": "84d7ae4a514dee745292546a613260a3ea0bc83a3eb12dfe435ebebcf2967544",
+      "candidate_card_sha256": "1e982eaca64ec63547c6a6ab770801dfed8538a6ad3377f4ef9f138e5887ebb1",
+      "before_card": {
+        "id": "ffct-29481",
+        "factId": "mars-two-moons-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "Mars has two small moons",
+        "terms": [
+          "mars",
+          "dalawang buwan",
+          "duha ka bulan",
+          "two moons",
+          "phobos",
+          "deimos",
+          "maliit",
+          "gamay",
+          "buwan",
+          "bulan",
+          "satelayt"
+        ],
+        "fact": {
+          "en": "The red planet Mars has two tiny moons! They are small and are named Phobos and Deimos.",
+          "tl": "Ang pulang planetang Mars ay may dalawang maliit na buwan! Maliit sila at ang pangalan ay Phobos at Deimos.",
+          "bis": "Ang pulang planeta Mars adunay duha ka gamay nga bulan! Gamay sila ug ang ngalan mao ang Phobos ug Deimos."
+        },
+        "slug": "ffct-29481",
+        "source": "original",
+        "title": {
+          "tl": "Ang Dalawang Buwan ng Mars",
+          "en": "Mars and Its Two Moons",
+          "bis": "Duha ka Bulan ni Mars"
+        },
+        "cats": [
+          "planets"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29481",
+        "factId": "mars-two-moons-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "Mars has two small moons",
+        "terms": [
+          "mars",
+          "dalawang buwan",
+          "duha ka bulan",
+          "two moons",
+          "phobos",
+          "deimos",
+          "maliit",
+          "gamay",
+          "buwan",
+          "bulan",
+          "satelayt"
+        ],
+        "fact": {
+          "en": "The red planet Mars has two tiny moons! They are small and are named Phobos and Deimos.",
+          "tl": "Ang pulang planetang Mars ay may dalawang maliit na buwan! Maliit sila at ang pangalan ay Phobos at Deimos.",
+          "bis": "Ang pulang planeta nga Mars adunay duha ka gamay nga bulan! Gamay sila, ug ang ilang mga ngalan mao ang Phobos ug Deimos."
+        },
+        "slug": "ffct-29481",
+        "source": "original",
+        "title": {
+          "tl": "Ang Dalawang Buwan ng Mars",
+          "en": "Mars and Its Two Moons",
+          "bis": "Duha ka Bulan ni Mars"
+        },
+        "cats": [
+          "planets"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Adds the linker before Mars and explicitly gives the two moons their plural names. Wolff bulan and ngalan support moons/names. Two, small, Phobos and Deimos remain; both body preferences agree and the title ties. No extra moon or change in proper names.",
+      "formal_item_id": "cac3e6e9ba54ff045d187e79acc1be399",
+      "fidelity_item_id": "m2360d2c6ae7812b93306d9b3",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29498",
+      "source_card_sha256": "4431f6393d87b5daf5a207593e0695f32030302151b6d6f931cb8eee5e0923a4",
+      "candidate_card_sha256": "5d25b60151e57a74467a66d3300527fdb7a9465d4d61b32671f2647207af665e",
+      "before_card": {
+        "id": "ffct-29498",
+        "factId": "seasons-not-from-distance-perihelion-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "Earth is actually closest to the Sun during northern winter",
+        "terms": [
+          "layo sa araw",
+          "hindi layo",
+          "enero",
+          "pinakamalapit",
+          "taglamig",
+          "distansya",
+          "duol sa adlaw",
+          "enero pinakaduol",
+          "dili distansya",
+          "gilay-on",
+          "distance",
+          "closest",
+          "january",
+          "not distance"
+        ],
+        "fact": {
+          "en": "Do seasons happen because of distance?\n\nSeasons are not from distance: Earth is actually closest to the Sun in January, yet the northern half has winter then — the tilt, not the distance, makes the seasons!",
+          "tl": "Dahil ba sa layo ang mga panahon?\n\nHindi dahil sa layo ang panahon: ang Mundo ay pinakamalapit pa sa Araw tuwing Enero, ngunit taglamig pa rin sa hilagang bahagi — dahil ang hilig, hindi ang layo, ang nagdudulot ng panahon!",
+          "bis": "Tungod ba sa gilay-on ang mga panahon?\n\nAng panahon dili gikan sa gilay-on: ang Kalibotan pinakaduol gyud sa Adlaw kada Enero, apan tingtugnaw gihapon sa amihanang bahin — ang pagkatakilid, dili ang gilay-on, mao ang hinungdan sa panahon!"
+        },
+        "slug": "earth-tilt-seasons",
+        "title": {
+          "en": "Seasons and Distance",
+          "tl": "Panahon at Distansya",
+          "bis": "Panahon ug Distansya"
+        },
+        "cats": [
+          "seasons",
+          "earth"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "hilig"
+          ],
+          "en": [
+            "tilt"
+          ],
+          "bis": [
+            "pagkatakilid"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-29498",
+        "factId": "seasons-not-from-distance-perihelion-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "Earth is actually closest to the Sun during northern winter",
+        "terms": [
+          "layo sa araw",
+          "hindi layo",
+          "enero",
+          "pinakamalapit",
+          "taglamig",
+          "distansya",
+          "duol sa adlaw",
+          "enero pinakaduol",
+          "dili distansya",
+          "gilay-on",
+          "distance",
+          "closest",
+          "january",
+          "not distance"
+        ],
+        "fact": {
+          "en": "Do seasons happen because of distance?\n\nSeasons are not from distance: Earth is actually closest to the Sun in January, yet the northern half has winter then — the tilt, not the distance, makes the seasons!",
+          "tl": "Dahil ba sa layo ang mga panahon?\n\nHindi dahil sa layo ang panahon: ang Mundo ay pinakamalapit pa sa Araw tuwing Enero, ngunit taglamig pa rin sa hilagang bahagi — dahil ang hilig, hindi ang layo, ang nagdudulot ng panahon!",
+          "bis": "Tungod ba sa gilay-on ang mga panahon?\n\nDili ang gilay-on ang hinungdan sa mga panahon. Sa tinuod, pinakaduol ang Kalibotan sa Adlaw kada Enero, apan tingtugnaw gihapon niana sa amihanang bahin. Ang pagkatakilid, dili ang gilay-on, mao ang hinungdan sa panahon!"
+        },
+        "slug": "earth-tilt-seasons",
+        "title": {
+          "en": "Seasons and Distance",
+          "tl": "Panahon at Distansya",
+          "bis": "Panahon ug Distansya"
+        },
+        "cats": [
+          "seasons",
+          "earth"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "hilig"
+          ],
+          "en": [
+            "tilt"
+          ],
+          "bis": [
+            "pagkatakilid"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Three sentences retain the negation of distance as the seasons’ cause, January proximity, northern winter and the axial-tilt explanation. Wolff takilid supports tilt; niana restores then. Both body preferences agree, the title ties and the exact pagkatakilid emphasis survives.",
+      "formal_item_id": "cbf8946db59812039005bc943e1635ae1",
+      "fidelity_item_id": "m18de4768e3ee964aba0c05ed",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29513",
+      "source_card_sha256": "5cdeb3239d06523d1c670c1376930377e4cfe2b1e061cd0a2583189ff64e5090",
+      "candidate_card_sha256": "ec7868ca27d638ecc609a13ef356f8b3a7360a6df60c19a3a792ce979f36baf0",
+      "before_card": {
+        "id": "ffct-29513",
+        "factId": "gravity-collapses-cloud-into-star-g9",
+        "domain": "EARTH_SPACE",
+        "topic": "gravity squeezes gas until fusion starts",
+        "terms": [
+          "grabidad",
+          "gravity",
+          "presyon",
+          "pressure",
+          "init",
+          "bituin",
+          "bitoon",
+          "fusion",
+          "nucleus",
+          "kuyog",
+          "collapse",
+          "hydrogen",
+          "pagkadugmok"
+        ],
+        "fact": {
+          "en": "As gravity pulls gas inward, pressure and heat at the center rise! This starts fusion and forms a star.",
+          "tl": "Habang hinihila ng grabidad ang gas paloob, tumataas ang presyon at init sa gitna! Nagsisimula ang fusion at nabubuo ang bituin.",
+          "bis": "Samtang gibira sa grabidad ang gas paingon sa sulod, mosaka ang presyon ug init sa tunga! Magsugod ang fusion ug mahimong bituon."
+        },
+        "slug": "ffct-29513",
+        "source": "original",
+        "title": {
+          "tl": "Grabidad at Pagsiklab ng Bituin",
+          "en": "Gravity Ignites a Star",
+          "bis": "Grabidad Pagsugod sa Bituon"
+        },
+        "cats": [
+          "stars",
+          "gravity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29513",
+        "factId": "gravity-collapses-cloud-into-star-g9",
+        "domain": "EARTH_SPACE",
+        "topic": "gravity squeezes gas until fusion starts",
+        "terms": [
+          "grabidad",
+          "gravity",
+          "presyon",
+          "pressure",
+          "init",
+          "bituin",
+          "bitoon",
+          "fusion",
+          "nucleus",
+          "kuyog",
+          "collapse",
+          "hydrogen",
+          "pagkadugmok"
+        ],
+        "fact": {
+          "en": "As gravity pulls gas inward, pressure and heat at the center rise! This starts fusion and forms a star.",
+          "tl": "Habang hinihila ng grabidad ang gas paloob, tumataas ang presyon at init sa gitna! Nagsisimula ang fusion at nabubuo ang bituin.",
+          "bis": "Samtang gibira sa grabidad ang gas paingon sa sulod, mosaka ang presyon ug init sa tunga! Tungod niini, magsugod ang fusion ug maporma ang usa ka bituon."
+        },
+        "slug": "ffct-29513",
+        "source": "original",
+        "title": {
+          "tl": "Grabidad at Pagsiklab ng Bituin",
+          "en": "Gravity Ignites a Star",
+          "bis": "Grabidad ug ang Pagsugod sa Bituon"
+        },
+        "cats": [
+          "stars",
+          "gravity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Tungod niini makes the causal connection explicit and maporma ang usa ka bituon names what forms, avoiding a reading that fusion itself becomes a star. Wolff purma supports taking form. Gravity, inward gas, central pressure/heat and fusion remain; both changed-field preferences agree.",
+      "formal_item_id": "c087cd641951a49de031dfabf507989e7",
+      "fidelity_item_id": "m253f57acd223d1c52b503ec3",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29562",
+      "source_card_sha256": "3723ccb0f444efb28da725ae9fc4c1f2d8b744041cda815ac1eb5b4b93b752f8",
+      "candidate_card_sha256": "f6ee24a3a9122f8c4191a025bcbcb78582108c81646e98fe3949fb9bbbbb8c5d",
+      "before_card": {
+        "id": "ffct-29562",
+        "factId": "water-cycle-sun-powers-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "sun powers water cycle",
+        "terms": [
+          "araw",
+          "adlaw",
+          "sun",
+          "init",
+          "kainit",
+          "heat",
+          "energy",
+          "enerhiya",
+          "sumisingaw",
+          "moalisngaw",
+          "evaporate",
+          "nagpapaandar",
+          "nagpaandar",
+          "drives"
+        ],
+        "fact": {
+          "en": "What powers the water cycle?\n\nThe sun's heat powers it! The sun makes water evaporate up into the air to keep the cycle going.",
+          "tl": "Ano ang nagpapaandar ng water cycle?\n\nAng init ng araw! Kaya ito nagpapasingaw ng tubig pataas sa himpapawid para tuloy-tuloy ang water cycle.",
+          "bis": "Unsa ang nagpaandar sa water cycle?\n\nAng kainit sa adlaw! Kini ang nagpaalisngaw sa tubig pataas sa kahanginan aron magpadayon ang water cycle."
+        },
+        "slug": "ffct-21612",
+        "title": {
+          "en": "Sun Powers Cycle",
+          "tl": "Araw Nagpapagana",
+          "bis": "Adlaw Nagpaandar"
+        },
+        "cats": [
+          "water-cycle",
+          "energy"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "init ng araw"
+          ],
+          "en": [
+            "sun's heat"
+          ],
+          "bis": [
+            "kainit sa adlaw"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-29562",
+        "factId": "water-cycle-sun-powers-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "sun powers water cycle",
+        "terms": [
+          "araw",
+          "adlaw",
+          "sun",
+          "init",
+          "kainit",
+          "heat",
+          "energy",
+          "enerhiya",
+          "sumisingaw",
+          "moalisngaw",
+          "evaporate",
+          "nagpapaandar",
+          "nagpaandar",
+          "drives"
+        ],
+        "fact": {
+          "en": "What powers the water cycle?\n\nThe sun's heat powers it! The sun makes water evaporate up into the air to keep the cycle going.",
+          "tl": "Ano ang nagpapaandar ng water cycle?\n\nAng init ng araw! Kaya ito nagpapasingaw ng tubig pataas sa himpapawid para tuloy-tuloy ang water cycle.",
+          "bis": "Unsa ang nagpaandar sa water cycle?\n\nAng kainit sa adlaw! Kini ang nagpaalisngaw sa tubig pataas sa kahanginan aron magpadayon ang water cycle."
+        },
+        "slug": "ffct-21612",
+        "title": {
+          "en": "Sun Powers Cycle",
+          "tl": "Araw Nagpapagana",
+          "bis": "Ang Adlaw ang Nagpaandar"
+        },
+        "cats": [
+          "water-cycle",
+          "energy"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "init ng araw"
+          ],
+          "en": [
+            "sun's heat"
+          ],
+          "bis": [
+            "kainit sa adlaw"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title’s ang markers make the Sun’s role explicit. The unchanged body preserves solar heat, evaporation into air and continuation of the water cycle. Wolff andar and alisngaw support operation and evaporation; independent bodies corroborate powering. Both title preferences agree with body ties and unchanged emphasis.",
+      "formal_item_id": "c005c029aeacc4117189bea528816bee5",
+      "fidelity_item_id": "mbf00d2071ff3a683074bf52b",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29604",
+      "source_card_sha256": "b61da9f2dffe20ad41fe4af48eb5daf9ea3e26f37d5306a353e1cc16172268bf",
+      "candidate_card_sha256": "69f14889f03b4e4b17b9db2664f1b9bee2b89395ac6ca4e889593c7e1305cbd2",
+      "before_card": {
+        "id": "ffct-29604",
+        "factId": "why-prepare-before-typhoon-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "preparing when a typhoon is forecast",
+        "terms": [
+          "paghahanda",
+          "pag-andam",
+          "babala",
+          "pasidaan",
+          "bagyo",
+          "typhoon",
+          "pagkain",
+          "pagkaon",
+          "tubig",
+          "flashlight",
+          "ligtas",
+          "luwas",
+          "lumikas",
+          "mobakwit",
+          "forecast"
+        ],
+        "fact": {
+          "en": "When PAGASA warns about a coming typhoon, prepare food, clean water, and a flashlight, and listen to the news to stay safe!",
+          "tl": "Kapag may babala ang PAGASA ng paparating na bagyo, maghanda ng pagkain, malinis na tubig, at flashlight, at makinig sa balita para manatiling ligtas!",
+          "bis": "Kon magpasidaan ang PAGASA nga naay moabot nga bagyo, mag-andam og pagkaon, limpyo nga tubig, ug flashlight, ug maminaw sa balita aron magpabiling luwas!"
+        },
+        "slug": "ffct-29604",
+        "source": "original",
+        "title": {
+          "tl": "Babala ng PAGASA",
+          "en": "PAGASA Typhoon Warning",
+          "bis": "Pahimangno sa PAGASA"
+        },
+        "cats": [
+          "natural-disasters",
+          "weather"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29604",
+        "factId": "why-prepare-before-typhoon-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "preparing when a typhoon is forecast",
+        "terms": [
+          "paghahanda",
+          "pag-andam",
+          "babala",
+          "pasidaan",
+          "bagyo",
+          "typhoon",
+          "pagkain",
+          "pagkaon",
+          "tubig",
+          "flashlight",
+          "ligtas",
+          "luwas",
+          "lumikas",
+          "mobakwit",
+          "forecast"
+        ],
+        "fact": {
+          "en": "When PAGASA warns about a coming typhoon, prepare food, clean water, and a flashlight, and listen to the news to stay safe!",
+          "tl": "Kapag may babala ang PAGASA ng paparating na bagyo, maghanda ng pagkain, malinis na tubig, at flashlight, at makinig sa balita para manatiling ligtas!",
+          "bis": "Kon magpasidaan ang PAGASA nga naay moabot nga bagyo, pag-andam og pagkaon, limpyo nga tubig, ug flashlight. Paminaw usab sa balita aron magpabiling luwas!"
+        },
+        "slug": "ffct-29604",
+        "source": "original",
+        "title": {
+          "tl": "Babala ng PAGASA",
+          "en": "PAGASA Typhoon Warning",
+          "bis": "Pahimangno sa PAGASA"
+        },
+        "cats": [
+          "natural-disasters",
+          "weather"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Two direct instructions separate supplies from listening to the news, preserving the PAGASA warning condition and food, clean water and flashlight. Wolff andam and paminaw explicitly support prepare and listening to news. PAGASA’s primary flood/storm-surge guidance supports these items and updates. Both body observations agree; neither imperative form is declared invalid, and this remains a brief tip, not an exhaustive evacuation plan.",
+      "formal_item_id": "c620d8f862a0c7703622d5de71eddfbde",
+      "fidelity_item_id": "mc279321a85ac404673911f54",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-29674",
+      "source_card_sha256": "14e5b7a8ed8bb5c84ef6b85660d8938f2be4c0e1ad1c885bbb98bb45d34ee41b",
+      "candidate_card_sha256": "fb6a6111176b146ff2b2821362ec52c1723e0e10fcbdc214f3ccbfd250c17e9c",
+      "before_card": {
+        "id": "ffct-29674",
+        "factId": "karst-landscape-definition-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "karst landscape",
+        "terms": [
+          "karst",
+          "tanawin",
+          "talan-awon",
+          "limestone",
+          "apog na bato",
+          "natunaw",
+          "sinkhole",
+          "langob",
+          "kweba",
+          "bungtod",
+          "talampas",
+          "matunaw"
+        ],
+        "fact": {
+          "en": "A landscape called karst forms when limestone dissolves, creating caves, sinkholes, and hills!",
+          "tl": "Ang tanawin na tinatawag na karst ay nabubuo kapag natutunaw ang limestone, na lumilikha ng mga kweba, sinkhole, at burol!",
+          "bis": "Ang talan-awon nga gitawag karst maporma kung matunaw ang limestone, nga maghimo og mga langob, sinkhole, ug bungtod!"
+        },
+        "slug": "limestone-karst-landscape-scene",
+        "title": {
+          "en": "Karst Landscape",
+          "tl": "Tanawing Karst",
+          "bis": "Talan-awong Karst"
+        },
+        "cats": [
+          "landforms",
+          "geology"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "karst"
+          ],
+          "en": [
+            "karst"
+          ],
+          "bis": [
+            "karst"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-29674",
+        "factId": "karst-landscape-definition-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "karst landscape",
+        "terms": [
+          "karst",
+          "tanawin",
+          "talan-awon",
+          "limestone",
+          "apog na bato",
+          "natunaw",
+          "sinkhole",
+          "langob",
+          "kweba",
+          "bungtod",
+          "talampas",
+          "matunaw"
+        ],
+        "fact": {
+          "en": "A landscape called karst forms when limestone dissolves, creating caves, sinkholes, and hills!",
+          "tl": "Ang tanawin na tinatawag na karst ay nabubuo kapag natutunaw ang limestone, na lumilikha ng mga kweba, sinkhole, at burol!",
+          "bis": "Kung matunaw ang limestone, maporma ang talan-awon nga gitawag og karst. Sa pagkatunaw niini, motungha ang mga langob, sinkhole, ug bungtod!"
+        },
+        "slug": "limestone-karst-landscape-scene",
+        "title": {
+          "en": "Karst Landscape",
+          "tl": "Tanawing Karst",
+          "bis": "Talan-awong Karst"
+        },
+        "cats": [
+          "landforms",
+          "geology"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "karst"
+          ],
+          "en": [
+            "karst"
+          ],
+          "bis": [
+            "karst"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Moves the limestone condition first and states the resulting landforms separately. Wolff tunaw explicitly includes dissolving, not just melting, and tungha includes appearing; independent bodies corroborate both. UNESCO/USGS support limestone dissolution and karst landforms. Both body preferences agree, with caves, sinkholes, hills, karst emphasis and the causal relationship intact.",
+      "formal_item_id": "c1deb5b5ba8cb7097d2dfb8e04a6b15fc",
+      "fidelity_item_id": "m06fd140b7bc0ecfdcdf26916",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and lexical/source evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    }
+  ],
+  "held": [
+    {
+      "card_id": "ffct-28960",
+      "source_card_sha256": "1f966774305600f41c90a56e365cb4fb6505c4240dfa23d4ee57717e3a93a9b8",
+      "candidate_card_sha256": "9718ac43fb271072ea9f79b27f3a314263b105e932a65c924293c838a276ca5a",
+      "before_card": {
+        "id": "ffct-28960",
+        "factId": "sun-corona-hotter-g9",
+        "domain": "EARTH_SPACE",
+        "topic": "the sun's corona",
+        "terms": [
+          "corona",
+          "outer atmosphere hotter",
+          "korona ng araw",
+          "mas mainit ang labas",
+          "mistery ng korona",
+          "korona sa adlaw",
+          "mas init ang gawas",
+          "why corona is hotter than surface",
+          "misteryo ng init ng araw"
+        ],
+        "fact": {
+          "en": "Is the Sun's outer atmosphere, the corona, cooler than its surface?\n\nNope! The corona is actually hotter than the Sun's surface! It looks like a glowing ring during a total eclipse, and it's still a scientific puzzle.",
+          "tl": "Mas malamig ba ang corona, ang pinakalabas na hangin ng Araw, kaysa sa ibabaw nito?\n\nHindi! Mas mainit pa ang corona kaysa sa ibabaw ng Araw! Mukhang maliwanag na singsing ito tuwing total eclipse, at misteryo pa rin ito sa mga siyentipiko.",
+          "bis": "Mas bugnaw ba ang corona, ang pinakagawas nga hangin sa Adlaw, kaysa sa nawong niini?\n\nDili! Mas init pa ang corona kaysa sa nawong sa Adlaw! Murag nagdan-ag nga singsing kini panahon sa total eclipse, ug misteryo pa gihapon kini sa mga siyentista."
+        },
+        "slug": "ffct-28960",
+        "source": "original",
+        "title": {
+          "tl": "Mainit na Corona",
+          "en": "Hot Corona Mystery",
+          "bis": "Mainit Corona"
+        },
+        "cats": [
+          "stars"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28960",
+        "factId": "sun-corona-hotter-g9",
+        "domain": "EARTH_SPACE",
+        "topic": "the sun's corona",
+        "terms": [
+          "corona",
+          "outer atmosphere hotter",
+          "korona ng araw",
+          "mas mainit ang labas",
+          "mistery ng korona",
+          "korona sa adlaw",
+          "mas init ang gawas",
+          "why corona is hotter than surface",
+          "misteryo ng init ng araw"
+        ],
+        "fact": {
+          "en": "Is the Sun's outer atmosphere, the corona, cooler than its surface?\n\nNope! The corona is actually hotter than the Sun's surface! It looks like a glowing ring during a total eclipse, and it's still a scientific puzzle.",
+          "tl": "Mas malamig ba ang corona, ang pinakalabas na hangin ng Araw, kaysa sa ibabaw nito?\n\nHindi! Mas mainit pa ang corona kaysa sa ibabaw ng Araw! Mukhang maliwanag na singsing ito tuwing total eclipse, at misteryo pa rin ito sa mga siyentipiko.",
+          "bis": "Mas bugnaw ba ang corona, ang pinakagawas nga hangin sa Adlaw, kaysa sa nawong niini?\n\nDili! Mas init pa ang corona kaysa sa nawong sa Adlaw! Murag nagdan-ag nga singsing kini panahon sa total eclipse, ug misteryo pa gihapon kini sa mga siyentista."
+        },
+        "slug": "ffct-28960",
+        "source": "original",
+        "title": {
+          "tl": "Mainit na Corona",
+          "en": "Hot Corona Mystery",
+          "bis": "Misteryo sa Init nga Corona"
+        },
+        "cats": [
+          "stars"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The title is clearer, but the unchanged body describes the corona with pinakagawas nga hangin sa Adlaw, backtranslated as outermost air of the Sun. Wolff hangin has air/wind senses and a derived atmosphere term; NASA describes a plasma outer atmosphere. That does not resolve this exact term for Grade 5 readers. Hold the whole candidate for lexical authority, without declaring hangin generally wrong or replacing it with an unreviewed term.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "cb7ea217b5091becf84c72e7565721022"
+    },
+    {
+      "card_id": "ffct-29013",
+      "source_card_sha256": "d1748fa1c718488dea8db5b4e517cc09630d3fae2fa9f7e6af37c771841c78f1",
+      "candidate_card_sha256": "929960363425b7167cac8da06c251de4756bd7f8d8701b08735bc31fb8a954d4",
+      "before_card": {
+        "id": "ffct-29013",
+        "factId": "oil-spill-harms-birds-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "oil spills",
+        "terms": [
+          "oil spill",
+          "langis",
+          "tumagas",
+          "natapon",
+          "nausik",
+          "dagat",
+          "ibon",
+          "langgam",
+          "balahibo",
+          "balhibo",
+          "feathers",
+          "lumulutang",
+          "naglutaw",
+          "dikit",
+          "lumamig",
+          "nginginig",
+          "init",
+          "nakakamatay",
+          "cleanup"
+        ],
+        "fact": {
+          "en": "Why are oil spills so dangerous for seabirds?\n\nWhen oil spills into the sea, it sticks to seabirds' feathers and ruins their ability to stay warm and float — making oil spills very dangerous to animals!",
+          "tl": "Bakit napakapanganib ng oil spill sa mga ibon-dagat?\n\nKapag tumagas ang langis sa dagat, dumidikit ito sa balahibo ng mga ibon-dagat at sira ang kakayahan nitong panatilihin silang mainit at lumutang — kaya napakapanganib nito sa mga hayop!",
+          "bis": "Ngano nga peligroso kaayo ang oil spill sa mga langgam-dagat?\n\nKon motulo ang lana sa dagat, modikit kini sa balhibo sa mga langgam-dagat ug madaot ang ilang katakos sa pagpabilin nga init ug paglutaw — busa peligroso kaayo ang oil spill sa mga hayop!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Oil Spills",
+          "tl": "Pagtagas ng Langis",
+          "bis": "Pagbuga sa Lana"
+        },
+        "cats": [
+          "pollution",
+          "marine-animals"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "oil spill"
+          ],
+          "en": [
+            "oil spills"
+          ],
+          "bis": [
+            "oil spill"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-29013",
+        "factId": "oil-spill-harms-birds-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "oil spills",
+        "terms": [
+          "oil spill",
+          "langis",
+          "tumagas",
+          "natapon",
+          "nausik",
+          "dagat",
+          "ibon",
+          "langgam",
+          "balahibo",
+          "balhibo",
+          "feathers",
+          "lumulutang",
+          "naglutaw",
+          "dikit",
+          "lumamig",
+          "nginginig",
+          "init",
+          "nakakamatay",
+          "cleanup"
+        ],
+        "fact": {
+          "en": "Why are oil spills so dangerous for seabirds?\n\nWhen oil spills into the sea, it sticks to seabirds' feathers and ruins their ability to stay warm and float — making oil spills very dangerous to animals!",
+          "tl": "Bakit napakapanganib ng oil spill sa mga ibon-dagat?\n\nKapag tumagas ang langis sa dagat, dumidikit ito sa balahibo ng mga ibon-dagat at sira ang kakayahan nitong panatilihin silang mainit at lumutang — kaya napakapanganib nito sa mga hayop!",
+          "bis": "Ngano nga peligroso kaayo ang oil spill sa mga langgam-dagat?\n\nKon motulo ang lana sa dagat, modikit kini sa balhibo sa mga langgam-dagat. Madaot ang ilang katakos sa pagpabilin nga init ug sa paglutaw — busa peligroso kaayo ang oil spill sa mga hayop!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Oil Spills",
+          "tl": "Pagtagas ng Langis",
+          "bis": "Pagbuga sa Lana"
+        },
+        "cats": [
+          "pollution",
+          "marine-animals"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "oil spill"
+          ],
+          "en": [
+            "oil spills"
+          ],
+          "bis": [
+            "oil spill"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Sentence structure improves the bird-feather explanation, which NOAA supports, but the unchanged title Pagbuga sa Lana needs a spill-versus-emission decision. The proposer itself retained uncertainty about spill/leak wording. Wolff and Binisaya buga describe emission/spewing, not an unqualified generic spill. Hold the exact candidate; lana and langgam are not being rejected, and no substitute spill term is silently inserted.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "cb5bc3a560d0c518aee7d9d9dea0f583b"
+    },
+    {
+      "card_id": "ffct-29018",
+      "source_card_sha256": "8b6bfbecb02effdaf35003023fefa27ef4fd1749e2df6f880c47aa8758114cda",
+      "candidate_card_sha256": "c1c3f76780af27f99e77aca5d22c437b6e3fb5163d59bddda0ff204b62021ef0",
+      "before_card": {
+        "id": "ffct-29018",
+        "factId": "single-use-plastic-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "single-use plastic",
+        "terms": [
+          "single-use",
+          "isahang gamit",
+          "minsan lang",
+          "kaisa ra gamiton",
+          "plastik",
+          "plastic",
+          "straw",
+          "istro",
+          "supot",
+          "sando bag",
+          "sachet",
+          "tinatapon agad",
+          "gilabay dayon",
+          "sandali lang",
+          "matagal",
+          "dugay",
+          "nananatili",
+          "tabang",
+          "i-refuse",
+          "tanggihan",
+          "dala-dalang"
+        ],
+        "fact": {
+          "en": "Why is single-use plastic such a big problem?\n\nSingle-use plastics like straws and sachets are used for only a few minutes but stay in nature for hundreds of years — so bringing your own cup or bag helps a lot!",
+          "tl": "Bakit malaking problema ang single-use na plastic?\n\nAng single-use na plastic tulad ng straw at sachet ay ginagamit lang nang ilang minuto pero nananatili sa kalikasan nang daan-daang taon — kaya malaking tulong ang pagdadala ng sariling baso o bag!",
+          "bis": "Ngano nga dako nga problema ang single-use nga plastik?\n\nAng single-use nga plastik sama sa istro ug sachet gamiton lang sa pipila ka minuto apan magpabilin sa kinaiyahan og gatusan ka tuig — busa dako og tabang ang pagdala sa kaugalingong baso o bag!"
+        },
+        "slug": "ffct-29018",
+        "source": "original",
+        "title": {
+          "tl": "Single-Use na Plastic",
+          "en": "Single-Use Plastic Problem",
+          "bis": "Single-Use Plastik"
+        },
+        "cats": [
+          "pollution"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29018",
+        "factId": "single-use-plastic-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "single-use plastic",
+        "terms": [
+          "single-use",
+          "isahang gamit",
+          "minsan lang",
+          "kaisa ra gamiton",
+          "plastik",
+          "plastic",
+          "straw",
+          "istro",
+          "supot",
+          "sando bag",
+          "sachet",
+          "tinatapon agad",
+          "gilabay dayon",
+          "sandali lang",
+          "matagal",
+          "dugay",
+          "nananatili",
+          "tabang",
+          "i-refuse",
+          "tanggihan",
+          "dala-dalang"
+        ],
+        "fact": {
+          "en": "Why is single-use plastic such a big problem?\n\nSingle-use plastics like straws and sachets are used for only a few minutes but stay in nature for hundreds of years — so bringing your own cup or bag helps a lot!",
+          "tl": "Bakit malaking problema ang single-use na plastic?\n\nAng single-use na plastic tulad ng straw at sachet ay ginagamit lang nang ilang minuto pero nananatili sa kalikasan nang daan-daang taon — kaya malaking tulong ang pagdadala ng sariling baso o bag!",
+          "bis": "Ngano nga dako nga problema ang single-use nga plastik?\n\nAng single-use nga plastik sama sa istro ug sachet gamiton lang sa pipila ka minuto, apan magpabilin kini sa kinaiyahan og gatusan ka tuig. Busa dako og tabang ang pagdala sa kaugalingong baso o bag!"
+        },
+        "slug": "ffct-29018",
+        "source": "original",
+        "title": {
+          "tl": "Single-Use na Plastic",
+          "en": "Single-Use Plastic Problem",
+          "bis": "Single-Use Plastik"
+        },
+        "cats": [
+          "pollution"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The English assigns hundreds of years in nature to single-use plastics without qualifying material or conditions. NOAA emphasizes the wide dependence of breakdown on material and environment and distinguishes fragmentation from disappearance. Hold for a more precise English claim across languages, not a claim that plastic cannot persist for centuries. The readability pass cannot add a qualification only to Cebuano.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "ce4e6b85fc28dc756fe96d42a6097d697"
+    },
+    {
+      "card_id": "ffct-29025",
+      "source_card_sha256": "2ffac04d4c4c245d8e41118b776ec112a52bbe96c86e9ccb14d8ab3d3448f745",
+      "candidate_card_sha256": "edb641cfb751e55bf413d397279d31b36d6549ae9543151b041a75b2deebbebb",
+      "before_card": {
+        "id": "ffct-29025",
+        "factId": "endangered-protected-area-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "protected areas help wildlife",
+        "terms": [
+          "protected area",
+          "protektadong lugar",
+          "kapunungan",
+          "sanctuary",
+          "santuwaryo",
+          "reserba",
+          "reserve",
+          "national park",
+          "ligtas",
+          "luwas",
+          "hayop",
+          "mananap",
+          "hindi pinapangaso",
+          "dili mangayam",
+          "habitat",
+          "tirahan",
+          "puok",
+          "nababawi",
+          "makarekober",
+          "populasyon",
+          "ipinagbabawal"
+        ],
+        "fact": {
+          "en": "Why are some places made into \"protected areas\" or sanctuaries?\n\nHunting and tree-cutting are banned there! This gives endangered animals a safe home so their numbers can grow again.",
+          "tl": "Bakit ginagawang \"protected areas\" o santuwaryo ang ilang lugar?\n\nIpinagbabawal ang pangangaso at pagputol ng puno! Nagkakaroon ng ligtas na tirahan ang mga endangered animals para dumami sila muli.",
+          "bis": "Ngano nga gihimong \"protected areas\" o santuwaryo ang ubang dapit?\n\nGidili ang pagpangayam ug pagputol og kahoy! Adunay luwas nga puy-anan ang mga namiligrong hayop aron modaghan sila pag-usab."
+        },
+        "slug": "ffct-29025",
+        "source": "original",
+        "title": {
+          "tl": "Santuwaryo ng Endangered",
+          "en": "Protected Sanctuaries",
+          "bis": "Santuwaryo Hayop"
+        },
+        "cats": [
+          "conservation"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29025",
+        "factId": "endangered-protected-area-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "protected areas help wildlife",
+        "terms": [
+          "protected area",
+          "protektadong lugar",
+          "kapunungan",
+          "sanctuary",
+          "santuwaryo",
+          "reserba",
+          "reserve",
+          "national park",
+          "ligtas",
+          "luwas",
+          "hayop",
+          "mananap",
+          "hindi pinapangaso",
+          "dili mangayam",
+          "habitat",
+          "tirahan",
+          "puok",
+          "nababawi",
+          "makarekober",
+          "populasyon",
+          "ipinagbabawal"
+        ],
+        "fact": {
+          "en": "Why are some places made into \"protected areas\" or sanctuaries?\n\nHunting and tree-cutting are banned there! This gives endangered animals a safe home so their numbers can grow again.",
+          "tl": "Bakit ginagawang \"protected areas\" o santuwaryo ang ilang lugar?\n\nIpinagbabawal ang pangangaso at pagputol ng puno! Nagkakaroon ng ligtas na tirahan ang mga endangered animals para dumami sila muli.",
+          "bis": "Ngano nga gihimong \"protected areas\" o santuwaryo ang ubang dapit?\n\nGidili didto ang pagpangayam ug pagputol og kahoy! Tungod niini, adunay luwas nga puy-anan ang mga namiligrong hayop aron modaghan sila pag-usab."
+        },
+        "slug": "ffct-29025",
+        "source": "original",
+        "title": {
+          "tl": "Santuwaryo ng Endangered",
+          "en": "Protected Sanctuaries",
+          "bis": "Santuwaryo sa mga Hayop"
+        },
+        "cats": [
+          "conservation"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The English describes protected areas as a blanket ban on hunting and cutting trees. The primary judicial text quoting ENIPAS section 20(c) explicitly retains permits and recognized Indigenous subsistence exceptions for timber. Hold for source scope clarification across languages; this is not permission to hunt or log and not a ruling that protected-area restrictions do not exist.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c1f526f421b0b2fb18d0291e276a04079"
+    },
+    {
+      "card_id": "ffct-29243",
+      "source_card_sha256": "c14cb1b0c620724e1820aa8ef63aca55f6c8fc9dc46afdee05b30344f97871f6",
+      "candidate_card_sha256": "31c28980b630e7245050f96c6c7bbf50df44c659aec50be2856e0af716dc7250",
+      "before_card": {
+        "id": "ffct-29243",
+        "factId": "milky-way-name-origin-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "why it is called Milky Way",
+        "terms": [
+          "daan ng gatas",
+          "milky way name",
+          "dalan sa gatas",
+          "gatas",
+          "milk",
+          "milky",
+          "parang gatas",
+          "puti",
+          "white",
+          "puti nga guhit",
+          "pangalan",
+          "ngalan"
+        ],
+        "fact": {
+          "en": "Why is it called the Milky Way?\n\nIts faint band across the sky looks just like a trail of spilled milk!",
+          "tl": "Bakit ito tinatawag na Milky Way?\n\nAng malabong guhit nito sa langit ay parang natapong gatas!",
+          "bis": "Nganong gitawag kini nga Milky Way?\n\nAng luspad nga guhit niini sa langit morag giula nga gatas!"
+        },
+        "slug": "ffct-29243",
+        "source": "original",
+        "title": {
+          "tl": "Milky Way Gatas na Landas",
+          "en": "Why the Name Milky Way",
+          "bis": "Milky Way sa Gatas"
+        },
+        "cats": [
+          "space"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-29243",
+        "factId": "milky-way-name-origin-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "why it is called Milky Way",
+        "terms": [
+          "daan ng gatas",
+          "milky way name",
+          "dalan sa gatas",
+          "gatas",
+          "milk",
+          "milky",
+          "parang gatas",
+          "puti",
+          "white",
+          "puti nga guhit",
+          "pangalan",
+          "ngalan"
+        ],
+        "fact": {
+          "en": "Why is it called the Milky Way?\n\nIts faint band across the sky looks just like a trail of spilled milk!",
+          "tl": "Bakit ito tinatawag na Milky Way?\n\nAng malabong guhit nito sa langit ay parang natapong gatas!",
+          "bis": "Nganong gitawag kini nga Milky Way?\n\nAng luspad nga guhit niini sa langit morag giula nga gatas!"
+        },
+        "slug": "ffct-29243",
+        "source": "original",
+        "title": {
+          "tl": "Milky Way Gatas na Landas",
+          "en": "Why the Name Milky Way",
+          "bis": "Nganong Milky Way ang Ngalan"
+        },
+        "cats": [
+          "space"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The proposed title answers why the galaxy has its name, but the unchanged body uses giula nga gatas for spilled milk. Wolff and Binisaya’s direct ula entry specify blood-shedding; narrower independent card bodies contain general spills but are machine translations. Broad ula counts also match unrelated words. Hold for lexical authority on the milk context, without declaring it invalid or adopting an unreviewed replacement.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "cbbaf4229852a23a4314e5bdf2eb900a7"
+    },
+    {
+      "card_id": "ffct-29669",
+      "source_card_sha256": "bb62028138dd62b2664421bfede42d9f76f23b8a483799ef8e6fd2900280b1dd",
+      "candidate_card_sha256": "976164903c9e1f7ce572d10ee360f65ad97f801bc8303331532da79648baf5dd",
+      "before_card": {
+        "id": "ffct-29669",
+        "factId": "chocolate-hills-fossils-inside-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "Chocolate Hills contain marine fossils",
+        "terms": [
+          "fossil",
+          "fosil",
+          "chocolate hills",
+          "bohol",
+          "coral",
+          "shell",
+          "kabibe",
+          "mollusk",
+          "ebidensya",
+          "pamatuod",
+          "karaang dagat",
+          "hayop-dagat"
+        ],
+        "fact": {
+          "en": "Inside the Chocolate Hills are fossils of coral, shells, and tiny sea animals, proving it was once a sea!",
+          "tl": "May mga fossil ng coral, kabibe, at maliliit na hayop-dagat sa loob ng Chocolate Hills, patunay na dating dagat ito!",
+          "bis": "Sa sulod sa Chocolate Hills naa'y mga fosil sa coral, kabibe, ug gagmay nga mananap-dagat, pamatuod nga kini kaniadto dagat!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Marine Fossils",
+          "tl": "Mga Fossil sa Dagat",
+          "bis": "Fossil sa Dagat"
+        },
+        "cats": [
+          "fossils",
+          "marine-animals"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "fossil"
+          ],
+          "en": [
+            "fossils"
+          ],
+          "bis": [
+            "fosil"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-29669",
+        "factId": "chocolate-hills-fossils-inside-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "Chocolate Hills contain marine fossils",
+        "terms": [
+          "fossil",
+          "fosil",
+          "chocolate hills",
+          "bohol",
+          "coral",
+          "shell",
+          "kabibe",
+          "mollusk",
+          "ebidensya",
+          "pamatuod",
+          "karaang dagat",
+          "hayop-dagat"
+        ],
+        "fact": {
+          "en": "Inside the Chocolate Hills are fossils of coral, shells, and tiny sea animals, proving it was once a sea!",
+          "tl": "May mga fossil ng coral, kabibe, at maliliit na hayop-dagat sa loob ng Chocolate Hills, patunay na dating dagat ito!",
+          "bis": "Sa sulod sa Chocolate Hills, naa'y mga fosil sa coral, kabibe, ug gagmay nga mananap-dagat. Pamatuod kini nga dagat kaniadto ang maong dapit!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Marine Fossils",
+          "tl": "Mga Fossil sa Dagat",
+          "bis": "Fossil sa Dagat"
+        },
+        "cats": [
+          "fossils",
+          "marine-animals"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "fossil"
+          ],
+          "en": [
+            "fossils"
+          ],
+          "bis": [
+            "fosil"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Splitting the sentence and naming maong dapit clarifies the reference. National Museum and UNESCO support the marine limestone/fossil setting. However kabibe is used for both shellfish and shells in the machine-translated corpus, while this review found no decisive direct Cebuano dictionary entry for the exact fossil-shell sense. Hold for lexical authority, not a claim that the borrowing is wrong or that Bohol’s marine fossils are unproven.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c730eb3b43596557fd955057ebef8cf3a"
+    }
+  ],
+  "prior_mandatory_missing_judgment_holds": [
+    "ffct-15686",
+    "ffct-24823",
+    "ffct-24184"
+  ],
+  "native_verified": false,
+  "science_verified": false,
+  "released": false,
+  "source_precision_holds_require_cross_language_review": [
+    "ffct-29018",
+    "ffct-29025"
+  ],
+  "lexical_holds": [
+    "ffct-28960",
+    "ffct-29013",
+    "ffct-29243",
+    "ffct-29669"
+  ]
+}

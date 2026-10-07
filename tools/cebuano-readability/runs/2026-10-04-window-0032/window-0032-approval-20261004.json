@@ -1,0 +1,2485 @@
+{
+  "schema": "hiraia.cebuano-readability-reviewed-edits/v1",
+  "status": "reviewed_for_local_application",
+  "created_at": "2026-10-04T05:46:24.737800+00:00",
+  "reviewer": "Codex root, independent of Claude proposal/backtranslation/fidelity/readability calls; no separate Codex reviewer used for this window",
+  "scope": "Window 32: 16 individually reviewed exact Cebuano edits and 7 priority holds. Windows 1–31 were previously adjudicated. No score-only approval, native verification, exhaustive science certification or release permission. Invalid-evidence holds ffct-08459, ffct-09018, ffct-10152 and ffct-18958 remain mandatory. Missing-fidelity cards ffct-15686, ffct-24823 and ffct-24184 remain held without a synthesized judgment or repeated call.",
+  "window_id": "window-0032",
+  "window_accounting": {
+    "source_cards": 768,
+    "completed_assessments": 766,
+    "missing_fidelity_holds": 2,
+    "approved_exact_edits": 16,
+    "unchanged_keeps": 59,
+    "held": 693,
+    "held_from_priority_set": 7,
+    "preexisting_nonpriority_holds": 686
+  },
+  "input_pins": [
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0032/report.json",
+      "sha256": "721fa381cd3ae418b9b92080e5b58621224f4e1fd671f9888e13d1e6ad5677b6",
+      "bytes": 41603274
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0032/clean-agreement.jsonl",
+      "sha256": "7497f03775a4295a4402b9fcc6b16a541899be96dc089dae87adfae59b9d2efa",
+      "bytes": 672307
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0032/replay/fidelity/judgments.jsonl",
+      "sha256": "61037fbb576432e2464b33794b832290a0e8b7b1cb056fc80d7da7b5829f668c",
+      "bytes": 1629503
+    },
+    {
+      "path": "build/cebuano-readability/campaign-20261002-v1/windows/window-0032/fidelity-inputs/private-map.json",
+      "sha256": "6b4b6b3af5ac6037658c3d1dc73018d43d0539eb5180c10b168becb3e8d0c18c",
+      "bytes": 792074
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0032/replay/fidelity/missing-judgments.jsonl",
+      "sha256": "9b3e412d3e4b416f44d87f41a4cfe3c53f9b60feabb207a227eb98c97c7e66f8",
+      "bytes": 4354
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0032/root-decisions.json",
+      "sha256": "aa131e63d701add77ee6dbff9ecc5c21969e98472014aa91e32b56c52552a82f",
+      "bytes": 13583
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0032/corpus-lexical-evidence.json",
+      "sha256": "76a513f5c44bdbac7f40d33b322974b79e21122be10180818812501e76e2fac6",
+      "bytes": 32285
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0032/dictionary-entries.json",
+      "sha256": "b60e32e90e261c0cb874accc5ad81363d07228582c0b25edf8a98504c54dc242",
+      "bytes": 21317
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0032/lexical-source-review.json",
+      "sha256": "a6684e78437889b2c6fbc92baca2571c5ea45581402fbb02fb96d7e8acbe2343",
+      "bytes": 17899
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0032/lexical-supplement-001.json",
+      "sha256": "b2c9e762a8bd984c61bda3f4853bcdeaa367a622a513fb704c9a3da2d6daeab4",
+      "bytes": 1220
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0032/source-evidence-001.json",
+      "sha256": "e1aab68104b31586776bb1be2173c65141e40c3f4007202a8632e7e33bc28268",
+      "bytes": 16953
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0032/root-notes-final-001.json",
+      "sha256": "3e78c6e9abd51c639b587b3f4e935b25046bcf2b9509789ec04adf07b8cff17a",
+      "bytes": 11979
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-gutenberg-40074.txt",
+      "sha256": "f80b888b24dd4ca7f5cb16276b4a53f9d22129a496b9ffb7f7efe17d3b9a1504",
+      "bytes": 5699379
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-retrieval.json",
+      "sha256": "bd713c5adf21541a0e7fd9c49f75fb6b9d4157fb88d41151a245165b8955b7da",
+      "bytes": 502
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0032/collect-evidence-001.py",
+      "sha256": "4db3a43f57e4a9b9e62bf637c5eac49a70a273e4c14db9f2f6d20d34942db3a0",
+      "bytes": 4722
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/show-dossiers-d17ce591.py",
+      "sha256": "b5857656b3e2e6343220b3c66bf17bb560556572462874cb7534d9e6a51efba8",
+      "bytes": 2081
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0032/write-root-records.py",
+      "sha256": "2f37dd3fe8b4ada027c23d481dd07b8c4a28d305ffbc7be3ad01be5e4b4b2c08",
+      "bytes": 3089
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0032/create-root-approval.py",
+      "sha256": "a20cc1750c4c8445feb36f58ae8ec3233c164808fd0f5ba4d750bfc76428c86b",
+      "bytes": 8399
+    }
+  ],
+  "current_pool_before_application": {
+    "path": "rag/pipeline/cardsPool.app.json",
+    "sha256": "ede93e2359ad63404139ee33f33ca24e2d66aa41baf43e9383092f89f4ceee6e",
+    "bytes": 50648060
+  },
+  "accepted": [
+    {
+      "card_id": "ffct-24222",
+      "source_card_sha256": "6f0f65e1e7f483a9d255111dde2c03d3d7c3a1f87362b8ae4ee3a010bdd76917",
+      "candidate_card_sha256": "877315663bafbc42a0224ca2509564489f9437fa6511ef71c81a3c28ad53bc3f",
+      "before_card": {
+        "id": "ffct-24222",
+        "factId": "static-grounding-vs-insulating-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "grounding versus insulating, opposite goals",
+        "terms": [
+          "grounding",
+          "insulating",
+          "insulator",
+          "konduktor",
+          "comparison",
+          "pagkumpara",
+          "kabaliktaran",
+          "kalainan",
+          "pinapadaloy",
+          "hinaharang",
+          "naiipon",
+          "static",
+          "goma",
+          "metal"
+        ],
+        "fact": {
+          "en": "Grounding opens a path so charge flows to the ground. Insulating blocks the flow so charge stays in one place. They are opposites: one lets charge escape, the other keeps it trapped.",
+          "tl": "Ang grounding ay nagbubukas ng daan para makadaloy ang charge sa lupa. Ang insulating naman ay humaharang para manatili ang charge sa isang lugar. Magkasalungat sila: ang isa ay nagpapalabas, ang isa ay nagpapanatili!",
+          "bis": "Ang grounding mo-abli og dalan aron moagas ang charge sa yuta. Ang insulating mobabag aron magpabilin ang charge sa usa ka lugar. Magkasukwahi sila: ang usa magpagawas, ang usa magpabilin!"
+        },
+        "slug": "ffct-24222",
+        "source": "original",
+        "title": {
+          "tl": "Grounding Path Insulator Block",
+          "en": "Grounding vs Insulating",
+          "bis": "Grounding ug Insulator"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-24222",
+        "factId": "static-grounding-vs-insulating-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "grounding versus insulating, opposite goals",
+        "terms": [
+          "grounding",
+          "insulating",
+          "insulator",
+          "konduktor",
+          "comparison",
+          "pagkumpara",
+          "kabaliktaran",
+          "kalainan",
+          "pinapadaloy",
+          "hinaharang",
+          "naiipon",
+          "static",
+          "goma",
+          "metal"
+        ],
+        "fact": {
+          "en": "Grounding opens a path so charge flows to the ground. Insulating blocks the flow so charge stays in one place. They are opposites: one lets charge escape, the other keeps it trapped.",
+          "tl": "Ang grounding ay nagbubukas ng daan para makadaloy ang charge sa lupa. Ang insulating naman ay humaharang para manatili ang charge sa isang lugar. Magkasalungat sila: ang isa ay nagpapalabas, ang isa ay nagpapanatili!",
+          "bis": "Ang grounding mo-abli og dalan aron moagas ang charge sa yuta. Ang insulating mobabag sa pag-agas, mao nga magpabilin ang charge sa usa ka lugar. Magkasukwahi sila: ang usa motugot nga makagawas ang charge, ug ang usa pa mopugong niini sa usa ka lugar!"
+        },
+        "slug": "ffct-24222",
+        "source": "original",
+        "title": {
+          "tl": "Grounding Path Insulator Block",
+          "en": "Grounding vs Insulating",
+          "bis": "Grounding ug Insulator"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate names charge as the thing that remains or escapes and separates insulation from its result. Full English and clear backtranslation retain the static-charge path-versus-barrier contrast; both blind readers prefer the body and tie the unchanged title. Wolff pugung and gawas support restraint and exit. This is a static-charge comparison, not a claim that an earth wire alone guarantees appliance safety; OpenStax supports charge transfer with Earth and restricted movement in insulators.",
+      "formal_item_id": "c4f4615cde8f1add299c0b3d3ff72fb22",
+      "fidelity_item_id": "m38232bd0046fe38b969d5464",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-24328",
+      "source_card_sha256": "6ec2a085350cbddf1f78d1cb15761adab5b3c6cd99eddff3dfaee7d39e3bbb36",
+      "candidate_card_sha256": "9c2d224b84e0a1f50d1624a20f884227d11348b2e1b40ac0b63323a6a4def7a0",
+      "before_card": {
+        "id": "ffct-24328",
+        "factId": "kinetic-energy-formula-half-mv2-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "The half-m-v-squared formula for kinetic energy",
+        "terms": [
+          "kinetic energy formula",
+          "1/2 mv2",
+          "ke = 1/2 m v squared",
+          "paano kuwentahin",
+          "pormula",
+          "half mv squared",
+          "kusog formula",
+          "ano ang formula",
+          "mass times velocity squared",
+          "joules",
+          "compute kinetic energy",
+          "unsa pormula",
+          "bilis",
+          "mabilis"
+        ],
+        "fact": {
+          "en": "How do scientists calculate kinetic energy?\n\nThe formula is KE = 1/2 x m x v x v! Half the mass times speed squared. Bigger mass or speed means more energy, measured in joules!",
+          "tl": "Paano kinakalkula ang kinetic energy?\n\nAng formula ay KE = 1/2 x m x v x v! Kalahati ng mass times speed squared. Mas malaki ang mass o speed, mas malaki ang energy, nasusukat sa joules!",
+          "bis": "Unsaon pagkalkula sa kinetic energy?\n\nAng pormula mao ang KE = 1/2 x m x v x v! Katunga sa mass times speed squared. Mas dako ang mass o speed, mas dako ang energy, gisukod sa joules!"
+        },
+        "slug": "kinetic-potential-energy",
+        "title": {
+          "en": "KE Formula",
+          "tl": "Formula ng KE",
+          "bis": "Pormula sa KE"
+        },
+        "cats": [
+          "energy",
+          "motion"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kinetic energy"
+          ],
+          "en": [
+            "kinetic energy"
+          ],
+          "bis": [
+            "kinetic energy"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-24328",
+        "factId": "kinetic-energy-formula-half-mv2-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "The half-m-v-squared formula for kinetic energy",
+        "terms": [
+          "kinetic energy formula",
+          "1/2 mv2",
+          "ke = 1/2 m v squared",
+          "paano kuwentahin",
+          "pormula",
+          "half mv squared",
+          "kusog formula",
+          "ano ang formula",
+          "mass times velocity squared",
+          "joules",
+          "compute kinetic energy",
+          "unsa pormula",
+          "bilis",
+          "mabilis"
+        ],
+        "fact": {
+          "en": "How do scientists calculate kinetic energy?\n\nThe formula is KE = 1/2 x m x v x v! Half the mass times speed squared. Bigger mass or speed means more energy, measured in joules!",
+          "tl": "Paano kinakalkula ang kinetic energy?\n\nAng formula ay KE = 1/2 x m x v x v! Kalahati ng mass times speed squared. Mas malaki ang mass o speed, mas malaki ang energy, nasusukat sa joules!",
+          "bis": "Unsaon pagkalkula sa mga siyentista ang kinetic energy?\n\nAng pormula mao ang KE = 1/2 x m x v x v! Katunga sa mass times speed squared. Kung mas dako ang mass o ang speed, mas dako ang energy. Gisukod ang energy sa joules!"
+        },
+        "slug": "kinetic-potential-energy",
+        "title": {
+          "en": "KE Formula",
+          "tl": "Formula ng KE",
+          "bis": "Pormula sa KE"
+        },
+        "cats": [
+          "energy",
+          "motion"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kinetic energy"
+          ],
+          "en": [
+            "kinetic energy"
+          ],
+          "bis": [
+            "kinetic energy"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate restores scientists as the formula users, preserves KE = 1/2 x m x v x v exactly, and makes joules a separate sentence. Mass, speed-squared and the conditional comparison remain aligned with the English and backtranslation. Both blind readers prefer the body; the title and kinetic energy emphasis stay exact. No new quantitative or causal claim is introduced.",
+      "formal_item_id": "c28b0db638cd535aabaa887f7df6bf61c",
+      "fidelity_item_id": "m4eb6b8b0d47ca619d618bb6b",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-24335",
+      "source_card_sha256": "dcc693ecbd2419704cce7394cfb1e42fcaea833f02128db341bda978a6cece94",
+      "candidate_card_sha256": "7a4986f73618c94fa68608b43dfa61eaf998dfbc28d5cb077e4ec747f7a12f88",
+      "before_card": {
+        "id": "ffct-24335",
+        "factId": "kinetic-energy-wind-energy-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Moving air has kinetic energy too",
+        "terms": [
+          "hangin",
+          "wind",
+          "kinetic ng hangin",
+          "windmill",
+          "wind turbine",
+          "bangui windmills",
+          "ilocos",
+          "may energy ba ang hangin",
+          "naa bay enerhiya ang hangin",
+          "umiihip",
+          "huyop",
+          "moving air",
+          "bagyo",
+          "typhoon",
+          "lumilipad na dahon"
+        ],
+        "fact": {
+          "en": "Moving air has kinetic energy too! Strong wind spins giant wind turbines like those in Bangui, Ilocos to make electricity. That is also why typhoons cause damage!",
+          "tl": "May kinetic energy din ang gumagalaw na hangin! Kayang paikutin ng malakas na hangin ang malalaking wind turbine tulad ng sa Bangui, Ilocos para gumawa ng kuryente. Kaya rin nakakasira ang bagyo!",
+          "bis": "Naay kinetic energy usab ang naglihok nga hangin! Makapatuyok ang kusog nga hangin sa dagkong wind turbine sama sa Bangui, Ilocos aron mohimo ug kuryente. Mao usab nga makadaot ang bagyo!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Wind Kinetic Energy",
+          "tl": "Enerhiya ng Hangin",
+          "bis": "Enerhiya sa Hangin"
+        },
+        "cats": [
+          "energy",
+          "weather"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kinetic energy"
+          ],
+          "en": [
+            "kinetic energy"
+          ],
+          "bis": [
+            "kinetic energy"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-24335",
+        "factId": "kinetic-energy-wind-energy-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Moving air has kinetic energy too",
+        "terms": [
+          "hangin",
+          "wind",
+          "kinetic ng hangin",
+          "windmill",
+          "wind turbine",
+          "bangui windmills",
+          "ilocos",
+          "may energy ba ang hangin",
+          "naa bay enerhiya ang hangin",
+          "umiihip",
+          "huyop",
+          "moving air",
+          "bagyo",
+          "typhoon",
+          "lumilipad na dahon"
+        ],
+        "fact": {
+          "en": "Moving air has kinetic energy too! Strong wind spins giant wind turbines like those in Bangui, Ilocos to make electricity. That is also why typhoons cause damage!",
+          "tl": "May kinetic energy din ang gumagalaw na hangin! Kayang paikutin ng malakas na hangin ang malalaking wind turbine tulad ng sa Bangui, Ilocos para gumawa ng kuryente. Kaya rin nakakasira ang bagyo!",
+          "bis": "Naay kinetic energy usab ang naglihok nga hangin! Ang kusog nga hangin makapatuyok sa dagkong wind turbine, sama sa mga naa sa Bangui, Ilocos, aron mohimo ug kuryente. Mao usab kini ang hinungdan nga makadaot ang bagyo!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Wind Kinetic Energy",
+          "tl": "Enerhiya ng Hangin",
+          "bis": "Enerhiya sa Hangin"
+        },
+        "cats": [
+          "energy",
+          "weather"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kinetic energy"
+          ],
+          "en": [
+            "kinetic energy"
+          ],
+          "bis": [
+            "kinetic energy"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate names strong wind as the actor, makes the Bangui turbines an explicit example and gives the storm-damage explanation a clear referent. The full English, backtranslation and both blind observations preserve kinetic energy, electricity generation and possible damage. ACEN's own NorthWind page confirms the Bangui, Ilocos Norte location. The unchanged title and kinetic energy emphasis remain exact.",
+      "formal_item_id": "c9573df855176bfc455b50dfcd2baac27",
+      "fidelity_item_id": "m711c4b5e53dc9ef09518ceac",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-24354",
+      "source_card_sha256": "9071eea0dd48751cde5b9da639c38ccf6c4729d50f56bbc8d32d31bdaae1982b",
+      "candidate_card_sha256": "52d12b2b92e9adf6d67bbc6063c7422bc9e597d831dfb564c038c4acae22d3c0",
+      "before_card": {
+        "id": "ffct-24354",
+        "factId": "kinetic-energy-regenerative-brake-g10",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Some cars recycle kinetic energy when braking",
+        "terms": [
+          "electric car",
+          "kotseng de-koryente",
+          "regenerative braking",
+          "preno",
+          "brake",
+          "nare-recycle",
+          "naipon ang enerhiya",
+          "battery",
+          "baterya",
+          "real world",
+          "gamit",
+          "saan ginagamit",
+          "asa gamit",
+          "hybrid",
+          "naglihok balik",
+          "ina-ipon ang kinetic"
+        ],
+        "fact": {
+          "en": "In some modern electric cars, regenerative braking captures kinetic energy when braking! Instead of losing it as heat, it turns into electrical energy and stores in the battery to be used again.",
+          "tl": "Sa ilang modernong electric car, ang regenerative braking ay kumukuha ng kinetic energy kapag nagpre-preno! Imbes na mawala bilang init, nagiging electrical energy ito at iniimbak sa baterya para magamit ulit.",
+          "bis": "Sa pipila ka modernong electric car, ang regenerative braking mokuha sa kinetic energy kung magpreno! Imbis nga mawala isip init, mahimong electrical energy kini ug itipon sa baterya aron magamit pag-usab."
+        },
+        "slug": "ffct-24868",
+        "title": {
+          "en": "Regenerative Braking",
+          "tl": "Enerhiya sa Pagpreno",
+          "bis": "Enerhiya sa Pagpreno"
+        },
+        "cats": [
+          "energy",
+          "electricity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "regenerative braking"
+          ],
+          "en": [
+            "regenerative braking"
+          ],
+          "bis": [
+            "regenerative braking"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-24354",
+        "factId": "kinetic-energy-regenerative-brake-g10",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Some cars recycle kinetic energy when braking",
+        "terms": [
+          "electric car",
+          "kotseng de-koryente",
+          "regenerative braking",
+          "preno",
+          "brake",
+          "nare-recycle",
+          "naipon ang enerhiya",
+          "battery",
+          "baterya",
+          "real world",
+          "gamit",
+          "saan ginagamit",
+          "asa gamit",
+          "hybrid",
+          "naglihok balik",
+          "ina-ipon ang kinetic"
+        ],
+        "fact": {
+          "en": "In some modern electric cars, regenerative braking captures kinetic energy when braking! Instead of losing it as heat, it turns into electrical energy and stores in the battery to be used again.",
+          "tl": "Sa ilang modernong electric car, ang regenerative braking ay kumukuha ng kinetic energy kapag nagpre-preno! Imbes na mawala bilang init, nagiging electrical energy ito at iniimbak sa baterya para magamit ulit.",
+          "bis": "Sa pipila ka modernong electric car, ang regenerative braking mokuha sa kinetic energy kung magpreno ang sakyanan! Imbis nga mawala kini isip init, mahimo kining electrical energy. Dayon itipon kini sa baterya aron magamit pag-usab."
+        },
+        "slug": "ffct-24868",
+        "title": {
+          "en": "Regenerative Braking",
+          "tl": "Enerhiya sa Pagpreno",
+          "bis": "Enerhiya sa Pagpreno"
+        },
+        "cats": [
+          "energy",
+          "electricity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "regenerative braking"
+          ],
+          "en": [
+            "regenerative braking"
+          ],
+          "bis": [
+            "regenerative braking"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate states that the car is braking and splits conversion from collection in the battery. It retains some modern electric cars, regenerative braking, the heat-loss contrast and reuse; full backtranslation and both blind judgments support that sequence. Wolff tipun supports putting together and independent bodies attest collection. No claim that all braking energy is recovered is added; the unchanged emphasis remains exact.",
+      "formal_item_id": "ce96b3fcfd6ca2fb5b4e6a6afd739da7c",
+      "fidelity_item_id": "mf26bb251feef227394ef9895",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-24425",
+      "source_card_sha256": "ea367ca33ccf2ea2748a7aa70e37887dcd6c7666b4d7a5686c35d73f2fea6713",
+      "candidate_card_sha256": "a08962259b752c7591b0d75fafebb1f128ebb38b14f62cfea22a979c1655d434",
+      "before_card": {
+        "id": "ffct-24425",
+        "factId": "refraction-light-rainbow-prism-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Refraction splits white light into rainbow colors",
+        "terms": [
+          "bahaghari",
+          "rainbow",
+          "prism",
+          "kulay",
+          "colors",
+          "nahahati ang liwanag",
+          "puting liwanag",
+          "white light",
+          "bakit may kulay",
+          "spectrum",
+          "refraction",
+          "kahayag",
+          "paghahati ng kulay",
+          "pagkakahiwalay"
+        ],
+        "fact": {
+          "en": "How does white light make a rainbow?\n\nWhen white light passes through a prism or raindrop, it splits into colors! Each color bends by a slightly different amount, making them separate.",
+          "tl": "Paano gumagawa ng bahaghari ang puting liwanag?\n\nKapag dumaan ang puting liwanag sa prism o patak ng ulan, nahahati ito sa mga kulay! Bawat kulay ay yumuyuko nang bahagyang magkaiba, kaya nahihiwalay sila.",
+          "bis": "Unsaon paghimo sa balangaw sa puti nga kahayag?\n\nKung mutadlas ang puti nga kahayag sa prism o tulo sa ulan, mabahin kini sa mga kolor! Ang matag kolor mubawog og gamay nga lahi, maong magbulag sila."
+        },
+        "slug": "ffct-26864",
+        "title": {
+          "en": "Rainbow Colors",
+          "tl": "Kulay ng Bahaghari",
+          "bis": "Kolor sa Balangaw"
+        },
+        "cats": [
+          "light"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "puting liwanag"
+          ],
+          "en": [
+            "white light"
+          ],
+          "bis": [
+            "puti nga kahayag"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-24425",
+        "factId": "refraction-light-rainbow-prism-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Refraction splits white light into rainbow colors",
+        "terms": [
+          "bahaghari",
+          "rainbow",
+          "prism",
+          "kulay",
+          "colors",
+          "nahahati ang liwanag",
+          "puting liwanag",
+          "white light",
+          "bakit may kulay",
+          "spectrum",
+          "refraction",
+          "kahayag",
+          "paghahati ng kulay",
+          "pagkakahiwalay"
+        ],
+        "fact": {
+          "en": "How does white light make a rainbow?\n\nWhen white light passes through a prism or raindrop, it splits into colors! Each color bends by a slightly different amount, making them separate.",
+          "tl": "Paano gumagawa ng bahaghari ang puting liwanag?\n\nKapag dumaan ang puting liwanag sa prism o patak ng ulan, nahahati ito sa mga kulay! Bawat kulay ay yumuyuko nang bahagyang magkaiba, kaya nahihiwalay sila.",
+          "bis": "Unsaon sa puti nga kahayag paghimo og balangaw?\n\nKung mutadlas ang puti nga kahayag sa prism o tulo sa ulan, mabahin kini sa mga kolor! Ang matag kolor mubawog og gamay nga lahi, maong magbulag sila."
+        },
+        "slug": "ffct-26864",
+        "title": {
+          "en": "Rainbow Colors",
+          "tl": "Kulay ng Bahaghari",
+          "bis": "Kolor sa Balangaw"
+        },
+        "cats": [
+          "light"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "puting liwanag"
+          ],
+          "en": [
+            "white light"
+          ],
+          "bis": [
+            "puti nga kahayag"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the question changes to give white light an explicit actor role. The answer about prism or raindrop dispersion is byte-identical, as are title and emphasis. Both blind readers prefer the question/body and the backtranslation retains the English question. This is a local referent improvement, not a declaration that the previous question form was universally ungrammatical.",
+      "formal_item_id": "c34f17475a3bf1cab6d5655ce054ac67b",
+      "fidelity_item_id": "m827f361d6152860006cc4fe5",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-24457",
+      "source_card_sha256": "86710aeb33eaefe57987df61fe0950fcba51f1ed68f84cda287fb5684ea14197",
+      "candidate_card_sha256": "9273b6b77f23cd9aadc501986b62e5eef12d864e0ad004c4129d24ba2d134197",
+      "before_card": {
+        "id": "ffct-24457",
+        "factId": "lever-three-bottle-opener-ph-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "A bottle opener at home is a lever",
+        "terms": [
+          "bottle opener",
+          "pambukas ng bote",
+          "pang-abli",
+          "lever",
+          "palanka",
+          "example",
+          "halimbawa",
+          "bahay",
+          "kusina",
+          "tansan",
+          "fulcrum",
+          "pilipinas",
+          "everyday"
+        ],
+        "fact": {
+          "en": "How does a bottle opener work as a lever?\n\nYou hook it on the cap and lift the handle to pop it off easily! It’s a lever, so you don't have to force it with just your hand.",
+          "tl": "Paano gumagana ang pambukas ng bote bilang isang lever?\n\nIdikit mo ito sa tansan at itaas ang hawakan para madaling matanggal! Ito ay lever, kaya hindi mo na kailangang pilitin gamit ang kamay.",
+          "bis": "Unsaon paglihok sa pang-abli sa botelya isip lever?\n\nIsab-it kini sa takup ug ialsa ang kuptanan aron dali matangtang! Usa kini ka lever, mao nga dili na nimo kinahanglan pugson kini sa kamot."
+        },
+        "slug": "bottle-cap-opener-lever",
+        "title": {
+          "en": "Bottle Opener Lever",
+          "tl": "Pambukas na Lever",
+          "bis": "Pambukas nga Lever"
+        },
+        "cats": [
+          "simple-machines"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "lever"
+          ],
+          "en": [
+            "lever"
+          ],
+          "bis": [
+            "lever"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-24457",
+        "factId": "lever-three-bottle-opener-ph-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "A bottle opener at home is a lever",
+        "terms": [
+          "bottle opener",
+          "pambukas ng bote",
+          "pang-abli",
+          "lever",
+          "palanka",
+          "example",
+          "halimbawa",
+          "bahay",
+          "kusina",
+          "tansan",
+          "fulcrum",
+          "pilipinas",
+          "everyday"
+        ],
+        "fact": {
+          "en": "How does a bottle opener work as a lever?\n\nYou hook it on the cap and lift the handle to pop it off easily! It’s a lever, so you don't have to force it with just your hand.",
+          "tl": "Paano gumagana ang pambukas ng bote bilang isang lever?\n\nIdikit mo ito sa tansan at itaas ang hawakan para madaling matanggal! Ito ay lever, kaya hindi mo na kailangang pilitin gamit ang kamay.",
+          "bis": "Unsaon paglihok sa pang-abli sa botelya isip lever?\n\nIsab-it kini sa takup, ug ialsa ang kuptanan aron dali matangtang ang takup! Lever kini, mao nga dili na nimo kinahanglan pugson ang takup gamit lang ang imong kamot."
+        },
+        "slug": "bottle-cap-opener-lever",
+        "title": {
+          "en": "Bottle Opener Lever",
+          "tl": "Pambukas na Lever",
+          "bis": "Pambukas nga Lever"
+        },
+        "cats": [
+          "simple-machines"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "lever"
+          ],
+          "en": [
+            "lever"
+          ],
+          "bis": [
+            "lever"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate explicitly names the cap in both removal and forcing clauses and restores using just your hand. The handle lift and lever explanation are preserved in the English and backtranslation. Wolff pugus includes physically forcing an object, fitting this context. Both blind readers prefer the body; the unchanged title and lever emphasis stay exact.",
+      "formal_item_id": "cdb8cfce542b90a73c35780fbdb0990bc",
+      "fidelity_item_id": "m1d648e7bc99c450b2afbff90",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-24512",
+      "source_card_sha256": "7831628b64b2cc2acb7b56f6284ad1ba4451fd29ef627dc86647df4bec456ff3",
+      "candidate_card_sha256": "f37c57fc7c3fedd0e9c4b6bfa4def58d41312be3962935c19efdc3936c2f1fe8",
+      "before_card": {
+        "id": "ffct-24512",
+        "factId": "fishing-net-friction-grip-hands-g4",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "friction helps hands grip the wet net",
+        "terms": [
+          "friction",
+          "kuskos",
+          "lambat",
+          "kamay",
+          "hindi madulas",
+          "grip",
+          "hawak",
+          "basa",
+          "pukot",
+          "kunot",
+          "dili modalin-as",
+          "kapot",
+          "bakit hindi nadudulas",
+          "guards",
+          "buhol",
+          "knots"
+        ],
+        "fact": {
+          "en": "How do fishermen hold a wet, slippery net?\n\nThe knots and threads create friction, letting them grip it tightly!",
+          "tl": "Paano nahahawakan ng mangingisda ang basang at madulas na lambat?\n\nGumagawa ng friction ang mga buhol at hibla, kaya nahahawakan ito nang mahigpit!",
+          "bis": "Giunsa pagkupot sa mananagat ang basa ug danlog nga pukot?\n\nAng mga buhol ug hilo naghimo ug friction, maong magunitan kini pag-ayo!"
+        },
+        "slug": "fishing-net-hauling-pull",
+        "title": {
+          "en": "Gripping the Net",
+          "tl": "Paghawak sa Lambat",
+          "bis": "Pagkupot sa Pukot"
+        },
+        "cats": [
+          "friction"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "friction"
+          ],
+          "en": [
+            "friction"
+          ],
+          "bis": [
+            "friction"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-24512",
+        "factId": "fishing-net-friction-grip-hands-g4",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "friction helps hands grip the wet net",
+        "terms": [
+          "friction",
+          "kuskos",
+          "lambat",
+          "kamay",
+          "hindi madulas",
+          "grip",
+          "hawak",
+          "basa",
+          "pukot",
+          "kunot",
+          "dili modalin-as",
+          "kapot",
+          "bakit hindi nadudulas",
+          "guards",
+          "buhol",
+          "knots"
+        ],
+        "fact": {
+          "en": "How do fishermen hold a wet, slippery net?\n\nThe knots and threads create friction, letting them grip it tightly!",
+          "tl": "Paano nahahawakan ng mangingisda ang basang at madulas na lambat?\n\nGumagawa ng friction ang mga buhol at hibla, kaya nahahawakan ito nang mahigpit!",
+          "bis": "Giunsa pagkupot sa mga mananagat ang basa ug danlog nga pukot?\n\nAng mga buhol ug hilo naghimo ug friction, maong magunitan nila kini pag-ayo!"
+        },
+        "slug": "fishing-net-hauling-pull",
+        "title": {
+          "en": "Gripping the Net",
+          "tl": "Paghawak sa Lambat",
+          "bis": "Pagkupot sa Pukot"
+        },
+        "cats": [
+          "friction"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "friction"
+          ],
+          "en": [
+            "friction"
+          ],
+          "bis": [
+            "friction"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The edit adds mga to the English plural fishermen and nila to identify who grips the net. Knots, threads, friction and firm grip remain unchanged in substance, with no guarantee against slipping added. Both blind readers independently identify the explicit actor as the improvement; backtranslation, unchanged title and friction emphasis agree.",
+      "formal_item_id": "c2661fa9fb652ac9843df7d18f4776307",
+      "fidelity_item_id": "m1a4a6abacfca8af11f1f4825",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-24540",
+      "source_card_sha256": "3d52e00518789262cda62b289acc637811b5df5107b61c192a464ec6fda96f37",
+      "candidate_card_sha256": "6ad3619740798246a7c00d605c10bb433fb749e7dca54fa6435665f5be2d8b0d",
+      "before_card": {
+        "id": "ffct-24540",
+        "factId": "val-speed-average-vs-instant-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Average speed versus instant speed",
+        "terms": [
+          "average speed",
+          "katamtamang bilis",
+          "instant speed",
+          "kasalukuyang bilis",
+          "speedometer",
+          "biyahe",
+          "trip",
+          "pagkakaiba",
+          "ano ang average",
+          "bilis",
+          "katulin",
+          "kabuoan",
+          "sandali"
+        ],
+        "fact": {
+          "en": "What's the difference between average speed and instant speed?\n\nAverage speed is total distance divided by total time. Instant speed is your speed right now—like what a speedometer shows. You might average 60 km/h but hit 80 km/h at one moment!",
+          "tl": "Ano ang pagkakaiba ng average speed at instant speed?\n\nAng average speed ay kabuuang layo hinati sa kabuuang oras. Ang instant speed ay bilis mo ngayon—gaya ng speedometer. Maaaring 60 km/h ang average mo pero 80 km/h sa isang sandali!",
+          "bis": "Unsay kalahian sa average speed ug instant speed?\n\nAng average speed mao ang kinatibuk-ang gilay-on gibahin sa kinatibuk-ang oras. Ang instant speed mao ang imong katulin karon—sama sa speedometer. Mahimong 60 km/h ang average pero 80 km/h sa usa ka gutlo!"
+        },
+        "slug": "ffct-24540",
+        "source": "original",
+        "title": {
+          "tl": "Average vs Instant Bilis",
+          "en": "Average vs Instant Speed",
+          "bis": "Average ug Instant"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-24540",
+        "factId": "val-speed-average-vs-instant-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Average speed versus instant speed",
+        "terms": [
+          "average speed",
+          "katamtamang bilis",
+          "instant speed",
+          "kasalukuyang bilis",
+          "speedometer",
+          "biyahe",
+          "trip",
+          "pagkakaiba",
+          "ano ang average",
+          "bilis",
+          "katulin",
+          "kabuoan",
+          "sandali"
+        ],
+        "fact": {
+          "en": "What's the difference between average speed and instant speed?\n\nAverage speed is total distance divided by total time. Instant speed is your speed right now—like what a speedometer shows. You might average 60 km/h but hit 80 km/h at one moment!",
+          "tl": "Ano ang pagkakaiba ng average speed at instant speed?\n\nAng average speed ay kabuuang layo hinati sa kabuuang oras. Ang instant speed ay bilis mo ngayon—gaya ng speedometer. Maaaring 60 km/h ang average mo pero 80 km/h sa isang sandali!",
+          "bis": "Unsay kalahian sa average speed ug instant speed?\n\nAng average speed mao ang kinatibuk-ang gilay-on gibahin sa kinatibuk-ang oras. Ang instant speed mao ang imong katulin karon mismo—sama sa gipakita sa speedometer. Mahimong 60 km/h ang imong average, pero 80 km/h ka sa usa ka gutlo!"
+        },
+        "slug": "ffct-24540",
+        "source": "original",
+        "title": {
+          "tl": "Average vs Instant Bilis",
+          "en": "Average vs Instant Speed",
+          "bis": "Average ug Instant Speed"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate says the speedometer shows the instantaneous speed, supplies the reader as the subject of both examples and completes the title with Speed. It preserves total distance divided by total time and the exact 60 km/h versus 80 km/h example. Both blind readers prefer both changed fields and fidelity is equivalent. No normalization or unit substitution is performed.",
+      "formal_item_id": "c5d68195533b09702edf0cecf7a5ac959",
+      "fidelity_item_id": "m5607729025d9255a8bbb0515",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-24563",
+      "source_card_sha256": "b385d4828542460cb629dd3cf174d2ecadabb69fd9cd94331afbb733728b8472",
+      "candidate_card_sha256": "8b0d514ee35d383df652b2a16fdd75f732a8d19efab0bd78fdbb59058a33968c",
+      "before_card": {
+        "id": "ffct-24563",
+        "factId": "led-bulb-in-gadgets-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "LEDs are used in phones TVs and remotes",
+        "terms": [
+          "gadget",
+          "cellphone",
+          "tv",
+          "remote",
+          "led",
+          "screen",
+          "saan ginagamit",
+          "real world",
+          "paggamit",
+          "telepono",
+          "gamit",
+          "asa gamiton",
+          "uses",
+          "flashlight",
+          "traffic light"
+        ],
+        "fact": {
+          "en": "LEDs aren't just in bulbs! They are in phone and TV screens, flashlights, remote controls, and traffic lights because they are small, durable, and energy-saving.",
+          "tl": "Hindi lang sa bombilya ang LED! Nasa screen ng phone at TV, flashlight, remote control, at traffic lights dahil maliit, matibay, at matipid ito sa kuryente.",
+          "bis": "Dili lang sa bombilya ang LED! Naa sa screen sa phone ug TV, flashlight, remote control, ug traffic lights kay gamay, lig-on, ug matipid sa kuryente."
+        },
+        "slug": "ffct-25143",
+        "title": {
+          "en": "LED Uses",
+          "tl": "Gamit ng LED",
+          "bis": "Gamit sa LED"
+        },
+        "cats": [
+          "light",
+          "electricity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "LED"
+          ],
+          "en": [
+            "LEDs"
+          ],
+          "bis": [
+            "LED"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-24563",
+        "factId": "led-bulb-in-gadgets-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "LEDs are used in phones TVs and remotes",
+        "terms": [
+          "gadget",
+          "cellphone",
+          "tv",
+          "remote",
+          "led",
+          "screen",
+          "saan ginagamit",
+          "real world",
+          "paggamit",
+          "telepono",
+          "gamit",
+          "asa gamiton",
+          "uses",
+          "flashlight",
+          "traffic light"
+        ],
+        "fact": {
+          "en": "LEDs aren't just in bulbs! They are in phone and TV screens, flashlights, remote controls, and traffic lights because they are small, durable, and energy-saving.",
+          "tl": "Hindi lang sa bombilya ang LED! Nasa screen ng phone at TV, flashlight, remote control, at traffic lights dahil maliit, matibay, at matipid ito sa kuryente.",
+          "bis": "Dili lang sa bombilya ang LED! Naa usab kini sa screen sa phone ug TV, sa flashlight, sa remote control, ug sa traffic lights. Gigamit kini didto kay ang LED gamay, lig-on, ug matipid sa kuryente."
+        },
+        "slug": "ffct-25143",
+        "title": {
+          "en": "LED Uses",
+          "tl": "Gamit ng LED",
+          "bis": "Gamit sa LED"
+        },
+        "cats": [
+          "light",
+          "electricity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "LED"
+          ],
+          "en": [
+            "LEDs"
+          ],
+          "bis": [
+            "LED"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate separates the list of devices from the reason and names LED again, removing an unclear referent after traffic lights. Every listed use and the small, durable, energy-saving properties remain in the English and backtranslation. Both blind readers prefer the body and tie the identical title. The LED emphasis remains present.",
+      "formal_item_id": "cbf4a638d4b72128a5e643ed24413ae80",
+      "fidelity_item_id": "m7d700de7e21db4306816a3a9",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-24700",
+      "source_card_sha256": "f0bae789611d077b760b9f4ea8bff8b9c338bbec4ac6351cbd6a1baf33f53648",
+      "candidate_card_sha256": "10a8e299ac8545d9e89d1dbfafe2f3952f39e870de972bced07edab01fc50515",
+      "before_card": {
+        "id": "ffct-24700",
+        "factId": "lever-class1-balance-scale-weight-g4",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "balance scale as first-class lever",
+        "terms": [
+          "balance scale",
+          "timbangan",
+          "pagtimbang",
+          "timbang",
+          "first class",
+          "unang klase",
+          "fulcrum",
+          "gitna",
+          "weight",
+          "lever"
+        ],
+        "fact": {
+          "en": "A two-pan balance scale is a first-class lever that helps you compare the weight of different objects!",
+          "tl": "Ang timbangan na may dalawang mangkok ay unang klase na lever na tumutulong ikumpara ang timbang ng iba't ibang bagay!",
+          "bis": "Ang timbangan nga adunay duha ka mangkok usa ka una nga klase nga lever nga nagtabang sa pagkumpara sa gibug-aton sa lainlaing butang!"
+        },
+        "slug": "ffct-16554",
+        "title": {
+          "en": "Balance Scale Lever",
+          "tl": "Timbangang Lever",
+          "bis": "Timbangang Lever"
+        },
+        "cats": [
+          "simple-machines",
+          "measurement"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "unang klase na lever"
+          ],
+          "en": [
+            "first-class lever"
+          ],
+          "bis": [
+            "una nga klase nga lever"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-24700",
+        "factId": "lever-class1-balance-scale-weight-g4",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "balance scale as first-class lever",
+        "terms": [
+          "balance scale",
+          "timbangan",
+          "pagtimbang",
+          "timbang",
+          "first class",
+          "unang klase",
+          "fulcrum",
+          "gitna",
+          "weight",
+          "lever"
+        ],
+        "fact": {
+          "en": "A two-pan balance scale is a first-class lever that helps you compare the weight of different objects!",
+          "tl": "Ang timbangan na may dalawang mangkok ay unang klase na lever na tumutulong ikumpara ang timbang ng iba't ibang bagay!",
+          "bis": "Ang timbangan nga adunay duha ka mangkok usa ka una nga klase nga lever. Nagtabang kini kanimo sa pagkumpara sa gibug-aton sa lainlaing butang!"
+        },
+        "slug": "ffct-16554",
+        "title": {
+          "en": "Balance Scale Lever",
+          "tl": "Timbangang Lever",
+          "bis": "Timbangang Lever"
+        },
+        "cats": [
+          "simple-machines",
+          "measurement"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "unang klase na lever"
+          ],
+          "en": [
+            "first-class lever"
+          ],
+          "bis": [
+            "una nga klase nga lever"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate splits the two-pan scale definition from its purpose and restores helps you as kini kanimo. The first-class lever classification and comparison of weights are unchanged in the English and backtranslation. Both blind readers prefer the shorter clauses; title and full lever emphasis are byte-identical.",
+      "formal_item_id": "c5379da84b814db8ccbe85a9118b312af",
+      "fidelity_item_id": "m8203b5c39421f306445cf2a8",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-24711",
+      "source_card_sha256": "c20f83be6130a957774a2e4a80220a30f9b7af5a108c4599e0927a2e4916f31c",
+      "candidate_card_sha256": "ce3f99dc7a375b7955da038888d2aeebe948cbda9a40d3e5fa604089f4db8208",
+      "before_card": {
+        "id": "ffct-24711",
+        "factId": "geometry-compass-tool-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "compass circle drawing tool",
+        "terms": [
+          "kompas",
+          "pang-bilog",
+          "pagguhit ng bilog",
+          "geometry",
+          "compass",
+          "radius",
+          "pivot",
+          "circle",
+          "lapis",
+          "pana-bilog",
+          "pagguhit ng sirkulo"
+        ],
+        "fact": {
+          "en": "A geometry compass is a two-armed tool that draws a perfect circle. One point stays fixed while the pencil on the other arm swings around at an equal distance!",
+          "tl": "Ang geometry compass ay isang two-armed tool na gumuguhit ng perpektong bilog. Nananatiling nakatusok ang isang dulo habang umiikot ang lapis sa kabilang dulo sa pantay na layo!",
+          "bis": "Ang geometry compass usa ka two-armed tool nga modrowing ug hingpit nga lingin. Magpabilin nga nakatusok ang usa ka tumoy samtang motuyok ang lapis sa pikas sa managsama nga gilay-on!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Drawing Compass",
+          "tl": "Compas Pangguhit",
+          "bis": "Compas Pangguhit"
+        },
+        "cats": [
+          "measurement"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "geometry compass"
+          ],
+          "en": [
+            "geometry compass"
+          ],
+          "bis": [
+            "geometry compass"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-24711",
+        "factId": "geometry-compass-tool-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "compass circle drawing tool",
+        "terms": [
+          "kompas",
+          "pang-bilog",
+          "pagguhit ng bilog",
+          "geometry",
+          "compass",
+          "radius",
+          "pivot",
+          "circle",
+          "lapis",
+          "pana-bilog",
+          "pagguhit ng sirkulo"
+        ],
+        "fact": {
+          "en": "A geometry compass is a two-armed tool that draws a perfect circle. One point stays fixed while the pencil on the other arm swings around at an equal distance!",
+          "tl": "Ang geometry compass ay isang two-armed tool na gumuguhit ng perpektong bilog. Nananatiling nakatusok ang isang dulo habang umiikot ang lapis sa kabilang dulo sa pantay na layo!",
+          "bis": "Ang geometry compass usa ka himan nga adunay duha ka bukton. Modrowing kini ug hingpit nga lingin. Ang usa ka tumoy magpabilin nga nakatusok, samtang ang lapis sa pikas nga bukton motuyok palibot niini sa managsama nga gilay-on!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Drawing Compass",
+          "tl": "Compas Pangguhit",
+          "bis": "Compas Pangguhit"
+        },
+        "cats": [
+          "measurement"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "geometry compass"
+          ],
+          "en": [
+            "geometry compass"
+          ],
+          "bis": [
+            "geometry compass"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate replaces the descriptive two-armed tool phrase with himan nga adunay duha ka bukton, splits the drawing action and explicitly names the other arm and rotation around the fixed tip. Wolff himan and buktun establish tool and arm; guhit establishes drawing, so the retained drawing title is not rejected merely for resembling Tagalog. Both blind readers prefer the body, while the title and geometry compass emphasis stay exact; the equal-distance geometry is preserved.",
+      "formal_item_id": "cb4b943f4b953f20c95a4763efd96ae44",
+      "fidelity_item_id": "m3e531b2013d915cbe5af906a",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-24754",
+      "source_card_sha256": "4394db561e12f324356830bbd64dc42f3184a2a2f690d8fa8a56b92440c600f7",
+      "candidate_card_sha256": "5e2ec8c06757528b43412fc11afc7d06ba1a73b771b1f5069ee59adb6860bd4a",
+      "before_card": {
+        "id": "ffct-24754",
+        "factId": "screw-vise-woodworking-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "bench vise uses screw to clamp work",
+        "terms": [
+          "vise",
+          "bench vise",
+          "karpinterya",
+          "carpentry",
+          "screw",
+          "tornilyo",
+          "clamp",
+          "ipit",
+          "woodworking",
+          "secure"
+        ],
+        "fact": {
+          "en": "A bench vise in carpentry uses a large screw to clamp a piece of wood firmly! This helps the carpenter work on it safely.",
+          "tl": "Ang bench vise sa carpentry ay gumagamit ng malaking screw para mahigpit na mapiit ang kahoy! Nakakatulong ito para makapagtrabaho ang carpenter nang ligtas.",
+          "bis": "Ang bench vise sa carpentry naggamit sa dako nga screw aron pag-ayo mapiit ang kahoy! Makatabang kini aron makatrabaho ang carpenter nga luwas."
+        },
+        "slug": "ffct-24754",
+        "source": "original",
+        "title": {
+          "tl": "Bench Vise Screw Piit Kahoy",
+          "en": "Bench Vise Screw Clamp",
+          "bis": "Bench Vise Screw Piit Kahoy"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-24754",
+        "factId": "screw-vise-woodworking-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "bench vise uses screw to clamp work",
+        "terms": [
+          "vise",
+          "bench vise",
+          "karpinterya",
+          "carpentry",
+          "screw",
+          "tornilyo",
+          "clamp",
+          "ipit",
+          "woodworking",
+          "secure"
+        ],
+        "fact": {
+          "en": "A bench vise in carpentry uses a large screw to clamp a piece of wood firmly! This helps the carpenter work on it safely.",
+          "tl": "Ang bench vise sa carpentry ay gumagamit ng malaking screw para mahigpit na mapiit ang kahoy! Nakakatulong ito para makapagtrabaho ang carpenter nang ligtas.",
+          "bis": "Ang bench vise sa carpentry naggamit og dakong screw aron mapiit pag-ayo ang kahoy! Makatabang kini aron luwas nga makatrabaho ang carpenter."
+        },
+        "slug": "ffct-24754",
+        "source": "original",
+        "title": {
+          "tl": "Bench Vise Screw Piit Kahoy",
+          "en": "Bench Vise Screw Clamp",
+          "bis": "Ang Screw sa Bench Vise"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate puts firmly beside clamping and safely beside working, changes the keyword title to a clear bench-vise screw phrase and preserves a large screw holding wood. The proposer's piit/ipit doubt is resolved narrowly: Wolff piit includes wedging tightly and holding tightly, with a squeezing-device derivative; ipit is also separately valid. No unsupported preference between those roots is imposed. Both blind readers prefer both changed fields and full backtranslation agrees.",
+      "formal_item_id": "c0c96fdb43f8b0e203c76f2702a7b8e12",
+      "fidelity_item_id": "m7b19224ae2bdca1db8424cf0",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-24886",
+      "source_card_sha256": "ca7523897254b5ecd98c957d409f52761ab937f18a1e70dd3bad21ea3504cd40",
+      "candidate_card_sha256": "02be4b92ab35d7dd46e6997a8b054579b8f5fa9235fd5eac46e2bcb8978f8eb7",
+      "before_card": {
+        "id": "ffct-24886",
+        "factId": "kalesa-horse-carriage-g4",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "animal pulling force",
+        "terms": [
+          "kalesa",
+          "kabayo",
+          "hila",
+          "gulong",
+          "puwersa",
+          "sasakyan",
+          "karwahe",
+          "guyod",
+          "ligid",
+          "kusog",
+          "horse",
+          "pull",
+          "wheel",
+          "force",
+          "carriage"
+        ],
+        "fact": {
+          "en": "A kalesa is a carriage pulled by a horse—the horse uses muscle power to apply force and make the wheels roll!",
+          "tl": "Ang kalesa ay sasakyang hinihila ng kabayo—ginagamit ng kabayo ang lakas ng kalamnan para mag-aplay ng puwersa at pagulin ang mga gulong!",
+          "bis": "Ang kalesa usa ka sakyanan nga giguyod sa kabayo—gigamit sa kabayo ang kusog sa kaunoran aron mohatag ug puwersa ug magpaligid sa mga ligid!"
+        },
+        "slug": "horse-pulling-kalesa",
+        "title": {
+          "en": "Horse Pulling Force",
+          "tl": "Puwersa ng Kabayo",
+          "bis": "Puwersa sa Kabayo"
+        },
+        "cats": [
+          "forces",
+          "farm-animals"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "puwersa"
+          ],
+          "en": [
+            "force"
+          ],
+          "bis": [
+            "puwersa"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-24886",
+        "factId": "kalesa-horse-carriage-g4",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "animal pulling force",
+        "terms": [
+          "kalesa",
+          "kabayo",
+          "hila",
+          "gulong",
+          "puwersa",
+          "sasakyan",
+          "karwahe",
+          "guyod",
+          "ligid",
+          "kusog",
+          "horse",
+          "pull",
+          "wheel",
+          "force",
+          "carriage"
+        ],
+        "fact": {
+          "en": "A kalesa is a carriage pulled by a horse—the horse uses muscle power to apply force and make the wheels roll!",
+          "tl": "Ang kalesa ay sasakyang hinihila ng kabayo—ginagamit ng kabayo ang lakas ng kalamnan para mag-aplay ng puwersa at pagulin ang mga gulong!",
+          "bis": "Ang kalesa usa ka sakyanan nga giguyod sa kabayo—gamit ang kusog sa iyang kaunoran, mohatag ang kabayo ug puwersa aron moligid ang mga ligid!"
+        },
+        "slug": "horse-pulling-kalesa",
+        "title": {
+          "en": "Horse Pulling Force",
+          "tl": "Puwersa ng Kabayo",
+          "bis": "Puwersa sa Kabayo"
+        },
+        "cats": [
+          "forces",
+          "farm-animals"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "puwersa"
+          ],
+          "en": [
+            "force"
+          ],
+          "bis": [
+            "puwersa"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate explicitly assigns the muscles and applied force to the horse, then states the result as the wheels rolling. Wolff ligid supplies both roll and wheel, and independent bodies corroborate muscle usage. Full English and backtranslation keep the horse-drawn carriage causal sequence. Both blind readers prefer the body; no claim that the horse directly turns an axle is added, and title/emphasis stay exact.",
+      "formal_item_id": "c00d1c0fca039cd59341f97f214aafcbe",
+      "fidelity_item_id": "m12ee6e2453cf5876721952f4",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-24887",
+      "source_card_sha256": "ce626aa0694bc764345ee28e3f003de9cbe9acec3cf932dc87fc4def5c020188",
+      "candidate_card_sha256": "2df125a9e7bbecb9b6c2242a3b895a916af5c199e559586f71f3821ac2572fb7",
+      "before_card": {
+        "id": "ffct-24887",
+        "factId": "kalinga-gong-circle-g4",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "sound from metal gongs",
+        "terms": [
+          "gangsa",
+          "kalinga",
+          "gong",
+          "metal",
+          "tunog",
+          "tugtog",
+          "panginginig",
+          "agong",
+          "tingog",
+          "pagtugtog",
+          "sound",
+          "vibration",
+          "percussion"
+        ],
+        "fact": {
+          "en": "How does a gangsa make sound?\n\nThe gangsa is a metal gong of the Kalinga—when struck, the metal vibrates and creates a loud sound that spreads through the air!",
+          "tl": "Paano gumagawa ng tunog ang gangsa?\n\nAng gangsa ay metal na gong ng mga Kalinga—kapag pinalo, nanginginig ang metal at lumilikha ng malakas na tunog na kumakalat sa hangin!",
+          "bis": "Unsaon paghimo og tingog ang gangsa?\n\nAng gangsa usa ka metal nga agong sa mga Kalinga—kon pukpukon, mag-uyog ang metal ug mohimo og kusog nga tingog nga mokaylap sa hangin!"
+        },
+        "slug": "gangsa-flat-gong",
+        "title": {
+          "en": "Metal Gong Sound",
+          "tl": "Tunog ng Gangsa",
+          "bis": "Tingog sa Gangsa"
+        },
+        "cats": [
+          "sound",
+          "materials"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "nanginginig ang metal"
+          ],
+          "en": [
+            "metal vibrates"
+          ],
+          "bis": [
+            "mag-uyog ang metal"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-24887",
+        "factId": "kalinga-gong-circle-g4",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "sound from metal gongs",
+        "terms": [
+          "gangsa",
+          "kalinga",
+          "gong",
+          "metal",
+          "tunog",
+          "tugtog",
+          "panginginig",
+          "agong",
+          "tingog",
+          "pagtugtog",
+          "sound",
+          "vibration",
+          "percussion"
+        ],
+        "fact": {
+          "en": "How does a gangsa make sound?\n\nThe gangsa is a metal gong of the Kalinga—when struck, the metal vibrates and creates a loud sound that spreads through the air!",
+          "tl": "Paano gumagawa ng tunog ang gangsa?\n\nAng gangsa ay metal na gong ng mga Kalinga—kapag pinalo, nanginginig ang metal at lumilikha ng malakas na tunog na kumakalat sa hangin!",
+          "bis": "Unsaon sa gangsa paghimo og tingog?\n\nAng gangsa usa ka metal nga agong sa mga Kalinga. Kon pukpukon kini, mag-uyog ang metal ug mohimo og kusog nga tingog nga mokaylap sa hangin!"
+        },
+        "slug": "gangsa-flat-gong",
+        "title": {
+          "en": "Metal Gong Sound",
+          "tl": "Tunog ng Gangsa",
+          "bis": "Tingog sa Gangsa"
+        },
+        "cats": [
+          "sound",
+          "materials"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "nanginginig ang metal"
+          ],
+          "en": [
+            "metal vibrates"
+          ],
+          "bis": [
+            "mag-uyog ang metal"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The question names the gangsa early, while the answer separates the instrument definition and adds kini to what is struck. The National Museum identifies the gong or gangsa in Kalinga practice. Wolff uyug supports quick shaking and pukpuk striking, matching the preserved vibration explanation. Both blind observations prefer the body and the full backtranslation is aligned; no claim of cultural exclusivity is added and the vibration emphasis is unchanged.",
+      "formal_item_id": "cee4dfb0570c0f0fc893b1de317d127e5",
+      "fidelity_item_id": "ma721842beaf14f0af48341d7",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-24955",
+      "source_card_sha256": "41befa2f17db55506d1c45f99cba497358ac143005ffe7413a94b7ccb6d9b5cc",
+      "candidate_card_sha256": "c4641cc6e872423fce4ca8993b33e2e4b9d6db8a435111ad169fcafba0519bb4",
+      "before_card": {
+        "id": "ffct-24955",
+        "factId": "work-lifting-box-against-gravity-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "lifting a box does work against gravity",
+        "terms": [
+          "work",
+          "trabaho",
+          "lifting",
+          "pag-angat",
+          "gravity",
+          "timbang",
+          "force",
+          "distance",
+          "calculation",
+          "joule"
+        ],
+        "fact": {
+          "en": "When you lift a box off the floor, you do work against gravity — the work equals the weight of the box multiplied by the height you lift it.",
+          "tl": "Kapag inangat mo ang kahon mula sa sahig, gumagawa ka ng work against gravity — ang work ay katumbas ng timbang ng kahon pinarami sa taas na inangat.",
+          "bis": "Kon ibangon nimo ang kahon gikan sa salog, naghimo ka og work batok sa gravity — ang work katumbas sa timbang sa kahon gipadaghan sa taas nga gibangon."
+        },
+        "slug": "",
+        "title": {
+          "en": "Work and Gravity",
+          "tl": "Trabaho at Gravity",
+          "bis": "Trabaho ug Gravity"
+        },
+        "cats": [
+          "forces",
+          "gravity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "work"
+          ],
+          "en": [
+            "work"
+          ],
+          "bis": [
+            "work"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-24955",
+        "factId": "work-lifting-box-against-gravity-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "lifting a box does work against gravity",
+        "terms": [
+          "work",
+          "trabaho",
+          "lifting",
+          "pag-angat",
+          "gravity",
+          "timbang",
+          "force",
+          "distance",
+          "calculation",
+          "joule"
+        ],
+        "fact": {
+          "en": "When you lift a box off the floor, you do work against gravity — the work equals the weight of the box multiplied by the height you lift it.",
+          "tl": "Kapag inangat mo ang kahon mula sa sahig, gumagawa ka ng work against gravity — ang work ay katumbas ng timbang ng kahon pinarami sa taas na inangat.",
+          "bis": "Kon ibangon nimo ang kahon gikan sa salog, naghimo ka og work batok sa gravity. Ang work katumbas sa timbang sa kahon gipadaghan sa gitas-on nga imong gibangon niini."
+        },
+        "slug": "",
+        "title": {
+          "en": "Work and Gravity",
+          "tl": "Trabaho at Gravity",
+          "bis": "Trabaho ug Gravity"
+        },
+        "cats": [
+          "forces",
+          "gravity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "work"
+          ],
+          "en": [
+            "work"
+          ],
+          "bis": [
+            "work"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The edit separates the gravitational-work formula and makes height and its lifted object explicit. Wolff taas includes gitas-un for height, and bangun includes making something lying erect with an explicit lifting example; the retained lifting root is not rejected solely because alsa is more common. The formula remains weight times lifted height, not mass times height. Both blind readers prefer the body and title/emphasis are unchanged.",
+      "formal_item_id": "ce6634d33d2c5bb84f5a575ecd19eae93",
+      "fidelity_item_id": "m6208fd4dff5d2ef58746b559",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-24976",
+      "source_card_sha256": "3845fb86a723b06124ca91345305de3a063670bd03e3265bc8e0c7cf36c74598",
+      "candidate_card_sha256": "670a1bc4ccb0c1057ec10c1866e46bcadce29ec76c840f72301195bd314392d7",
+      "before_card": {
+        "id": "ffct-24976",
+        "factId": "center-gravity-crane-prevent-tip-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "crane operators monitor load to prevent tipping",
+        "terms": [
+          "crane",
+          "grua",
+          "tipping",
+          "overturn",
+          "center of gravity",
+          "counterweight",
+          "safe load",
+          "tip",
+          "balance",
+          "operator"
+        ],
+        "fact": {
+          "en": "Crane operators watch load weight and position so the center of gravity stays inside the crane's base — or the whole crane tips over!",
+          "tl": "Bantayan ng crane operator ang timbang at posisyon ng karga para manatili sa loob ng base ang sentro ng grabidad — kung hindi, matutumba ang crane!",
+          "bis": "Ang crane operator mag-monitor sa timbang ug posisyon sa karga aron ang sentro sa grabidad magpabilin sa sulod sa base — kung dili, matumba ang crane!"
+        },
+        "slug": "ffct-24976",
+        "source": "original",
+        "title": {
+          "tl": "Crane Operator sa Load",
+          "en": "Cranes Watch the Load",
+          "bis": "Crane sa Load"
+        },
+        "cats": [
+          "gravity",
+          "forces"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-24976",
+        "factId": "center-gravity-crane-prevent-tip-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "crane operators monitor load to prevent tipping",
+        "terms": [
+          "crane",
+          "grua",
+          "tipping",
+          "overturn",
+          "center of gravity",
+          "counterweight",
+          "safe load",
+          "tip",
+          "balance",
+          "operator"
+        ],
+        "fact": {
+          "en": "Crane operators watch load weight and position so the center of gravity stays inside the crane's base — or the whole crane tips over!",
+          "tl": "Bantayan ng crane operator ang timbang at posisyon ng karga para manatili sa loob ng base ang sentro ng grabidad — kung hindi, matutumba ang crane!",
+          "bis": "Ang mga crane operator nagbantay sa timbang ug posisyon sa karga aron magpabilin ang sentro sa grabidad sulod sa base sa crane. Kung dili, matumba ang tibuok crane!"
+        },
+        "slug": "ffct-24976",
+        "source": "original",
+        "title": {
+          "tl": "Crane Operator sa Load",
+          "en": "Cranes Watch the Load",
+          "bis": "Ang Crane ug ang Karga"
+        },
+        "cats": [
+          "gravity",
+          "forces"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate uses attested bantay for watching, names the crane as owner of the base, and restores whole crane in a separate warning. Both blind readers prefer body and title; backtranslation preserves the English load-weight/position and tipping relationship. OpenStax supports the base-of-support criterion, interpreted here as the center-of-gravity projection within the support footprint, not a claim that the center is physically embedded in the base. No equipment-operation procedure is added.",
+      "formal_item_id": "c07bbf2e294bbb8f6185cf8ce26e4dd40",
+      "fidelity_item_id": "mfd0b07ab30e920b68e511195",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    }
+  ],
+  "held": [
+    {
+      "card_id": "ffct-24190",
+      "source_card_sha256": "f77382ad48bd55b9b3e2b209d3300d33b0a201196d66e102f9c25b0c58756953",
+      "candidate_card_sha256": "dc16bdd86e1c249d8114aa0e322baded735ab719bf4d01192c341209cc6cb804",
+      "before_card": {
+        "id": "ffct-24190",
+        "factId": "scissors-lever-kitchen-shears-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Kitchen shears as a real-world use",
+        "terms": [
+          "kitchen shears",
+          "gunting sa kusina",
+          "gunting pang-kusina",
+          "manok",
+          "chicken",
+          "food",
+          "pagkain",
+          "real use",
+          "gamit",
+          "malaking gunting",
+          "makapal",
+          "cut food",
+          "pamutol pagkain",
+          "kusina"
+        ],
+        "fact": {
+          "en": "What are those big scissors in the kitchen?\n\nThey are kitchen shears! They cut chicken, vegetables, or tough packaging, still working as a lever to make the job easier.",
+          "tl": "Ano ang mga malalaking gunting sa kusina?\n\nMga kitchen shears! Ginagamit ito para gupitin ang manok, gulay, o mabibigat na pakete, gumagana pa rin bilang palanca para mas madali.",
+          "bis": "Unsa ang mga dagko nga gunting sa kusina?\n\nMga kitchen shears! Gigamit kini sa pagputol og manok, utanon, o gahi nga putos, nagsilbi gihapon nga palanca aron mas sayon."
+        },
+        "slug": "",
+        "title": {
+          "en": "Kitchen Shears",
+          "tl": "Gunting sa Kusina",
+          "bis": "Gunting sa Kusina"
+        },
+        "cats": [
+          "simple-machines",
+          "forces"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kitchen shears"
+          ],
+          "en": [
+            "kitchen shears"
+          ],
+          "bis": [
+            "kitchen shears"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-24190",
+        "factId": "scissors-lever-kitchen-shears-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Kitchen shears as a real-world use",
+        "terms": [
+          "kitchen shears",
+          "gunting sa kusina",
+          "gunting pang-kusina",
+          "manok",
+          "chicken",
+          "food",
+          "pagkain",
+          "real use",
+          "gamit",
+          "malaking gunting",
+          "makapal",
+          "cut food",
+          "pamutol pagkain",
+          "kusina"
+        ],
+        "fact": {
+          "en": "What are those big scissors in the kitchen?\n\nThey are kitchen shears! They cut chicken, vegetables, or tough packaging, still working as a lever to make the job easier.",
+          "tl": "Ano ang mga malalaking gunting sa kusina?\n\nMga kitchen shears! Ginagamit ito para gupitin ang manok, gulay, o mabibigat na pakete, gumagana pa rin bilang palanca para mas madali.",
+          "bis": "Unsa ang mga dagko nga gunting sa kusina?\n\nMga kitchen shears! Gigamit kini sa pagputol og manok, utanon, o gahi nga putos. Nagsilbi gihapon kini nga palanca aron mas sayon ang trabaho."
+        },
+        "slug": "",
+        "title": {
+          "en": "Kitchen Shears",
+          "tl": "Gunting sa Kusina",
+          "bis": "Gunting sa Kusina"
+        },
+        "cats": [
+          "simple-machines",
+          "forces"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kitchen shears"
+          ],
+          "en": [
+            "kitchen shears"
+          ],
+          "bis": [
+            "kitchen shears"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The split and explicit trabaho preserve the lever claim, and both blind readers prefer the candidate. However palanca remains central to the explanation: the 19 independent corpus bodies use it for lever, while Wolff palangka_2 points to plangka, a service switch. Binisaya confirms the Spanish lever etymology but its Cebuano sense is a circuit breaker. That does not establish this exact classroom mechanical-lever usage; hold for lexical authority without declaring the loan invalid.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c888dbc7eeaebd8cb4346ece9048ac8a4"
+    },
+    {
+      "card_id": "ffct-24491",
+      "source_card_sha256": "67a7cb7f301df382f23dd8160a36cbfe88f12f25fce0a8908f629e6c7451193d",
+      "candidate_card_sha256": "6fcf62591a75b8da004cbb136d2f0b7dc9dd5c7af7ef5c8fd88fe4911d1bb07c",
+      "before_card": {
+        "id": "ffct-24491",
+        "factId": "fme-friction-three-kinds-set-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "the main kinds of friction together",
+        "terms": [
+          "friction",
+          "kinds of friction",
+          "uri ng friction",
+          "static",
+          "sliding",
+          "rolling",
+          "fluid",
+          "dumudulas",
+          "gumugulong",
+          "sa hangin",
+          "sa tubig",
+          "apat na uri",
+          "types"
+        ],
+        "fact": {
+          "en": "Friction has different kinds! Static holds things still, sliding happens when things slide, rolling is for rolling, and fluid is for moving through water or air. All oppose motion!",
+          "tl": "May iba't ibang uri ng friction! Ang static ay humahawak sa nakatigil, sliding kapag dumudulas, rolling kapag gumugulong, at fluid kapag gumagalaw sa tubig o hangin. Lahat sumasalungat sa galaw!",
+          "bis": "Adunay lain-laing matang sa friction! Ang static nagkupot sa naghunong, sliding kung modanlog, rolling kung moligid, ug fluid kung molihok sa tubig o hangin. Tanan mosupak sa paglihok!"
+        },
+        "slug": "ffct-24491",
+        "source": "original",
+        "title": {
+          "tl": "Static Sliding Rolling Friction",
+          "en": "Kinds of Friction",
+          "bis": "Klase sa Friction"
+        },
+        "cats": [
+          "friction"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-24491",
+        "factId": "fme-friction-three-kinds-set-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "the main kinds of friction together",
+        "terms": [
+          "friction",
+          "kinds of friction",
+          "uri ng friction",
+          "static",
+          "sliding",
+          "rolling",
+          "fluid",
+          "dumudulas",
+          "gumugulong",
+          "sa hangin",
+          "sa tubig",
+          "apat na uri",
+          "types"
+        ],
+        "fact": {
+          "en": "Friction has different kinds! Static holds things still, sliding happens when things slide, rolling is for rolling, and fluid is for moving through water or air. All oppose motion!",
+          "tl": "May iba't ibang uri ng friction! Ang static ay humahawak sa nakatigil, sliding kapag dumudulas, rolling kapag gumugulong, at fluid kapag gumagalaw sa tubig o hangin. Lahat sumasalungat sa galaw!",
+          "bis": "Adunay lain-laing matang sa friction! Ang static friction mopugong sa mga butang aron dili molihok. Ang sliding friction mahitabo kung modanlog ang butang. Ang rolling friction para sa mga butang nga moligid. Ang fluid friction para sa paglihok agi sa tubig o hangin. Tanan mosupak sa paglihok!"
+        },
+        "slug": "ffct-24491",
+        "source": "original",
+        "title": {
+          "tl": "Static Sliding Rolling Friction",
+          "en": "Kinds of Friction",
+          "bis": "Klase sa Friction"
+        },
+        "cats": [
+          "friction"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The candidate expands the list clearly, but the English and candidate say static friction keeps objects from moving and all friction opposes motion without the relative-contact qualification. OpenStax defines opposition to relative motion between surfaces and explicitly notes friction also permits motion. The universal wording can misteach static friction in walking or rolling. Hold the exact rewrite for a coordinated source correction despite clean model agreement.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c28bfe80654276f5c1fd05dfbd4593fa2"
+    },
+    {
+      "card_id": "ffct-24547",
+      "source_card_sha256": "4ec5d1284f364ba85d57c7e29e1df900295da8f33d1314d0c148f207cfa4d93a",
+      "candidate_card_sha256": "b850c501ae0d533409e5a4421144b12400d0096acf2a61850e1820dabceb5a0b",
+      "before_card": {
+        "id": "ffct-24547",
+        "factId": "val-speed-reading-graph-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Reading speed from a distance-time graph",
+        "terms": [
+          "graph",
+          "distance-time",
+          "talangguhit",
+          "slope",
+          "gilid",
+          "tarik",
+          "bilis",
+          "katulin",
+          "paano basahin",
+          "steep",
+          "flat",
+          "patag",
+          "tumitigil",
+          "line",
+          "kurba",
+          "tilt"
+        ],
+        "fact": {
+          "en": "On a distance-time graph, a steeper line means faster movement, while a flat line means standing still. You can easily tell the speed just by looking at the line's shape!",
+          "tl": "Sa distance-time graph, ang mas tarik na linya ay mas mabilis, habang ang patag na linya ay nakatigil. Madali mong masasabi ang bilis sa pamamagitan lang ng pagtingin sa hugis ng linya!",
+          "bis": "Sa distance-time graph, ang mas tarik nga linya mas paspas, samtang ang patag nga linya naghunong. Masulti nimo ang katulin pinaagi lang sa pagtan-aw sa porma sa linya!"
+        },
+        "slug": "graph-line-distance-time",
+        "title": {
+          "en": "Distance-Time Graph",
+          "tl": "Distansya-Oras Graph",
+          "bis": "Distansya-Oras Grap"
+        },
+        "cats": [
+          "motion",
+          "measurement"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "distance-time graph"
+          ],
+          "en": [
+            "distance-time graph"
+          ],
+          "bis": [
+            "distance-time graph"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-24547",
+        "factId": "val-speed-reading-graph-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Reading speed from a distance-time graph",
+        "terms": [
+          "graph",
+          "distance-time",
+          "talangguhit",
+          "slope",
+          "gilid",
+          "tarik",
+          "bilis",
+          "katulin",
+          "paano basahin",
+          "steep",
+          "flat",
+          "patag",
+          "tumitigil",
+          "line",
+          "kurba",
+          "tilt"
+        ],
+        "fact": {
+          "en": "On a distance-time graph, a steeper line means faster movement, while a flat line means standing still. You can easily tell the speed just by looking at the line's shape!",
+          "tl": "Sa distance-time graph, ang mas tarik na linya ay mas mabilis, habang ang patag na linya ay nakatigil. Madali mong masasabi ang bilis sa pamamagitan lang ng pagtingin sa hugis ng linya!",
+          "bis": "Sa distance-time graph, ang mas tarik nga linya nagpasabot nga mas paspas ang lihok. Ang patag nga linya nagpasabot nga wala molihok ang butang. Dali ra nimo masulti ang katulin pinaagi lang sa pagtan-aw sa porma sa linya!"
+        },
+        "slug": "graph-line-distance-time",
+        "title": {
+          "en": "Distance-Time Graph",
+          "tl": "Distansya-Oras Graph",
+          "bis": "Distansya-Oras Grap"
+        },
+        "cats": [
+          "motion",
+          "measurement"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "distance-time graph"
+          ],
+          "en": [
+            "distance-time graph"
+          ],
+          "bis": [
+            "distance-time graph"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The graph-versus-object clarification is useful and scientifically aligned, but the proposer explicitly questions retained tarik for steep. There are 48 independent topical corpus bodies, yet Wolff and Binisaya supply an outrigger sense rather than the required slope adjective. The machine corpus cannot settle that conflict. Hold the exact candidate pending lexical authority; absence from these dictionary senses is not proof the wording is invalid.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c13ecaf3284f5ad5c9ed18d1eca2b97a2"
+    },
+    {
+      "card_id": "ffct-24766",
+      "source_card_sha256": "972f6aea7a037b860d275595ff83d3891e67e689933c68e27377756e05190fb4",
+      "candidate_card_sha256": "7a6f1ce111ff1377c05c5e3834cea30f634402c7b815c19149599dd5634a76a6",
+      "before_card": {
+        "id": "ffct-24766",
+        "factId": "gear-train-multiple-compound-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "gear train uses multiple gears in series",
+        "terms": [
+          "gear train",
+          "serye ng gear",
+          "multiple gears",
+          "maraming gear",
+          "speed reduction",
+          "bawas ng bilis",
+          "machinery",
+          "makinarya",
+          "compound"
+        ],
+        "fact": {
+          "en": "A gear train is a chain of connected gears that makes bigger changes in speed or force than just one pair of gears ever could!",
+          "tl": "Ang gear train ay isang serye ng magkakabit na gear na gumagawa ng mas malaking pagbabago sa bilis o puwersa kaysa sa isang pares ng gear!",
+          "bis": "Ang gear train usa ka serye sa mga magkabit nga gear nga naghimo og mas dako nga pagbag-o sa bilis o puwersa kaysa sa usa ka pares sa gear!"
+        },
+        "slug": "ffct-24766",
+        "source": "original",
+        "title": {
+          "tl": "Gear Train Marami Series Chain",
+          "en": "Gear Trains in Series",
+          "bis": "Gear Train Daghan Series"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-24766",
+        "factId": "gear-train-multiple-compound-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "gear train uses multiple gears in series",
+        "terms": [
+          "gear train",
+          "serye ng gear",
+          "multiple gears",
+          "maraming gear",
+          "speed reduction",
+          "bawas ng bilis",
+          "machinery",
+          "makinarya",
+          "compound"
+        ],
+        "fact": {
+          "en": "A gear train is a chain of connected gears that makes bigger changes in speed or force than just one pair of gears ever could!",
+          "tl": "Ang gear train ay isang serye ng magkakabit na gear na gumagawa ng mas malaking pagbabago sa bilis o puwersa kaysa sa isang pares ng gear!",
+          "bis": "Ang gear train usa ka serye sa mga gear nga nagkadugtong. Mas dako ang kausaban nga mahimo niini sa bilis o puwersa kaysa sa mahimo sa usa lang ka pares sa gear!"
+        },
+        "slug": "ffct-24766",
+        "source": "original",
+        "title": {
+          "tl": "Gear Train Marami Series Chain",
+          "en": "Gear Trains in Series",
+          "bis": "Gear Train"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The proposal itself acknowledges the English ever-could overstatement. A chain of gears is not automatically a compound train with a greater ratio than any pair: simple idlers do not multiply the overall ratio, and tooth ratios determine the result. MIT teaching materials support that distinction and the two-gear ratio relation. Hold for source qualification instead of promoting the blanket claim; no raw model judgment is changed.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "cef665116761607ac70b3581db9be74ad"
+    },
+    {
+      "card_id": "ffct-24779",
+      "source_card_sha256": "c6bc2f536251baeaedfa79788c646e848a615da59f31cc0943ea7967412b4b87",
+      "candidate_card_sha256": "c19c4865990852a97ea137208f4ddb0de44249ab461cd562d037705e4ecec873",
+      "before_card": {
+        "id": "ffct-24779",
+        "factId": "friction-brake-system-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "bicycle brakes use friction to stop",
+        "terms": [
+          "bicycle brake",
+          "preno",
+          "friction",
+          "kiskisan",
+          "stop",
+          "itigil",
+          "brake pad",
+          "rubber",
+          "gulong",
+          "slow down"
+        ],
+        "fact": {
+          "en": "A bicycle brake uses friction! Pressing the brake forces rubber pads against the wheel rim, and the friction slows the wheel down.",
+          "tl": "Gumagamit ng friction ang preno ng bisikleta! Kapag pinipisil mo ito, tumatama ang rubber pads sa wheel rim, at ang friction ay nagpapabagal sa gulong.",
+          "bis": "Naggamit og friction ang preno sa bisikleta! Kon pisliton nimo, ang rubber pads mo pugos sa wheel rim, ug ang friction mopahinay sa gulong."
+        },
+        "slug": "ffct-24779",
+        "source": "original",
+        "title": {
+          "tl": "Bisikleta Brake Goma Pad",
+          "en": "Bike Brake Pads",
+          "bis": "Brake sa Pad"
+        },
+        "cats": [
+          "friction"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-24779",
+        "factId": "friction-brake-system-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "bicycle brakes use friction to stop",
+        "terms": [
+          "bicycle brake",
+          "preno",
+          "friction",
+          "kiskisan",
+          "stop",
+          "itigil",
+          "brake pad",
+          "rubber",
+          "gulong",
+          "slow down"
+        ],
+        "fact": {
+          "en": "A bicycle brake uses friction! Pressing the brake forces rubber pads against the wheel rim, and the friction slows the wheel down.",
+          "tl": "Gumagamit ng friction ang preno ng bisikleta! Kapag pinipisil mo ito, tumatama ang rubber pads sa wheel rim, at ang friction ay nagpapabagal sa gulong.",
+          "bis": "Naggamit og friction ang preno sa bisikleta! Kon pisliton nimo ang preno, mopugos ang rubber pads sa wheel rim. Dayon, ang friction mopahinay sa gulong."
+        },
+        "slug": "ffct-24779",
+        "source": "original",
+        "title": {
+          "tl": "Bisikleta Brake Goma Pad",
+          "en": "Bike Brake Pads",
+          "bis": "Pad sa Preno sa Bisikleta"
+        },
+        "cats": [
+          "friction"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The explicit brake object and title relationship improve clarity, but the proposer flags the exact mopugos construction for pressing against the rim. Wolff pugus supports forcing something to give way, without resolving that precise construction; the independent examples concern forced fluid flow rather than brake-pad contact. Retained gulong for wheel is also unsupported by the inspected Wolff entries, and the Binisaya lookup failed. Hold for targeted lexical review, without asserting these forms cannot be borrowed.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "cba7c5faea993721c97b9c4abccc6838e"
+    },
+    {
+      "card_id": "ffct-24870",
+      "source_card_sha256": "edf6f26d9a7bae7292903093b496c96c995aaf8829bcb88f61de5e4678a83747",
+      "candidate_card_sha256": "03c479a5a24887bcf9c25af75540e8afa3bccbede26678383f72efd5d9a7f4e5",
+      "before_card": {
+        "id": "ffct-24870",
+        "factId": "vehicle-newton-third-law-jet-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "jet engine uses Newton's third law action reaction",
+        "terms": [
+          "jet engine",
+          "newton's third law",
+          "action reaction",
+          "ikatlong batas ni newton",
+          "thrust",
+          "exhaust",
+          "backward",
+          "paatras",
+          "pasulong",
+          "forward"
+        ],
+        "fact": {
+          "en": "A jet engine pushes gas backward at high speed! By Newton's third law, the gas pushes the plane forward with an equal force called thrust.",
+          "tl": "Ang jet engine ay nagtutulak ng gas paatras sa mataas na bilis! Ayon sa ikatlong batas ni Newton, ang gas ay nagtutulak sa eroplano pasulong na may katumbas na puwersa na thrust.",
+          "bis": "Ang jet engine nagtulod sa gas paatras sa taas nga bilis! Sumala sa ikatulong batas ni Newton, ang gas nagtulod sa eroplano pasulong nga adunay katumbas nga puwersa nga gitawag thrust."
+        },
+        "slug": "ffct-22961",
+        "title": {
+          "en": "Jet Engine",
+          "tl": "Jet Engine",
+          "bis": "Jet Engine"
+        },
+        "cats": [
+          "forces"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "ikatlong batas ni Newton"
+          ],
+          "en": [
+            "Newton's third law"
+          ],
+          "bis": [
+            "ikatulong batas ni Newton"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-24870",
+        "factId": "vehicle-newton-third-law-jet-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "jet engine uses Newton's third law action reaction",
+        "terms": [
+          "jet engine",
+          "newton's third law",
+          "action reaction",
+          "ikatlong batas ni newton",
+          "thrust",
+          "exhaust",
+          "backward",
+          "paatras",
+          "pasulong",
+          "forward"
+        ],
+        "fact": {
+          "en": "A jet engine pushes gas backward at high speed! By Newton's third law, the gas pushes the plane forward with an equal force called thrust.",
+          "tl": "Ang jet engine ay nagtutulak ng gas paatras sa mataas na bilis! Ayon sa ikatlong batas ni Newton, ang gas ay nagtutulak sa eroplano pasulong na may katumbas na puwersa na thrust.",
+          "bis": "Ang jet engine nagtulod sa gas paatras sa taas nga bilis! Sumala sa ikatulong batas ni Newton, ang gas motulod sa eroplano pasulong uban sa katumbas nga puwersa. Kini nga puwersa gitawag og thrust."
+        },
+        "slug": "ffct-22961",
+        "title": {
+          "en": "Jet Engine",
+          "tl": "Jet Engine",
+          "bis": "Jet Engine"
+        },
+        "cats": [
+          "forces"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "ikatlong batas ni Newton"
+          ],
+          "en": [
+            "Newton's third law"
+          ],
+          "bis": [
+            "ikatulong batas ni Newton"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The thrust definition is clearer and both blind readers prefer it, but the proposer flags retained batas and the body also uses bilis. Independent corpus bodies reproduce those law/speed meanings; Wolff and Binisaya instead give batas a bamboo-cutting sense, and no inspected Wolff bilis entry supplies speed. Dictionary conflict cannot be overruled by the translated corpus or model agreement. Hold the exact wording without repairing the emphasis or declaring a universal lexical defect.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c6a60769bcee158b5c62f51b2bcb7155f"
+    },
+    {
+      "card_id": "ffct-24984",
+      "source_card_sha256": "e3f23e44561f00a9d801cba95394e1fb3ce2dceee93d1332dd43e1b848b99e6b",
+      "candidate_card_sha256": "c0ac02287bd5c8667bc140c9353aefff29d8bdba0846d510e8121f0bb4957229",
+      "before_card": {
+        "id": "ffct-24984",
+        "factId": "mechanical-advantage-less-1-speed-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "machines with MA less than 1 trade force for speed",
+        "terms": [
+          "mechanical advantage",
+          "less than one",
+          "force",
+          "speed",
+          "bilis",
+          "third class lever",
+          "tweezers",
+          "fishing rod",
+          "trade-off",
+          "ikatlong klase"
+        ],
+        "fact": {
+          "en": "Why use a machine with a mechanical advantage less than 1?\n\nIt needs more input force, but this tradeoff gives greater speed or distance at the load end!",
+          "tl": "Bakit gumamit ng makina na may mechanical advantage na mas mababa sa 1?\n\nKailangan nito ng mas malaking puwersa, pero ginagawa ito para makakuha ng mas malaking bilis o layo ng galaw!",
+          "bis": "Nganong maggamit og makina nga adunay mechanical advantage nga mas ubos sa 1?\n\nKinahanglan kini og mas dako nga puwersa, pero naghatag kini og mas dako nga bilis o distansya sa karga!"
+        },
+        "slug": "ffct-24984",
+        "source": "original",
+        "title": {
+          "tl": "MA < 1 Force para Bilis",
+          "en": "Machines Trade for Speed",
+          "bis": "MA sa Bilis"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-24984",
+        "factId": "mechanical-advantage-less-1-speed-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "machines with MA less than 1 trade force for speed",
+        "terms": [
+          "mechanical advantage",
+          "less than one",
+          "force",
+          "speed",
+          "bilis",
+          "third class lever",
+          "tweezers",
+          "fishing rod",
+          "trade-off",
+          "ikatlong klase"
+        ],
+        "fact": {
+          "en": "Why use a machine with a mechanical advantage less than 1?\n\nIt needs more input force, but this tradeoff gives greater speed or distance at the load end!",
+          "tl": "Bakit gumamit ng makina na may mechanical advantage na mas mababa sa 1?\n\nKailangan nito ng mas malaking puwersa, pero ginagawa ito para makakuha ng mas malaking bilis o layo ng galaw!",
+          "bis": "Nganong maggamit og makina nga adunay mechanical advantage nga mas ubos sa 1?\n\nKinahanglan kini og mas dako nga puwersa nga imong ihatag. Pero isip baylo, makakuha ka og mas dako nga bilis o distansya sa bahin sa karga!"
+        },
+        "slug": "ffct-24984",
+        "source": "original",
+        "title": {
+          "tl": "MA < 1 Force para Bilis",
+          "en": "Machines Trade for Speed",
+          "bis": "Ibaylo ang Puwersa sa Bilis"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The explicit input force and exchange explanation match the English and both blind readers prefer them. Wolff baylu supports the exchange phrase, but the new title elevates bilis to the key term for speed. The inspected Wolff entries lack that sense and the Binisaya lookup failed; independent body examples include conspicuously mixed Tagalog passages. Hold the exact new title/body pair for lexical authority, without treating missing dictionary coverage as proof of invalidity.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "cab5013f8dbf2e2c5238600c25cbad688"
+    }
+  ],
+  "prior_mandatory_missing_judgment_holds": [
+    "ffct-15686",
+    "ffct-24823",
+    "ffct-24184"
+  ],
+  "native_verified": false,
+  "science_verified": false,
+  "released": false,
+  "source_precision_holds_require_cross_language_review": [
+    "ffct-24491",
+    "ffct-24766"
+  ],
+  "lexical_holds": [
+    "ffct-24190",
+    "ffct-24547",
+    "ffct-24779",
+    "ffct-24870",
+    "ffct-24984"
+  ],
+  "fidelity_holds": [],
+  "readability_holds": [],
+  "missing_fidelity_holds_preserved": [
+    {
+      "candidate_approved": false,
+      "card_id": "ffct-24823",
+      "evidence_validated": false,
+      "item_id": "m62c9a9707ea07175cab142c5",
+      "judgment": null,
+      "mandatory_hold": true,
+      "reason": "Requested candidate absent from its exact preserved response; no judgment synthesized.",
+      "receipt_lineage": {
+        "execution": {
+          "bytes": 304,
+          "path": "build/cebuano-readability/campaign-20261002-v1/windows/window-0032/fidelity/execution-001/tasks/compare-006/001/execution.json",
+          "sha256": "3a4b7283d0891c5f8809c1143bbef3a49eae2d9af5ebb2ee8879f623b9157cfb"
+        },
+        "missing_item_ids": [
+          "m62c9a9707ea07175cab142c5"
+        ],
+        "original_call_remains_failed": true,
+        "original_invocation_result": {
+          "bytes": 666,
+          "path": "build/cebuano-readability/campaign-20261002-v1/windows/window-0032/fidelity/execution-001/invocations/b9e2e140-26d1-4569-a410-eaf66ea31ad4/result.json",
+          "sha256": "da06dab9ddfdbb7eedf5a9de5218d0fb0c80ff018bfbc05914875ce5848a743b"
+        },
+        "raw": {
+          "bytes": 5714,
+          "path": "build/cebuano-readability/campaign-20261002-v1/windows/window-0032/fidelity/execution-001/tasks/compare-006/001/stdout.json",
+          "sha256": "b6bb6f717f8934f456926930629db55019b8a01a51b9c3a1829133296d82dc8a"
+        },
+        "request": {
+          "bytes": 1505,
+          "path": "build/cebuano-readability/campaign-20261002-v1/windows/window-0032/fidelity/execution-001/tasks/compare-006/001/request.json",
+          "sha256": "8353bf38c46990008a5889c412a35621e077f80993adbea465be3240ca3b8837"
+        },
+        "returned_item_ids": [
+          "m5c46b33b473407a98fc05c75",
+          "mc2ce13d3a16bd2d46fd292f0",
+          "mfd0b07ab30e920b68e511195",
+          "m02eae99f0d1f29770f750290",
+          "m27ecb04b8c7a37a9d9a65c7c",
+          "m25d0f8cb701e511dcc042b25",
+          "m39395676bba71c67d785b081"
+        ],
+        "state": "failed",
+        "stderr": {
+          "bytes": 0,
+          "path": "build/cebuano-readability/campaign-20261002-v1/windows/window-0032/fidelity/execution-001/tasks/compare-006/001/stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "validation": {
+          "bytes": 573,
+          "path": "build/cebuano-readability/campaign-20261002-v1/windows/window-0032/fidelity/execution-001/tasks/compare-006/001/validation.json",
+          "sha256": "122d1ae6a30f336d521517a404784e6a773c51d5a76c7b4629772bca3b5e4e3b"
+        }
+      },
+      "status": "missing_fidelity_judgment",
+      "task_id": "compare-006"
+    },
+    {
+      "candidate_approved": false,
+      "card_id": "ffct-24184",
+      "evidence_validated": false,
+      "item_id": "me00d19600610cea034540bf9",
+      "judgment": null,
+      "mandatory_hold": true,
+      "reason": "Requested candidate absent from its exact preserved response; no judgment synthesized.",
+      "receipt_lineage": {
+        "execution": {
+          "bytes": 304,
+          "path": "build/cebuano-readability/campaign-20261002-v1/controller-v14/partial-requests/window-0032/fidelity/execution-001/tasks/compare-073/001/execution.json",
+          "sha256": "76bbb86d870641945b3d4047c7ad923c4305758f10090b2c8a321ccbb6d16499"
+        },
+        "missing_item_ids": [
+          "me00d19600610cea034540bf9"
+        ],
+        "original_call_remains_failed": true,
+        "original_invocation_result": {
+          "bytes": 678,
+          "path": "build/cebuano-readability/campaign-20261002-v1/controller-v14/partial-requests/window-0032/fidelity/execution-001/invocations/795d51f4-774d-42eb-9484-929a1882c3bd/result.json",
+          "sha256": "eb965f75ea6a0f7327f1ad4b8a11f8cad288881706673a145a4ddc7f595cfeee"
+        },
+        "raw": {
+          "bytes": 7892,
+          "path": "build/cebuano-readability/campaign-20261002-v1/controller-v14/partial-requests/window-0032/fidelity/execution-001/tasks/compare-073/001/stdout.json",
+          "sha256": "6c238a71db23a52315e2e95065f7a7e41a9449cf8574f2301c11eeb3d945d2a8"
+        },
+        "request": {
+          "bytes": 1515,
+          "path": "build/cebuano-readability/campaign-20261002-v1/controller-v14/partial-requests/window-0032/fidelity/execution-001/tasks/compare-073/001/request.json",
+          "sha256": "bbe78871d0c2ea298e4c81aa8a9a7c11d8a7ed3ab897ed1eb1672319c71be8d7"
+        },
+        "returned_item_ids": [
+          "mc62ae3660140fc799d163ebb",
+          "mf49a39fba6ea67f667c1f21e",
+          "mf8461968ec22db14d8aaa9a1",
+          "m127bdbabe58abf9cd0ae7102",
+          "mccfb6823f48e5cd7103906ad",
+          "m6656c41fbb14ee6e5b3a3491",
+          "m070f612994b7b7645a27b72b"
+        ],
+        "state": "failed",
+        "stderr": {
+          "bytes": 0,
+          "path": "build/cebuano-readability/campaign-20261002-v1/controller-v14/partial-requests/window-0032/fidelity/execution-001/tasks/compare-073/001/stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "validation": {
+          "bytes": 573,
+          "path": "build/cebuano-readability/campaign-20261002-v1/controller-v14/partial-requests/window-0032/fidelity/execution-001/tasks/compare-073/001/validation.json",
+          "sha256": "273a0caee45566bde64006cf75de9db205b34d17d828b642ef5a6e564a56e5db"
+        }
+      },
+      "status": "missing_fidelity_judgment",
+      "task_id": "compare-073"
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "schema": "hiraia.cebuano-curriculum-final-verification/v1",
+  "approved_historical_edits": 3986,
+  "reviewed_curriculum_records": 137,
+  "curriculum_records_edited": 26,
+  "curriculum_bis_leaves_edited": 47,
+  "active_cards": 49155,
+  "retired_card": "dcard-09952",
+  "whole_pool_matches_approved_changes": true,
+  "mandatory_holds_unchanged": [
+    "ffct-15686",
+    "ffct-24184",
+    "ffct-24823",
+    "ffct-08459",
+    "ffct-09018",
+    "ffct-10152",
+    "ffct-18958",
+    "ffct-34595"
+  ],
+  "banks": {
+    "science-facts.jsonl": {
+      "rows": 53022,
+      "changed_rows": 2
+    },
+    "quiz-bank.jsonl": {
+      "rows": 32718,
+      "changed_rows": 4
+    }
+  },
+  "assessment_links_reviewed": 79,
+  "foundation_snapshots_reviewed": 2,
+  "assessment_content_keys_statuses_unchanged": true,
+  "unsupported_exposure_hold": "ha-g4-0010",
+  "compiled_assessments": 705,
+  "excluded_assessments": 5,
+  "production_assessments_enabled": false,
+  "english_review_and_membership_unchanged": true,
+  "db_version": "a486f1a7be0c",
+  "all_database_card_fields_verified": 49155,
+  "retrieval_asset": {
+    "path": "packages/mobile/assets/rag/vectors-labse.i8.bin",
+    "bytes": 122162688,
+    "sha256": "67912d4fd3270876ab2922316b20f8dad4109ac26eac2234cdb1728a6d59405b",
+    "filename": "vectors-labse-3a36094d18d2.i8.bin",
+    "md5": "3d555f7450025a208ca65f2f02436759",
+    "published": false
+  },
+  "outputs": [
+    {
+      "path": "rag/pipeline/cardsPool.app.json",
+      "bytes": 50690630,
+      "sha256": "9e52c84daf466863cdd843f1d17e95ba4b815df669687063163a73ce26b74f1f"
+    },
+    {
+      "path": "rag/bank/science-facts.jsonl",
+      "bytes": 46085176,
+      "sha256": "5010a449b49fe144a9a1b31f40fdf1ea310301d6250fda84818c6f27aa4f7b46"
+    },
+    {
+      "path": "rag/bank/quiz-bank.jsonl",
+      "bytes": 49804289,
+      "sha256": "0c3bf1c0df9d877c7f2db03165d399ecea781b7a348aad5f28d0f761342c1efa"
+    },
+    {
+      "path": "packages/mobile/src/data/cards-questions.json",
+      "bytes": 33712209,
+      "sha256": "9b485d844897e18cf494576b0fb5637a4cb2cdbba9daa4f520e4b21812c6b179"
+    },
+    {
+      "path": "packages/mobile/src/assessment/bank.generated.json",
+      "bytes": 4064813,
+      "sha256": "33e4fc4950adea90ac2c359d2ea4b0774776ec65877cd4b45a6b3505d28d0843"
+    },
+    {
+      "path": "packages/mobile/assets/data/cards.db",
+      "bytes": 146587648,
+      "sha256": "a486f1a7be0c24ea7642bfb570b297acca82e254c059c801b6ca34c9e8ebe047"
+    },
+    {
+      "path": "packages/mobile/src/generated/cardsIndex.generated.json",
+      "bytes": 16717222,
+      "sha256": "edc8f64d77fd8846bddecbad7567eaed6debe07fc4b2c955b40b32d0f97cf883"
+    },
+    {
+      "path": "packages/mobile/assets/data/tokens.bin",
+      "bytes": 8161964,
+      "sha256": "e7c883c5239f550efc01acda89d5d4573e6e779bb2a7a698fc878d28e44948ad"
+    },
+    {
+      "path": "packages/mobile/assets/rag/vectors-labse.meta.json",
+      "bytes": 196,
+      "sha256": "fa50e23c1636d90c86a20626b63c07dd1f18055ca594f9b31ce8f4b37e8414ba"
+    },
+    {
+      "path": "packages/mobile/src/config/edition.ts",
+      "bytes": 2747,
+      "sha256": "d30f0010a82f100d8ed0da9ba918fb95c75eef01b5c318a87715e45934da3b02"
+    }
+  ],
+  "native_certified": false,
+  "provider_calls": 0,
+  "committed": false,
+  "deployed": false
+}

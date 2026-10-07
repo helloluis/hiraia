@@ -1,0 +1,8 @@
+{
+  "actual_exit": 1,
+  "chunk": "aaf66b",
+  "error": "AssertionError: original absolute approval destination already exists",
+  "cause": "18 registry review paths are absolute. Joining an absolute path to the target root retained the original source root. Existence assertion prevented overwriting the source.",
+  "effects": "Nine helpers/tests/retirement files and exact original registry copied to target before failure; zero original-source writes and zero pool changes.",
+  "recovery": "Resolve source paths within original root; copy unchanged approval bytes under matching target-relative paths; change only those 18 review.path references and preserve the original registry."
+}

@@ -1,5 +1,11 @@
 # Full-year curriculum audit — Cebuano handoff
 
+7 October follow-up: [local Cebuano alignment is complete](CEBUANO-CURRICULUM-ALIGNMENT-20261007.md)
+on `codex/cebuano-curriculum-alignment-20261007`. That record covers both handoffs,
+exact source edits, assessment-link review and the new **unpublished** vector asset.
+Native-language and classroom certification remain pending. The 5 October scope
+and evidence below are preserved as the historical handoff.
+
 5 October 2026. **Content changes complete; native language review pending.** Scope: Science Grades 3–10, all three terms. This extends [the Term 2 handoff](TERM2-PILOT-CEBUANO-HANDOFF.md); preserve those earlier fixes.
 
 This pass added **42 trilingual teaching cards**, added/replaced **35 questions on existing facts**, and made **20 persistent science corrections** (19 rendered cards and 19 grounding facts, with overlapping sets). Exact before/after scope is relative to commit `f540e6b0d`. [Machine-readable changes](full-year-content-changes.json) lists every affected ID and the correction payloads.

@@ -1,0 +1,548 @@
+{
+  "schema": "hiraia.gpt61-root-checkpoint-proof/v1",
+  "window_id": "window-0064",
+  "status_sha256": "d2a67c6dd340c0dc953a150190ead651c243db6b355b332d7bc191bd14cb5fcc",
+  "readme_sha256": "17610a9b52cbf4ff4baf4f0e7851f1037e5b53d8c67919920366950430156f45",
+  "known_complete_assessment_counts": {
+    "historical_claude_cards": 35421,
+    "new_unique_gpt_cards": 13732,
+    "new_unique_gpt_qualification_cards": 32,
+    "new_unique_gpt_recovered_window_cards": 1536,
+    "total": 49153,
+    "source_cards": 49156,
+    "remaining": 3,
+    "missing_historical_judgments_remain_holds": 3
+  },
+  "known_provider_accounting": {
+    "gpt61_provider_campaign_calls": 4632,
+    "gpt61_science_assessment_provider_calls": 4625,
+    "gpt61_protocol_attempts": 1,
+    "gpt61_remaining_global_call_ceiling": 25909,
+    "all_providers_known_task_attempts_including_pilot": 18566,
+    "all_providers_validated_successful_calls_excluding_original_failed_protocol": 18508
+  },
+  "approval": {
+    "path": "/Users/luis/Code/hiraia/tools/cebuano-readability/runs/2026-10-07-window-0064/window-0064-approval-20261007.json",
+    "sha256": "c26abd828d8941a9e9d4576d4c5d8d9fae3028dac1f78d653523a66bdc1ca917",
+    "bytes": 357798
+  },
+  "root_decisions": {
+    "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/window64-astra-root-decisions-001.json",
+    "sha256": "78ad5b19632d6cbdf98414a8e92407d1770bd00eac49575cb3bf70fb66b3b148",
+    "bytes": 68402
+  },
+  "review_report": {
+    "path": "/Users/luis/Code/hiraia/build/cebuano-readability/adjudication-20261002/window-0064/replay-v10-001/report.json",
+    "sha256": "bbc0c1b9014c01afda06b188afb81d75dbcd260da26717aa0898679c8105cbe7",
+    "bytes": 2073561
+  },
+  "replay_completion": {
+    "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/window64-replay-v10-completion-001.json",
+    "sha256": "0c8580fb4032b62562d2456e8a66ce02bb4d6a3151cb2992cf069db96b2c2eff",
+    "bytes": 5323
+  },
+  "local_verification": {
+    "path": "/Users/luis/Code/hiraia/build/cebuano-readability/adjudication-20261002/window-0064/local-verification-001.json",
+    "sha256": "ffd50f789e230de65c42405046c67c41249e1ddb49061a1485d4bb5998e9bd79",
+    "bytes": 2802
+  },
+  "local_commands": {
+    "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/window64-local-command-executions-001.json",
+    "sha256": "89f681b7f3569987f01dc8fe1dfe3df2d4547a842fd6141a49d9674457121874",
+    "bytes": 1287
+  },
+  "pool": {
+    "path": "/Users/luis/Code/hiraia/rag/pipeline/cardsPool.app.json",
+    "sha256": "ff2f4634f9cc50874a84d2c42bb53d4f4161ae659949c6d8b3c45f4bd5ff657d",
+    "bytes": 50675401
+  },
+  "registry": {
+    "path": "/Users/luis/Code/hiraia/rag/pipeline/card-language-patches.json",
+    "sha256": "93532d37f761d8b1a9cac825a89961130615100d8f37592e6c1c10232b65331e",
+    "bytes": 9710617
+  },
+  "source_verification": {
+    "path": "/Users/luis/Code/hiraia/build/cebuano-readability/adjudication-20261002/window-0064/source-regeneration-002/verification.json",
+    "sha256": "45ffb767fc6800c64bad101c85181e293eca72efe6fa0cfdf74d403efc97db66",
+    "bytes": 3155
+  },
+  "source_actual_exec": {
+    "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/window64-source-regeneration-exec-002.json",
+    "sha256": "e481f85c86a31e0c2ba6b82fca579320c36e69fa12f2d76ec74c16d2db4f0199",
+    "bytes": 1116
+  },
+  "source_baseline_repair": {
+    "path": "/Users/luis/Code/hiraia/build/cebuano-readability/adjudication-20261002/window-0064/source-baseline-001/repair-001/applied.json",
+    "sha256": "c3cb8a71cb5ce8d1875f80b54103d9236ca0d7336e40d526b3599c5a12ff6e66",
+    "bytes": 10343
+  },
+  "expected_source_repair": {
+    "restored_card_ids": [
+      "ffct-39180",
+      "ffct-39195",
+      "ffct-39196",
+      "ffct-39197",
+      "ffct-39205",
+      "ffct-39206",
+      "ffct-39225",
+      "ffct-39227",
+      "ffct-39228",
+      "ffct-39229",
+      "ffct-39240",
+      "ffct-39249",
+      "ffct-39268",
+      "ffct-39281",
+      "ffct-39283",
+      "ffct-39284",
+      "ffct-39304",
+      "ffct-39313",
+      "ffct-39329",
+      "ffct-39346",
+      "ffct-39349",
+      "ffct-39353",
+      "ffct-39356",
+      "ffct-39367",
+      "ffct-39376",
+      "ffct-39384",
+      "ffct-39392",
+      "ffct-39407",
+      "ffct-39410",
+      "ffct-39412",
+      "ffct-39414",
+      "ffct-39444",
+      "ffct-39476",
+      "ffct-39484",
+      "ffct-39485",
+      "ffct-39521",
+      "ffct-39528",
+      "ffct-39531",
+      "ffct-39537",
+      "ffct-39541",
+      "ffct-39561",
+      "ffct-39572",
+      "ffct-39579",
+      "ffct-39610",
+      "ffct-39613",
+      "ffct-39623",
+      "ffct-39628",
+      "ffct-39644",
+      "ffct-39651",
+      "ffct-39654",
+      "ffct-39660",
+      "ffct-39663",
+      "ffct-39675",
+      "ffct-39677",
+      "ffct-39690",
+      "ffct-39691",
+      "ffct-39696",
+      "ffct-39722",
+      "ffct-39742",
+      "ffct-39749",
+      "ffct-39752",
+      "ffct-39755",
+      "ffct-39758",
+      "ffct-39772",
+      "ffct-39777",
+      "ffct-39778",
+      "ffct-39780",
+      "ffct-39781",
+      "ffct-39797",
+      "ffct-39808",
+      "ffct-39818"
+    ],
+    "restored_paths": {
+      "merged": [
+        [
+          "cards",
+          48982,
+          "fact",
+          "bis"
+        ],
+        [
+          "cards",
+          48487,
+          "title"
+        ],
+        [
+          "cards",
+          48502,
+          "title"
+        ],
+        [
+          "cards",
+          48503,
+          "title"
+        ],
+        [
+          "cards",
+          48504,
+          "title"
+        ],
+        [
+          "cards",
+          48512,
+          "title"
+        ],
+        [
+          "cards",
+          48513,
+          "title"
+        ],
+        [
+          "cards",
+          48532,
+          "title"
+        ],
+        [
+          "cards",
+          48534,
+          "title"
+        ],
+        [
+          "cards",
+          48535,
+          "title"
+        ],
+        [
+          "cards",
+          48536,
+          "title"
+        ],
+        [
+          "cards",
+          48547,
+          "title"
+        ],
+        [
+          "cards",
+          48554,
+          "title"
+        ],
+        [
+          "cards",
+          48573,
+          "title"
+        ],
+        [
+          "cards",
+          48586,
+          "title"
+        ],
+        [
+          "cards",
+          48588,
+          "title"
+        ],
+        [
+          "cards",
+          48589,
+          "title"
+        ],
+        [
+          "cards",
+          48609,
+          "title"
+        ],
+        [
+          "cards",
+          48618,
+          "title"
+        ],
+        [
+          "cards",
+          48634,
+          "title"
+        ],
+        [
+          "cards",
+          48651,
+          "title"
+        ],
+        [
+          "cards",
+          48654,
+          "title"
+        ],
+        [
+          "cards",
+          48658,
+          "title"
+        ],
+        [
+          "cards",
+          48661,
+          "title"
+        ],
+        [
+          "cards",
+          48672,
+          "title"
+        ],
+        [
+          "cards",
+          48681,
+          "title"
+        ],
+        [
+          "cards",
+          48689,
+          "title"
+        ],
+        [
+          "cards",
+          48697,
+          "title"
+        ],
+        [
+          "cards",
+          48712,
+          "title"
+        ],
+        [
+          "cards",
+          48715,
+          "title"
+        ],
+        [
+          "cards",
+          48717,
+          "title"
+        ],
+        [
+          "cards",
+          48719,
+          "title"
+        ],
+        [
+          "cards",
+          48749,
+          "title"
+        ],
+        [
+          "cards",
+          48781,
+          "title"
+        ],
+        [
+          "cards",
+          48789,
+          "title"
+        ],
+        [
+          "cards",
+          48790,
+          "title"
+        ],
+        [
+          "cards",
+          48826,
+          "title"
+        ],
+        [
+          "cards",
+          48833,
+          "title"
+        ],
+        [
+          "cards",
+          48836,
+          "title"
+        ],
+        [
+          "cards",
+          48842,
+          "title"
+        ],
+        [
+          "cards",
+          48846,
+          "title"
+        ],
+        [
+          "cards",
+          48866,
+          "title"
+        ],
+        [
+          "cards",
+          48877,
+          "title"
+        ],
+        [
+          "cards",
+          48884,
+          "title"
+        ],
+        [
+          "cards",
+          48915,
+          "title"
+        ],
+        [
+          "cards",
+          48918,
+          "title"
+        ],
+        [
+          "cards",
+          48928,
+          "title"
+        ],
+        [
+          "cards",
+          48933,
+          "title"
+        ],
+        [
+          "cards",
+          48949,
+          "title"
+        ],
+        [
+          "cards",
+          48956,
+          "title"
+        ],
+        [
+          "cards",
+          48959,
+          "title"
+        ],
+        [
+          "cards",
+          48965,
+          "title"
+        ],
+        [
+          "cards",
+          48968,
+          "title"
+        ],
+        [
+          "cards",
+          48980,
+          "title"
+        ],
+        [
+          "cards",
+          48982,
+          "title"
+        ],
+        [
+          "cards",
+          48995,
+          "title"
+        ],
+        [
+          "cards",
+          48996,
+          "title"
+        ],
+        [
+          "cards",
+          49001,
+          "title"
+        ],
+        [
+          "cards",
+          49027,
+          "title"
+        ],
+        [
+          "cards",
+          49047,
+          "title"
+        ],
+        [
+          "cards",
+          49054,
+          "title"
+        ],
+        [
+          "cards",
+          49057,
+          "title"
+        ],
+        [
+          "cards",
+          49060,
+          "title"
+        ],
+        [
+          "cards",
+          49063,
+          "title"
+        ],
+        [
+          "cards",
+          49077,
+          "title"
+        ],
+        [
+          "cards",
+          49082,
+          "title"
+        ],
+        [
+          "cards",
+          49083,
+          "title"
+        ],
+        [
+          "cards",
+          49085,
+          "title"
+        ],
+        [
+          "cards",
+          49086,
+          "title"
+        ],
+        [
+          "cards",
+          49102,
+          "title"
+        ],
+        [
+          "cards",
+          49113,
+          "title"
+        ],
+        [
+          "cards",
+          49123,
+          "title"
+        ]
+      ]
+    },
+    "complete_trial_field": "trial_complete_pool_equals_prior_normal_plus71_approved_contexts"
+  },
+  "preserved_source_failures": [
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/adjudication-20261002/window-0064/source-regeneration-001/failure.json",
+      "sha256": "f509dee2302a87164a06f840e5b88eaabe41185be63cefc4f2803bc95d5f4424",
+      "bytes": 322
+    }
+  ],
+  "review_manifest": {
+    "path": "/Users/luis/Code/hiraia/build/cebuano-readability/review-full-campaign/review-manifest.json",
+    "sha256": "41c1a6feda485f778e76f5c66b40dfa1b589ba5083865375721c2ceb62a0b1d7",
+    "bytes": 30504067
+  },
+  "review_page": {
+    "path": "/Users/luis/Code/hiraia/build/cebuano-readability/review-full-campaign/index.html",
+    "sha256": "b5f04abc7cbc189185245acdf347ce4b7e58b3ba730e9488f13c36ce80a45a67",
+    "bytes": 11826432
+  },
+  "review_page_actual_exec": {
+    "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/window64-review-page-exec-002.json",
+    "sha256": "4d99e1d29bc3bea0cddc1f1c585625651d34611be51b68ae295ec93474d5ec13",
+    "bytes": 694
+  },
+  "dispatch_drained_observation": {
+    "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/production-observation-v12-windows63-64-001.json",
+    "sha256": "6227020185009ab34ee54a4c79d90c5b13628c15466eb1005882de2971fb587b",
+    "bytes": 2506
+  },
+  "current_serial_heavy_idle": true
+}

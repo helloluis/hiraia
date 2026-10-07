@@ -1,0 +1,4680 @@
+{
+  "schema": "hiraia.cebuano-readability-reviewed-edits/v1",
+  "status": "reviewed_for_local_application",
+  "created_at": "2026-10-04T00:19:40.378936+00:00",
+  "reviewer": "Codex root, independent of Claude proposal/backtranslation/fidelity/readability calls; no separate Codex reviewer used for this window",
+  "scope": "Window 29: 38 individually reviewed exact Cebuano edits and 14 priority holds. Windows 1–28 were previously adjudicated. No score-only approval, native verification, exhaustive science certification or release permission. Invalid-evidence holds ffct-08459, ffct-09018, ffct-10152 and ffct-18958 remain mandatory. Missing-fidelity cards ffct-15686 and ffct-24823 remain held without a synthesized judgment or repeated call.",
+  "window_id": "window-0029",
+  "window_accounting": {
+    "source_cards": 768,
+    "completed_assessments": 768,
+    "missing_fidelity_holds": 0,
+    "approved_exact_edits": 38,
+    "unchanged_keeps": 93,
+    "held": 637,
+    "held_from_priority_set": 14,
+    "preexisting_nonpriority_holds": 623
+  },
+  "input_pins": [
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0029/report.json",
+      "sha256": "8be6332abe004c84c1370faecd1864d9c77fd42ed9c4358e228769a3f203def4",
+      "bytes": 37172483
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0029/clean-agreement.jsonl",
+      "sha256": "7a7f4ff84534e8e063cd14cc0538fdc07638a9e811dbf9ac592beec2f78d5c63",
+      "bytes": 1327834
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0029/replay/fidelity/judgments.jsonl",
+      "sha256": "59fbcf53708209fb9eb27d3826bf906fc0c6aed0a29220d7110ec7cee063e3ae",
+      "bytes": 785027
+    },
+    {
+      "path": "build/cebuano-readability/campaign-20261002-v1/windows/window-0029/fidelity-inputs/private-map.json",
+      "sha256": "3c3dce31065a5aab3fec731e0134bb7992212964489da45423df72112ea75f73",
+      "bytes": 785494
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0029/root-decisions.json",
+      "sha256": "eab8335f3d23b47198e36fc5025dcb7e09fa1210070f1e34ab828be8aa585a6d",
+      "bytes": 20089
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0029/corpus-lexical-evidence.json",
+      "sha256": "1a8aa31fbcef2c7c9de606c423afe515c57fc3f87e47e90f10a68df67d697705",
+      "bytes": 47118
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0029/dictionary-entries.json",
+      "sha256": "0c095088f4a1bcd31ef2d281e84318f203681ffd1288350a14997224cadd11e3",
+      "bytes": 44639
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0029/dictionary-cross-references.json",
+      "sha256": "1175acb0bb34f4e87187776582de0e5ccc404c5ac883d8c26951207661bbd78c",
+      "bytes": 1493
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0029/lexical-source-review.json",
+      "sha256": "aa8897d384fd6cc5edf241e1439a103349257f6fe77f3c8edad0e98868c1dd2b",
+      "bytes": 8759
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-gutenberg-40074.txt",
+      "sha256": "f80b888b24dd4ca7f5cb16276b4a53f9d22129a496b9ffb7f7efe17d3b9a1504",
+      "bytes": 5699379
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-retrieval.json",
+      "sha256": "bd713c5adf21541a0e7fd9c49f75fb6b9d4157fb88d41151a245165b8955b7da",
+      "bytes": 502
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0029/collect-evidence-001.py",
+      "sha256": "851be74bdad44cc71dae9952715ea1d0d7ce5c33186032065ec82a909fc7311e",
+      "bytes": 5104
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/show-dossiers-381c35b8.py",
+      "sha256": "3c4026d3aca782f1605b75855c941eac29ecef94119e2e58ea3773aa08bcd3cd",
+      "bytes": 2322
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0029/write-root-records.py",
+      "sha256": "10ae8b402bc5d65b5901b266a735c393f20c4a147a0727e366695a6ef7871ec5",
+      "bytes": 25445
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0029/create-root-approval.py",
+      "sha256": "fe9adeb7a2cb6177d1bec658f998ad77d735c5c750d7cba16309374df202271b",
+      "bytes": 7080
+    }
+  ],
+  "current_pool_before_application": {
+    "path": "rag/pipeline/cardsPool.app.json",
+    "sha256": "7a020d946ffd4b74af132716399871fe99e3afa7be138f4f0d75128761f74288",
+    "bytes": 50646662
+  },
+  "accepted": [
+    {
+      "card_id": "ffct-21851",
+      "source_card_sha256": "36c2761e3fd74b505facff17cef468fbc5aca951eef748e3aa895a400a96c788",
+      "candidate_card_sha256": "8d288ece22decebceb8f919e11eba44971971a712be0dea2b872691f19f7acf0",
+      "before_card": {
+        "id": "ffct-21851",
+        "factId": "melting-around-us-examples-g3",
+        "domain": "MATTER",
+        "topic": "everyday examples of melting",
+        "terms": [
+          "natutunaw",
+          "melting",
+          "ice candy",
+          "sorbetes",
+          "ice cream",
+          "chocolate",
+          "tsokolate",
+          "kandila",
+          "wax",
+          "mantika",
+          "mainit",
+          "init",
+          "matunaw"
+        ],
+        "fact": {
+          "en": "Lots of things melt when it's hot — like ice cream, chocolate, and candle wax! 🍦🍫🕯️",
+          "tl": "Maraming bagay ang natutunaw kapag mainit — tulad ng ice cream, tsokolate, at wax ng kandila! 🍦🍫🕯️",
+          "bis": "Daghan og butang ang natunaw kung mainit — sama sa ice cream, tsokolate, ug wax sa kandila! 🍦🍫🕯️"
+        },
+        "slug": "",
+        "title": {
+          "en": "Melting Examples",
+          "tl": "Pagtunaw Halimbawa",
+          "bis": "Pagtunaw Pananglitan"
+        },
+        "cats": [
+          "states-of-matter",
+          "heat"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "natutunaw"
+          ],
+          "en": [
+            "melt"
+          ],
+          "bis": [
+            "natunaw"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-21851",
+        "factId": "melting-around-us-examples-g3",
+        "domain": "MATTER",
+        "topic": "everyday examples of melting",
+        "terms": [
+          "natutunaw",
+          "melting",
+          "ice candy",
+          "sorbetes",
+          "ice cream",
+          "chocolate",
+          "tsokolate",
+          "kandila",
+          "wax",
+          "mantika",
+          "mainit",
+          "init",
+          "matunaw"
+        ],
+        "fact": {
+          "en": "Lots of things melt when it's hot — like ice cream, chocolate, and candle wax! 🍦🍫🕯️",
+          "tl": "Maraming bagay ang natutunaw kapag mainit — tulad ng ice cream, tsokolate, at wax ng kandila! 🍦🍫🕯️",
+          "bis": "Daghan og butang ang natunaw kung mainit — sama sa ice cream, tsokolate, ug wax sa kandila! 🍦🍫🕯️"
+        },
+        "slug": "",
+        "title": {
+          "en": "Melting Examples",
+          "tl": "Pagtunaw Halimbawa",
+          "bis": "Mga Pananglitan sa Pagtunaw"
+        },
+        "cats": [
+          "states-of-matter",
+          "heat"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "natutunaw"
+          ],
+          "en": [
+            "melt"
+          ],
+          "bis": [
+            "natunaw"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title becomes Examples of Melting with the plural marker and linker. The existing melting examples and natunaw emphasis remain exact. Wolff’s sanglit derivatives support pananglitan. Both readers prefer the title and tie the body.",
+      "formal_item_id": "cf8b474730739a639381becc9f7df5bc2",
+      "fidelity_item_id": "m940fe7bd94c03aa2aabad9db",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-21863",
+      "source_card_sha256": "c037dc5f81db2a1d7bcf59aa0cd2354733fe0134f008df08e205b6490b2640c7",
+      "candidate_card_sha256": "679b6481dfea0db5f5dfbb48758c226109ec06be8cee9ef09d9887502df144f1",
+      "before_card": {
+        "id": "ffct-21863",
+        "factId": "fme-kinetic-potential-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "kinetic and potential energy",
+        "terms": [
+          "kinetic energy",
+          "potential energy",
+          "stored",
+          "motion",
+          "tumatakbong",
+          "gumulong",
+          "nagdagan",
+          "moligid",
+          "kalagayan",
+          "posisyon",
+          "bungtod",
+          "tuktok",
+          "burol",
+          "nakaimbak"
+        ],
+        "fact": {
+          "en": "Kinetic energy is the energy of a moving object, like a running child! Potential energy is stored energy due to an object's position, like a rock at a hill's top.",
+          "tl": "Ang kinetic energy ay ang energy ng gumagalaw na bagay, tulad ng tumatakbong bata! Ang potential energy naman ay nakaimbak na energy dahil sa posisyon, tulad ng batong nasa tuktok ng burol.",
+          "bis": "Ang kinetic energy mao ang energy sa naglihok nga butang, sama sa nagdagan nga bata! Ang potential energy mao ang natipig nga energy tungod sa posisyon, sama sa bato sa tumoy sa bungtod."
+        },
+        "slug": "kinetic-potential-energy",
+        "title": {
+          "en": "Kinetic & Potential",
+          "tl": "Kinetic at Potensyal",
+          "bis": "Kinetic ug Potensyal"
+        },
+        "cats": [
+          "energy",
+          "motion"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kinetic energy"
+          ],
+          "en": [
+            "Kinetic energy"
+          ],
+          "bis": [
+            "kinetic energy"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-21863",
+        "factId": "fme-kinetic-potential-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "kinetic and potential energy",
+        "terms": [
+          "kinetic energy",
+          "potential energy",
+          "stored",
+          "motion",
+          "tumatakbong",
+          "gumulong",
+          "nagdagan",
+          "moligid",
+          "kalagayan",
+          "posisyon",
+          "bungtod",
+          "tuktok",
+          "burol",
+          "nakaimbak"
+        ],
+        "fact": {
+          "en": "Kinetic energy is the energy of a moving object, like a running child! Potential energy is stored energy due to an object's position, like a rock at a hill's top.",
+          "tl": "Ang kinetic energy ay ang energy ng gumagalaw na bagay, tulad ng tumatakbong bata! Ang potential energy naman ay nakaimbak na energy dahil sa posisyon, tulad ng batong nasa tuktok ng burol.",
+          "bis": "Ang kinetic energy mao ang energy sa naglihok nga butang, sama sa nagdagan nga bata! Ang potential energy mao ang natipig nga energy tungod sa posisyon sa butang, sama sa bato sa tumoy sa bungtod."
+        },
+        "slug": "kinetic-potential-energy",
+        "title": {
+          "en": "Kinetic & Potential",
+          "tl": "Kinetic at Potensyal",
+          "bis": "Kinetic ug Potensyal"
+        },
+        "cats": [
+          "energy",
+          "motion"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kinetic energy"
+          ],
+          "en": [
+            "Kinetic energy"
+          ],
+          "bis": [
+            "kinetic energy"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Adding sa butang explicitly identifies whose position determines the stored energy, matching the English. Both kinetic/moving and potential/stored examples remain unchanged. Both readers prefer this exact body; title and emphasis stay exact.",
+      "formal_item_id": "c7e67945517cd09f66a6a761f53579a77",
+      "fidelity_item_id": "mbd3e371201f996b195263440",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-21870",
+      "source_card_sha256": "fd6aea16036de2ecaaa77068d145256ac217c09bdf8c6e19182da16f25c5ded9",
+      "candidate_card_sha256": "3081b06d9e556e60166fa549899ad0af01d8ed1845d6112251dd2346090b03c3",
+      "before_card": {
+        "id": "ffct-21870",
+        "factId": "straw-bent-water-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "straw looks bent in water",
+        "terms": [
+          "straw",
+          "baso",
+          "tubig",
+          "mukhang",
+          "baluktot",
+          "putol",
+          "lumiliko",
+          "liwanag",
+          "bent",
+          "broken",
+          "water",
+          "glass",
+          "light",
+          "murag",
+          "baliko",
+          "naputol",
+          "refraction"
+        ],
+        "fact": {
+          "en": "Why does a straw look bent in a glass of water?\n\nIt looks bent or broken because light bends, or refracts, as it leaves the water!",
+          "tl": "Bakit mukhang baluktot ang straw sa baso ng tubig?\n\nMukhang baluktot o putol ito dahil lumiliko, o nagre-refract, ang liwanag habang lumalabas sa tubig!",
+          "bis": "Ngano nga murag baliko ang straw sa baso nga tubig?\n\nMurag baliko o naputol kini tungod kay moliko, o mag-refract, ang kahayag samtang mogawas kini sa tubig!"
+        },
+        "slug": "straw-bend-glass-water",
+        "title": {
+          "en": "Bent Straw",
+          "tl": "Baluktot na Straw",
+          "bis": "Baliko nga Straw"
+        },
+        "cats": [
+          "light"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "nagre-refract"
+          ],
+          "en": [
+            "refracts"
+          ],
+          "bis": [
+            "mag-refract"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-21870",
+        "factId": "straw-bent-water-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "straw looks bent in water",
+        "terms": [
+          "straw",
+          "baso",
+          "tubig",
+          "mukhang",
+          "baluktot",
+          "putol",
+          "lumiliko",
+          "liwanag",
+          "bent",
+          "broken",
+          "water",
+          "glass",
+          "light",
+          "murag",
+          "baliko",
+          "naputol",
+          "refraction"
+        ],
+        "fact": {
+          "en": "Why does a straw look bent in a glass of water?\n\nIt looks bent or broken because light bends, or refracts, as it leaves the water!",
+          "tl": "Bakit mukhang baluktot ang straw sa baso ng tubig?\n\nMukhang baluktot o putol ito dahil lumiliko, o nagre-refract, ang liwanag habang lumalabas sa tubig!",
+          "bis": "Ngano nga murag baliko ang straw sa baso nga tubig?\n\nMurag baliko o naputol kini tungod kay moliko, o mag-refract, ang kahayag samtang mogawas gikan sa tubig!"
+        },
+        "slug": "straw-bend-glass-water",
+        "title": {
+          "en": "Bent Straw",
+          "tl": "Baluktot na Straw",
+          "bis": "Baliko nga Straw"
+        },
+        "cats": [
+          "light"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "nagre-refract"
+          ],
+          "en": [
+            "refracts"
+          ],
+          "bis": [
+            "mag-refract"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The final clause replaces a repeated kini with gikan, marking the water as the light’s source and avoiding a competing straw referent. Refraction, the apparent bend and mag-refract emphasis remain. Both readers prefer the changed body; no physical bending of the straw is asserted.",
+      "formal_item_id": "c4493d450bf4eb423a46a0e19ffb39e99",
+      "fidelity_item_id": "m13110169bf7f5455dfde0c2d",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-21874",
+      "source_card_sha256": "5cc9df72f870467d8002b046bf2f9edf06f73f92cd63f609f5660e39946d0672",
+      "candidate_card_sha256": "30f5c0373d28b79f48864a7434b51ec1c18f60ccee412c219561584f789454b5",
+      "before_card": {
+        "id": "ffct-21874",
+        "factId": "inertia-depends-on-mass-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "inertia increases with mass",
+        "terms": [
+          "inertia",
+          "inersya",
+          "masa",
+          "mass",
+          "gibug-aton",
+          "mas mabigat",
+          "mas malaki ang inersya",
+          "mas mahirap pakilusin",
+          "mas mahirap patigilin",
+          "resistensya sa pagbabago",
+          "bug-at",
+          "mas lisod palihukon",
+          "mas lisod patumanon",
+          "resistance to change",
+          "carabao cart",
+          "kariton",
+          "more mass more inertia"
+        ],
+        "fact": {
+          "en": "Why is a loaded cart harder to push than an empty one?\n\nAn object has more inertia when it has more mass! That’s why a loaded cart has more inertia and is harder to start or stop than an empty one.",
+          "tl": "Bakit mas mahirap itulak ang punong kariton kaysa sa walang laman?\n\nMas malaki ang inertia ng isang bagay kapag mas malaki ang masa nito! Kaya mas mahirap pakilusin o patigilin ang punong kariton kaysa sa walang laman.",
+          "bis": "Nganong mas lisod iduso ang puno nga kariton kaysa walay sulod?\n\nMas dako ang inertia sa butang kon mas dako ang masa niini! Mao nga mas lisod palihukon o pahunongon ang puno nga kariton kaysa walay sulod."
+        },
+        "slug": "ffct-21874",
+        "source": "original",
+        "title": {
+          "tl": "Punong Kariton Malaking Inertia",
+          "en": "Loaded Cart More Inertia",
+          "bis": "Puno nga Kariton Dako Inertia"
+        },
+        "cats": [
+          "forces-and-motion"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-21874",
+        "factId": "inertia-depends-on-mass-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "inertia increases with mass",
+        "terms": [
+          "inertia",
+          "inersya",
+          "masa",
+          "mass",
+          "gibug-aton",
+          "mas mabigat",
+          "mas malaki ang inersya",
+          "mas mahirap pakilusin",
+          "mas mahirap patigilin",
+          "resistensya sa pagbabago",
+          "bug-at",
+          "mas lisod palihukon",
+          "mas lisod patumanon",
+          "resistance to change",
+          "carabao cart",
+          "kariton",
+          "more mass more inertia"
+        ],
+        "fact": {
+          "en": "Why is a loaded cart harder to push than an empty one?\n\nAn object has more inertia when it has more mass! That’s why a loaded cart has more inertia and is harder to start or stop than an empty one.",
+          "tl": "Bakit mas mahirap itulak ang punong kariton kaysa sa walang laman?\n\nMas malaki ang inertia ng isang bagay kapag mas malaki ang masa nito! Kaya mas mahirap pakilusin o patigilin ang punong kariton kaysa sa walang laman.",
+          "bis": "Nganong mas lisod iduso ang puno nga kariton kaysa walay sulod?\n\nMas dako ang inertia sa butang kon mas dako ang masa niini! Mao nga mas dako ang inertia sa puno nga kariton, ug mas lisod kini palihukon o pahunongon kaysa sa kariton nga walay sulod."
+        },
+        "slug": "ffct-21874",
+        "source": "original",
+        "title": {
+          "tl": "Punong Kariton Malaking Inertia",
+          "en": "Loaded Cart More Inertia",
+          "bis": "Mas Dako ang Inertia sa Puno nga Kariton"
+        },
+        "cats": [
+          "forces-and-motion"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate explicitly states the loaded cart’s greater inertia before its greater resistance to starting/stopping, as the English does. It names the empty comparison cart and links the title grammatically. Both readers prefer both fields; no new mass claim is introduced.",
+      "formal_item_id": "c32992df7cc9dbd3ae6fb85b7ba452d5a",
+      "fidelity_item_id": "m455127bd2280fb72b17a6257",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-21879",
+      "source_card_sha256": "9ecb9b2c3960439077f797ad70424b5e69b97bd92ec049a4ff8fb0eef02febee",
+      "candidate_card_sha256": "484674e2ede05cf251680fa81bbbd617742f84540441b7cd629de29cb7c6a946",
+      "before_card": {
+        "id": "ffct-21879",
+        "factId": "action-reaction-different-objects-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "action-reaction pairs act on different objects",
+        "terms": [
+          "ikatlong batas",
+          "third law",
+          "action reaction",
+          "aksyon reaksyon",
+          "magkaibang bagay",
+          "different objects",
+          "hindi nagkakansela",
+          "do not cancel",
+          "dalawang bagay",
+          "magkahiwalay na bagay",
+          "magkalahing butang",
+          "dili magkanselar",
+          "duha ka butang",
+          "lain-lain nga butang",
+          "pair of forces",
+          "magkapares na puwersa"
+        ],
+        "fact": {
+          "en": "Why don't action and reaction forces cancel each other out?\n\nThey act on TWO DIFFERENT objects! When you push a wall, your force is on the wall, and its reaction force is on you.",
+          "tl": "Bakit hindi nagkakansela ang action at reaction forces?\n\nKumikilos sila sa DALAWANG MAGKAIBANG bagay! Kapag itinulak mo ang dingding, ang force mo ay nasa dingding, at ang reaction force nito ay nasa iyo.",
+          "bis": "Nganong dili magkanselar ang action ug reaction forces?\n\nMolihok sila sa DUHA KA MAGKALAHING butang! Kon iduso nimo ang bungbong, ang imong force anaa sa bungbong, ug ang reaction force niini anaa kanimo."
+        },
+        "slug": "ffct-21879",
+        "source": "original",
+        "title": {
+          "tl": "Action Reaction Dalawang Bagay",
+          "en": "Action Reaction Two Objects",
+          "bis": "Action Reaction Duha ka Butang"
+        },
+        "cats": [
+          "forces"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-21879",
+        "factId": "action-reaction-different-objects-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "action-reaction pairs act on different objects",
+        "terms": [
+          "ikatlong batas",
+          "third law",
+          "action reaction",
+          "aksyon reaksyon",
+          "magkaibang bagay",
+          "different objects",
+          "hindi nagkakansela",
+          "do not cancel",
+          "dalawang bagay",
+          "magkahiwalay na bagay",
+          "magkalahing butang",
+          "dili magkanselar",
+          "duha ka butang",
+          "lain-lain nga butang",
+          "pair of forces",
+          "magkapares na puwersa"
+        ],
+        "fact": {
+          "en": "Why don't action and reaction forces cancel each other out?\n\nThey act on TWO DIFFERENT objects! When you push a wall, your force is on the wall, and its reaction force is on you.",
+          "tl": "Bakit hindi nagkakansela ang action at reaction forces?\n\nKumikilos sila sa DALAWANG MAGKAIBANG bagay! Kapag itinulak mo ang dingding, ang force mo ay nasa dingding, at ang reaction force nito ay nasa iyo.",
+          "bis": "Nganong dili magkanselar ang action ug reaction forces?\n\nMolihok sila sa DUHA KA MAGKALAHING butang! Kon iduso nimo ang bungbong, ang imong force anaa sa bungbong, ug ang reaction force niini anaa kanimo."
+        },
+        "slug": "ffct-21879",
+        "source": "original",
+        "title": {
+          "tl": "Action Reaction Dalawang Bagay",
+          "en": "Action Reaction Two Objects",
+          "bis": "Action ug Reaction sa Duha ka Butang"
+        },
+        "cats": [
+          "forces"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only ug and sa connect action, reaction and the two objects in the title. The unchanged body retains TWO DIFFERENT objects and the wall/person force assignment. Both readers prefer the title; no same-object cancellation explanation is introduced.",
+      "formal_item_id": "c35502d32af62ad31752b5e88494fc280",
+      "fidelity_item_id": "mcf00144c7d3b72a2baaeec52",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-21881",
+      "source_card_sha256": "a0da336c169e4b384d4e3d731d7961763ba099407a9c1f77b841a46b1a37835f",
+      "candidate_card_sha256": "c20daa9af1582fce8ceda44bda3bf0dfff0ceeb824e84221a14023a618a42dd7",
+      "before_card": {
+        "id": "ffct-21881",
+        "factId": "basketball-jump-reaction-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "jumping action-reaction with the floor",
+        "terms": [
+          "basketball",
+          "talon",
+          "jump",
+          "lukso",
+          "itinutulak ang sahig",
+          "push the floor",
+          "sahig",
+          "floor",
+          "tumutulak pabalik",
+          "reaction",
+          "aksyon reaksyon",
+          "umakyat",
+          "iambak",
+          "iduso ang salog",
+          "moduso balik",
+          "molukso",
+          "ground pushes back",
+          "rebound",
+          "lakas"
+        ],
+        "fact": {
+          "en": "When a basketball player jumps, they push hard on the floor downward (action), and the floor pushes them upward (reaction) to lift them into the air!",
+          "tl": "Kapag tumalon ang basketball player, malakas niyang itinutulak ang sahig pababa (action), at itinutulak siya ng sahig pataas (reaction) para umangat sa ere!",
+          "bis": "Kon molukso ang basketball player, kusgan niyang iduso ang salog paubos (action), ug moduso ang salog kaniya pataas (reaction) aron makaangat sa hangin!"
+        },
+        "slug": "ffct-21881",
+        "source": "original",
+        "title": {
+          "tl": "Talon Sahig Reaction Pataas",
+          "en": "Jump Floor Reaction",
+          "bis": "Lukso Salog Reaction Paibabaw"
+        },
+        "cats": [
+          "forces-and-motion"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-21881",
+        "factId": "basketball-jump-reaction-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "jumping action-reaction with the floor",
+        "terms": [
+          "basketball",
+          "talon",
+          "jump",
+          "lukso",
+          "itinutulak ang sahig",
+          "push the floor",
+          "sahig",
+          "floor",
+          "tumutulak pabalik",
+          "reaction",
+          "aksyon reaksyon",
+          "umakyat",
+          "iambak",
+          "iduso ang salog",
+          "moduso balik",
+          "molukso",
+          "ground pushes back",
+          "rebound",
+          "lakas"
+        ],
+        "fact": {
+          "en": "When a basketball player jumps, they push hard on the floor downward (action), and the floor pushes them upward (reaction) to lift them into the air!",
+          "tl": "Kapag tumalon ang basketball player, malakas niyang itinutulak ang sahig pababa (action), at itinutulak siya ng sahig pataas (reaction) para umangat sa ere!",
+          "bis": "Kon molukso ang basketball player, iduso niya og kusog ang salog paubos (action). Moduso usab ang salog kaniya pataas (reaction) aron makaangat siya sa hangin!"
+        },
+        "slug": "ffct-21881",
+        "source": "original",
+        "title": {
+          "tl": "Talon Sahig Reaction Pataas",
+          "en": "Jump Floor Reaction",
+          "bis": "Paglukso ug ang Reaction sa Salog"
+        },
+        "cats": [
+          "forces-and-motion"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Separate action and reaction sentences preserve downward pushing on the floor and the upward floor force on the player. Kusug supports pushing hard, and siya names the rising player. The linked title retains the floor’s reaction. Both readers prefer both changed fields.",
+      "formal_item_id": "c428a0f86e894b0fb452cc57b9b12160e",
+      "fidelity_item_id": "m7cd4cda1184534130035376c",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-21964",
+      "source_card_sha256": "9a372b147b00294c954dfff3498f61e9a1f4dde8577102fc55a99d5a146cf381",
+      "candidate_card_sha256": "c37686c59270952f6091d4839bfbfd89cdb8937619f966545d669a4c671575f8",
+      "before_card": {
+        "id": "ffct-21964",
+        "factId": "wave-speed-depends-medium-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "wave speed depends on medium",
+        "terms": [
+          "wave speed medium",
+          "bilis ng alon depende sa medium",
+          "lainlain nga katulin",
+          "different speeds in different materials",
+          "iba't ibang bilis",
+          "magkaiba sa bawat materyal",
+          "katulin nagdepende sa materyal",
+          "sound travels faster in water"
+        ],
+        "fact": {
+          "en": "Does a wave travel at the same speed everywhere?\n\nWaves travel at different speeds in different materials! Sound goes faster in water and metal than in air.",
+          "tl": "Pare-pareho ba ang bilis ng alon sa lahat ng lugar?\n\nNagkakaiba ang bilis ng alon sa iba't ibang materyal! Mas mabilis ang tunog sa tubig at metal kaysa sa hangin.",
+          "bis": "Parehas ba ang katulin sa balod sa tanang lugar?\n\nNagkalain-lain ang katulin sa balod sa lainlaing materyal! Mas paspas ang tingog sa tubig ug metal kaysa sa hangin."
+        },
+        "slug": "ffct-21964",
+        "source": "original",
+        "title": {
+          "tl": "Tunog Mabilis Tubig Metal",
+          "en": "Speed by Medium",
+          "bis": "Tunog Mabilis Tubig Metal"
+        },
+        "cats": [
+          "sound"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-21964",
+        "factId": "wave-speed-depends-medium-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "wave speed depends on medium",
+        "terms": [
+          "wave speed medium",
+          "bilis ng alon depende sa medium",
+          "lainlain nga katulin",
+          "different speeds in different materials",
+          "iba't ibang bilis",
+          "magkaiba sa bawat materyal",
+          "katulin nagdepende sa materyal",
+          "sound travels faster in water"
+        ],
+        "fact": {
+          "en": "Does a wave travel at the same speed everywhere?\n\nWaves travel at different speeds in different materials! Sound goes faster in water and metal than in air.",
+          "tl": "Pare-pareho ba ang bilis ng alon sa lahat ng lugar?\n\nNagkakaiba ang bilis ng alon sa iba't ibang materyal! Mas mabilis ang tunog sa tubig at metal kaysa sa hangin.",
+          "bis": "Parehas ba ang katulin sa balod sa tanang lugar?\n\nNagkalain-lain ang katulin sa balod sa lainlaing materyal! Mas paspas ang tingog sa tubig ug metal kaysa sa hangin."
+        },
+        "slug": "ffct-21964",
+        "source": "original",
+        "title": {
+          "tl": "Tunog Mabilis Tubig Metal",
+          "en": "Speed by Medium",
+          "bis": "Katulin sa Lainlaing Materyal"
+        },
+        "cats": [
+          "sound"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title becomes Speed in Different Materials, reusing the body’s katulin and materyal. The unchanged body retains sound’s faster propagation in water/metals than air. Both readers prefer the title. This approval does not adopt the judges’ broad claim that tunog can only be Tagalog.",
+      "formal_item_id": "cdfb0039188066e9d10729ffc341330d3",
+      "fidelity_item_id": "m9de7e1fe830fac34804fcb7f",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-21965",
+      "source_card_sha256": "bbbc0a20dd39aed638e682459e396e6df68a91f3eff34e605027fd567618d53b",
+      "candidate_card_sha256": "dc6c6c08fcddddc9b116d61c6236ca96fd5d68d3bc118c56a146e679eee9b4b9",
+      "before_card": {
+        "id": "ffct-21965",
+        "factId": "wave-sound-needs-medium-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "sound waves need a medium",
+        "terms": [
+          "sound needs medium",
+          "kailangan ng tunog ng medium",
+          "walang tunog sa vacuum",
+          "walay tingog sa wala'y hangin",
+          "sound vacuum",
+          "pressure wave air",
+          "tunog kailangan hangin",
+          "tingog nanginahanglan medium",
+          "bakwum"
+        ],
+        "fact": {
+          "en": "Sound is a pressure wave needing a medium like air, water, or solid, so it cannot travel through a complete vacuum!",
+          "tl": "Ang tunog ay isang alon ng presyon na nangangailangan ng medium tulad ng hangin, tubig, o solido, kaya't hindi makakadaan sa complete vacuum!",
+          "bis": "Ang tingog usa ka balod sa presyon nga nanginahanglan og medium sama sa hangin, tubig, o solido, mao nga dili makaagi sa hingpit nga wala'y sulod nga luna!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Sound Medium",
+          "tl": "Daluyan ng Tunog",
+          "bis": "Midyum sa Tunog"
+        },
+        "cats": [
+          "sound"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "medium"
+          ],
+          "en": [
+            "medium"
+          ],
+          "bis": [
+            "medium"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-21965",
+        "factId": "wave-sound-needs-medium-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "sound waves need a medium",
+        "terms": [
+          "sound needs medium",
+          "kailangan ng tunog ng medium",
+          "walang tunog sa vacuum",
+          "walay tingog sa wala'y hangin",
+          "sound vacuum",
+          "pressure wave air",
+          "tunog kailangan hangin",
+          "tingog nanginahanglan medium",
+          "bakwum"
+        ],
+        "fact": {
+          "en": "Sound is a pressure wave needing a medium like air, water, or solid, so it cannot travel through a complete vacuum!",
+          "tl": "Ang tunog ay isang alon ng presyon na nangangailangan ng medium tulad ng hangin, tubig, o solido, kaya't hindi makakadaan sa complete vacuum!",
+          "bis": "Ang tingog usa ka balod sa presyon. Nanginahanglan kini og medium sama sa hangin, tubig, o solido. Mao nga dili kini makaagi sa hingpit nga wala'y sulod nga luna!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Sound Medium",
+          "tl": "Daluyan ng Tunog",
+          "bis": "Midyum sa Tunog"
+        },
+        "cats": [
+          "sound"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "medium"
+          ],
+          "en": [
+            "medium"
+          ],
+          "bis": [
+            "medium"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Three sentences distinguish the pressure-wave definition, required medium and inability to cross a complete vacuum, linked by Mao nga. Explicit kini retains sound as subject, and medium emphasis stays exact. Tunug is dictionary-attested; the existing title is not silently normalized. Both readers prefer the body.",
+      "formal_item_id": "c422cf3783598813f4e58471a32f60ec1",
+      "fidelity_item_id": "m7871c52ecc391a7c3161bbce",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22010",
+      "source_card_sha256": "3f7ccc1dc3dae532592e6ed9a1dbb913e5ada955191aaa65ee2c20c062467d8e",
+      "candidate_card_sha256": "44dbb8a36f76880585d8c9c771e04a7e6d3542ff02f3982e38750987c54c39e4",
+      "before_card": {
+        "id": "ffct-22010",
+        "factId": "generator-mechanical-to-electrical-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "generators turn mechanical energy into electrical energy",
+        "terms": [
+          "generator",
+          "henerador",
+          "mechanical patungong electrical",
+          "mechanical to electrical",
+          "umiikot na magnet bumubuo ng kuryente",
+          "spinning turbine",
+          "henerador sa kuryente",
+          "mekanikal ngadto sa elektrikal",
+          "nagtuyok nga magnet maghimo og kuryente",
+          "turbine nga nagtuyok",
+          "enerhiya ng paggalaw nagiging kuryente",
+          "lihok mahimong elektrisidad",
+          "elektromagnetikong induksyon",
+          "planta ng kuryente"
+        ],
+        "fact": {
+          "en": "How does a generator make electricity?\n\nA generator changes the mechanical energy of a spinning turbine into electrical energy by turning a magnet near coils of wire.",
+          "tl": "Paano gumagawa ng kuryente ang generator?\n\nGinagawa ito ng generator sa pagbabago ng mechanical energy ng umiikot na turbine tungong electrical energy, sa pamamagitan ng pagpapaikot ng magnet malapit sa mga kawad.",
+          "bis": "Unsaon paghimo og kuryente sa generator?\n\nAng generator magbalhin sa mechanical energy sa nagtuyok nga turbine ngadto sa electrical energy pinaagi sa pagtuyok sa magnet duol sa mga koil sa alambre."
+        },
+        "slug": "ffct-22010",
+        "source": "original",
+        "title": {
+          "tl": "Generator Turbine Kuryente",
+          "en": "How Generators Work",
+          "bis": "Generator sa Kuryente"
+        },
+        "cats": [
+          "energy",
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22010",
+        "factId": "generator-mechanical-to-electrical-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "generators turn mechanical energy into electrical energy",
+        "terms": [
+          "generator",
+          "henerador",
+          "mechanical patungong electrical",
+          "mechanical to electrical",
+          "umiikot na magnet bumubuo ng kuryente",
+          "spinning turbine",
+          "henerador sa kuryente",
+          "mekanikal ngadto sa elektrikal",
+          "nagtuyok nga magnet maghimo og kuryente",
+          "turbine nga nagtuyok",
+          "enerhiya ng paggalaw nagiging kuryente",
+          "lihok mahimong elektrisidad",
+          "elektromagnetikong induksyon",
+          "planta ng kuryente"
+        ],
+        "fact": {
+          "en": "How does a generator make electricity?\n\nA generator changes the mechanical energy of a spinning turbine into electrical energy by turning a magnet near coils of wire.",
+          "tl": "Paano gumagawa ng kuryente ang generator?\n\nGinagawa ito ng generator sa pagbabago ng mechanical energy ng umiikot na turbine tungong electrical energy, sa pamamagitan ng pagpapaikot ng magnet malapit sa mga kawad.",
+          "bis": "Giunsa paghimo sa generator og kuryente?\n\nAng generator nagtuyok og magnet duol sa mga koil sa alambre. Pinaagi niini, ang mechanical energy sa nagtuyok nga turbine mahimong electrical energy."
+        },
+        "slug": "ffct-22010",
+        "source": "original",
+        "title": {
+          "tl": "Generator Turbine Kuryente",
+          "en": "How Generators Work",
+          "bis": "Generator sa Kuryente"
+        },
+        "cats": [
+          "energy",
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The question gives the generator an explicit role. Two linked answer sentences preserve turning a magnet near wire coils and conversion of turbine mechanical energy to electrical energy. Both readers prefer the body; the means relationship survives Pinaagi niini and no energy creation claim is added.",
+      "formal_item_id": "ce088ea03c4db8bce092912ce447c1710",
+      "fidelity_item_id": "md50325a689f2548b9fd4fa60",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22011",
+      "source_card_sha256": "12769f4171e8da44fc83f7fc6a89b1a9ac270355529d2dd7458ebafeb8e7830d",
+      "candidate_card_sha256": "21ad9f8ad5bae5a79e13337f372358daf4417d93527ff3e131ddbd18842daeb3",
+      "before_card": {
+        "id": "ffct-22011",
+        "factId": "energy-source-traced-back-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "tracing an energy chain back to its source",
+        "terms": [
+          "energy chain",
+          "pinagmulan ng enerhiya",
+          "enerhiya mula sa araw",
+          "energy from sun",
+          "kadena ng enerhiya",
+          "tunton sa enerhiya",
+          "gigikanan sa enerhiya",
+          "enerhiya gikan sa adlaw",
+          "kutob sa pagkaon hangtod sa araw",
+          "pagkain galing sa araw",
+          "pagkaon gikan sa adlaw",
+          "transpormasyon ng enerhiya sunod-sunod",
+          "serye ng enerhiya",
+          "fosil na panggatong"
+        ],
+        "fact": {
+          "en": "Every form of energy can be traced back to its source! Your movement energy comes from food, which came from the sun's energy.",
+          "tl": "Maaaring tunton ang bawat anyo ng enerhiya pabalik sa pinagmulan nito! Ang enerhiya sa pagkilos mo ay galing sa pagkain, na galing sa enerhiya ng araw.",
+          "bis": "Ang matag porma sa enerhiya matultolan balik sa gigikanan niini! Ang enerhiya sa imong paglihok gikan sa pagkaon, nga gikan usab sa enerhiya sa adlaw."
+        },
+        "slug": "ffct-22011",
+        "source": "original",
+        "title": {
+          "tl": "Energy Chain Pinagmulan Araw",
+          "en": "Energy Chain Source Sun",
+          "bis": "Energy Chain Gikan Adlaw Kaon"
+        },
+        "cats": [
+          "energy"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22011",
+        "factId": "energy-source-traced-back-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "tracing an energy chain back to its source",
+        "terms": [
+          "energy chain",
+          "pinagmulan ng enerhiya",
+          "enerhiya mula sa araw",
+          "energy from sun",
+          "kadena ng enerhiya",
+          "tunton sa enerhiya",
+          "gigikanan sa enerhiya",
+          "enerhiya gikan sa adlaw",
+          "kutob sa pagkaon hangtod sa araw",
+          "pagkain galing sa araw",
+          "pagkaon gikan sa adlaw",
+          "transpormasyon ng enerhiya sunod-sunod",
+          "serye ng enerhiya",
+          "fosil na panggatong"
+        ],
+        "fact": {
+          "en": "Every form of energy can be traced back to its source! Your movement energy comes from food, which came from the sun's energy.",
+          "tl": "Maaaring tunton ang bawat anyo ng enerhiya pabalik sa pinagmulan nito! Ang enerhiya sa pagkilos mo ay galing sa pagkain, na galing sa enerhiya ng araw.",
+          "bis": "Ang matag porma sa enerhiya matultolan balik sa gigikanan niini! Ang enerhiya sa imong paglihok gikan sa pagkaon, nga gikan usab sa enerhiya sa adlaw."
+        },
+        "slug": "ffct-22011",
+        "source": "original",
+        "title": {
+          "tl": "Energy Chain Pinagmulan Araw",
+          "en": "Energy Chain Source Sun",
+          "bis": "Energy Chain: Gikan sa Adlaw"
+        },
+        "cats": [
+          "energy"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title becomes Energy Chain: From the Sun, consistent with the food-to-motion example in the unchanged body. Tultul supports finding/tracing a way and the existing metaphor is retained. Both readers prefer the title; the edit does not claim every energy source is solar.",
+      "formal_item_id": "c6539125522cfe7476dff5a43f1cb71b7",
+      "fidelity_item_id": "ma3a4dd3a096ce49932159a3e",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22016",
+      "source_card_sha256": "07b16336421fc6262c915ec7a019b098d65d004288f5875ba9e245b061222cda",
+      "candidate_card_sha256": "6f2da7cd01d1600c22442069956768ba4fd1134e0be4332dc2ee2b6610268377",
+      "before_card": {
+        "id": "ffct-22016",
+        "factId": "mirage-desert-not-real-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "a mirage is real light not imagination",
+        "terms": [
+          "mirage",
+          "malikmata",
+          "desert",
+          "disyerto",
+          "not imagination",
+          "totoo",
+          "real",
+          "liwanag",
+          "light",
+          "camera",
+          "kamera",
+          "tubig",
+          "optical",
+          "trick",
+          "ilusyon",
+          "makikita",
+          "kuha"
+        ],
+        "fact": {
+          "en": "A mirage isn't just in your head! It's actually real, bent light, which means even a camera can take a picture of it.",
+          "tl": "Hindi gawa-gawa ng isip ang mirage! Tunay itong nakabaluktot na liwanag, kaya kahit ang camera ay makakakuha ng litrato nito.",
+          "bis": "Ang mirage dili imahinasyon! Kini tinuod nga nabaliko nga kahayag, mao nga bisan ang kamera makakuha ug litrato niini."
+        },
+        "slug": "ffct-22016",
+        "source": "original",
+        "title": {
+          "tl": "Mirage Tunay Liwanag Camera",
+          "en": "Mirage Real Light",
+          "bis": "Mirage Tinuod Kahayag Kamera"
+        },
+        "cats": [
+          "light"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22016",
+        "factId": "mirage-desert-not-real-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "a mirage is real light not imagination",
+        "terms": [
+          "mirage",
+          "malikmata",
+          "desert",
+          "disyerto",
+          "not imagination",
+          "totoo",
+          "real",
+          "liwanag",
+          "light",
+          "camera",
+          "kamera",
+          "tubig",
+          "optical",
+          "trick",
+          "ilusyon",
+          "makikita",
+          "kuha"
+        ],
+        "fact": {
+          "en": "A mirage isn't just in your head! It's actually real, bent light, which means even a camera can take a picture of it.",
+          "tl": "Hindi gawa-gawa ng isip ang mirage! Tunay itong nakabaluktot na liwanag, kaya kahit ang camera ay makakakuha ng litrato nito.",
+          "bis": "Ang mirage dili imahinasyon! Kini tinuod nga nabaliko nga kahayag, mao nga bisan ang kamera makakuha ug litrato niini."
+        },
+        "slug": "ffct-22016",
+        "source": "original",
+        "title": {
+          "tl": "Mirage Tunay Liwanag Camera",
+          "en": "Mirage Real Light",
+          "bis": "Ang Mirage Tinuod nga Kahayag"
+        },
+        "cats": [
+          "light"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title becomes a connected statement that a mirage involves real light. The body still distinguishes refracted light from imagination and retains camera photographability. Both readers prefer the title; it does not make the apparent object physically present.",
+      "formal_item_id": "cf131967d36e0fa2680797fb9ddfce6b0",
+      "fidelity_item_id": "mbb95b5971ff93ecb7e05b82c",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22042",
+      "source_card_sha256": "00afdb0ae9ad45febe2dfe7cb7e35b1f56cdf9e4c8fde0bfec7452cc718d058c",
+      "candidate_card_sha256": "2e14ccb969914cbe6a4b402b55da78692023021ed9a6a3193268986e1c30ba69",
+      "before_card": {
+        "id": "ffct-22042",
+        "factId": "led-light-from-electrons-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "an LED makes light directly from electricity",
+        "terms": [
+          "led",
+          "light emitting diode",
+          "ilaw",
+          "kahayag",
+          "liwanag",
+          "suga",
+          "bombilya",
+          "bombilyang led",
+          "electron",
+          "kuryente",
+          "diode",
+          "diyodo",
+          "walang init",
+          "walay kainit",
+          "electricity to light",
+          "kuryente patungong ilaw",
+          "semiconductor",
+          "matipid",
+          "kuryente direkta sa ilaw"
+        ],
+        "fact": {
+          "en": "How does an LED make light?\n\nTiny electrons inside release light directly from electricity! Unlike old bulbs, an LED doesn't need to get hot to shine.",
+          "tl": "Paano gumagawa ng ilaw ang LED?\n\nAng maliliit na electrons sa loob ay naglalabas ng ilaw direkta mula sa kuryente! Hindi kasing init ng lumang bombilya para sumilaw.",
+          "bis": "Unsaon paghimo sa LED ug kahayag?\n\nAng gagmay nga electrons sa sulod mobuga ug kahayag direkta gikan sa kuryente! Dili kinahanglan mainit sama sa daang bombilya aron mosiga."
+        },
+        "slug": "ffct-22042",
+        "source": "original",
+        "title": {
+          "tl": "LED Electrons Kuryente Ilaw",
+          "en": "LED Direct Light",
+          "bis": "LED Elektron Kuryente Kahayag"
+        },
+        "cats": [
+          "electricity",
+          "light"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22042",
+        "factId": "led-light-from-electrons-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "an LED makes light directly from electricity",
+        "terms": [
+          "led",
+          "light emitting diode",
+          "ilaw",
+          "kahayag",
+          "liwanag",
+          "suga",
+          "bombilya",
+          "bombilyang led",
+          "electron",
+          "kuryente",
+          "diode",
+          "diyodo",
+          "walang init",
+          "walay kainit",
+          "electricity to light",
+          "kuryente patungong ilaw",
+          "semiconductor",
+          "matipid",
+          "kuryente direkta sa ilaw"
+        ],
+        "fact": {
+          "en": "How does an LED make light?\n\nTiny electrons inside release light directly from electricity! Unlike old bulbs, an LED doesn't need to get hot to shine.",
+          "tl": "Paano gumagawa ng ilaw ang LED?\n\nAng maliliit na electrons sa loob ay naglalabas ng ilaw direkta mula sa kuryente! Hindi kasing init ng lumang bombilya para sumilaw.",
+          "bis": "Giunsa paghimo sa LED ug kahayag?\n\nAng gagmay nga electrons sa sulod mobuga ug kahayag direkta gikan sa kuryente! Lahi sa daang bombilya, ang LED dili kinahanglan nga moinit aron mosiga."
+        },
+        "slug": "ffct-22042",
+        "source": "original",
+        "title": {
+          "tl": "LED Electrons Kuryente Ilaw",
+          "en": "LED Direct Light",
+          "bis": "Direkta nga Kahayag sa LED"
+        },
+        "cats": [
+          "electricity",
+          "light"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The explicit LED subject and initial contrast preserve light production without requiring incandescence, unlike the old bulb comparison. The linked title matches the source. Both readers prefer both fields; the statement does not say an operating LED produces no waste heat.",
+      "formal_item_id": "c654ad343b5ff0e9703c8ac8c77abca35",
+      "fidelity_item_id": "mad9b560cebd646f3ac254b59",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22131",
+      "source_card_sha256": "06dfb3b5e6d5dd1fad694a474910133b8df4047cabab9f69d0f3d52be245c0ec",
+      "candidate_card_sha256": "a59822ba4bea46b28630b3e5f84deaf7e9992aa6c77cca9261445449cec71ca7",
+      "before_card": {
+        "id": "ffct-22131",
+        "factId": "real-vs-virtual-image-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "real and virtual images",
+        "terms": [
+          "tunay na larawan",
+          "real image",
+          "virtual image",
+          "larawang-isip",
+          "screen",
+          "salamin",
+          "lente",
+          "hulagway",
+          "tinuod",
+          "kahayag",
+          "tabing",
+          "virtual"
+        ],
+        "fact": {
+          "en": "A real image can be projected onto a screen, but a virtual image in a flat mirror cannot be caught on a screen!",
+          "tl": "Ang real image ay maaaring iproject sa screen, pero ang virtual image sa patag na salamin ay hindi mahuhuli sa screen!",
+          "bis": "Ang real image mapakita sa screen, apan ang virtual image sa patag nga salamin dili madakop sa screen!"
+        },
+        "slug": "ffct-22131",
+        "source": "original",
+        "title": {
+          "tl": "Real vs Virtual na Image",
+          "en": "Real vs Virtual Images",
+          "bis": "Real ug Virtual sa Image"
+        },
+        "cats": [
+          "light"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22131",
+        "factId": "real-vs-virtual-image-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "real and virtual images",
+        "terms": [
+          "tunay na larawan",
+          "real image",
+          "virtual image",
+          "larawang-isip",
+          "screen",
+          "salamin",
+          "lente",
+          "hulagway",
+          "tinuod",
+          "kahayag",
+          "tabing",
+          "virtual"
+        ],
+        "fact": {
+          "en": "A real image can be projected onto a screen, but a virtual image in a flat mirror cannot be caught on a screen!",
+          "tl": "Ang real image ay maaaring iproject sa screen, pero ang virtual image sa patag na salamin ay hindi mahuhuli sa screen!",
+          "bis": "Ang real image mapakita sa screen, apan ang virtual image sa patag nga salamin dili madakop sa screen!"
+        },
+        "slug": "ffct-22131",
+        "source": "original",
+        "title": {
+          "tl": "Real vs Virtual na Image",
+          "en": "Real vs Virtual Images",
+          "bis": "Real ug Virtual nga Image"
+        },
+        "cats": [
+          "light"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only sa becomes nga in the title, linking real/virtual as image descriptors. The unchanged body preserves screen projection versus the flat-mirror virtual image. Both readers prefer the title and tie the body.",
+      "formal_item_id": "c354c4cc0656716d48811fca8c98b77a7",
+      "fidelity_item_id": "mb9e2435259c53f1c2ce999af",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22178",
+      "source_card_sha256": "7f93fe37056ec75f0d3acdcfec0260eff1d689b8722777a01f97730563f28162",
+      "candidate_card_sha256": "7ed2b310dcc48d3030e41eb8211aeb8ff82df16127d667cded491127360e60df",
+      "before_card": {
+        "id": "ffct-22178",
+        "factId": "drum-skin-vibrates-air-g4",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "a drum makes sound by vibrating",
+        "terms": [
+          "tambol",
+          "balat",
+          "yanig",
+          "pinapalo",
+          "tunog",
+          "panit",
+          "uyog",
+          "gibunalan",
+          "tingog",
+          "drum",
+          "skin",
+          "vibrate",
+          "beat"
+        ],
+        "fact": {
+          "en": "When you hit a drum, its skin vibrates — and that vibration is what creates the sound traveling through the air!",
+          "tl": "Kapag pinalo mo ang tambol, nayayanig ang balat nito — at ang yanig na iyon ang lumilikha ng tunog sa hangin!",
+          "bis": "Kung bunalan ang tambol, mouyog ang panit niini — ug ang pag-uyog maoy naghimo sa tingog nga moagi sa hangin!"
+        },
+        "slug": "drum-membrane-vibration-sound",
+        "title": {
+          "en": "Drum Vibrations",
+          "tl": "Pintig ng Tambol",
+          "bis": "Tingog sa Tambol"
+        },
+        "cats": [
+          "sound"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "yanig"
+          ],
+          "en": [
+            "vibration"
+          ],
+          "bis": [
+            "pag-uyog"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-22178",
+        "factId": "drum-skin-vibrates-air-g4",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "a drum makes sound by vibrating",
+        "terms": [
+          "tambol",
+          "balat",
+          "yanig",
+          "pinapalo",
+          "tunog",
+          "panit",
+          "uyog",
+          "gibunalan",
+          "tingog",
+          "drum",
+          "skin",
+          "vibrate",
+          "beat"
+        ],
+        "fact": {
+          "en": "When you hit a drum, its skin vibrates — and that vibration is what creates the sound traveling through the air!",
+          "tl": "Kapag pinalo mo ang tambol, nayayanig ang balat nito — at ang yanig na iyon ang lumilikha ng tunog sa hangin!",
+          "bis": "Kung imong bunalan ang tambol, mouyog ang panit niini. Kana nga pag-uyog maoy mohimo sa tingog nga moagi sa hangin!"
+        },
+        "slug": "drum-membrane-vibration-sound",
+        "title": {
+          "en": "Drum Vibrations",
+          "tl": "Pintig ng Tambol",
+          "bis": "Tingog sa Tambol"
+        },
+        "cats": [
+          "sound"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "yanig"
+          ],
+          "en": [
+            "vibration"
+          ],
+          "bis": [
+            "pag-uyog"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The sentence break and Kana nga explicitly connect drum-skin vibration to sound traveling through air. Imong retains English you; uyug supports vibration and pag-uyog emphasis stays exact. Both readers prefer the changed body; title stays unchanged.",
+      "formal_item_id": "ca3af948290cf2ab0fad1e0067596c5fe",
+      "fidelity_item_id": "m47ee21d49030dcf091c85f67",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22184",
+      "source_card_sha256": "983e724f954a5a870b8d94b174293c86d767be6a2648e2e5b12c2af1cd117254",
+      "candidate_card_sha256": "f6735f440b292d53e93d9d3096afa282db43997d33805029be422f40a56050fc",
+      "before_card": {
+        "id": "ffct-22184",
+        "factId": "metals-good-conductors-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "thermal conductors",
+        "terms": [
+          "conductor",
+          "metal",
+          "puthaw",
+          "bakal",
+          "tanso",
+          "mabilis",
+          "mabilis na naglilipat",
+          "maayo nga konduktor",
+          "kawali",
+          "kaldero",
+          "init",
+          "kahoy",
+          "plastik",
+          "paspas",
+          "modala"
+        ],
+        "fact": {
+          "en": "Metals like iron and copper are good conductors that move heat quickly! That's why pots and pans are made of metal to cook food fast.",
+          "tl": "Ang mga metal tulad ng bakal at tanso ay magagaling na conductor na mabilis maglipat ng init! Kaya gawa sa metal ang mga kawali para mabilis maluto ang pagkain.",
+          "bis": "Ang mga metal sama sa puthaw ug tanso maayong conductor nga paspas modala sa init! Mao nga ang mga kalaha ug kaldero hinimo sa metal aron paspas maluto ang pagkaon."
+        },
+        "slug": "ffct-22184",
+        "source": "original",
+        "title": {
+          "tl": "Metal Conductor Kawali Init",
+          "en": "Metal Pots Conduct Heat",
+          "bis": "Metal Puthaw Tanso Kawali Init"
+        },
+        "cats": [
+          "heat"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22184",
+        "factId": "metals-good-conductors-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "thermal conductors",
+        "terms": [
+          "conductor",
+          "metal",
+          "puthaw",
+          "bakal",
+          "tanso",
+          "mabilis",
+          "mabilis na naglilipat",
+          "maayo nga konduktor",
+          "kawali",
+          "kaldero",
+          "init",
+          "kahoy",
+          "plastik",
+          "paspas",
+          "modala"
+        ],
+        "fact": {
+          "en": "Metals like iron and copper are good conductors that move heat quickly! That's why pots and pans are made of metal to cook food fast.",
+          "tl": "Ang mga metal tulad ng bakal at tanso ay magagaling na conductor na mabilis maglipat ng init! Kaya gawa sa metal ang mga kawali para mabilis maluto ang pagkain.",
+          "bis": "Ang mga metal sama sa puthaw ug tanso maayong conductor nga paspas modala sa init! Mao nga ang mga kalaha ug kaldero hinimo sa metal aron paspas maluto ang pagkaon."
+        },
+        "slug": "ffct-22184",
+        "source": "original",
+        "title": {
+          "tl": "Metal Conductor Kawali Init",
+          "en": "Metal Pots Conduct Heat",
+          "bis": "Paspas Modala sa Init ang Metal"
+        },
+        "cats": [
+          "heat"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title becomes a full heat-transfer statement about metal, matching the unchanged iron/copper and pots/pans example. Both readers prefer it. No lexical ban on kawali or universal heat-flow direction is inferred; the cooking context remains the source’s example.",
+      "formal_item_id": "cc51b917d5893f59be04cd64526842f85",
+      "fidelity_item_id": "ma6728dbaf0554ee6c2809428",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22192",
+      "source_card_sha256": "af45cd066935015f8e4ba5eae76ff7cdb27cb097d5ce51512b306f989bdcc3a1",
+      "candidate_card_sha256": "b13317564c503936ca21cb181649f12663bc08888050b80d67cc9bc1449b60a4",
+      "before_card": {
+        "id": "ffct-22192",
+        "factId": "thermos-blocks-transfer-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "insulation thermos",
+        "terms": [
+          "thermos",
+          "termos",
+          "vacuum flask",
+          "insulation",
+          "puwang",
+          "luna",
+          "vacuum",
+          "pinipigil",
+          "gipugngan",
+          "init",
+          "lamig",
+          "nagpapanatili",
+          "molungtad",
+          "conduction"
+        ],
+        "fact": {
+          "en": "A thermos has an empty vacuum gap between its walls to block conduction and convection, keeping your drink hot or cold for a long time!",
+          "tl": "May walang-laman na vacuum sa pagitan ng pader ng thermos para pigilan ang conduction at convection, kaya tumatagal na mainit o malamig ang inumin mo!",
+          "bis": "Ang thermos adunay walay-sulod nga vacuum tali sa mga pader niini aron pugngan ang conduction ug convection, busa molungtad nga init o bugnaw ang imong ilimnon!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Thermos Insulation",
+          "tl": "Thermos Insulasyon",
+          "bis": "Thermos Insulasyon"
+        },
+        "cats": [
+          "heat"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "vacuum"
+          ],
+          "en": [
+            "vacuum"
+          ],
+          "bis": [
+            "vacuum"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-22192",
+        "factId": "thermos-blocks-transfer-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "insulation thermos",
+        "terms": [
+          "thermos",
+          "termos",
+          "vacuum flask",
+          "insulation",
+          "puwang",
+          "luna",
+          "vacuum",
+          "pinipigil",
+          "gipugngan",
+          "init",
+          "lamig",
+          "nagpapanatili",
+          "molungtad",
+          "conduction"
+        ],
+        "fact": {
+          "en": "A thermos has an empty vacuum gap between its walls to block conduction and convection, keeping your drink hot or cold for a long time!",
+          "tl": "May walang-laman na vacuum sa pagitan ng pader ng thermos para pigilan ang conduction at convection, kaya tumatagal na mainit o malamig ang inumin mo!",
+          "bis": "Ang thermos adunay walay-sulod nga vacuum tali sa mga pader niini. Mopugong kini sa conduction ug convection. Busa dugay nga magpabilin nga init o bugnaw ang imong ilimnon!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Thermos Insulation",
+          "tl": "Thermos Insulasyon",
+          "bis": "Insulasyon sa Thermos"
+        },
+        "cats": [
+          "heat"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "vacuum"
+          ],
+          "en": [
+            "vacuum"
+          ],
+          "bis": [
+            "vacuum"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Three sentences separate the vacuum gap, blocked conduction/convection across it, and longer temperature retention. Pugung supports the prevention sense, dugay preserves duration, and vacuum emphasis remains exact. Both readers prefer body/title. No claim that the entire thermos has zero heat loss is added.",
+      "formal_item_id": "c08a47f37720a98c10cc13d989505ccaf",
+      "fidelity_item_id": "m2186b9b46778889b04a441aa",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22215",
+      "source_card_sha256": "cd401599b30d371fd9d5ded032063b5aafedb9c04a2250937fb2075e0890309e",
+      "candidate_card_sha256": "240b9ba09a4624200ac14088ae89803edcc4bba1d7b58306f45151dacba1cb42",
+      "before_card": {
+        "id": "ffct-22215",
+        "factId": "electrical-safety-no-outlet-fingers-g3",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "do not poke things into outlets",
+        "terms": [
+          "outlet",
+          "saksakan",
+          "kuryente",
+          "huwag isuksok",
+          "daliri",
+          "metal",
+          "delikado",
+          "electric shock",
+          "kuryenti",
+          "ayaw isuksok",
+          "tudlo",
+          "kuryente makapatay",
+          "kakuryentihan",
+          "shock"
+        ],
+        "fact": {
+          "en": "Why should you never poke things into an outlet?\n\nNever poke your finger or metal into an outlet! You could get a very serious and painful electric shock.",
+          "tl": "Bakit hindi dapat natin tinutusok ang mga bagay sa saksakan?\n\nHuwag itusok ang daliri o metal sa saksakan! Maaari kang makuryente at masaktan nang sobra.",
+          "bis": "Ngano nga dili dapat isuksok ang mga butang sa saksakan?\n\nDili gayud isuksok ang tudlo o metal sa saksakan! Mahimo kang ma-kuryente ug grabe nga masakitan."
+        },
+        "slug": "",
+        "title": {
+          "en": "Outlet Safety",
+          "tl": "Kaligtasan sa Outlet",
+          "bis": "Kaluwasan sa Outlet"
+        },
+        "cats": [
+          "electricity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "makuryente"
+          ],
+          "en": [
+            "electric shock"
+          ],
+          "bis": [
+            "ma-kuryente"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-22215",
+        "factId": "electrical-safety-no-outlet-fingers-g3",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "do not poke things into outlets",
+        "terms": [
+          "outlet",
+          "saksakan",
+          "kuryente",
+          "huwag isuksok",
+          "daliri",
+          "metal",
+          "delikado",
+          "electric shock",
+          "kuryenti",
+          "ayaw isuksok",
+          "tudlo",
+          "kuryente makapatay",
+          "kakuryentihan",
+          "shock"
+        ],
+        "fact": {
+          "en": "Why should you never poke things into an outlet?\n\nNever poke your finger or metal into an outlet! You could get a very serious and painful electric shock.",
+          "tl": "Bakit hindi dapat natin tinutusok ang mga bagay sa saksakan?\n\nHuwag itusok ang daliri o metal sa saksakan! Maaari kang makuryente at masaktan nang sobra.",
+          "bis": "Ngano nga dili dapat isuksok ang mga butang sa saksakan?\n\nAyaw gayud isuksok ang imong tudlo o metal sa saksakan! Mahimo kang ma-kuryente ug grabe nga masakitan."
+        },
+        "slug": "",
+        "title": {
+          "en": "Outlet Safety",
+          "tl": "Kaligtasan sa Outlet",
+          "bis": "Kaluwasan sa Outlet"
+        },
+        "cats": [
+          "electricity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "makuryente"
+          ],
+          "en": [
+            "electric shock"
+          ],
+          "bis": [
+            "ma-kuryente"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Ayaw gayud and imong make the prohibition directly address the child’s own finger, preserving the never instruction and electric-shock warning. Wolff supports ayaw as a prohibition; ma-kuryente emphasis remains exact. Both readers prefer the body, and no hazardous exception is added.",
+      "formal_item_id": "cb5ae6b17100d3e1861518f0d4bfb09c8",
+      "fidelity_item_id": "m01a527e7a5a273aec9a787d8",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22250",
+      "source_card_sha256": "5e60991d3047c1007a5205e455b61761b6075e484c38df781eccf52bcf038d50",
+      "candidate_card_sha256": "eea70d79fc37aefbfb628ee5303d0326d9007b19097ab8d935fc6598d346c481",
+      "before_card": {
+        "id": "ffct-22250",
+        "factId": "static-charge-measured-coulomb-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "charge measured in coulombs",
+        "terms": [
+          "charge",
+          "coulomb",
+          "sukat",
+          "sukod",
+          "yunit",
+          "unit",
+          "electron",
+          "elektron",
+          "dami",
+          "gidaghanon",
+          "static",
+          "electric charge",
+          "simbolo"
+        ],
+        "fact": {
+          "en": "How do we measure electric charge?\n\nWe measure electric charge in a unit called the coulomb! Since a single electron has a very tiny charge, it takes a huge number of electrons to make just one coulomb.",
+          "tl": "Paano natin sinusukat ang electric charge?\n\nSinusukat natin ang electric charge sa yunit na tinatawag na coulomb! Dahil napakaliit ng charge ng isang electron, kailangan ng napakaraming electron para makabuo ng isang coulomb.",
+          "bis": "Unsaon nato pagsukod sa electric charge?\n\nGisukod nato ang electric charge sa yunit nga gitawag og coulomb! Tungod kay gamay ra kaayo ang charge sa usa ka electron, gikinahanglan ang daghan kaayo nga electron para makahimo og usa ka coulomb."
+        },
+        "slug": "ffct-22250",
+        "source": "original",
+        "title": {
+          "tl": "Coulomb Yunit ng Charge",
+          "en": "Charge in Coulombs",
+          "bis": "Coulomb Yunit sa Charge"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22250",
+        "factId": "static-charge-measured-coulomb-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "charge measured in coulombs",
+        "terms": [
+          "charge",
+          "coulomb",
+          "sukat",
+          "sukod",
+          "yunit",
+          "unit",
+          "electron",
+          "elektron",
+          "dami",
+          "gidaghanon",
+          "static",
+          "electric charge",
+          "simbolo"
+        ],
+        "fact": {
+          "en": "How do we measure electric charge?\n\nWe measure electric charge in a unit called the coulomb! Since a single electron has a very tiny charge, it takes a huge number of electrons to make just one coulomb.",
+          "tl": "Paano natin sinusukat ang electric charge?\n\nSinusukat natin ang electric charge sa yunit na tinatawag na coulomb! Dahil napakaliit ng charge ng isang electron, kailangan ng napakaraming electron para makabuo ng isang coulomb.",
+          "bis": "Unsaon nato pagsukod sa electric charge?\n\nGisukod nato ang electric charge sa yunit nga gitawag og coulomb! Gamay ra kaayo ang charge sa usa ka electron. Busa, gikinahanglan ang daghan kaayo nga electron para makahimo og usa lang ka coulomb."
+        },
+        "slug": "ffct-22250",
+        "source": "original",
+        "title": {
+          "tl": "Coulomb Yunit ng Charge",
+          "en": "Charge in Coulombs",
+          "bis": "Coulomb Yunit sa Charge"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The electron-charge statement and resulting need for many electrons are split with Busa, and lang preserves just one coulomb. This retains the unit/magnitude comparison without adding a positive-charge sign to electrons. Both readers prefer the body; title stays unchanged.",
+      "formal_item_id": "cf50c81bab134807314dcef00527866ef",
+      "fidelity_item_id": "m52d4866fbdebeff70c4a5715",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22260",
+      "source_card_sha256": "cd7dd851fd13b0c1139e46ebe3c97f6ec5471239afd4619eb03ef957df611282",
+      "candidate_card_sha256": "c8599ef48f91f1a91878a862e9a95e6492cceae93d1a5507b3f35fe47197798e",
+      "before_card": {
+        "id": "ffct-22260",
+        "factId": "lever-three-classes-exist-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "three classes of levers",
+        "terms": [
+          "tatlong uri ng palanca",
+          "three classes",
+          "tulo ka matang",
+          "uri ng palanca",
+          "first second third",
+          "klase sa palanca",
+          "tatlong klase",
+          "kinds of levers",
+          "matang sa palanca"
+        ],
+        "fact": {
+          "en": "There are three classes of levers! They are different because of where the fulcrum, effort, and load are placed.",
+          "tl": "May tatlong uri ng lever! Magkakaiba sila base sa kung saan nakalagay ang fulcrum, effort, at load.",
+          "bis": "Adunay tulo ka matang sa lever! Magkalain sila base sa kung asa gibutang ang fulcrum, effort, ug load."
+        },
+        "slug": "ffct-22260",
+        "source": "original",
+        "title": {
+          "tl": "Tatlong Klase Lever",
+          "en": "The Three Lever Classes",
+          "bis": "Tulo Klase Lever"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22260",
+        "factId": "lever-three-classes-exist-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "three classes of levers",
+        "terms": [
+          "tatlong uri ng palanca",
+          "three classes",
+          "tulo ka matang",
+          "uri ng palanca",
+          "first second third",
+          "klase sa palanca",
+          "tatlong klase",
+          "kinds of levers",
+          "matang sa palanca"
+        ],
+        "fact": {
+          "en": "There are three classes of levers! They are different because of where the fulcrum, effort, and load are placed.",
+          "tl": "May tatlong uri ng lever! Magkakaiba sila base sa kung saan nakalagay ang fulcrum, effort, at load.",
+          "bis": "Adunay tulo ka matang sa lever! Magkalain sila base sa kung asa gibutang ang fulcrum, effort, ug load."
+        },
+        "slug": "ffct-22260",
+        "source": "original",
+        "title": {
+          "tl": "Tatlong Klase Lever",
+          "en": "The Three Lever Classes",
+          "bis": "Ang Tulo ka Klase sa Lever"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title gains Ang, ka and sa to express the three lever classes. The unchanged body retains distinctions by fulcrum, effort and load placement. Both readers prefer the title and tie the body.",
+      "formal_item_id": "c98e29bcd4d149482a9152109ee836d57",
+      "fidelity_item_id": "me974c5aba3c9eb08af073e74",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22299",
+      "source_card_sha256": "db7367c8f9a094e98465255ef0fa2f77146f90b0a53932cda65b9df3b3bd9c7c",
+      "candidate_card_sha256": "d22de4e21b09a2357b6fb43fbabeccc1557948360fcfc97b68ef3db491a1938a",
+      "before_card": {
+        "id": "ffct-22299",
+        "factId": "gear-idler-same-direction-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "idler gear keeps same direction",
+        "terms": [
+          "idler gear",
+          "gitnang gear",
+          "third gear",
+          "pangatlong gear",
+          "parehong direksyon",
+          "samang direksyon",
+          "magkapareho",
+          "pareha",
+          "gear sa tunga",
+          "pag-ikot",
+          "pagtuyok",
+          "magkadikit"
+        ],
+        "fact": {
+          "en": "Place a third gear, called an idler gear, between two gears! The first and last gears will then turn in the same direction.",
+          "tl": "Maglagay ka ng pangatlong gear, o idler gear, sa pagitan ng dalawa! Ang una at huling gear ay iikot na sa parehong direksyon.",
+          "bis": "Pagbutang ug ikatulo nga gear, o idler gear, sa taliwala sa duha! Ang una ug katapusang gear motuyok na sa samang direksyon."
+        },
+        "slug": "ffct-22299",
+        "source": "original",
+        "title": {
+          "tl": "Idler Gear sa Parehong Direksyon",
+          "en": "Idler Gear Same Direction",
+          "bis": "Idler Gear Parehas"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22299",
+        "factId": "gear-idler-same-direction-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "idler gear keeps same direction",
+        "terms": [
+          "idler gear",
+          "gitnang gear",
+          "third gear",
+          "pangatlong gear",
+          "parehong direksyon",
+          "samang direksyon",
+          "magkapareho",
+          "pareha",
+          "gear sa tunga",
+          "pag-ikot",
+          "pagtuyok",
+          "magkadikit"
+        ],
+        "fact": {
+          "en": "Place a third gear, called an idler gear, between two gears! The first and last gears will then turn in the same direction.",
+          "tl": "Maglagay ka ng pangatlong gear, o idler gear, sa pagitan ng dalawa! Ang una at huling gear ay iikot na sa parehong direksyon.",
+          "bis": "Pagbutang ug ikatulo nga gear, nga gitawag ug idler gear, sa taliwala sa duha ka gear! Ang una ug ang katapusang gear motuyok na sa samang direksyon."
+        },
+        "slug": "ffct-22299",
+        "source": "original",
+        "title": {
+          "tl": "Idler Gear sa Parehong Direksyon",
+          "en": "Idler Gear Same Direction",
+          "bis": "Idler Gear ug Samang Direksyon"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Nga gitawag ug explicitly introduces idler gear, and duha ka gear states the two surrounding gears. The linked title retains same direction; no count or rotational direction changes. Both readers prefer body/title for this ordinary three-meshing-gear example.",
+      "formal_item_id": "c81a888981693421e744c5a1f6119f061",
+      "fidelity_item_id": "m3bebe764c40a3381c880b95f",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22341",
+      "source_card_sha256": "f519d5e625dbbb3f664bd998468957600ec29287e0331292659f1eb28868ef76",
+      "candidate_card_sha256": "509e4dd4872363ea596f9fd7b537fba2f50f890c7ed5480f42c41c6b30ffb44e",
+      "before_card": {
+        "id": "ffct-22341",
+        "factId": "pendulum-length-controls-period-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "length changes the period",
+        "terms": [
+          "length",
+          "haba",
+          "gitas-on",
+          "string",
+          "tali",
+          "pisi",
+          "longer",
+          "mas mahaba",
+          "mas taas",
+          "slower",
+          "mas mabagal",
+          "mas hinay"
+        ],
+        "fact": {
+          "en": "How does a longer string affect a pendulum?\n\nA longer string makes a pendulum swing more slowly and gives it a longer period!",
+          "tl": "Paano nakakaapekto ang mas mahabang tali sa pendulum?\n\nMas mahabang tali, mas mabagal ang ugoy ng pendulum at mas mahaba ang period nito!",
+          "bis": "Unsay epekto sa mas taas nga pisi sa pendulum?\n\nMas taas nga pisi, mas hinay ang labyog sa pendulum ug mas taas ang period niini!"
+        },
+        "slug": "ffct-22341",
+        "source": "original",
+        "title": {
+          "tl": "Haba ng String sa Period",
+          "en": "Length Changes Period",
+          "bis": "Taas sa Pisi sa Period"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22341",
+        "factId": "pendulum-length-controls-period-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "length changes the period",
+        "terms": [
+          "length",
+          "haba",
+          "gitas-on",
+          "string",
+          "tali",
+          "pisi",
+          "longer",
+          "mas mahaba",
+          "mas taas",
+          "slower",
+          "mas mabagal",
+          "mas hinay"
+        ],
+        "fact": {
+          "en": "How does a longer string affect a pendulum?\n\nA longer string makes a pendulum swing more slowly and gives it a longer period!",
+          "tl": "Paano nakakaapekto ang mas mahabang tali sa pendulum?\n\nMas mahabang tali, mas mabagal ang ugoy ng pendulum at mas mahaba ang period nito!",
+          "bis": "Unsay epekto sa mas taas nga pisi sa pendulum?\n\nKon mas taas ang pisi, mas hinay ang labyog sa pendulum ug mas taas ang period niini!"
+        },
+        "slug": "ffct-22341",
+        "source": "original",
+        "title": {
+          "tl": "Haba ng String sa Period",
+          "en": "Length Changes Period",
+          "bis": "Gitas-on sa Pisi ug ang Period"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Kon supplies an explicit condition for longer string, retaining slower oscillation and a longer period. Wolff explicitly lists gitas-un as length, supporting the title. Both readers prefer body/title; the edit makes no claim that linear bob speed must always be smaller.",
+      "formal_item_id": "c0871378caa8e461309e522e58186f4ef",
+      "fidelity_item_id": "m1e8d3ad59d7077270b89b154",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22373",
+      "source_card_sha256": "2d044dcff1a2057d264d874a2d14009e704113a1e1a3c482c1b24795728116c5",
+      "candidate_card_sha256": "244f838fdad804e50138b874cb051fdd884e14ee4a3308756d48d73f900f6ae4",
+      "before_card": {
+        "id": "ffct-22373",
+        "factId": "renewable-energy-needs-converted-electricity-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "energy conversion",
+        "terms": [
+          "generator",
+          "turbine",
+          "ikot",
+          "tuyok",
+          "kuryente",
+          "mekanikal",
+          "mechanical",
+          "convert",
+          "pagbabago",
+          "pag-ikot",
+          "electricity",
+          "magnet",
+          "spin",
+          "pagbag-o",
+          "hangin"
+        ],
+        "fact": {
+          "en": "How does most renewable energy make electricity?\n\nSomething spins a turbine that turns a generator! Whether it's wind, water, or steam doing the spinning, that's how most renewable energy (except solar panels) makes electricity.",
+          "tl": "Paano gumagawa ng kuryente ang karamihan sa renewable energy?\n\nMay something na umiikot ng turbine na nagpapatakbo ng generator! Hangin man, tubig, o singaw ang umiikot, ganito gumagawa ng kuryente ang karamihan sa renewable energy (maliban sa solar panels).",
+          "bis": "Unsaon paghimo sa kuryente sa kadaghanan sa renewable energy?\n\nAdunay something nga magpatuyok sa turbine nga magpatuyok sa generator! Hangin man, tubig, o alisngaw ang magpatuyok, mao kini paagi sa paghimo sa kuryente sa kadaghanan sa renewable energy (gawas sa solar panels)."
+        },
+        "slug": "ffct-22373",
+        "source": "original",
+        "title": {
+          "tl": "Turbine sa Enerhiya Conversion",
+          "en": "Turbines Make Electricity",
+          "bis": "Turbine sa Kuryente"
+        },
+        "cats": [
+          "energy",
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22373",
+        "factId": "renewable-energy-needs-converted-electricity-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "energy conversion",
+        "terms": [
+          "generator",
+          "turbine",
+          "ikot",
+          "tuyok",
+          "kuryente",
+          "mekanikal",
+          "mechanical",
+          "convert",
+          "pagbabago",
+          "pag-ikot",
+          "electricity",
+          "magnet",
+          "spin",
+          "pagbag-o",
+          "hangin"
+        ],
+        "fact": {
+          "en": "How does most renewable energy make electricity?\n\nSomething spins a turbine that turns a generator! Whether it's wind, water, or steam doing the spinning, that's how most renewable energy (except solar panels) makes electricity.",
+          "tl": "Paano gumagawa ng kuryente ang karamihan sa renewable energy?\n\nMay something na umiikot ng turbine na nagpapatakbo ng generator! Hangin man, tubig, o singaw ang umiikot, ganito gumagawa ng kuryente ang karamihan sa renewable energy (maliban sa solar panels).",
+          "bis": "Giunsa sa kadaghanan sa renewable energy paghimo og kuryente?\n\nAdunay butang nga mopatuyok sa turbine, ug ang turbine mopatuyok sa generator! Bisan hangin, tubig, o alisngaw ang mopatuyok niini, mao kini ang paagi sa kadaghanan sa renewable energy sa paghimo og kuryente (gawas sa solar panels)."
+        },
+        "slug": "ffct-22373",
+        "source": "original",
+        "title": {
+          "tl": "Turbine sa Enerhiya Conversion",
+          "en": "Turbines Make Electricity",
+          "bis": "Turbine sa Kuryente"
+        },
+        "cats": [
+          "energy",
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Butang replaces the nontechnical filler something. Separate subjects preserve the sequence of wind/water/steam spinning a turbine and the turbine turning a generator, while the most and solar-panel exception remain. Both readers prefer the body; the title is unchanged.",
+      "formal_item_id": "c2a4f5d20620d85c35d2467eef3a3158c",
+      "fidelity_item_id": "m97b83d865997125c035b0f58",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22388",
+      "source_card_sha256": "861cd3f9598f488e207af1a4f228aade50c23b4e9cd5869fe2754001ccf8eb81",
+      "candidate_card_sha256": "403dfbfd1de6a3b3e49ae222219bc4663b0eb92994990eea9bc653daf599129d",
+      "before_card": {
+        "id": "ffct-22388",
+        "factId": "distance-how-far-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "distance is how far",
+        "terms": [
+          "distance",
+          "layo",
+          "kalayo",
+          "gilay-on",
+          "distansya",
+          "far",
+          "meter",
+          "metro",
+          "kilometer",
+          "kilometro",
+          "lakbay",
+          "biyahe"
+        ],
+        "fact": {
+          "en": "Distance is simply how far an object travels from its start to its finish line!",
+          "tl": "Ang distansya ay kung gaano kalayo ang nilakbay ng isang bagay mula sa simula hanggang dulo!",
+          "bis": "Ang gilay-on mao kung unsa ka layo ang gibiyahe sa usa ka butang gikan sa sinugdan hangtod sa kataposan!"
+        },
+        "slug": "ffct-22388",
+        "source": "original",
+        "title": {
+          "tl": "Distansya Layo Nilakbay",
+          "en": "Distance How Far",
+          "bis": "Distansya Unsa Kalayo"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22388",
+        "factId": "distance-how-far-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "distance is how far",
+        "terms": [
+          "distance",
+          "layo",
+          "kalayo",
+          "gilay-on",
+          "distansya",
+          "far",
+          "meter",
+          "metro",
+          "kilometer",
+          "kilometro",
+          "lakbay",
+          "biyahe"
+        ],
+        "fact": {
+          "en": "Distance is simply how far an object travels from its start to its finish line!",
+          "tl": "Ang distansya ay kung gaano kalayo ang nilakbay ng isang bagay mula sa simula hanggang dulo!",
+          "bis": "Ang gilay-on mao kung unsa ka layo ang gibiyahe sa usa ka butang gikan sa sinugdan hangtod sa kataposan!"
+        },
+        "slug": "ffct-22388",
+        "source": "original",
+        "title": {
+          "tl": "Distansya Layo Nilakbay",
+          "en": "Distance How Far",
+          "bis": "Gilay-on: Unsa Ka Layo"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title uses gilay-on and a punctuated how-far explanation, consistent with the unchanged traveled-distance body. Wolff supports the distance derivative. Both readers prefer the title; this is not rewritten as straight-line displacement.",
+      "formal_item_id": "c70934bc49b3532e9014f95bb60d16d83",
+      "fidelity_item_id": "m90b37edc7b5e30a717cc083c",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22390",
+      "source_card_sha256": "b7752e7c62b2c897d3f909c4071caea9d94ce4d068d587c39c8451b40f7f9bfa",
+      "candidate_card_sha256": "60f291f3c90994b40549e8d0a315cd23a1e0df1e2651c401a800c90fd96e7298",
+      "before_card": {
+        "id": "ffct-22390",
+        "factId": "time-units-second-hour-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "units of time",
+        "terms": [
+          "time",
+          "oras",
+          "panahon",
+          "segundo",
+          "second",
+          "minuto",
+          "minute",
+          "hour",
+          "sukat",
+          "relo",
+          "orasan",
+          "takda"
+        ],
+        "fact": {
+          "en": "We measure time in units such as seconds, minutes, and hours! Tick-tock!",
+          "tl": "Sinusukat natin ang oras sa mga yunit tulad ng segundo, minuto, at oras!",
+          "bis": "Atong sukdon ang panahon sa mga yunit sama sa segundo, minuto, ug oras!"
+        },
+        "slug": "ffct-22390",
+        "source": "original",
+        "title": {
+          "tl": "Segundo Minuto Oras Yunit",
+          "en": "Time Units Seconds Hours",
+          "bis": "Segundo Minuto Oras Yunit"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22390",
+        "factId": "time-units-second-hour-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "units of time",
+        "terms": [
+          "time",
+          "oras",
+          "panahon",
+          "segundo",
+          "second",
+          "minuto",
+          "minute",
+          "hour",
+          "sukat",
+          "relo",
+          "orasan",
+          "takda"
+        ],
+        "fact": {
+          "en": "We measure time in units such as seconds, minutes, and hours! Tick-tock!",
+          "tl": "Sinusukat natin ang oras sa mga yunit tulad ng segundo, minuto, at oras!",
+          "bis": "Atong sukdon ang panahon sa mga yunit sama sa segundo, minuto, ug oras!"
+        },
+        "slug": "ffct-22390",
+        "source": "original",
+        "title": {
+          "tl": "Segundo Minuto Oras Yunit",
+          "en": "Time Units Seconds Hours",
+          "bis": "Segundo, Minuto ug Oras"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title becomes a punctuated seconds/minutes/hours list. The existing measurement body remains exact; omission of the English sound effect is not a new science omission. Both readers prefer the title and tie the body.",
+      "formal_item_id": "c146e88300750d724149439ac7cce89aa",
+      "fidelity_item_id": "mf63365c96d9b5205ace2271d",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22396",
+      "source_card_sha256": "8030335509ad71c4335578114628298063688ae4532c30bb96af91ab23186170",
+      "candidate_card_sha256": "f3d9d0c82bdf51a10398edcb1475cdac0463e466b816b813bb646e946ccf835a",
+      "before_card": {
+        "id": "ffct-22396",
+        "factId": "constant-speed-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "constant speed",
+        "terms": [
+          "constant speed",
+          "pare-parehong bilis",
+          "steady",
+          "pirme nga katulin",
+          "walay kausaban",
+          "hindi nagbabago",
+          "equal distance",
+          "pantay na layo",
+          "oras",
+          "time",
+          "tulin"
+        ],
+        "fact": {
+          "en": "What does constant speed mean?\n\nAn object moves at constant speed when it covers equal distances in each second!",
+          "tl": "Ano ang ibig sabihin ng constant speed?\n\nAng isang bagay ay may pare-parehong bilis kapag pantay ang layong nararating nito sa bawat segundo!",
+          "bis": "Unsa ang pasabot sa constant speed?\n\nAng usa ka butang adunay pirme nga katulin kung pareho ang gilay-on nga maabot niini matag segundo!"
+        },
+        "slug": "ffct-22396",
+        "source": "original",
+        "title": {
+          "tl": "Constant Speed Pantay Layo",
+          "en": "Constant Equal Distances",
+          "bis": "Constant Speed Managsama Layo"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22396",
+        "factId": "constant-speed-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "constant speed",
+        "terms": [
+          "constant speed",
+          "pare-parehong bilis",
+          "steady",
+          "pirme nga katulin",
+          "walay kausaban",
+          "hindi nagbabago",
+          "equal distance",
+          "pantay na layo",
+          "oras",
+          "time",
+          "tulin"
+        ],
+        "fact": {
+          "en": "What does constant speed mean?\n\nAn object moves at constant speed when it covers equal distances in each second!",
+          "tl": "Ano ang ibig sabihin ng constant speed?\n\nAng isang bagay ay may pare-parehong bilis kapag pantay ang layong nararating nito sa bawat segundo!",
+          "bis": "Unsa ang pasabot sa constant speed?\n\nAng usa ka butang adunay pirme nga katulin kung pareho ang gilay-on nga maabot niini matag segundo!"
+        },
+        "slug": "ffct-22396",
+        "source": "original",
+        "title": {
+          "tl": "Constant Speed Pantay Layo",
+          "en": "Constant Equal Distances",
+          "bis": "Constant Speed: Managsamang Gilay-on"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title gains a colon and linked Managsamang Gilay-on, retaining equal distances with constant speed. The body still names each-second intervals. Both readers prefer the title; no unit, interval or physical quantity is changed.",
+      "formal_item_id": "cc957ac7300327178d0dc44f27e2c4b6b",
+      "fidelity_item_id": "m6c77ed35d17ff96f6ee42da2",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22406",
+      "source_card_sha256": "16d89e18e113b68a042c12647861350cb437e9b9d42d05c1945255c98ea148d8",
+      "candidate_card_sha256": "ab7edd7f0e6f649c84b5083dcd89fe1cdaf644845e57ce7dc4899db568fff905",
+      "before_card": {
+        "id": "ffct-22406",
+        "factId": "direction-part-of-motion-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "direction matters in motion",
+        "terms": [
+          "direction",
+          "direksyon",
+          "direksiyon",
+          "padulnganan",
+          "motion",
+          "galaw",
+          "lihok",
+          "north",
+          "hilaga",
+          "amihanan",
+          "pakanan",
+          "pakaliwa"
+        ],
+        "fact": {
+          "en": "Besides speed, the direction of movement also matters to fully describe motion!",
+          "tl": "Bukod sa speed, mahalaga rin ang direction ng paggalaw para ganap na mailarawan ang motion!",
+          "bis": "Gawas sa speed, importante usab ang direction sa paglihok aron hingpit nga mahulagway ang motion!"
+        },
+        "slug": "ffct-22406",
+        "source": "original",
+        "title": {
+          "tl": "Direction Mahalaga Motion",
+          "en": "Direction Matters in Motion",
+          "bis": "Direction Motion"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22406",
+        "factId": "direction-part-of-motion-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "direction matters in motion",
+        "terms": [
+          "direction",
+          "direksyon",
+          "direksiyon",
+          "padulnganan",
+          "motion",
+          "galaw",
+          "lihok",
+          "north",
+          "hilaga",
+          "amihanan",
+          "pakanan",
+          "pakaliwa"
+        ],
+        "fact": {
+          "en": "Besides speed, the direction of movement also matters to fully describe motion!",
+          "tl": "Bukod sa speed, mahalaga rin ang direction ng paggalaw para ganap na mailarawan ang motion!",
+          "bis": "Gawas sa speed, importante usab ang direction sa paglihok aron hingpit nga mahulagway ang motion!"
+        },
+        "slug": "ffct-22406",
+        "source": "original",
+        "title": {
+          "tl": "Direction Mahalaga Motion",
+          "en": "Direction Matters in Motion",
+          "bis": "Importante ang Direction sa Motion"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title states that direction matters in motion, directly supported by English and the unchanged body’s speed/direction comparison. Both readers prefer it; established classroom English terms remain acceptable.",
+      "formal_item_id": "c5f948fd2c51f9a89ed040d566eef8a5b",
+      "fidelity_item_id": "mf34ce3d3ef7017ac22d0f4f3",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22412",
+      "source_card_sha256": "283c19637673c754ad46e24b643818b342f4dc12c63af2fda5660252e34d45a1",
+      "candidate_card_sha256": "0d912754ea8a9ea211017705462faa081ff75ab8d65ea23d855c6397f82fe474",
+      "before_card": {
+        "id": "ffct-22412",
+        "factId": "moon-gravity-one-sixth-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Moon gravity is about one-sixth of Earth's",
+        "terms": [
+          "buwan",
+          "moon",
+          "bulan",
+          "isang-kaanim",
+          "one-sixth",
+          "ikaunom",
+          "kaanim na bahagi",
+          "grabidad",
+          "gravity",
+          "daigdig",
+          "yuta",
+          "timbang"
+        ],
+        "fact": {
+          "en": "How strong is the Moon's gravity?\n\nThe Moon's gravity is only about one-sixth as strong as Earth's gravity!",
+          "tl": "Gaano kalakas ang grabidad sa Buwan?\n\nAng grabidad sa Buwan ay mga isang-kaanim lamang ng grabidad sa Daigdig!",
+          "bis": "Unsa kakusog ang grabidad sa Bulan?\n\nAng grabidad sa Bulan mga ikaunom lang ka bahin sa grabidad sa Yuta!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Moon Gravity",
+          "tl": "Grabidad sa Buwan",
+          "bis": "Grabidad sa Buwan"
+        },
+        "cats": [
+          "gravity",
+          "the-moon"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "isang-kaanim"
+          ],
+          "en": [
+            "one-sixth"
+          ],
+          "bis": [
+            "ikaunom"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-22412",
+        "factId": "moon-gravity-one-sixth-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Moon gravity is about one-sixth of Earth's",
+        "terms": [
+          "buwan",
+          "moon",
+          "bulan",
+          "isang-kaanim",
+          "one-sixth",
+          "ikaunom",
+          "kaanim na bahagi",
+          "grabidad",
+          "gravity",
+          "daigdig",
+          "yuta",
+          "timbang"
+        ],
+        "fact": {
+          "en": "How strong is the Moon's gravity?\n\nThe Moon's gravity is only about one-sixth as strong as Earth's gravity!",
+          "tl": "Gaano kalakas ang grabidad sa Buwan?\n\nAng grabidad sa Buwan ay mga isang-kaanim lamang ng grabidad sa Daigdig!",
+          "bis": "Unsa kakusog ang grabidad sa Bulan?\n\nAng grabidad sa Bulan mga ikaunom lang ka bahin sa grabidad sa Yuta!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Moon Gravity",
+          "tl": "Grabidad sa Buwan",
+          "bis": "Grabidad sa Bulan"
+        },
+        "cats": [
+          "gravity",
+          "the-moon"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "isang-kaanim"
+          ],
+          "en": [
+            "one-sixth"
+          ],
+          "bis": [
+            "ikaunom"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title’s Buwan becomes Bulan. Wolff directly establishes the moon sense and independent bodies corroborate it. The approximate one-sixth comparison and ikaunom emphasis stay exact. Both readers prefer the title; this is an exact contextual correction, not a general dialect ruling.",
+      "formal_item_id": "c32bb59eea72d7c31d8244a5a1ce1588a",
+      "fidelity_item_id": "m5922c74ef26a6f693771cbdf",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22422",
+      "source_card_sha256": "5b8c7b9c83b90a27e414aff7819beb934962c63608602f559571b54e5dbc8d66",
+      "candidate_card_sha256": "5154d98b90e08acd385652c9a64829bd4cef9a59c28742de516f29670d0d795a",
+      "before_card": {
+        "id": "ffct-22422",
+        "factId": "weight-measured-in-newtons-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "weight is measured in newtons",
+        "terms": [
+          "timbang",
+          "weight",
+          "newton",
+          "sinusukat",
+          "gisukod",
+          "newtons",
+          "puwersa",
+          "pwersa",
+          "force",
+          "siyentista",
+          "scientist",
+          "grabidad"
+        ],
+        "fact": {
+          "en": "How do scientists measure weight?\n\nBecause weight is a force, they measure it in units called newtons!",
+          "tl": "Paano sinusukat ng mga siyentista ang timbang?\n\nDahil ang timbang ay isang puwersa, sinusukat ito sa yunit na tinatawag na newton!",
+          "bis": "Unsaon pagsukod sa mga siyentista sa timbang?\n\nTungod kay ang timbang usa ka pwersa, gisukod kini sa yunit nga gitawag ug newton!"
+        },
+        "slug": "ffct-22422",
+        "source": "original",
+        "title": {
+          "tl": "Weight Newton Sukat",
+          "en": "Weight Measured in Newtons",
+          "bis": "Weight Newton Sukat"
+        },
+        "cats": [
+          "gravity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22422",
+        "factId": "weight-measured-in-newtons-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "weight is measured in newtons",
+        "terms": [
+          "timbang",
+          "weight",
+          "newton",
+          "sinusukat",
+          "gisukod",
+          "newtons",
+          "puwersa",
+          "pwersa",
+          "force",
+          "siyentista",
+          "scientist",
+          "grabidad"
+        ],
+        "fact": {
+          "en": "How do scientists measure weight?\n\nBecause weight is a force, they measure it in units called newtons!",
+          "tl": "Paano sinusukat ng mga siyentista ang timbang?\n\nDahil ang timbang ay isang puwersa, sinusukat ito sa yunit na tinatawag na newton!",
+          "bis": "Unsaon pagsukod sa mga siyentista sa timbang?\n\nTungod kay ang timbang usa ka pwersa, gisukod kini sa yunit nga gitawag ug newton!"
+        },
+        "slug": "ffct-22422",
+        "source": "original",
+        "title": {
+          "tl": "Weight Newton Sukat",
+          "en": "Weight Measured in Newtons",
+          "bis": "Timbang Gisukod sa Newton"
+        },
+        "cats": [
+          "gravity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title becomes a linked weight-measured-in-newtons statement. Wolff timbang supports weight, and the unchanged body explicitly identifies force. Both readers prefer the title; no substitution of kilograms or mass is made.",
+      "formal_item_id": "c8c20f3dc18d6b975950f913abf9edd2a",
+      "fidelity_item_id": "m65c5065555f699654aceb3a0",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22428",
+      "source_card_sha256": "1c61eb84e794864ed111598cc844504d8b4c158306baff2a564531e26999ab14",
+      "candidate_card_sha256": "7c7c496795591d8fdf8c6aca2f73f2b718a7eaf5ac340313194e76a6ef618f0e",
+      "before_card": {
+        "id": "ffct-22428",
+        "factId": "force-push-pull-basic-g3",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "force is a push or a pull",
+        "terms": [
+          "puwersa",
+          "tulak",
+          "hila",
+          "force",
+          "push",
+          "pull",
+          "duso",
+          "bira",
+          "kusog"
+        ],
+        "fact": {
+          "en": "What exactly is a force?\n\nA force is simply a push or a pull that can make an object move!",
+          "tl": "Ano ba ang puwersa?\n\nAng puwersa ay isang tulak o hila na maaaring magpagalaw sa isang bagay!",
+          "bis": "Unsa man ang puwersa?\n\nAng puwersa usa ka duso o bira nga makahimo og lihok sa usa ka butang!"
+        },
+        "slug": "force-pull-arrow",
+        "title": {
+          "en": "Force",
+          "tl": "Puwersa",
+          "bis": "Puwersa"
+        },
+        "cats": [
+          "forces"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "puwersa"
+          ],
+          "en": [
+            "force"
+          ],
+          "bis": [
+            "puwersa"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-22428",
+        "factId": "force-push-pull-basic-g3",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "force is a push or a pull",
+        "terms": [
+          "puwersa",
+          "tulak",
+          "hila",
+          "force",
+          "push",
+          "pull",
+          "duso",
+          "bira",
+          "kusog"
+        ],
+        "fact": {
+          "en": "What exactly is a force?\n\nA force is simply a push or a pull that can make an object move!",
+          "tl": "Ano ba ang puwersa?\n\nAng puwersa ay isang tulak o hila na maaaring magpagalaw sa isang bagay!",
+          "bis": "Unsa man ang puwersa?\n\nAng puwersa usa ka duso o bira nga makapalihok sa usa ka butang!"
+        },
+        "slug": "force-pull-arrow",
+        "title": {
+          "en": "Force",
+          "tl": "Puwersa",
+          "bis": "Puwersa"
+        },
+        "cats": [
+          "forces"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "puwersa"
+          ],
+          "en": [
+            "force"
+          ],
+          "bis": [
+            "puwersa"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Makapalihok replaces the longer make-movement phrase while retaining ability and the push-or-pull subject. Wolff lihuk with pa- supports setting into motion, and independent body uses corroborate the construction. Both readers prefer the exact body; puwersa emphasis and title stay unchanged.",
+      "formal_item_id": "c1503cece9f1bb853995cae7bd6ce3903",
+      "fidelity_item_id": "me362e6275c3c9a9ed71c3189",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22446",
+      "source_card_sha256": "91fdb320567f77866b3856de32e2316ec9d69d19ef3ef2f58b910bdbd7125b9d",
+      "candidate_card_sha256": "9e04c09a85f856b2076808e3aa57555955cd14e470afcc31b22e7eef5bfff20a",
+      "before_card": {
+        "id": "ffct-22446",
+        "factId": "force-measured-newtons-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "force is measured in newtons",
+        "terms": [
+          "puwersa",
+          "newton",
+          "sukat",
+          "force",
+          "measure",
+          "unit",
+          "sukod",
+          "yunit",
+          "kakusog"
+        ],
+        "fact": {
+          "en": "The strength of a force is measured in a special unit called the newton!",
+          "tl": "Sinusukat ang lakas ng puwersa sa yunit na tinatawag na newton!",
+          "bis": "Ang kakusog sa puwersa gisukod sa yunit nga gitawag og newton!"
+        },
+        "slug": "ffct-22446",
+        "source": "original",
+        "title": {
+          "tl": "Force Newton Unit",
+          "en": "Force in Newtons",
+          "bis": "Force Newton Unit"
+        },
+        "cats": [
+          "forces"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22446",
+        "factId": "force-measured-newtons-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "force is measured in newtons",
+        "terms": [
+          "puwersa",
+          "newton",
+          "sukat",
+          "force",
+          "measure",
+          "unit",
+          "sukod",
+          "yunit",
+          "kakusog"
+        ],
+        "fact": {
+          "en": "The strength of a force is measured in a special unit called the newton!",
+          "tl": "Sinusukat ang lakas ng puwersa sa yunit na tinatawag na newton!",
+          "bis": "Ang kakusog sa puwersa gisukod sa yunit nga gitawag og newton!"
+        },
+        "slug": "ffct-22446",
+        "source": "original",
+        "title": {
+          "tl": "Force Newton Unit",
+          "en": "Force in Newtons",
+          "bis": "Newton: Yunit sa Puwersa"
+        },
+        "cats": [
+          "forces"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title becomes Newton: Unit of Force using the body’s puwersa and yunit. The unchanged body retains force strength measured in newtons. Both readers prefer the title and tie the body.",
+      "formal_item_id": "ca29aed414dbf4ba479235d84ad313e6f",
+      "fidelity_item_id": "md8852b41823426fb1e09f5b6",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22531",
+      "source_card_sha256": "3b09680b17a44a45c34d82491399a6db66db4b81ddc497d5287b93b60ed8c3ab",
+      "candidate_card_sha256": "4bcf79edf68ace346dd9b2c1d8f6820762a1f61e2653f0d371249b3dd643d204",
+      "before_card": {
+        "id": "ffct-22531",
+        "factId": "roller-coaster-energy-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "energy changes on a roller coaster",
+        "terms": [
+          "roller coaster",
+          "highest hill",
+          "potensyal",
+          "kinetiko",
+          "pinakamataas",
+          "downhill",
+          "pinakahabog",
+          "paspas",
+          "tuktok",
+          "bumababa",
+          "speeds up",
+          "bumibilis"
+        ],
+        "fact": {
+          "en": "On a roller coaster, the car has the most potential energy at the highest hill. This becomes kinetic energy, speeding it up going down!",
+          "tl": "Sa roller coaster, pinakamarami ang potential energy ng sasakyan sa pinakamataas na burol. Ito ay nagiging kinetic energy, kaya bumibilis ito pababa!",
+          "bis": "Sa roller coaster, labing daghan ang potential energy sa sakyanan sa pinakahabog nga bungtod. Kini mahimong kinetic energy, mao nga mopaspas kini paubos!"
+        },
+        "slug": "ffct-22531",
+        "source": "original",
+        "title": {
+          "tl": "Roller Coaster Potential Kinetic",
+          "en": "Roller Coaster Energy Shift",
+          "bis": "Roller Coaster Potential Kinetic"
+        },
+        "cats": [
+          "energy"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22531",
+        "factId": "roller-coaster-energy-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "energy changes on a roller coaster",
+        "terms": [
+          "roller coaster",
+          "highest hill",
+          "potensyal",
+          "kinetiko",
+          "pinakamataas",
+          "downhill",
+          "pinakahabog",
+          "paspas",
+          "tuktok",
+          "bumababa",
+          "speeds up",
+          "bumibilis"
+        ],
+        "fact": {
+          "en": "On a roller coaster, the car has the most potential energy at the highest hill. This becomes kinetic energy, speeding it up going down!",
+          "tl": "Sa roller coaster, pinakamarami ang potential energy ng sasakyan sa pinakamataas na burol. Ito ay nagiging kinetic energy, kaya bumibilis ito pababa!",
+          "bis": "Sa roller coaster, labing daghan ang potential energy sa sakyanan sa pinakahabog nga bungtod. Kini mahimong kinetic energy, mao nga mopaspas kini paubos!"
+        },
+        "slug": "ffct-22531",
+        "source": "original",
+        "title": {
+          "tl": "Roller Coaster Potential Kinetic",
+          "en": "Roller Coaster Energy Shift",
+          "bis": "Enerhiya sa Roller Coaster"
+        },
+        "cats": [
+          "energy"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title becomes a linked Roller Coaster Energy phrase. The unchanged body retains the highest-position potential energy and downhill kinetic-energy increase. Both readers prefer the title; no energy creation or extra acceleration claim is introduced.",
+      "formal_item_id": "c87384d9667e76ee271b317bd78926a00",
+      "fidelity_item_id": "m7010bb0e201b5586da8fac4d",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22551",
+      "source_card_sha256": "0b8c0dfae5c69ccdfc0d659b8957a30d05c3cdc96d9b7671f60e58f8e2bfecde",
+      "candidate_card_sha256": "998efb28ee9b91b6e0e0913a17394daf4811ee980a682eaf25513661625e74f9",
+      "before_card": {
+        "id": "ffct-22551",
+        "factId": "switch-only-needs-one-break-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "a switch can be placed anywhere in a circuit",
+        "terms": [
+          "switch",
+          "swits",
+          "kahit saan",
+          "bisan asa",
+          "isang puwang",
+          "usa ka gintang",
+          "putol",
+          "putol sa agianan",
+          "buong daanan",
+          "tibuok agianan",
+          "humihinto",
+          "mohunong",
+          "kuryente",
+          "loop",
+          "circuit",
+          "sirkito",
+          "saan man ilagay",
+          "isa lang"
+        ],
+        "fact": {
+          "en": "Does it matter where in the loop a switch is placed?\n\nNope! As long as the switch opens one gap in the path, the whole flow of current in the circuit stops, no matter where it is placed in the loop.",
+          "tl": "Mahalaga ba kung saan sa loop ilagay ang switch?\n\nHindi! Basta't buksan ng switch ang isang puwang sa daanan, humihinto na ang buong daloy ng kuryente sa circuit, kahit saan man ito ilagay sa loop.",
+          "bis": "Importante ba kung asa sa loop ibutang ang switch?\n\nDili! Basta moabli ang switch og usa ka gintang sa agianan, mohunong na ang tibuok dagan sa kuryente sa sirkito, bisan asa man kini ibutang sa loop."
+        },
+        "slug": "ffct-22551",
+        "source": "original",
+        "title": {
+          "tl": "Switch Kahit Saang Circuit",
+          "en": "Switch Anywhere in Circuit",
+          "bis": "Switch Bisan Asa Circuit"
+        },
+        "cats": [
+          "circuits"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22551",
+        "factId": "switch-only-needs-one-break-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "a switch can be placed anywhere in a circuit",
+        "terms": [
+          "switch",
+          "swits",
+          "kahit saan",
+          "bisan asa",
+          "isang puwang",
+          "usa ka gintang",
+          "putol",
+          "putol sa agianan",
+          "buong daanan",
+          "tibuok agianan",
+          "humihinto",
+          "mohunong",
+          "kuryente",
+          "loop",
+          "circuit",
+          "sirkito",
+          "saan man ilagay",
+          "isa lang"
+        ],
+        "fact": {
+          "en": "Does it matter where in the loop a switch is placed?\n\nNope! As long as the switch opens one gap in the path, the whole flow of current in the circuit stops, no matter where it is placed in the loop.",
+          "tl": "Mahalaga ba kung saan sa loop ilagay ang switch?\n\nHindi! Basta't buksan ng switch ang isang puwang sa daanan, humihinto na ang buong daloy ng kuryente sa circuit, kahit saan man ito ilagay sa loop.",
+          "bis": "Importante ba kung asa sa loop ibutang ang switch?\n\nDili! Basta moabli ang switch og usa ka gintang sa agianan, mohunong na ang tibuok dagan sa kuryente sa sirkito, bisan asa man kini ibutang sa loop."
+        },
+        "slug": "ffct-22551",
+        "source": "original",
+        "title": {
+          "tl": "Switch Kahit Saang Circuit",
+          "en": "Switch Anywhere in Circuit",
+          "bis": "Switch Bisan Asa sa Circuit"
+        },
+        "cats": [
+          "circuits"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only sa is added to link anywhere with circuit in the title. The body’s question and answer explicitly concern a loop and its opened path; the normal single-loop example is retained. Both readers prefer the title. This approval does not extend the statement to every branch of a parallel circuit.",
+      "formal_item_id": "c7d57f2bb7dfc1a79bc0f27c98bd0ec3a",
+      "fidelity_item_id": "m47b8e6ae5c4b6d1a619fa189",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22558",
+      "source_card_sha256": "85bdbee012ef5d9a644fd7b067fd2a5a0a3e1a955a167aa273525fab4c082f32",
+      "candidate_card_sha256": "1195ac3cb1aa728d08ebf10557ac5bd8657df59522b6b969ef002c161da9823a",
+      "before_card": {
+        "id": "ffct-22558",
+        "factId": "tension-pulling-force-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "tension force in ropes",
+        "terms": [
+          "tension",
+          "tirintas",
+          "hila",
+          "pulling",
+          "lubid",
+          "rope",
+          "pisi",
+          "kable",
+          "cable",
+          "nakabitin",
+          "nakahatak",
+          "hinihila",
+          "nakaunat",
+          "tug of war",
+          "buno-bunohan",
+          "binira",
+          "hugot"
+        ],
+        "fact": {
+          "en": "Tension is the pulling force along a stretched rope or cable! You can feel it when playing a game of tug-of-war.",
+          "tl": "Ang tension ay ang pulling force sa isang banat na lubid o kable! Mararamdaman mo ito sa laro ng tug-of-war.",
+          "bis": "Ang tension mao ang pulling force sa nabanat nga pisi o kable! Mabati nimo kini sa dula nga tug-of-war."
+        },
+        "slug": "ffct-22558",
+        "source": "original",
+        "title": {
+          "tl": "Tension Lubid Tug-of-War",
+          "en": "Tension in Ropes",
+          "bis": "Tension Pisi Tug-of-War"
+        },
+        "cats": [
+          "forces"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22558",
+        "factId": "tension-pulling-force-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "tension force in ropes",
+        "terms": [
+          "tension",
+          "tirintas",
+          "hila",
+          "pulling",
+          "lubid",
+          "rope",
+          "pisi",
+          "kable",
+          "cable",
+          "nakabitin",
+          "nakahatak",
+          "hinihila",
+          "nakaunat",
+          "tug of war",
+          "buno-bunohan",
+          "binira",
+          "hugot"
+        ],
+        "fact": {
+          "en": "Tension is the pulling force along a stretched rope or cable! You can feel it when playing a game of tug-of-war.",
+          "tl": "Ang tension ay ang pulling force sa isang banat na lubid o kable! Mararamdaman mo ito sa laro ng tug-of-war.",
+          "bis": "Ang tension mao ang pulling force sa nabanat nga pisi o kable! Mabati nimo kini kung magdula ka og tug-of-war."
+        },
+        "slug": "ffct-22558",
+        "source": "original",
+        "title": {
+          "tl": "Tension Lubid Tug-of-War",
+          "en": "Tension in Ropes",
+          "bis": "Tension sa Pisi"
+        },
+        "cats": [
+          "forces"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Kung magdula ka makes the tug-of-war example explicitly refer to the learner playing, as the English does. The stretched rope/cable pulling-force definition remains. Pisi is dictionary-attested for rope; both readers prefer body/title and no compressive-force claim is added.",
+      "formal_item_id": "c02db18d510b89cd77efe51790a224b25",
+      "fidelity_item_id": "ma6e6c7267867dfa0779c095e",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22567",
+      "source_card_sha256": "1597276b05198df59549c484b4ddba3e0025bd8de5e975a1fe12eb27c61fdb31",
+      "candidate_card_sha256": "2cc8ae3d56fb1c375b9223a41da341d1b06647c84a7d147a912a4dfaf3e9dede",
+      "before_card": {
+        "id": "ffct-22567",
+        "factId": "electromagnet-has-north-south-poles-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "electromagnet has poles",
+        "terms": [
+          "hilagang polo",
+          "timog na polo",
+          "north pole",
+          "south pole",
+          "amihanang polo",
+          "habagatang polo",
+          "poste",
+          "magnetikong polo",
+          "magnet",
+          "elektromagnet"
+        ],
+        "fact": {
+          "en": "An electromagnet has a north pole and a south pole, just like your ordinary magnet!",
+          "tl": "Ang electromagnet ay may north pole at south pole, tulad ng ordinaryong magnet!",
+          "bis": "Ang electromagnet adunay north pole ug south pole, sama sa ordinaryong magnet!"
+        },
+        "slug": "ffct-22567",
+        "source": "original",
+        "title": {
+          "tl": "Electromagnet North South Pole",
+          "en": "Electromagnet Has Poles",
+          "bis": "Electromagnet North South"
+        },
+        "cats": [
+          "magnets",
+          "magnetism"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22567",
+        "factId": "electromagnet-has-north-south-poles-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "electromagnet has poles",
+        "terms": [
+          "hilagang polo",
+          "timog na polo",
+          "north pole",
+          "south pole",
+          "amihanang polo",
+          "habagatang polo",
+          "poste",
+          "magnetikong polo",
+          "magnet",
+          "elektromagnet"
+        ],
+        "fact": {
+          "en": "An electromagnet has a north pole and a south pole, just like your ordinary magnet!",
+          "tl": "Ang electromagnet ay may north pole at south pole, tulad ng ordinaryong magnet!",
+          "bis": "Ang electromagnet adunay north pole ug south pole, sama sa ordinaryong magnet!"
+        },
+        "slug": "ffct-22567",
+        "source": "original",
+        "title": {
+          "tl": "Electromagnet North South Pole",
+          "en": "Electromagnet Has Poles",
+          "bis": "Mga Pole sa Electromagnet"
+        },
+        "cats": [
+          "magnets",
+          "magnetism"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title becomes a phrase naming the electromagnet’s poles. The unchanged body explicitly retains north and south poles and the ordinary-magnet comparison. Both readers prefer the title; no pole is omitted from the body.",
+      "formal_item_id": "c3aa6d7a867951bc326ca3c2b065bfd28",
+      "fidelity_item_id": "mf4a2b8a970ad871dee0cd6d8",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22582",
+      "source_card_sha256": "51f79e5427a087fc57e67c9ce31737dac8e497bf1303d5848a79968cc51dfaa5",
+      "candidate_card_sha256": "df0c63f6f9e755e7b86daf92837abf332cee39e2eec18ba49f36e01050816a39",
+      "before_card": {
+        "id": "ffct-22582",
+        "factId": "electromagnet-electricity-and-magnetism-linked-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "electricity and magnetism are connected",
+        "terms": [
+          "elektrisidad",
+          "magnetismo",
+          "electricity",
+          "magnetism",
+          "elektromagnetismo",
+          "electromagnetism",
+          "magkaugnay",
+          "konektado",
+          "puwersa",
+          "kuryente"
+        ],
+        "fact": {
+          "en": "What is electromagnetism?\n\nElectromagnets show us that electricity and magnetism are connected—and this connection is called electromagnetism!",
+          "tl": "Ano ang elektromagnetismo?\n\nIpinapakita ng electromagnet na magkaugnay ang elektrisidad at magnetismo—at ang tawag dito ay elektromagnetismo!",
+          "bis": "Unsa ang elektromagnetismo?\n\nNagpakita ang elektromagnet nga magkadugtong ang elektrisidad ug magnetismo—ug kini nga koneksyon gitawag ug elektromagnetismo!"
+        },
+        "slug": "ffct-22582",
+        "source": "original",
+        "title": {
+          "tl": "Electricity Magnetism Konektado",
+          "en": "Electricity Meets Magnetism",
+          "bis": "Kuryente Magnetism Konek"
+        },
+        "cats": [
+          "electricity",
+          "magnetism"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22582",
+        "factId": "electromagnet-electricity-and-magnetism-linked-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "electricity and magnetism are connected",
+        "terms": [
+          "elektrisidad",
+          "magnetismo",
+          "electricity",
+          "magnetism",
+          "elektromagnetismo",
+          "electromagnetism",
+          "magkaugnay",
+          "konektado",
+          "puwersa",
+          "kuryente"
+        ],
+        "fact": {
+          "en": "What is electromagnetism?\n\nElectromagnets show us that electricity and magnetism are connected—and this connection is called electromagnetism!",
+          "tl": "Ano ang elektromagnetismo?\n\nIpinapakita ng electromagnet na magkaugnay ang elektrisidad at magnetismo—at ang tawag dito ay elektromagnetismo!",
+          "bis": "Unsa ang elektromagnetismo?\n\nNagpakita ang elektromagnet nga magkadugtong ang elektrisidad ug magnetismo—ug kini nga koneksyon gitawag ug elektromagnetismo!"
+        },
+        "slug": "ffct-22582",
+        "source": "original",
+        "title": {
+          "tl": "Electricity Magnetism Konektado",
+          "en": "Electricity Meets Magnetism",
+          "bis": "Kuryente ug Magnetismo, Magkadugtong"
+        },
+        "cats": [
+          "electricity",
+          "magnetism"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title gains coordination and a connection predicate, matching the unchanged electricity/magnetism explanation. Wolff dugtung supports linking. Both readers prefer it; this does not assume English technical terms themselves are defects.",
+      "formal_item_id": "c46321c3f4ce1ed78eeeb3ff01421f8f4",
+      "fidelity_item_id": "ma4d05985d25357a9470383c0",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22583",
+      "source_card_sha256": "1d7f01c0d73a2a2c02a22bddcfafe0a8f9960a110e9315c30e073a64fd4842e2",
+      "candidate_card_sha256": "513f9c13eaa70a356cee3434754709491c7e9eab2d5c132abcd215e4b63eaa1b",
+      "before_card": {
+        "id": "ffct-22583",
+        "factId": "conductor-allows-electricity-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what a conductor is",
+        "terms": [
+          "konduktor",
+          "conductor",
+          "nagpapadaloy ng kuryente",
+          "nagpaagi sa kuryente",
+          "electricity",
+          "kuryente",
+          "koryente",
+          "dumadaloy",
+          "modagan",
+          "flow",
+          "metal",
+          "tanso"
+        ],
+        "fact": {
+          "en": "A conductor is a material that lets electricity flow through it easily—like copper and other metals!",
+          "tl": "Ang conductor ay materyal na madaling pinagdadaluyan ng kuryente, gaya ng tanso at iba pang metal!",
+          "bis": "Ang konduktor usa ka materyal nga sayon nga giagian sa kuryente, sama sa tumbaga ug uban pang metal!"
+        },
+        "slug": "ffct-22583",
+        "source": "original",
+        "title": {
+          "tl": "Conductor Material Kuryente Flow",
+          "en": "What Conductors Are",
+          "bis": "Conductor Material Kuryente"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22583",
+        "factId": "conductor-allows-electricity-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what a conductor is",
+        "terms": [
+          "konduktor",
+          "conductor",
+          "nagpapadaloy ng kuryente",
+          "nagpaagi sa kuryente",
+          "electricity",
+          "kuryente",
+          "koryente",
+          "dumadaloy",
+          "modagan",
+          "flow",
+          "metal",
+          "tanso"
+        ],
+        "fact": {
+          "en": "A conductor is a material that lets electricity flow through it easily—like copper and other metals!",
+          "tl": "Ang conductor ay materyal na madaling pinagdadaluyan ng kuryente, gaya ng tanso at iba pang metal!",
+          "bis": "Ang konduktor usa ka materyal nga sayon nga giagian sa kuryente, sama sa tumbaga ug uban pang metal!"
+        },
+        "slug": "ffct-22583",
+        "source": "original",
+        "title": {
+          "tl": "Conductor Material Kuryente Flow",
+          "en": "What Conductors Are",
+          "bis": "Ang Konduktor sa Kuryente"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title becomes a connected electrical-conductor phrase using the existing spelling. Wolff explicitly permits tumbaga for copper, so the unchanged copper example is retained despite the same word also having an alloy sense. Both readers prefer the title.",
+      "formal_item_id": "c7f6ab0475672df72caee9ad6da3123ea",
+      "fidelity_item_id": "m4b62b06463ae61696e6a7cac",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22584",
+      "source_card_sha256": "43694981c05f2d001b9a020ea86a81756e757e4b0f55fea289672481b483a73b",
+      "candidate_card_sha256": "babd746681dd7935168e6988a2be624c463cf5832c7138c0eb227d7240e8a9bb",
+      "before_card": {
+        "id": "ffct-22584",
+        "factId": "insulator-blocks-electricity-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what an insulator is",
+        "terms": [
+          "insulator",
+          "insulador",
+          "di nagpapadaloy",
+          "dili moagi",
+          "humaharang",
+          "nagsanta",
+          "kuryente",
+          "electricity",
+          "goma",
+          "rubber",
+          "plastik",
+          "plastic"
+        ],
+        "fact": {
+          "en": "An insulator is a material that blocks electricity from flowing easily. Rubber and plastic are great examples of insulators!",
+          "tl": "Ang insulador ay isang materyal na hindi nagpapadaloy ng kuryente nang madali. Ang goma at plastic ay mga halimbawa ng insulador!",
+          "bis": "Ang insulador usa ka materyal nga dili sayon nga paagian sa kuryente. Ang goma ug plastik maayong pananglitan sa insulador!"
+        },
+        "slug": "",
+        "source": "original",
+        "title": {
+          "tl": "Insulator Block Kuryente",
+          "en": "What Insulators Are",
+          "bis": "Insulator Block Kuryente"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22584",
+        "factId": "insulator-blocks-electricity-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what an insulator is",
+        "terms": [
+          "insulator",
+          "insulador",
+          "di nagpapadaloy",
+          "dili moagi",
+          "humaharang",
+          "nagsanta",
+          "kuryente",
+          "electricity",
+          "goma",
+          "rubber",
+          "plastik",
+          "plastic"
+        ],
+        "fact": {
+          "en": "An insulator is a material that blocks electricity from flowing easily. Rubber and plastic are great examples of insulators!",
+          "tl": "Ang insulador ay isang materyal na hindi nagpapadaloy ng kuryente nang madali. Ang goma at plastic ay mga halimbawa ng insulador!",
+          "bis": "Ang insulador usa ka materyal nga dili sayon nga paagian sa kuryente. Ang goma ug plastik maayong pananglitan sa insulador!"
+        },
+        "slug": "",
+        "source": "original",
+        "title": {
+          "tl": "Insulator Block Kuryente",
+          "en": "What Insulators Are",
+          "bis": "Unsa ang Insulador"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title becomes What Is an Insulator, matching the English definition and existing insulador spelling. The unchanged body retains does-not-flow-easily and rubber/plastic examples. Both readers prefer the title; no absolute infinite-resistance claim is added.",
+      "formal_item_id": "c450aceca5db4130c82163f3ebb322b6a",
+      "fidelity_item_id": "m436ee33ce630f45aefd3e6ce",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-22597",
+      "source_card_sha256": "9796e1a18deb26bd852b137a4a7979ec5601e0a37c04a6fd1ddf8c1faf623ed4",
+      "candidate_card_sha256": "fbc9e71c0ed0691b6e040bc46bd4cefd26c001259d4ef0f5ea09e138633c6ece",
+      "before_card": {
+        "id": "ffct-22597",
+        "factId": "electrical-conductors-also-heat-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "metals conduct both heat and electricity",
+        "terms": [
+          "metal",
+          "puthaw",
+          "init",
+          "heat",
+          "kuryente",
+          "electricity",
+          "konduktor",
+          "conductor",
+          "parehong",
+          "duha",
+          "both",
+          "elektron",
+          "electron"
+        ],
+        "fact": {
+          "en": "Why are metals usually good conductors of both heat and electricity?\n\nIt is because of their free electrons that easily carry both heat and electricity through the metal!",
+          "tl": "Bakit karaniwang magaling magpadaloy ng init at kuryente ang mga metal?\n\nDahil ito sa kanilang malayang mga elektron na madaling nagdadala ng init at kuryente sa metal!",
+          "bis": "Nganong kasagaran maayong konduktor sa init ug kuryente ang mga metal?\n\nTungod kini sa ilang gawasnong mga elektron nga sayon magdala sa init ug kuryente sulod sa metal!"
+        },
+        "slug": "ffct-22597",
+        "source": "original",
+        "title": {
+          "tl": "Free Electron ng Metal",
+          "en": "Metals Heat Electricity",
+          "bis": "Free Electron Metal"
+        },
+        "cats": [
+          "heat",
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22597",
+        "factId": "electrical-conductors-also-heat-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "metals conduct both heat and electricity",
+        "terms": [
+          "metal",
+          "puthaw",
+          "init",
+          "heat",
+          "kuryente",
+          "electricity",
+          "konduktor",
+          "conductor",
+          "parehong",
+          "duha",
+          "both",
+          "elektron",
+          "electron"
+        ],
+        "fact": {
+          "en": "Why are metals usually good conductors of both heat and electricity?\n\nIt is because of their free electrons that easily carry both heat and electricity through the metal!",
+          "tl": "Bakit karaniwang magaling magpadaloy ng init at kuryente ang mga metal?\n\nDahil ito sa kanilang malayang mga elektron na madaling nagdadala ng init at kuryente sa metal!",
+          "bis": "Nganong kasagaran maayong konduktor sa init ug kuryente ang mga metal?\n\nTungod kini sa ilang gawasnong mga elektron nga sayon magdala sa init ug kuryente sulod sa metal!"
+        },
+        "slug": "ffct-22597",
+        "source": "original",
+        "title": {
+          "tl": "Free Electron ng Metal",
+          "en": "Metals Heat Electricity",
+          "bis": "Metal, Init ug Kuryente"
+        },
+        "cats": [
+          "heat",
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Only the title becomes a linked heat/electricity topic phrase matching the question. The unchanged body retains usually and free electrons carrying both heat and current. Both readers prefer the title; English free-electron terminology is not declared inherently wrong.",
+      "formal_item_id": "c3885183ee305a055f7444ca5239f6f74",
+      "fidelity_item_id": "m1f7c1c8775aaa15b4b78c67b",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    }
+  ],
+  "held": [
+    {
+      "card_id": "ffct-21932",
+      "source_card_sha256": "0aa599f74473640769084b397e0462a7ed7de10c25692f9962f9aa57d8996c9e",
+      "candidate_card_sha256": "27fb91cbd13e22078ec3f4221f78af4a4a6b4bba3ed2c91cd4d9c6f337e526d2",
+      "before_card": {
+        "id": "ffct-21932",
+        "factId": "projectile-range-optimal-45-g10",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "projectile maximum range at 45 degrees",
+        "terms": [
+          "range",
+          "layo",
+          "pinakamalayo",
+          "abot",
+          "distansya",
+          "45 degrees",
+          "anggulo",
+          "angle",
+          "optimal",
+          "maximum",
+          "ihagis",
+          "ilabay",
+          "pinakamalayong",
+          "gilay-on"
+        ],
+        "fact": {
+          "en": "With no air resistance and level ground, a thrown object travels the farthest (greatest range) when launched at an angle of 45 degrees!",
+          "tl": "Kung walang resistensya ng hangin at pantay ang lupa, pinakamalayo ang abot (range) ng isang itinapong bagay kapag inihagis sa anggulong 45 degrees!",
+          "bis": "Kung walay resistensya sa hangin ug patag ang yuta, pinakalayo ang abot (range) sa gilabay nga butang kung ilabay kini sa anggulo nga 45 degrees!"
+        },
+        "slug": "ffct-21932",
+        "source": "original",
+        "title": {
+          "tl": "45 Degrees na Pinakamalayo",
+          "en": "45 Degrees Maximum Range",
+          "bis": "45 Degrees Layo"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-21932",
+        "factId": "projectile-range-optimal-45-g10",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "projectile maximum range at 45 degrees",
+        "terms": [
+          "range",
+          "layo",
+          "pinakamalayo",
+          "abot",
+          "distansya",
+          "45 degrees",
+          "anggulo",
+          "angle",
+          "optimal",
+          "maximum",
+          "ihagis",
+          "ilabay",
+          "pinakamalayong",
+          "gilay-on"
+        ],
+        "fact": {
+          "en": "With no air resistance and level ground, a thrown object travels the farthest (greatest range) when launched at an angle of 45 degrees!",
+          "tl": "Kung walang resistensya ng hangin at pantay ang lupa, pinakamalayo ang abot (range) ng isang itinapong bagay kapag inihagis sa anggulong 45 degrees!",
+          "bis": "Kung walay resistensya sa hangin ug patag ang yuta, pinakalayo ang abot (range) sa gilabay nga butang kung ilabay kini sa anggulo nga 45 degrees!"
+        },
+        "slug": "ffct-21932",
+        "source": "original",
+        "title": {
+          "tl": "45 Degrees na Pinakamalayo",
+          "en": "45 Degrees Maximum Range",
+          "bis": "Pinakalayo nga Abot sa 45 Degrees"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The title is clearer, but the 45-degree maximum needs fixed launch speed and equal launch/landing elevation. OpenStax’s range derivation makes the latter explicit; level ground alone does not settle a hand-thrown object’s launch height. Keep the exact candidate held for cross-language source scope.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c6d48d94742ff37ecb411cd14f66ed633"
+    },
+    {
+      "card_id": "ffct-21961",
+      "source_card_sha256": "6f9d732da36bfb400dd1cdff1a6d839669bf1741f3d342b7a719b0f4b3b97904",
+      "candidate_card_sha256": "3c5dcd9e0df13a0ca4862aad56342c4346c7e2e539abad73283e56b8e1c54c6f",
+      "before_card": {
+        "id": "ffct-21961",
+        "factId": "wave-frequency-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "wave frequency",
+        "terms": [
+          "frequency",
+          "dalas",
+          "kadalas",
+          "kadaghan sa balod",
+          "bilang ng alon",
+          "waves per second",
+          "hertz",
+          "kadalas ng alon",
+          "frequency meaning",
+          "bilang sa balod kada segundo"
+        ],
+        "fact": {
+          "en": "What is frequency?\n\nFrequency is exactly how many waves pass a point in one second, measured in hertz!",
+          "tl": "Ano ang frequency (dalas)?\n\nAng frequency (dalas) ay kung ilang alon ang dumadaan sa isang punto sa isang segundo, sinusukat sa hertz!",
+          "bis": "Unsa ang frequency (kadalas)?\n\nAng frequency (kadalas) mao kung pila ka balod ang moagi sa usa ka punto sa usa ka segundo, gisukod sa hertz!"
+        },
+        "slug": "ffct-21961",
+        "source": "original",
+        "title": {
+          "tl": "Frequency Hertz kada Segundo",
+          "en": "Frequency in Hertz",
+          "bis": "Frequency Hertz kada Segundo"
+        },
+        "cats": [
+          "sound"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-21961",
+        "factId": "wave-frequency-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "wave frequency",
+        "terms": [
+          "frequency",
+          "dalas",
+          "kadalas",
+          "kadaghan sa balod",
+          "bilang ng alon",
+          "waves per second",
+          "hertz",
+          "kadalas ng alon",
+          "frequency meaning",
+          "bilang sa balod kada segundo"
+        ],
+        "fact": {
+          "en": "What is frequency?\n\nFrequency is exactly how many waves pass a point in one second, measured in hertz!",
+          "tl": "Ano ang frequency (dalas)?\n\nAng frequency (dalas) ay kung ilang alon ang dumadaan sa isang punto sa isang segundo, sinusukat sa hertz!",
+          "bis": "Unsa ang frequency (kadalas)?\n\nAng frequency (kadalas) mao kung pila ka balod ang moagi sa usa ka punto sulod sa usa ka segundo. Gisukod kini sa hertz!"
+        },
+        "slug": "ffct-21961",
+        "source": "original",
+        "title": {
+          "tl": "Frequency Hertz kada Segundo",
+          "en": "Frequency in Hertz",
+          "bis": "Frequency: Gisukod sa Hertz"
+        },
+        "cats": [
+          "sound"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The sentence split and measured-in-hertz title are faithful. The retained kadalas gloss remains unresolved after independent corpus and Wolff lookup, including the proposer’s expressed doubt. Do not infer correctness from model agreement or silently delete the gloss.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "cb6c50842fc3ec22bf4396581648344bb"
+    },
+    {
+      "card_id": "ffct-21972",
+      "source_card_sha256": "c6f4e6879dab6b2b9261249709d96cd15fbace76815ed8c3c9024d174ff21387",
+      "candidate_card_sha256": "ae038201d3bbff97f86a7bfc5710aa077ca0673b7dc2e01b2dd2c9dc8cad0ff8",
+      "before_card": {
+        "id": "ffct-21972",
+        "factId": "wave-resonance-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "resonance",
+        "terms": [
+          "resonance",
+          "resonansya",
+          "natural frequency",
+          "natural na frequency",
+          "kinaiyanhon nga frequency",
+          "pag-ugong",
+          "in phase",
+          "tumataas na amplitude",
+          "musical instrument",
+          "vibrating string",
+          "instrumentong pangmusika",
+          "pagdugang sa amplitude"
+        ],
+        "fact": {
+          "en": "Resonance happens when something is pushed at its natural frequency. The waves add up and grow in amplitude, like a guitar string or air inside a flute!",
+          "tl": "Ang resonance ay nangyayari kapag ang isang bagay ay tinutulak sa natural frequency nito. Ang mga alon ay nagdadagdag at lumalaki ang amplitude, tulad sa kuwerdas ng gitara o hangin sa plawta!",
+          "bis": "Ang resonance mahitabo kung ang usa ka butang itulod sa natural niini nga frequency. Ang mga balod magdugang ug modako ang amplitude, sama sa kwerdas sa gitara o hangin sa plawta!"
+        },
+        "slug": "ffct-21972",
+        "source": "original",
+        "title": {
+          "tl": "Resonance Gitara Plawta",
+          "en": "Resonance Guitar Flute",
+          "bis": "Resonance Gitara Plawta"
+        },
+        "cats": [
+          "sound"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-21972",
+        "factId": "wave-resonance-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "resonance",
+        "terms": [
+          "resonance",
+          "resonansya",
+          "natural frequency",
+          "natural na frequency",
+          "kinaiyanhon nga frequency",
+          "pag-ugong",
+          "in phase",
+          "tumataas na amplitude",
+          "musical instrument",
+          "vibrating string",
+          "instrumentong pangmusika",
+          "pagdugang sa amplitude"
+        ],
+        "fact": {
+          "en": "Resonance happens when something is pushed at its natural frequency. The waves add up and grow in amplitude, like a guitar string or air inside a flute!",
+          "tl": "Ang resonance ay nangyayari kapag ang isang bagay ay tinutulak sa natural frequency nito. Ang mga alon ay nagdadagdag at lumalaki ang amplitude, tulad sa kuwerdas ng gitara o hangin sa plawta!",
+          "bis": "Mahitabo ang resonance kung ang usa ka butang tulodon sa iyang natural nga frequency. Magdugang ang mga balod ug modako ang ilang amplitude, sama sa kwerdas sa gitara o hangin sa plawta!"
+        },
+        "slug": "ffct-21972",
+        "source": "original",
+        "title": {
+          "tl": "Resonance Gitara Plawta",
+          "en": "Resonance Guitar Flute",
+          "bis": "Resonance sa Gitara ug Plawta"
+        },
+        "cats": [
+          "sound"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Root tulud is valid for pushing, but the exact tulodon replacement has one independent machine-translated attestation and the proposer flags its inflection as uncertain. Wolff’s itulud construction does not settle that choice. Preserve the candidate as held rather than approving a lexical conjecture.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c12c5986a7ba4e88e27ba3dfb0fbfa104"
+    },
+    {
+      "card_id": "ffct-22040",
+      "source_card_sha256": "f5fb726c573c5ec8afce433842c866bbb9ce2d1486e0bf0b52cc6e6de3504639",
+      "candidate_card_sha256": "15150c280a16aa1f17697fdc63581713040e8703fee1385f9827d91f642b27fc",
+      "before_card": {
+        "id": "ffct-22040",
+        "factId": "wifi-radio-different-channels-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "wifi and radio use invisible waves at set frequencies",
+        "terms": [
+          "wifi",
+          "wi-fi",
+          "radio wave",
+          "alon ng radyo",
+          "balud sa radyo",
+          "frequency",
+          "himpapawid",
+          "channel",
+          "estasyon",
+          "station",
+          "invisible waves",
+          "alon na di nakikita",
+          "balud nga dili makita",
+          "tunog",
+          "signal",
+          "antenna",
+          "antena",
+          "tuned"
+        ],
+        "fact": {
+          "en": "Why don't Wi-Fi, radio, and phone signals mix up?\n\nThey all use invisible radio waves, but each is tuned to its own frequency, just like different radio stations!",
+          "tl": "Bakit hindi nagkakagulo ang wifi, radyo, at telepono?\n\nGumagamit sila ng invisible radio waves, pero bawat isa ay naka-tune sa sarili nitong frequency, parang iba't ibang radio station!",
+          "bis": "Nganong dili magkasagol ang wifi, radyo, ug telepono?\n\nNaggamit sila ug invisible radio waves, pero ang matag usa naka-tune sa kaugalingong frequency niini, sama sa lainlaing radio station!"
+        },
+        "slug": "ffct-22040",
+        "source": "original",
+        "title": {
+          "tl": "WiFi Radio Frequency Station",
+          "en": "Radio Frequencies Separate",
+          "bis": "WiFi Radio Frequency Station"
+        },
+        "cats": [
+          "energy"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22040",
+        "factId": "wifi-radio-different-channels-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "wifi and radio use invisible waves at set frequencies",
+        "terms": [
+          "wifi",
+          "wi-fi",
+          "radio wave",
+          "alon ng radyo",
+          "balud sa radyo",
+          "frequency",
+          "himpapawid",
+          "channel",
+          "estasyon",
+          "station",
+          "invisible waves",
+          "alon na di nakikita",
+          "balud nga dili makita",
+          "tunog",
+          "signal",
+          "antenna",
+          "antena",
+          "tuned"
+        ],
+        "fact": {
+          "en": "Why don't Wi-Fi, radio, and phone signals mix up?\n\nThey all use invisible radio waves, but each is tuned to its own frequency, just like different radio stations!",
+          "tl": "Bakit hindi nagkakagulo ang wifi, radyo, at telepono?\n\nGumagamit sila ng invisible radio waves, pero bawat isa ay naka-tune sa sarili nitong frequency, parang iba't ibang radio station!",
+          "bis": "Nganong dili magkasagol ang mga signal sa wifi, radyo, ug telepono?\n\nTanan sila naggamit ug radio waves nga dili makita. Pero ang matag usa naka-tune sa kaugalingon niini nga frequency, sama sa lainlaing radio station!"
+        },
+        "slug": "ffct-22040",
+        "source": "original",
+        "title": {
+          "tl": "WiFi Radio Frequency Station",
+          "en": "Radio Frequencies Separate",
+          "bis": "Lainlaing Frequency sa Signal"
+        },
+        "cats": [
+          "energy"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The source’s no-mixing guarantee is too broad. Apple’s primary guidance describes shared wireless bands and actual interference, including cordless phones. Hold for a bounded English explanation rather than make an overgeneralization more fluent. No new technical explanation is inserted in Cebuano alone.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c792a13caca4a837c0f74d39b4393b317"
+    },
+    {
+      "card_id": "ffct-22098",
+      "source_card_sha256": "75f6cd89a52a98315bd8082a182f7e79e6def6ec8e6f83021ea065ad615359bd",
+      "candidate_card_sha256": "b7428c8d580d8fdf7280ec79d0b2fd2158449017e4f3ae455b0507d60b9b1c8d",
+      "before_card": {
+        "id": "ffct-22098",
+        "factId": "hard-drive-stores-with-magnetism-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "computers store data with magnetism",
+        "terms": [
+          "hard drive",
+          "computer",
+          "kompyuter",
+          "magnet",
+          "datos",
+          "data",
+          "impormasyon",
+          "kahibalo",
+          "naka-store",
+          "gitago",
+          "disk",
+          "plato",
+          "magnetiko",
+          "spot",
+          "bit",
+          "memorya",
+          "file",
+          "nakaimbak"
+        ],
+        "fact": {
+          "en": "How does a hard drive store data?\n\nA computer's hard drive stores data by magnetizing very tiny spots on a spinning disk!",
+          "tl": "Paano nag-iimbak ng datos ang hard drive?\n\nAng hard drive ng kompyuter ay nag-iimbak ng datos sa pamamagitan ng pag-magnetize ng napakaliliit na lugar sa umiikot na disk!",
+          "bis": "Unsaon pag-imbak sa datos sa hard drive?\n\nAng hard drive sa kompyuter mag-imbak ug datos pinaagi sa pag-magnetize sa gagmay kaayo nga lugar sa nagaliyok nga disk!"
+        },
+        "slug": "ffct-22098",
+        "source": "original",
+        "title": {
+          "tl": "Hard Drive na Magnetize",
+          "en": "Hard Drive Magnetic Data",
+          "bis": "Hard Drive Magnet"
+        },
+        "cats": [
+          "magnets",
+          "magnetism"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22098",
+        "factId": "hard-drive-stores-with-magnetism-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "computers store data with magnetism",
+        "terms": [
+          "hard drive",
+          "computer",
+          "kompyuter",
+          "magnet",
+          "datos",
+          "data",
+          "impormasyon",
+          "kahibalo",
+          "naka-store",
+          "gitago",
+          "disk",
+          "plato",
+          "magnetiko",
+          "spot",
+          "bit",
+          "memorya",
+          "file",
+          "nakaimbak"
+        ],
+        "fact": {
+          "en": "How does a hard drive store data?\n\nA computer's hard drive stores data by magnetizing very tiny spots on a spinning disk!",
+          "tl": "Paano nag-iimbak ng datos ang hard drive?\n\nAng hard drive ng kompyuter ay nag-iimbak ng datos sa pamamagitan ng pag-magnetize ng napakaliliit na lugar sa umiikot na disk!",
+          "bis": "Giunsa sa hard drive pag-imbak ang datos?\n\nAng hard drive sa kompyuter mag-imbak ug datos pinaagi sa pag-magnetize sa gagmay kaayo nga lugar sa nagaliyok nga disk!"
+        },
+        "slug": "ffct-22098",
+        "source": "original",
+        "title": {
+          "tl": "Hard Drive na Magnetize",
+          "en": "Hard Drive Magnetic Data",
+          "bis": "Magnetic nga Datos sa Hard Drive"
+        },
+        "cats": [
+          "magnets",
+          "magnetism"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Both blind readers tie the changed body while preferring the title. The proposed complete candidate changes the opening question as well as the title, so that body rewrite lacks the required directional improvement evidence. Hold the exact candidate; do not splice out a title-only variant without its own review.",
+      "hold_kind": "hold_readability",
+      "formal_item_id": "cba4c0c5108fde83a1f81b6c2e8725fc8"
+    },
+    {
+      "card_id": "ffct-22193",
+      "source_card_sha256": "8db91eae9bd24ed906e4cba374570da337609e2f02d2abea6fc6430c6d83666e",
+      "candidate_card_sha256": "f3897978d2529a987f79d8e390e11528f248bd6bd90072ad4c7b9ad39ab7a1a2",
+      "before_card": {
+        "id": "ffct-22193",
+        "factId": "metal-feels-colder-conduction-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "conduction perception",
+        "terms": [
+          "metal",
+          "puthaw",
+          "mas malamig",
+          "mas bugnaw",
+          "pakiramdam",
+          "bati",
+          "kahoy",
+          "parehong temperatura",
+          "managsama init",
+          "mabilis kumuha",
+          "paspas mokuha",
+          "conduction",
+          "hawakan",
+          "kuptan"
+        ],
+        "fact": {
+          "en": "Metal feels colder than wood even at the same temperature because it quickly pulls heat away from your hand through conduction!",
+          "tl": "Mas malamig ang pakiramdam ng metal kaysa kahoy kahit pareho ang temperatura, dahil mabilis niyang hinahatak ang init ng kamay mo sa pamamagitan ng conduction!",
+          "bis": "Mas bugnaw og bati ang metal kaysa kahoy bisan managsama ang temperatura, kay paspas niyang mokuha sa init sa imong kamot pinaagi sa conduction!"
+        },
+        "slug": "ffct-22193",
+        "source": "original",
+        "title": {
+          "tl": "Metal Malamig Kahoy Conduction",
+          "en": "Metal Feels Colder Why",
+          "bis": "Metal Bugnaw Kahoy Conduction"
+        },
+        "cats": [
+          "heat"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22193",
+        "factId": "metal-feels-colder-conduction-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "conduction perception",
+        "terms": [
+          "metal",
+          "puthaw",
+          "mas malamig",
+          "mas bugnaw",
+          "pakiramdam",
+          "bati",
+          "kahoy",
+          "parehong temperatura",
+          "managsama init",
+          "mabilis kumuha",
+          "paspas mokuha",
+          "conduction",
+          "hawakan",
+          "kuptan"
+        ],
+        "fact": {
+          "en": "Metal feels colder than wood even at the same temperature because it quickly pulls heat away from your hand through conduction!",
+          "tl": "Mas malamig ang pakiramdam ng metal kaysa kahoy kahit pareho ang temperatura, dahil mabilis niyang hinahatak ang init ng kamay mo sa pamamagitan ng conduction!",
+          "bis": "Mas bugnaw og bati ang metal kaysa kahoy bisan managsama ang ilang temperatura. Kini tungod kay paspas mokuha ang metal sa init sa imong kamot pinaagi sa conduction!"
+        },
+        "slug": "ffct-22193",
+        "source": "original",
+        "title": {
+          "tl": "Metal Malamig Kahoy Conduction",
+          "en": "Metal Feels Colder Why",
+          "bis": "Mas Bugnaw og Bati ang Metal"
+        },
+        "cats": [
+          "heat"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The explanation needs objects cooler than the hand. Conductivity affects transfer rate, while the temperature difference determines its direction; hot metal can transfer heat toward the hand. Hold the source scope despite the faithful sentence split and both readers’ preference.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c4e7867d1e31478c090142fcb96034d9e"
+    },
+    {
+      "card_id": "ffct-22206",
+      "source_card_sha256": "1f9fc18201cd8dd9232ff4202a8d1dea7c9334012320e6d924c793ed55b62a07",
+      "candidate_card_sha256": "1b451e3c7a448d36fdc855c0f0b38391312f4565c22d9d1a4601cf2d1d7eb7ee",
+      "before_card": {
+        "id": "ffct-22206",
+        "factId": "magnet-not-all-metals-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "not all metals are magnetic",
+        "terms": [
+          "metal",
+          "puthaw",
+          "gold",
+          "silver",
+          "ginto",
+          "pilak",
+          "aluminum",
+          "copper",
+          "tanso",
+          "hindi lahat",
+          "dili tanan",
+          "magnetic"
+        ],
+        "fact": {
+          "en": "Are all metals pulled by a magnet?\n\nNope! Gold, silver, and aluminum are metals, but they are not attracted to a magnet.",
+          "tl": "Lahat ba ng metal ay hinihila ng magnet?\n\nHindi! Ang ginto, pilak, at aluminum ay metal, pero hindi sila umaakit sa magnet.",
+          "bis": "Tanan ba nga metal ginabira sa magnet?\n\nDili! Ang bulawan, pilak, ug aluminum mga metal, pero dili sila magtapot sa magnet."
+        },
+        "slug": "ffct-22206",
+        "source": "original",
+        "title": {
+          "tl": "Ginto Pilak Aluminum Magnet",
+          "en": "Not All Metals Magnetic",
+          "bis": "Bulawan Pilak Aluminum Magnet"
+        },
+        "cats": [
+          "magnets"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22206",
+        "factId": "magnet-not-all-metals-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "not all metals are magnetic",
+        "terms": [
+          "metal",
+          "puthaw",
+          "gold",
+          "silver",
+          "ginto",
+          "pilak",
+          "aluminum",
+          "copper",
+          "tanso",
+          "hindi lahat",
+          "dili tanan",
+          "magnetic"
+        ],
+        "fact": {
+          "en": "Are all metals pulled by a magnet?\n\nNope! Gold, silver, and aluminum are metals, but they are not attracted to a magnet.",
+          "tl": "Lahat ba ng metal ay hinihila ng magnet?\n\nHindi! Ang ginto, pilak, at aluminum ay metal, pero hindi sila umaakit sa magnet.",
+          "bis": "Tanan ba nga metal ginabira sa magnet?\n\nDili! Ang bulawan, pilak, ug aluminum mga metal, pero dili sila magtapot sa magnet."
+        },
+        "slug": "ffct-22206",
+        "source": "original",
+        "title": {
+          "tl": "Ginto Pilak Aluminum Magnet",
+          "en": "Not All Metals Magnetic",
+          "bis": "Dili Tanang Metal Ginabira sa Magnet"
+        },
+        "cats": [
+          "magnets"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The unqualified English says aluminum is not attracted, while OpenStax identifies a small positive paramagnetic susceptibility. An ordinary-magnet/no-noticeable-sticking qualifier would preserve the classroom observation. Hold the exact title candidate pending cross-language source precision; do not equate sticking with all magnetic response.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c31de340891a6ab56184d57b17b43e9e4"
+    },
+    {
+      "card_id": "ffct-22259",
+      "source_card_sha256": "3bf373f15f8d96c4290f7e8f81a80a8b2a7a0d439529f61e8c46cf7a062b66cd",
+      "candidate_card_sha256": "d55946856a2b56efa8643094e15cf2a327603961678e336bedd4da35bb723827",
+      "before_card": {
+        "id": "ffct-22259",
+        "factId": "lever-third-class-effort-middle-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "third-class lever",
+        "terms": [
+          "ikatlong uri",
+          "third-class lever",
+          "effort sa gitna",
+          "puwersa sa gitna",
+          "ikatulong klase",
+          "tweezers",
+          "sipit",
+          "kusog sa tunga",
+          "fishing rod",
+          "pamingwit"
+        ],
+        "fact": {
+          "en": "What makes a third-class lever special?\n\nThe effort is in the middle! You use this kind of lever when using tweezers or a fishing rod.",
+          "tl": "Ano ang espesyal sa third-class lever?\n\nNasa gitna ang effort! Ginagamit mo itong uri ng lever kapag gumamit ng tweezers o pamingwit.",
+          "bis": "Unsay espesyal sa third-class lever?\n\nNaa sa tunga ang effort! Gigamit nimo ni nga klase nga lever kung mogamit ka og tweezers o pamasol."
+        },
+        "slug": "ffct-22259",
+        "source": "original",
+        "title": {
+          "tl": "Third-Class Lever Effort Gitna",
+          "en": "The Third-Class Lever",
+          "bis": "Third-Class Lever Tunga"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22259",
+        "factId": "lever-third-class-effort-middle-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "third-class lever",
+        "terms": [
+          "ikatlong uri",
+          "third-class lever",
+          "effort sa gitna",
+          "puwersa sa gitna",
+          "ikatulong klase",
+          "tweezers",
+          "sipit",
+          "kusog sa tunga",
+          "fishing rod",
+          "pamingwit"
+        ],
+        "fact": {
+          "en": "What makes a third-class lever special?\n\nThe effort is in the middle! You use this kind of lever when using tweezers or a fishing rod.",
+          "tl": "Ano ang espesyal sa third-class lever?\n\nNasa gitna ang effort! Ginagamit mo itong uri ng lever kapag gumamit ng tweezers o pamingwit.",
+          "bis": "Unsay espesyal sa third-class lever?\n\nNaa sa tunga ang effort! Gigamit nimo ni nga klase nga lever kung mogamit ka og tweezers o pamasol."
+        },
+        "slug": "ffct-22259",
+        "source": "original",
+        "title": {
+          "tl": "Third-Class Lever Effort Gitna",
+          "en": "The Third-Class Lever",
+          "bis": "Ang Third-Class Lever"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The title is clear, but the unchanged lever example uses pamasol where English requires a fishing rod. Wolff pasul identifies a fishing line and fishing activity; broad substring corpus hits include unrelated pasulod. The physical rod-versus-line referent remains unresolved, so the complete candidate stays held.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c24a92b0c865dad8aa54a7e31e6777bc5"
+    },
+    {
+      "card_id": "ffct-22279",
+      "source_card_sha256": "7af40cb0d4d6811136242a08a00d5767d6ef7cd4252dc8106c49801c1a3a2d1d",
+      "candidate_card_sha256": "e19c842953ee9072e69c5346be83f8bff0d039084c1c444145a005976a57dc36",
+      "before_card": {
+        "id": "ffct-22279",
+        "factId": "wedge-is-two-inclined-planes-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "wedge structure",
+        "terms": [
+          "wedge",
+          "two inclined planes",
+          "kalang",
+          "tilos",
+          "dalawang dahilig",
+          "matalas na dulo",
+          "duha ka banghilig",
+          "sungkod",
+          "pointed",
+          "makina",
+          "makina nga tinalinis",
+          "talinis"
+        ],
+        "fact": {
+          "en": "A wedge is a simple machine made of two inclined planes joined to form a sharp edge!",
+          "tl": "Ang wedge ay isang payak na makina na gawa sa dalawang dahilig na pinagsama para mabuo ang matalas na dulo!",
+          "bis": "Ang wedge usa ka yano nga makina nga gihimo sa duha ka banghilig nga gisumpay aron maporma ang talinis nga sidsid!"
+        },
+        "slug": "ffct-22279",
+        "source": "original",
+        "title": {
+          "tl": "Wedge Dalawang Inclined Plane",
+          "en": "Wedge, Two Inclined Planes",
+          "bis": "Wedge Duha Plane"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22279",
+        "factId": "wedge-is-two-inclined-planes-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "wedge structure",
+        "terms": [
+          "wedge",
+          "two inclined planes",
+          "kalang",
+          "tilos",
+          "dalawang dahilig",
+          "matalas na dulo",
+          "duha ka banghilig",
+          "sungkod",
+          "pointed",
+          "makina",
+          "makina nga tinalinis",
+          "talinis"
+        ],
+        "fact": {
+          "en": "A wedge is a simple machine made of two inclined planes joined to form a sharp edge!",
+          "tl": "Ang wedge ay isang payak na makina na gawa sa dalawang dahilig na pinagsama para mabuo ang matalas na dulo!",
+          "bis": "Ang wedge usa ka yano nga makina. Gihimo kini sa duha ka banghilig nga gisumpay aron maporma ang talinis nga sidsid!"
+        },
+        "slug": "ffct-22279",
+        "source": "original",
+        "title": {
+          "tl": "Wedge Dalawang Inclined Plane",
+          "en": "Wedge, Two Inclined Planes",
+          "bis": "Wedge: Duha ka Banghilig"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Banghilig has both dictionary slope support and independent inclined-plane uses, but talinis nga sidsid remains uncertain for the wedge’s cutting edge: Wolff talinis emphasizes a point, while sidsid is an edge/border. Hold the complete candidate; do not replace it with an unreviewed blade term.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c27c262ff0e85f5ecad745d17a3ae3153"
+    },
+    {
+      "card_id": "ffct-22339",
+      "source_card_sha256": "bbff01de7c5e59d7f93ab4a768a2c1d851fbcc99dfda78b6da1123d3add0b0b5",
+      "candidate_card_sha256": "8f3df5dce291fe9f7acd711c3cd9507d15e8bbd4bfe79532f5963cfb86233af8",
+      "before_card": {
+        "id": "ffct-22339",
+        "factId": "pendulum-equilibrium-rest-position-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "rest position at the bottom",
+        "terms": [
+          "equilibrium",
+          "panimbang",
+          "rest position",
+          "pahingahan",
+          "lowest point",
+          "pinakamababa",
+          "ubos",
+          "gitna",
+          "tunga",
+          "center",
+          "balanse"
+        ],
+        "fact": {
+          "en": "When nothing pushes it, a pendulum rests at its lowest point, called the equilibrium or rest position.",
+          "tl": "Kapag walang humahatak, ang pendulum ay nakahinto sa pinakamababang punto, na tinatawag na equilibrium o rest position.",
+          "bis": "Kon walay nagduso niini, ang pendulum mopahulay sa pinakaubos nga punto, nga gitawag nga equilibrium o rest position."
+        },
+        "slug": "ffct-22339",
+        "source": "original",
+        "title": {
+          "tl": "Rest Position sa Ibaba",
+          "en": "The Rest Position",
+          "bis": "Rest sa Ubos"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22339",
+        "factId": "pendulum-equilibrium-rest-position-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "rest position at the bottom",
+        "terms": [
+          "equilibrium",
+          "panimbang",
+          "rest position",
+          "pahingahan",
+          "lowest point",
+          "pinakamababa",
+          "ubos",
+          "gitna",
+          "tunga",
+          "center",
+          "balanse"
+        ],
+        "fact": {
+          "en": "When nothing pushes it, a pendulum rests at its lowest point, called the equilibrium or rest position.",
+          "tl": "Kapag walang humahatak, ang pendulum ay nakahinto sa pinakamababang punto, na tinatawag na equilibrium o rest position.",
+          "bis": "Kon walay nagduso niini, ang pendulum mopahulay sa pinakaubos nga punto, nga gitawag nga equilibrium o rest position."
+        },
+        "slug": "ffct-22339",
+        "source": "original",
+        "title": {
+          "tl": "Rest Position sa Ibaba",
+          "en": "The Rest Position",
+          "bis": "Ang Rest Position"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The equilibrium position is plausible, but absence of a current push does not mean an already moving pendulum is at rest. OpenStax’s damping account distinguishes energy loss over time. Hold for an at-rest/eventual-settling scope in English rather than silently qualify only Cebuano.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "cb901c2d1ae943580a655bb5ada8b35eb"
+    },
+    {
+      "card_id": "ffct-22425",
+      "source_card_sha256": "ca3651514a1d49c3c818be374ec57738e5226b124845ab058ed210b8a055283f",
+      "candidate_card_sha256": "4a16c2485d440182803f4238dc991d9cc001cbb5ee572a0a44c60c5d51827b1c",
+      "before_card": {
+        "id": "ffct-22425",
+        "factId": "astronauts-float-microgravity-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "astronauts seem weightless in space",
+        "terms": [
+          "astronaut",
+          "lumulutang",
+          "molutaw",
+          "float",
+          "kalawakan",
+          "kawanangan",
+          "space",
+          "walang timbang",
+          "walay timbang",
+          "weightless",
+          "istasyon",
+          "nahuhulog"
+        ],
+        "fact": {
+          "en": "Why do astronauts float inside a space station?\n\nThey float because they and the space station are actually falling around Earth together at the same time!",
+          "tl": "Bakit lumulutang ang mga astronaut sa loob ng space station?\n\nLumulutang sila dahil sila at ang space station ay magkasabay na nahuhulog sa paligid ng Earth nang sabay-sabay!",
+          "bis": "Nganong molutaw ang mga astronaut sulod sa space station?\n\nMolutaw sila tungod kay sila ug ang space station magkauban nga nahulog libot sa Yuta sa samang higayon!"
+        },
+        "slug": "ffct-22425",
+        "source": "original",
+        "title": {
+          "tl": "Astronaut Float Space Station",
+          "en": "Floating Astronauts",
+          "bis": "Astronaut Float Station"
+        },
+        "cats": [
+          "gravity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22425",
+        "factId": "astronauts-float-microgravity-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "astronauts seem weightless in space",
+        "terms": [
+          "astronaut",
+          "lumulutang",
+          "molutaw",
+          "float",
+          "kalawakan",
+          "kawanangan",
+          "space",
+          "walang timbang",
+          "walay timbang",
+          "weightless",
+          "istasyon",
+          "nahuhulog"
+        ],
+        "fact": {
+          "en": "Why do astronauts float inside a space station?\n\nThey float because they and the space station are actually falling around Earth together at the same time!",
+          "tl": "Bakit lumulutang ang mga astronaut sa loob ng space station?\n\nLumulutang sila dahil sila at ang space station ay magkasabay na nahuhulog sa paligid ng Earth nang sabay-sabay!",
+          "bis": "Nganong molutaw ang mga astronaut sulod sa space station?\n\nMolutaw sila tungod kay sila ug ang space station magkauban nga nahulog libot sa Yuta sa samang higayon!"
+        },
+        "slug": "ffct-22425",
+        "source": "original",
+        "title": {
+          "tl": "Astronaut Float Space Station",
+          "en": "Floating Astronauts",
+          "bis": "Mga Astronaut nga Molutaw"
+        },
+        "cats": [
+          "gravity"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The floating title is supported by lutaw. The full body retains nahulog for ongoing orbital free fall, a tense/aspect uncertainty expressly raised by the proposer. Corpus repetition and a completed-fall dictionary example do not resolve that construction. Hold without declaring all nahulog uses wrong.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c9b0cad1a9d7bfe59fefcd098ef859144"
+    },
+    {
+      "card_id": "ffct-22530",
+      "source_card_sha256": "e634896936bf557ab5e2a490ea5cb0f356e67aca9f2f7e62226115ef9d0b136e",
+      "candidate_card_sha256": "7d50ce8a1e310a357327c2bac353528ed221d373c478d9e2ee03ec2032f2bc1f",
+      "before_card": {
+        "id": "ffct-22530",
+        "factId": "pendulum-energy-swap-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "energy exchange in a pendulum or swing",
+        "terms": [
+          "pendulum",
+          "swing",
+          "duyan",
+          "palawit",
+          "kinetiko",
+          "potensyal",
+          "indayog",
+          "pinakamataas",
+          "pinakamababa",
+          "taas-baba",
+          "highest point",
+          "lowest point"
+        ],
+        "fact": {
+          "en": "How does energy swap on a swing or pendulum?\n\nPotential energy is highest at the top, and kinetic energy is highest at the bottom. They trade back and forth as it swings!",
+          "tl": "Paano nagpapalitan ang enerhiya sa duyan o pendulum?\n\nPinakamalaki ang potential energy sa pinakamataas, at pinakamalaki ang kinetic energy sa pinakamababa. Palit-palit sila habang umuugoy!",
+          "bis": "Unsaon pagbinayloay sa enerhiya sa duyan o pendulum?\n\nLabing dako ang potential energy sa pinakahabog, ug ang kinetic energy sa pinakaubos. Nagbinayloay sila samtang nagaindayog!"
+        },
+        "slug": "child-on-swing",
+        "title": {
+          "en": "Pendulum Energy",
+          "tl": "Enerhiya ng Pendulum",
+          "bis": "Enerhiya sa Pendulum"
+        },
+        "cats": [
+          "energy",
+          "motion"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "potential energy",
+            "kinetic energy"
+          ],
+          "en": [
+            "kinetic energy"
+          ],
+          "bis": [
+            "potential energy",
+            "kinetic energy"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-22530",
+        "factId": "pendulum-energy-swap-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "energy exchange in a pendulum or swing",
+        "terms": [
+          "pendulum",
+          "swing",
+          "duyan",
+          "palawit",
+          "kinetiko",
+          "potensyal",
+          "indayog",
+          "pinakamataas",
+          "pinakamababa",
+          "taas-baba",
+          "highest point",
+          "lowest point"
+        ],
+        "fact": {
+          "en": "How does energy swap on a swing or pendulum?\n\nPotential energy is highest at the top, and kinetic energy is highest at the bottom. They trade back and forth as it swings!",
+          "tl": "Paano nagpapalitan ang enerhiya sa duyan o pendulum?\n\nPinakamalaki ang potential energy sa pinakamataas, at pinakamalaki ang kinetic energy sa pinakamababa. Palit-palit sila habang umuugoy!",
+          "bis": "Unsaon pagbinayloay sa enerhiya sa duyan o pendulum?\n\nLabing dako ang potential energy sa pinakahabog, ug labing dako ang kinetic energy sa pinakaubos. Nagbinayloay sila samtang nagaindayog kini!"
+        },
+        "slug": "child-on-swing",
+        "title": {
+          "en": "Pendulum Energy",
+          "tl": "Enerhiya ng Pendulum",
+          "bis": "Enerhiya sa Pendulum"
+        },
+        "cats": [
+          "energy",
+          "motion"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "potential energy",
+            "kinetic energy"
+          ],
+          "en": [
+            "kinetic energy"
+          ],
+          "bis": [
+            "potential energy",
+            "kinetic energy"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Repeating highest and naming the swinging subject are faithful, but nagaindayog remains lexically unresolved after the sparse independent swing examples and dictionary lookup. Neither infrequency nor naga- alone proves an error. Hold the complete candidate rather than silently substitute or normalize it.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c5f63e1d9c9aa7d044da057e57d636018"
+    },
+    {
+      "card_id": "ffct-22546",
+      "source_card_sha256": "808fb221c5dfbe2a6f99ece3fb9259c9e90e5fbb8bc07b4d8ca93d7cf6c53fe4",
+      "candidate_card_sha256": "7a8206326283a870c764e6d9e534182ef05226cfbd2da93c46c61b3d59261d4b",
+      "before_card": {
+        "id": "ffct-22546",
+        "factId": "dead-battery-no-chemical-energy-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "a drained battery stops the circuit",
+        "terms": [
+          "ubos na baterya",
+          "patay na baterya",
+          "dead battery",
+          "naubos",
+          "nahurot",
+          "wala nay kuryente",
+          "walang kuryente",
+          "chemical energy",
+          "kemikal na enerhiya",
+          "hindi na gumagana",
+          "dili na molihok",
+          "palitan",
+          "ilisan",
+          "tumigil",
+          "mihunong",
+          "flashlight",
+          "naluya"
+        ],
+        "fact": {
+          "en": "When the chemical energy inside a battery is used up, it can't push the current anymore. Your flashlight or toy stops working, so the battery must be replaced or recharged!",
+          "tl": "Kapag naubos na ang chemical energy sa loob ng baterya, hindi na nito kayang itulak ang kuryente. Titigil ang flashlight o laruan, kaya kailangan itong palitan o i-charge muli!",
+          "bis": "Kung mahurot na ang chemical energy sulod sa baterya, dili na niini matulod ang kuryente. Mohunong ang flashlight o dulaan, mao nga kinahanglan na kining ilisan o i-charge pag-usab!"
+        },
+        "slug": "battery-flashlight-circuit",
+        "title": {
+          "en": "Dead Battery",
+          "tl": "Patay na Baterya",
+          "bis": "Patay nga Baterya"
+        },
+        "cats": [
+          "electricity",
+          "circuits"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "chemical energy"
+          ],
+          "en": [
+            "chemical energy"
+          ],
+          "bis": [
+            "chemical energy"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-22546",
+        "factId": "dead-battery-no-chemical-energy-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "a drained battery stops the circuit",
+        "terms": [
+          "ubos na baterya",
+          "patay na baterya",
+          "dead battery",
+          "naubos",
+          "nahurot",
+          "wala nay kuryente",
+          "walang kuryente",
+          "chemical energy",
+          "kemikal na enerhiya",
+          "hindi na gumagana",
+          "dili na molihok",
+          "palitan",
+          "ilisan",
+          "tumigil",
+          "mihunong",
+          "flashlight",
+          "naluya"
+        ],
+        "fact": {
+          "en": "When the chemical energy inside a battery is used up, it can't push the current anymore. Your flashlight or toy stops working, so the battery must be replaced or recharged!",
+          "tl": "Kapag naubos na ang chemical energy sa loob ng baterya, hindi na nito kayang itulak ang kuryente. Titigil ang flashlight o laruan, kaya kailangan itong palitan o i-charge muli!",
+          "bis": "Kung mahurot na ang chemical energy sa sulod sa baterya, dili na niini matulod ang kuryente. Mohunong ang imong flashlight o dulaan. Busa, kinahanglan nang ilisan o i-charge pag-usab ang baterya!"
+        },
+        "slug": "battery-flashlight-circuit",
+        "title": {
+          "en": "Dead Battery",
+          "tl": "Patay na Baterya",
+          "bis": "Patay nga Baterya"
+        },
+        "cats": [
+          "electricity",
+          "circuits"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "chemical energy"
+          ],
+          "en": [
+            "chemical energy"
+          ],
+          "bis": [
+            "chemical energy"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Naming the battery fixes the ambiguous referent, but the source’s unrestricted recharge option can be unsafe for primary batteries. Energizer expressly limits charging to rechargeable types. Hold for a shared source qualification rather than approve a clearer unrestricted instruction.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c8981cc2bf3f7eedec83492731f5844df"
+    },
+    {
+      "card_id": "ffct-22565",
+      "source_card_sha256": "f6eac0af249cd1781e4e8ab3e34d7503fae7630c72742abbc26489a3ff092a4c",
+      "candidate_card_sha256": "571273f4df486e34b62ade182474f3d170573e45d763ee43c7f4f97a3b49a73a",
+      "before_card": {
+        "id": "ffct-22565",
+        "factId": "electromagnet-turn-off-loses-magnetism-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "switch off removes magnetism",
+        "terms": [
+          "patayin ang kuryente",
+          "switch",
+          "nawawalang magnet",
+          "elektromagnet",
+          "pagpalong sa kuryente",
+          "off",
+          "magnetismo",
+          "pagpatay",
+          "control",
+          "kontrol"
+        ],
+        "fact": {
+          "en": "What happens when you turn off the electric current?\n\nThe electromagnet loses its magnetism! This means you can easily switch it on and off.",
+          "tl": "Ano ang mangyayari kapag pinatay mo ang electric current?\n\nNawawala ang magnetism ng electromagnet! Kaya naman madali mo itong ma-on at ma-off.",
+          "bis": "Unsay mahitabo kung palongon nimo ang electric current?\n\nMawala ang magnetism sa electromagnet! Busa sayon nimo kini ma-on ug ma-off."
+        },
+        "slug": "ffct-22565",
+        "source": "original",
+        "title": {
+          "tl": "Off Switch Wala Magnetism",
+          "en": "Off Switch Removes Magnetism",
+          "bis": "Off Switch Wala Magnet"
+        },
+        "cats": [
+          "magnetism",
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-22565",
+        "factId": "electromagnet-turn-off-loses-magnetism-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "switch off removes magnetism",
+        "terms": [
+          "patayin ang kuryente",
+          "switch",
+          "nawawalang magnet",
+          "elektromagnet",
+          "pagpalong sa kuryente",
+          "off",
+          "magnetismo",
+          "pagpatay",
+          "control",
+          "kontrol"
+        ],
+        "fact": {
+          "en": "What happens when you turn off the electric current?\n\nThe electromagnet loses its magnetism! This means you can easily switch it on and off.",
+          "tl": "Ano ang mangyayari kapag pinatay mo ang electric current?\n\nNawawala ang magnetism ng electromagnet! Kaya naman madali mo itong ma-on at ma-off.",
+          "bis": "Unsay mahitabo kung palongon nimo ang electric current?\n\nMawala ang magnetism sa electromagnet! Busa sayon nimo kini ma-on ug ma-off."
+        },
+        "slug": "ffct-22565",
+        "source": "original",
+        "title": {
+          "tl": "Off Switch Wala Magnetism",
+          "en": "Off Switch Removes Magnetism",
+          "bis": "Mawala ang Magnetism kung I-off"
+        },
+        "cats": [
+          "magnetism",
+          "electricity"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The source says magnetism disappears without distinguishing the current-produced coil field from remanent core magnetization. OpenStax explicitly documents retained iron magnetization at zero solenoid current. Keep the faithful title rewrite held until the source is appropriately bounded.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "cd592c196cfa9113d3ee9c9a087a34183"
+    }
+  ],
+  "prior_mandatory_missing_judgment_holds": [
+    "ffct-15686",
+    "ffct-24823"
+  ],
+  "native_verified": false,
+  "science_verified": false,
+  "released": false,
+  "source_precision_holds_require_cross_language_review": [
+    "ffct-21932",
+    "ffct-22040",
+    "ffct-22193",
+    "ffct-22206",
+    "ffct-22339",
+    "ffct-22546",
+    "ffct-22565"
+  ],
+  "lexical_holds": [
+    "ffct-21961",
+    "ffct-21972",
+    "ffct-22259",
+    "ffct-22279",
+    "ffct-22425",
+    "ffct-22530"
+  ],
+  "fidelity_holds": [],
+  "readability_holds": [
+    "ffct-22098"
+  ]
+}

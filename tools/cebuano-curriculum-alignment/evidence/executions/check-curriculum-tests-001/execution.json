@@ -1,0 +1,33 @@
+{
+  "command": [
+    "pnpm",
+    "--filter",
+    "@hiraia/mobile",
+    "exec",
+    "tsx",
+    "--test",
+    "--test-concurrency=1",
+    "scripts/grade3-lessons.test.mts",
+    "scripts/grade4-lessons.test.mts",
+    "scripts/grade5-lessons.test.mts",
+    "scripts/grade6-lessons.test.mts",
+    "scripts/grade7-lessons.test.mts",
+    "scripts/grade8-lessons.test.mts",
+    "scripts/grade9-lessons.test.mts",
+    "scripts/grade10-lessons.test.mts",
+    "scripts/calendar-selection.test.mts",
+    "scripts/curriculum-default.test.mts",
+    "scripts/review-series.test.mts",
+    "scripts/term2-pilot.test.mts",
+    "scripts/three-term-curriculum.test.mts",
+    "scripts/full-year-curriculum.test.mts",
+    "scripts/lesson-variety.test.mts"
+  ],
+  "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007",
+  "started_at": "2026-10-07T04:11:14.326818+00:00",
+  "finished_at": "2026-10-07T04:11:36.717752+00:00",
+  "actual_exit_code": 1,
+  "parent_nice": 10,
+  "output_sha256": "bda391c8b22a286c12452453a10c66bb63bfd400ba254f52f73629cd44497200",
+  "output_bytes": 10805
+}

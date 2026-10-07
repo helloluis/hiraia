@@ -1,0 +1,175 @@
+✔ Grade 3 baseline admits only its explicit earlier-learning catalogue with 3 items per domain (20.087291ms)
+✔ foundation membership cannot be inferred from numeric grade, calendar, topic or exposure alone (0.231375ms)
+✔ Grade 3 en sustains 8 follow-ups with empty recent history, four seeds (81.629666ms)
+✔ Grade 3 en sustains 8 follow-ups with sparse recent history, four seeds (69.508167ms)
+✔ Grade 3 en sustains 8 follow-ups with rich recent history, four seeds (340.429167ms)
+✔ Grade 3 tl sustains 8 follow-ups with empty recent history, four seeds (56.355875ms)
+✔ Grade 3 tl sustains 8 follow-ups with sparse recent history, four seeds (63.565375ms)
+✔ Grade 3 tl sustains 8 follow-ups with rich recent history, four seeds (338.205833ms)
+✔ Grade 3 bis sustains 8 follow-ups with empty recent history, four seeds (55.654834ms)
+✔ Grade 3 bis sustains 8 follow-ups with sparse recent history, four seeds (62.578ms)
+✔ Grade 3 bis sustains 8 follow-ups with rich recent history, four seeds (335.648792ms)
+✔ a language/content change starts a balanced new baseline and preserves old results (22.255583ms)
+✔ picture questions freeze scene data and reject missing, foreign or malformed saved scenes (3.707667ms)
+✔ diagram geometry distinguishes contact, gap, enclosure and reversed vertical observations (0.121542ms)
+✔ fresh Grade 3 profiles each get an offer; save failure, process restart and fortnight due retain the exam (27.610417ms)
+✔ actual trilingual baseline reports for all supported grades satisfy the receiving protocol (63.577ms)
+✔ summary uses original profile, original time and stable identity, without name/content/answers (2.367834ms)
+✔ older or opted-out results never enter the report queue (1.208208ms)
+✔ publication failures retry from durable history and successful staging is idempotent (2.151792ms)
+✔ completion preserves learning while reporting policy is enabled (20.329125ms)
+✔ completion preserves learning while reporting policy is disabled (17.114625ms)
+✔ completion preserves learning while reporting policy is failed (16.64675ms)
+✔ UTF-8 batch budget includes envelope and metadata reserve, not just item count (4.222083ms)
+✔ old collector ACKs/rejections cannot discard assessments; ordinary acknowledgements still pass (1.489875ms)
+✖ grade 4, en: four seeds each sustain eight rich-history follow-ups (19.441333ms)
+✖ grade 4, tl: four seeds each sustain eight rich-history follow-ups (3.623625ms)
+✖ grade 4, bis: four seeds each sustain eight rich-history follow-ups (3.333583ms)
+✔ grade 5, en: four seeds each sustain eight rich-history follow-ups (109.315042ms)
+✔ grade 5, tl: four seeds each sustain eight rich-history follow-ups (95.075958ms)
+✔ grade 5, bis: four seeds each sustain eight rich-history follow-ups (91.760375ms)
+✔ grade 6, en: four seeds each sustain eight rich-history follow-ups (104.934209ms)
+✔ grade 6, tl: four seeds each sustain eight rich-history follow-ups (99.960708ms)
+✔ grade 6, bis: four seeds each sustain eight rich-history follow-ups (99.427875ms)
+✔ grade 7, en: four seeds each sustain eight rich-history follow-ups (112.224583ms)
+✔ grade 7, tl: four seeds each sustain eight rich-history follow-ups (112.920542ms)
+✔ grade 7, bis: four seeds each sustain eight rich-history follow-ups (115.95325ms)
+✔ grade 8, en: four seeds each sustain eight rich-history follow-ups (119.306208ms)
+✔ grade 8, tl: four seeds each sustain eight rich-history follow-ups (119.049583ms)
+✔ grade 8, bis: four seeds each sustain eight rich-history follow-ups (117.594417ms)
+✔ grade 9, en: four seeds each sustain eight rich-history follow-ups (131.070708ms)
+✔ grade 9, tl: four seeds each sustain eight rich-history follow-ups (129.213ms)
+✔ grade 9, bis: four seeds each sustain eight rich-history follow-ups (129.164708ms)
+✔ grade 10, en: four seeds each sustain eight rich-history follow-ups (143.010542ms)
+✔ grade 10, tl: four seeds each sustain eight rich-history follow-ups (141.821166ms)
+✔ grade 10, bis: four seeds each sustain eight rich-history follow-ups (141.933458ms)
+✔ manual Settings entry uses the current profile, grade and language, and labels the preview (43.957917ms)
+✔ rapid duplicate taps issue a single start, disable the button, then restore it (6.548209ms)
+✔ an unavailable or changing profile and a busy exam cannot start another attempt (16.26075ms)
+✔ persisted language codes resolve to the pinned app language and speech copy (0.64ms)
+✔ a first assessment alternates only when eligible and the feed is quiet (0.090666ms)
+✔ a completed baseline never reactivates rotation; due and new-segment entries stay static (0.065ms)
+✔ pre-start errors can close, while active or unknown sessions remain recoverable (0.05175ms)
+✔ foreground card reading is required; quizzes, chat, sheets and profile flows suppress nudges (0.859875ms)
+Assessment exposure was not saved: write failed
+✔ SHA-256 matches UTF-8 reference for source prose, Unicode and padding boundaries (1.536917ms)
+✔ registry preserves pending review flags and excludes every held row (1.381291ms)
+✔ all grades 3–10 get deterministic balanced 12-item evaluation baselines in three languages (96.463625ms)
+✔ all production drafts defer, with or without invented coverage (0.204458ms)
+✔ exact body, language, knowledge link and inclusive 14-day boundary are mandatory (0.56625ms)
+✔ sparse followups retain separate denominators; recent material never comes from date alone (6.039416ms)
+✔ successive full forms enforce two-repeat ceiling and never replay a whole paper (21.54425ms)
+✔ language and benchmark revision changes begin fresh balanced comparison baselines (19.367958ms)
+✔ exhaustion and corrupt calendar values defer before starting (1.6115ms)
+✔ answers are durable before advance; failed write retries and process restart resume pinned content (6.283417ms)
+✔ independent questions accept any order and concurrent duplicate submissions commit once (3.821625ms)
+✔ out-of-order choices survive failed writes and restart, then score by identity in every group (16.517875ms)
+✔ saved arbitrary-order answers still reject duplicates, unknown items, invalid choices and backwards times (3.445708ms)
+✔ final answer, history and results are one durable commit; replay never appends another result (17.002541ms)
+✔ profile and admission namespaces cannot leak active sessions or history (3.317ms)
+✔ invalid persisted answer IDs, option IDs or JSON block recovery without wiping disk (2.166083ms)
+✔ actual rendered-body exposures persist; changed text does not unlock claims; failed saves do not trap UI (3.579542ms)
+✔ queued old-profile exposure cannot enter the newly hydrated profile (2.475042ms)
+✔ questionable dates cannot fabricate due progress or answers; observed real fortnight does become due (18.077375ms)
+✔ a long absence has no arbitrary expiry and restores an unfinished quiz without erasing answers (4.16575ms)
+✔ pending start can be dismissed only after successful hydration with no active quiz (1.8195ms)
+✔ a manual request starts another full exam immediately without waiting for the reminder (15.594334ms)
+✔ repeated manual starts resume the same saved exam and retain its answers (3.135541ms)
+node:fs:436
+    return binding.readFileUtf8(path, stringToFlags(options.flag));
+                   ^
+
+Error: ENOENT: no such file or directory, open '/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/tala/android/app/src/test/resources/assessment-wire-v1.json'
+    at readFileSync (node:fs:436:20)
+    at <anonymous> (/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/tala-assessment.test.mts:9:3)
+    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:642:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/tala/android/app/src/test/resources/assessment-wire-v1.json'
+}
+
+Node.js v26.0.0
+✖ scripts/tala-assessment.test.mts (178.633542ms)
+✔ selected profiles and guest use their own existing files, keys and separate query-only connections (26.820667ms)
+✔ absent files are never opened or created; absent settings/key returns empty and closes (0.19375ms)
+✔ unknown or path-like profile IDs cannot inspect any file (0.34125ms)
+✔ public reports do not read private evaluation keys or accept mismatched saved identities (6.228833ms)
+✔ query failures and corrupt saved data close the isolated connection without a write (1.737125ms)
+ℹ tests 82
+ℹ suites 0
+ℹ pass 78
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6352.949875
+
+✖ failing tests:
+
+test at scripts/assessment-rotation.test.mts:1:950
+✖ grade 4, en: four seeds each sustain eight rich-history follow-ups (19.441333ms)
+  AssertionError [ERR_ASSERTION]: teaching version exists: ha-g4-0010/en
+      at <anonymous> (/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/assessment-rotation.test.mts:36:20)
+      at Array.map (<anonymous>)
+      at TestContext.<anonymous> (/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/assessment-rotation.test.mts:33:96)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.start (node:internal/test_runner/test:1096:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at scripts/assessment-rotation.test.mts:1:950
+✖ grade 4, tl: four seeds each sustain eight rich-history follow-ups (3.623625ms)
+  AssertionError [ERR_ASSERTION]: teaching version exists: ha-g4-0010/tl
+      at <anonymous> (/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/assessment-rotation.test.mts:36:20)
+      at Array.map (<anonymous>)
+      at TestContext.<anonymous> (/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/assessment-rotation.test.mts:33:96)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at scripts/assessment-rotation.test.mts:1:950
+✖ grade 4, bis: four seeds each sustain eight rich-history follow-ups (3.333583ms)
+  AssertionError [ERR_ASSERTION]: teaching version exists: ha-g4-0010/bis
+      at <anonymous> (/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/assessment-rotation.test.mts:36:20)
+      at Array.map (<anonymous>)
+      at TestContext.<anonymous> (/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/assessment-rotation.test.mts:33:96)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at scripts/tala-assessment.test.mts:1:1
+✖ scripts/tala-assessment.test.mts (178.633542ms)
+  'test failed'
+undefined
+/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: tsx --test --test-concurrency=1 scripts/assessment-foundation.test.mts scripts/assessment-reporting.test.mts scripts/assessment-rotation.test.mts scripts/assessment-settings.test.mts scripts/assessment-ui.test.mts scripts/assessment.test.mts src/assessment/historyRepository.test.ts scripts/tala-assessment.test.mts

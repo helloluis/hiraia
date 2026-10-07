@@ -1,0 +1,2467 @@
+{
+  "schema": "hiraia.cebuano-readability-reviewed-edits/v1",
+  "status": "reviewed_for_local_application",
+  "created_at": "2026-10-04T09:16:59.842501+00:00",
+  "reviewer": "Codex root, independent of Claude proposal/backtranslation/fidelity/readability calls; no separate Codex reviewer used for this window",
+  "scope": "Window 36: 21 individually reviewed exact Cebuano edits and 5 priority holds. Windows 1–35 were previously adjudicated. No score-only approval, native verification, exhaustive science certification or release permission. Invalid-evidence holds ffct-08459, ffct-09018, ffct-10152 and ffct-18958 remain mandatory. Missing-fidelity cards ffct-15686, ffct-24823 and ffct-24184 remain held without a synthesized judgment or repeated call.",
+  "window_id": "window-0036",
+  "window_accounting": {
+    "source_cards": 768,
+    "completed_assessments": 768,
+    "missing_fidelity_holds": 0,
+    "approved_exact_edits": 21,
+    "unchanged_keeps": 76,
+    "held": 671,
+    "held_from_priority_set": 5,
+    "preexisting_nonpriority_holds": 666
+  },
+  "input_pins": [
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0036/report.json",
+      "sha256": "318b44a74e51889694e17610653c78ab33062c7f83fa19ab9c6c4f27f7f98b32",
+      "bytes": 42163065
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0036/clean-agreement.jsonl",
+      "sha256": "e2ee7908768e17fa9ead8624fef28f7dcd7fd328f51ea516978d8073340e10cd",
+      "bytes": 679462
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0036/replay/fidelity/judgments.jsonl",
+      "sha256": "db7629231508bf1f5c44411483b5487d0e6dbf94b4d1c7c2c91aa69fb3f02df1",
+      "bytes": 773151
+    },
+    {
+      "path": "build/cebuano-readability/campaign-20261002-v1/windows/window-0036/fidelity-inputs/private-map.json",
+      "sha256": "0dc7a56eb5d8cc59f47b35f1ebf932a6e27338349fbaace9437728117caf3025",
+      "bytes": 752840
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0036/root-decisions.json",
+      "sha256": "3c09eb1655f629eeb71ec271e2911158dc8e3b47874f625ea165bced706eba04",
+      "bytes": 13149
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0036/corpus-lexical-evidence.json",
+      "sha256": "9c123ebbd597e0c4e38f16c841037e799f576e7e7071701314f370328f3f6827",
+      "bytes": 53913
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0036/dictionary-entries.json",
+      "sha256": "5ed17808d6afaf1b663712a10db5e6d24465d8aa84b65d9e5f3f0b17b82e1e03",
+      "bytes": 78399
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0036/lexical-source-review.json",
+      "sha256": "d86f0a873871df65e8c15d3f2a112bfdca3dbc23f655a6517cd5ed335183d71b",
+      "bytes": 12113
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0036/corpus-supplement-001.json",
+      "sha256": "1a40e32f3c82cc1ed0758086ebfdbd28098bba7251100698227441cc2b77408f",
+      "bytes": 9178
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0036/dictionary-supplement-001.json",
+      "sha256": "ccb5fa5fa9d2a4f704d00ff88009218930bb41cce24bf592e554a1ec50f1a076",
+      "bytes": 4793
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0036/source-evidence-001.json",
+      "sha256": "6a137fb9f94535fd367d74a77c501a636d6f3f8168e4026a2c6dea2286b3bbdb",
+      "bytes": 11021
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0036/root-notes-final-001.json",
+      "sha256": "a4817d8656bcf7626f108891d77c9f40c355afd8683c9393d65a57428bf8bffb",
+      "bytes": 11678
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-gutenberg-40074.txt",
+      "sha256": "f80b888b24dd4ca7f5cb16276b4a53f9d22129a496b9ffb7f7efe17d3b9a1504",
+      "bytes": 5699379
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-retrieval.json",
+      "sha256": "bd713c5adf21541a0e7fd9c49f75fb6b9d4157fb88d41151a245165b8955b7da",
+      "bytes": 502
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0036/collect-evidence-001.py",
+      "sha256": "bd502d4f303629e760ddb0641b1953463bc4f74d85e2349b0aa91a0ad187c862",
+      "bytes": 5123
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0036/collect-supplement-001.py",
+      "sha256": "e661ba564323e21a41cd11e92ed82b3c4fc9a939fba2aaf5b9b68d4efb8bd4a1",
+      "bytes": 2956
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/show-dossiers-d17ce591.py",
+      "sha256": "b5857656b3e2e6343220b3c66bf17bb560556572462874cb7534d9e6a51efba8",
+      "bytes": 2081
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0036/write-root-records.py",
+      "sha256": "eb4727245eb98bd37a0231b7ead32364fb1bf1ac7e85a6c9a637628854fcba2d",
+      "bytes": 19827
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0036/create-root-approval.py",
+      "sha256": "5b89ec5a95420279eec31f4595786f8666ec3e7a746f4d5f445231aaad366c1b",
+      "bytes": 7200
+    }
+  ],
+  "current_pool_before_application": {
+    "path": "rag/pipeline/cardsPool.app.json",
+    "sha256": "8012d5aaa690453e0ee0999cd9dc6e16eeaaf18bac3db56c4203abbb044be9df",
+    "bytes": 50649519
+  },
+  "accepted": [
+    {
+      "card_id": "ffct-27341",
+      "source_card_sha256": "de779f2abd344531d02b6c6a2fae0adee3dde9c33c05ea8cda98d7a911f9ae57",
+      "candidate_card_sha256": "367f62222432a906f3312dfe78b1353ad8efc0f9acb5c03700717422f08adef6",
+      "before_card": {
+        "id": "ffct-27341",
+        "factId": "fwg-electricity-916",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "electricity",
+        "terms": [
+          "electricity",
+          "binga",
+          "hydroelectric",
+          "plant",
+          "benguet",
+          "generates",
+          "using",
+          "flowing",
+          "water",
+          "spin"
+        ],
+        "fact": {
+          "en": "The Binga Hydroelectric Plant in Benguet generates electricity by using flowing water to spin large turbines connected to electrical generators!",
+          "tl": "Ang Binga Hydroelectric Plant sa Benguet ay gumagawa ng electricity gamit ang dumadaloy na tubig para paikutin ang malalaking turbines na nakakonekta sa generators!",
+          "bis": "Ang Binga Hydroelectric Plant sa Benguet nag-generate og electricity pinaagi sa paggamit sa nag-dagan nga tubig aron pa-spin ang dagkong turbines nga konektado sa generators!"
+        },
+        "slug": "hydroelectric-dam-scene",
+        "title": {
+          "en": "Hydroelectric Power",
+          "tl": "Enerhiya ng Tubig",
+          "bis": "Enerhiya sa Tubig"
+        },
+        "cats": [
+          "electricity",
+          "energy"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "Binga Hydroelectric Plant"
+          ],
+          "en": [
+            "Binga Hydroelectric Plant"
+          ],
+          "bis": [
+            "Binga Hydroelectric Plant"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-27341",
+        "factId": "fwg-electricity-916",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "electricity",
+        "terms": [
+          "electricity",
+          "binga",
+          "hydroelectric",
+          "plant",
+          "benguet",
+          "generates",
+          "using",
+          "flowing",
+          "water",
+          "spin"
+        ],
+        "fact": {
+          "en": "The Binga Hydroelectric Plant in Benguet generates electricity by using flowing water to spin large turbines connected to electrical generators!",
+          "tl": "Ang Binga Hydroelectric Plant sa Benguet ay gumagawa ng electricity gamit ang dumadaloy na tubig para paikutin ang malalaking turbines na nakakonekta sa generators!",
+          "bis": "Ang Binga Hydroelectric Plant sa Benguet naghimo og electricity gamit ang nagdagan nga tubig. Kini nga tubig ang mopatuyok sa dagkong turbines nga konektado sa generators!"
+        },
+        "slug": "hydroelectric-dam-scene",
+        "title": {
+          "en": "Hydroelectric Power",
+          "tl": "Enerhiya ng Tubig",
+          "bis": "Enerhiya sa Tubig"
+        },
+        "cats": [
+          "electricity",
+          "energy"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "Binga Hydroelectric Plant"
+          ],
+          "en": [
+            "Binga Hydroelectric Plant"
+          ],
+          "bis": [
+            "Binga Hydroelectric Plant"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Two sentences separate electricity production from the water/turbine/generator mechanism without changing Binga or Benguet. Wolff dagan points to dalagan, whose movement/circulation senses and independent water-flow bodies support the context; himu and tuyuk support production and turning. First Balfour separately documents the Binga generator work in Benguet. Both body preferences agree; the existing turbine emphasis is retained.",
+      "formal_item_id": "c3248cbaa3a731d482b0ac82a7f1f2272",
+      "fidelity_item_id": "me3143e8437052f0b246617bd",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27345",
+      "source_card_sha256": "7bd06546d54f221f57e1c8c7f59fc9c1fe8c4cb0f90578710b9fbc10abb3830f",
+      "candidate_card_sha256": "9d81b1d874f03715e1bfb16baacc68c0720087d530a39c1a00af462f8215e3b3",
+      "before_card": {
+        "id": "ffct-27345",
+        "factId": "fwg-lever-classes-1056",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Lever Classes",
+        "terms": [
+          "lever",
+          "classes",
+          "third",
+          "class",
+          "always",
+          "mechanical",
+          "advantage",
+          "less",
+          "meaning",
+          "multiplies"
+        ],
+        "fact": {
+          "en": "A third-class lever always has a mechanical advantage of less than 1, multiplying distance instead of force!",
+          "tl": "Ang third-class lever ay laging may mechanical advantage na mas mababa sa 1, pinapalaki ang distansya kaysa puwersa!",
+          "bis": "Ang third-class lever kanunay adunay mechanical advantage nga ubos sa 1, nagpadako sa gilay-on imbis nga puwersa!"
+        },
+        "slug": "ffct-27345",
+        "source": "original",
+        "title": {
+          "tl": "Third-Class Lever MA < 1",
+          "en": "Third-Class Lever Trade",
+          "bis": "Third-Class sa Lever"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-27345",
+        "factId": "fwg-lever-classes-1056",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Lever Classes",
+        "terms": [
+          "lever",
+          "classes",
+          "third",
+          "class",
+          "always",
+          "mechanical",
+          "advantage",
+          "less",
+          "meaning",
+          "multiplies"
+        ],
+        "fact": {
+          "en": "A third-class lever always has a mechanical advantage of less than 1, multiplying distance instead of force!",
+          "tl": "Ang third-class lever ay laging may mechanical advantage na mas mababa sa 1, pinapalaki ang distansya kaysa puwersa!",
+          "bis": "Ang third-class lever kanunay adunay mechanical advantage nga ubos sa 1. Gipadako niini ang gilay-on imbis nga ang puwersa!"
+        },
+        "slug": "ffct-27345",
+        "source": "original",
+        "title": {
+          "tl": "Third-Class Lever MA < 1",
+          "en": "Third-Class Lever Trade",
+          "bis": "Ang Third-Class Lever"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Separates mechanical advantage below one from the distance-versus-force explanation. Wolff daku, kanunay and layu/gilay-un support increase, always and distance. The third-class designation and numerical comparison survive exactly; both changed-field preferences and the full backtranslation agree. This is the elementary ideal-lever relationship, not a new efficiency measurement.",
+      "formal_item_id": "ce2a0160786f944a5e28920353f040737",
+      "fidelity_item_id": "m79443b9b713a4fc29ceb7939",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27399",
+      "source_card_sha256": "098e907fca86efbe16ea886f3708635e70d214f80b3dace27af0fd3b9733d3df",
+      "candidate_card_sha256": "b4c68a720b9e5701173bcde398d20c13a7413b9179ad1878dbb3cc8ff035fead",
+      "before_card": {
+        "id": "ffct-27399",
+        "factId": "fwg-space-gravity-1551",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Space Gravity",
+        "terms": [
+          "space",
+          "gravity",
+          "although",
+          "many",
+          "think",
+          "disappears",
+          "actually",
+          "exists",
+          "vacuum",
+          "keeps"
+        ],
+        "fact": {
+          "en": "Does gravity disappear in space?\n\nAlthough many think so, gravity actually exists in the vacuum of space! It keeps the Moon orbiting the Earth.",
+          "tl": "Nawawala ba ang gravity sa kalawakan?\n\nBagaman iniisip ng marami na nawawala ito, totoo na may gravity pa rin sa vacuum ng space! Ito ang nag-pananatiling umiikot ang Moon sa paligid ng Earth.",
+          "bis": "Mawala ba ang gravity sa kalawakan?\n\nBisan pa man daghan nagtuo nga mawala kini, naa gihapon ang gravity sa vacuum sa space! Kini maoy nag-padayon sa pag-orbit sa Moon palibot sa Earth."
+        },
+        "slug": "ffct-27399",
+        "source": "original",
+        "title": {
+          "tl": "Gravity Nasa Space Pa Rin",
+          "en": "Gravity Still in Space",
+          "bis": "Gravity Anaa sa Space"
+        },
+        "cats": [
+          "gravity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-27399",
+        "factId": "fwg-space-gravity-1551",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Space Gravity",
+        "terms": [
+          "space",
+          "gravity",
+          "although",
+          "many",
+          "think",
+          "disappears",
+          "actually",
+          "exists",
+          "vacuum",
+          "keeps"
+        ],
+        "fact": {
+          "en": "Does gravity disappear in space?\n\nAlthough many think so, gravity actually exists in the vacuum of space! It keeps the Moon orbiting the Earth.",
+          "tl": "Nawawala ba ang gravity sa kalawakan?\n\nBagaman iniisip ng marami na nawawala ito, totoo na may gravity pa rin sa vacuum ng space! Ito ang nag-pananatiling umiikot ang Moon sa paligid ng Earth.",
+          "bis": "Mawala ba ang gravity sa kalawakan?\n\nBisan daghan ang nagtuo nga mawala kini, naa gihapon ang gravity sa vacuum sa space! Ang gravity maoy nagpabilin sa Moon nga nag-orbit palibot sa Earth."
+        },
+        "slug": "ffct-27399",
+        "source": "original",
+        "title": {
+          "tl": "Gravity Nasa Space Pa Rin",
+          "en": "Gravity Still in Space",
+          "bis": "Anaa Gihapon ang Gravity sa Space"
+        },
+        "cats": [
+          "gravity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Names gravity, Moon and Earth again to clarify the orbit relationship while preserving gravity across a vacuum. Wolff bilin and the Binisaya pabilin entry support remain/keep; independent bodies corroborate the maintenance construction. Both changed-field judgments agree. No claim that gravity requires material contact or that only Earth exerts gravity is added.",
+      "formal_item_id": "c036e2a43dfa29dea1d0537aa71fa638d",
+      "fidelity_item_id": "m04230f8c951d28aab3483891",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27421",
+      "source_card_sha256": "3750402a32623f5bcacda41a7f62bd2561309c92e9864cef7399a6b927e04dbd",
+      "candidate_card_sha256": "43f58841ab1eabf3b0bef9d7c759d36179e33d679459d515d96d753c138b1d57",
+      "before_card": {
+        "id": "ffct-27421",
+        "factId": "screw-jack-lifting-vehicle-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "screw jack as a simple machine",
+        "terms": [
+          "jack",
+          "screw",
+          "turnilyo",
+          "sasakyan",
+          "pag-angat",
+          "puwersa",
+          "simpleng makina",
+          "screw jack",
+          "pag-alsa sa sakyanan",
+          "kusog sa kamot",
+          "lift car",
+          "simple machine",
+          "screw"
+        ],
+        "fact": {
+          "en": "How does a screw jack lift a heavy vehicle?\n\nIt uses a turning screw to lift the vehicle, using only a small force from your hand!",
+          "tl": "Paano inaangat ng screw jack ang mabigat na sasakyan?\n\nGumagamit ito ng paikot na screw para iangat ito, gamit lang ang kaunting puwersa mula sa kamay mo!",
+          "bis": "Unsaon sa screw jack pag-alsa sa bug-at nga sakyanan?\n\nMogamit kini og nagtuyok nga screw aron alsahon kini, gamit lang ang gamay nga kusog sa imong kamot!"
+        },
+        "slug": "screw-jack-lifting-vehicle",
+        "title": {
+          "en": "Screw Jack",
+          "tl": "Diyak na Turnilyo",
+          "bis": "Diyak nga Turnilyo"
+        },
+        "cats": [
+          "simple-machines"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "screw jack"
+          ],
+          "en": [
+            "screw jack"
+          ],
+          "bis": [
+            "screw jack"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-27421",
+        "factId": "screw-jack-lifting-vehicle-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "screw jack as a simple machine",
+        "terms": [
+          "jack",
+          "screw",
+          "turnilyo",
+          "sasakyan",
+          "pag-angat",
+          "puwersa",
+          "simpleng makina",
+          "screw jack",
+          "pag-alsa sa sakyanan",
+          "kusog sa kamot",
+          "lift car",
+          "simple machine",
+          "screw"
+        ],
+        "fact": {
+          "en": "How does a screw jack lift a heavy vehicle?\n\nIt uses a turning screw to lift the vehicle, using only a small force from your hand!",
+          "tl": "Paano inaangat ng screw jack ang mabigat na sasakyan?\n\nGumagamit ito ng paikot na screw para iangat ito, gamit lang ang kaunting puwersa mula sa kamay mo!",
+          "bis": "Unsaon sa screw jack pag-alsa sa bug-at nga sakyanan?\n\nMogamit kini og nagtuyok nga screw aron alsahon ang sakyanan, gamit lang ang gamay nga kusog sa imong kamot!"
+        },
+        "slug": "screw-jack-lifting-vehicle",
+        "title": {
+          "en": "Screw Jack",
+          "tl": "Diyak na Turnilyo",
+          "bis": "Diyak nga Turnilyo"
+        },
+        "cats": [
+          "simple-machines"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "screw jack"
+          ],
+          "en": [
+            "screw jack"
+          ],
+          "bis": [
+            "screw jack"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Replacing the second kini with ang sakyanan identifies exactly what the screw jack lifts. Wolff alsa and sakay/sakyanan support lift and vehicle; the large lifting force, tire-change setting and unchanged title remain. Both body readers prefer the exact referent clarification, with title ties.",
+      "formal_item_id": "c393ad0bac76064e6a6d0e0e5651297af",
+      "fidelity_item_id": "mb59a0f219ffdc314442c5914",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27482",
+      "source_card_sha256": "d0227307029d3b98530f7ea8a11ae4064ab8cfa3f873a6290442288b654901d8",
+      "candidate_card_sha256": "8d7545bebe37ad29d3dc268f801c65569b73ac5f8b7183ed3519388a41cd9100",
+      "before_card": {
+        "id": "ffct-27482",
+        "factId": "fwg-forms-of-energy-1724",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Forms of Energy",
+        "terms": [
+          "forms",
+          "energy",
+          "calatagan",
+          "solar",
+          "farm",
+          "batangas",
+          "uses",
+          "thousands",
+          "photovoltaic",
+          "panels"
+        ],
+        "fact": {
+          "en": "The Calatagan Solar Farm in Batangas uses thousands of photovoltaic panels! They convert radiant energy from the sun into usable electrical power.",
+          "tl": "Ang Calatagan Solar Farm sa Batangas ay gumagamit ng libu-libong photovoltaic panels! Kine-convert nila ang radiant energy mula sa araw para maging usable electrical power.",
+          "bis": "Ang Calatagan Solar Farm sa Batangas naggamit ug liboan ka photovoltaic panels! Gi-convert nila ang radiant energy gikan sa adlaw ngadto sa usable electrical power."
+        },
+        "slug": "ffct-28014",
+        "title": {
+          "en": "Solar Energy",
+          "tl": "Enerhiyang Solar",
+          "bis": "Enerhiya sa Solar"
+        },
+        "cats": [
+          "energy",
+          "electricity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "photovoltaic panels"
+          ],
+          "en": [
+            "photovoltaic panels"
+          ],
+          "bis": [
+            "photovoltaic panels"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-27482",
+        "factId": "fwg-forms-of-energy-1724",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Forms of Energy",
+        "terms": [
+          "forms",
+          "energy",
+          "calatagan",
+          "solar",
+          "farm",
+          "batangas",
+          "uses",
+          "thousands",
+          "photovoltaic",
+          "panels"
+        ],
+        "fact": {
+          "en": "The Calatagan Solar Farm in Batangas uses thousands of photovoltaic panels! They convert radiant energy from the sun into usable electrical power.",
+          "tl": "Ang Calatagan Solar Farm sa Batangas ay gumagamit ng libu-libong photovoltaic panels! Kine-convert nila ang radiant energy mula sa araw para maging usable electrical power.",
+          "bis": "Ang Calatagan Solar Farm sa Batangas naggamit ug liboan ka photovoltaic panels! Gi-convert nila ang radiant energy gikan sa adlaw ngadto sa kuryente nga magamit."
+        },
+        "slug": "ffct-28014",
+        "title": {
+          "en": "Solar Energy",
+          "tl": "Enerhiyang Solar",
+          "bis": "Enerhiya sa Solar"
+        },
+        "cats": [
+          "energy",
+          "electricity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "photovoltaic panels"
+          ],
+          "en": [
+            "photovoltaic panels"
+          ],
+          "bis": [
+            "photovoltaic panels"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Kuryenteng magamit makes usable electrical output readable while retaining Calatagan, photovoltaic panels, solar radiant energy and conversion. Wolff kuryinti and gamit, independent electricity bodies and the PCC project record support the context. This is everyday usable electricity, not an assertion equating numerical energy and power units. Both body preferences agree and the technical emphasis remains exact.",
+      "formal_item_id": "c4d95caef37a559b16d28a08d5ee80377",
+      "fidelity_item_id": "m669fc2f5b9b53ff0b1dd219e",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27520",
+      "source_card_sha256": "238cd7ceeb1e962faf0cd84e55e5850e88f5a647da9c85fd274af6917030de4e",
+      "candidate_card_sha256": "dbb1a1b8151a5dcfd2e36b997a1b180bd6133e9757760ede1be4ec8b2fe78993",
+      "before_card": {
+        "id": "ffct-27520",
+        "factId": "fwg-magnets-1256",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Magnets",
+        "terms": [
+          "magnets",
+          "permanent",
+          "magnet",
+          "half",
+          "isolated",
+          "poles",
+          "smaller",
+          "complete"
+        ],
+        "fact": {
+          "en": "What happens if you cut a bar magnet in half?\n\nYou won't get a lonely north or south pole! You actually get two smaller complete magnets, each with its own north and south pole.",
+          "tl": "Anong mangyayari kapag pinutol mo ang bar magnet sa dalawa?\n\nHindi ka makakakuha ng nag-iisang north o south pole! Makakakuha ka ng dalawang mas maliit na buong magnet, bawat isa ay may sariling north at south pole.",
+          "bis": "Unsay mahitabo kung putlon nimo ang bar magnet sa tunga?\n\nDili ka makakuha og nag-inusara nga north o south pole! Makakuha ka og duha ka mas gagmay nga kompleto nga magnet, ang matag usa adunay kaugalingong north ug south pole."
+        },
+        "slug": "ffct-27520",
+        "source": "original",
+        "title": {
+          "tl": "Hati Magnet Dalawang Poles",
+          "en": "Cut Magnet Two Poles",
+          "bis": "Bahin Magnet Poles"
+        },
+        "cats": [
+          "magnets"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-27520",
+        "factId": "fwg-magnets-1256",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Magnets",
+        "terms": [
+          "magnets",
+          "permanent",
+          "magnet",
+          "half",
+          "isolated",
+          "poles",
+          "smaller",
+          "complete"
+        ],
+        "fact": {
+          "en": "What happens if you cut a bar magnet in half?\n\nYou won't get a lonely north or south pole! You actually get two smaller complete magnets, each with its own north and south pole.",
+          "tl": "Anong mangyayari kapag pinutol mo ang bar magnet sa dalawa?\n\nHindi ka makakakuha ng nag-iisang north o south pole! Makakakuha ka ng dalawang mas maliit na buong magnet, bawat isa ay may sariling north at south pole.",
+          "bis": "Unsay mahitabo kung putlon nimo ang bar magnet sa tunga?\n\nDili ka makakuha og nag-inusara nga north o south pole! Makakuha ka og duha ka mas gagmay nga kompleto nga magnet. Ang matag usa adunay kaugalingong north ug south pole."
+        },
+        "slug": "ffct-27520",
+        "source": "original",
+        "title": {
+          "tl": "Hati Magnet Dalawang Poles",
+          "en": "Cut Magnet Two Poles",
+          "bis": "Pagputol sa Bar Magnet"
+        },
+        "cats": [
+          "magnets"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Separates the result into two sentences and names cutting in the title. Wolff putul and matag support cut and each; two complete magnets, both north and south poles in each, and the original question remain. Both changed-field judgments agree; no isolated magnetic pole is introduced.",
+      "formal_item_id": "c378a60c465c626661fa78a3c7e084ad3",
+      "fidelity_item_id": "mc4da214f394a57cfe3857ed5",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27643",
+      "source_card_sha256": "5b4b597a2622600c1e5ccdcef69c6ffafdd9c4e3648ac3de5ce7ca0e5ec310be",
+      "candidate_card_sha256": "3f74223171f7d5f988544355fe8f58bf4a0cdf754b3c9d0aa552462a56697540",
+      "before_card": {
+        "id": "ffct-27643",
+        "factId": "fwg-potential-energy-1601",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "potential-energy",
+        "terms": [
+          "potential",
+          "energy",
+          "book",
+          "resting",
+          "high",
+          "shelf",
+          "gravitational",
+          "stored",
+          "position",
+          "above"
+        ],
+        "fact": {
+          "en": "Even when not moving, a book resting on a high shelf has gravitational potential energy stored because of its position above the ground!",
+          "tl": "Kahit hindi gumagalaw, ang aklat na nakapatong sa mataas na istante ay may nakatagong gravitational potential energy dahil sa posisyon nito sa itaas ng lupa!",
+          "bis": "Bisan pa wala kini naglihok, ang libro nga naa sa taas nga istante adunay nakatago nga gravitational potential energy tungod sa iyang posisyon ibabaw sa yuta!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Book on Shelf",
+          "tl": "Aklat sa Istante",
+          "bis": "Libro sa Estante"
+        },
+        "cats": [
+          "energy",
+          "gravity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "gravitational potential energy"
+          ],
+          "en": [
+            "gravitational potential energy"
+          ],
+          "bis": [
+            "gravitational potential energy"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-27643",
+        "factId": "fwg-potential-energy-1601",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "potential-energy",
+        "terms": [
+          "potential",
+          "energy",
+          "book",
+          "resting",
+          "high",
+          "shelf",
+          "gravitational",
+          "stored",
+          "position",
+          "above"
+        ],
+        "fact": {
+          "en": "Even when not moving, a book resting on a high shelf has gravitational potential energy stored because of its position above the ground!",
+          "tl": "Kahit hindi gumagalaw, ang aklat na nakapatong sa mataas na istante ay may nakatagong gravitational potential energy dahil sa posisyon nito sa itaas ng lupa!",
+          "bis": "Bisan wala maglihok, ang libro sa taas nga istante adunay nakatago nga gravitational potential energy. Tungod kini sa iyang posisyon ibabaw sa yuta!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Book on Shelf",
+          "tl": "Aklat sa Istante",
+          "bis": "Libro sa Estante"
+        },
+        "cats": [
+          "energy",
+          "gravity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "gravitational potential energy"
+          ],
+          "en": [
+            "gravitational potential energy"
+          ],
+          "bis": [
+            "gravitational potential energy"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Names the book in the explanation and separates its stationary state from energy due to position. Wolff tagu includes storing/keeping for later use, rather than only hiding. The exact gravitational-potential-energy term and bookshelf relationship remain; both body preferences agree with an unchanged title.",
+      "formal_item_id": "c03b703bc3c4ad756a004bc927d891c99",
+      "fidelity_item_id": "m4fefa2a8cf26d46bbdfd2169",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27686",
+      "source_card_sha256": "e9922e2a55f91cf17d9d4037e66a7472691ac973270836cbaf4fa994e831eb2c",
+      "candidate_card_sha256": "aa72f95c47f6aaf28c10e6668933e228a10f3e444218d5ff95362365f8ea04c7",
+      "before_card": {
+        "id": "ffct-27686",
+        "factId": "tape-measure-roll-g3",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "measuring length with a tape measure",
+        "terms": [
+          "tape measure",
+          "metro",
+          "panukat",
+          "sukat",
+          "haba",
+          "sentimetro",
+          "pulgada",
+          "sukod",
+          "gitas-on",
+          "length",
+          "centimeter",
+          "ruler",
+          "panukat sa gitas-on"
+        ],
+        "fact": {
+          "en": "A tape measure is a flexible tool marked in units like centimeters and meters to measure the length of things!",
+          "tl": "Ang tape measure ay isang flexible na panukat na may mga marka tulad ng centimeters at meters para sukatin ang haba ng mga bagay!",
+          "bis": "Ang tape measure usa ka flexible nga panukod nga adunay mga marka sama sa centimeters ug meters aron sukdon ang gitas-on sa mga butang!"
+        },
+        "slug": "tape-measure-roll",
+        "title": {
+          "en": "Tape Measure",
+          "tl": "Panukat na Tape",
+          "bis": "Sukod nga Tape"
+        },
+        "cats": [
+          "measurement"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "tape measure"
+          ],
+          "en": [
+            "tape measure"
+          ],
+          "bis": [
+            "tape measure"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-27686",
+        "factId": "tape-measure-roll-g3",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "measuring length with a tape measure",
+        "terms": [
+          "tape measure",
+          "metro",
+          "panukat",
+          "sukat",
+          "haba",
+          "sentimetro",
+          "pulgada",
+          "sukod",
+          "gitas-on",
+          "length",
+          "centimeter",
+          "ruler",
+          "panukat sa gitas-on"
+        ],
+        "fact": {
+          "en": "A tape measure is a flexible tool marked in units like centimeters and meters to measure the length of things!",
+          "tl": "Ang tape measure ay isang flexible na panukat na may mga marka tulad ng centimeters at meters para sukatin ang haba ng mga bagay!",
+          "bis": "Ang tape measure usa ka flexible nga panukod. Kini adunay mga marka sama sa centimeters ug meters. Gamiton kini aron sukdon ang gitas-on sa mga butang!"
+        },
+        "slug": "tape-measure-roll",
+        "title": {
+          "en": "Tape Measure",
+          "tl": "Panukat na Tape",
+          "bis": "Sukod nga Tape"
+        },
+        "cats": [
+          "measurement"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "tape measure"
+          ],
+          "en": [
+            "tape measure"
+          ],
+          "bis": [
+            "tape measure"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Three shorter sentences retain the flexible tape, centimetre/metre markings and length measurement. Wolff sukud supports measuring and taas explicitly derives gitas-un for both length and height, resolving the apparent height-only concern. Both body readers prefer the candidate; units and the emphasis span are preserved.",
+      "formal_item_id": "c719759eaf2621578d73fb90363054968",
+      "fidelity_item_id": "ma2803b69e1f39a1cffc746e4",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27719",
+      "source_card_sha256": "a9bf642ad506660f194365c320638c0f9e701f2e99a253bef0dbabbb42bbe9e4",
+      "candidate_card_sha256": "e0aa4d2683a3290c054aaf373b1a083c3437cec22ab6eab1eb6b37a70c518b11",
+      "before_card": {
+        "id": "ffct-27719",
+        "factId": "fwg-electromagnets-983",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Electromagnets",
+        "terms": [
+          "electromagnets",
+          "modern",
+          "jeepneys",
+          "cruising",
+          "streets",
+          "manila",
+          "electric",
+          "motors",
+          "containing",
+          "convert"
+        ],
+        "fact": {
+          "en": "Modern e-jeepneys cruising the streets of Manila use electric motors with electromagnets to convert electrical energy into motion!",
+          "tl": "Ang mga modernong e-jeepney sa mga kalye ng Manila ay gumagamit ng electric motors na may electromagnets para gawing motion ang electrical energy!",
+          "bis": "Ang mga modernong e-jeepney sa mga kalsada sa Manila naggamit og electric motors nga adunay electromagnets aron ma-convert ang electrical energy ngadto sa motion!"
+        },
+        "slug": "ffct-27719",
+        "source": "original",
+        "title": {
+          "tl": "E-jeepney sa Maynila",
+          "en": "Manila's E-Jeepneys",
+          "bis": "E-jeepney Manila"
+        },
+        "cats": [
+          "magnets",
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-27719",
+        "factId": "fwg-electromagnets-983",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Electromagnets",
+        "terms": [
+          "electromagnets",
+          "modern",
+          "jeepneys",
+          "cruising",
+          "streets",
+          "manila",
+          "electric",
+          "motors",
+          "containing",
+          "convert"
+        ],
+        "fact": {
+          "en": "Modern e-jeepneys cruising the streets of Manila use electric motors with electromagnets to convert electrical energy into motion!",
+          "tl": "Ang mga modernong e-jeepney sa mga kalye ng Manila ay gumagamit ng electric motors na may electromagnets para gawing motion ang electrical energy!",
+          "bis": "Ang mga modernong e-jeepney sa mga kalsada sa Manila naggamit og electric motors nga adunay electromagnets aron ma-convert ang electrical energy ngadto sa motion!"
+        },
+        "slug": "ffct-27719",
+        "source": "original",
+        "title": {
+          "tl": "E-jeepney sa Maynila",
+          "en": "Manila's E-Jeepneys",
+          "bis": "Mga E-jeepney sa Manila"
+        },
+        "cats": [
+          "magnets",
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title connects e-jeepneys to Manila instead of leaving a noun list; the body is unchanged. TESDA’s 2019 EV market record includes Manila e-jeepneys, supporting the place/example without making a current fleet-count claim. English technical terms and the electromagnet/motor explanation are retained; both title preferences agree.",
+      "formal_item_id": "ce057ac3baaa34f2cde846f0da66206e1",
+      "fidelity_item_id": "mf7147f514a8aa5d2e9380d5c",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27720",
+      "source_card_sha256": "ac929a24189c6e8491598eba7a9372a7f62e9f389deb8c4d00f27cc0aa8b61c0",
+      "candidate_card_sha256": "49b2fde3c2803038cf87818de1b17088e6b020ca442135cbd8821c030cdb0107",
+      "before_card": {
+        "id": "ffct-27720",
+        "factId": "fwg-electromagnetism-1380",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Electromagnetism",
+        "terms": [
+          "electromagnetism",
+          "electric",
+          "guitar",
+          "pickups",
+          "used",
+          "filipino",
+          "rock",
+          "bands",
+          "contain",
+          "magnets"
+        ],
+        "fact": {
+          "en": "Electric guitar pickups in Filipino rock bands use magnets and wire coils to turn string vibrations into electrical signals!",
+          "tl": "Ang mga pickup ng electric guitar sa mga Filipino rock band ay gumagamit ng magnets at wire coils para gawing electrical signals ang string vibrations!",
+          "bis": "Ang mga pickup sa electric guitar sa mga Filipino rock band naggamit ug magnets ug wire coils para himuon nga electrical signals ang string vibrations!"
+        },
+        "slug": "ffct-27720",
+        "source": "original",
+        "title": {
+          "tl": "Pickup ng Electric Guitar",
+          "en": "Guitar Pickups",
+          "bis": "Pickup Gitara"
+        },
+        "cats": [
+          "magnetism",
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-27720",
+        "factId": "fwg-electromagnetism-1380",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Electromagnetism",
+        "terms": [
+          "electromagnetism",
+          "electric",
+          "guitar",
+          "pickups",
+          "used",
+          "filipino",
+          "rock",
+          "bands",
+          "contain",
+          "magnets"
+        ],
+        "fact": {
+          "en": "Electric guitar pickups in Filipino rock bands use magnets and wire coils to turn string vibrations into electrical signals!",
+          "tl": "Ang mga pickup ng electric guitar sa mga Filipino rock band ay gumagamit ng magnets at wire coils para gawing electrical signals ang string vibrations!",
+          "bis": "Ang mga pickup sa electric guitar sa mga Filipino rock band naggamit ug magnets ug wire coils para himuon nga electrical signals ang string vibrations!"
+        },
+        "slug": "ffct-27720",
+        "source": "original",
+        "title": {
+          "tl": "Pickup ng Electric Guitar",
+          "en": "Guitar Pickups",
+          "bis": "Pickup sa Gitara"
+        },
+        "cats": [
+          "magnetism",
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Pickup sa Gitara supplies the relation missing from the title. The full body still states magnets, wire coils, string vibration and electrical signals; both title preferences agree and both body preferences tie. No prohibition on the English classroom term pickup or new electronics claim.",
+      "formal_item_id": "c6b7d2aa7c06278859c9d6ecd200b4dc3",
+      "fidelity_item_id": "mb1d43a50a655e12475201759",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27731",
+      "source_card_sha256": "cf5a3ae79316a3d8aa233a88dd26d1e6cce890edcb794f09a2d708c98cf0d2b9",
+      "candidate_card_sha256": "e9b3efac592b8741b03098d128dec4df5408ab3240d6ca858ce2cd6cf9e8870d",
+      "before_card": {
+        "id": "ffct-27731",
+        "factId": "fwg-gravity-873",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Gravity",
+        "terms": [
+          "gravity",
+          "moon",
+          "sixth",
+          "earth",
+          "meaning",
+          "person",
+          "weighs",
+          "newtons",
+          "would",
+          "weigh"
+        ],
+        "fact": {
+          "en": "The Moon's gravity is one-sixth of Earth's! A person weighing 600 newtons on Earth would weigh only 100 newtons on the Moon.",
+          "tl": "Ang gravity ng Moon ay isang-anim ng Earth! Ang taong 600 newtons sa Earth ay magiging 100 newtons lang sa Moon.",
+          "bis": "Ang gravity sa Moon kay usa ka-unom sa Earth! Ang tawo nga 600 newtons sa Earth, 100 newtons ra siya sa Moon."
+        },
+        "slug": "ffct-33732",
+        "title": {
+          "en": "Moon Gravity",
+          "tl": "Grabidad ng Buwan",
+          "bis": "Grabidad sa Buwan"
+        },
+        "cats": [
+          "gravity",
+          "the-moon"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "isang-anim"
+          ],
+          "en": [
+            "one-sixth"
+          ],
+          "bis": [
+            "usa ka-unom"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-27731",
+        "factId": "fwg-gravity-873",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Gravity",
+        "terms": [
+          "gravity",
+          "moon",
+          "sixth",
+          "earth",
+          "meaning",
+          "person",
+          "weighs",
+          "newtons",
+          "would",
+          "weigh"
+        ],
+        "fact": {
+          "en": "The Moon's gravity is one-sixth of Earth's! A person weighing 600 newtons on Earth would weigh only 100 newtons on the Moon.",
+          "tl": "Ang gravity ng Moon ay isang-anim ng Earth! Ang taong 600 newtons sa Earth ay magiging 100 newtons lang sa Moon.",
+          "bis": "Ang gravity sa Moon kay usa ka-unom sa Earth! Kung 600 newtons ang timbang sa usa ka tawo sa Earth, 100 newtons ra ang iyang timbang sa Moon."
+        },
+        "slug": "ffct-33732",
+        "title": {
+          "en": "Moon Gravity",
+          "tl": "Grabidad ng Buwan",
+          "bis": "Grabidad sa Buwan"
+        },
+        "cats": [
+          "gravity",
+          "the-moon"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "isang-anim"
+          ],
+          "en": [
+            "one-sixth"
+          ],
+          "bis": [
+            "usa ka-unom"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Explicit Kung and the repeated timbang clarify the Earth/Moon comparison. Wolff timbang supports weighing; 600 N, 100 N and the elementary one-sixth approximation remain, without converting weight to mass. Both body readers agree; the existing title is unchanged.",
+      "formal_item_id": "cd27f6d5f0427d557349eefee9b1e2d31",
+      "fidelity_item_id": "m01df90e9fde65d13dd061cc9",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27795",
+      "source_card_sha256": "e2c516c9a594aaad7d783c19844ab031c02232872d55926f52b807c336f5b840",
+      "candidate_card_sha256": "e28ad4decde17d71cf8ce15b99610243458c9222aa720f36a550aa21e6e84437",
+      "before_card": {
+        "id": "ffct-27795",
+        "factId": "fwg-sound-922",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Sound",
+        "terms": [
+          "sound",
+          "visitors",
+          "puerto",
+          "princesa",
+          "underground",
+          "river",
+          "hear",
+          "distinct",
+          "echoes",
+          "waves"
+        ],
+        "fact": {
+          "en": "Why do you hear distinct echoes in the Puerto Princesa Underground River?\n\nBecause sound waves bounce off the hard, smooth limestone cave walls!",
+          "tl": "Bakit maririnig mo ang distinct echoes sa Puerto Princesa Underground River?\n\nDahil tumatama at bumabalik ang sound waves mula sa matitigas at makinis na limestone na pader ng kuweba!",
+          "bis": "Nganong makadungog ka og distinct echoes sa Puerto Princesa Underground River?\n\nKay ang sound waves mo-bounce gikan sa hard, smooth limestone nga mga bungbong sa langob!"
+        },
+        "slug": "underground-river-cave-scene",
+        "title": {
+          "en": "Sound Echoes",
+          "tl": "Echo ng Tunog",
+          "bis": "Echo sa Tunog"
+        },
+        "cats": [
+          "sound",
+          "caves"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "sound waves"
+          ],
+          "en": [
+            "sound waves"
+          ],
+          "bis": [
+            "sound waves"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-27795",
+        "factId": "fwg-sound-922",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Sound",
+        "terms": [
+          "sound",
+          "visitors",
+          "puerto",
+          "princesa",
+          "underground",
+          "river",
+          "hear",
+          "distinct",
+          "echoes",
+          "waves"
+        ],
+        "fact": {
+          "en": "Why do you hear distinct echoes in the Puerto Princesa Underground River?\n\nBecause sound waves bounce off the hard, smooth limestone cave walls!",
+          "tl": "Bakit maririnig mo ang distinct echoes sa Puerto Princesa Underground River?\n\nDahil tumatama at bumabalik ang sound waves mula sa matitigas at makinis na limestone na pader ng kuweba!",
+          "bis": "Nganong makadungog ka og klaro nga mga echo sa Puerto Princesa Underground River?\n\nKay ang sound waves moigo ug mobalik gikan sa gahi ug hamis nga limestone nga mga bungbong sa langob!"
+        },
+        "slug": "underground-river-cave-scene",
+        "title": {
+          "en": "Sound Echoes",
+          "tl": "Echo ng Tunog",
+          "bis": "Echo sa Tunog"
+        },
+        "cats": [
+          "sound",
+          "caves"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "sound waves"
+          ],
+          "en": [
+            "sound waves"
+          ],
+          "bis": [
+            "sound waves"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Moigo ug mobalik states sound hitting and returning from the cave surfaces, preserving the echo explanation. Wolff igu, balik, gahi and hamis support hitting, return, hard and smooth surfaces; UNESCO confirms the limestone karst setting, not measured acoustic properties of every surface. Both changed-field preferences agree and the echo emphasis survives.",
+      "formal_item_id": "c8310653da27c3ffa9fc6d0c3663367d7",
+      "fidelity_item_id": "m5eed6c5e8faf3ac19bfeaca9",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27843",
+      "source_card_sha256": "b76fdebbd457b81a279861757401fd34af63d3b30a4456950b4f749d9fc06cd6",
+      "candidate_card_sha256": "2066bbc296db5fac47625479d3c15be375b1bbc81fd921efb97f8235aede7294",
+      "before_card": {
+        "id": "ffct-27843",
+        "factId": "fwg-forms-of-energy-881",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Forms of Energy",
+        "terms": [
+          "forms",
+          "energy",
+          "kilogram",
+          "moving",
+          "meters",
+          "second",
+          "four",
+          "times",
+          "kinetic",
+          "same"
+        ],
+        "fact": {
+          "en": "A 1,000-kilogram car moving at 20 meters per second has four times more kinetic energy than the same car moving at just 10 meters per second!",
+          "tl": "Ang kotse na may bigat na 1,000 kilo na gumagalaw ng 20 metro kada segundo ay may apat na beses na mas maraming kinetic energy kaysa sa 10 metro kada segundo lang!",
+          "bis": "Ang sakyanan nga 1,000 kilo nga naglihok sa 20 metros kada segundo adunay upat ka beses nga mas daghang kinetic energy kaysa parehas nga sakyanan nga 10 metros kada segundo ra!"
+        },
+        "slug": "ffct-22853",
+        "title": {
+          "en": "Kinetic Energy",
+          "tl": "Enerhiyang Kinetiko",
+          "bis": "Kinetikong Enerhiya"
+        },
+        "cats": [
+          "energy",
+          "motion"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kinetic energy"
+          ],
+          "en": [
+            "kinetic energy"
+          ],
+          "bis": [
+            "kinetic energy"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-27843",
+        "factId": "fwg-forms-of-energy-881",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Forms of Energy",
+        "terms": [
+          "forms",
+          "energy",
+          "kilogram",
+          "moving",
+          "meters",
+          "second",
+          "four",
+          "times",
+          "kinetic",
+          "same"
+        ],
+        "fact": {
+          "en": "A 1,000-kilogram car moving at 20 meters per second has four times more kinetic energy than the same car moving at just 10 meters per second!",
+          "tl": "Ang kotse na may bigat na 1,000 kilo na gumagalaw ng 20 metro kada segundo ay may apat na beses na mas maraming kinetic energy kaysa sa 10 metro kada segundo lang!",
+          "bis": "Ang sakyanan nga 1,000 kilo nga naglihok sa 20 metros kada segundo adunay upat ka beses nga mas daghang kinetic energy kaysa sa parehas nga sakyanan nga naglihok sa 10 metros kada segundo ra!"
+        },
+        "slug": "ffct-22853",
+        "title": {
+          "en": "Kinetic Energy",
+          "tl": "Enerhiyang Kinetiko",
+          "bis": "Kinetikong Enerhiya"
+        },
+        "cats": [
+          "energy",
+          "motion"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kinetic energy"
+          ],
+          "en": [
+            "kinetic energy"
+          ],
+          "bis": [
+            "kinetic energy"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The repeated naglihok makes the two speeds an explicit comparison for the same 1000 kg car. The physical ratio is (20/10)^2 = 4; the candidate retains that intended fourfold energy ratio, both speeds, mass and squared-speed reason. Both body preferences agree; no numeric normalization or extra arithmetic claim.",
+      "formal_item_id": "cdde5a7c3c64564e862f95fbd4b6ea8f3",
+      "fidelity_item_id": "m3a3f2f4d2cd129bc1a644b74",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27908",
+      "source_card_sha256": "7f64ec5cdde4d4926a900eee2c099fdf7dcbd1d758c8294e1abb4677063c78a6",
+      "candidate_card_sha256": "68f1d509908ddb0d385ac55e48be285be42a1176c676e491d4098bdef6c90b7d",
+      "before_card": {
+        "id": "ffct-27908",
+        "factId": "fwg-fluid-friction-1559",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Fluid Friction",
+        "terms": [
+          "fluid",
+          "friction",
+          "just",
+          "solid",
+          "objects",
+          "rubbing",
+          "together",
+          "swimmer",
+          "experiences",
+          "called"
+        ],
+        "fact": {
+          "en": "Friction isn't just for solid objects! A swimmer also experiences fluid friction, called drag, when moving through water.",
+          "tl": "Hindi lang para sa mga solidong bagay ang friction! Nakararanas din ang isang swimmer ng fluid friction o drag kapag lumalangoy sa tubig.",
+          "bis": "Dili lang para sa solid nga mga butang ang friction! Nakasinati usab ang swimmer og fluid friction o drag kung molangoy sa tubig."
+        },
+        "slug": "ffct-27908",
+        "source": "original",
+        "title": {
+          "tl": "Drag sa Langoy",
+          "en": "Swimmer's Drag",
+          "bis": "Drag Langoy"
+        },
+        "cats": [
+          "friction"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-27908",
+        "factId": "fwg-fluid-friction-1559",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Fluid Friction",
+        "terms": [
+          "fluid",
+          "friction",
+          "just",
+          "solid",
+          "objects",
+          "rubbing",
+          "together",
+          "swimmer",
+          "experiences",
+          "called"
+        ],
+        "fact": {
+          "en": "Friction isn't just for solid objects! A swimmer also experiences fluid friction, called drag, when moving through water.",
+          "tl": "Hindi lang para sa mga solidong bagay ang friction! Nakararanas din ang isang swimmer ng fluid friction o drag kapag lumalangoy sa tubig.",
+          "bis": "Dili lang para sa solid nga mga butang ang friction! Nakasinati usab ang swimmer og fluid friction o drag kung molangoy sa tubig."
+        },
+        "slug": "ffct-27908",
+        "source": "original",
+        "title": {
+          "tl": "Drag sa Langoy",
+          "en": "Swimmer's Drag",
+          "bis": "Drag sa Paglangoy"
+        },
+        "cats": [
+          "friction"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Drag sa Paglangoy relates drag to swimming in the title. Wolff languy supports swimming. The identical body keeps fluid friction and the water/swimmer setting; both independent title preferences agree, with body ties.",
+      "formal_item_id": "c56739bc7bce266087f6110e79851ba17",
+      "fidelity_item_id": "ma8aaacc643a7641b17535b61",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27973",
+      "source_card_sha256": "ee57b40d2d0b7101c04dac3aad79cd3000bcb90720f7e05e343f2f3b11472a7f",
+      "candidate_card_sha256": "2343ff3a612a1b663bfb514382b3d91134467c14e742f7d44621fa8094c0682e",
+      "before_card": {
+        "id": "ffct-27973",
+        "factId": "fwg2-levers-safety-1745",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Levers Safety",
+        "terms": [
+          "levers",
+          "safety",
+          "using",
+          "class",
+          "lever",
+          "like",
+          "seesaw",
+          "requires",
+          "keeping",
+          "your"
+        ],
+        "fact": {
+          "en": "What safety rule should you follow when playing on a seesaw?\n\nKeep your fingers clear of the fulcrum on this class-1 lever to prevent painful crushing injuries!",
+          "tl": "Anong safety rule ang dapat sundin kapag naglalaro sa seesaw?\n\nIlayo ang mga daliri mo sa fulcrum ng class-1 lever na ito para maiwasan ang masakit na pagkadurog!",
+          "bis": "Unsa nga safety rule ang dapat sundon kung nagdula sa seesaw?\n\nLayoi ang imong mga tudlo sa fulcrum niini nga class-1 lever aron malikayan ang sakit nga pagdugmok!"
+        },
+        "slug": "ffct-27973",
+        "source": "original",
+        "title": {
+          "tl": "Seesaw Safety Fulcrum Daliri",
+          "en": "Seesaw Safety Rule",
+          "bis": "Seesaw sa Kaluwasan"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-27973",
+        "factId": "fwg2-levers-safety-1745",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Levers Safety",
+        "terms": [
+          "levers",
+          "safety",
+          "using",
+          "class",
+          "lever",
+          "like",
+          "seesaw",
+          "requires",
+          "keeping",
+          "your"
+        ],
+        "fact": {
+          "en": "What safety rule should you follow when playing on a seesaw?\n\nKeep your fingers clear of the fulcrum on this class-1 lever to prevent painful crushing injuries!",
+          "tl": "Anong safety rule ang dapat sundin kapag naglalaro sa seesaw?\n\nIlayo ang mga daliri mo sa fulcrum ng class-1 lever na ito para maiwasan ang masakit na pagkadurog!",
+          "bis": "Unsang safety rule ang angay nimong sundon kung magdula ka sa seesaw?\n\nLayoi ang imong mga tudlo sa fulcrum niini nga class-1 lever aron malikayan ang sakit nga pagdugmok!"
+        },
+        "slug": "ffct-27973",
+        "source": "original",
+        "title": {
+          "tl": "Seesaw Safety Fulcrum Daliri",
+          "en": "Seesaw Safety Rule",
+          "bis": "Kaluwasan sa Seesaw"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The question addresses the reader directly and the title links safety to the seesaw. The instruction to keep fingers away from the fulcrum remains unchanged. Wolff angay and luwas/kaluwasan support should and safety; layu explicitly supplies a causative move-farther-away example Layui, resolving the initial imperative concern. Both changed-field preferences agree; no instruction to experiment with the pinch point.",
+      "formal_item_id": "cf85da3617827c10b061345d4ccc2a563",
+      "fidelity_item_id": "m6b92c815fc39e5b34c7d47c6",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27974",
+      "source_card_sha256": "608a8f068c3d22c4cae6e2aaccd3ffcefa695120c3a312baff4aa9afa1d38e27",
+      "candidate_card_sha256": "86412f30ff0d8b0d606eeb90435ba854f69c75bf2067abd020091ffe966dc44c",
+      "before_card": {
+        "id": "ffct-27974",
+        "factId": "fwg2-sound-1220",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Sound",
+        "terms": [
+          "sound",
+          "greater",
+          "horseshoe",
+          "navigates",
+          "hunts",
+          "insects",
+          "complete",
+          "darkness",
+          "emitting",
+          "high"
+        ],
+        "fact": {
+          "en": "How does the greater horseshoe bat hunt in complete darkness?\n\nIt navigates and hunts by emitting high-pitched sounds and listening for their returning echoes!",
+          "tl": "Paano nanghuhuli ang greater horseshoe bat sa kabuangang dilim?\n\nNaglalakbay at naghuhuli ito sa pamamagitan ng pag-emit ng high-pitched sounds at pakikinig sa returning echoes nito!",
+          "bis": "Unsaon pangayam sa greater horseshoe bat sa tibuok kangitngit?\n\nNag-navigate ug nangayam kini pinaagi sa pag-emit og high-pitched sounds ug pagpaminaw sa returning echoes niini!"
+        },
+        "slug": "ffct-27974",
+        "source": "original",
+        "title": {
+          "tl": "Horseshoe Bat Echolocation",
+          "en": "The Bat's Dark Hunt",
+          "bis": "Paniki sa Kangitngit"
+        },
+        "cats": [
+          "sound"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-27974",
+        "factId": "fwg2-sound-1220",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Sound",
+        "terms": [
+          "sound",
+          "greater",
+          "horseshoe",
+          "navigates",
+          "hunts",
+          "insects",
+          "complete",
+          "darkness",
+          "emitting",
+          "high"
+        ],
+        "fact": {
+          "en": "How does the greater horseshoe bat hunt in complete darkness?\n\nIt navigates and hunts by emitting high-pitched sounds and listening for their returning echoes!",
+          "tl": "Paano nanghuhuli ang greater horseshoe bat sa kabuangang dilim?\n\nNaglalakbay at naghuhuli ito sa pamamagitan ng pag-emit ng high-pitched sounds at pakikinig sa returning echoes nito!",
+          "bis": "Unsaon sa greater horseshoe bat pagpangayam sa hingpit nga kangitngit?\n\nNag-navigate ug nangayam kini pinaagi sa pagpagawas og high-pitched sounds ug pagpaminaw sa mga echo nga mobalik niini!"
+        },
+        "slug": "ffct-27974",
+        "source": "original",
+        "title": {
+          "tl": "Horseshoe Bat Echolocation",
+          "en": "The Bat's Dark Hunt",
+          "bis": "Paniki sa Kangitngit"
+        },
+        "cats": [
+          "sound"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The question names its bat subject and the answer explains emitting sound and returning echoes while preserving navigation and hunting. Wolff hingpit, gawas, paminaw and balik support complete, emit/let out, listen and return. Binisaya directly lists the derived pangayam as hunting despite the narrower dog-chasing root gloss; English WordNet surname senses are not evidence. Both body readers agree; the title is unchanged.",
+      "formal_item_id": "c14e932770c51ac0f5e0c4c8a956d82e8",
+      "fidelity_item_id": "m81a1d41cdc028fb2a6d86608",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27981",
+      "source_card_sha256": "1bc0d471616d2c8b9dbcaea9ca4e06f88d4e39e326093ad3705bd83a057e8c36",
+      "candidate_card_sha256": "a4257cfece2b1335ead4843b42539b1e87915453f6a898cdbb1b2b94a299a98e",
+      "before_card": {
+        "id": "ffct-27981",
+        "factId": "fwg2-lever-operation-process-1728",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Lever operation process",
+        "terms": [
+          "lever",
+          "operation",
+          "process",
+          "operating",
+          "begins",
+          "applying",
+          "input",
+          "force",
+          "effort",
+          "move"
+        ],
+        "fact": {
+          "en": "Operating a lever begins with applying an input force to the effort arm to move the resistance!",
+          "tl": "Ang pag-operate ng lever ay nagsisimula sa pag-apply ng input force sa effort arm para ilipat ang resistance!",
+          "bis": "Ang pag-operate sa lever nagsugod sa pag-apply og input force sa effort arm aron ibalhin ang resistance!"
+        },
+        "slug": "ffct-27981",
+        "source": "original",
+        "title": {
+          "tl": "Effort Arm Input Force",
+          "en": "How Levers Operate",
+          "bis": "Lever sa Effort"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-27981",
+        "factId": "fwg2-lever-operation-process-1728",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Lever operation process",
+        "terms": [
+          "lever",
+          "operation",
+          "process",
+          "operating",
+          "begins",
+          "applying",
+          "input",
+          "force",
+          "effort",
+          "move"
+        ],
+        "fact": {
+          "en": "Operating a lever begins with applying an input force to the effort arm to move the resistance!",
+          "tl": "Ang pag-operate ng lever ay nagsisimula sa pag-apply ng input force sa effort arm para ilipat ang resistance!",
+          "bis": "Ang pag-operate sa lever nagsugod sa pag-apply og input force sa effort arm aron ibalhin ang resistance!"
+        },
+        "slug": "ffct-27981",
+        "source": "original",
+        "title": {
+          "tl": "Effort Arm Input Force",
+          "en": "How Levers Operate",
+          "bis": "Paggamit sa Lever"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Paggamit sa Lever supplies the relation in the title. The unchanged body retains effort arm, applied force and moving the resistance/load. Wolff gamit supports use; both title preferences agree with body ties. No blanket substitution of English lever vocabulary.",
+      "formal_item_id": "c8e77842eff1db1186fbdd6ec2895c134",
+      "fidelity_item_id": "mf20aebb2b251f16a3dd6caa6",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27990",
+      "source_card_sha256": "f797140822cc0c067c0c128bcacce78b0a90e32404daa0fac72f77bb493ceb7e",
+      "candidate_card_sha256": "ec407e94cd96d73d5d137ccbd758fe098b6001d33684823be2daae156da586be",
+      "before_card": {
+        "id": "ffct-27990",
+        "factId": "fwg2-electricity-1184",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Electricity",
+        "terms": [
+          "electricity",
+          "copper",
+          "used",
+          "electrical",
+          "wiring",
+          "homes",
+          "excellent",
+          "conductor",
+          "allows",
+          "electric"
+        ],
+        "fact": {
+          "en": "Copper is used for electrical wiring in homes because it is an excellent conductor that allows electric current to flow with minimal resistance!",
+          "tl": "Ginagamit ang copper para sa electrical wiring sa mga bahay dahil ito ay isang excellent conductor na nag-aallow sa electric current na dumaloy nang may minimal resistance!",
+          "bis": "Ang copper gigamit para sa electrical wiring sa mga balay kay maayo kaayo kini nga excellent conductor nga nag-allow sa electric current nga mo-flow nga gamay ra ang resistance!"
+        },
+        "slug": "ffct-27990",
+        "source": "original",
+        "title": {
+          "tl": "Copper Wiring Bahay Conductor",
+          "en": "Copper Home Wiring",
+          "bis": "Copper sa Wiring"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-27990",
+        "factId": "fwg2-electricity-1184",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Electricity",
+        "terms": [
+          "electricity",
+          "copper",
+          "used",
+          "electrical",
+          "wiring",
+          "homes",
+          "excellent",
+          "conductor",
+          "allows",
+          "electric"
+        ],
+        "fact": {
+          "en": "Copper is used for electrical wiring in homes because it is an excellent conductor that allows electric current to flow with minimal resistance!",
+          "tl": "Ginagamit ang copper para sa electrical wiring sa mga bahay dahil ito ay isang excellent conductor na nag-aallow sa electric current na dumaloy nang may minimal resistance!",
+          "bis": "Ang copper gigamit sa electrical wiring sa mga balay kay maayo kaayo kini nga conductor. Makaagos ang electric current sa copper nga gamay ra ang resistance!"
+        },
+        "slug": "ffct-27990",
+        "source": "original",
+        "title": {
+          "tl": "Copper Wiring Bahay Conductor",
+          "en": "Copper Home Wiring",
+          "bis": "Copper sa Wiring"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Two sentences remove the duplicated excellent wording and retain copper, home wiring, excellent conduction and low resistance. Wolff agus includes flow/oozing and Binisaya directly gives the root a stream sense; independent electrical-current bodies include this makaagos form. These support the exact flow context without relying on every English WordNet gloss or claiming fast electron drift. Both body preferences agree, and the unchanged title ties.",
+      "formal_item_id": "c348c62f939121d67e624fd5b6376c466",
+      "fidelity_item_id": "mb7bb5529b5ba1575816cdaca",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27996",
+      "source_card_sha256": "5049f6c9c05bcdb981c610028fdd1f79091af0ce15a62f6610c1d1bb776d45a0",
+      "candidate_card_sha256": "cad24467e6226df19987288e5cdd163ab074247ed0fcabe8b9fc8ad8ee43a71d",
+      "before_card": {
+        "id": "ffct-27996",
+        "factId": "fwg2-rock-cycle-1631",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Rock Cycle",
+        "terms": [
+          "rock",
+          "cycle",
+          "during",
+          "cooling",
+          "stage",
+          "magma",
+          "loses",
+          "heat",
+          "energy",
+          "solidifies"
+        ],
+        "fact": {
+          "en": "During the cooling stage of the rock cycle, hot magma loses heat energy and solidifies into igneous rock!",
+          "tl": "Sa yugto ng paglamig ng rock cycle, ang mainit na magma nawawalan ng init at nagiging solidong igneous rock!",
+          "bis": "Sa cooling stage sa rock cycle, ang init nga magma mawala ang kainit ug mo-solidify ngadto sa igneous rock!"
+        },
+        "slug": "igneous-rock-formation",
+        "title": {
+          "en": "Rock Cycle",
+          "tl": "Siklo ng Bato",
+          "bis": "Siklo sa Bato"
+        },
+        "cats": [
+          "rocks",
+          "geology"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "igneous rock"
+          ],
+          "en": [
+            "igneous rock"
+          ],
+          "bis": [
+            "igneous rock"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-27996",
+        "factId": "fwg2-rock-cycle-1631",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Rock Cycle",
+        "terms": [
+          "rock",
+          "cycle",
+          "during",
+          "cooling",
+          "stage",
+          "magma",
+          "loses",
+          "heat",
+          "energy",
+          "solidifies"
+        ],
+        "fact": {
+          "en": "During the cooling stage of the rock cycle, hot magma loses heat energy and solidifies into igneous rock!",
+          "tl": "Sa yugto ng paglamig ng rock cycle, ang mainit na magma nawawalan ng init at nagiging solidong igneous rock!",
+          "bis": "Sa cooling stage sa rock cycle, ang init nga magma mawad-an og kainit. Unya, mogahi kini ug mahimong igneous rock!"
+        },
+        "slug": "igneous-rock-formation",
+        "title": {
+          "en": "Rock Cycle",
+          "tl": "Siklo ng Bato",
+          "bis": "Siklo sa Bato"
+        },
+        "cats": [
+          "rocks",
+          "geology"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "igneous rock"
+          ],
+          "en": [
+            "igneous rock"
+          ],
+          "bis": [
+            "igneous rock"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Mawad-an og kainit and mogahi mahimong make loss of heat and solidification explicit in shorter clauses. Wolff wala includes losing, gahi includes becoming hard, and himu includes becoming. Cooling magma and formation of solid igneous rock remain; both body preferences agree and the technical emphasis is preserved.",
+      "formal_item_id": "cb9e4f10f2ede9511bb0ac49254d89590",
+      "fidelity_item_id": "m1dad55711f99157b66b349ea",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-28026",
+      "source_card_sha256": "dfb868718ba83380d369ae2e7447ed3ba6e4e53659ed071338dccc0d2ebcc59e",
+      "candidate_card_sha256": "b4199d1b84a1dabb241c27290547560d56ff049b76ee9454fd55e39adc441611",
+      "before_card": {
+        "id": "ffct-28026",
+        "factId": "fwg2-light-1859",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Light",
+        "terms": [
+          "light",
+          "looking",
+          "directly",
+          "damages",
+          "retina",
+          "intense",
+          "visible",
+          "ultraviolet",
+          "rays",
+          "burn"
+        ],
+        "fact": {
+          "en": "Never look directly at the sun! Its intense visible light and ultraviolet rays can burn eye tissue and damage your retina.",
+          "tl": "Ayaw titingnan nang diretso ang araw! Ang intense visible light at ultraviolet rays nito ay pwedeng magsunog ng eye tissue at makasira ng retina.",
+          "bis": "Ayaw ug tan-aw direkta sa adlaw! Ang intense visible light ug ultraviolet rays niini makasunog sa eye tissue ug makadaot sa retina."
+        },
+        "slug": "ffct-28942",
+        "title": {
+          "en": "Sunlight",
+          "tl": "Sikat ng Araw",
+          "bis": "Kahayag sa Adlaw"
+        },
+        "cats": [
+          "light",
+          "health"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "ultraviolet rays"
+          ],
+          "en": [
+            "ultraviolet rays"
+          ],
+          "bis": [
+            "ultraviolet rays"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-28026",
+        "factId": "fwg2-light-1859",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Light",
+        "terms": [
+          "light",
+          "looking",
+          "directly",
+          "damages",
+          "retina",
+          "intense",
+          "visible",
+          "ultraviolet",
+          "rays",
+          "burn"
+        ],
+        "fact": {
+          "en": "Never look directly at the sun! Its intense visible light and ultraviolet rays can burn eye tissue and damage your retina.",
+          "tl": "Ayaw titingnan nang diretso ang araw! Ang intense visible light at ultraviolet rays nito ay pwedeng magsunog ng eye tissue at makasira ng retina.",
+          "bis": "Ayaw gyud tan-awa nga direkta ang adlaw! Ang intense visible light ug ultraviolet rays niini makasunog sa eye tissue ug makadaot sa imong retina."
+        },
+        "slug": "ffct-28942",
+        "title": {
+          "en": "Sunlight",
+          "tl": "Sikat ng Araw",
+          "bis": "Kahayag sa Adlaw"
+        },
+        "cats": [
+          "light",
+          "health"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "ultraviolet rays"
+          ],
+          "en": [
+            "ultraviolet rays"
+          ],
+          "bis": [
+            "ultraviolet rays"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Ayaw gyud tan-awa strengthens the existing never-look warning and imong makes the affected retina personal. Wolff tan-aw and gayud, with its giyud short form and emphatic/negative senses, support the construction. NASA and NEI support eye harm from sunlight and visible-light retinal damage. The unchanged aggregate warning does not specify that UV reaches a normal retina; no wavelength-specific mechanism or viewing workaround is added. Both body readers agree and the ultraviolet emphasis remains exact.",
+      "formal_item_id": "c1238739a8d2985f1182b162914b31d6c",
+      "fidelity_item_id": "ma47146ff7a4d94c442321088",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-28095",
+      "source_card_sha256": "40212844a2cc34fc4f83cfe4fc15e11c2e5f04e18451e6f20002206954605110",
+      "candidate_card_sha256": "96dde3a5b3c704b25cb75f56eeff177da23e6533377a2c6e8e191407f66ef7d4",
+      "before_card": {
+        "id": "ffct-28095",
+        "factId": "fwg2-retinal-energy-1239",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Retinal Energy",
+        "terms": [
+          "retinal",
+          "energy",
+          "your",
+          "retina",
+          "transforms",
+          "light",
+          "electrical",
+          "signals",
+          "travel",
+          "brain"
+        ],
+        "fact": {
+          "en": "How does your eye help you see images?\n\nYour retina transforms light energy into electrical signals that travel to the brain so you can see!",
+          "tl": "Paano tinutulungan ng mata ang iyong paningin ng mga larawan?\n\nAng retina mo ay nagko-convert ng light energy sa mga electrical signal na naglalakbay sa utak para makakita ka!",
+          "bis": "Unsaon pagtabang sa mata aron makakita ka og mga hulagway?\n\nAng retina nimo nag-convert sa light energy ngadto sa mga electrical signal nga mo-padulong sa utok aron makakita ka!"
+        },
+        "slug": "ffct-28095",
+        "source": "original",
+        "title": {
+          "tl": "Retina sa Utak Signal",
+          "en": "Retina Light Signals",
+          "bis": "Retina Signal"
+        },
+        "cats": [
+          "light",
+          "senses"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28095",
+        "factId": "fwg2-retinal-energy-1239",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Retinal Energy",
+        "terms": [
+          "retinal",
+          "energy",
+          "your",
+          "retina",
+          "transforms",
+          "light",
+          "electrical",
+          "signals",
+          "travel",
+          "brain"
+        ],
+        "fact": {
+          "en": "How does your eye help you see images?\n\nYour retina transforms light energy into electrical signals that travel to the brain so you can see!",
+          "tl": "Paano tinutulungan ng mata ang iyong paningin ng mga larawan?\n\nAng retina mo ay nagko-convert ng light energy sa mga electrical signal na naglalakbay sa utak para makakita ka!",
+          "bis": "Unsaon pagtabang sa imong mata aron makakita ka og mga hulagway?\n\nAng imong retina nag-convert sa light energy ngadto sa mga electrical signal. Kini nga mga signal mobiyahe paingon sa utok aron makakita ka!"
+        },
+        "slug": "ffct-28095",
+        "source": "original",
+        "title": {
+          "tl": "Retina sa Utak Signal",
+          "en": "Retina Light Signals",
+          "bis": "Retina ug mga Signal"
+        },
+        "cats": [
+          "light",
+          "senses"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Names the electrical signals explicitly before stating their travel to the brain, retaining retinal conversion of light and the resulting vision. Wolff byahi and Binisaya biyahe support travel; independent neural-signal bodies corroborate this use. NEI describes photoreceptor conversion and signal transport to the brain. Both changed-field preferences agree; no literal material picture sent to the brain is introduced.",
+      "formal_item_id": "cc35e7df89a32b89f08a4be5b22f3875b",
+      "fidelity_item_id": "m753d3407ecb8306887de7996",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    }
+  ],
+  "held": [
+    {
+      "card_id": "ffct-27351",
+      "source_card_sha256": "c80828906bcf2e9a3b5a34e3a4874559d1d79416849f29b4d7d09206c9623a9b",
+      "candidate_card_sha256": "7751135acdf7d976e6000adc1fca903f3627f9b4391caa6a2b9af80d4b4a3c3d",
+      "before_card": {
+        "id": "ffct-27351",
+        "factId": "fwg-electric-current-888",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Electric Current",
+        "terms": [
+          "electric",
+          "current",
+          "copper",
+          "wire",
+          "actually",
+          "flow",
+          "negatively",
+          "charged",
+          "electrons",
+          "negative"
+        ],
+        "fact": {
+          "en": "Electric current in a copper wire is actually the flow of negatively charged electrons from the negative terminal!",
+          "tl": "Ang electric current sa copper wire ay talagang daloy ng negatively charged electrons mula sa negative terminal!",
+          "bis": "Ang electric current sa copper wire mao ang pag-agos sa negatively charged electrons gikan sa negative terminal!"
+        },
+        "slug": "",
+        "source": "original",
+        "title": {
+          "tl": "Electron Flow Copper Wire",
+          "en": "Current Is Electron Flow",
+          "bis": "Electron sa Wire"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-27351",
+        "factId": "fwg-electric-current-888",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Electric Current",
+        "terms": [
+          "electric",
+          "current",
+          "copper",
+          "wire",
+          "actually",
+          "flow",
+          "negatively",
+          "charged",
+          "electrons",
+          "negative"
+        ],
+        "fact": {
+          "en": "Electric current in a copper wire is actually the flow of negatively charged electrons from the negative terminal!",
+          "tl": "Ang electric current sa copper wire ay talagang daloy ng negatively charged electrons mula sa negative terminal!",
+          "bis": "Ang electric current sa copper wire mao ang pag-agos sa negatively charged electrons gikan sa negative terminal!"
+        },
+        "slug": "",
+        "source": "original",
+        "title": {
+          "tl": "Electron Flow Copper Wire",
+          "en": "Current Is Electron Flow",
+          "bis": "Agos sa mga Electron"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The title is clearer, but the English describes current as electrons leaving a negative terminal without stating the DC/electron-flow convention. DOE Electrical Science supports that description in its battery example and separately distinguishes conventional current and AC reversal. Hold for source scope clarification, not a claim that electron flow or this battery example is false. Do not add qualifiers only in Cebuano.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c972675d276baac5aace715286a0c4d5d"
+    },
+    {
+      "card_id": "ffct-27372",
+      "source_card_sha256": "701c294c65bd236b35a461be503219cf6a0fc06b0be5418bcad1831b31ca4082",
+      "candidate_card_sha256": "add88da1d6dd6581a91d68f0684350fe43b8d7c301d76bf44cc407675d83e1fa",
+      "before_card": {
+        "id": "ffct-27372",
+        "factId": "fwg-potential-energy-917",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "potential energy",
+        "terms": [
+          "potential",
+          "energy",
+          "massive",
+          "concrete",
+          "wall",
+          "magat",
+          "isabela",
+          "holds",
+          "back",
+          "water"
+        ],
+        "fact": {
+          "en": "The massive concrete wall of Magat Dam in Isabela holds back water to store immense gravitational potential energy!",
+          "tl": "Ang napakalaking konkretong pader ng Magat Dam sa Isabela ay humaharang sa tubig para mag-imbak ng immense gravitational potential energy!",
+          "bis": "Ang dako kaayo nga konkreto nga pader sa Magat Dam sa Isabela mopugong sa tubig aron magtipig og immense gravitational potential energy!"
+        },
+        "slug": "dam-holding-water",
+        "title": {
+          "en": "Potential Energy",
+          "tl": "Potensyal na Lakas",
+          "bis": "Potensyal nga Kusog"
+        },
+        "cats": [
+          "energy"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "gravitational potential energy"
+          ],
+          "en": [
+            "gravitational potential energy"
+          ],
+          "bis": [
+            "gravitational potential energy"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-27372",
+        "factId": "fwg-potential-energy-917",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "potential energy",
+        "terms": [
+          "potential",
+          "energy",
+          "massive",
+          "concrete",
+          "wall",
+          "magat",
+          "isabela",
+          "holds",
+          "back",
+          "water"
+        ],
+        "fact": {
+          "en": "The massive concrete wall of Magat Dam in Isabela holds back water to store immense gravitational potential energy!",
+          "tl": "Ang napakalaking konkretong pader ng Magat Dam sa Isabela ay humaharang sa tubig para mag-imbak ng immense gravitational potential energy!",
+          "bis": "Ang dako kaayong konkretong pader sa Magat Dam sa Isabela mopugong sa tubig aron matipigan ang daghan kaayong gravitational potential energy!"
+        },
+        "slug": "dam-holding-water",
+        "title": {
+          "en": "Potential Energy",
+          "tl": "Potensyal na Lakas",
+          "bis": "Potensyal nga Kusog"
+        },
+        "cats": [
+          "energy"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "gravitational potential energy"
+          ],
+          "en": [
+            "gravitational potential energy"
+          ],
+          "bis": [
+            "gravitational potential energy"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "NIA describes Magat as a large rockfill dam and lists substantial earth/rock fill alongside concrete works. The card specifically attributes impoundment to a massive concrete wall. Hold for a precise structure description across languages; the evidence does not say there is no concrete at Magat. The gravitational-potential-energy principle itself is not rejected.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "cd3bf8988b939197ff2cce388be15e56b"
+    },
+    {
+      "card_id": "ffct-27377",
+      "source_card_sha256": "ac683485c0853255820aa09662a693a8b8edfb794fb623873507927c8dd138ea",
+      "candidate_card_sha256": "8b0bb89bceeb7e2e2fb12c294b8482afdb78e70864467fe328addaa68af1c4bd",
+      "before_card": {
+        "id": "ffct-27377",
+        "factId": "fwg-everyday-machines-1261",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Everyday Machines",
+        "terms": [
+          "everyday",
+          "machines",
+          "standard",
+          "doorknob",
+          "operates",
+          "wheel",
+          "axle",
+          "simple",
+          "machine",
+          "allowing"
+        ],
+        "fact": {
+          "en": "A standard doorknob works as a wheel and axle simple machine! It lets a small rotational force easily turn the internal latch.",
+          "tl": "Ang karaniwang doorknob ay gumagana bilang isang wheel and axle na simple machine! Pinapayagan nito ang maliit na rotational force na madaling paikutin ang internal latch.",
+          "bis": "Ang ordinaryong doorknob nagtrabaho isip wheel and axle nga simple machine! Nagpasayon kini sa gamay nga rotational force aron dali ma-turn ang internal latch."
+        },
+        "slug": "ffct-17611",
+        "title": {
+          "en": "Wheel and Axle",
+          "tl": "Gulong at Ehe",
+          "bis": "Ligid ug Ehe"
+        },
+        "cats": [
+          "simple-machines"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "wheel and axle"
+          ],
+          "en": [
+            "wheel and axle"
+          ],
+          "bis": [
+            "wheel and axle"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-27377",
+        "factId": "fwg-everyday-machines-1261",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Everyday Machines",
+        "terms": [
+          "everyday",
+          "machines",
+          "standard",
+          "doorknob",
+          "operates",
+          "wheel",
+          "axle",
+          "simple",
+          "machine",
+          "allowing"
+        ],
+        "fact": {
+          "en": "A standard doorknob works as a wheel and axle simple machine! It lets a small rotational force easily turn the internal latch.",
+          "tl": "Ang karaniwang doorknob ay gumagana bilang isang wheel and axle na simple machine! Pinapayagan nito ang maliit na rotational force na madaling paikutin ang internal latch.",
+          "bis": "Ang ordinaryong doorknob mogana isip wheel and axle nga simple machine! Tungod niini, ang gamay nga rotational force dali ra makapatuyok sa latch sa sulod."
+        },
+        "slug": "ffct-17611",
+        "title": {
+          "en": "Wheel and Axle",
+          "tl": "Gulong at Ehe",
+          "bis": "Ligid ug Ehe"
+        },
+        "cats": [
+          "simple-machines"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "wheel and axle"
+          ],
+          "en": [
+            "wheel and axle"
+          ],
+          "bis": [
+            "wheel and axle"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The candidate explicitly makes the latch rotate, matching an imprecise English object of turn. Schlage’s primary mechanism description distinguishes rotating knob/spindle from retracting the bolt. Hold for a source decision about the named component and motion; the wheel-and-axle example is not itself rejected. No unreviewed substitution of retract for turn.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "ce0e223755e11e8294be9b6a0553f34df"
+    },
+    {
+      "card_id": "ffct-28018",
+      "source_card_sha256": "83a748396ceb34e301fe9a2cdaead7f6b934a7b20247f59ccb653b0cfaa98d40",
+      "candidate_card_sha256": "e97304a73f642a0f7039697b7eae5d6b49cb6f2f948e56de688947d50ede9ece",
+      "before_card": {
+        "id": "ffct-28018",
+        "factId": "fwg2-food-chemical-energy-1015",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Food Chemical Energy",
+        "terms": [
+          "food",
+          "chemical",
+          "energy",
+          "your",
+          "digestive",
+          "system",
+          "breaks",
+          "down",
+          "release",
+          "cells"
+        ],
+        "fact": {
+          "en": "How does your food give you energy to play?\n\nYour digestive system breaks down food to release chemical energy that your cells use to power daily activities!",
+          "tl": "Paano binibigyan ka ng pagkain ng energy para maglaro?\n\nAng digestive system mo-break down ng pagkain para i-release ang chemical energy na ginagamit ng cells para sa araw-araw na gawain!",
+          "bis": "Unsaon paghatag sa pagkaon og energy para magdula?\n\nAng digestive system mo-break down sa pagkaon para i-release ang chemical energy nga gigamit sa cells para sa adlaw-adlaw nga kalihokan!"
+        },
+        "slug": "exercise-children-playing",
+        "title": {
+          "en": "Chemical Energy",
+          "tl": "Enerhiya ng Pagkain",
+          "bis": "Enerhiya sa Pagkaon"
+        },
+        "cats": [
+          "energy",
+          "nutrition"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "chemical energy"
+          ],
+          "en": [
+            "chemical energy"
+          ],
+          "bis": [
+            "chemical energy"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-28018",
+        "factId": "fwg2-food-chemical-energy-1015",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Food Chemical Energy",
+        "terms": [
+          "food",
+          "chemical",
+          "energy",
+          "your",
+          "digestive",
+          "system",
+          "breaks",
+          "down",
+          "release",
+          "cells"
+        ],
+        "fact": {
+          "en": "How does your food give you energy to play?\n\nYour digestive system breaks down food to release chemical energy that your cells use to power daily activities!",
+          "tl": "Paano binibigyan ka ng pagkain ng energy para maglaro?\n\nAng digestive system mo-break down ng pagkain para i-release ang chemical energy na ginagamit ng cells para sa araw-araw na gawain!",
+          "bis": "Unsaon sa pagkaon paghatag kanimo og energy aron makadula ka?\n\nAng imong digestive system mo-break down sa pagkaon aron i-release ang chemical energy. Gigamit sa imong cells kini nga chemical energy para sa adlaw-adlaw nga kalihokan!"
+        },
+        "slug": "exercise-children-playing",
+        "title": {
+          "en": "Chemical Energy",
+          "tl": "Enerhiya ng Pagkain",
+          "bis": "Enerhiya sa Pagkaon"
+        },
+        "cats": [
+          "energy",
+          "nutrition"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "chemical energy"
+          ],
+          "en": [
+            "chemical energy"
+          ],
+          "bis": [
+            "chemical energy"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The new sentence isolates a claim that the digestive system releases chemical energy. NIDDK separates breakdown into absorbable nutrients from their later transport and use; this needs an English decision distinguishing digestion from cellular energy release. Hold the exact candidate for cross-language source review, rather than polishing or correcting only Cebuano.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c57476e3c2299c84135825b916f1242d9"
+    },
+    {
+      "card_id": "ffct-28062",
+      "source_card_sha256": "de5e432ce15c3090735c5577d9570330d152400ae64e79433d31eb6eec7d56ef",
+      "candidate_card_sha256": "5059345706d751c60a803ab30f03558a519e6aa0e1a97bacbc454c12c08a837d",
+      "before_card": {
+        "id": "ffct-28062",
+        "factId": "fwg2-static-electricity-1021",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "static electricity",
+        "terms": [
+          "static",
+          "electricity",
+          "during",
+          "amihan",
+          "season",
+          "rubbing",
+          "plastic",
+          "comb",
+          "through",
+          "hair"
+        ],
+        "fact": {
+          "en": "In the dry Amihan season, rubbing a plastic comb through dry hair transfers electrons, creating static electricity that makes your hair stand up!",
+          "tl": "Sa tuyong panahon ng Amihan, ang pagkuskos ng plastic comb sa tuyong buhok ay naglilipat ng electrons, na gumagawa ng static electricity na nagpapatayo ng buhok!",
+          "bis": "Sa uga nga panahon sa Amihan, ang pagkuskos og plastic comb sa uga nga buhok nagbalhin og electrons, naghimo og static electricity nga nagpatindog sa buhok!"
+        },
+        "slug": "comb-static-attract-hair",
+        "title": {
+          "en": "Static Electricity",
+          "tl": "Static na Kuryente",
+          "bis": "Static nga Kuryente"
+        },
+        "cats": [
+          "electricity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "static electricity"
+          ],
+          "en": [
+            "static electricity"
+          ],
+          "bis": [
+            "static electricity"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-28062",
+        "factId": "fwg2-static-electricity-1021",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "static electricity",
+        "terms": [
+          "static",
+          "electricity",
+          "during",
+          "amihan",
+          "season",
+          "rubbing",
+          "plastic",
+          "comb",
+          "through",
+          "hair"
+        ],
+        "fact": {
+          "en": "In the dry Amihan season, rubbing a plastic comb through dry hair transfers electrons, creating static electricity that makes your hair stand up!",
+          "tl": "Sa tuyong panahon ng Amihan, ang pagkuskos ng plastic comb sa tuyong buhok ay naglilipat ng electrons, na gumagawa ng static electricity na nagpapatayo ng buhok!",
+          "bis": "Sa uga nga panahon sa Amihan, kung kuskuson nimo og plastic comb ang uga nga buhok, mabalhin ang electrons. Naghimo kini og static electricity nga nagpatindog sa imong buhok!"
+        },
+        "slug": "comb-static-attract-hair",
+        "title": {
+          "en": "Static Electricity",
+          "tl": "Static na Kuryente",
+          "bis": "Static nga Kuryente"
+        },
+        "cats": [
+          "electricity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "static electricity"
+          ],
+          "en": [
+            "static electricity"
+          ],
+          "bis": [
+            "static electricity"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The English labels Amihan dry without a region or a local dry-condition qualifier. PAGASA both describes a broad cool dry season and explicitly notes northeast-monsoon rain on eastern coasts. Hold for geographically precise English framing; this is not a claim that Amihan is never dry or that the comb/static-electricity mechanism is false. No nationwide climate assumption added through a readability edit.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c7c20dbfa6ab8c45e747241a6e9c25f9c"
+    }
+  ],
+  "prior_mandatory_missing_judgment_holds": [
+    "ffct-15686",
+    "ffct-24823",
+    "ffct-24184"
+  ],
+  "native_verified": false,
+  "science_verified": false,
+  "released": false,
+  "source_precision_holds_require_cross_language_review": [
+    "ffct-27351",
+    "ffct-27372",
+    "ffct-27377",
+    "ffct-28018",
+    "ffct-28062"
+  ],
+  "lexical_holds": [],
+  "fidelity_holds": [],
+  "readability_holds": []
+}

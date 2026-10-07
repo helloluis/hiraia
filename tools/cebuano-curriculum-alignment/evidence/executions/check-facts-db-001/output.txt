@@ -1,0 +1,12 @@
+  PASS  fact_meta.count matches the bank file  53022 vs 53022
+  PASS  fact_meta.bankHash matches md5(science-facts.jsonl)  3a36094d18d2
+  PASS  vectors blob agrees (count + bankHash) — attachSemantic would accept  blob count 53022, bankHash 3a36094d18d2
+  PASS  fact row count  53022
+  PASS  ord is a dense 0..N-1 range  0..53021
+  PASS  500 random ords: fact.id == the id on that line of the JSONL  500/500 matched
+  PASS  all 53022 rows round-trip to the exact ScienceFact object
+  PASS  fact_token covers exactly the bank vocabulary  60038 tokens vs 60038
+  PASS  df equals the number of facts carrying the token (RagStore's df)  0 wrong
+  PASS  every postings list decodes back to (ord, mask) exactly  0 wrong
+
+  ALL CHECKS PASS

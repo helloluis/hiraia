@@ -28,6 +28,8 @@ script calls so that one command produces the whole asset.
   -> packages/tala/android/app/src/main/assets/card-catalog.tsv  (Tala: ids -> subcategories)
 """
 import json, os, gzip, hashlib, importlib.util, zlib, struct, sqlite3, collections
+from card_retirement import assert_no_retired_cards
+from card_language_patches import apply_patches as apply_language_patches
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
@@ -54,6 +56,12 @@ _tala_spec.loader.exec_module(_tala_catalog)
 def main():
     pool = json.load(open(POOL))
     cards = pool['cards']
+    # Validate before opening, removing or replacing any derived asset.
+    try:
+        assert_no_retired_cards(cards)
+        apply_language_patches(cards, require_applied=True)
+    except ValueError as exc:
+        raise SystemExit(f'build-cards-db: {exc}') from exc
     os.makedirs(os.path.dirname(OUT_DB), exist_ok=True)
 
     # ---------- the resident index: everything sequencing needs, nothing it does not ----------

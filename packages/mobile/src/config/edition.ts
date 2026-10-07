@@ -1,6 +1,7 @@
 import type { GradeLevel, Language } from '@hiraia/shared';
 import type { RemoteAssetSpec } from '../engine/modelDownload';
 import { remoteAssetUrl } from './assetDelivery';
+import modelAssets from './modelAssets.json';
 
 export interface EditionLanguage {
   lang: Language;
@@ -35,18 +36,9 @@ export const PH_EDITION: LearningEdition = {
   grades: [3, 4, 5, 6, 7, 8, 9, 10], defaultLanguage: 'tagalog', defaultGrade: 5,
   textDelivery: 'bundled', modelFamily: 'hiraia-2b-qwen35-v1',
   models: {
-    base: {
-      filename: 'hiraia-sft-2b-v2.Q4_K_M.gguf', url: remoteAssetUrl('hiraia-sft-2b-v2.Q4_K_M.gguf'),
-      bytes: 1274396160, md5: 'fe2d0ab2ad856f2a42c5add5872c4234', label: 'Hiraia-2B base',
-    },
-    vectors: {
-      filename: 'vectors-labse-45f9310c4179.i8.bin', url: remoteAssetUrl('vectors-labse-45f9310c4179.i8.bin'),
-      bytes: 122162688, md5: 'deee5b7a02d9d7503e961057fcfc6b10', label: 'Hiraiapedia vectors',
-    },
-    embedder: {
-      filename: 'labse.Q4_K_M.gguf', url: remoteAssetUrl('labse.Q4_K_M.gguf'),
-      bytes: 383762048, md5: '2667f69edfbcb68acf617187fe817fae', label: 'LaBSE embedder',
-    },
+    base: { ...modelAssets.base, url: remoteAssetUrl(modelAssets.base.filename) },
+    vectors: { ...modelAssets.vectors, url: remoteAssetUrl(modelAssets.vectors.filename) },
+    embedder: { ...modelAssets.embedder, url: remoteAssetUrl(modelAssets.embedder.filename) },
   },
 };
 

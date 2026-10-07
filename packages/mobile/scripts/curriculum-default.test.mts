@@ -24,7 +24,7 @@ test('calendar estimates stay in the selected grade and advance through quarter 
     }
   }
 });
-test('curriculum successors stay in topic without keyword forks, then advance and review', () => {
+test('curriculum successors follow each planned run without keyword forks, then advance and review', () => {
   const rows = C.curriculumOutline(5);
   let cursor = C.curriculumCursor(5, rows[0].key);
   const seen = new Set<string>();
@@ -38,7 +38,16 @@ test('curriculum successors stay in topic without keyword forks, then advance an
     });
     assert.equal(next.length, 1);
     assert.ok(cursor.idSet.has(next[0].factId));
-    assert.ok(!seen.has(next[0].factId));
+    // The same reviewed anchor can serve two lessons. Global seen history is
+    // not completion of the current run; a completed card must not repeat here.
+    if (cursor.lessonRun) {
+      assert.ok(!cursor.lessonRun.completed.includes(next[0].factId));
+      assert.equal(next[0].factId, cursor.lessonRun.cards.find(
+        (id: string) => id !== current.id && !cursor.lessonRun.completed.includes(id)
+      ));
+    } else {
+      assert.ok(!seen.has(next[0].factId));
+    }
     current = C.getCard(next[0].factId);
   }
   const first = C.curriculumCursor(5, rows[0].key);

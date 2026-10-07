@@ -1,0 +1,633 @@
+CHECK pipeline-guards
+................................/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/rag/pipeline/build-cards-db.py:57: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/6c/tws616rj0fjgvb9vtml26l3h0000gn/T/hiraia-card-retirement-lmzzcxyd/app.json' mode='r' encoding='UTF-8'>
+  pool = json.load(open(POOL))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+............./Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/rag/pipeline/wire-app-pool.py:60: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/6c/tws616rj0fjgvb9vtml26l3h0000gn/T/hiraia-card-retirement-nkyk9yaz/merged.json' mode='r' encoding='UTF-8'>
+  pool = json.load(open(SRC))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/rag/pipeline/wire-app-pool.py:60: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/6c/tws616rj0fjgvb9vtml26l3h0000gn/T/hiraia-card-retirement-nkyk9yaz/merged.json' mode='r' encoding='UTF-8'>
+  pool = json.load(open(SRC))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/rag/pipeline/wire-app-pool.py:60: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/6c/tws616rj0fjgvb9vtml26l3h0000gn/T/hiraia-card-retirement-hvadpk42/merged.json' mode='r' encoding='UTF-8'>
+  pool = json.load(open(SRC))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/rag/pipeline/wire-app-pool.py:66: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/6c/tws616rj0fjgvb9vtml26l3h0000gn/T/hiraia-card-retirement-hvadpk42/imageMap.ts' mode='r' encoding='UTF-8'>
+  bundled = set(re.findall(r'"([^"]+)":\s*require', open(IMAGEMAP).read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/rag/pipeline/wire-app-pool.py:73: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/6c/tws616rj0fjgvb9vtml26l3h0000gn/T/hiraia-card-retirement-hvadpk42/editorial.json' mode='r' encoding='UTF-8'>
+  ed = json.load(open(ED)) if os.path.exists(ED) else {}
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/rag/pipeline/wire-app-pool.py:82: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/6c/tws616rj0fjgvb9vtml26l3h0000gn/T/hiraia-card-retirement-hvadpk42/art.json' mode='r' encoding='UTF-8'>
+  art = json.load(open(ART)) if os.path.exists(ART) else {}
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/rag/pipeline/wire-app-pool.py:173: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/6c/tws616rj0fjgvb9vtml26l3h0000gn/T/hiraia-card-retirement-hvadpk42/app.json' mode='w' encoding='UTF-8'>
+  json.dump({'cards': out, 'taxonomy': pool.get('taxonomy') or []},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.
+----------------------------------------------------------------------
+Ran 47 tests in 0.162s
+
+OK
+
+{"command": ["python3", "-B", "-m", "unittest", "discover", "-s", "rag/pipeline", "-p", "test_card_*.py"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:10:07.615953+00:00", "finished_at": "2026-10-07T04:10:07.894893+00:00", "actual_exit_code": 0, "parent_nice": 10, "output_sha256": "0e0136fe78b252efec279954d2ced61d9144362f79d3be249b2488442a492d0c", "output_bytes": 3356}
+CHECK pipeline-integration
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.003s
+
+OK
+
+{"command": ["python3", "-B", "-m", "unittest", "discover", "-s", "rag/pipeline", "-p", "test_curriculum_language_alignment.py"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:10:07.948621+00:00", "finished_at": "2026-10-07T04:10:08.034869+00:00", "actual_exit_code": 0, "parent_nice": 10, "output_sha256": "edb4e2159c923ea45a32656078835cdf531c3d7b414c670dd786978875cb0678", "output_bytes": 101}
+CHECK english-review-guards
+....
+----------------------------------------------------------------------
+Ran 4 tests in 3.143s
+
+OK
+
+{"command": ["python3", "-B", "-m", "unittest", "discover", "-s", "rag/pipeline", "-p", "test_full_year_audit.py"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:10:08.088205+00:00", "finished_at": "2026-10-07T04:10:11.339391+00:00", "actual_exit_code": 0, "parent_nice": 10, "output_sha256": "d2bccf12ad0620006f076a858ae459f095d161a1ef73cf987aba6bddacc17386", "output_bytes": 102}
+CHECK facts-db
+  PASS  fact_meta.count matches the bank file  53022 vs 53022
+  PASS  fact_meta.bankHash matches md5(science-facts.jsonl)  3a36094d18d2
+  PASS  vectors blob agrees (count + bankHash) — attachSemantic would accept  blob count 53022, bankHash 3a36094d18d2
+  PASS  fact row count  53022
+  PASS  ord is a dense 0..N-1 range  0..53021
+  PASS  500 random ords: fact.id == the id on that line of the JSONL  500/500 matched
+  PASS  all 53022 rows round-trip to the exact ScienceFact object
+  PASS  fact_token covers exactly the bank vocabulary  60038 tokens vs 60038
+  PASS  df equals the number of facts carrying the token (RagStore's df)  0 wrong
+  PASS  every postings list decodes back to (ord, mask) exactly  0 wrong
+
+  ALL CHECKS PASS
+
+{"command": ["python3", "rag/pipeline/build-facts-db.py", "--check"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:10:11.399179+00:00", "finished_at": "2026-10-07T04:10:16.027323+00:00", "actual_exit_code": 0, "parent_nice": 10, "output_sha256": "d02d77ca937636cf4bd70af37859a65a1e924019c88db3c76a6d27e903eb0e87", "output_bytes": 735}
+CHECK grade3-compiled
+Lessons 29 objectives 34 coverage slots 99 unique candidates 148
+g3:everyday-science 20 target 3 eligible
+g3:exploring 20 target 3 eligible
+g3:science-tools 30 target 6 eligible
+g3:science-skills 30 target 6 eligible
+g3:solid-properties 20 target 3 eligible
+g3:harmful-changes 20 target 3 eligible
+g3:safe-materials 30 target 5 eligible
+g3:useful-changes 30 target 6 eligible
+g3:community-metals 20 target 6 eligible
+g3:living-things-investigation 30 target 4 eligible
+g3:living-or-not 20 target 3 eligible
+g3:signs-of-life 20 target 4 eligible
+g3:animal-parts 30 target 9 eligible
+g3:plant-parts 30 target 8 eligible
+g3:basic-needs 30 target 11 eligible
+g3:depending-on-nature 20 target 5 eligible
+g3:protecting-nature 20 target 3 eligible
+g3:moving-things 30 target 14 eligible
+g3:movement-factors 30 target 6 eligible
+g3:position 20 target 3 eligible
+g3:sound 20 target 3 eligible
+g3:light 30 target 5 eligible
+g3:light-and-sound-safety 20 target 3 eligible
+g3:sending-messages 20 target 4 eligible
+g3:earth-materials 30 target 5 eligible
+g3:weather 30 target 4 eligible
+g3:watching-the-sky 30 target 8 eligible
+g3:sky-and-our-day 20 target 3 eligible
+g3:sun-safety 20 target 3 eligible
+GAPS []
+
+{"command": ["python3", "rag/pipeline/compile-lessons.py", "--grade", "3", "--check"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:10:16.080649+00:00", "finished_at": "2026-10-07T04:10:21.440867+00:00", "actual_exit_code": 0, "parent_nice": 10, "output_sha256": "d9c7f15f68c5ce9c7f7a54b5e65f286c898d4f2665aa3f07b6de914318667b68", "output_bytes": 1198}
+CHECK grade4-compiled
+Lessons 33 objectives 33 coverage slots 110 unique candidates 132
+g4:scientists 20 target 3 eligible
+g4:local-inventions 20 target 3 eligible
+g4:chemical-properties 30 target 3 eligible
+g4:heating-materials 20 target 3 eligible
+g4:preventing-harm 20 target 3 eligible
+g4:community-problems 20 target 3 eligible
+g4:environment-survey 30 target 3 eligible
+g4:body-systems 30 target 5 eligible
+g4:plant-systems 20 target 3 eligible
+g4:habitat-groups 30 target 4 eligible
+g4:habitat-examples 30 target 5 eligible
+g4:life-cycles 30 target 5 eligible
+g4:animal-food 30 target 5 eligible
+g4:food-chains 20 target 3 eligible
+g4:rigid-soft 20 target 6 eligible
+g4:distance-time 20 target 6 eligible
+g4:speed 20 target 3 eligible
+g4:speed-graphs 30 target 6 eligible
+g4:change-motion 30 target 4 eligible
+g4:change-shape 30 target 8 eligible
+g4:magnets 30 target 4 eligible
+g4:effects-at-distance 20 target 3 eligible
+g4:energy 20 target 4 eligible
+g4:energy-uses 30 target 3 eligible
+g4:soil 30 target 4 eligible
+g4:water-for-life 20 target 3 eligible
+g4:soil-and-growth 20 target 3 eligible
+g4:weather-elements 30 target 7 eligible
+g4:weather-tools 30 target 9 eligible
+g4:weather-chart-safety 20 target 3 eligible
+g4:sun 30 target 3 eligible
+g4:shadows 30 target 4 eligible
+g4:sun-and-life 20 target 3 eligible
+GAPS []
+
+{"command": ["python3", "rag/pipeline/compile-lessons.py", "--grade", "4", "--check"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:10:21.496833+00:00", "finished_at": "2026-10-07T04:10:27.439827+00:00", "actual_exit_code": 0, "parent_nice": 10, "output_sha256": "2a9cc189ffe97d968389a2abc0a83265b9d6abe1eb4a96321e14c2582821b696", "output_bytes": 1312}
+CHECK grade5-compiled
+Lessons 29 objectives 40 coverage slots 105 unique candidates 139
+g5:matter 20 target 3 eligible
+g5:states-of-matter 30 target 6 eligible
+g5:volume 20 target 4 eligible
+g5:heat-and-state 20 target 4 eligible
+g5:investigations 30 target 7 eligible
+g5:digestion 20 target 5 eligible
+g5:breathing 20 target 4 eligible
+g5:human-reproduction 30 target 6 eligible
+g5:classification 30 target 12 eligible
+g5:animal-reproduction 20 target 4 eligible
+g5:life-cycles 30 target 7 eligible
+g5:plant-structures 30 target 5 eligible
+g5:adaptations 30 target 8 eligible
+g5:contact-forces 20 target 3 eligible
+g5:friction 30 target 11 eligible
+g5:gravity 30 target 3 eligible
+g5:static-electricity 20 target 3 eligible
+g5:simple-circuits 30 target 5 eligible
+g5:conductors 20 target 4 eligible
+g5:electromagnets 20 target 3 eligible
+g5:landforms 30 target 5 eligible
+g5:rock-observation 20 target 3 eligible
+g5:rock-classification 20 target 3 eligible
+g5:soil-formation 20 target 4 eligible
+g5:erosion 20 target 3 eligible
+g5:water-cycle 30 target 3 eligible
+g5:weather-disturbances 30 target 6 eligible
+g5:solar-system 30 target 5 eligible
+g5:moon-phases 20 target 3 eligible
+GAPS []
+
+{"command": ["python3", "rag/pipeline/compile-lessons.py", "--grade", "5", "--check"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:10:27.493430+00:00", "finished_at": "2026-10-07T04:10:33.100585+00:00", "actual_exit_code": 0, "parent_nice": 10, "output_sha256": "bb79bf06194fc51408a319479c1a4454a9a1edb3004daba97dbab4cfbabe1d67", "output_bytes": 1169}
+CHECK grade6-compiled
+Lessons 37 objectives 37 coverage slots 127 unique candidates 258
+g6:state-changes 30 target 4 eligible
+g6:heat-and-state 20 target 3 eligible
+g6:physical-chemical 20 target 4 eligible
+g6:useful-mixtures 30 target 3 eligible
+g6:air-mixture 20 target 5 eligible
+g6:separation-methods 30 target 8 eligible
+g6:separation-products 20 target 6 eligible
+g6:fair-tests 20 target 3 eligible
+g6:repeat-record 20 target 3 eligible
+g6:circulation 30 target 3 eligible
+g6:plant-reproduction 30 target 4 eligible
+g6:propagation-tests 30 target 5 eligible
+g6:animal-groups 20 target 3 eligible
+g6:food-webs 30 target 6 eligible
+g6:competition-predation 20 target 3 eligible
+g6:ecosystem-factors 30 target 6 eligible
+g6:ecosystem-effects 20 target 6 eligible
+g6:simple-machines 20 target 6 eligible
+g6:machine-investigation 30 target 14 eligible
+g6:lever-tests 20 target 7 eligible
+g6:wave-energy 20 target 5 eligible
+g6:water-waves 30 target 13 eligible
+g6:wave-properties 30 target 8 eligible
+g6:wave-types 20 target 35 eligible
+g6:wave-models 20 target 4 eligible
+g6:wave-examples 20 target 55 eligible
+g6:moving-sound 20 target 3 eligible
+g6:volcano-formation 20 target 3 eligible
+g6:local-volcano-risk 20 target 4 eligible
+g6:eruption-history 20 target 3 eligible
+g6:volcanic-materials 20 target 4 eligible
+g6:volcano-alerts 30 target 5 eligible
+g6:philippine-seasons 20 target 3 eligible
+g6:day-night 20 target 3 eligible
+g6:sun-earth-moon 30 target 6 eligible
+g6:sky-navigation 20 target 3 eligible
+g6:community-sky-knowledge 20 target 4 eligible
+GAPS []
+
+{"command": ["python3", "rag/pipeline/compile-lessons.py", "--grade", "6", "--check"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:10:33.155842+00:00", "finished_at": "2026-10-07T04:10:39.862817+00:00", "actual_exit_code": 0, "parent_nice": 10, "output_sha256": "41f2331954fcd53b227abc0051cbda8e5e4f8dc32a7bbdcee1f59dc8d8e24656", "output_bytes": 1547}
+CHECK grade7-compiled
+Lessons 45 objectives 45 coverage slots 142 unique candidates 175
+g7:scientific-models 20 target 4 eligible
+g7:particle-model 20 target 3 eligible
+g7:particle-motion 30 target 4 eligible
+g7:particle-diagrams 30 target 4 eligible
+g7:particle-state-changes 30 target 3 eligible
+g7:investigation-steps 30 target 6 eligible
+g7:measure-record 30 target 3 eligible
+g7:solute-solvent 20 target 3 eligible
+g7:concentration 30 target 3 eligible
+g7:solubility 20 target 3 eligible
+g7:litmus 30 target 3 eligible
+g7:equipment-safety 20 target 3 eligible
+g7:microscope 30 target 4 eligible
+g7:cell-observation 30 target 7 eligible
+g7:one-many-cells 20 target 3 eligible
+g7:plant-animal-cells 30 target 3 eligible
+g7:cell-division 20 target 4 eligible
+g7:inherited-information 20 target 3 eligible
+g7:reproduction-types 20 target 3 eligible
+g7:biological-levels 30 target 7 eligible
+g7:trophic-levels 20 target 4 eligible
+g7:energy-transfer 20 target 7 eligible
+g7:measuring-forces 20 target 5 eligible
+g7:balanced-unbalanced 30 target 8 eligible
+g7:force-diagrams 30 target 8 eligible
+g7:net-force 20 target 3 eligible
+g7:distance-displacement 20 target 3 eligible
+g7:speed-velocity 20 target 3 eligible
+g7:motion-graphs 30 target 3 eligible
+g7:heat-temperature 20 target 3 eligible
+g7:heat-transfer-uses 30 target 5 eligible
+g7:heat-particles 20 target 3 eligible
+g7:heat-electricity 20 target 3 eligible
+g7:fault-types 30 target 5 eligible
+g7:fault-models 30 target 4 eligible
+g7:earthquake-effects 20 target 3 eligible
+g7:local-faults 20 target 3 eligible
+g7:earthquake-models 30 target 3 eligible
+g7:earthquake-plan 20 target 4 eligible
+g7:tsunami-generation 20 target 3 eligible
+g7:tsunami-alerts 30 target 3 eligible
+g7:sun-atmosphere 20 target 4 eligible
+g7:sunlight-angle 20 target 4 eligible
+g7:day-length 20 target 3 eligible
+g7:solar-winds 30 target 6 eligible
+GAPS []
+
+{"command": ["python3", "rag/pipeline/compile-lessons.py", "--grade", "7", "--check"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:10:39.916314+00:00", "finished_at": "2026-10-07T04:10:47.407428+00:00", "actual_exit_code": 0, "parent_nice": 10, "output_sha256": "7a90a171657c01e7aa5788bb482553e666429a6c8a0f4ec14eab094e8bea2e34", "output_bytes": 1868}
+CHECK grade8-compiled
+Lessons 44 objectives 44 coverage slots 133 unique candidates 170
+g8:digestion 30 target 5 eligible
+g8:body-systems 20 target 3 eligible
+g8:plant-transport 20 target 3 eligible
+g8:inheritance-patterns 20 target 3 eligible
+g8:inheritance-ratios 30 target 4 eligible
+g8:classification 30 target 5 eligible
+g8:humans-primates 20 target 3 eligible
+g8:nature-cycles 30 target 4 eligible
+g8:photosynthesis-respiration 30 target 3 eligible
+g8:cell-energy-sites 20 target 3 eligible
+g8:photosynthesis-test 20 target 3 eligible
+g8:atomic-timeline 30 target 4 eligible
+g8:draw-atom 20 target 3 eligible
+g8:subatomic-particles 30 target 6 eligible
+g8:pure-substances 20 target 3 eligible
+g8:periodic-history 20 target 6 eligible
+g8:element-names 30 target 6 eligible
+g8:periods-groups 20 target 7 eligible
+g8:electron-position 20 target 5 eligible
+g8:count-particles 30 target 9 eligible
+g8:group-valence 20 target 6 eligible
+g8:land-water 20 target 5 eligible
+g8:crust-sources 20 target 3 eligible
+g8:volcano-types 30 target 5 eligible
+g8:volcano-shape 20 target 4 eligible
+g8:global-patterns 30 target 6 eligible
+g8:plates-crust 20 target 5 eligible
+g8:typhoon-formation 30 target 3 eligible
+g8:typhoon-track 20 target 3 eligible
+g8:land-sea-storms 20 target 3 eligible
+g8:community-support 20 target 3 eligible
+g8:tide-motions 30 target 3 eligible
+g8:tidal-energy 20 target 3 eligible
+g8:acceleration 20 target 3 eligible
+g8:local-motion 20 target 4 eligible
+g8:acceleration-graphs 30 target 3 eligible
+g8:kinetic-potential 20 target 3 eligible
+g8:energy-exchange 20 target 3 eligible
+g8:work 20 target 3 eligible
+g8:power 20 target 3 eligible
+g8:mechanical-energy 20 target 3 eligible
+g8:falling-energy 20 target 4 eligible
+g8:hydropower 20 target 3 eligible
+g8:light-investigations 30 target 5 eligible
+GAPS []
+
+{"command": ["python3", "rag/pipeline/compile-lessons.py", "--grade", "8", "--check"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:10:47.463921+00:00", "finished_at": "2026-10-07T04:10:54.763649+00:00", "actual_exit_code": 0, "parent_nice": 10, "output_sha256": "3f85cfb7c54a1388eb65ef34c5f047d212cdd92e14b57dfdea3ed97dea98ae1c", "output_bytes": 1805}
+CHECK grade9-compiled
+Lessons 46 objectives 46 coverage slots 156 unique candidates 192
+g9:f-1 20 target 4 eligible
+g9:f-2 20 target 3 eligible
+g9:f-3 20 target 3 eligible
+g9:f-4 20 target 3 eligible
+g9:f-5 20 target 3 eligible
+g9:f-6 20 target 3 eligible
+g9:f-7 30 target 3 eligible
+g9:f-8 30 target 4 eligible
+g9:f-9 20 target 3 eligible
+g9:f-10 20 target 3 eligible
+g9:f-11 30 target 8 eligible
+g9:f-12 20 target 3 eligible
+g9:f-13 20 target 3 eligible
+g9:e-1 20 target 4 eligible
+g9:e-2 20 target 3 eligible
+g9:e-3 20 target 4 eligible
+g9:e-4 20 target 7 eligible
+g9:e-5 20 target 8 eligible
+g9:e-6 20 target 6 eligible
+g9:e-7 20 target 8 eligible
+g9:e-8 30 target 11 eligible
+g9:e-9 30 target 12 eligible
+g9:e-10 20 target 4 eligible
+g9:e-11 20 target 3 eligible
+g9:l-1 20 target 3 eligible
+g9:l-2 30 target 3 eligible
+g9:l-3 30 target 4 eligible
+g9:l-4 30 target 4 eligible
+g9:l-5 20 target 4 eligible
+g9:l-6 30 target 4 eligible
+g9:l-7 20 target 6 eligible
+g9:l-8 20 target 3 eligible
+g9:l-9 30 target 5 eligible
+g9:l-10 30 target 4 eligible
+g9:l-11 20 target 3 eligible
+g9:m-1 20 target 4 eligible
+g9:m-2 20 target 3 eligible
+g9:m-3 20 target 3 eligible
+g9:m-4 20 target 3 eligible
+g9:m-5 20 target 4 eligible
+g9:m-6 30 target 4 eligible
+g9:m-7 20 target 3 eligible
+g9:m-8 20 target 3 eligible
+g9:m-9 20 target 3 eligible
+g9:m-10 20 target 4 eligible
+g9:m-11 30 target 4 eligible
+GAPS []
+
+{"command": ["python3", "rag/pipeline/compile-lessons.py", "--grade", "9", "--check"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:10:54.819276+00:00", "finished_at": "2026-10-07T04:11:03.129968+00:00", "actual_exit_code": 0, "parent_nice": 10, "output_sha256": "0741a94bca869797f6e892def0ed2277ca6f43b9f82522459eb672b6cd1588cc", "output_bytes": 1374}
+CHECK grade10-compiled
+Lessons 45 objectives 45 coverage slots 165 unique candidates 167
+g10:e-1 20 target 3 eligible
+g10:e-2 20 target 4 eligible
+g10:e-3 30 target 3 eligible
+g10:e-4 20 target 3 eligible
+g10:e-5 30 target 3 eligible
+g10:e-6 20 target 3 eligible
+g10:e-7 20 target 3 eligible
+g10:e-8 30 target 8 eligible
+g10:e-9 20 target 7 eligible
+g10:e-10 20 target 3 eligible
+g10:e-11 20 target 3 eligible
+g10:e-12 30 target 3 eligible
+g10:f-1 30 target 4 eligible
+g10:f-2 20 target 3 eligible
+g10:f-3 20 target 3 eligible
+g10:f-4 20 target 3 eligible
+g10:f-5 30 target 4 eligible
+g10:f-6 20 target 3 eligible
+g10:f-7 30 target 5 eligible
+g10:f-8 20 target 3 eligible
+g10:f-9 30 target 4 eligible
+g10:f-10 20 target 3 eligible
+g10:f-11 20 target 5 eligible
+g10:f-12 20 target 3 eligible
+g10:f-13 30 target 3 eligible
+g10:m-1 30 target 3 eligible
+g10:m-2 30 target 3 eligible
+g10:m-3 30 target 5 eligible
+g10:m-4 30 target 3 eligible
+g10:m-5 30 target 3 eligible
+g10:m-6 20 target 3 eligible
+g10:m-7 20 target 4 eligible
+g10:m-8 30 target 3 eligible
+g10:m-9 20 target 4 eligible
+g10:l-1 30 target 5 eligible
+g10:l-2 20 target 3 eligible
+g10:l-3 20 target 3 eligible
+g10:l-4 30 target 3 eligible
+g10:l-5 30 target 4 eligible
+g10:l-6 20 target 7 eligible
+g10:l-7 30 target 11 eligible
+g10:l-8 20 target 3 eligible
+g10:l-9 30 target 6 eligible
+g10:l-10 30 target 5 eligible
+g10:l-11 20 target 3 eligible
+GAPS []
+
+{"command": ["python3", "rag/pipeline/compile-lessons.py", "--grade", "10", "--check"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:11:03.185423+00:00", "finished_at": "2026-10-07T04:11:11.741145+00:00", "actual_exit_code": 0, "parent_nice": 10, "output_sha256": "b6a99da21dccb598d2c1384f95ffc4a792b9432f6bb8c87ca69ea97368dcc177", "output_bytes": 1389}
+CHECK assessment-compiled
+710 authoring items; 705 compiled; 5 excluded; production_enabled=False; input_sha256=7719b4304f834076ab89b86ab187dd650c7126d9309df98ecc57c551c9b98107
+
+{"command": ["python3", "packages/mobile/scripts/build-assessment-bank.py", "--check"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:11:11.796657+00:00", "finished_at": "2026-10-07T04:11:12.957655+00:00", "actual_exit_code": 0, "parent_nice": 10, "output_sha256": "43497b67559c9dd2300c23335b38cc9336bd2d3ddbbca3d33fd2269effa5c4dd", "output_bytes": 151}
+CHECK similarity-compiled
+{"checked": true, "facts": 1093, "links": 292, "unembedded": 276, "bytes": 58154}
+
+{"command": ["python3", "packages/mobile/scripts/build-lesson-similarity.py", "--check"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:11:13.011687+00:00", "finished_at": "2026-10-07T04:11:13.738706+00:00", "actual_exit_code": 0, "parent_nice": 10, "output_sha256": "20dcc763f66b602072ff513d917b54eae3cd99f6afa0c531eab2a5af2e03edf7", "output_bytes": 82}
+CHECK tala-catalog
+
+{"command": ["python3", "packages/tala/scripts/build-card-catalog.py", "--check"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:11:13.793541+00:00", "finished_at": "2026-10-07T04:11:14.271990+00:00", "actual_exit_code": 0, "parent_nice": 10, "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "output_bytes": 0}
+CHECK curriculum-tests
+ 9 additions are offline, trilingual, scoped correctly and do not activate unsupported grades (2.145292ms)
+✔ Grade 9 supplemental cards and lessons follow the rotated quarter order in real feed weights (80.044125ms)
+Planned 2472 real lessons in 38 ms (Node, not phone)
+✔ all grades retain objective quizzes, eligibility, bounds and distinct facts across seeds (39.542084ms)
+✔ rich lessons vary optional examples and order, including after everything has been seen (2.222292ms)
+✔ old saves and new seeded saves resume exactly even with another seed or graph revision (0.237833ms)
+✔ remaining unseen optional facts win even when they are semantically repetitive (0.296458ms)
+✔ LaBSE hints demote a known similar fact; absent and stale hints do not (0.20675ms)
+✔ similarity artifact matches all frozen content inputs and has bounded valid edges (100.892625ms)
+✔ 20 unique viewed cards create 3 questions; repeated views and unavailable quizzes do not pad sets (1.826417ms)
+✔ coincident topic and checkpoint triggers create one bounded recap of the completed topic (0.147916ms)
+✔ answers, option order and summaries survive serialization; double grading is ignored (1.082667ms)
+✔ missed quizzes queue source cards for reinforcement and completed topics earn stars (0.16525ms)
+✔ defer preserves an unfinished set and repeats become eligible only after spacing (0.141ms)
+✔ pending sets do not reserve the same quiz twice; correct repeats require spacing (0.18175ms)
+✔ only a strict-majority topic failure selects a remediation subcategory (0.15025ms)
+✔ remedial cards create a recap; a majority pass restores declared-grade flow (0.175292ms)
+✔ a failed remedial recap repeats the lower-level run without changing declared grade (0.105666ms)
+✔ single quizzes at 5, 10 and 15 cards coexist with a 20-card series containing one repeat and two new questions (0.723333ms)
+✔ repeat slot prefers a missed answer and does not reuse a just-answered quiz (0.137125ms)
+✔ sparse question banks still offer available singles and never manufacture quiz content (0.137417ms)
+✔ topics below 20 cards omit the third standalone round and keep their closing review (2.0465ms)
+✔ standalone allowance resets on a new short topic (0.124167ms)
+✔ a recap uses distinct lesson objectives even when competency labels are identical (0.219333ms)
+✔ pilot scope includes every official block overlapping Term 2 weeks 4–9 (15.137917ms)
+✔ scheduled pilot lessons use reviewed candidates and preserve quiz anchors across seeds (29.472042ms)
+✔ known false matches cannot return through core or reserve selections (0.173834ms)
+✔ new teaching diagram remains available with optional art absent (0.769875ms)
+✔ term inference respects boundaries, Christmas review, and year-end blocks (2.516875ms)
+✔ all old codes remain addressable; BOW coverage excludes supporting objectives (1.365208ms)
+✔ Grade 3 uses the official 10/10/14 split; Grade 10 starts with chemistry (0.621375ms)
+✔ Grade 5 adaptations split by term, retaining old key and objective IDs (0.399875ms)
+✔ unchanged lesson saved runs preserve exact cards and completion after rescheduling (1.160166ms)
+✔ feed favours actual terms even when two competencies share the same old quarter (0.201416ms)
+ℹ tests 92
+ℹ suites 0
+ℹ pass 91
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 20975.6665
+
+✖ failing tests:
+
+test at scripts/curriculum-default.test.mts:1:646
+✖ curriculum successors stay in topic without keyword forks, then advance and review (13.974667ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!seen.has(next[0].factId))
+  
+      at TestContext.<anonymous> (/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/curriculum-default.test.mts:41:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+undefined
+/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: tsx --test --test-concurrency=1 scripts/grade3-lessons.test.mts scripts/grade4-lessons.test.mts scripts/grade5-lessons.test.mts scripts/grade6-lessons.test.mts scripts/grade7-lessons.test.mts scripts/grade8-lessons.test.mts scripts/grade9-lessons.test.mts scripts/grade10-lessons.test.mts scripts/calendar-selection.test.mts scripts/curriculum-default.test.mts scripts/review-series.test.mts scripts/term2-pilot.test.mts scripts/three-term-curriculum.test.mts scripts/full-year-curriculum.test.mts scripts/lesson-variety.test.mts
+
+{"command": ["pnpm", "--filter", "@hiraia/mobile", "exec", "tsx", "--test", "--test-concurrency=1", "scripts/grade3-lessons.test.mts", "scripts/grade4-lessons.test.mts", "scripts/grade5-lessons.test.mts", "scripts/grade6-lessons.test.mts", "scripts/grade7-lessons.test.mts", "scripts/grade8-lessons.test.mts", "scripts/grade9-lessons.test.mts", "scripts/grade10-lessons.test.mts", "scripts/calendar-selection.test.mts", "scripts/curriculum-default.test.mts", "scripts/review-series.test.mts", "scripts/term2-pilot.test.mts", "scripts/three-term-curriculum.test.mts", "scripts/full-year-curriculum.test.mts", "scripts/lesson-variety.test.mts"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:11:14.326818+00:00", "finished_at": "2026-10-07T04:11:36.717752+00:00", "actual_exit_code": 1, "parent_nice": 10, "output_sha256": "bda391c8b22a286c12452453a10c66bb63bfd400ba254f52f73629cd44497200", "output_bytes": 10805}
+CHECK assessment-tests
+:436:20)
+    at <anonymous> (/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/tala-assessment.test.mts:9:3)
+    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:642:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/tala/android/app/src/test/resources/assessment-wire-v1.json'
+}
+
+Node.js v26.0.0
+✖ scripts/tala-assessment.test.mts (178.633542ms)
+✔ selected profiles and guest use their own existing files, keys and separate query-only connections (26.820667ms)
+✔ absent files are never opened or created; absent settings/key returns empty and closes (0.19375ms)
+✔ unknown or path-like profile IDs cannot inspect any file (0.34125ms)
+✔ public reports do not read private evaluation keys or accept mismatched saved identities (6.228833ms)
+✔ query failures and corrupt saved data close the isolated connection without a write (1.737125ms)
+ℹ tests 82
+ℹ suites 0
+ℹ pass 78
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6352.949875
+
+✖ failing tests:
+
+test at scripts/assessment-rotation.test.mts:1:950
+✖ grade 4, en: four seeds each sustain eight rich-history follow-ups (19.441333ms)
+  AssertionError [ERR_ASSERTION]: teaching version exists: ha-g4-0010/en
+      at <anonymous> (/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/assessment-rotation.test.mts:36:20)
+      at Array.map (<anonymous>)
+      at TestContext.<anonymous> (/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/assessment-rotation.test.mts:33:96)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.start (node:internal/test_runner/test:1096:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at scripts/assessment-rotation.test.mts:1:950
+✖ grade 4, tl: four seeds each sustain eight rich-history follow-ups (3.623625ms)
+  AssertionError [ERR_ASSERTION]: teaching version exists: ha-g4-0010/tl
+      at <anonymous> (/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/assessment-rotation.test.mts:36:20)
+      at Array.map (<anonymous>)
+      at TestContext.<anonymous> (/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/assessment-rotation.test.mts:33:96)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at scripts/assessment-rotation.test.mts:1:950
+✖ grade 4, bis: four seeds each sustain eight rich-history follow-ups (3.333583ms)
+  AssertionError [ERR_ASSERTION]: teaching version exists: ha-g4-0010/bis
+      at <anonymous> (/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/assessment-rotation.test.mts:36:20)
+      at Array.map (<anonymous>)
+      at TestContext.<anonymous> (/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/assessment-rotation.test.mts:33:96)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at scripts/tala-assessment.test.mts:1:1
+✖ scripts/tala-assessment.test.mts (178.633542ms)
+  'test failed'
+undefined
+/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: tsx --test --test-concurrency=1 scripts/assessment-foundation.test.mts scripts/assessment-reporting.test.mts scripts/assessment-rotation.test.mts scripts/assessment-settings.test.mts scripts/assessment-ui.test.mts scripts/assessment.test.mts src/assessment/historyRepository.test.ts scripts/tala-assessment.test.mts
+
+{"command": ["pnpm", "--filter", "@hiraia/mobile", "exec", "tsx", "--test", "--test-concurrency=1", "scripts/assessment-foundation.test.mts", "scripts/assessment-reporting.test.mts", "scripts/assessment-rotation.test.mts", "scripts/assessment-settings.test.mts", "scripts/assessment-ui.test.mts", "scripts/assessment.test.mts", "src/assessment/historyRepository.test.ts", "scripts/tala-assessment.test.mts"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:11:36.778072+00:00", "finished_at": "2026-10-07T04:11:43.649719+00:00", "actual_exit_code": 1, "parent_nice": 10, "output_sha256": "800b08a010a530b458e449acdc8253c30573e78ba1b500d88df5f7ee757707d9", "output_bytes": 12646}
+CHECK web-competencies
+Competencies verified: 322/322 competencies, 309 topics, 8 grades; 334.0 KiB.
+
+{"command": ["node", "packages/web/scripts/build-competencies.mjs", "--check"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:11:43.705186+00:00", "finished_at": "2026-10-07T04:11:44.198919+00:00", "actual_exit_code": 0, "parent_nice": 10, "output_sha256": "6ba38c543907b2deee3d2a5471acf64e679a0b1f1f3b575ffd1a4282b2ea8179", "output_bytes": 78}
+CHECK web-terms-tests
+✔ all eight original PDFs match the pinned curriculum sources (3.678875ms)
+✔ public browser and app share ordered lessons, codes, and term/week assignments (1.829875ms)
+✔ demo seeds and grade packs contain only Term 1 cards in the new sequence (16.279208ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 278.197375
+
+{"command": ["pnpm", "--filter", "@hiraia/mobile", "exec", "tsx", "--test", "--test-concurrency=1", "../web/scripts/three-term.test.mts"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:11:44.254210+00:00", "finished_at": "2026-10-07T04:11:45.028855+00:00", "actual_exit_code": 0, "parent_nice": 10, "output_sha256": "62edca9bfb5fbdc2cb8607fbd95b7990f487d9ab7c9c53dbe9f8bc517522c413", "output_bytes": 379}
+CHECK mobile-types
+src/config/model.ts(262,30): error TS2307: Cannot find module '../../assets/rag/image-vectors-labse.meta.json' or its corresponding type declarations.
+src/voice/bench.ts(22,21): error TS2307: Cannot find module '../../assets/voices/tl/voice.json' or its corresponding type declarations.
+src/voice/catalog.ts(2,21): error TS2307: Cannot find module '../../assets/voices/catalog.json' or its corresponding type declarations.
+src/voice/catalog.ts(3,21): error TS2307: Cannot find module '../../assets/voices/en/voice.json' or its corresponding type declarations.
+src/voice/catalog.ts(4,21): error TS2307: Cannot find module '../../assets/voices/tl/voice.json' or its corresponding type declarations.
+undefined
+/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 2: tsc --noEmit
+
+{"command": ["pnpm", "--filter", "@hiraia/mobile", "exec", "tsc", "--noEmit"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:11:45.082645+00:00", "finished_at": "2026-10-07T04:11:58.826933+00:00", "actual_exit_code": 1, "parent_nice": 10, "output_sha256": "0f2ac5f9f30ed7169ac3d2445669a13c9779c1248873de370efd000fed6412de", "output_bytes": 879}
+CHECK desktop-types
+src/config/model.ts(262,30): error TS2307: Cannot find module '../../assets/rag/image-vectors-labse.meta.json' or its corresponding type declarations.
+src/voice/bench.ts(22,21): error TS2307: Cannot find module '../../assets/voices/tl/voice.json' or its corresponding type declarations.
+src/voice/catalog.ts(2,21): error TS2307: Cannot find module '../../assets/voices/catalog.json' or its corresponding type declarations.
+src/voice/catalog.ts(3,21): error TS2307: Cannot find module '../../assets/voices/en/voice.json' or its corresponding type declarations.
+src/voice/catalog.ts(4,21): error TS2307: Cannot find module '../../assets/voices/tl/voice.json' or its corresponding type declarations.
+undefined
+/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 2: tsc --noEmit -p tsconfig.desktop.json
+
+{"command": ["pnpm", "--filter", "@hiraia/mobile", "exec", "tsc", "--noEmit", "-p", "tsconfig.desktop.json"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:11:58.887528+00:00", "finished_at": "2026-10-07T04:12:11.292003+00:00", "actual_exit_code": 1, "parent_nice": 10, "output_sha256": "ce394d49fcb715cc712696c2eecb68ce28855f7755752d98f1e7c524068a213c", "output_bytes": 904}
+CHECK web-types
+
+{"command": ["pnpm", "--filter", "@hiraia/web", "exec", "tsc", "--noEmit"], "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007", "started_at": "2026-10-07T04:12:11.351477+00:00", "finished_at": "2026-10-07T04:12:14.030436+00:00", "actual_exit_code": 0, "parent_nice": 10, "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "output_bytes": 0}
+{"failures": [{"check": "curriculum-tests", "actual_exit_code": 1}, {"check": "assessment-tests", "actual_exit_code": 1}, {"check": "mobile-types", "actual_exit_code": 1}, {"check": "desktop-types", "actual_exit_code": 1}]}

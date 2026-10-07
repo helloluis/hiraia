@@ -90,3 +90,28 @@ python3 tools/cebuano-language-audit/ceb_usage.py --en <term>    # how bodies re
 Counts are over Cebuano **bodies** only, so a defective title cannot vouch for itself. Where the
 corpus is ambiguous, a dictionary outranks it — this corpus is itself machine-translated and can
 be wrong in bulk.
+
+## 7 October 2026 curriculum alignment findings
+
+The [alignment review](CEBUANO-CURRICULUM-ALIGNMENT-20261007.md) records exact
+English/Cebuano contexts and dictionary/corpus evidence. These are contextual
+lessons for future generation, not a global replacement list:
+
+- A moving car or cart should not be described as walking (`naglakaw`). The
+  reviewed motion examples use `naglihok`; walking organisms remain valid uses.
+- Material roughness needs the physical-surface sense. The reviewed friction
+  examples use attested `gansal` rather than the fierce/harsh reading of `bagis`.
+- Physical volume/space is not a dwelling (`puy-anan`). The reviewed matter
+  example uses `luna`; this does not invalidate the habitat sense elsewhere.
+- Preserve procedural and quantitative distinctions: repeat trials explicitly,
+  distinguish clay from generic soil, and retain "tens of thousands" rather than
+  reducing it to ten thousand. Reconcile identical fact/explanation copies.
+- `titip` (steep), `similya` (seedling), `hulagway` (description), `pilak` (silver)
+  and `kapunawpunawan` (horizon) were supported by lexical evidence. Initial model
+  suspicion was rejected and documented. Do not turn unfamiliar vocabulary into
+  an automatic defect rule.
+
+Apply edits to the source correction overlays and lesson supplements before
+regeneration. A card-body edit also requires assessment claim-link re-review and,
+when it changes grounding text, compatible retrieval vectors. A matching text hash
+alone cannot establish that a source teaches an assessment's tested claim.

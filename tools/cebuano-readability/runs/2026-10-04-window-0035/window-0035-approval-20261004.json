@@ -1,0 +1,3751 @@
+{
+  "schema": "hiraia.cebuano-readability-reviewed-edits/v1",
+  "status": "reviewed_for_local_application",
+  "created_at": "2026-10-04T08:24:31.985677+00:00",
+  "reviewer": "Codex root, independent of Claude proposal/backtranslation/fidelity/readability calls; no separate Codex reviewer used for this window",
+  "scope": "Window 35: 36 individually reviewed exact Cebuano edits and 7 priority holds. Windows 1–34 were previously adjudicated. No score-only approval, native verification, exhaustive science certification or release permission. Invalid-evidence holds ffct-08459, ffct-09018, ffct-10152 and ffct-18958 remain mandatory. Missing-fidelity cards ffct-15686, ffct-24823 and ffct-24184 remain held without a synthesized judgment or repeated call.",
+  "window_id": "window-0035",
+  "window_accounting": {
+    "source_cards": 768,
+    "completed_assessments": 768,
+    "missing_fidelity_holds": 0,
+    "approved_exact_edits": 36,
+    "unchanged_keeps": 115,
+    "held": 617,
+    "held_from_priority_set": 7,
+    "preexisting_nonpriority_holds": 610
+  },
+  "input_pins": [
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0035/report.json",
+      "sha256": "28428f80813352792eaf9e67dc1b78b6ce664011ba0afb9bd03e6e3b0cc70e19",
+      "bytes": 42030272
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0035/clean-agreement.jsonl",
+      "sha256": "415bd1f36aa3efcf2203c532fb26530372a8a48f5ee3b703bbbe2e771a6f742c",
+      "bytes": 1069132
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0035/replay/fidelity/judgments.jsonl",
+      "sha256": "f52f28d7ae50c14058ebdc09ef94a46fffeef4f5984b33369f2e8af950db0846",
+      "bytes": 704125
+    },
+    {
+      "path": "build/cebuano-readability/campaign-20261002-v1/windows/window-0035/fidelity-inputs/private-map.json",
+      "sha256": "63e43e4ce3b1a3d4c958fc3ed14d4b1bcdd92c3e0a06a0c8924b5b2ce9fb3041",
+      "bytes": 695256
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0035/root-decisions.json",
+      "sha256": "930d66fab7996970b2342b0574845676cbf59aa4d28c9d4bb94bb188771a8276",
+      "bytes": 17189
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0035/corpus-lexical-evidence.json",
+      "sha256": "bfdfc811cc4a9363ef6e3cbff262034fafb6f41800708e13e0160eb630a865ce",
+      "bytes": 55494
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0035/dictionary-entries.json",
+      "sha256": "076cf58a172cac5f25e698fdee7e7f0dc7cdddac458893bbdb63d92a68a9cbb7",
+      "bytes": 52668
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0035/lexical-source-review.json",
+      "sha256": "3bd89ba40d4c4c9efe979a83acc8fb2a5818e1faae95cd386004103536c096e6",
+      "bytes": 12107
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0035/corpus-supplement-001.json",
+      "sha256": "ca4b11f7f363f9d293f42ceceead08ec5b4cc74249c82cbe5e3ba1d47ca1a8a1",
+      "bytes": 12827
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0035/dictionary-supplement-001.json",
+      "sha256": "0512900172e4aff27fd360f9f8d153c88c52b009935b1e0517281923f7c64010",
+      "bytes": 16976
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0035/wolff-variation-excerpt.json",
+      "sha256": "58a918ee6f747b0950b65a2988efd0d16124b5d140819dce0e01fc285291dba4",
+      "bytes": 3398
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0035/source-evidence-001.json",
+      "sha256": "cc294d7420450f7d4e4ad65be1de1434c5ece48322a44e324030df512ae3a0de",
+      "bytes": 11022
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0035/root-notes-final-001.json",
+      "sha256": "e7c99c4fe437e3aa4102778592d6646e7bc22c6ca878f841150b78eb4d77d920",
+      "bytes": 15733
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-gutenberg-40074.txt",
+      "sha256": "f80b888b24dd4ca7f5cb16276b4a53f9d22129a496b9ffb7f7efe17d3b9a1504",
+      "bytes": 5699379
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-retrieval.json",
+      "sha256": "bd713c5adf21541a0e7fd9c49f75fb6b9d4157fb88d41151a245165b8955b7da",
+      "bytes": 502
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0035/collect-evidence-001.py",
+      "sha256": "96c62177b67c9499a202a29d1ad58924aa8c89340b1d7572e00b192d9f10aad5",
+      "bytes": 5188
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0035/collect-supplement-001.py",
+      "sha256": "16904f87af3bb02e7631878a9236f0d04b4602c75f193876ffef928953fb9c30",
+      "bytes": 4124
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/show-dossiers-d17ce591.py",
+      "sha256": "b5857656b3e2e6343220b3c66bf17bb560556572462874cb7534d9e6a51efba8",
+      "bytes": 2081
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0035/write-root-records.py",
+      "sha256": "e08cb925dc1b7fd997a13d69a0f0c115058c62875f88f162dcc0ab6b49a61e0e",
+      "bytes": 24781
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0035/create-root-approval.py",
+      "sha256": "40d1fd9fc48e0378e592effec3339fc7fbdeb8263271cfa796ef6685464da188",
+      "bytes": 7236
+    }
+  ],
+  "current_pool_before_application": {
+    "path": "rag/pipeline/cardsPool.app.json",
+    "sha256": "8bcb6712574225b3feca9d725765832f6af8d2e6ee5be3485859be2130d0319a",
+    "bytes": 50649232
+  },
+  "accepted": [
+    {
+      "card_id": "ffct-26559",
+      "source_card_sha256": "a675dfdbb303c32a034a6ebf99aed023a4b85f348e33d3e1631740d82f2e92b6",
+      "candidate_card_sha256": "c1c6c011c034e5330684d3c9aee766f4f67cc28aeb88aa266a0df28e32b19291",
+      "before_card": {
+        "id": "ffct-26559",
+        "factId": "first-solo-atlantic-lindbergh-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who first flew solo across the Atlantic",
+        "terms": [
+          "charles lindbergh",
+          "lindbergh",
+          "sino unang tumawid atlantic",
+          "kinsa unang nitabok atlantiko",
+          "first solo atlantic",
+          "unang nag-isang tumawid",
+          "atlantic ocean",
+          "karagatang atlantiko",
+          "solo flight",
+          "1927",
+          "spirit of st. louis"
+        ],
+        "fact": {
+          "en": "Charles Lindbergh was the first person to fly solo nonstop across the Atlantic Ocean!",
+          "tl": "Si Charles Lindbergh ang unang taong nag-isang lumipad nang tuloy-tuloy patawid sa Karagatang Atlantiko!",
+          "bis": "Si Charles Lindbergh mao ang unang tawo nga nag-inusara nga milupad nga walay hunong patabok sa Kadagatang Atlantiko!"
+        },
+        "slug": "qa-ffct-26559",
+        "source": "original",
+        "title": {
+          "tl": "Lindbergh Solo Atlantic",
+          "en": "Lindbergh's Solo Atlantic",
+          "bis": "Lindbergh sa Atlantic"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26559",
+        "factId": "first-solo-atlantic-lindbergh-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who first flew solo across the Atlantic",
+        "terms": [
+          "charles lindbergh",
+          "lindbergh",
+          "sino unang tumawid atlantic",
+          "kinsa unang nitabok atlantiko",
+          "first solo atlantic",
+          "unang nag-isang tumawid",
+          "atlantic ocean",
+          "karagatang atlantiko",
+          "solo flight",
+          "1927",
+          "spirit of st. louis"
+        ],
+        "fact": {
+          "en": "Charles Lindbergh was the first person to fly solo nonstop across the Atlantic Ocean!",
+          "tl": "Si Charles Lindbergh ang unang taong nag-isang lumipad nang tuloy-tuloy patawid sa Karagatang Atlantiko!",
+          "bis": "Si Charles Lindbergh ang unang tawo nga milupad nga nag-inusara ug walay hunong patabok sa Kadagatang Atlantiko!"
+        },
+        "slug": "qa-ffct-26559",
+        "source": "original",
+        "title": {
+          "tl": "Lindbergh Solo Atlantic",
+          "en": "Lindbergh's Solo Atlantic",
+          "bis": "Lindbergh sa Atlantic"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Grouping the solo and nonstop modifiers after milupad clarifies the flight without changing the joint first-person qualification. Smithsonian collection evidence confirms the specifically solo, nonstop Atlantic achievement; both blind readers prefer this exact body and tie on the unchanged title.",
+      "formal_item_id": "c69b311254a97499f5abf736dd6b99847",
+      "fidelity_item_id": "m1342ef774b20c605babfc8f1",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26564",
+      "source_card_sha256": "fdbfab9e935c34f6052b5f3b87ed5610d8172cc4a2ce57774a791a57801762a8",
+      "candidate_card_sha256": "869cf8692c4211e1886582a2aa04ae14637878465cde7230121708ef3fc87c18",
+      "before_card": {
+        "id": "ffct-26564",
+        "factId": "earhart-atlantic-year-1932-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "when did Earhart fly solo across the Atlantic",
+        "terms": [
+          "1932",
+          "kailan tumawid earhart",
+          "anus-a nitabok earhart",
+          "amelia earhart",
+          "first woman solo atlantic",
+          "atlantic crossing",
+          "karagatang atlantiko",
+          "year",
+          "taon",
+          "babaeng piloto",
+          "lockheed vega"
+        ],
+        "fact": {
+          "en": "When did Amelia Earhart make her solo flight across the Atlantic?\n\nShe made her amazing solo flight across the Atlantic Ocean in the year 1932!",
+          "tl": "Kailan lumipad nang nag-iisa si Amelia Earhart patawid sa Atlantiko?\n\nLumipad nang nag-iisa siya patawid sa Atlantiko noong 1932!",
+          "bis": "Kanus-a milupad nga nag-inusara si Amelia Earhart patabok sa Atlantiko?\n\nSiya milupad nga nag-inusara patabok sa Atlantiko niadtong 1932!"
+        },
+        "slug": "ffct-26564",
+        "source": "original",
+        "title": {
+          "tl": "1932 Earhart Solo Atlantic",
+          "en": "Earhart Flew 1932",
+          "bis": "1932 sa Earhart"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26564",
+        "factId": "earhart-atlantic-year-1932-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "when did Earhart fly solo across the Atlantic",
+        "terms": [
+          "1932",
+          "kailan tumawid earhart",
+          "anus-a nitabok earhart",
+          "amelia earhart",
+          "first woman solo atlantic",
+          "atlantic crossing",
+          "karagatang atlantiko",
+          "year",
+          "taon",
+          "babaeng piloto",
+          "lockheed vega"
+        ],
+        "fact": {
+          "en": "When did Amelia Earhart make her solo flight across the Atlantic?\n\nShe made her amazing solo flight across the Atlantic Ocean in the year 1932!",
+          "tl": "Kailan lumipad nang nag-iisa si Amelia Earhart patawid sa Atlantiko?\n\nLumipad nang nag-iisa siya patawid sa Atlantiko noong 1932!",
+          "bis": "Kanus-a milupad nga nag-inusara si Amelia Earhart patabok sa Atlantiko?\n\nSiya milupad nga nag-inusara patabok sa Atlantiko niadtong 1932!"
+        },
+        "slug": "ffct-26564",
+        "source": "original",
+        "title": {
+          "tl": "1932 Earhart Solo Atlantic",
+          "en": "Earhart Flew 1932",
+          "bis": "Earhart Milupad sa 1932"
+        },
+        "cats": [
+          "motion"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title now says Earhart flew in 1932 instead of leaving the year relationship unstated. The unchanged body and the Smithsonian Vega collection record retain the solo transatlantic event; both title judgments agree.",
+      "formal_item_id": "cd38e533980cf0805f2d2d2b7c2863d9e",
+      "fidelity_item_id": "m3f41dbc8d63ccc7cd24e072b",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26583",
+      "source_card_sha256": "abba2a1f19f1d96a90441d1eb727dbc9d68f530fd460a4e7ea64bfedb33f7ab1",
+      "candidate_card_sha256": "ac1e94d9b86346328372a716196c0232e566d5303ce0ec15571bec0ffaf993f4",
+      "before_card": {
+        "id": "ffct-26583",
+        "factId": "early-factories-steam-power-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what powered early factory machines",
+        "terms": [
+          "steam power",
+          "factory machines",
+          "pabrika",
+          "makina sa pabrika",
+          "uling",
+          "coal",
+          "ano ang nagpapaandar",
+          "unsa ang nagpaandar",
+          "industrial revolution",
+          "singaw",
+          "engine"
+        ],
+        "fact": {
+          "en": "During the Industrial Revolution, many factory machines were powered by steam engines fueled by coal!",
+          "tl": "Sa Rebolusyong Industriyal, maraming makina sa pabrika ang pinapaandar ng steam engine na gatong ang coal!",
+          "bis": "Atol sa Industrial Revolution, daghang makina sa pabrika ang gipaandar sa steam engine nga ang gatong mao ang coal!"
+        },
+        "slug": "ffct-26583",
+        "source": "original",
+        "title": {
+          "tl": "Pabrika Steam Coal Industriyal",
+          "en": "Factory Steam Coal",
+          "bis": "Pabrika Steam Coal"
+        },
+        "cats": [
+          "energy"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26583",
+        "factId": "early-factories-steam-power-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what powered early factory machines",
+        "terms": [
+          "steam power",
+          "factory machines",
+          "pabrika",
+          "makina sa pabrika",
+          "uling",
+          "coal",
+          "ano ang nagpapaandar",
+          "unsa ang nagpaandar",
+          "industrial revolution",
+          "singaw",
+          "engine"
+        ],
+        "fact": {
+          "en": "During the Industrial Revolution, many factory machines were powered by steam engines fueled by coal!",
+          "tl": "Sa Rebolusyong Industriyal, maraming makina sa pabrika ang pinapaandar ng steam engine na gatong ang coal!",
+          "bis": "Atol sa Industrial Revolution, daghang makina sa pabrika ang gipaandar sa mga steam engine. Coal ang gatong niining mga steam engine!"
+        },
+        "slug": "ffct-26583",
+        "source": "original",
+        "title": {
+          "tl": "Pabrika Steam Coal Industriyal",
+          "en": "Factory Steam Coal",
+          "bis": "Steam ug Coal sa Pabrika"
+        },
+        "cats": [
+          "energy"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Separate sentences identify the engines and then their coal fuel; many factory machines, Industrial Revolution and steam power remain. Wolff andar and gatung support the relevant running/fuel senses; the independent gipaandar example is useful, whereas mandaragit/standard substring hits are not. Both changed fields win independently.",
+      "formal_item_id": "cbb9a0f7f7bc72dbde448b2b7dfee78c3",
+      "fidelity_item_id": "m7c59b8d4e6aaf09708819ac9",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26614",
+      "source_card_sha256": "97710b262aab39d1a2d5da6b5a2e648fd1211d4e2a439ae4953356269bbdf9c5",
+      "candidate_card_sha256": "4a8948ccc8b2d547ad11e71bd529cdc66037a6df38cb3ed0d509299339552f6a",
+      "before_card": {
+        "id": "ffct-26614",
+        "factId": "first-automobile-karl-benz-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who invented the first automobile (car)",
+        "terms": [
+          "karl benz",
+          "carl benz",
+          "first automobile",
+          "first car",
+          "unang kotse",
+          "sino gumawa ng kotse",
+          "kinsay nag-imbento sa awto",
+          "patent-motorwagen",
+          "gasoline car",
+          "automobile inventor"
+        ],
+        "fact": {
+          "en": "Karl Benz built the very first practical gasoline-powered automobile! He called it the Benz Patent-Motorwagen.",
+          "tl": "Si Karl Benz ang gumawa ng unang praktikal na kotseng de-gasolina! Tinawag niya itong Benz Patent-Motorwagen.",
+          "bis": "Si Karl Benz ang naghimo sa unang praktikal nga awto nga gasolina! Gitawag niya kini nga Benz Patent-Motorwagen."
+        },
+        "slug": "ffct-26614",
+        "source": "original",
+        "title": {
+          "tl": "Karl Benz Unang Gasolina Kotse",
+          "en": "Benz's First Car",
+          "bis": "Karl Benz Unang Kotse"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26614",
+        "factId": "first-automobile-karl-benz-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who invented the first automobile (car)",
+        "terms": [
+          "karl benz",
+          "carl benz",
+          "first automobile",
+          "first car",
+          "unang kotse",
+          "sino gumawa ng kotse",
+          "kinsay nag-imbento sa awto",
+          "patent-motorwagen",
+          "gasoline car",
+          "automobile inventor"
+        ],
+        "fact": {
+          "en": "Karl Benz built the very first practical gasoline-powered automobile! He called it the Benz Patent-Motorwagen.",
+          "tl": "Si Karl Benz ang gumawa ng unang praktikal na kotseng de-gasolina! Tinawag niya itong Benz Patent-Motorwagen.",
+          "bis": "Si Karl Benz ang naghimo sa labing unang praktikal nga awto nga gipadagan sa gasolina! Gitawag niya kini nga Benz Patent-Motorwagen."
+        },
+        "slug": "ffct-26614",
+        "source": "original",
+        "title": {
+          "tl": "Karl Benz Unang Gasolina Kotse",
+          "en": "Benz's First Car",
+          "bis": "Ang Unang Awto ni Karl Benz"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Gipadagan sa gasolina explicitly states gasoline-powered rather than merely a gasoline car, and labing retains very first. Follow the dagan cross-reference to dalagan and the superlative root labi, not the unrelated labing sweetheart entry. Mercedes history supports the qualified practical gasoline automobile; both body and title wins and clean fidelity support the exact candidate.",
+      "formal_item_id": "cfd154920a818b03d3333468656b40c83",
+      "fidelity_item_id": "m640db9cb50fe3ffa0628f8b8",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26655",
+      "source_card_sha256": "a990367a6342c8a347e2e3a681ec363d22d063253d74639c5100614ef30ff4e9",
+      "candidate_card_sha256": "2509603fd88826caa6ce66c9bce9568cf70dc42d73c113579e31ad727435f208",
+      "before_card": {
+        "id": "ffct-26655",
+        "factId": "resistance-unit-ohm-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what unit measures electrical resistance",
+        "terms": [
+          "ohm",
+          "ω",
+          "resistance unit",
+          "resistensya",
+          "yunit ng resistensya",
+          "unit of resistance",
+          "georg ohm",
+          "ohm",
+          "elektrikong resistensya",
+          "yunit sa resistensya",
+          "ohms"
+        ],
+        "fact": {
+          "en": "How do we measure electrical resistance?\n\nElectrical resistance is measured in ohms (Ω)! This unit is named after the physicist Georg Ohm.",
+          "tl": "Paano natin sinusukat ang elektrikong resistensya?\n\nAng elektrikong resistensya ay sinusukat sa ohms (Ω)! Ipinangalan ito sa physicist na si Georg Ohm.",
+          "bis": "Unsaon nato pagsukod sa elektrikong resistensya?\n\nAng elektrikong resistensya gisukod sa ohms (Ω)! Gipangalan kini sa physicist nga si Georg Ohm."
+        },
+        "slug": "ffct-26655",
+        "source": "original",
+        "title": {
+          "tl": "Ohms Resistensya",
+          "en": "Resistance in Ohms",
+          "bis": "Ohm Resistensya"
+        },
+        "cats": [
+          "measurement",
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26655",
+        "factId": "resistance-unit-ohm-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what unit measures electrical resistance",
+        "terms": [
+          "ohm",
+          "ω",
+          "resistance unit",
+          "resistensya",
+          "yunit ng resistensya",
+          "unit of resistance",
+          "georg ohm",
+          "ohm",
+          "elektrikong resistensya",
+          "yunit sa resistensya",
+          "ohms"
+        ],
+        "fact": {
+          "en": "How do we measure electrical resistance?\n\nElectrical resistance is measured in ohms (Ω)! This unit is named after the physicist Georg Ohm.",
+          "tl": "Paano natin sinusukat ang elektrikong resistensya?\n\nAng elektrikong resistensya ay sinusukat sa ohms (Ω)! Ipinangalan ito sa physicist na si Georg Ohm.",
+          "bis": "Unsaon nato pagsukod sa elektrikong resistensya?\n\nAng elektrikong resistensya gisukod sa ohms (Ω)! Gipangalan kini sa physicist nga si Georg Ohm."
+        },
+        "slug": "ffct-26655",
+        "source": "original",
+        "title": {
+          "tl": "Ohms Resistensya",
+          "en": "Resistance in Ohms",
+          "bis": "Ohm ang Yunit sa Resistensya"
+        },
+        "cats": [
+          "measurement",
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title makes the existing unit/resistance relationship explicit; the body, Ohm namesake and omega symbol are unchanged. Both title judgments agree; no scientific term substitution or symbol normalization.",
+      "formal_item_id": "cc5998c90b6f2024a22c56d142443f290",
+      "fidelity_item_id": "m44bb49648d4ce5d8db5807f2",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26674",
+      "source_card_sha256": "a2830e79cdf90ec39dc7038c797cbac6674c5ae11f320b1bfc7c96c050bb2f2b",
+      "candidate_card_sha256": "b315bf6df7c622cdf9538e95ba30544b68fb408e52772963178042fe31bc05b9",
+      "before_card": {
+        "id": "ffct-26674",
+        "factId": "namesake-faraday-capacitance-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who is the farad named after",
+        "terms": [
+          "michael faraday",
+          "farad",
+          "capacitance scientist",
+          "sino si faraday",
+          "faraday namesake",
+          "electromagnetic induction",
+          "kapasitansya",
+          "ngalan sa farad",
+          "faraday",
+          "british scientist",
+          "electricity magnetism"
+        ],
+        "fact": {
+          "en": "The farad unit is named after Michael Faraday, a British scientist who studied electricity and magnetism!",
+          "tl": "Ang yunit na farad ay ipinangalan kay Michael Faraday, isang Britanong siyentista na nag-aral ng kuryente at magnetismo!",
+          "bis": "Ang yunit nga farad ginganlan kang Michael Faraday, usa ka Britaniko nga siyentista nga nagtuon sa koryente ug magnetismo!"
+        },
+        "slug": "ffct-26674",
+        "source": "original",
+        "title": {
+          "tl": "Faraday British Scientist",
+          "en": "The Farad Namesake",
+          "bis": "Faraday sa Britain"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26674",
+        "factId": "namesake-faraday-capacitance-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who is the farad named after",
+        "terms": [
+          "michael faraday",
+          "farad",
+          "capacitance scientist",
+          "sino si faraday",
+          "faraday namesake",
+          "electromagnetic induction",
+          "kapasitansya",
+          "ngalan sa farad",
+          "faraday",
+          "british scientist",
+          "electricity magnetism"
+        ],
+        "fact": {
+          "en": "The farad unit is named after Michael Faraday, a British scientist who studied electricity and magnetism!",
+          "tl": "Ang yunit na farad ay ipinangalan kay Michael Faraday, isang Britanong siyentista na nag-aral ng kuryente at magnetismo!",
+          "bis": "Ang yunit nga farad ginganlan kang Michael Faraday, usa ka Britaniko nga siyentista nga nagtuon sa koryente ug magnetismo!"
+        },
+        "slug": "ffct-26674",
+        "source": "original",
+        "title": {
+          "tl": "Faraday British Scientist",
+          "en": "The Farad Namesake",
+          "bis": "Ang Ngalan sa Farad"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Namesake title now points to the farad rather than Faraday being in Britain. Wolff ngalan supports naming and the unchanged scientist/electricity/magnetism body matches English; both title wins, body ties.",
+      "formal_item_id": "c2a878c7d8a59af9f0b2db34ed9b34100",
+      "fidelity_item_id": "mc48a59cb5194eb458a391802",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26675",
+      "source_card_sha256": "e91c67be75cab5dc0865165ccb8824b9b9fd3c4f1f894a7a62889d59466b4c55",
+      "candidate_card_sha256": "e2367912d52ca8c11490340c6e8b325b1ae73cfece0e9c971602a437eb229d41",
+      "before_card": {
+        "id": "ffct-26675",
+        "factId": "xrays-roentgen-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who discovered X-rays",
+        "terms": [
+          "wilhelm roentgen",
+          "x-rays",
+          "x-ray",
+          "natuklasan",
+          "sino nakatuklas",
+          "x-ray discovery",
+          "nadiskobre",
+          "roentgen",
+          "ekis-rey",
+          "ekis ray"
+        ],
+        "fact": {
+          "en": "Wilhelm Roentgen discovered X-rays!",
+          "tl": "Si Wilhelm Roentgen ang nakatuklas ng X-rays (ekis-rey)!",
+          "bis": "Si Wilhelm Roentgen ang nakadiskobre sa X-rays (ekis-rey)!"
+        },
+        "slug": "ffct-26675",
+        "source": "original",
+        "title": {
+          "tl": "Roentgen X-Ray Discovery",
+          "en": "Roentgen Found X-Rays",
+          "bis": "Roentgen sa X-Ray"
+        },
+        "cats": [
+          "energy"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26675",
+        "factId": "xrays-roentgen-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who discovered X-rays",
+        "terms": [
+          "wilhelm roentgen",
+          "x-rays",
+          "x-ray",
+          "natuklasan",
+          "sino nakatuklas",
+          "x-ray discovery",
+          "nadiskobre",
+          "roentgen",
+          "ekis-rey",
+          "ekis ray"
+        ],
+        "fact": {
+          "en": "Wilhelm Roentgen discovered X-rays!",
+          "tl": "Si Wilhelm Roentgen ang nakatuklas ng X-rays (ekis-rey)!",
+          "bis": "Si Wilhelm Roentgen ang nakadiskobre sa X-rays (ekis-rey)!"
+        },
+        "slug": "ffct-26675",
+        "source": "original",
+        "title": {
+          "tl": "Roentgen X-Ray Discovery",
+          "en": "Roentgen Found X-Rays",
+          "bis": "Nadiskobre ni Roentgen ang X-Ray"
+        },
+        "cats": [
+          "energy"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title supplies the discovery verb connecting Roentgen and X-rays. Wolff diskubri supports discover and Nobel historical material identifies the discovery; body and pronunciation aid unchanged.",
+      "formal_item_id": "c6e809c515b3cccd1a64c7119042724bb",
+      "fidelity_item_id": "mb6c239e1bb67c5fd97757a0e",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26676",
+      "source_card_sha256": "7e49a464b2b1d1c5f3bc504391dd90a702ce7514d0f55464ed28fea87e74dcff",
+      "candidate_card_sha256": "fbd810623ca040adadbae7618e370d3837b5919238a05c56ad0439f55d7880bc",
+      "before_card": {
+        "id": "ffct-26676",
+        "factId": "xrays-discovered-1895-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "when were X-rays discovered",
+        "terms": [
+          "x-rays",
+          "1895",
+          "kailan natuklasan",
+          "taon",
+          "x-ray year",
+          "roentgen",
+          "kanus-a nadiskobre",
+          "x-ray",
+          "ekis-rey",
+          "discovered 1895"
+        ],
+        "fact": {
+          "en": "X-rays were discovered in 1895 by Wilhelm Roentgen!",
+          "tl": "Natuklasan ang X-rays noong 1895 ni Wilhelm Roentgen!",
+          "bis": "Nadiskobre ang X-rays niadtong 1895 ni Wilhelm Roentgen!"
+        },
+        "slug": "ffct-26676",
+        "source": "original",
+        "title": {
+          "tl": "1895 X-Ray Taon",
+          "en": "X-Rays Found 1895",
+          "bis": "1895 sa X-Ray"
+        },
+        "cats": [
+          "energy"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26676",
+        "factId": "xrays-discovered-1895-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "when were X-rays discovered",
+        "terms": [
+          "x-rays",
+          "1895",
+          "kailan natuklasan",
+          "taon",
+          "x-ray year",
+          "roentgen",
+          "kanus-a nadiskobre",
+          "x-ray",
+          "ekis-rey",
+          "discovered 1895"
+        ],
+        "fact": {
+          "en": "X-rays were discovered in 1895 by Wilhelm Roentgen!",
+          "tl": "Natuklasan ang X-rays noong 1895 ni Wilhelm Roentgen!",
+          "bis": "Nadiskobre ang X-rays niadtong 1895 ni Wilhelm Roentgen!"
+        },
+        "slug": "ffct-26676",
+        "source": "original",
+        "title": {
+          "tl": "1895 X-Ray Taon",
+          "en": "X-Rays Found 1895",
+          "bis": "Ang X-Ray Nadiskobre sa 1895"
+        },
+        "cats": [
+          "energy"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title explicitly ties discovery of X-rays to 1895, preserving the year and attribution in the unchanged body. Nobel historical record corroborates the date; both title wins and body ties.",
+      "formal_item_id": "c7914ae85870c55f0be6d0fbf5fc678af",
+      "fidelity_item_id": "mc2a22200a101c5ee51f7f8d3",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26681",
+      "source_card_sha256": "40296c03d7d6d6d5aaa676ceddafc74aaa8a0f6a7e1edff1bebe0e39db13145a",
+      "candidate_card_sha256": "f499d7d89e62ff0a9254ef315251d243c8ea31d611bac9f04b436cda13b38367",
+      "before_card": {
+        "id": "ffct-26681",
+        "factId": "principia-1687-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what book and year did Newton publish his laws",
+        "terms": [
+          "principia",
+          "philosophiae naturalis principia mathematica",
+          "1687",
+          "isaac newton",
+          "libro ni newton",
+          "kanus-a gipatik",
+          "kailan inilathala",
+          "batas ng galaw",
+          "aklat",
+          "gravity"
+        ],
+        "fact": {
+          "en": "Where did Isaac Newton publish his famous laws of motion?\n\nHe published them in a famous book called 'Principia' way back in the year 1687!",
+          "tl": "Saan inilathala ni Isaac Newton ang kanyang mga sikat na batas ng galaw?\n\nInilathala niya ang mga ito sa isang sikat na aklat na tinatawag na 'Principia' noong taong 1687!",
+          "bis": "Asa gipatik ni Isaac Newton ang iyang bantog nga mga balaod sa paglihok?\n\nGipatik niya kini sa usa ka bantog nga libro nga gitawag og 'Principia' niadtong tuig 1687!"
+        },
+        "slug": "ffct-26681",
+        "source": "original",
+        "title": {
+          "tl": "Newton Principia 1687 Aklat Laws",
+          "en": "Newton's Principia, 1687",
+          "bis": "Newton Principia 1687"
+        },
+        "cats": [
+          "forces-and-motion"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26681",
+        "factId": "principia-1687-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what book and year did Newton publish his laws",
+        "terms": [
+          "principia",
+          "philosophiae naturalis principia mathematica",
+          "1687",
+          "isaac newton",
+          "libro ni newton",
+          "kanus-a gipatik",
+          "kailan inilathala",
+          "batas ng galaw",
+          "aklat",
+          "gravity"
+        ],
+        "fact": {
+          "en": "Where did Isaac Newton publish his famous laws of motion?\n\nHe published them in a famous book called 'Principia' way back in the year 1687!",
+          "tl": "Saan inilathala ni Isaac Newton ang kanyang mga sikat na batas ng galaw?\n\nInilathala niya ang mga ito sa isang sikat na aklat na tinatawag na 'Principia' noong taong 1687!",
+          "bis": "Asa gipatik ni Isaac Newton ang iyang bantog nga mga balaod sa paglihok?\n\nGipatik niya kini sa usa ka bantog nga libro nga gitawag og 'Principia' niadtong tuig 1687!"
+        },
+        "slug": "ffct-26681",
+        "source": "original",
+        "title": {
+          "tl": "Newton Principia 1687 Aklat Laws",
+          "en": "Newton's Principia, 1687",
+          "bis": "Ang Principia ni Newton, 1687"
+        },
+        "cats": [
+          "forces-and-motion"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Ang and ni turn Newton/Principia/year into a possessive title; the 1687 publication answer and proper book name stay byte-identical. Wolff patik supports publish. This title edit does not depend on the inaccessible Cambridge page or on NASA material with a different presentation-year statement.",
+      "formal_item_id": "c1798958e3415d123d9307ef4f4dc312a",
+      "fidelity_item_id": "m9ee317fb82569ac68f8b4f32",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26684",
+      "source_card_sha256": "d3eed896f8a7f50d1a1f5910fb3143e99e7c0069636f3169b5ef56c39051543a",
+      "candidate_card_sha256": "675edfb8db9672fb6726efb5cfba11597313bccc161d539b040a8b63e379a93e",
+      "before_card": {
+        "id": "ffct-26684",
+        "factId": "newton-third-law-action-reaction-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is Newton's third law of motion",
+        "terms": [
+          "newton's third law",
+          "action reaction",
+          "aksyon reaksyon",
+          "katapat na puwersa",
+          "ikatlong batas ni newton",
+          "isaac newton",
+          "ikatulong balaod",
+          "puwersa",
+          "reaksyon",
+          "motion"
+        ],
+        "fact": {
+          "en": "What is the secret behind Newton's third law of motion?\n\nIt says that for every single action, there is always an equal and opposite reaction!",
+          "tl": "Ano ang sikreto sa likod ng ikatlong batas ng galaw ni Newton?\n\nNagsasabi ito na sa bawat isang aksyon, may katumbas at kabaligtarang reaksyon na laging nangyayari!",
+          "bis": "Unsay sekreto sa likod sa ikatulong balaod sa paglihok ni Newton?\n\nNag-ingon kini nga sa matag aksyon adunay parehas ug kaatbang nga reaksyon nga kanunay mahitabo!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Newton's Third Law",
+          "tl": "Batas ni Newton III",
+          "bis": "Balaod ni Newton III"
+        },
+        "cats": [
+          "forces",
+          "motion"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "ikatlong batas ng galaw"
+          ],
+          "en": [
+            "third law of motion"
+          ],
+          "bis": [
+            "ikatulong balaod sa paglihok"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-26684",
+        "factId": "newton-third-law-action-reaction-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is Newton's third law of motion",
+        "terms": [
+          "newton's third law",
+          "action reaction",
+          "aksyon reaksyon",
+          "katapat na puwersa",
+          "ikatlong batas ni newton",
+          "isaac newton",
+          "ikatulong balaod",
+          "puwersa",
+          "reaksyon",
+          "motion"
+        ],
+        "fact": {
+          "en": "What is the secret behind Newton's third law of motion?\n\nIt says that for every single action, there is always an equal and opposite reaction!",
+          "tl": "Ano ang sikreto sa likod ng ikatlong batas ng galaw ni Newton?\n\nNagsasabi ito na sa bawat isang aksyon, may katumbas at kabaligtarang reaksyon na laging nangyayari!",
+          "bis": "Unsay sekreto sa likod sa ikatulong balaod sa paglihok ni Newton?\n\nNag-ingon kini nga sa matag aksyon, kanunay adunay parehas ug kaatbang nga reaksyon!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Newton's Third Law",
+          "tl": "Batas ni Newton III",
+          "bis": "Balaod ni Newton III"
+        },
+        "cats": [
+          "forces",
+          "motion"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "ikatlong batas ng galaw"
+          ],
+          "en": [
+            "third law of motion"
+          ],
+          "bis": [
+            "ikatulong balaod sa paglihok"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Moves kanunay before adunay and removes the trailing relative clause while retaining every action, equal/opposite reaction and always. Wolff kanunay supports always; both body wins and the exact third-law emphasis span survives. No new scientific claim added.",
+      "formal_item_id": "c491968e42d9a60d3a82898a857880384",
+      "fidelity_item_id": "ma74d47a89bad213ae2c8a13c",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26703",
+      "source_card_sha256": "e883c04b25c0be4f6331bff168a1ae6bd9becac910548b63b42552d3b7691b53",
+      "candidate_card_sha256": "b2ce8a3b2fb31d40c46a02a5bb3fe26c4b6afbe9ea32caf901c1da8597a94eab",
+      "before_card": {
+        "id": "ffct-26703",
+        "factId": "transistor-year-1947-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what year was the transistor invented",
+        "terms": [
+          "transistor",
+          "transistor",
+          "1947",
+          "bell labs",
+          "bell laboratories",
+          "kailan",
+          "anong taon",
+          "kanus-a",
+          "elektroniko",
+          "electronics",
+          "imbento",
+          "tuig"
+        ],
+        "fact": {
+          "en": "Where and when was the transistor invented?\n\nIt was invented at Bell Labs in 1947! That is where and when the transistor was made.",
+          "tl": "Saan at kailan naimbento ang transistor?\n\nNaimbento ito sa Bell Labs noong 1947! Doon at kailan ginawa ang transistor.",
+          "bis": "Asa ug kanus-a naimbento ang transistor?\n\nNaimbento kini sa Bell Labs niadtong 1947! Mao na ang diin ug kanus-a gihimo ang transistor."
+        },
+        "slug": "ffct-26703",
+        "source": "original",
+        "title": {
+          "tl": "Bell Labs 1947 Transistor",
+          "en": "Transistor Bell Labs 1947",
+          "bis": "Bell Labs sa 1947"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26703",
+        "factId": "transistor-year-1947-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what year was the transistor invented",
+        "terms": [
+          "transistor",
+          "transistor",
+          "1947",
+          "bell labs",
+          "bell laboratories",
+          "kailan",
+          "anong taon",
+          "kanus-a",
+          "elektroniko",
+          "electronics",
+          "imbento",
+          "tuig"
+        ],
+        "fact": {
+          "en": "Where and when was the transistor invented?\n\nIt was invented at Bell Labs in 1947! That is where and when the transistor was made.",
+          "tl": "Saan at kailan naimbento ang transistor?\n\nNaimbento ito sa Bell Labs noong 1947! Doon at kailan ginawa ang transistor.",
+          "bis": "Asa ug kanus-a naimbento ang transistor?\n\nNaimbento kini sa Bell Labs niadtong 1947! Mao na ang diin ug kanus-a gihimo ang transistor."
+        },
+        "slug": "ffct-26703",
+        "source": "original",
+        "title": {
+          "tl": "Bell Labs 1947 Transistor",
+          "en": "Transistor Bell Labs 1947",
+          "bis": "Ang Transistor sa Bell Labs, 1947"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title adds the missing transistor topic beside Bell Labs and 1947. Nokia Bell Labs history supports the place/date; English itself repeats the answer, so the identical repetitive body is not labelled a translation defect.",
+      "formal_item_id": "cf8301cfa6144888c89055cd59e49c236",
+      "fidelity_item_id": "mbe9cfed6428af02adbc6e2ec",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26725",
+      "source_card_sha256": "e9115cc919e1b18e00de45fa2863f11dfa0ea01f556c60ed03c65b232cffca96",
+      "candidate_card_sha256": "ed9ed4ea1c6b66f057834648c0627a373ef94181805723ba5da64c65d29d05f7",
+      "before_card": {
+        "id": "ffct-26725",
+        "factId": "unit-of-energy-joule-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is the SI unit of energy and work",
+        "terms": [
+          "unit ng enerhiya",
+          "joule",
+          "j",
+          "energy unit",
+          "work unit",
+          "trabaho",
+          "yunit sa enerhiya",
+          "enerhiya",
+          "anong yunit ang enerhiya",
+          "kusog"
+        ],
+        "fact": {
+          "en": "What is the SI unit of energy and work?\n\nThe SI unit of energy and work is the joule, with the symbol J!",
+          "tl": "Ano ang yunit ng enerhiya at trabaho (work) sa SI?\n\nAng yunit ng enerhiya at trabaho (work) sa SI ay joule, na ang simbolo ay J!",
+          "bis": "Unsa ang yunit sa enerhiya ug trabaho (work) sa SI?\n\nAng yunit sa enerhiya ug trabaho (work) sa SI mao ang joule, nga ang simbolo kay J!"
+        },
+        "slug": "ffct-26725",
+        "source": "original",
+        "title": {
+          "tl": "Joule SI Unit Enerhiya Trabaho",
+          "en": "Joule, SI Energy Unit",
+          "bis": "Joule SI Unit Enerhiya"
+        },
+        "cats": [
+          "energy"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26725",
+        "factId": "unit-of-energy-joule-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is the SI unit of energy and work",
+        "terms": [
+          "unit ng enerhiya",
+          "joule",
+          "j",
+          "energy unit",
+          "work unit",
+          "trabaho",
+          "yunit sa enerhiya",
+          "enerhiya",
+          "anong yunit ang enerhiya",
+          "kusog"
+        ],
+        "fact": {
+          "en": "What is the SI unit of energy and work?\n\nThe SI unit of energy and work is the joule, with the symbol J!",
+          "tl": "Ano ang yunit ng enerhiya at trabaho (work) sa SI?\n\nAng yunit ng enerhiya at trabaho (work) sa SI ay joule, na ang simbolo ay J!",
+          "bis": "Unsa ang yunit sa enerhiya ug trabaho (work) sa SI?\n\nAng yunit sa enerhiya ug trabaho (work) sa SI mao ang joule, nga ang simbolo kay J!"
+        },
+        "slug": "ffct-26725",
+        "source": "original",
+        "title": {
+          "tl": "Joule SI Unit Enerhiya Trabaho",
+          "en": "Joule, SI Energy Unit",
+          "bis": "Joule, Yunit sa Enerhiya sa SI"
+        },
+        "cats": [
+          "energy"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title supplies Yunit sa Enerhiya sa SI to express the existing unit relationship. Energy and work, joule and uppercase J remain unchanged in the body; mixed English terminology was not itself an error.",
+      "formal_item_id": "c35b5cc533e149483a3ab93994b7c1075",
+      "fidelity_item_id": "ma4518ebc0d998bd3bd08f354",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26728",
+      "source_card_sha256": "23bd76ba3f11d251f882f7f89f2f7de1ccca482101cb2879487fb629c8eabc68",
+      "candidate_card_sha256": "f326792a8c06cae1dcd422857abdc47309b3ea99b9e0edac95db90e9987e6feb",
+      "before_card": {
+        "id": "ffct-26728",
+        "factId": "unit-of-current-ampere-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is the SI unit of electric current",
+        "terms": [
+          "unit ng kuryente",
+          "ampere",
+          "a",
+          "electric current unit",
+          "agos ng kuryente",
+          "yunit sa koryente",
+          "agos sa koryente",
+          "anong yunit ang kuryente",
+          "elektrisidad",
+          "current"
+        ],
+        "fact": {
+          "en": "The SI unit of electric current is the ampere! You can spot it easily with its cool symbol, A.",
+          "tl": "Ang yunit ng electric current sa SI ay ampere! Madali mo itong makikita sa simbolo nitong A.",
+          "bis": "Ang yunit sa electric current sa SI mao ang ampere! Sayon nimo kini makita sa simbolo niini nga A."
+        },
+        "slug": "ffct-26728",
+        "source": "original",
+        "title": {
+          "tl": "Ampere SI Unit Current Simbolo A",
+          "en": "Ampere, SI Current Unit",
+          "bis": "Ampere SI Unit Current"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26728",
+        "factId": "unit-of-current-ampere-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is the SI unit of electric current",
+        "terms": [
+          "unit ng kuryente",
+          "ampere",
+          "a",
+          "electric current unit",
+          "agos ng kuryente",
+          "yunit sa koryente",
+          "agos sa koryente",
+          "anong yunit ang kuryente",
+          "elektrisidad",
+          "current"
+        ],
+        "fact": {
+          "en": "The SI unit of electric current is the ampere! You can spot it easily with its cool symbol, A.",
+          "tl": "Ang yunit ng electric current sa SI ay ampere! Madali mo itong makikita sa simbolo nitong A.",
+          "bis": "Ang yunit sa electric current sa SI mao ang ampere! Sayon nimo kini makita sa simbolo niini nga A."
+        },
+        "slug": "ffct-26728",
+        "source": "original",
+        "title": {
+          "tl": "Ampere SI Unit Current Simbolo A",
+          "en": "Ampere, SI Current Unit",
+          "bis": "Ampere, Yunit sa Current sa SI"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title links ampere to current and SI; electric current and uppercase A stay unchanged. BIPM base-unit table corroborates the quantity/unit/symbol; both title judgments agree.",
+      "formal_item_id": "c04ba685701cbee3a366b69f676382ae7",
+      "fidelity_item_id": "mabe2831e895de99d5868e62d",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26729",
+      "source_card_sha256": "4511dacfdf605c0a93ae7add03cf1375c7c7500cd53581e459092e9c404e2325",
+      "candidate_card_sha256": "8804dda049dcaddfc7e54d95b28dc54a35a21f78f463bf9b9b24ab9106d8ecd2",
+      "before_card": {
+        "id": "ffct-26729",
+        "factId": "unit-of-voltage-volt-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is the SI unit of voltage",
+        "terms": [
+          "unit ng boltahe",
+          "volt",
+          "v",
+          "voltage unit",
+          "boltahe",
+          "yunit sa boltahe",
+          "voltahe",
+          "anong yunit ang boltahe",
+          "kuryente",
+          "elektrisidad"
+        ],
+        "fact": {
+          "en": "The SI unit of voltage is the volt! You can spot it easily with its symbol, V.",
+          "tl": "Ang yunit ng voltage sa SI ay volt! Madali mo itong makikita sa simbolo nitong V.",
+          "bis": "Ang yunit sa voltage sa SI mao ang volt! Sayon nimo kini makita sa simbolo niini nga V."
+        },
+        "slug": "ffct-26729",
+        "source": "original",
+        "title": {
+          "tl": "Volt SI Unit Boltahe Simbolo V",
+          "en": "Volt, SI Voltage Unit",
+          "bis": "Volt SI Unit Boltahe"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26729",
+        "factId": "unit-of-voltage-volt-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is the SI unit of voltage",
+        "terms": [
+          "unit ng boltahe",
+          "volt",
+          "v",
+          "voltage unit",
+          "boltahe",
+          "yunit sa boltahe",
+          "voltahe",
+          "anong yunit ang boltahe",
+          "kuryente",
+          "elektrisidad"
+        ],
+        "fact": {
+          "en": "The SI unit of voltage is the volt! You can spot it easily with its symbol, V.",
+          "tl": "Ang yunit ng voltage sa SI ay volt! Madali mo itong makikita sa simbolo nitong V.",
+          "bis": "Ang yunit sa voltage sa SI mao ang volt! Sayon nimo kini makita sa simbolo niini nga V."
+        },
+        "slug": "ffct-26729",
+        "source": "original",
+        "title": {
+          "tl": "Volt SI Unit Boltahe Simbolo V",
+          "en": "Volt, SI Voltage Unit",
+          "bis": "Volt, Yunit sa Boltahe sa SI"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title adds connecting words around the existing Boltahe term; the body retains voltage, volt and V. The approval is for the explicit relation, not a rule prohibiting English classroom terms.",
+      "formal_item_id": "c46c71a0bc61dae957b455ab7a9e58be0",
+      "fidelity_item_id": "m03a30cdbd271189538543e16",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26730",
+      "source_card_sha256": "70e630458d1c14a27d0a051c6dd40126ce5f544da2d37ebb0d2f81963d15e431",
+      "candidate_card_sha256": "0f8d64ff28f195b62eb1a52495cba2a6256aa699f55953f5e0f34c304dcf820b",
+      "before_card": {
+        "id": "ffct-26730",
+        "factId": "unit-of-resistance-ohm-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is the SI unit of electrical resistance",
+        "terms": [
+          "unit ng resistance",
+          "ohm",
+          "omega",
+          "resistance unit",
+          "resistensya",
+          "yunit sa resistance",
+          "paghadlang sa koryente",
+          "anong yunit ang resistance",
+          "kuryente",
+          "elektrisidad"
+        ],
+        "fact": {
+          "en": "For electrical resistance, the SI unit is the ohm. It uses the Greek letter omega, Ω, as its symbol!",
+          "tl": "Para sa electrical resistance, ang yunit sa SI ay ohm. Ginagamit nito ang letrang Griyego na omega, Ω, bilang simbolo!",
+          "bis": "Para sa electrical resistance, ang yunit sa SI mao ang ohm. Gigamit niini ang letrang Griego nga omega, Ω, isip simbolo!"
+        },
+        "slug": "ffct-26730",
+        "source": "original",
+        "title": {
+          "tl": "Ohm Yunit Resistance",
+          "en": "Ohm Resistance Unit",
+          "bis": "Ohm Yunit Resistance"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26730",
+        "factId": "unit-of-resistance-ohm-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is the SI unit of electrical resistance",
+        "terms": [
+          "unit ng resistance",
+          "ohm",
+          "omega",
+          "resistance unit",
+          "resistensya",
+          "yunit sa resistance",
+          "paghadlang sa koryente",
+          "anong yunit ang resistance",
+          "kuryente",
+          "elektrisidad"
+        ],
+        "fact": {
+          "en": "For electrical resistance, the SI unit is the ohm. It uses the Greek letter omega, Ω, as its symbol!",
+          "tl": "Para sa electrical resistance, ang yunit sa SI ay ohm. Ginagamit nito ang letrang Griyego na omega, Ω, bilang simbolo!",
+          "bis": "Para sa electrical resistance, ang yunit sa SI mao ang ohm. Gigamit niini ang letrang Griego nga omega, Ω, isip simbolo!"
+        },
+        "slug": "ffct-26730",
+        "source": "original",
+        "title": {
+          "tl": "Ohm Yunit Resistance",
+          "en": "Ohm Resistance Unit",
+          "bis": "Ohm, Yunit sa Resistance"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The comma and sa make the ohm/resistance title relationship explicit. Body and uppercase omega Ω are untouched; both independent title preferences agree.",
+      "formal_item_id": "c78c0e91b2d21ebd2dbbadbb673efc95f",
+      "fidelity_item_id": "m2b8a4081f6b941fd021b6e4d",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26732",
+      "source_card_sha256": "b2d2a5bb4686819c5c196b0242877d7be5eee6689dd157a5f617d104865857ad",
+      "candidate_card_sha256": "7ac3f98aec45ba1f5d1c79c08303ca4d19e083fc0efe415160249fe90aedbc80",
+      "before_card": {
+        "id": "ffct-26732",
+        "factId": "unit-of-temperature-kelvin-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is the SI base unit of temperature",
+        "terms": [
+          "unit ng temperatura",
+          "kelvin",
+          "k",
+          "temperature unit",
+          "init",
+          "yunit sa temperatura",
+          "temperatura",
+          "anong yunit ang temperatura",
+          "si base unit",
+          "lamig"
+        ],
+        "fact": {
+          "en": "What is the SI base unit of temperature?\n\nThe SI base unit of temperature is the kelvin! You write it with the symbol K.",
+          "tl": "Ano ang batayang yunit ng temperatura sa SI?\n\nAng batayang yunit ng temperatura sa SI ay kelvin! Isinusulat mo ito gamit ang simbolong K.",
+          "bis": "Unsa ang sukaranang yunit sa temperatura sa SI?\n\nAng sukaranang yunit sa temperatura sa SI mao ang kelvin! Isulat nimo kini gamit ang simbolong K."
+        },
+        "slug": "ffct-26732",
+        "source": "original",
+        "title": {
+          "tl": "Kelvin SI Base Unit Temperatura",
+          "en": "Kelvin, SI Temperature Unit",
+          "bis": "Kelvin SI Unit Temperatura"
+        },
+        "cats": [
+          "heat"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26732",
+        "factId": "unit-of-temperature-kelvin-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is the SI base unit of temperature",
+        "terms": [
+          "unit ng temperatura",
+          "kelvin",
+          "k",
+          "temperature unit",
+          "init",
+          "yunit sa temperatura",
+          "temperatura",
+          "anong yunit ang temperatura",
+          "si base unit",
+          "lamig"
+        ],
+        "fact": {
+          "en": "What is the SI base unit of temperature?\n\nThe SI base unit of temperature is the kelvin! You write it with the symbol K.",
+          "tl": "Ano ang batayang yunit ng temperatura sa SI?\n\nAng batayang yunit ng temperatura sa SI ay kelvin! Isinusulat mo ito gamit ang simbolong K.",
+          "bis": "Unsa ang sukaranang yunit sa temperatura sa SI?\n\nAng sukaranang yunit sa temperatura sa SI mao ang kelvin! Isulat nimo kini gamit ang simbolong K."
+        },
+        "slug": "ffct-26732",
+        "source": "original",
+        "title": {
+          "tl": "Kelvin SI Base Unit Temperatura",
+          "en": "Kelvin, SI Temperature Unit",
+          "bis": "Kelvin, SI Yunit sa Temperatura"
+        },
+        "cats": [
+          "heat"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title supplies a linked SI temperature-unit phrase; sukaranang base-unit qualification and K remain in the identical body. Wolff sukad/sukaranan base sense and BIPM kelvin entry support the context; no conversion to degrees.",
+      "formal_item_id": "c0735ac4ffa37c5b8fef08e92e92133db",
+      "fidelity_item_id": "m7fafa677891376abd8d317a3",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26735",
+      "source_card_sha256": "a55f187d8811c7acd91a3ec18ffb109a173ba222ffe4b933ec24a8f7097f93d0",
+      "candidate_card_sha256": "26cd78f4474b54d514d9325ab06bab9cf11d69fa8c98674352629932e7f1e58a",
+      "before_card": {
+        "id": "ffct-26735",
+        "factId": "unit-of-mass-kilogram-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is the SI base unit of mass",
+        "terms": [
+          "unit ng masa",
+          "kilogram",
+          "kg",
+          "mass unit",
+          "bigat",
+          "masa",
+          "yunit sa masa",
+          "kilo",
+          "anong yunit ang masa",
+          "si base unit"
+        ],
+        "fact": {
+          "en": "For mass, the SI base unit is the kilogram. You can recognize it by its symbol, kg!",
+          "tl": "Para sa masa (mass), ang batayang yunit sa SI ay kilogram. Makikilala mo ito sa simbolong kg!",
+          "bis": "Para sa masa (mass), ang sukaranang yunit sa SI mao ang kilogram. Makilala nimo kini sa simbolo niini nga kg!"
+        },
+        "slug": "ffct-26735",
+        "source": "original",
+        "title": {
+          "tl": "Kilogram SI Base Unit Mass kg",
+          "en": "Kilogram, SI Mass Unit",
+          "bis": "Kilogram SI Unit Mass"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26735",
+        "factId": "unit-of-mass-kilogram-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is the SI base unit of mass",
+        "terms": [
+          "unit ng masa",
+          "kilogram",
+          "kg",
+          "mass unit",
+          "bigat",
+          "masa",
+          "yunit sa masa",
+          "kilo",
+          "anong yunit ang masa",
+          "si base unit"
+        ],
+        "fact": {
+          "en": "For mass, the SI base unit is the kilogram. You can recognize it by its symbol, kg!",
+          "tl": "Para sa masa (mass), ang batayang yunit sa SI ay kilogram. Makikilala mo ito sa simbolong kg!",
+          "bis": "Para sa masa (mass), ang sukaranang yunit sa SI mao ang kilogram. Makilala nimo kini sa simbolo niini nga kg!"
+        },
+        "slug": "ffct-26735",
+        "source": "original",
+        "title": {
+          "tl": "Kilogram SI Base Unit Mass kg",
+          "en": "Kilogram, SI Mass Unit",
+          "bis": "Kilogram, SI Yunit sa Masa"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Linked title names kilogram as a mass unit, agreeing with its English title and unchanged body. BIPM base table confirms kilogram/kg; masa is not confused with weight and lower-case kg is preserved.",
+      "formal_item_id": "c2a9ee984f47a1de605e754aa75498399",
+      "fidelity_item_id": "mae866b310669bae8e8b965d2",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26737",
+      "source_card_sha256": "36788dd2d4ad64a570ba6fc6a00fe48d948c8c9d0531c8b3673d0f33b9bea79e",
+      "candidate_card_sha256": "f4221d283937b8f43bd64c59de760bbe7a67f41c82fdbd2c06443a679617bfd5",
+      "before_card": {
+        "id": "ffct-26737",
+        "factId": "unit-of-electric-charge-coulomb-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is the SI unit of electric charge",
+        "terms": [
+          "unit ng electric charge",
+          "coulomb",
+          "c",
+          "charge unit",
+          "kargang elektriko",
+          "yunit sa charge",
+          "singil elektriko",
+          "anong yunit ang charge",
+          "kuryente",
+          "elektrisidad"
+        ],
+        "fact": {
+          "en": "The SI unit of electric charge is the coulomb, and its symbol is a big letter C!",
+          "tl": "Ang yunit ng kargang elektriko (electric charge) sa SI ay coulomb, at ang simbolo nito ay malaking letrang C!",
+          "bis": "Ang yunit sa kargang elektriko (electric charge) sa SI mao ang coulomb, ug ang simbolo niini kay dakong letrang C!"
+        },
+        "slug": "qa-ffct-26737",
+        "source": "original",
+        "title": {
+          "tl": "Coulomb SI Unit Charge Simbolo C",
+          "en": "Coulomb, SI Charge Unit",
+          "bis": "Coulomb SI Unit Charge"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26737",
+        "factId": "unit-of-electric-charge-coulomb-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is the SI unit of electric charge",
+        "terms": [
+          "unit ng electric charge",
+          "coulomb",
+          "c",
+          "charge unit",
+          "kargang elektriko",
+          "yunit sa charge",
+          "singil elektriko",
+          "anong yunit ang charge",
+          "kuryente",
+          "elektrisidad"
+        ],
+        "fact": {
+          "en": "The SI unit of electric charge is the coulomb, and its symbol is a big letter C!",
+          "tl": "Ang yunit ng kargang elektriko (electric charge) sa SI ay coulomb, at ang simbolo nito ay malaking letrang C!",
+          "bis": "Ang yunit sa kargang elektriko (electric charge) sa SI mao ang coulomb, ug ang simbolo niini kay dakong letrang C!"
+        },
+        "slug": "qa-ffct-26737",
+        "source": "original",
+        "title": {
+          "tl": "Coulomb SI Unit Charge Simbolo C",
+          "en": "Coulomb, SI Charge Unit",
+          "bis": "Coulomb, SI Yunit sa Charge"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title adds linking grammar to the existing coulomb/charge relation while retaining the English classroom term charge. Body keeps electric charge and capital C; both title wins and body ties.",
+      "formal_item_id": "c9eb3bc5a0e5e71310c511553ee3bfd7a",
+      "fidelity_item_id": "mf00add88ffe79fa482af62ac",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26774",
+      "source_card_sha256": "ab7933d721e7974d42bd4e29b2b454eb2dcba28db491871d2202f515932c1141",
+      "candidate_card_sha256": "fb76b8abc22bc92bde1d5df975be3524a10eb8a95dd0e4c27b5c40c1035acc98",
+      "before_card": {
+        "id": "ffct-26774",
+        "factId": "pulley-example-flagpole-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "real-world example of a pulley",
+        "terms": [
+          "pulley",
+          "flagpole",
+          "bandila",
+          "poste ng bandila",
+          "kalo",
+          "halimbawa ng pulley",
+          "pananglitan sa pulley",
+          "example of a pulley",
+          "raising a flag",
+          "pagtaas ng bandila",
+          "well bucket",
+          "lubid"
+        ],
+        "fact": {
+          "en": "How do we raise a flag on a flagpole?\n\nBy using a pulley, a wheel with a rope that changes the pull's direction!",
+          "tl": "Paano natin itinataas ang bandila sa flagpole?\n\nSa paggamit ng pulley, isang gulong na may lubid na nagbabago ng direksyon ng hila!",
+          "bis": "Unsaon nato pagpataas ang bandera sa flagpole?\n\nSa paggamit sa pulley, usa ka ligid nga adunay pisi nga mag-usab sa direksyon sa bira!"
+        },
+        "slug": "flag-on-flagpole-pulley",
+        "title": {
+          "en": "Pulley Flagpole",
+          "tl": "Pulley sa Flagpole",
+          "bis": "Pulley sa Flagpole"
+        },
+        "cats": [
+          "simple-machines"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "pulley"
+          ],
+          "en": [
+            "pulley"
+          ],
+          "bis": [
+            "pulley"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-26774",
+        "factId": "pulley-example-flagpole-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "real-world example of a pulley",
+        "terms": [
+          "pulley",
+          "flagpole",
+          "bandila",
+          "poste ng bandila",
+          "kalo",
+          "halimbawa ng pulley",
+          "pananglitan sa pulley",
+          "example of a pulley",
+          "raising a flag",
+          "pagtaas ng bandila",
+          "well bucket",
+          "lubid"
+        ],
+        "fact": {
+          "en": "How do we raise a flag on a flagpole?\n\nBy using a pulley, a wheel with a rope that changes the pull's direction!",
+          "tl": "Paano natin itinataas ang bandila sa flagpole?\n\nSa paggamit ng pulley, isang gulong na may lubid na nagbabago ng direksyon ng hila!",
+          "bis": "Unsaon nato pagpataas ang bandera sa flagpole?\n\nMogamit kita og pulley. Usa kini ka ligid nga adunay pisi, ug kini ang mag-usab sa direksyon sa bira!"
+        },
+        "slug": "flag-on-flagpole-pulley",
+        "title": {
+          "en": "Pulley Flagpole",
+          "tl": "Pulley sa Flagpole",
+          "bis": "Pulley sa Flagpole"
+        },
+        "cats": [
+          "simple-machines"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "pulley"
+          ],
+          "en": [
+            "pulley"
+          ],
+          "bis": [
+            "pulley"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "A direct answer sentence is followed by a definition with kini referring to the pulley; the rope, wheel and change in pull direction remain. Wolff gamit, bira and usab support use/pull/change; no unsupported mechanical-advantage promise is added, and pulley emphasis is exact.",
+      "formal_item_id": "c43233e3e3f0b90fd68a8205efb613d86",
+      "fidelity_item_id": "mc4adf236a36a2bca833d53d4",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26782",
+      "source_card_sha256": "9d11f830bbd67560ba16dcc03b44a6ab7f9a1278793982911d7fd7047c6e1f40",
+      "candidate_card_sha256": "d90081bc9636fa527f8cb18635590c4e2ec53e58ef6443826ca2d4e88c2a71a1",
+      "before_card": {
+        "id": "ffct-26782",
+        "factId": "compound-machine-definition-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is a compound machine",
+        "terms": [
+          "compound machine",
+          "kumplikadong makina",
+          "pinagsamang makina",
+          "dalawa o higit",
+          "two or more simple machines",
+          "ano ang compound machine",
+          "unsa ang compound machine",
+          "what is a compound machine",
+          "scissors",
+          "bisikleta",
+          "duha o sobra",
+          "combined machines"
+        ],
+        "fact": {
+          "en": "A compound machine is made of two or more simple machines working together, like scissors or a bicycle!",
+          "tl": "Ang compound machine ay binubuo ng dalawa o higit pang simpleng makina na nagtatrabaho nang magkasama, tulad ng gunting o bisikleta!",
+          "bis": "Ang compound machine usa ka makina nga gihimo sa duha o labaw pa ka simpleng makina nga nagtrabaho nga magkauban, sama sa gunting o bisikleta!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Compound Machine",
+          "tl": "Tambalang Makina",
+          "bis": "Compound Machine"
+        },
+        "cats": [
+          "simple-machines"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "compound machine"
+          ],
+          "en": [
+            "compound machine"
+          ],
+          "bis": [
+            "compound machine"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-26782",
+        "factId": "compound-machine-definition-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is a compound machine",
+        "terms": [
+          "compound machine",
+          "kumplikadong makina",
+          "pinagsamang makina",
+          "dalawa o higit",
+          "two or more simple machines",
+          "ano ang compound machine",
+          "unsa ang compound machine",
+          "what is a compound machine",
+          "scissors",
+          "bisikleta",
+          "duha o sobra",
+          "combined machines"
+        ],
+        "fact": {
+          "en": "A compound machine is made of two or more simple machines working together, like scissors or a bicycle!",
+          "tl": "Ang compound machine ay binubuo ng dalawa o higit pang simpleng makina na nagtatrabaho nang magkasama, tulad ng gunting o bisikleta!",
+          "bis": "Ang compound machine gihimo sa duha o labaw pa ka simpleng makina nga magkauban nga motrabaho. Pananglitan niini ang gunting o bisikleta!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Compound Machine",
+          "tl": "Tambalang Makina",
+          "bis": "Compound Machine"
+        },
+        "cats": [
+          "simple-machines"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "compound machine"
+          ],
+          "en": [
+            "compound machine"
+          ],
+          "bis": [
+            "compound machine"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Definition and examples become separate sentences; two or more simple machines working together and scissors/bicycle are all retained. Wolff uban and trabaho support the relevant together/work senses. Both readers mildly prefer the exact shorter structure with no unresolved judgment hold; no tie exception used.",
+      "formal_item_id": "c509e0a60953e89dd039315bee6dc54e2",
+      "fidelity_item_id": "m6d5fda20157730b8a579a19e",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26792",
+      "source_card_sha256": "f431a42674e951d5ee824887257665cff3743fd3188a988f768c995c07b02e70",
+      "candidate_card_sha256": "53981a348f141eeb265f28fc639b0999aea2d5900095a41e7e82eac6a1abd789",
+      "before_card": {
+        "id": "ffct-26792",
+        "factId": "hookes-law-published-1678-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "when Hooke's law was published",
+        "terms": [
+          "hooke's law published",
+          "1678",
+          "robert hooke",
+          "ut tensio sic vis",
+          "kailan inilathala hooke",
+          "hooke 1678",
+          "kanus-a gimantala",
+          "spring law year",
+          "batas ni hooke taon",
+          "robert hooke 1678",
+          "elasticity 1678",
+          "balaod ni hooke tuig"
+        ],
+        "fact": {
+          "en": "Robert Hooke published his law of elasticity in 1678! He stated it in Latin as 'ut tensio, sic vis'.",
+          "tl": "Inilathala ni Robert Hooke ang kanyang batas ng elasticity noong 1678! Sinabi niya ito sa Latin na 'ut tensio, sic vis'.",
+          "bis": "Gipatik ni Robert Hooke ang iyang balaod sa elasticity niadtong 1678! Gisulti niya kini sa Latin nga 'ut tensio, sic vis'."
+        },
+        "slug": "qa-ffct-26792",
+        "source": "original",
+        "title": {
+          "tl": "1678 Hooke Law Latin",
+          "en": "Hooke Published 1678",
+          "bis": "1678 sa Hooke"
+        },
+        "cats": [
+          "forces"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26792",
+        "factId": "hookes-law-published-1678-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "when Hooke's law was published",
+        "terms": [
+          "hooke's law published",
+          "1678",
+          "robert hooke",
+          "ut tensio sic vis",
+          "kailan inilathala hooke",
+          "hooke 1678",
+          "kanus-a gimantala",
+          "spring law year",
+          "batas ni hooke taon",
+          "robert hooke 1678",
+          "elasticity 1678",
+          "balaod ni hooke tuig"
+        ],
+        "fact": {
+          "en": "Robert Hooke published his law of elasticity in 1678! He stated it in Latin as 'ut tensio, sic vis'.",
+          "tl": "Inilathala ni Robert Hooke ang kanyang batas ng elasticity noong 1678! Sinabi niya ito sa Latin na 'ut tensio, sic vis'.",
+          "bis": "Gipatik ni Robert Hooke ang iyang balaod sa elasticity niadtong 1678! Gisulti niya kini sa Latin nga 'ut tensio, sic vis'."
+        },
+        "slug": "qa-ffct-26792",
+        "source": "original",
+        "title": {
+          "tl": "1678 Hooke Law Latin",
+          "en": "Hooke Published 1678",
+          "bis": "Gipatik ni Hooke sa 1678"
+        },
+        "cats": [
+          "forces"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title now supplies gipatik to explain the 1678 date; the Latin expression and body remain identical. Oxford library holdings plus Utah elasticity course distinguish the 1676 anagram from its 1678 expansion, matching this publication claim. Wolff patik supports publish.",
+      "formal_item_id": "c895c669dccdae3bbf4181ae59a4332fc",
+      "fidelity_item_id": "meb2c05ea219814333a15a9e6",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26793",
+      "source_card_sha256": "d8eabf6abaa37c50b5e63e360a6db309866ffd34d8a8d41160623175b01b4606",
+      "candidate_card_sha256": "23bbf30074f0d9d7e93526dea8c1cf15900443f920f6bf06c938031c83c4d83f",
+      "before_card": {
+        "id": "ffct-26793",
+        "factId": "ohms-law-named-georg-ohm-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who Ohm's law is named after",
+        "terms": [
+          "who is ohm's law named after",
+          "georg ohm",
+          "georg simon ohm",
+          "sino si ohm",
+          "german physicist",
+          "ohm's law named",
+          "kinsa si ohm",
+          "physicist ohm",
+          "ohm unit",
+          "pinangalanan kay ohm",
+          "ginganlan kang ohm",
+          "aleman pisiko"
+        ],
+        "fact": {
+          "en": "Who is Ohm's Law named after?\n\nThe famous Ohm's Law is named after the German physicist Georg Simon Ohm!",
+          "tl": "Kanino ipinangalan ang Batas ni Ohm?\n\nAng tanyag na Batas ni Ohm ay ipinangalan sa pisikong Aleman na si Georg Simon Ohm!",
+          "bis": "Kang kinsa ginganlan ang Balaod ni Ohm?\n\nAng bantog nga Balaod ni Ohm ginganlan sunod sa Aleman nga pisiko nga si Georg Simon Ohm!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Ohm's Law Namesake",
+          "tl": "Pinangalan kay Ohm",
+          "bis": "Ngalan sa Balaod Ohm"
+        },
+        "cats": [
+          "electricity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "Georg Simon Ohm"
+          ],
+          "en": [
+            "Georg Simon Ohm"
+          ],
+          "bis": [
+            "Georg Simon Ohm"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-26793",
+        "factId": "ohms-law-named-georg-ohm-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who Ohm's law is named after",
+        "terms": [
+          "who is ohm's law named after",
+          "georg ohm",
+          "georg simon ohm",
+          "sino si ohm",
+          "german physicist",
+          "ohm's law named",
+          "kinsa si ohm",
+          "physicist ohm",
+          "ohm unit",
+          "pinangalanan kay ohm",
+          "ginganlan kang ohm",
+          "aleman pisiko"
+        ],
+        "fact": {
+          "en": "Who is Ohm's Law named after?\n\nThe famous Ohm's Law is named after the German physicist Georg Simon Ohm!",
+          "tl": "Kanino ipinangalan ang Batas ni Ohm?\n\nAng tanyag na Batas ni Ohm ay ipinangalan sa pisikong Aleman na si Georg Simon Ohm!",
+          "bis": "Kang kinsa ginganlan ang Balaod ni Ohm?\n\nAng bantog nga Balaod ni Ohm ginganlan sunod sa Aleman nga pisiko nga si Georg Simon Ohm!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Ohm's Law Namesake",
+          "tl": "Pinangalan kay Ohm",
+          "bis": "Ngalan sa Balaod ni Ohm"
+        },
+        "cats": [
+          "electricity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "Georg Simon Ohm"
+          ],
+          "en": [
+            "Georg Simon Ohm"
+          ],
+          "bis": [
+            "Georg Simon Ohm"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The single added ni connects Ohm to his law in the title and matches the existing body/English relation. Wolff ngalan and sunud support name/following senses, with independent named-after body examples. The unchanged phrase is not rejected merely for being described as a calque; exact Georg Simon Ohm emphasis remains.",
+      "formal_item_id": "c2117067041c055b18f30a7289f3518e8",
+      "fidelity_item_id": "mae538635795ac9e354733857",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26819",
+      "source_card_sha256": "51288078d45a16962aa8a5441bb7e2855ec7ca72a9e3ffd335a47730638e85d6",
+      "candidate_card_sha256": "f60fda868001262e442defcbf6c90ab85482a34f1a6782f62505dfda354ba8cf",
+      "before_card": {
+        "id": "ffct-26819",
+        "factId": "ohm-symbol-omega-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is the symbol for ohm",
+        "terms": [
+          "ohm",
+          "symbol",
+          "simbolo",
+          "omega",
+          "ω",
+          "resistance",
+          "ano simbolo",
+          "greek letter",
+          "simbolo sa ohm"
+        ],
+        "fact": {
+          "en": "Did you know? The symbol for the ohm is Ω, which is the Greek letter omega!",
+          "tl": "Alam mo ba? Ang simbolo ng ohm ay Ω, na ang Griyegong letra omega!",
+          "bis": "Nahibaw-an ba nimo? Ang simbolo sa ohm kay Ω, nga mao ang Griyego nga letra nga omega!"
+        },
+        "slug": "ffct-26819",
+        "source": "original",
+        "title": {
+          "tl": "Ohm Simbolo Omega Griyego Letter",
+          "en": "Ohm's Omega Symbol",
+          "bis": "Ohm Simbolo Omega"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26819",
+        "factId": "ohm-symbol-omega-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is the symbol for ohm",
+        "terms": [
+          "ohm",
+          "symbol",
+          "simbolo",
+          "omega",
+          "ω",
+          "resistance",
+          "ano simbolo",
+          "greek letter",
+          "simbolo sa ohm"
+        ],
+        "fact": {
+          "en": "Did you know? The symbol for the ohm is Ω, which is the Greek letter omega!",
+          "tl": "Alam mo ba? Ang simbolo ng ohm ay Ω, na ang Griyegong letra omega!",
+          "bis": "Nahibaw-an ba nimo? Ang simbolo sa ohm kay Ω, nga mao ang Griyego nga letra nga omega!"
+        },
+        "slug": "ffct-26819",
+        "source": "original",
+        "title": {
+          "tl": "Ohm Simbolo Omega Griyego Letter",
+          "en": "Ohm's Omega Symbol",
+          "bis": "Omega, ang Simbolo sa Ohm"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title now relates Omega to the ohm symbol. Body, spelling variant Nahibaw-an and the exact Ω remain unchanged. Both title preferences agree; no general orthographic ruling.",
+      "formal_item_id": "c17200db1a7f6386f43a1626d9aa2e998",
+      "fidelity_item_id": "m1422fb12737bfa3d9f84c6ef",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26836",
+      "source_card_sha256": "37d9621bfc88dfb82d3ca27aaec6303b1090a22099c2ae34da5c33edfc3c8b94",
+      "candidate_card_sha256": "503ec7d89b25c834b788e3fb875664eff4c9c621c4043144aa0228dc7d1e099d",
+      "before_card": {
+        "id": "ffct-26836",
+        "factId": "coal-nonrenewable-fossil-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what type of energy source is coal",
+        "terms": [
+          "coal",
+          "karbon",
+          "fossil fuel",
+          "nonrenewable",
+          "fosil nga sugnod",
+          "ano klaseng enerhiya ang karbon",
+          "unsa klase coal",
+          "langis",
+          "nauubos",
+          "karbon nga sugnod"
+        ],
+        "fact": {
+          "en": "What kind of energy source is coal?\n\nCoal is a fossil fuel and is considered a nonrenewable energy source for our world!",
+          "tl": "Anong uri ng pinagkukunan ng enerhiya ang karbon (coal)?\n\nAng karbon (coal) ay isang fossil fuel at itinuturing na nonrenewable na pinagkukunan ng enerhiya sa mundo!",
+          "bis": "Unsa nga klase nga tinubdan sa enerhiya ang karbon (coal)?\n\nAng karbon (coal) usa ka fossil fuel ug giisip nga nonrenewable nga tinubdan sa enerhiya sa kalibutan!"
+        },
+        "slug": "ffct-26836",
+        "source": "original",
+        "title": {
+          "tl": "Karbon Fossil Fuel Nonrenewable",
+          "en": "Coal Fossil Fuel Type",
+          "bis": "Karbon Fossil Fuel Nonrenewable"
+        },
+        "cats": [
+          "energy",
+          "fossil-fuels"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26836",
+        "factId": "coal-nonrenewable-fossil-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what type of energy source is coal",
+        "terms": [
+          "coal",
+          "karbon",
+          "fossil fuel",
+          "nonrenewable",
+          "fosil nga sugnod",
+          "ano klaseng enerhiya ang karbon",
+          "unsa klase coal",
+          "langis",
+          "nauubos",
+          "karbon nga sugnod"
+        ],
+        "fact": {
+          "en": "What kind of energy source is coal?\n\nCoal is a fossil fuel and is considered a nonrenewable energy source for our world!",
+          "tl": "Anong uri ng pinagkukunan ng enerhiya ang karbon (coal)?\n\nAng karbon (coal) ay isang fossil fuel at itinuturing na nonrenewable na pinagkukunan ng enerhiya sa mundo!",
+          "bis": "Unsa nga klase nga tinubdan sa enerhiya ang karbon (coal)?\n\nAng karbon (coal) usa ka fossil fuel ug giisip nga nonrenewable nga tinubdan sa enerhiya sa kalibutan!"
+        },
+        "slug": "ffct-26836",
+        "source": "original",
+        "title": {
+          "tl": "Karbon Fossil Fuel Nonrenewable",
+          "en": "Coal Fossil Fuel Type",
+          "bis": "Karbon: Usa ka Fossil Fuel"
+        },
+        "cats": [
+          "energy",
+          "fossil-fuels"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title becomes Coal: a fossil fuel rather than a noun list. Wolff karbun explicitly includes coal; nonrenewable remains in the identical body even though the concise title omits it. No claim that carbon and coal are interchangeable.",
+      "formal_item_id": "c84cb9730fbf4a7a3834514e57f596ebb",
+      "fidelity_item_id": "m5a6e7a252869f22efe73f92f",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26840",
+      "source_card_sha256": "28ac9dafbf0dd8ee7b98e1fe969803a60a204e111c25c82c835732572772f1a8",
+      "candidate_card_sha256": "dbbed2e198d6d67b3dec8c4cd580f8b991e1ed09851d695591d151f0c843f211",
+      "before_card": {
+        "id": "ffct-26840",
+        "factId": "photosynthesis-light-to-chemical-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what energy conversion happens in photosynthesis",
+        "terms": [
+          "photosynthesis",
+          "potosintesis",
+          "light energy to chemical energy",
+          "liwanag tungo kemikal",
+          "kahayag ngadto chemical",
+          "ano ginagawa ng potosintesis",
+          "unsa gibuhat sa photosynthesis",
+          "enerhiya ng araw",
+          "light to chemical",
+          "pagbag-o sa enerhiya"
+        ],
+        "fact": {
+          "en": "In photosynthesis, plants turn light energy from the sun into chemical energy to make their food!",
+          "tl": "Sa photosynthesis, ginagawang chemical energy ng mga halaman ang light energy mula sa araw para gumawa ng pagkain!",
+          "bis": "Sa photosynthesis, gihimo sa mga tanom ang light energy gikan sa adlaw ngadto sa chemical energy para makahimo og pagkaon!"
+        },
+        "slug": "ffct-26840",
+        "source": "original",
+        "title": {
+          "tl": "Photosynthesis Light Chemical",
+          "en": "Photosynthesis Light to Sugar",
+          "bis": "Photosynthesis Light Chemical"
+        },
+        "cats": [
+          "energy",
+          "plants"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26840",
+        "factId": "photosynthesis-light-to-chemical-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what energy conversion happens in photosynthesis",
+        "terms": [
+          "photosynthesis",
+          "potosintesis",
+          "light energy to chemical energy",
+          "liwanag tungo kemikal",
+          "kahayag ngadto chemical",
+          "ano ginagawa ng potosintesis",
+          "unsa gibuhat sa photosynthesis",
+          "enerhiya ng araw",
+          "light to chemical",
+          "pagbag-o sa enerhiya"
+        ],
+        "fact": {
+          "en": "In photosynthesis, plants turn light energy from the sun into chemical energy to make their food!",
+          "tl": "Sa photosynthesis, ginagawang chemical energy ng mga halaman ang light energy mula sa araw para gumawa ng pagkain!",
+          "bis": "Sa photosynthesis, giusab sa mga tanom ang light energy gikan sa adlaw ngadto sa chemical energy aron makahimo sila og ilang pagkaon!"
+        },
+        "slug": "ffct-26840",
+        "source": "original",
+        "title": {
+          "tl": "Photosynthesis Light Chemical",
+          "en": "Photosynthesis Light to Sugar",
+          "bis": "Photosynthesis Light Chemical"
+        },
+        "cats": [
+          "energy",
+          "plants"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Giusab makes the change from solar light energy to chemical energy explicit; sila and ilang identify the plants and their food. Wolff usab includes change/substitute, not only again, and independent change-context bodies corroborate. Both body judgments prefer this exact candidate; title untouched.",
+      "formal_item_id": "ccf176a83ddbd12c9acc2f1e0a3235381",
+      "fidelity_item_id": "m24e9c3208b9b943358d8688a",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26845",
+      "source_card_sha256": "70e4bc00b369bb6c69aca2a4ccf7c66700563cef02ce7f010b9ec83126a5d8fa",
+      "candidate_card_sha256": "3c45b1b9fff5186cda1ba08a683939e3e3df23f64ce10b90c90acca6ce20459b",
+      "before_card": {
+        "id": "ffct-26845",
+        "factId": "nuclear-energy-from-atoms-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "where does nuclear energy come from",
+        "terms": [
+          "nuclear energy",
+          "enerhiya ng nukleyar",
+          "atom",
+          "nucleus",
+          "enerhiya sa atomo",
+          "saan galing nuclear energy",
+          "asa gikan nuclear energy",
+          "fission",
+          "fusion",
+          "nukleus ng atom"
+        ],
+        "fact": {
+          "en": "Where does nuclear energy come from?\n\nNuclear energy comes from the nucleus of atoms when they are split or joined together!",
+          "tl": "Saan nagmumula ang nuclear energy?\n\nAng nuclear energy ay nagmumula sa nukleus ng mga atom kapag ito ay nahahati o nagsasama!",
+          "bis": "Asa gikan ang nuclear energy?\n\nAng nuclear energy gikan sa nucleus sa mga atomo kung kini bahinon o iusa!"
+        },
+        "slug": "ffct-26845",
+        "source": "original",
+        "title": {
+          "tl": "Nuclear Enerhiya Atom Nucleus",
+          "en": "Nuclear from Atom Splitting",
+          "bis": "Nuclear Enerhiya Atom Nucleus"
+        },
+        "cats": [
+          "energy",
+          "atoms"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26845",
+        "factId": "nuclear-energy-from-atoms-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "where does nuclear energy come from",
+        "terms": [
+          "nuclear energy",
+          "enerhiya ng nukleyar",
+          "atom",
+          "nucleus",
+          "enerhiya sa atomo",
+          "saan galing nuclear energy",
+          "asa gikan nuclear energy",
+          "fission",
+          "fusion",
+          "nukleus ng atom"
+        ],
+        "fact": {
+          "en": "Where does nuclear energy come from?\n\nNuclear energy comes from the nucleus of atoms when they are split or joined together!",
+          "tl": "Saan nagmumula ang nuclear energy?\n\nAng nuclear energy ay nagmumula sa nukleus ng mga atom kapag ito ay nahahati o nagsasama!",
+          "bis": "Asa gikan ang nuclear energy?\n\nAng nuclear energy gikan sa nucleus sa mga atomo kung kini bahinon o iusa!"
+        },
+        "slug": "ffct-26845",
+        "source": "original",
+        "title": {
+          "tl": "Nuclear Enerhiya Atom Nucleus",
+          "en": "Nuclear from Atom Splitting",
+          "bis": "Nuclear Energy gikan sa mga Atomo"
+        },
+        "cats": [
+          "energy",
+          "atoms"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title links nuclear energy to atoms, while the identical body retains nuclei and the split-or-joined alternatives. Wolff bahin supports division. This does not broaden the statement to every atomic reaction or remove the fusion alternative from the body.",
+      "formal_item_id": "cb10c85003df4ec56aebc7386a99d0132",
+      "fidelity_item_id": "mc8f462529cbe611ff25ee49f",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26849",
+      "source_card_sha256": "140f68214a5a296af028f64c95260693a7f6fb22c65c26c0f0a266c46815bf2e",
+      "candidate_card_sha256": "75899c53a8d410f8f2abc52b8bb9772d407581f154347889a733cc2d826c653b",
+      "before_card": {
+        "id": "ffct-26849",
+        "factId": "four-fundamental-forces-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "the four fundamental forces",
+        "terms": [
+          "four fundamental forces",
+          "apat na puwersa",
+          "upat ka pwersa",
+          "gravity",
+          "electromagnetic",
+          "strong nuclear",
+          "weak nuclear",
+          "grabidad",
+          "elektromagnetiko",
+          "puwersa ng kalikasan",
+          "4 forces",
+          "sukaranang puwersa"
+        ],
+        "fact": {
+          "en": "Nature has four fundamental forces: gravity, electromagnetic, strong nuclear, and weak nuclear force!",
+          "tl": "May apat na pangunahing puwersa sa kalikasan: gravity, electromagnetic, strong nuclear, at weak nuclear force!",
+          "bis": "Adunay upat ka sukaranang puwersa sa kinaiyahan: gravity, electromagnetic, strong nuclear, ug weak nuclear force!"
+        },
+        "slug": "ffct-26849",
+        "source": "original",
+        "title": {
+          "tl": "Apat Fundamental Forces",
+          "en": "Four Fundamental Forces",
+          "bis": "Upat Fundamental Forces"
+        },
+        "cats": [
+          "forces",
+          "gravity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26849",
+        "factId": "four-fundamental-forces-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "the four fundamental forces",
+        "terms": [
+          "four fundamental forces",
+          "apat na puwersa",
+          "upat ka pwersa",
+          "gravity",
+          "electromagnetic",
+          "strong nuclear",
+          "weak nuclear",
+          "grabidad",
+          "elektromagnetiko",
+          "puwersa ng kalikasan",
+          "4 forces",
+          "sukaranang puwersa"
+        ],
+        "fact": {
+          "en": "Nature has four fundamental forces: gravity, electromagnetic, strong nuclear, and weak nuclear force!",
+          "tl": "May apat na pangunahing puwersa sa kalikasan: gravity, electromagnetic, strong nuclear, at weak nuclear force!",
+          "bis": "Adunay upat ka sukaranang puwersa sa kinaiyahan: gravity, electromagnetic, strong nuclear, ug weak nuclear force!"
+        },
+        "slug": "ffct-26849",
+        "source": "original",
+        "title": {
+          "tl": "Apat Fundamental Forces",
+          "en": "Four Fundamental Forces",
+          "bis": "Upat ka Sukaranang Puwersa"
+        },
+        "cats": [
+          "forces",
+          "gravity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title repeats the body phrase upat ka sukaranang puwersa with the numeral linker. All four named interactions remain byte-identical; sukad/sukaranan supports base/foundation context. English force names remain valid.",
+      "formal_item_id": "c2636030d1a2780e5b9a86bf7e831bb29",
+      "fidelity_item_id": "m0d0e3e0c8902bb86d109bfe3",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26851",
+      "source_card_sha256": "5f041b19bef44e36cb4300fc4e959fdc78fccf91b7c95d45d84ec89dcab00c1e",
+      "candidate_card_sha256": "beb23e4c0c16376b0471328f98c98f13a7814043829d33578946a1e2c22145c5",
+      "before_card": {
+        "id": "ffct-26851",
+        "factId": "newton-gravity-discovery-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who described the law of gravity",
+        "terms": [
+          "isaac newton",
+          "law of gravity",
+          "batas ng grabidad",
+          "balaod sa gravity",
+          "sino nag-imbento gravity",
+          "kinsa nakadiskobre gravity",
+          "newton apple",
+          "gravity scientist",
+          "law of universal gravitation",
+          "mansanas newton",
+          "who discovered gravity",
+          "siyentipiko ng grabidad"
+        ],
+        "fact": {
+          "en": "Isaac Newton described the law of gravity (universal gravitation): every object with mass pulls on every other object!",
+          "tl": "Si Isaac Newton ang naglarawan ng batas ng gravity (universal gravitation): lahat ng bagay na may mass ay naghihilahan sa isa't isa!",
+          "bis": "Si Isaac Newton ang naghulagway sa balaod sa gravity (universal gravitation): ang tanang butang nga adunay mass nagbinira sa usag usa!"
+        },
+        "slug": "ffct-26851",
+        "source": "original",
+        "title": {
+          "tl": "Newton Universal Gravitation",
+          "en": "Newton Universal Gravitation",
+          "bis": "Newton Universal Gravitation"
+        },
+        "cats": [
+          "gravity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26851",
+        "factId": "newton-gravity-discovery-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who described the law of gravity",
+        "terms": [
+          "isaac newton",
+          "law of gravity",
+          "batas ng grabidad",
+          "balaod sa gravity",
+          "sino nag-imbento gravity",
+          "kinsa nakadiskobre gravity",
+          "newton apple",
+          "gravity scientist",
+          "law of universal gravitation",
+          "mansanas newton",
+          "who discovered gravity",
+          "siyentipiko ng grabidad"
+        ],
+        "fact": {
+          "en": "Isaac Newton described the law of gravity (universal gravitation): every object with mass pulls on every other object!",
+          "tl": "Si Isaac Newton ang naglarawan ng batas ng gravity (universal gravitation): lahat ng bagay na may mass ay naghihilahan sa isa't isa!",
+          "bis": "Si Isaac Newton ang naghulagway sa balaod sa gravity (universal gravitation): ang tanang butang nga adunay mass nagbinira sa usag usa!"
+        },
+        "slug": "ffct-26851",
+        "source": "original",
+        "title": {
+          "tl": "Newton Universal Gravitation",
+          "en": "Newton Universal Gravitation",
+          "bis": "Balaod sa Gravity ni Newton"
+        },
+        "cats": [
+          "gravity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Linked title states Newton’s law of gravity instead of a noun stack; body retains every object with mass and mutual pulling. Wolff bira supports the pull sense, with independent scientific body use. No alteration to the law claim.",
+      "formal_item_id": "c150b69f2309d471bf364e373a672fc5c",
+      "fidelity_item_id": "mc6fbad9a099b61ffa33b2edc",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26876",
+      "source_card_sha256": "0632eff9e848273b9a3405901d7f201d825f508937035c9d289e8bbf49c51dd9",
+      "candidate_card_sha256": "4dcc540dcd2e66bcf83d2fec5b21853c8688c64d5591bacc7a6e9be748680e0b",
+      "before_card": {
+        "id": "ffct-26876",
+        "factId": "transistor-inventors-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who invented the transistor",
+        "terms": [
+          "transistor",
+          "bardeen",
+          "brattain",
+          "shockley",
+          "sino gumawa ng transistor",
+          "kinsa naghimo sa transistor",
+          "bell labs",
+          "transistor inventor"
+        ],
+        "fact": {
+          "en": "The transistor was invented by John Bardeen, Walter Brattain, and William Shockley at Bell Labs! They worked together to create it.",
+          "tl": "Ang transistor ay inimbento nina John Bardeen, Walter Brattain, at William Shockley sa Bell Labs! Nagtulungan sila para likhain ito.",
+          "bis": "Ang transistor gi-imbento nila John Bardeen, Walter Brattain, ug William Shockley sa Bell Labs! Nagtinabangay sila aron paghimo niini."
+        },
+        "slug": "ffct-26876",
+        "source": "original",
+        "title": {
+          "tl": "Bardeen Brattain Shockley",
+          "en": "Who Invented Transistor",
+          "bis": "Tulo sa Transistor"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26876",
+        "factId": "transistor-inventors-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who invented the transistor",
+        "terms": [
+          "transistor",
+          "bardeen",
+          "brattain",
+          "shockley",
+          "sino gumawa ng transistor",
+          "kinsa naghimo sa transistor",
+          "bell labs",
+          "transistor inventor"
+        ],
+        "fact": {
+          "en": "The transistor was invented by John Bardeen, Walter Brattain, and William Shockley at Bell Labs! They worked together to create it.",
+          "tl": "Ang transistor ay inimbento nina John Bardeen, Walter Brattain, at William Shockley sa Bell Labs! Nagtulungan sila para likhain ito.",
+          "bis": "Ang transistor gi-imbento nila John Bardeen, Walter Brattain, ug William Shockley sa Bell Labs! Nagtinabangay sila aron paghimo niini."
+        },
+        "slug": "ffct-26876",
+        "source": "original",
+        "title": {
+          "tl": "Bardeen Brattain Shockley",
+          "en": "Who Invented Transistor",
+          "bis": "Mga Nag-imbento sa Transistor"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title identifies the transistor inventors rather than an unexplained three. Nokia Bell Labs credits the three-person team while its detailed account distinguishes Bardeen/Brattain work under Shockley. The unchanged general team claim does not assert identical contributions or a shared patent; both title wins.",
+      "formal_item_id": "c2fc8f33cc5489e7d24777b40860d48b4",
+      "fidelity_item_id": "meb1e81e5016d67fedd96b5d6",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26883",
+      "source_card_sha256": "d3ae3b77c497ceb561b35ec2d9a108281a7896b5de9ddc69894e83112f4389d8",
+      "candidate_card_sha256": "2d8ed1e06939c12f59a6ae6eb75b856f709b78145d1091605bc541736e757e68",
+      "before_card": {
+        "id": "ffct-26883",
+        "factId": "karaoke-speaker-sound-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "speakers vibrate to make sound",
+        "terms": [
+          "karaoke",
+          "ispiker",
+          "tunog",
+          "bumibrate",
+          "hangin",
+          "tingog",
+          "nagkurog",
+          "speaker",
+          "sound",
+          "vibration"
+        ],
+        "fact": {
+          "en": "How does a karaoke speaker make sound?\n\nThe cone inside vibrates quickly and shakes the air around it—that's how sound is made!",
+          "tl": "Paano gumagawa ng tunog ang ispiker ng karaoke?\n\nAng cone sa loob ay mabilis na bumibrate at nagpapayanig sa hangin sa paligid—ganito gumagawa ang tunog!",
+          "bis": "Unsaon paghimo og tingog sa ispiker sa karaoke?\n\nAng cone sa sulod paspas nga magkurog ug magpakurog sa hangin sa palibot—mao ni kung unsaon paghimo og tingog!"
+        },
+        "slug": "karaoke-speaker-sound",
+        "title": {
+          "en": "Speaker",
+          "tl": "Speaker",
+          "bis": "Speaker"
+        },
+        "cats": [
+          "sound"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "bumibrate"
+          ],
+          "en": [
+            "vibrates"
+          ],
+          "bis": [
+            "magkurog"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-26883",
+        "factId": "karaoke-speaker-sound-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "speakers vibrate to make sound",
+        "terms": [
+          "karaoke",
+          "ispiker",
+          "tunog",
+          "bumibrate",
+          "hangin",
+          "tingog",
+          "nagkurog",
+          "speaker",
+          "sound",
+          "vibration"
+        ],
+        "fact": {
+          "en": "How does a karaoke speaker make sound?\n\nThe cone inside vibrates quickly and shakes the air around it—that's how sound is made!",
+          "tl": "Paano gumagawa ng tunog ang ispiker ng karaoke?\n\nAng cone sa loob ay mabilis na bumibrate at nagpapayanig sa hangin sa paligid—ganito gumagawa ang tunog!",
+          "bis": "Unsaon sa ispiker sa karaoke paghimo og tingog?\n\nAng cone sa sulod magkurog og paspas. Kini mopakurog sa hangin sa palibot—mao kana ang paagi sa paghimo og tingog!"
+        },
+        "slug": "karaoke-speaker-sound",
+        "title": {
+          "en": "Speaker",
+          "tl": "Speaker",
+          "bis": "Speaker"
+        },
+        "cats": [
+          "sound"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "bumibrate"
+          ],
+          "en": [
+            "vibrates"
+          ],
+          "bis": [
+            "magkurog"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Question explicitly makes the karaoke speaker the agent; the answer separates cone vibration from its effect on surrounding air. Wolff kurug directly includes vibration/shaking; both body preferences agree and the exact magkurog emphasis remains.",
+      "formal_item_id": "c7a30951872968fee0bfb93be0a5b8e93",
+      "fidelity_item_id": "mb205d25e522418002cce2195",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26920",
+      "source_card_sha256": "119b6340e8ad1fd76db1f0849734d1014c75f89ebfb01e77b91a5170974ca49c",
+      "candidate_card_sha256": "2315d1b1e3fb0bd8f024f8d14da35c02b0b1a654c607acf7327948aaa743eac6",
+      "before_card": {
+        "id": "ffct-26920",
+        "factId": "fwg-friction-1413",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Friction",
+        "terms": [
+          "friction",
+          "stepping",
+          "banana",
+          "leaf",
+          "creates",
+          "very",
+          "little",
+          "making",
+          "extremely",
+          "slippery"
+        ],
+        "fact": {
+          "en": "Stepping on a wet banana leaf creates very little friction, making it super slippery!",
+          "tl": "Ang pagtapak sa basang dahon ng saging ay gumagawa ng kaunting friction, kaya sobrang madulas ito!",
+          "bis": "Ang pagtunob sa basang dahon sa saging naghimo ug gamay ra kaayong friction, mao nga super slippery kini!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Friction",
+          "tl": "Friksyon",
+          "bis": "Friksyon"
+        },
+        "cats": [
+          "forces",
+          "friction"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "friction"
+          ],
+          "en": [
+            "friction"
+          ],
+          "bis": [
+            "friction"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-26920",
+        "factId": "fwg-friction-1413",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Friction",
+        "terms": [
+          "friction",
+          "stepping",
+          "banana",
+          "leaf",
+          "creates",
+          "very",
+          "little",
+          "making",
+          "extremely",
+          "slippery"
+        ],
+        "fact": {
+          "en": "Stepping on a wet banana leaf creates very little friction, making it super slippery!",
+          "tl": "Ang pagtapak sa basang dahon ng saging ay gumagawa ng kaunting friction, kaya sobrang madulas ito!",
+          "bis": "Kung motunob ka sa basa nga dahon sa saging, gamay ra kaayo ang friction, mao nga danlog kaayo kini!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Friction",
+          "tl": "Friksyon",
+          "bis": "Friksyon"
+        },
+        "cats": [
+          "forces",
+          "friction"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "friction"
+          ],
+          "en": [
+            "friction"
+          ],
+          "bis": [
+            "friction"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The conditional sentence retains stepping on a wet banana leaf, very little friction and the slippery consequence. Wolff tunub means step on and danlug points to danglug, explicitly slippery when wet; independent bodies corroborate. Both body wins and exact friction emphasis remain; this is an explanation, not an invitation to test a slippery surface.",
+      "formal_item_id": "cba867fdc7d70152f05c7fb9dae66fb53",
+      "fidelity_item_id": "m01ebe518063fc275edf651e6",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-26982",
+      "source_card_sha256": "b174f115d1909760cb0269b8651ba18cb7a2216eb106c3396471c3caac93efe6",
+      "candidate_card_sha256": "7f18f337739fd92eec2f6e26425fd6e3058a116d9a2141d78456ffeec853a447",
+      "before_card": {
+        "id": "ffct-26982",
+        "factId": "fwg-magnets-797",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Magnets",
+        "terms": [
+          "magnets",
+          "black",
+          "sand",
+          "beaches",
+          "ilocos",
+          "norte",
+          "contain",
+          "magnetite",
+          "naturally",
+          "magnetic"
+        ],
+        "fact": {
+          "en": "The black sand beaches of Ilocos Norte contain magnetite, a naturally magnetic mineral separated from regular sand using a magnet!",
+          "tl": "Ang mga itim na buhangin sa beaches ng Ilocos Norte ay may magnetite, isang natural na magnetic mineral na maaaring paghiwalayin mula sa karaniwang buhangin gamit ang magnet!",
+          "bis": "Ang itom nga balas sa mga baybayon sa Ilocos Norte adunay magnetite, usa ka natural nga magnetic mineral nga mahimo nga buwagon gikan sa ordinaryong balas gamit ang magnet!"
+        },
+        "slug": "ffct-26982",
+        "source": "original",
+        "title": {
+          "tl": "Magnetite Ilocos Norte Beach",
+          "en": "Ilocos Magnetite Sands",
+          "bis": "Magnetite sa Ilocos"
+        },
+        "cats": [
+          "magnets",
+          "minerals"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26982",
+        "factId": "fwg-magnets-797",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Magnets",
+        "terms": [
+          "magnets",
+          "black",
+          "sand",
+          "beaches",
+          "ilocos",
+          "norte",
+          "contain",
+          "magnetite",
+          "naturally",
+          "magnetic"
+        ],
+        "fact": {
+          "en": "The black sand beaches of Ilocos Norte contain magnetite, a naturally magnetic mineral separated from regular sand using a magnet!",
+          "tl": "Ang mga itim na buhangin sa beaches ng Ilocos Norte ay may magnetite, isang natural na magnetic mineral na maaaring paghiwalayin mula sa karaniwang buhangin gamit ang magnet!",
+          "bis": "Ang itom nga balas sa mga baybayon sa Ilocos Norte adunay magnetite. Ang magnetite usa ka natural nga magnetic mineral. Mahimo kining buwagon gikan sa ordinaryong balas gamit ang magnet!"
+        },
+        "slug": "ffct-26982",
+        "source": "original",
+        "title": {
+          "tl": "Magnetite Ilocos Norte Beach",
+          "en": "Ilocos Magnetite Sands",
+          "bis": "Magnetite sa Ilocos"
+        },
+        "cats": [
+          "magnets",
+          "minerals"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Three sentences retain Ilocos Norte black sand, magnetite, natural magnetism and ability to separate it with a magnet. MGB and UN ESCAP regional evidence place magnetite sands on this northwest coast. Wolff bulag, its documented intervocalic-l variation and independent buwag separation examples support the verb. No claim about every dark mineral being magnetite.",
+      "formal_item_id": "cbbf978c9a53271541cd3b31775683f3e",
+      "fidelity_item_id": "md2322847eea7d0d362b50303",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27070",
+      "source_card_sha256": "b2eda4e1438394618d6e1fcc18e223ba3cb7b0f4e73e40f2d781f7fcf60cc596",
+      "candidate_card_sha256": "4ac588cb09031a88782625c6549ebb6ad1937d39dab0c313d081e17a699d6d1d",
+      "before_card": {
+        "id": "ffct-27070",
+        "factId": "magnifier-burn-paper-sun-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "convex lens concentrates sunlight",
+        "terms": [
+          "magnifying glass",
+          "lente",
+          "araw",
+          "sinunog",
+          "papel",
+          "tinipon na liwanag",
+          "adlaw",
+          "gisunog",
+          "sidlak",
+          "convex lens",
+          "sunlight",
+          "focus",
+          "burn"
+        ],
+        "fact": {
+          "en": "A magnifying glass gathers the sun's rays into one tiny point! It gets so hot in that spot that it can actually burn paper.",
+          "tl": "Nagtitipon ang magnifying glass ng sinag ng araw sa isang maliit na punto! Napakainit nito kaya kayang sunugin ang papel sa spot na iyon.",
+          "bis": "Nagtipon ang magnifying glass sa sidlak sa adlaw ngadto sa usa ka gamay nga punto! Init kaayo niini mao nga makasunog kini og papel."
+        },
+        "slug": "magnifier-burn-paper-sun",
+        "title": {
+          "en": "Convex Lens",
+          "tl": "Lente na Matambok",
+          "bis": "Lente nga Matambok"
+        },
+        "cats": [
+          "light",
+          "heat"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "magnifying glass"
+          ],
+          "en": [
+            "magnifying glass"
+          ],
+          "bis": [
+            "magnifying glass"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-27070",
+        "factId": "magnifier-burn-paper-sun-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "convex lens concentrates sunlight",
+        "terms": [
+          "magnifying glass",
+          "lente",
+          "araw",
+          "sinunog",
+          "papel",
+          "tinipon na liwanag",
+          "adlaw",
+          "gisunog",
+          "sidlak",
+          "convex lens",
+          "sunlight",
+          "focus",
+          "burn"
+        ],
+        "fact": {
+          "en": "A magnifying glass gathers the sun's rays into one tiny point! It gets so hot in that spot that it can actually burn paper.",
+          "tl": "Nagtitipon ang magnifying glass ng sinag ng araw sa isang maliit na punto! Napakainit nito kaya kayang sunugin ang papel sa spot na iyon.",
+          "bis": "Nagtipon ang magnifying glass sa sidlak sa adlaw ngadto sa usa ka gamay kaayo nga punto! Init kaayo sa maong punto, mao nga makasunog gyud kini og papel."
+        },
+        "slug": "magnifier-burn-paper-sun",
+        "title": {
+          "en": "Convex Lens",
+          "tl": "Lente na Matambok",
+          "bis": "Lente nga Matambok"
+        },
+        "cats": [
+          "light",
+          "heat"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "magnifying glass"
+          ],
+          "en": [
+            "magnifying glass"
+          ],
+          "bis": [
+            "magnifying glass"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Names the hot point explicitly and retains tiny with gamay kaayo, actually with gyud and can with maka-. Wolff sidlak includes ray/beam, not only glitter; independent focal-point bodies support the existing point wording. Exact magnifying-glass emphasis and convex-lens title remain.",
+      "formal_item_id": "cc8e65607eb15e052832ea7a05a9a908e",
+      "fidelity_item_id": "m575cd242fc55f2cd2170e397",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27170",
+      "source_card_sha256": "9a3a3bb44e3f91338b7ecd483cdbcf11cdc5a5b0a21b0493b53fa6c2401805d2",
+      "candidate_card_sha256": "062b7f2fb1eda744c5e5a04864d272ab92855cfd26a4d7a272d9f328b1f60c48",
+      "before_card": {
+        "id": "ffct-27170",
+        "factId": "fwg-force-1467",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "force",
+        "terms": [
+          "force",
+          "golden",
+          "gate",
+          "bridge",
+          "uses",
+          "massive",
+          "steel",
+          "cables",
+          "under",
+          "tension"
+        ],
+        "fact": {
+          "en": "How does the Golden Gate Bridge hold up its heavy roadway?\n\nThe Golden Gate Bridge uses massive steel cables under tension to support the heavy weight of the roadway!",
+          "tl": "Paano kaya tinatayo ng Golden Gate Bridge ang mabigat niyang kalsada?\n\nAng Golden Gate Bridge ay gumagamit ng napakakapal na steel cables na naka-tension para suportahan ang mabigat na kalsada!",
+          "bis": "Unsaon man pagdala sa Golden Gate Bridge sa bug-at niyang dalan?\n\nAng Golden Gate Bridge naggamit ug dagkong steel cables nga gi-tension aron suportahan ang bug-at nga dalan!"
+        },
+        "slug": "ffct-27170",
+        "source": "original",
+        "title": {
+          "tl": "Golden Gate Steel Cable",
+          "en": "The Bridge's Steel Cables",
+          "bis": "Golden Gate sa Cable"
+        },
+        "cats": [
+          "forces"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-27170",
+        "factId": "fwg-force-1467",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "force",
+        "terms": [
+          "force",
+          "golden",
+          "gate",
+          "bridge",
+          "uses",
+          "massive",
+          "steel",
+          "cables",
+          "under",
+          "tension"
+        ],
+        "fact": {
+          "en": "How does the Golden Gate Bridge hold up its heavy roadway?\n\nThe Golden Gate Bridge uses massive steel cables under tension to support the heavy weight of the roadway!",
+          "tl": "Paano kaya tinatayo ng Golden Gate Bridge ang mabigat niyang kalsada?\n\nAng Golden Gate Bridge ay gumagamit ng napakakapal na steel cables na naka-tension para suportahan ang mabigat na kalsada!",
+          "bis": "Unsaon man pagdala sa Golden Gate Bridge sa bug-at niyang dalan?\n\nAng Golden Gate Bridge naggamit ug dagkong steel cables nga gi-tension aron suportahan ang bug-at nga dalan!"
+        },
+        "slug": "ffct-27170",
+        "source": "original",
+        "title": {
+          "tl": "Golden Gate Steel Cable",
+          "en": "The Bridge's Steel Cables",
+          "bis": "Ang Steel Cables sa Tulay"
+        },
+        "cats": [
+          "forces"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title directly identifies the bridge’s steel cables rather than reversing/obscuring the relationship. Wolff tulay is bridge and must retain l; Golden Gate’s own cable/tension exhibit corroborates the supporting mechanism. Body unchanged, both title wins.",
+      "formal_item_id": "c98fde9332c99745e0f3de924cd008f11",
+      "fidelity_item_id": "m80f5e1d9083f1a86bd4c867f",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27258",
+      "source_card_sha256": "ad017c2ab10b1d8289c90b81247d35665baa8502d65218918c874828197e499b",
+      "candidate_card_sha256": "b576fba292401301813106cf4b2b24ac9710da7639220d70bf4ce4837f43e6cc",
+      "before_card": {
+        "id": "ffct-27258",
+        "factId": "fwg-sound-pitch-1098",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Sound (Pitch)",
+        "terms": [
+          "sound",
+          "pitch",
+          "plucking",
+          "tight",
+          "guitar",
+          "string",
+          "makes",
+          "vibrate",
+          "faster",
+          "loose"
+        ],
+        "fact": {
+          "en": "Plucking a tight guitar string makes it vibrate faster than a loose one, producing a higher-pitched sound wave!",
+          "tl": "Kapag pinipitik mo ang mahigpit na guitar string, mas mabilis itong mag-vibrate kaysa sa maluwag, kaya mas mataas ang pitch ng tunog!",
+          "bis": "Kung i-pluck nimo ang tight nga guitar string, mas paspas siya mag-vibrate kaysa sa loose, mao nga mas taas ang pitch sa tunog!"
+        },
+        "slug": "guitar-strum-vibrating-strings",
+        "title": {
+          "en": "Sound Pitch",
+          "tl": "Tono ng Tunog",
+          "bis": "Pitch sa Tunog"
+        },
+        "cats": [
+          "sound"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "pitch"
+          ],
+          "en": [
+            "pitch"
+          ],
+          "bis": [
+            "pitch"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-27258",
+        "factId": "fwg-sound-pitch-1098",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Sound (Pitch)",
+        "terms": [
+          "sound",
+          "pitch",
+          "plucking",
+          "tight",
+          "guitar",
+          "string",
+          "makes",
+          "vibrate",
+          "faster",
+          "loose"
+        ],
+        "fact": {
+          "en": "Plucking a tight guitar string makes it vibrate faster than a loose one, producing a higher-pitched sound wave!",
+          "tl": "Kapag pinipitik mo ang mahigpit na guitar string, mas mabilis itong mag-vibrate kaysa sa maluwag, kaya mas mataas ang pitch ng tunog!",
+          "bis": "Kung i-pluck nimo ang hugot nga guitar string, mas paspas kini mo-vibrate kaysa sa luag nga string. Mao nga mas taas ang pitch sa tunog!"
+        },
+        "slug": "guitar-strum-vibrating-strings",
+        "title": {
+          "en": "Sound Pitch",
+          "tl": "Tono ng Tunog",
+          "bis": "Pitch sa Tunog"
+        },
+        "cats": [
+          "sound"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "pitch"
+          ],
+          "en": [
+            "pitch"
+          ],
+          "bis": [
+            "pitch"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Hugot and luag render tight and loose with a fully stated comparison; the result becomes its own sentence. Wolff hugut explicitly uses taut guitar strings and luag denotes loose attachment. Retain i-pluck instead of inventing an unverified substitute; both body wins and pitch emphasis unchanged.",
+      "formal_item_id": "cb9e12e9d8fddcc1ddda72c95a86c3dc4",
+      "fidelity_item_id": "m0ef531788953b6bbf59cb93b",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-27295",
+      "source_card_sha256": "857315392d31478e59916a923ca926fd7628ac7be02a60afcb24d1fc45b8659e",
+      "candidate_card_sha256": "c30243ec0a468f17a3503ec3d1b793afee4047b8d23703c4ca2c97a1d032d26b",
+      "before_card": {
+        "id": "ffct-27295",
+        "factId": "fwg-heat-convection-1304",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Heat Convection",
+        "terms": [
+          "heat",
+          "convection",
+          "heating",
+          "water",
+          "causes",
+          "bottom",
+          "layer",
+          "expand",
+          "become",
+          "less"
+        ],
+        "fact": {
+          "en": "What happens to water when you heat it in a pot?\n\nThe bottom layer expands and becomes less dense, making it rise while cooler, denser water sinks to replace it!",
+          "tl": "Ano ang nangyayari sa tubig kapag pinainit mo ito sa isang pot?\n\nAng ilalim na layer ay lumalawak at nagiging less dense, kaya umaangat ito habang ang mas malamig at denser na tubig ay bumababa para pumalit!",
+          "bis": "Unsay mahitabo sa tubig kung initon nimo kini sa usa ka pot?\n\nAng ubos nga layer mo-expand ug mo-less dense, mao nga mosaka kini samtang ang mas bugnaw ug denser nga tubig mo-ubos aron mopuli!"
+        },
+        "slug": "heat-convection",
+        "title": {
+          "en": "Heat Convection",
+          "tl": "Konbeksyon ng Init",
+          "bis": "Konbeksyon sa Init"
+        },
+        "cats": [
+          "heat"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "less dense"
+          ],
+          "en": [
+            "less dense"
+          ],
+          "bis": [
+            "less dense"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-27295",
+        "factId": "fwg-heat-convection-1304",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Heat Convection",
+        "terms": [
+          "heat",
+          "convection",
+          "heating",
+          "water",
+          "causes",
+          "bottom",
+          "layer",
+          "expand",
+          "become",
+          "less"
+        ],
+        "fact": {
+          "en": "What happens to water when you heat it in a pot?\n\nThe bottom layer expands and becomes less dense, making it rise while cooler, denser water sinks to replace it!",
+          "tl": "Ano ang nangyayari sa tubig kapag pinainit mo ito sa isang pot?\n\nAng ilalim na layer ay lumalawak at nagiging less dense, kaya umaangat ito habang ang mas malamig at denser na tubig ay bumababa para pumalit!",
+          "bis": "Unsay mahitabo sa tubig kung initon nimo kini sa kaldero?\n\nAng ubos nga layer sa tubig mo-expand ug mahimong less dense, mao nga mosaka kini. Sa samang higayon, moubos ang mas bugnaw ug mas dense nga tubig aron mopuli niini!"
+        },
+        "slug": "heat-convection",
+        "title": {
+          "en": "Heat Convection",
+          "tl": "Konbeksyon ng Init",
+          "bis": "Konbeksyon sa Init"
+        },
+        "cats": [
+          "heat"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "less dense"
+          ],
+          "en": [
+            "less dense"
+          ],
+          "bis": [
+            "less dense"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Kaldero is supported by Wolff kaldiru, a metal cooking pot, and independent pot-context bodies. Mahimong states becomes; layer sa tubig and mopuli niini clarify referents while Sa samang higayon retains simultaneity. Wolff gayun/higayun and puli support time/replacement, and less dense emphasis is exact.",
+      "formal_item_id": "c3859963b91a1977a2495fbe353e4a8bf",
+      "fidelity_item_id": "m2ee9a3f3a0c1cd584350c915",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    }
+  ],
+  "held": [
+    {
+      "card_id": "ffct-26646",
+      "source_card_sha256": "275ea10af689d8dbe2d20ac3804d8238f2d65a4dce318199e8f16bce70284a07",
+      "candidate_card_sha256": "0e9434d4af89807a31068ca66b0a9701dc1d5286768a2dc8ae7a89f9b806ae44",
+      "before_card": {
+        "id": "ffct-26646",
+        "factId": "first-color-photo-year-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "when was the first color photograph made",
+        "terms": [
+          "kailan unang kulay na larawan",
+          "1861",
+          "maxwell 1861",
+          "first color photo year",
+          "kanus-a unang kolor litrato",
+          "color photograph 1861"
+        ],
+        "fact": {
+          "en": "The first color photograph was made in 1861!",
+          "tl": "Ang unang makulay na larawan ay ginawa noong 1861!",
+          "bis": "Ang unang makulay nga litrato gihimo niadtong 1861!"
+        },
+        "slug": "ffct-26646",
+        "source": "original",
+        "title": {
+          "tl": "1861 Unang Kulay na Litrato",
+          "en": "1861 First Color Photo",
+          "bis": "1861 Unang Kolor Litrato"
+        },
+        "cats": [
+          "light"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26646",
+        "factId": "first-color-photo-year-g7",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "when was the first color photograph made",
+        "terms": [
+          "kailan unang kulay na larawan",
+          "1861",
+          "maxwell 1861",
+          "first color photo year",
+          "kanus-a unang kolor litrato",
+          "color photograph 1861"
+        ],
+        "fact": {
+          "en": "The first color photograph was made in 1861!",
+          "tl": "Ang unang makulay na larawan ay ginawa noong 1861!",
+          "bis": "Ang unang makulay nga litrato gihimo niadtong 1861!"
+        },
+        "slug": "ffct-26646",
+        "source": "original",
+        "title": {
+          "tl": "1861 Unang Kulay na Litrato",
+          "en": "1861 First Color Photo",
+          "bis": "Unang Makulay nga Litrato sa 1861"
+        },
+        "cats": [
+          "light"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The unqualified first colour photograph needs a precise historical scope: the museum account documents a three-filter projected colour demonstration in 1861, not every possible meaning of first colour photograph. Makulay is additionally unresolved for this Cebuano title/body; Wolff kulur and machine-translated colour occurrences do not establish that exact form. Do not polish this claim before cross-language source and lexical review.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c741bc70c9e2517a08ffa42e86a98e628"
+    },
+    {
+      "card_id": "ffct-26673",
+      "source_card_sha256": "9045166f6e8b8c9d769c3ea1213521a1e0edd8653028da0c4f1a3613a51637bb",
+      "candidate_card_sha256": "e2c41a1dd38c2618157e1959efe0f97aeca67a313fd30d4ae7f3dc4930c65049",
+      "before_card": {
+        "id": "ffct-26673",
+        "factId": "namesake-coulomb-charge-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who is the coulomb named after",
+        "terms": [
+          "charles-augustin de coulomb",
+          "coulomb",
+          "charge scientist",
+          "sino si coulomb",
+          "coulomb namesake",
+          "coulomb's law",
+          "kuryenteng karga",
+          "ngalan sa coulomb",
+          "coulomb",
+          "french physicist",
+          "electric force"
+        ],
+        "fact": {
+          "en": "The coulomb unit is named after Charles-Augustin de Coulomb, a French scientist who studied electric force!",
+          "tl": "Ang yunit na coulomb ay ipinangalan kay Charles-Augustin de Coulomb, isang Pranses na siyentista na nag-aral ng puwersa ng kuryente!",
+          "bis": "Ang yunit nga coulomb ginganlan kang Charles-Augustin de Coulomb, usa ka Pranses nga siyentista nga nagtuon sa kusog sa koryente!"
+        },
+        "slug": "ffct-26673",
+        "source": "original",
+        "title": {
+          "tl": "Coulomb French Scientist",
+          "en": "The Coulomb Namesake",
+          "bis": "Coulomb sa France"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26673",
+        "factId": "namesake-coulomb-charge-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "who is the coulomb named after",
+        "terms": [
+          "charles-augustin de coulomb",
+          "coulomb",
+          "charge scientist",
+          "sino si coulomb",
+          "coulomb namesake",
+          "coulomb's law",
+          "kuryenteng karga",
+          "ngalan sa coulomb",
+          "coulomb",
+          "french physicist",
+          "electric force"
+        ],
+        "fact": {
+          "en": "The coulomb unit is named after Charles-Augustin de Coulomb, a French scientist who studied electric force!",
+          "tl": "Ang yunit na coulomb ay ipinangalan kay Charles-Augustin de Coulomb, isang Pranses na siyentista na nag-aral ng puwersa ng kuryente!",
+          "bis": "Ang yunit nga coulomb ginganlan kang Charles-Augustin de Coulomb, usa ka Pranses nga siyentista nga nagtuon sa kusog sa koryente!"
+        },
+        "slug": "ffct-26673",
+        "source": "original",
+        "title": {
+          "tl": "Coulomb French Scientist",
+          "en": "The Coulomb Namesake",
+          "bis": "Ang Ngalan sa Coulomb"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Title is clearer, but the unchanged kusog sa koryente could suggest strength of electric current rather than electric force. Wolff kusug includes force, while kuryinti specifies current/wire; the proposer itself flags the phrase. These roots and mixed corpus examples do not settle this exact compound. Keep the whole candidate on hold rather than treating clean model fidelity as resolution.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "cec44474b2bdf1190055d222a4d067827"
+    },
+    {
+      "card_id": "ffct-26738",
+      "source_card_sha256": "1e5015e6a0a4e5fe1ad9e00a7052de88b6d8abd53bff5bafad308f13f044680c",
+      "candidate_card_sha256": "fd78b4366bf8ed04a7891ad4f5bf6b6693028e5b99e35b23519ee5213e1df411",
+      "before_card": {
+        "id": "ffct-26738",
+        "factId": "unit-of-area-square-meter-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is the SI unit of area",
+        "terms": [
+          "unit ng area",
+          "square meter",
+          "metro kwadrado",
+          "m2",
+          "area unit",
+          "lawak",
+          "yunit sa area",
+          "sukat ng lapad",
+          "anong yunit ang area",
+          "kuwadrado"
+        ],
+        "fact": {
+          "en": "The SI unit of area is the square meter, and its symbol is m²!",
+          "tl": "Ang yunit ng lawak (area) sa SI ay square meter o metro kwadrado, at ang simbolo nito ay m²!",
+          "bis": "Ang yunit sa gilapdon (area) sa SI mao ang square meter o metro kuwadrado, ug ang simbolo niini kay m²!"
+        },
+        "slug": "ffct-26738",
+        "source": "original",
+        "title": {
+          "tl": "Square Meter SI Unit Area m2",
+          "en": "Square Meter, Area Unit",
+          "bis": "Square Metro SI Unit Area"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26738",
+        "factId": "unit-of-area-square-meter-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "what is the SI unit of area",
+        "terms": [
+          "unit ng area",
+          "square meter",
+          "metro kwadrado",
+          "m2",
+          "area unit",
+          "lawak",
+          "yunit sa area",
+          "sukat ng lapad",
+          "anong yunit ang area",
+          "kuwadrado"
+        ],
+        "fact": {
+          "en": "The SI unit of area is the square meter, and its symbol is m²!",
+          "tl": "Ang yunit ng lawak (area) sa SI ay square meter o metro kwadrado, at ang simbolo nito ay m²!",
+          "bis": "Ang yunit sa gilapdon (area) sa SI mao ang square meter o metro kuwadrado, ug ang simbolo niini kay m²!"
+        },
+        "slug": "ffct-26738",
+        "source": "original",
+        "title": {
+          "tl": "Square Meter SI Unit Area m2",
+          "en": "Square Meter, Area Unit",
+          "bis": "Square Meter, Yunit sa Area"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The unchanged body equates gilapdon with area. Wolff specifically defines the derived gilapdun as width, although lapad has broader area-related uses. Parenthetical area and a square-metre answer do not establish the technical equivalence of width and area. Hold the title-only candidate for precise cross-language lexical review.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c79a8bb150cffc0b90451c40b911a99f4"
+    },
+    {
+      "card_id": "ffct-26897",
+      "source_card_sha256": "7afececac35f69b72d195a79df8893e4fa56a17f939ec2c32031fbeb1520f388",
+      "candidate_card_sha256": "168423ba198c0d078c1200bf782ed6e9e8a6f4b24f9e09b2a02c1faa693ba451",
+      "before_card": {
+        "id": "ffct-26897",
+        "factId": "laser-pointer-eye-injury-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "never shine a laser into eyes",
+        "terms": [
+          "laser",
+          "laser pointer",
+          "mata",
+          "eyes",
+          "delikado",
+          "dangerous",
+          "retina",
+          "ilaw",
+          "liwanag",
+          "tutok",
+          "ituon",
+          "pinsala",
+          "injury",
+          "mura",
+          "titigan",
+          "titig",
+          "tinitigan",
+          "tumitig",
+          "tumititig",
+          "masama",
+          "masama ba",
+          "masama sa mata",
+          "makasira",
+          "nakakasira",
+          "nakakasira ng mata",
+          "huwag tumingin",
+          "dont stare",
+          "stare at the sun",
+          "is it bad"
+        ],
+        "fact": {
+          "en": "Never shine a laser pointer into eyes! Even a small, cheap laser can injure the eye's retina.",
+          "tl": "Huwag itutok ang laser pointer sa mata! Kahit maliit at murang laser ay pwedeng makasira sa retina ng mata.",
+          "bis": "Ayaw gyud itutok ang laser pointer sa mata! Bisan gamay ug barato nga laser makadaot sa retina sa mata."
+        },
+        "slug": "ffct-26897",
+        "source": "original",
+        "title": {
+          "tl": "Huwag Laser Mata Tamaan Delikado",
+          "en": "Never Laser into Eyes",
+          "bis": "Ayaw Laser Mata Delikado"
+        },
+        "cats": [
+          "light",
+          "health"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-26897",
+        "factId": "laser-pointer-eye-injury-g5",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "never shine a laser into eyes",
+        "terms": [
+          "laser",
+          "laser pointer",
+          "mata",
+          "eyes",
+          "delikado",
+          "dangerous",
+          "retina",
+          "ilaw",
+          "liwanag",
+          "tutok",
+          "ituon",
+          "pinsala",
+          "injury",
+          "mura",
+          "titigan",
+          "titig",
+          "tinitigan",
+          "tumitig",
+          "tumititig",
+          "masama",
+          "masama ba",
+          "masama sa mata",
+          "makasira",
+          "nakakasira",
+          "nakakasira ng mata",
+          "huwag tumingin",
+          "dont stare",
+          "stare at the sun",
+          "is it bad"
+        ],
+        "fact": {
+          "en": "Never shine a laser pointer into eyes! Even a small, cheap laser can injure the eye's retina.",
+          "tl": "Huwag itutok ang laser pointer sa mata! Kahit maliit at murang laser ay pwedeng makasira sa retina ng mata.",
+          "bis": "Ayaw gyud itutok ang laser pointer sa mata! Bisan gamay ug barato nga laser makadaot sa retina sa mata."
+        },
+        "slug": "ffct-26897",
+        "source": "original",
+        "title": {
+          "tl": "Huwag Laser Mata Tamaan Delikado",
+          "en": "Never Laser into Eyes",
+          "bis": "Ayaw Itutok ang Laser sa Mata"
+        },
+        "cats": [
+          "light",
+          "health"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "FDA supports the laser-eye safety claim, but Wolff tutuk attests staring/fixing the eyes, not unambiguously aiming a device. Independent corpus examples are primarily eyes/focusing, and Binisaya access returned a verification page. Retaining a safety warning is essential; hold this exact title wording until the device-directed verb is established, without calling it a proven error.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "ca2ac0fa637ef2238ae22dd1ef0e5b0a2"
+    },
+    {
+      "card_id": "ffct-27149",
+      "source_card_sha256": "692e7f5d8e30236338b1531cf8bfc077a0fd6b4fe420d86e9150eb9f3407115a",
+      "candidate_card_sha256": "0df6d3e048d9f5984ac992781be8f8d266978033b0205aedba015a78303cf59e",
+      "before_card": {
+        "id": "ffct-27149",
+        "factId": "fwg-heat-813",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Heat",
+        "terms": [
+          "heat",
+          "under",
+          "certain",
+          "specific",
+          "conditions",
+          "water",
+          "actually",
+          "freeze",
+          "faster",
+          "cold"
+        ],
+        "fact": {
+          "en": "Under specific conditions, hot water can actually freeze faster than cold water in a surprising phenomenon called the Mpemba effect!",
+          "tl": "Sa ilang specific conditions, ang mainit na tubig ay maaaring mag-freeze nang mas mabilis kaysa sa malamig na tubig—ito ang Mpemba effect!",
+          "bis": "Sa pipila ka specific conditions, ang init nga tubig makafreeze mas paspas kaysa sa bugnaw nga tubig, usa ka katingalahan nga gitawag og Mpemba effect!"
+        },
+        "slug": "ffct-27149",
+        "source": "original",
+        "title": {
+          "tl": "Mpemba Mainit Unang Freeze",
+          "en": "Hot Can Freeze First",
+          "bis": "Mpemba sa Mainit"
+        },
+        "cats": [
+          "heat"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-27149",
+        "factId": "fwg-heat-813",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Heat",
+        "terms": [
+          "heat",
+          "under",
+          "certain",
+          "specific",
+          "conditions",
+          "water",
+          "actually",
+          "freeze",
+          "faster",
+          "cold"
+        ],
+        "fact": {
+          "en": "Under specific conditions, hot water can actually freeze faster than cold water in a surprising phenomenon called the Mpemba effect!",
+          "tl": "Sa ilang specific conditions, ang mainit na tubig ay maaaring mag-freeze nang mas mabilis kaysa sa malamig na tubig—ito ang Mpemba effect!",
+          "bis": "Sa pipila ka specific conditions, ang init nga tubig makafreeze mas paspas kaysa sa bugnaw nga tubig! Kini nga katingalahan gitawag og Mpemba effect."
+        },
+        "slug": "ffct-27149",
+        "source": "original",
+        "title": {
+          "tl": "Mpemba Mainit Unang Freeze",
+          "en": "Hot Can Freeze First",
+          "bis": "Ang Mpemba Effect"
+        },
+        "cats": [
+          "heat"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The condition and can qualifiers survive translation, but specific conditions and freezing endpoint are unspecified. Primary Mpemba studies differ on reproducibility; colloidal relaxation and model phase transitions do not themselves validate this water-freezing classroom claim. Hold for an English source decision and precise demonstration context rather than declaring the phenomenon universally false or approving solely on model agreement.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "cbe014ab8bd5fc45cadbf1ca39dd3f61b"
+    },
+    {
+      "card_id": "ffct-27157",
+      "source_card_sha256": "fabe9556c40de0e4645c2f62db91c298273cc9d41fc367e11170410aa54723ca",
+      "candidate_card_sha256": "5fc57e04808db7b8bc69ed4e0a960fafc02a01460b3580e86e85dae5ec83f8e3",
+      "before_card": {
+        "id": "ffct-27157",
+        "factId": "motion-graphs-distance-time-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "reading a distance-time motion graph",
+        "terms": [
+          "motion graph",
+          "graph ng galaw",
+          "distansya",
+          "distance",
+          "oras",
+          "time",
+          "tulin",
+          "speed",
+          "bilis",
+          "slope",
+          "linya",
+          "line",
+          "patag na linya",
+          "nakatigil",
+          "tumatarik",
+          "steep",
+          "grap sa lihok",
+          "gilay-on",
+          "nagpapakita ng galaw"
+        ],
+        "fact": {
+          "en": "On a distance-time graph, a steeper line means faster motion, while a flat line means the object is standing still!",
+          "tl": "Sa distance-time graph, ang mas matarik na linya ay mas mabilis na galaw, habang ang patag na linya ay nakatigil ang bagay!",
+          "bis": "Sa distance-time graph, ang mas tarik nga linya mas paspas nga lihok, samtang ang patag nga linya wala maglihok ang butang!"
+        },
+        "slug": "ffct-24145",
+        "title": {
+          "en": "Distance-Time Graph",
+          "tl": "Distansya-Oras Graph",
+          "bis": "Distansya-Oras Grap"
+        },
+        "cats": [
+          "motion",
+          "measurement"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "distance-time graph"
+          ],
+          "en": [
+            "distance-time graph"
+          ],
+          "bis": [
+            "distance-time graph"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-27157",
+        "factId": "motion-graphs-distance-time-g8",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "reading a distance-time motion graph",
+        "terms": [
+          "motion graph",
+          "graph ng galaw",
+          "distansya",
+          "distance",
+          "oras",
+          "time",
+          "tulin",
+          "speed",
+          "bilis",
+          "slope",
+          "linya",
+          "line",
+          "patag na linya",
+          "nakatigil",
+          "tumatarik",
+          "steep",
+          "grap sa lihok",
+          "gilay-on",
+          "nagpapakita ng galaw"
+        ],
+        "fact": {
+          "en": "On a distance-time graph, a steeper line means faster motion, while a flat line means the object is standing still!",
+          "tl": "Sa distance-time graph, ang mas matarik na linya ay mas mabilis na galaw, habang ang patag na linya ay nakatigil ang bagay!",
+          "bis": "Sa distance-time graph, ang mas tarik nga linya nagpasabot nga mas paspas ang lihok. Apan ang patag nga linya nagpasabot nga wala maglihok ang butang!"
+        },
+        "slug": "ffct-24145",
+        "title": {
+          "en": "Distance-Time Graph",
+          "tl": "Distansya-Oras Graph",
+          "bis": "Distansya-Oras Grap"
+        },
+        "cats": [
+          "motion",
+          "measurement"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "distance-time graph"
+          ],
+          "en": [
+            "distance-time graph"
+          ],
+          "bis": [
+            "distance-time graph"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Adding nagpasabot clarifies the graph explanation, but unchanged tarik as steep remains unresolved. Both Wolff and Binisaya list an outrigger sense; 48 machine-translated steep-context bodies are not independent lexical authority. Preserve the original and seek a technical lexical ruling; absence from those dictionaries is not proof of invalidity.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "cd06276578d0785fbc2454047905e5324"
+    },
+    {
+      "card_id": "ffct-27319",
+      "source_card_sha256": "4e3b0fbf6e31544f450a3bd8bfdefbec7cc4230471695ef8c8feefeb48201d8f",
+      "candidate_card_sha256": "c2f73a3e554591578fb9d7e119113677cf5d9f314ae58611cddb9e3f556c602d",
+      "before_card": {
+        "id": "ffct-27319",
+        "factId": "fwg-motion-1797",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Motion",
+        "terms": [
+          "motion",
+          "philippine",
+          "national",
+          "railways",
+          "trains",
+          "require",
+          "large",
+          "unbalanced",
+          "force",
+          "diesel"
+        ],
+        "fact": {
+          "en": "Philippine National Railways trains need a big unbalanced force from their diesel engines to overcome inertia and start moving from a station!",
+          "tl": "Ang mga tren ng Philippine National Railways ay kailangan ng malaking unbalanced force mula sa diesel engine para mapagtagumpayan ang inertia at makapagsimula sa istasyon!",
+          "bis": "Ang mga tren sa Philippine National Railways nagkinahanglan og dako nga unbalanced force gikan sa diesel engine aron mapildi ang inertia ug makasugod og lihok gikan sa estasyon!"
+        },
+        "slug": "ffct-27319",
+        "source": "original",
+        "title": {
+          "tl": "PNR Tren Diesel Inertia",
+          "en": "PNR Train Inertia Start",
+          "bis": "PNR Tren Inertia"
+        },
+        "cats": [
+          "forces-and-motion"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-27319",
+        "factId": "fwg-motion-1797",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Motion",
+        "terms": [
+          "motion",
+          "philippine",
+          "national",
+          "railways",
+          "trains",
+          "require",
+          "large",
+          "unbalanced",
+          "force",
+          "diesel"
+        ],
+        "fact": {
+          "en": "Philippine National Railways trains need a big unbalanced force from their diesel engines to overcome inertia and start moving from a station!",
+          "tl": "Ang mga tren ng Philippine National Railways ay kailangan ng malaking unbalanced force mula sa diesel engine para mapagtagumpayan ang inertia at makapagsimula sa istasyon!",
+          "bis": "Ang mga tren sa Philippine National Railways nagkinahanglan og dako nga unbalanced force gikan sa diesel engine aron mapildi ang inertia ug makasugod og lihok gikan sa estasyon!"
+        },
+        "slug": "ffct-27319",
+        "source": "original",
+        "title": {
+          "tl": "PNR Tren Diesel Inertia",
+          "en": "PNR Train Inertia Start",
+          "bis": "Inertia sa Tren sa PNR"
+        },
+        "cats": [
+          "forces-and-motion"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The English says a big force is needed to overcome inertia without specifying acceleration or separating inertia from resistance. Newton’s laws require nonzero net external force for acceleration, not a universal large-force threshold set by inertia. NASA law material supports this distinction. Hold the title-only polish for source review; no claim about PNR’s current service or fleet is newly verified.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c2bf96afaf70d7d56ac0ef8bff503933a"
+    }
+  ],
+  "prior_mandatory_missing_judgment_holds": [
+    "ffct-15686",
+    "ffct-24823",
+    "ffct-24184"
+  ],
+  "native_verified": false,
+  "science_verified": false,
+  "released": false,
+  "source_precision_holds_require_cross_language_review": [
+    "ffct-26646",
+    "ffct-27149",
+    "ffct-27319"
+  ],
+  "lexical_holds": [
+    "ffct-26673",
+    "ffct-26738",
+    "ffct-26897",
+    "ffct-27157"
+  ],
+  "fidelity_holds": [],
+  "readability_holds": []
+}

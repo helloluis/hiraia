@@ -1,0 +1,53 @@
+{
+  "recorded_at": "2026-10-07T04:14:46.460026+00:00",
+  "failures": [
+    {
+      "check": "curriculum-tests",
+      "receipt": {
+        "path": "build/cebuano-curriculum-alignment/executions/check-curriculum-tests-001/execution.json",
+        "sha256": "acd8af8bebad10d1b314a226aeb084145c599da8062d1e6b07797bc38226dc89",
+        "bytes": 1083
+      }
+    },
+    {
+      "check": "assessment-tests",
+      "receipt": {
+        "path": "build/cebuano-curriculum-alignment/executions/check-assessment-tests-001/execution.json",
+        "sha256": "703469854a5a23f1f7d79ba0cf69db212adb6b5bf8e1aad6b9a1f7165a47cc72",
+        "bytes": 820
+      }
+    },
+    {
+      "check": "mobile-types",
+      "receipt": {
+        "path": "build/cebuano-curriculum-alignment/executions/check-mobile-types-001/execution.json",
+        "sha256": "b1fafe7babaa439da85652ef6fd9e2d3f5156b1c1e50f94bb751c62bbc5ce90f",
+        "bytes": 452
+      }
+    },
+    {
+      "check": "desktop-types",
+      "receipt": {
+        "path": "build/cebuano-curriculum-alignment/executions/check-desktop-types-001/execution.json",
+        "sha256": "70da3ad0c0d96493fcaf60da4f9f11dcf8b5fac367f89ac5fbb2d7b70040d3a6",
+        "bytes": 491
+      }
+    }
+  ],
+  "diagnosis": [
+    {
+      "check": "curriculum-tests",
+      "reason": "The global never-seen assertion conflicts with authored scarce-anchor reuse across lessons. lessonPlan.ts explicitly permits scarce anchors to repeat; nextChoices follows the frozen run and excludes current-run completion. Production selection code and lesson membership are unchanged. Test now verifies exact run order and current-run nonrepetition."
+    },
+    {
+      "check": "assessment-tests",
+      "reason": "Three language rotation fixtures listed held ha-g4-0010 as a source exposure. Removed that exact ID from the constructed fixture; no replacement exposure invented, no assertion removed. All other rotation requirements remain. Tala fixture failure was a missing tracked file in the sparse checkout."
+    },
+    {
+      "check": "mobile-types/desktop-types",
+      "reason": "Four tracked image/voice metadata JSON files were omitted by sparse checkout. Existing branch files were materialized; no declarations or runtime assets were fabricated."
+    }
+  ],
+  "recovery": "Only these affected checks rerun in checks-002. Original failures retained.",
+  "provider_calls": 0
+}

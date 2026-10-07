@@ -11,6 +11,9 @@ build/
 android/
 !packages/tala/android/
 packages/tala/android/.gradle/
+!packages/provisioner/android/
+packages/provisioner/android/.gradle/
+packages/provisioner/wallpaper/out/
 ios/
 *.jks
 *.p8
@@ -279,3 +282,6 @@ packages/images/manual-originals/
 
 # Reproducible embedding refresh downloads; never commit model/cache bytes.
 .pilot-embedding-cache/
+
+# Tiny deliberately invalid/signature-only fixtures, not installable build artifacts.
+!packages/provisioner/android/app/src/test/resources/apk-signers/*.apk

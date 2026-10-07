@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python3",
+    "-c",
+    "import subprocess,sys; [subprocess.run([sys.executable,\"rag/pipeline/compile-lessons.py\",\"--grade\",str(g)],check=True) for g in range(3,11)]"
+  ],
+  "cwd": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007",
+  "started_at": "2026-10-07T03:56:43.693734+00:00",
+  "finished_at": "2026-10-07T03:57:38.953975+00:00",
+  "actual_exit_code": 0,
+  "parent_nice": 10,
+  "output_sha256": "c45e8885227beeb87e6fd786c6ad9f3a9215134032624696a646cbc605128046",
+  "output_bytes": 11662
+}

@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/build-assessment-bank.py", line 165, in <module>
+    main()
+    ~~~~^^
+  File "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/build-assessment-bank.py", line 153, in main
+    bank = compile_bank()
+  File "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/build-assessment-bank.py", line 124, in compile_bank
+    foundation, bundle = foundation_bundle(pool)
+                         ~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/build-assessment-bank.py", line 31, in foundation_bundle
+    assert not report['errors'], 'Foundation source gate failed:\n' + '\n'.join(report['errors'])
+           ^^^^^^^^^^^^^^^^^^^^
+AssertionError: Foundation source gate failed:
+ha-f3-0035: stale teaching-card snapshot
+ha-f3-0035: unsupported bis teaching excerpt
+ha-f3-0036: stale teaching-card snapshot
+ha-f3-0036: unsupported bis teaching excerpt

@@ -1,0 +1,2755 @@
+{
+  "schema": "hiraia.cebuano-readability-reviewed-edits/v1",
+  "status": "reviewed_for_local_application",
+  "created_at": "2026-10-04T19:01:01.157143+00:00",
+  "reviewer": "Codex root, independent of Claude proposal/backtranslation/fidelity/readability calls; no separate reviewer used for this window",
+  "scope": "Window 42: 23 individually reviewed exact edits and four priority holds. Windows 1–41 were previously reviewed. No score-only approval, native verification, exhaustive science certification or release permission. All seven prior missing-fidelity/invalid-evidence holds remain mandatory.",
+  "window_id": "window-0042",
+  "window_accounting": {
+    "source_cards": 768,
+    "completed_assessments": 768,
+    "missing_fidelity_holds": 0,
+    "approved_exact_edits": 23,
+    "unchanged_keeps": 98,
+    "held": 647,
+    "held_from_priority_set": 4,
+    "preexisting_nonpriority_holds": 643
+  },
+  "input_pins": [
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0042/report.json",
+      "sha256": "16ac1e124d1e21bac0b44af946624addbcbb95406143e3adffef33e619e52812",
+      "bytes": 55111160
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0042/clean-agreement.jsonl",
+      "sha256": "4884057fbad0d93a237c511681663cdad17757cc1128b8d583ea7c1a6d32eb4d",
+      "bytes": 820342
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0042/replay/fidelity/judgments.jsonl",
+      "sha256": "15067138d492f9d5360f13ae2c2a8603f817f3eb058d48dc8937d5612e53801a",
+      "bytes": 851149
+    },
+    {
+      "path": "build/cebuano-readability/campaign-20261002-v1/windows/window-0042/fidelity-inputs/private-map.json",
+      "sha256": "0c6e4de09f7f756f411b2efad2276e5a9a529c525cba3e2805f57f3e42774470",
+      "bytes": 750224
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0042/root-decisions.json",
+      "sha256": "6bf1fd11f37bfb5ef6be517477b6ba7eb158e207473e9119b47512ec84ae8b59",
+      "bytes": 19497
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0042/corpus-lexical-evidence.json",
+      "sha256": "fb800eb524b9345a3c736d2ae345fa8c89cc24694730b758cad4c7a85daf0bb5",
+      "bytes": 83274
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0042/dictionary-entries.json",
+      "sha256": "8c0c65d0e4789bfe55fce1f9dc7b16f75300f41a3978920e23ed9410c048d4c5",
+      "bytes": 100145
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0042/lexical-source-review.json",
+      "sha256": "3060a9a88372c8082b31a29af8d600d86b26a16bcd76b3c4fc7d97ad64205115",
+      "bytes": 2136
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0042/source-evidence-001.json",
+      "sha256": "cf68f3e2614931b3fce8b030675ec76fecdfc9a6ff71ac0641672cc1204756bd",
+      "bytes": 7151
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0042/preview-replay-comparison.json",
+      "sha256": "4af350e129d5b13ec5b186020e405a66a65335d043c5064aec2b700e000c410d",
+      "bytes": 1297
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0042/root-notes-final-001.json",
+      "sha256": "1b6594ee4afe2a2b7300a4ab7beb9b5fbcf5a0f7b1a6ae5c08acd123fca6fe81",
+      "bytes": 21242
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-gutenberg-40074.txt",
+      "sha256": "f80b888b24dd4ca7f5cb16276b4a53f9d22129a496b9ffb7f7efe17d3b9a1504",
+      "bytes": 5699379
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-retrieval.json",
+      "sha256": "bd713c5adf21541a0e7fd9c49f75fb6b9d4157fb88d41151a245165b8955b7da",
+      "bytes": 502
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/1007401b-5932-4d9a-ba80-c2b37ed447e9/window42-initial-reading-001.json",
+      "sha256": "c10e1a2dbafecb6093c7face8f4fd4a91c889b96f36158e91e08bf220a938707",
+      "bytes": 1038508
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/1007401b-5932-4d9a-ba80-c2b37ed447e9/read-dossiers.py",
+      "sha256": "45cf02698587c9d1e1e242b1cd2036897ba807da1bf65a2fc9f1c258b7371b07",
+      "bytes": 1382
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/1007401b-5932-4d9a-ba80-c2b37ed447e9/finalize-window42-evidence-001.py",
+      "sha256": "e2ef8768d548b89dc5bd9fe26963441ec8a8bade9189e4d30ced9f64037f1ac0",
+      "bytes": 4121
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/1007401b-5932-4d9a-ba80-c2b37ed447e9/write-window42-root-records-001.py",
+      "sha256": "7bc5ef84fa50e0c2ea932027b2cb4581a4b834760f4f628c2981056a0d73d15b",
+      "bytes": 24133
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/1007401b-5932-4d9a-ba80-c2b37ed447e9/register-reviewed-001.py",
+      "sha256": "e79f2913f91902108d5174744789d74bc7ad41d643f1f2bdc9ee3575e3682a43",
+      "bytes": 4201
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/1007401b-5932-4d9a-ba80-c2b37ed447e9/verify-local-001.py",
+      "sha256": "d2455719e585e5091977b3fb113fc858322b4774ede5964d2d96c4a7f10edc81",
+      "bytes": 7684
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/1007401b-5932-4d9a-ba80-c2b37ed447e9/create-window42-root-approval-001.py",
+      "sha256": "6a42b619b03877faf529b98470f25df2ac77a6f9951f9b766136bb0f0b49fcc2",
+      "bytes": 6743
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0042/dictionary-supplement-001.json",
+      "sha256": "4ae0d1161e08996baed0119cc1d51b831895ae4d2a0b1141cf4a7cd6f8a73255",
+      "bytes": 23117
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/1007401b-5932-4d9a-ba80-c2b37ed447e9/collect-window42-lexical-001.py",
+      "sha256": "c8143ad604d3ed96f923373f4fbb3054f6ec9b4ba1a1e16a7fde989a84cfb0e2",
+      "bytes": 5283
+    }
+  ],
+  "current_pool_before_application": {
+    "path": "rag/pipeline/cardsPool.app.json",
+    "sha256": "f6d321b5553a6682934630e5d7fb5f43c0094ed2b66f0ecdc60a8dd367b08ee0",
+    "bytes": 50651603
+  },
+  "accepted": [
+    {
+      "card_id": "ffct-32049",
+      "source_card_sha256": "744470f53869e31d1f227e096c1b079bf7dfa71e546d69d2b1096bbfe05c53e4",
+      "candidate_card_sha256": "ea1fe992b37b5b45d61042d81570a69ac91bcbaca521e0adece02c198d4e1257",
+      "before_card": {
+        "id": "ffct-32049",
+        "factId": "solar-eclipse-new-moon-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "solar eclipse happens at new moon",
+        "terms": [
+          "solar eclipse",
+          "eklipse sa araw",
+          "eklipse sa adlaw",
+          "buwan humaharang sa araw",
+          "bulan moali sa adlaw",
+          "anino ng buwan",
+          "anino sa bulan",
+          "bagong buwan",
+          "bag-ong bulan",
+          "new moon",
+          "umaga",
+          "araw na dumidilim",
+          "mongitngit",
+          "nagdidilim"
+        ],
+        "fact": {
+          "en": "How does a solar eclipse happen?\n\nAt new moon, when the Moon passes between Earth and the Sun! It blocks the Sun's light, casting the Moon's shadow on Earth.",
+          "tl": "Paano nangyayari ang solar eclipse?\n\nKapag bagong buwan! Dumadaan ang buwan sa pagitan ng Earth at Araw, humaharang sa liwanag at bumabagsak ang anino nito sa Earth.",
+          "bis": "Giunsa pagkahitabo ang solar eclipse?\n\nKung bag-ong bulan! Moagi ang bulan tungatunga sa Earth ug Adlaw, moali sa kahayag, ug mahulog ang anino sa bulan sa Earth."
+        },
+        "slug": "moon-shadow-on-earth",
+        "title": {
+          "en": "Solar Eclipse",
+          "tl": "Solar Eclipse",
+          "bis": "Solar Eclipse"
+        },
+        "cats": [
+          "eclipses",
+          "space"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "solar eclipse"
+          ],
+          "en": [
+            "solar eclipse"
+          ],
+          "bis": [
+            "solar eclipse"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-32049",
+        "factId": "solar-eclipse-new-moon-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "solar eclipse happens at new moon",
+        "terms": [
+          "solar eclipse",
+          "eklipse sa araw",
+          "eklipse sa adlaw",
+          "buwan humaharang sa araw",
+          "bulan moali sa adlaw",
+          "anino ng buwan",
+          "anino sa bulan",
+          "bagong buwan",
+          "bag-ong bulan",
+          "new moon",
+          "umaga",
+          "araw na dumidilim",
+          "mongitngit",
+          "nagdidilim"
+        ],
+        "fact": {
+          "en": "How does a solar eclipse happen?\n\nAt new moon, when the Moon passes between Earth and the Sun! It blocks the Sun's light, casting the Moon's shadow on Earth.",
+          "tl": "Paano nangyayari ang solar eclipse?\n\nKapag bagong buwan! Dumadaan ang buwan sa pagitan ng Earth at Araw, humaharang sa liwanag at bumabagsak ang anino nito sa Earth.",
+          "bis": "Giunsa pagkahitabo ang solar eclipse?\n\nMahitabo kini sa bag-ong bulan, kung moagi ang bulan sa tungatunga sa Earth ug Adlaw! Moali ang bulan sa kahayag sa Adlaw. Busa motama ang anino sa bulan sa Earth."
+        },
+        "slug": "moon-shadow-on-earth",
+        "title": {
+          "en": "Solar Eclipse",
+          "tl": "Solar Eclipse",
+          "bis": "Solar Eclipse"
+        },
+        "cats": [
+          "eclipses",
+          "space"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "solar eclipse"
+          ],
+          "en": [
+            "solar eclipse"
+          ],
+          "bis": [
+            "solar eclipse"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The new answer attaches the new-moon condition to the alignment, explicitly names the sunlight, then states the shadow reaching Earth as a separate consequence. No every-new-moon claim is introduced. Ali supports blocking passage and tama hitting a location; the latter has an independent-card light-striking example. NASA corroborates the geometry and shadow. Both readers prefer the complete body, with clear backtranslation and equivalent fidelity. The old fragment is not declared universally ungrammatical.",
+      "formal_item_id": "c2da37fdf6cafcf47b5531b6919ef10b9",
+      "fidelity_item_id": "m394a80588c77ad710dd513a3",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32051",
+      "source_card_sha256": "dbaa01593d357bbde17fc4e6b8529fbe0e8bb3f2566592bb4f50008b06385aaa",
+      "candidate_card_sha256": "9eb3368d59fc17a34e8c0f57e755a0e7e3cd28487a926af6d28546a09d8dd9f1",
+      "before_card": {
+        "id": "ffct-32051",
+        "factId": "three-rs-reduce-meaning-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "What Reduce really means in daily life",
+        "terms": [
+          "reduce",
+          "bawasan",
+          "ano ang reduce",
+          "paano bawasan",
+          "mas konti",
+          "less",
+          "hindi sobra",
+          "iwasan ang sobra",
+          "kunti lang",
+          "minus-an",
+          "unsa ang reduce",
+          "pagkunhod",
+          "less basura"
+        ],
+        "fact": {
+          "en": "How can we make less trash from the very start?\n\n\"Reduce\" means using less stuff! If you bring your own cup, you skip buying a plastic one. Less stuff used means less garbage made!",
+          "tl": "Paano tayo makakagawa ng mas kaunting basura mula sa simula?\n\nAng \"Reduce\" ay paggamit ng mas kaunti! Kapag nagdala ka ng sariling baso, hindi ka na bibili ng plastic cup. Mas kaunting gamit, mas kaunting basura!",
+          "bis": "Unsaon paghimo ug mas gamay nga basura gikan sa sinugdanan?\n\nAng \"Reduce\" nagpasabot nga paggamit ug mas gamay! Kon magdala ka ug kaugalingong baso, dili ka na mopalit ug plastic cup. Gamay ang gamit, gamay ang basura!"
+        },
+        "slug": "ffct-32051",
+        "source": "original",
+        "title": {
+          "tl": "Reduce na Kaunting Basura",
+          "en": "Reduce Means Less Trash",
+          "bis": "Reduce, Gamay nga Basura"
+        },
+        "cats": [
+          "recycling"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-32051",
+        "factId": "three-rs-reduce-meaning-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "What Reduce really means in daily life",
+        "terms": [
+          "reduce",
+          "bawasan",
+          "ano ang reduce",
+          "paano bawasan",
+          "mas konti",
+          "less",
+          "hindi sobra",
+          "iwasan ang sobra",
+          "kunti lang",
+          "minus-an",
+          "unsa ang reduce",
+          "pagkunhod",
+          "less basura"
+        ],
+        "fact": {
+          "en": "How can we make less trash from the very start?\n\n\"Reduce\" means using less stuff! If you bring your own cup, you skip buying a plastic one. Less stuff used means less garbage made!",
+          "tl": "Paano tayo makakagawa ng mas kaunting basura mula sa simula?\n\nAng \"Reduce\" ay paggamit ng mas kaunti! Kapag nagdala ka ng sariling baso, hindi ka na bibili ng plastic cup. Mas kaunting gamit, mas kaunting basura!",
+          "bis": "Unsaon nato paghimo ug mas gamay nga basura gikan sa sinugdanan?\n\nAng \"Reduce\" nagpasabot nga mogamit ug mas gamay nga butang! Kon magdala ka ug kaugalingong baso, dili ka na mopalit ug plastic cup. Kon mas gamay ang gamiton, mas gamay usab ang basura!"
+        },
+        "slug": "ffct-32051",
+        "source": "original",
+        "title": {
+          "tl": "Reduce na Kaunting Basura",
+          "en": "Reduce Means Less Trash",
+          "bis": "Reduce: Mas Gamay nga Basura"
+        },
+        "cats": [
+          "recycling"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Unsaon nato gives the source question an explicit inclusive subject. Mogamit ug mas gamay nga butang and the final conditional make using less and producing less trash explicit, while preserving the reusable-cup/plastic example. The title likewise states the comparison. Both readers prefer both changed fields and the meaning checks preserve the relationship. Gamay covers amount and number; this is not a claim that English classroom terms must be removed.",
+      "formal_item_id": "cadcfcfee06ec7f371600ea0e1f90959d",
+      "fidelity_item_id": "mf47643032c140348b55b35d5",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32053",
+      "source_card_sha256": "3da55035b5f6709216216eafa13274a58d66c1ee66d98a0bb8ca2ea200642601",
+      "candidate_card_sha256": "e113e67f94575c624db5a860a772e340e162f22a0771f935a4512a6f679ab085",
+      "before_card": {
+        "id": "ffct-32053",
+        "factId": "three-rs-ph-segregation-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "Filipino law on separating trash (RA 9003)",
+        "terms": [
+          "segregation",
+          "paghihiwalay",
+          "basura",
+          "pilipinas",
+          "batas",
+          "ra 9003",
+          "nabubulok",
+          "di-nabubulok",
+          "biodegradable",
+          "basurahan",
+          "kulay",
+          "philippines",
+          "pagbulag sa basura",
+          "balaod",
+          "color-coded"
+        ],
+        "fact": {
+          "en": "In the Philippines, Republic Act 9003 requires us to separate biodegradable trash like fruit peels from non-biodegradable trash like plastic. That's why schools and barangays use different-colored bins!",
+          "tl": "Sa Pilipinas, iniuutos ng Republic Act 9003 na hiwalay ang nabubulok na basura tulad ng balat ng prutas sa di-nabubulok tulad ng plastic. Kaya may iba't ibang kulay ang basurahan sa schools at barangays!",
+          "bis": "Sa Pilipinas, nagmando ang Republic Act 9003 nga bulagon ang madunot nga basura sama sa panit sa prutas gikan sa dili madunot sama sa plastik. Mao nga lahi-lahi ang kolor sa basurahan sa eskwelahan ug barangay!"
+        },
+        "slug": "ffct-32053",
+        "source": "original",
+        "title": {
+          "tl": "Republic Act 9003",
+          "en": "Republic Act 9003",
+          "bis": "Republic Act 9003"
+        },
+        "cats": [
+          "recycling"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-32053",
+        "factId": "three-rs-ph-segregation-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "Filipino law on separating trash (RA 9003)",
+        "terms": [
+          "segregation",
+          "paghihiwalay",
+          "basura",
+          "pilipinas",
+          "batas",
+          "ra 9003",
+          "nabubulok",
+          "di-nabubulok",
+          "biodegradable",
+          "basurahan",
+          "kulay",
+          "philippines",
+          "pagbulag sa basura",
+          "balaod",
+          "color-coded"
+        ],
+        "fact": {
+          "en": "In the Philippines, Republic Act 9003 requires us to separate biodegradable trash like fruit peels from non-biodegradable trash like plastic. That's why schools and barangays use different-colored bins!",
+          "tl": "Sa Pilipinas, iniuutos ng Republic Act 9003 na hiwalay ang nabubulok na basura tulad ng balat ng prutas sa di-nabubulok tulad ng plastic. Kaya may iba't ibang kulay ang basurahan sa schools at barangays!",
+          "bis": "Sa Pilipinas, nagmando ang Republic Act 9003 nga bulagon nato ang madunot nga basura gikan sa dili madunot nga basura. Pananglitan, madunot ang panit sa prutas, apan dili madunot ang plastik. Mao nga lahi-lahi ang kolor sa basurahan sa eskwelahan ug barangay!"
+        },
+        "slug": "ffct-32053",
+        "source": "original",
+        "title": {
+          "tl": "Republic Act 9003",
+          "en": "Republic Act 9003",
+          "bis": "Republic Act 9003"
+        },
+        "cats": [
+          "recycling"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Moves the segregation rule ahead of its fruit-peel/plastic examples, supplies the English us with nato and retains the school/barangay context. Both readers prefer the shorter explanation; full meaning evidence preserves the examples. RA 9003 sections 21–22 require source segregation and labeled categories; DepEd recommends color-coded bins coordinated with barangay waste management. The card does not claim only two legal categories or that the statute prescribes particular colors. Dunut, bulag and sanglit independently support decay, separation and the example marker.",
+      "formal_item_id": "ce3d62995bf340d8529026731411c4557",
+      "fidelity_item_id": "m818a06de53b167e4a83732cb",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32054",
+      "source_card_sha256": "4e2ef9077ed49fe299e6a02b9a86ef360d2b1f951016b3447e30c6ae07c5fc23",
+      "candidate_card_sha256": "740237c8e2c1e6b05c506a76df5d248cbd8034efaeee5d3d5dc4fc7c36ce1218",
+      "before_card": {
+        "id": "ffct-32054",
+        "factId": "three-rs-why-reduce-first-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "Why Reduce comes before Recycle",
+        "terms": [
+          "reduce muna",
+          "una",
+          "mas mabuti",
+          "kaysa recycle",
+          "why reduce first",
+          "pinakamabisa",
+          "energy",
+          "enerhiya",
+          "nguna",
+          "ngano",
+          "labing maayo",
+          "mas okay",
+          "pinakamaganda"
+        ],
+        "fact": {
+          "en": "Why is \"Reduce\" better than \"Recycle\"?\n\n\"Reduce\" is better because if you don't make trash, nothing needs cleaning, melting, or remaking! Those steps use energy. Avoiding waste from the start is the most effective way!",
+          "tl": "Bakit mas mabuti ang \"Reduce\" kaysa \"Recycle\"?\n\nMas mabuti ang \"Reduce\" dahil kung walang gagawing basura, wala nang kailangang linisin, tunawin, o gawing bago na nakakaubos ng enerhiya. Ang pag-iwas sa basura mula sa simula ang pinakamabisa!",
+          "bis": "Nganong mas maayo ang \"Reduce\" kaysa \"Recycle\"?\n\nMas maayo ang \"Reduce\" kay kon walay basura, wala nay kinahanglan limpyohan, tunawon, o himuong bag-o nga makakonsumo ug enerhiya. Ang paglikay sa basura gikan sa sinugdanan mao ang labing epektibo!"
+        },
+        "slug": "qa-ffct-32054",
+        "source": "original",
+        "title": {
+          "tl": "Reduce laban sa Recycle",
+          "en": "Reduce Beats Recycle",
+          "bis": "Reduce batok sa Recycle"
+        },
+        "cats": [
+          "recycling"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-32054",
+        "factId": "three-rs-why-reduce-first-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "Why Reduce comes before Recycle",
+        "terms": [
+          "reduce muna",
+          "una",
+          "mas mabuti",
+          "kaysa recycle",
+          "why reduce first",
+          "pinakamabisa",
+          "energy",
+          "enerhiya",
+          "nguna",
+          "ngano",
+          "labing maayo",
+          "mas okay",
+          "pinakamaganda"
+        ],
+        "fact": {
+          "en": "Why is \"Reduce\" better than \"Recycle\"?\n\n\"Reduce\" is better because if you don't make trash, nothing needs cleaning, melting, or remaking! Those steps use energy. Avoiding waste from the start is the most effective way!",
+          "tl": "Bakit mas mabuti ang \"Reduce\" kaysa \"Recycle\"?\n\nMas mabuti ang \"Reduce\" dahil kung walang gagawing basura, wala nang kailangang linisin, tunawin, o gawing bago na nakakaubos ng enerhiya. Ang pag-iwas sa basura mula sa simula ang pinakamabisa!",
+          "bis": "Nganong mas maayo ang \"Reduce\" kaysa \"Recycle\"?\n\nMas maayo ang \"Reduce\" kay kon dili ka mohimo ug basura, wala nay kinahanglan limpyohan, tunawon, o himuong bag-o! Kining mga lakang mogamit ug enerhiya. Ang paglikay sa basura gikan sa sinugdanan mao ang labing epektibo nga paagi!"
+        },
+        "slug": "qa-ffct-32054",
+        "source": "original",
+        "title": {
+          "tl": "Reduce laban sa Recycle",
+          "en": "Reduce Beats Recycle",
+          "bis": "Reduce batok sa Recycle"
+        },
+        "cats": [
+          "recycling"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Makes the no-waste condition explicit, then identifies cleaning, melting and remaking as the preceding steps that consume energy. The concluding paagi supplies a clear way/approach noun. The source preference for reduction remains, with no new energy quantity or claim that all recycling uses an identical process. Both blind readers prefer this organization and meaning checks agree. EPA places source reduction and reuse ahead of recycling; dictionary entries support the process terms without treating the old relative clause as a grammar error.",
+      "formal_item_id": "cb82e006329f1ce730b48a3bd62f5877b",
+      "fidelity_item_id": "m12aaedd148a146a03e26545d",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32086",
+      "source_card_sha256": "d6d005b0542d1023f130b4ab5f20fe7f48b7823cbfb87938858e105e41edb26b",
+      "candidate_card_sha256": "825eb6086a16ed835c6d8af649df6718892f2658b70b4ec1a0b4340011ac833a",
+      "before_card": {
+        "id": "ffct-32086",
+        "factId": "microplastics-in-research-ongoing-health-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "scientists still studying microplastics in the body",
+        "terms": [
+          "microplastics",
+          "mikroplastik",
+          "katawan",
+          "lawas",
+          "body",
+          "kalusugan",
+          "panglawas",
+          "health",
+          "siyentista",
+          "scientist",
+          "pag-aaral",
+          "pagtuon",
+          "research",
+          "study",
+          "hindi pa sigurado",
+          "wala pa",
+          "unknown",
+          "follow-up",
+          "totoo"
+        ],
+        "fact": {
+          "en": "Microplastics have been found inside people! Scientists are still studying how much they affect health, so it is wise to be careful while research continues.",
+          "tl": "Natagpuan na ang microplastics sa loob ng tao! Pinag-aaralan pa ng mga siyentista kung gaano ito kalaki ang epekto sa kalusugan, kaya mas mainam nang mag-ingat habang patuloy ang pananaliksik.",
+          "bis": "Nakit-an na ang microplastics sa sulod sa tawo! Gitun-an pa sa mga siyentista kung unsa kadako ang epekto niini sa panglawas, maong mas maayong mag-amping samtang nagpadayon ang panukiduki."
+        },
+        "slug": "ffct-32086",
+        "source": "original",
+        "title": {
+          "tl": "Microplastics sa Loob ng Tao",
+          "en": "Microplastics Inside People",
+          "bis": "Microplastics sa Lawas"
+        },
+        "cats": [
+          "pollution",
+          "health"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-32086",
+        "factId": "microplastics-in-research-ongoing-health-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "scientists still studying microplastics in the body",
+        "terms": [
+          "microplastics",
+          "mikroplastik",
+          "katawan",
+          "lawas",
+          "body",
+          "kalusugan",
+          "panglawas",
+          "health",
+          "siyentista",
+          "scientist",
+          "pag-aaral",
+          "pagtuon",
+          "research",
+          "study",
+          "hindi pa sigurado",
+          "wala pa",
+          "unknown",
+          "follow-up",
+          "totoo"
+        ],
+        "fact": {
+          "en": "Microplastics have been found inside people! Scientists are still studying how much they affect health, so it is wise to be careful while research continues.",
+          "tl": "Natagpuan na ang microplastics sa loob ng tao! Pinag-aaralan pa ng mga siyentista kung gaano ito kalaki ang epekto sa kalusugan, kaya mas mainam nang mag-ingat habang patuloy ang pananaliksik.",
+          "bis": "Nakit-an na ang microplastics sa sulod sa tawo! Gitun-an pa sa mga siyentista kung unsa kadako ang epekto niini sa panglawas. Busa, mas maayo nga mag-amping kita samtang nagpadayon ang panukiduki."
+        },
+        "slug": "ffct-32086",
+        "source": "original",
+        "title": {
+          "tl": "Microplastics sa Loob ng Tao",
+          "en": "Microplastics Inside People",
+          "bis": "Microplastics sa Lawas"
+        },
+        "cats": [
+          "pollution",
+          "health"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Separates the continuing-research uncertainty from the cautious concluding sentence, retaining mag-amping and explicitly including the reader with kita. It adds no health diagnosis, exposure threshold or claim that harm is established. FDA confirms human-sample findings alongside unresolved health effects. Dukiduki explicitly includes research via paN-, and dayun includes continuation via pa-. Both readers prefer the structure; backtranslation and fidelity retain the uncertainty.",
+      "formal_item_id": "ca4cfb1fda5034688d0e4456241fc95dc",
+      "fidelity_item_id": "mfc7acc150f63ff37adcd6c6a",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32117",
+      "source_card_sha256": "be803bfaf1fefa6079766ed3be02302955edd45448a6c7813268369f93f1aed5",
+      "candidate_card_sha256": "db7492d429fad20fe277d3aea783c60fe55d707ee8ae5a18f8501616e95a50e1",
+      "before_card": {
+        "id": "ffct-32117",
+        "factId": "philippine-trench-how-depth-measured-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "How scientists measure such deep water",
+        "terms": [
+          "paano sinusukat",
+          "how measured",
+          "sukat",
+          "lalim",
+          "depth",
+          "sonar",
+          "tunog",
+          "sound waves",
+          "barko",
+          "ship",
+          "echo",
+          "sukatin",
+          "giladmon",
+          "alingawngaw"
+        ],
+        "fact": {
+          "en": "You can't use a tape measure for the trench! Scientists use sonar instead, sending sound down and timing how long the echo takes to bounce back.",
+          "tl": "Hindi pwedeng manukat lang ng tape measure para sa trench! Gumagamit ang mga siyentipiko ng sonar, nagpapadala ng tunog pababa at sinusukat kung gaano katagal bumalik ang alingawngaw.",
+          "bis": "Dili pwede ang tape measure para sa trench! Mogamit ang mga siyentipiko og sonar, magpadala silag tingog paubos ug sukdon kon unsa kadugay mobalik ang lanog niini."
+        },
+        "slug": "ffct-23085",
+        "title": {
+          "en": "Sonar Depth Finding",
+          "tl": "Pagsukat ng Lalim",
+          "bis": "Pagsukod sa Lawom"
+        },
+        "cats": [
+          "oceans",
+          "measurement"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "sonar"
+          ],
+          "en": [
+            "sonar"
+          ],
+          "bis": [
+            "sonar"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-32117",
+        "factId": "philippine-trench-how-depth-measured-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "How scientists measure such deep water",
+        "terms": [
+          "paano sinusukat",
+          "how measured",
+          "sukat",
+          "lalim",
+          "depth",
+          "sonar",
+          "tunog",
+          "sound waves",
+          "barko",
+          "ship",
+          "echo",
+          "sukatin",
+          "giladmon",
+          "alingawngaw"
+        ],
+        "fact": {
+          "en": "You can't use a tape measure for the trench! Scientists use sonar instead, sending sound down and timing how long the echo takes to bounce back.",
+          "tl": "Hindi pwedeng manukat lang ng tape measure para sa trench! Gumagamit ang mga siyentipiko ng sonar, nagpapadala ng tunog pababa at sinusukat kung gaano katagal bumalik ang alingawngaw.",
+          "bis": "Dili pwede ang tape measure para sa trench! Mogamit hinuon ang mga siyentipiko og sonar. Magpadala sila og tingog paubos, unya sukdon nila kon unsa kadugay mobalik ang lanog."
+        },
+        "slug": "ffct-23085",
+        "title": {
+          "en": "Sonar Depth Finding",
+          "tl": "Pagsukat ng Lalim",
+          "bis": "Pagsukod sa Lawom"
+        },
+        "cats": [
+          "oceans",
+          "measurement"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "sonar"
+          ],
+          "en": [
+            "sonar"
+          ],
+          "bis": [
+            "sonar"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Sonar is named in its own sentence before the send-sound/measure-return sequence. Explicit sila and nila keep the scientists as actors and the echo timing relationship stays intact. Hinuun means instead, lanug has an echo sense and sukud supports measurement. Both readers prefer the body and tie the title; meaning evidence preserves the depth-finding method. No English comma-splice rule is imposed on Cebuano.",
+      "formal_item_id": "caf326af3574bb2763b6d399af7e08ddc",
+      "fidelity_item_id": "me60bcb9e52cbcec3241f5c9b",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32236",
+      "source_card_sha256": "6c846e346d537ef362b01288e0f4657627f0b91841a7e4be00e11548645d2672",
+      "candidate_card_sha256": "4c0718218a3a62cab24fa802df92ac2384eea893448c868962f8c813d723ea21",
+      "before_card": {
+        "id": "ffct-32236",
+        "factId": "tsunami-low-shoaling-rise-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "Why a low tsunami grows tall near shore",
+        "terms": [
+          "tsunami",
+          "shoaling",
+          "lumalaki",
+          "grows tall",
+          "mababaw",
+          "shallow",
+          "bakit tumataas",
+          "paano tumaas",
+          "mibabaw",
+          "modako",
+          "slows down",
+          "bumabagal",
+          "baybayin",
+          "coast",
+          "naipon ang tubig"
+        ],
+        "fact": {
+          "en": "When a tsunami reaches the shallow shore, it slows down and the water piles up, making the once-low wave suddenly grow super tall!",
+          "tl": "Pagdating ng tsunami sa mababaw na baybayin, bumabagal ito at naiipon ang tubig. Kaya biglang tumataas ang alon mula sa pagiging mababa!",
+          "bis": "Kon moabot ang tsunami sa mabaw nga baybayon, mohinay kini ug magtapok ang tubig. Maong kalit nga modako ang balod gikan sa pagka-ubos niini!"
+        },
+        "slug": "tsunami-approaching-shore",
+        "title": {
+          "en": "Tsunami Near Shore",
+          "tl": "Tsunami sa Baybay",
+          "bis": "Tsunami sa Baybayon"
+        },
+        "cats": [
+          "oceans",
+          "natural-disasters"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "naiipon ang tubig"
+          ],
+          "en": [
+            "water piles up"
+          ],
+          "bis": [
+            "magtapok ang tubig"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-32236",
+        "factId": "tsunami-low-shoaling-rise-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "Why a low tsunami grows tall near shore",
+        "terms": [
+          "tsunami",
+          "shoaling",
+          "lumalaki",
+          "grows tall",
+          "mababaw",
+          "shallow",
+          "bakit tumataas",
+          "paano tumaas",
+          "mibabaw",
+          "modako",
+          "slows down",
+          "bumabagal",
+          "baybayin",
+          "coast",
+          "naipon ang tubig"
+        ],
+        "fact": {
+          "en": "When a tsunami reaches the shallow shore, it slows down and the water piles up, making the once-low wave suddenly grow super tall!",
+          "tl": "Pagdating ng tsunami sa mababaw na baybayin, bumabagal ito at naiipon ang tubig. Kaya biglang tumataas ang alon mula sa pagiging mababa!",
+          "bis": "Kon moabot ang tsunami sa mabaw nga baybayon, mohinay kini ug magtapok ang tubig. Maong ang balod nga ubos ra ganiha kalit nga motaas pag-ayo!"
+        },
+        "slug": "tsunami-approaching-shore",
+        "title": {
+          "en": "Tsunami Near Shore",
+          "tl": "Tsunami sa Baybay",
+          "bis": "Tsunami sa Baybayon"
+        },
+        "cats": [
+          "oceans",
+          "natural-disasters"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "naiipon ang tubig"
+          ],
+          "en": [
+            "water piles up"
+          ],
+          "bis": [
+            "magtapok ang tubig"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Replaces an abstract low-state ending with a directly described previously low wave becoming much taller. Ganiha is independently defined as before/at a previous time despite zero independent-card matches; low frequency does not make it invalid. Taas supports height. NOAA describes slowing and height growth in shallower water. Both readers prefer the body, with equivalent fidelity and clear backtranslation. This approval does not add a numerical height, a breaking-wall requirement or a tsunami arrival prediction.",
+      "formal_item_id": "ce98c0321279cf3f1a58d47d84d6cefd0",
+      "fidelity_item_id": "mf36e9f8ee4fe90785d599ca7",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32254",
+      "source_card_sha256": "8faac7984667c23a5673ff2be919f8159cd84aa9d5f3a98c05312a7d8e37e60d",
+      "candidate_card_sha256": "5705f2fddd9a96de9fbbb8f2733208dc87307bd861a007a6fd406ba65cc15c57",
+      "before_card": {
+        "id": "ffct-32254",
+        "factId": "clogged-drains-what-can-i-do-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "What a kid can do to help prevent clogs",
+        "terms": [
+          "ano ang magagawa",
+          "what can i do",
+          "tumulong",
+          "help",
+          "bata",
+          "kid",
+          "huwag magtapon",
+          "do not throw",
+          "basura",
+          "tama",
+          "segregate",
+          "clog",
+          "barado",
+          "drain",
+          "kanal",
+          "action"
+        ],
+        "fact": {
+          "en": "How can kids help keep drains from clogging?\n\nDon't throw plastic, candy wrappers, or trash on the street! Put them in the right trash bin. Small acts are a big help!",
+          "tl": "Paano makakatulong ang mga bata para hindi mabara ang kanal?\n\nHuwag itapon ang plastic, candy wrappers, o basura sa kalsada! Ilagay sa tamang basurahan. Maliit na gawa, malaking tulong!",
+          "bis": "Unsay mahimo sa mga bata aron dili mababagan ang kanal?\n\nAyaw ilabay ang plastik, candy wrappers, o basura sa dalan! Ibutang sa hustong basurahan. Bisan gamay nga buhat, dako nga tabang!"
+        },
+        "slug": "ffct-32254",
+        "source": "original",
+        "title": {
+          "tl": "Tulong mga Bata sa Kanal",
+          "en": "Kids Help Keep Drains Clear",
+          "bis": "Tabang Bata sa Kanal"
+        },
+        "cats": [
+          "pollution"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-32254",
+        "factId": "clogged-drains-what-can-i-do-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "What a kid can do to help prevent clogs",
+        "terms": [
+          "ano ang magagawa",
+          "what can i do",
+          "tumulong",
+          "help",
+          "bata",
+          "kid",
+          "huwag magtapon",
+          "do not throw",
+          "basura",
+          "tama",
+          "segregate",
+          "clog",
+          "barado",
+          "drain",
+          "kanal",
+          "action"
+        ],
+        "fact": {
+          "en": "How can kids help keep drains from clogging?\n\nDon't throw plastic, candy wrappers, or trash on the street! Put them in the right trash bin. Small acts are a big help!",
+          "tl": "Paano makakatulong ang mga bata para hindi mabara ang kanal?\n\nHuwag itapon ang plastic, candy wrappers, o basura sa kalsada! Ilagay sa tamang basurahan. Maliit na gawa, malaking tulong!",
+          "bis": "Unsay mahimo sa mga bata aron dili mababagan ang kanal?\n\nAyaw ilabay ang plastik, candy wrappers, o basura sa dalan! Ibutang kini sa hustong basurahan. Bisan gamay nga buhat, dako nga tabang!"
+        },
+        "slug": "ffct-32254",
+        "source": "original",
+        "title": {
+          "tl": "Tulong mga Bata sa Kanal",
+          "en": "Kids Help Keep Drains Clear",
+          "bis": "Makatabang ang mga Bata sa Kanal"
+        },
+        "cats": [
+          "pollution"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title becomes a connected statement that children can help, and kini explicitly identifies the litter to put in a bin. The unchanged explanation concerns keeping trash out of streets and drains; it does not instruct children to enter drains. Tabang and butang support help and placing, and babag resolves through balabag as blocking. Both readers prefer the changed fields and meaning checks preserve the practical action.",
+      "formal_item_id": "c5dec18a49d58d61566e22eb25c5e32d8",
+      "fidelity_item_id": "me37ad16b86c613626da68d32",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32256",
+      "source_card_sha256": "36ff7be893da3d47d27ecd68511ed63ff8796c0b1fe0a7cf70eb6107474632e9",
+      "candidate_card_sha256": "c76c197a2099aebef5bc00d43dc4caf60814decca274e4f00f4278467ab4e20c",
+      "before_card": {
+        "id": "ffct-32256",
+        "factId": "clogged-drains-low-areas-flood-first-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "Why low-lying areas flood first",
+        "terms": [
+          "low area",
+          "mababang lugar",
+          "baba",
+          "gravity",
+          "grabidad",
+          "bumababa",
+          "flows down",
+          "baha",
+          "flood",
+          "first",
+          "una",
+          "clogged",
+          "barado",
+          "pilipinas",
+          "drain",
+          "why"
+        ],
+        "fact": {
+          "en": "Why do low-lying areas flood first when drains are clogged?\n\nBecause of gravity, water always flows downhill! When drains are clogged, water collects and floods these low areas first.",
+          "tl": "Bakit ang mababang lugar ang unang bumabaha kapag barado ang kanal?\n\nDahil sa gravity, laging umaagos pababa ang tubig! Kapag barado ang kanal, doon muna nagtitipon at bumabaha ang tubig.",
+          "bis": "Ngano nga ang ubos nga lugar ang unang mobaha kung mababagan ang kanal?\n\nTungod sa gravity, kanunay modagayday paubos ang tubig! Kung mababagan ang kanal, didto muna matapok ug mobaha ang tubig."
+        },
+        "slug": "ffct-32256",
+        "source": "original",
+        "title": {
+          "tl": "Baha Mababang Lugar",
+          "en": "Low Areas Flood First",
+          "bis": "Baha Ubos Lugar"
+        },
+        "cats": [
+          "gravity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-32256",
+        "factId": "clogged-drains-low-areas-flood-first-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "Why low-lying areas flood first",
+        "terms": [
+          "low area",
+          "mababang lugar",
+          "baba",
+          "gravity",
+          "grabidad",
+          "bumababa",
+          "flows down",
+          "baha",
+          "flood",
+          "first",
+          "una",
+          "clogged",
+          "barado",
+          "pilipinas",
+          "drain",
+          "why"
+        ],
+        "fact": {
+          "en": "Why do low-lying areas flood first when drains are clogged?\n\nBecause of gravity, water always flows downhill! When drains are clogged, water collects and floods these low areas first.",
+          "tl": "Bakit ang mababang lugar ang unang bumabaha kapag barado ang kanal?\n\nDahil sa gravity, laging umaagos pababa ang tubig! Kapag barado ang kanal, doon muna nagtitipon at bumabaha ang tubig.",
+          "bis": "Ngano nga ang ubos nga lugar ang unang mobaha kung mababagan ang kanal?\n\nTungod sa gravity, kanunay modagayday paubos ang tubig! Kung mababagan ang kanal, matapok ang tubig sa ubos nga mga lugar. Mao nga kini nga mga lugar ang unang mobaha."
+        },
+        "slug": "ffct-32256",
+        "source": "original",
+        "title": {
+          "tl": "Baha Mababang Lugar",
+          "en": "Low Areas Flood First",
+          "bis": "Unang Mobaha ang Ubos nga Lugar"
+        },
+        "cats": [
+          "gravity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Explicitly repeats the low-place referent after the clogged-drain condition, then separates the explanation of flooding. The title names low places and the first-flood relationship. Both readers prefer both changed fields; backtranslation/fidelity preserve the gravity-driven surface-flow context. Dagayday, tapuk, baha and ubus support flowing, collecting, flooding and low elevation. The decision is about clear references, not a blanket judgment against the removed word muna.",
+      "formal_item_id": "c262b3c8eb9061efd15e71ff20ff839ca",
+      "fidelity_item_id": "mff5d5153413f1229aa3ccab2",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32309",
+      "source_card_sha256": "69ae9c4892d2bc6317886c35a431f0b3d0044836f77c6bc91ec5f1e0e0354df7",
+      "candidate_card_sha256": "37f668650d6e1eb0fc8b52139e8000528d4b830ce63429ea105b9b0605db45ee",
+      "before_card": {
+        "id": "ffct-32309",
+        "factId": "earth-recycling-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "recycling and conservation",
+        "terms": [
+          "recycle",
+          "reduce",
+          "reuse",
+          "waste",
+          "environment",
+          "mababawasan",
+          "maingatan",
+          "maamping",
+          "bawasan",
+          "gamitin",
+          "makunhuran",
+          "kinaiyahan",
+          "kalikasan",
+          "gamiton",
+          "basura"
+        ],
+        "fact": {
+          "en": "How can we protect nature and reduce waste?\n\nUse the 3 R's! Reduce (use less), Reuse (use again), and Recycle (turn old plastic and paper into new things).",
+          "tl": "Paano natin mapoprotektahan ang kalikasan at mababawasan ang basura?\n\nGamitin ang 3 R's! Reduce (bawasan ang gamit), Reuse (gamitin muli), at Recycle (gawing bago ang lumang plastic at papel).",
+          "bis": "Unsaon nato pag-amping sa kinaiyahan ug pagkunhod sa basura?\n\nGamita ang 3 R's! Reduce (gamay nga gamiton), Reuse (gamiton pag-usab), ug Recycle (himoon nga bag-o ang daan nga plastik ug papel)."
+        },
+        "slug": "ffct-32309",
+        "source": "original",
+        "title": {
+          "tl": "Ang 3 R's ng Basura",
+          "en": "The 3 R's of Waste",
+          "bis": "Ang 3 R's sa Basura"
+        },
+        "cats": [
+          "recycling",
+          "conservation"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-32309",
+        "factId": "earth-recycling-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "recycling and conservation",
+        "terms": [
+          "recycle",
+          "reduce",
+          "reuse",
+          "waste",
+          "environment",
+          "mababawasan",
+          "maingatan",
+          "maamping",
+          "bawasan",
+          "gamitin",
+          "makunhuran",
+          "kinaiyahan",
+          "kalikasan",
+          "gamiton",
+          "basura"
+        ],
+        "fact": {
+          "en": "How can we protect nature and reduce waste?\n\nUse the 3 R's! Reduce (use less), Reuse (use again), and Recycle (turn old plastic and paper into new things).",
+          "tl": "Paano natin mapoprotektahan ang kalikasan at mababawasan ang basura?\n\nGamitin ang 3 R's! Reduce (bawasan ang gamit), Reuse (gamitin muli), at Recycle (gawing bago ang lumang plastic at papel).",
+          "bis": "Unsaon nato pag-amping sa kinaiyahan ug pagkunhod sa basura?\n\nGamita ang 3 R's! Reduce (mogamit og mas gamay), Reuse (gamiton pag-usab), ug Recycle (himoon nga bag-ong butang ang daan nga plastik ug papel)."
+        },
+        "slug": "ffct-32309",
+        "source": "original",
+        "title": {
+          "tl": "Ang 3 R's ng Basura",
+          "en": "The 3 R's of Waste",
+          "bis": "Ang 3 R's sa Basura"
+        },
+        "cats": [
+          "recycling",
+          "conservation"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The Reduce gloss now names using a smaller amount, and the Recycle gloss explicitly names new things. Reuse and the three English technical labels stay intact. Gamit, gamay and butang have the intended use/amount/thing senses. Both readers prefer the complete body and tie the unchanged title; the backtranslation and fidelity retain all three definitions. No all-English-is-wrong rationale.",
+      "formal_item_id": "cd31d840673b6430b1ab9101a1b1d56d2",
+      "fidelity_item_id": "mc2a51eb8fdec135a539d3735",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32365",
+      "source_card_sha256": "2df9b7bcf29dc563fb8b64d973b5e7ecd260829bf0f4c2ad64043918d6f59555",
+      "candidate_card_sha256": "94764d9539cffce420d749b01594c4f024572da9864056599f1aefca8bb25875",
+      "before_card": {
+        "id": "ffct-32365",
+        "factId": "seismograph-measures-detects-far-quakes-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "a seismograph can sense far-away earthquakes",
+        "terms": [
+          "malayong lindol",
+          "layo nga linog",
+          "ibang bansa",
+          "laing nasod",
+          "nararamdaman",
+          "mabati",
+          "sensitibo",
+          "sensitibo kaayo",
+          "seismograph",
+          "seismometro",
+          "gaano kalayo",
+          "unsa kalayo",
+          "kahit hindi naramdaman",
+          "bisan wala mabati",
+          "alon",
+          "balod"
+        ],
+        "fact": {
+          "en": "Can a seismograph feel earthquakes from far away?\n\nYes, it's super sensitive! Earthquake waves travel through the inside of the Earth, so the machine can sense quakes from the other side of the world.",
+          "tl": "Kaya bang ramdam ng seismograph ang mga lindol mula sa malalayong lugar?\n\nOo, napakasensitibo nito! Naglalakbay ang alon ng lindol sa loob ng Earth, kaya nararamdaman ng makina ang lindol mula sa kabilang panig ng mundo.",
+          "bis": "Makabati ba ang seismograph og mga linog gikan sa layo nga lugar?\n\nOo, sensitibo kaayo kini! Molakaw ang mga balod sa linog sulod sa Earth, mao nga mabati sa makina ang linog gikan sa pikas bahin sa kalibotan."
+        },
+        "slug": "ffct-32365",
+        "source": "original",
+        "title": {
+          "tl": "Layong Nararamdaman",
+          "en": "Sensing Distant Quakes",
+          "bis": "Layo nga Mabati"
+        },
+        "cats": [
+          "earthquakes"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-32365",
+        "factId": "seismograph-measures-detects-far-quakes-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "a seismograph can sense far-away earthquakes",
+        "terms": [
+          "malayong lindol",
+          "layo nga linog",
+          "ibang bansa",
+          "laing nasod",
+          "nararamdaman",
+          "mabati",
+          "sensitibo",
+          "sensitibo kaayo",
+          "seismograph",
+          "seismometro",
+          "gaano kalayo",
+          "unsa kalayo",
+          "kahit hindi naramdaman",
+          "bisan wala mabati",
+          "alon",
+          "balod"
+        ],
+        "fact": {
+          "en": "Can a seismograph feel earthquakes from far away?\n\nYes, it's super sensitive! Earthquake waves travel through the inside of the Earth, so the machine can sense quakes from the other side of the world.",
+          "tl": "Kaya bang ramdam ng seismograph ang mga lindol mula sa malalayong lugar?\n\nOo, napakasensitibo nito! Naglalakbay ang alon ng lindol sa loob ng Earth, kaya nararamdaman ng makina ang lindol mula sa kabilang panig ng mundo.",
+          "bis": "Makabati ba ang seismograph og mga linog gikan sa layo nga lugar?\n\nOo, sensitibo kaayo kini! Molakaw ang mga balod sa linog sulod sa Earth, mao nga mabati sa makina ang linog gikan sa pikas bahin sa kalibotan."
+        },
+        "slug": "ffct-32365",
+        "source": "original",
+        "title": {
+          "tl": "Layong Nararamdaman",
+          "en": "Sensing Distant Quakes",
+          "bis": "Mabati ang Layong Linog"
+        },
+        "cats": [
+          "earthquakes"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title only: Mabati ang Layong Linog names the distant-earthquake topic, replacing the unclear distance/feeling fragment. The unchanged body supplies the sensitive-seismograph context, so this is not a promise that people feel every distant quake. Bati supports sensing, layu distance and linug earthquake. Lakaw cross-refers to lakat, which extends beyond walking to going/spreading; the retained seismic travel expression is not rejected by surface intuition. Both readers prefer the title, tie the body, and the title fidelity is compatible.",
+      "formal_item_id": "c62b2b8728840fb220ce45121e89023fe",
+      "fidelity_item_id": "mfa6c8e7b406f3ddc2f4f23fe",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32386",
+      "source_card_sha256": "e251bcae881771212df8aa9668b01eb7ec3000de30c76b037a6f156225791780",
+      "candidate_card_sha256": "785f8b7b3c74236affbc69880b6701a90d7964432af1042367071222ab09363b",
+      "before_card": {
+        "id": "ffct-32386",
+        "factId": "water-cycle-acid-rain-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "acid rain formation and effects",
+        "terms": [
+          "acid rain",
+          "ulan",
+          "acidic",
+          "sulfur dioxide",
+          "nitrogen oxide",
+          "pollution",
+          "polusyon",
+          "halaman",
+          "plants",
+          "lawa",
+          "lake",
+          "maasim na ulan",
+          "asim",
+          "pabrika",
+          "sasakyan"
+        ],
+        "fact": {
+          "en": "Acid rain forms when pollutants like sulfur dioxide and nitrogen oxides from vehicles and factories mix with cloud moisture!",
+          "tl": "Nabubuo ang acid rain kapag ang mga polusyon tulad ng sulfur dioxide at nitrogen oxides mula sa sasakyan at pabrika ay nahahalu sa singaw ng ulap!",
+          "bis": "Naporma ang acid rain sa dihang ang mga polusyon sama sa sulfur dioxide ug nitrogen oxides gikan sa mga sasakyan ug pabrika nagsagol sa tubig sa panganod!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Acid Rain",
+          "tl": "Asidong Ulan",
+          "bis": "Asidong Ulan"
+        },
+        "cats": [
+          "weather",
+          "pollution"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "acid rain"
+          ],
+          "en": [
+            "Acid rain"
+          ],
+          "bis": [
+            "acid rain"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-32386",
+        "factId": "water-cycle-acid-rain-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "acid rain formation and effects",
+        "terms": [
+          "acid rain",
+          "ulan",
+          "acidic",
+          "sulfur dioxide",
+          "nitrogen oxide",
+          "pollution",
+          "polusyon",
+          "halaman",
+          "plants",
+          "lawa",
+          "lake",
+          "maasim na ulan",
+          "asim",
+          "pabrika",
+          "sasakyan"
+        ],
+        "fact": {
+          "en": "Acid rain forms when pollutants like sulfur dioxide and nitrogen oxides from vehicles and factories mix with cloud moisture!",
+          "tl": "Nabubuo ang acid rain kapag ang mga polusyon tulad ng sulfur dioxide at nitrogen oxides mula sa sasakyan at pabrika ay nahahalu sa singaw ng ulap!",
+          "bis": "Ang mga sasakyan ug pabrika nagbuga og mga polusyon sama sa sulfur dioxide ug nitrogen oxides. Kon kini mosagol sa tubig sa panganod, maporma ang acid rain!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Acid Rain",
+          "tl": "Asidong Ulan",
+          "bis": "Asidong Ulan"
+        },
+        "cats": [
+          "weather",
+          "pollution"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "acid rain"
+          ],
+          "en": [
+            "Acid rain"
+          ],
+          "bis": [
+            "acid rain"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Names vehicles and factories as emitters before the conditional mixing explanation. The proposer correctly disclosed that from became an explicit emitting verb; EPA independently confirms emissions from these sources and the gases involved. Buga supports emission and sagul mixing. Both readers prefer this clearer order; clear backtranslation and equivalent fidelity preserve the gases, cloud-water context and acid-rain term. The card remains a short account, not a complete reaction equation.",
+      "formal_item_id": "cfbb9f57bb17939f63643f0336b4fb6a2",
+      "fidelity_item_id": "m34ff85e832b6c91d9e7205d6",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32470",
+      "source_card_sha256": "a984f1b0fa87ea4a27405bda1ada484c58a8cff541c0c59670e4b929985bc0f6",
+      "candidate_card_sha256": "74dc3158bd1ea998bcd083d61c5aa490fcac10e6c0b8c76152e3525d9b597163",
+      "before_card": {
+        "id": "ffct-32470",
+        "factId": "monsoon-rainfall-distribution-ph-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "habagat rain falls mostly on western Philippines",
+        "terms": [
+          "western philippines",
+          "kanlurang pilipinas",
+          "rain distribution",
+          "habagat",
+          "wet season",
+          "tag-ulan",
+          "palawan",
+          "luzon",
+          "ilocos",
+          "mindanao",
+          "east coast",
+          "west coast",
+          "ulan",
+          "distribusyon ng ulan"
+        ],
+        "fact": {
+          "en": "The habagat brings heavy rain to the western Philippines, like western Luzon and Palawan! Meanwhile, the eastern side gets more rain during the amihan season.",
+          "tl": "Nagdadala ang habagat ng malakas na ulan sa kanlurang Pilipinas, tulad ng western Luzon at Palawan! Mas maraming ulan naman sa silangang bahagi tuwing amihan season.",
+          "bis": "Nagdala ang habagat og kusog nga ulan sa kasadpang Pilipinas, sama sa western Luzon ug Palawan! Mas daghan og ulan sa sidlakang bahin panahon sa amihan season."
+        },
+        "slug": "habagat-monsoon-rain",
+        "title": {
+          "en": "Western Habagat Rain",
+          "tl": "Habagat sa Kanluran",
+          "bis": "Habagat sa Kasadpan"
+        },
+        "cats": [
+          "weather"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kanlurang Pilipinas"
+          ],
+          "en": [
+            "western Philippines"
+          ],
+          "bis": [
+            "kasadpang Pilipinas"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-32470",
+        "factId": "monsoon-rainfall-distribution-ph-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "habagat rain falls mostly on western Philippines",
+        "terms": [
+          "western philippines",
+          "kanlurang pilipinas",
+          "rain distribution",
+          "habagat",
+          "wet season",
+          "tag-ulan",
+          "palawan",
+          "luzon",
+          "ilocos",
+          "mindanao",
+          "east coast",
+          "west coast",
+          "ulan",
+          "distribusyon ng ulan"
+        ],
+        "fact": {
+          "en": "The habagat brings heavy rain to the western Philippines, like western Luzon and Palawan! Meanwhile, the eastern side gets more rain during the amihan season.",
+          "tl": "Nagdadala ang habagat ng malakas na ulan sa kanlurang Pilipinas, tulad ng western Luzon at Palawan! Mas maraming ulan naman sa silangang bahagi tuwing amihan season.",
+          "bis": "Nagdala ang habagat og kusog nga ulan sa kasadpang Pilipinas, sama sa western Luzon ug Palawan! Mas daghan og ulan sa sidlakang bahin panahon sa amihan."
+        },
+        "slug": "habagat-monsoon-rain",
+        "title": {
+          "en": "Western Habagat Rain",
+          "tl": "Habagat sa Kanluran",
+          "bis": "Habagat sa Kasadpan"
+        },
+        "cats": [
+          "weather"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kanlurang Pilipinas"
+          ],
+          "en": [
+            "western Philippines"
+          ],
+          "bis": [
+            "kasadpang Pilipinas"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Deletes only season after panahon sa amihan. Wolff explicitly gives panahun the season sense, so the timing remains expressed. Every location and rain comparison is unchanged, with PAGASA corroborating Habagat rain over western sections. Both readers prefer the exact body edit, tie the title, and meaning checks are clear/equivalent. This is removal of a duplicated meaning, not a ban on English science vocabulary.",
+      "formal_item_id": "c2a94b3b9b31023976c8f99abed37f2fa",
+      "fidelity_item_id": "mac500f2fbc4081255adfd2aa",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32476",
+      "source_card_sha256": "eef2332f9a43b91586740b8987a87630de2e2ae157f9ff792e7c2d7fc1fa82fd",
+      "candidate_card_sha256": "5efeabac7aec1bbd3e3656e1a25654ec43f6f1c88497c2762c7dadbbf9c9cad1",
+      "before_card": {
+        "id": "ffct-32476",
+        "factId": "monsoon-weather-prediction-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "how PAGASA uses monsoon patterns to forecast",
+        "terms": [
+          "pagasa",
+          "weather forecast",
+          "monsoon",
+          "habagat",
+          "amihan",
+          "seasonal forecast",
+          "forecast",
+          "hula sa panahon",
+          "satellite",
+          "weather station",
+          "computer model",
+          "prediksyon"
+        ],
+        "fact": {
+          "en": "How does PAGASA know when habagat or amihan is coming?\n\nPAGASA uses data from weather stations, satellites, and radar to forecast their arrival and advise our farmers and fishermen!",
+          "tl": "Paano nalalaman ng PAGASA kung kailan darating ang habagat o amihan?\n\nGumagamit ang PAGASA ng data mula sa weather stations, satellites, at radar para hulaan ang pagdating nila at mag-abiso sa mga magsasaka at mangingisda!",
+          "bis": "Unsaon pagkahibalo sa PAGASA kung kanus-a moabot ang habagat o amihan?\n\nNaggamit ang PAGASA og datos gikan sa weather stations, satellites, ug radar aron matagna ang pag-abot nila ug magpahibalo sa mga mag-uuma ug mananagat!"
+        },
+        "slug": "typhoon-satellite-spiral",
+        "title": {
+          "en": "Monsoon Forecasting",
+          "tl": "Pagtaya sa Monsoon",
+          "bis": "Pagtagna sa Monsoon"
+        },
+        "cats": [
+          "weather"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "PAGASA"
+          ],
+          "en": [
+            "PAGASA"
+          ],
+          "bis": [
+            "PAGASA"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-32476",
+        "factId": "monsoon-weather-prediction-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "how PAGASA uses monsoon patterns to forecast",
+        "terms": [
+          "pagasa",
+          "weather forecast",
+          "monsoon",
+          "habagat",
+          "amihan",
+          "seasonal forecast",
+          "forecast",
+          "hula sa panahon",
+          "satellite",
+          "weather station",
+          "computer model",
+          "prediksyon"
+        ],
+        "fact": {
+          "en": "How does PAGASA know when habagat or amihan is coming?\n\nPAGASA uses data from weather stations, satellites, and radar to forecast their arrival and advise our farmers and fishermen!",
+          "tl": "Paano nalalaman ng PAGASA kung kailan darating ang habagat o amihan?\n\nGumagamit ang PAGASA ng data mula sa weather stations, satellites, at radar para hulaan ang pagdating nila at mag-abiso sa mga magsasaka at mangingisda!",
+          "bis": "Unsaon pagkahibalo sa PAGASA kung kanus-a moabot ang habagat o amihan?\n\nNaggamit ang PAGASA og datos gikan sa weather stations, satellites, ug radar aron matagna ang pag-abot sa habagat o amihan. Pinaagi niini, makapahibalo sila sa atong mga mag-uuma ug mananagat!"
+        },
+        "slug": "typhoon-satellite-spiral",
+        "title": {
+          "en": "Monsoon Forecasting",
+          "tl": "Pagtaya sa Monsoon",
+          "bis": "Pagtagna sa Monsoon"
+        },
+        "cats": [
+          "weather"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "PAGASA"
+          ],
+          "en": [
+            "PAGASA"
+          ],
+          "bis": [
+            "PAGASA"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Splits the forecasting explanation, explicitly repeats habagat o amihan in place of an implicit pronoun, and preserves the informing-farmers/fishers result with atong for English our. Tagna supports predicting, balu supplies pahi- inform and agi supplies the by-means-of relation. Both readers prefer the body and tie the title, with equivalent meaning checks. Personal-pronoun reference to weather is not declared inherently impossible; the exact edit clarifies the referent.",
+      "formal_item_id": "ca1818c7c6dc170897b678655f4f210ef",
+      "fidelity_item_id": "meca513467838f2c865d64b9c",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32486",
+      "source_card_sha256": "27b5c4e72bfae01718cf192c6d71378a119874a8a17e39be95f34f0f2997f915",
+      "candidate_card_sha256": "1c88a14489cf40e0fec39a51e3b5a84548727b54b2120f0a0f5118b6ebc8e9f1",
+      "before_card": {
+        "id": "ffct-32486",
+        "factId": "weather-instruments-hygrometer-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "hygrometer measures humidity",
+        "terms": [
+          "hygrometer",
+          "humidity",
+          "kahalumigmigan",
+          "relative humidity",
+          "hair hygrometer",
+          "electronic hygrometer",
+          "weather instrument",
+          "pagasa",
+          "weather station",
+          "singaw",
+          "moisture",
+          "pagsukat ng halumigmig"
+        ],
+        "fact": {
+          "en": "A hygrometer measures the humidity of the air! Different types of this cool instrument use hair, chemicals, or electronic sensors to do it.",
+          "tl": "Ang hygrometer ay sumusukat ng humidity ng hangin! Ang iba't ibang uri ng instrumentong ito ay gumagamit ng buhok, kemikal, o electronic sensors.",
+          "bis": "Ang hygrometer nagsukod sa humidity sa hangin! Ang lain-laing matang niini nga instrumento naggamit sa buhok, kemikal, o electronic sensors aron buhaton kini."
+        },
+        "slug": "ffct-32486",
+        "source": "original",
+        "title": {
+          "tl": "Hygrometer",
+          "en": "The Hygrometer",
+          "bis": "Ang Hygrometer"
+        },
+        "cats": [
+          "measurement",
+          "weather"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-32486",
+        "factId": "weather-instruments-hygrometer-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "hygrometer measures humidity",
+        "terms": [
+          "hygrometer",
+          "humidity",
+          "kahalumigmigan",
+          "relative humidity",
+          "hair hygrometer",
+          "electronic hygrometer",
+          "weather instrument",
+          "pagasa",
+          "weather station",
+          "singaw",
+          "moisture",
+          "pagsukat ng halumigmig"
+        ],
+        "fact": {
+          "en": "A hygrometer measures the humidity of the air! Different types of this cool instrument use hair, chemicals, or electronic sensors to do it.",
+          "tl": "Ang hygrometer ay sumusukat ng humidity ng hangin! Ang iba't ibang uri ng instrumentong ito ay gumagamit ng buhok, kemikal, o electronic sensors.",
+          "bis": "Ang hygrometer nagsukod sa humidity sa hangin! Ang lain-laing matang niini nga instrumento naggamit og buhok, kemikal, o electronic sensors aron masukod ang humidity."
+        },
+        "slug": "ffct-32486",
+        "source": "original",
+        "title": {
+          "tl": "Hygrometer",
+          "en": "The Hygrometer",
+          "bis": "Ang Hygrometer"
+        },
+        "cats": [
+          "measurement",
+          "weather"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Replaces the vague final buhaton kini with masukod ang humidity, making explicit what the listed sensors are used for. The hair/chemical/electronic options and instrument definition remain unchanged. Sukud and gamit support measurement and use. Both readers prefer the body, tie the title, and the meaning checks preserve the scope. No claim that the former sa construction was necessarily ungrammatical.",
+      "formal_item_id": "cda4333fa4af767ae96059eb69e252f91",
+      "fidelity_item_id": "mec3804ed2142dc964f9dc712",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32487",
+      "source_card_sha256": "5694e5d6c65f096ec8918c36e523362850c07214972da82cb2f1471df799860a",
+      "candidate_card_sha256": "3c9cd9fefae515742ec1037f85d6d71b20646de7c24a0fd11de7b6b386ed61ba",
+      "before_card": {
+        "id": "ffct-32487",
+        "factId": "weather-instruments-radiosonde-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "radiosonde measures upper atmosphere conditions",
+        "terms": [
+          "radiosonde",
+          "upper atmosphere",
+          "mataas na atmospera",
+          "weather balloon",
+          "balloon",
+          "pressure",
+          "temperature",
+          "humidity",
+          "wind",
+          "hangin",
+          "forecast",
+          "hula",
+          "pagasa",
+          "upper air data",
+          "altitude"
+        ],
+        "fact": {
+          "en": "A radiosonde is a small instrument attached to a weather balloon! It measures temperature, pressure, humidity, and wind high up, then sends data to weather stations.",
+          "tl": "Ang radiosonde ay isang maliit na instrumentong nakakabit sa weather balloon! Sinusukat nito ang temperature, pressure, humidity, at hangin sa itaas, at nagpapadala ng data sa weather stations.",
+          "bis": "Ang radiosonde usa ka gamay nga instrumento nga gikabit sa weather balloon! Nagsukod kini sa temperature, pressure, humidity, ug hangin sa taas, ug nagpadala sa data sa mga weather station."
+        },
+        "slug": "weather-balloon",
+        "title": {
+          "en": "Radiosonde",
+          "tl": "Radiosonde",
+          "bis": "Radiosonde"
+        },
+        "cats": [
+          "weather",
+          "atmosphere"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "radiosonde"
+          ],
+          "en": [
+            "radiosonde"
+          ],
+          "bis": [
+            "radiosonde"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-32487",
+        "factId": "weather-instruments-radiosonde-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "radiosonde measures upper atmosphere conditions",
+        "terms": [
+          "radiosonde",
+          "upper atmosphere",
+          "mataas na atmospera",
+          "weather balloon",
+          "balloon",
+          "pressure",
+          "temperature",
+          "humidity",
+          "wind",
+          "hangin",
+          "forecast",
+          "hula",
+          "pagasa",
+          "upper air data",
+          "altitude"
+        ],
+        "fact": {
+          "en": "A radiosonde is a small instrument attached to a weather balloon! It measures temperature, pressure, humidity, and wind high up, then sends data to weather stations.",
+          "tl": "Ang radiosonde ay isang maliit na instrumentong nakakabit sa weather balloon! Sinusukat nito ang temperature, pressure, humidity, at hangin sa itaas, at nagpapadala ng data sa weather stations.",
+          "bis": "Ang radiosonde usa ka gamay nga instrumento nga gikabit sa weather balloon! Didto sa taas, gisukod niini ang temperature, pressure, humidity, ug hangin. Dayon, ipadala niini ang data ngadto sa mga weather station."
+        },
+        "slug": "weather-balloon",
+        "title": {
+          "en": "Radiosonde",
+          "tl": "Radiosonde",
+          "bis": "Radiosonde"
+        },
+        "cats": [
+          "weather",
+          "atmosphere"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "radiosonde"
+          ],
+          "en": [
+            "radiosonde"
+          ],
+          "bis": [
+            "radiosonde"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Separates high-altitude measurement from data transmission and makes the location apply to the complete parameter list. Dayon retains English then and the radiosonde emphasis stays exact. NWS describes the balloon package, transmitted temperature/pressure/humidity and winds obtained through position tracking; the card is read at the observation-system level, not as asserting a separate direct wind sensor. Both blind readers prefer the structure, with clear/equivalent meaning evidence. No new timing interval or instrument specification.",
+      "formal_item_id": "c05466fa7a93ab1bbb8de086e0e0edf68",
+      "fidelity_item_id": "ma69fdaaebf4b6707a3755d93",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32570",
+      "source_card_sha256": "ff1e9b24273e4e386cb275cd6c9be5587ab577c8d94534f508f84825d084f0c5",
+      "candidate_card_sha256": "f799ab1254858a8f781f17d5dc70572cab2e8514ec6b8dfa271d7c8894e1cb63",
+      "before_card": {
+        "id": "ffct-32570",
+        "factId": "wind-land-breeze-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "land breeze blows toward sea at night",
+        "terms": [
+          "land breeze",
+          "land breeze",
+          "sea breeze",
+          "dagat",
+          "sea",
+          "coast",
+          "baybayin",
+          "cools faster",
+          "cooling",
+          "lupa lumamig",
+          "warm sea",
+          "fishermen"
+        ],
+        "fact": {
+          "en": "At night, land cools faster than the sea! Warm air over the sea rises, and cool air from the land blows toward the sea as a land breeze.",
+          "tl": "Sa gabi, mas mabilis lumamig ang lupa kaysa dagat! Umiakyat ang mainit na hangin sa ibabaw ng dagat, at humihip ang malamig na hangin mula sa lupa bilang land breeze.",
+          "bis": "Sa gabii, mas paspas mobugnaw ang yuta kaysa dagat! Mosaka ang mainit nga hangin sa ibabaw sa dagat, ug mohuyop ang mabugnaw nga hangin gikan sa yuta padulong sa dagat isip land breeze."
+        },
+        "slug": "",
+        "title": {
+          "en": "Land Breeze",
+          "tl": "Hangin mula sa Lupa",
+          "bis": "Hangin sa Yuta"
+        },
+        "cats": [
+          "weather",
+          "oceans"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "land breeze"
+          ],
+          "en": [
+            "land breeze"
+          ],
+          "bis": [
+            "land breeze"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-32570",
+        "factId": "wind-land-breeze-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "land breeze blows toward sea at night",
+        "terms": [
+          "land breeze",
+          "land breeze",
+          "sea breeze",
+          "dagat",
+          "sea",
+          "coast",
+          "baybayin",
+          "cools faster",
+          "cooling",
+          "lupa lumamig",
+          "warm sea",
+          "fishermen"
+        ],
+        "fact": {
+          "en": "At night, land cools faster than the sea! Warm air over the sea rises, and cool air from the land blows toward the sea as a land breeze.",
+          "tl": "Sa gabi, mas mabilis lumamig ang lupa kaysa dagat! Umiakyat ang mainit na hangin sa ibabaw ng dagat, at humihip ang malamig na hangin mula sa lupa bilang land breeze.",
+          "bis": "Sa gabii, mas paspas mobugnaw ang yuta kaysa dagat! Mosaka ang mainit nga hangin sa ibabaw sa dagat. Ang mabugnaw nga hangin gikan sa yuta mohuyop padulong sa dagat. Kini ang gitawag nga land breeze."
+        },
+        "slug": "",
+        "title": {
+          "en": "Land Breeze",
+          "tl": "Hangin mula sa Lupa",
+          "bis": "Hangin sa Yuta"
+        },
+        "cats": [
+          "weather",
+          "oceans"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "land breeze"
+          ],
+          "en": [
+            "land breeze"
+          ],
+          "bis": [
+            "land breeze"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Keeps the land-cools-faster night contrast, gives warm sea air rising and cool land air blowing seaward their own sentence, and names that process as land breeze. The dictionary independently supports cooling, warmth, blowing and rising, including the retained mabugnaw/mainit families. Both readers prefer the complete explanation; backtranslation/fidelity retain direction and cause. No dialect correction based on Tagalog-looking forms.",
+      "formal_item_id": "c107b3ddb7408fcc3122bb482f6642c92",
+      "fidelity_item_id": "m3a6315aa303b0fd1a79cdff1",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32582",
+      "source_card_sha256": "9ed7aad1b2010032b320558ac1c05024ee560ed400e22288d14206f1319b1e31",
+      "candidate_card_sha256": "3a8dff481a4bf45f7d68afc7769f7fe066e6a72dca4c7a08ee425741e75d3ff8",
+      "before_card": {
+        "id": "ffct-32582",
+        "factId": "troposphere-weather-layer-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "the troposphere is where weather happens",
+        "terms": [
+          "troposphere",
+          "weather layer",
+          "panahon",
+          "ulan",
+          "ulap",
+          "clouds",
+          "pinakamababang",
+          "kinaubsang",
+          "tubo kang panahon",
+          "dinhi mahitabo ang panahon",
+          "hininga",
+          "ginhuwa",
+          "pinakamalapit sa lupa"
+        ],
+        "fact": {
+          "en": "Where does all our weather happen?\n\nThe troposphere is the lowest layer of the atmosphere where we live and breathe — and where nearly all weather happens: rain, clouds, and wind!",
+          "tl": "Saan nangyayari ang lahat ng panahon?\n\nAng troposphere ang pinakamababang layer ng atmosphere kung saan tayo nakatira at humihinga — at dito nangyayari halos lahat ng panahon: ulan, ulap, at hangin!",
+          "bis": "Asa mahitabo ang tanang panahon?\n\nAng troposphere mao ang kinaubsang layer sa atmosphere diin kita nagpuyo ug nagginhawa — ug dinhi mahitabo halos tanang panahon: ulan, panganod, ug hangin!"
+        },
+        "slug": "ffct-32582",
+        "source": "original",
+        "title": {
+          "tl": "Troposphere ng Panahon",
+          "en": "Weather in the Troposphere",
+          "bis": "Troposphere sa Panahon"
+        },
+        "cats": [
+          "atmosphere",
+          "weather"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-32582",
+        "factId": "troposphere-weather-layer-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "the troposphere is where weather happens",
+        "terms": [
+          "troposphere",
+          "weather layer",
+          "panahon",
+          "ulan",
+          "ulap",
+          "clouds",
+          "pinakamababang",
+          "kinaubsang",
+          "tubo kang panahon",
+          "dinhi mahitabo ang panahon",
+          "hininga",
+          "ginhuwa",
+          "pinakamalapit sa lupa"
+        ],
+        "fact": {
+          "en": "Where does all our weather happen?\n\nThe troposphere is the lowest layer of the atmosphere where we live and breathe — and where nearly all weather happens: rain, clouds, and wind!",
+          "tl": "Saan nangyayari ang lahat ng panahon?\n\nAng troposphere ang pinakamababang layer ng atmosphere kung saan tayo nakatira at humihinga — at dito nangyayari halos lahat ng panahon: ulan, ulap, at hangin!",
+          "bis": "Asa mahitabo ang tanang panahon?\n\nAng troposphere mao ang kinaubsang layer sa atmosphere diin kita nagpuyo ug nagginhawa — ug dinhi mahitabo halos tanang panahon: ulan, panganod, ug hangin!"
+        },
+        "slug": "ffct-32582",
+        "source": "original",
+        "title": {
+          "tl": "Troposphere ng Panahon",
+          "en": "Weather in the Troposphere",
+          "bis": "Panahon sa Troposphere"
+        },
+        "cats": [
+          "atmosphere",
+          "weather"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title only: Panahon sa Troposphere expresses weather in that layer, rather than reversing the relationship. The complete body, nearly-all qualifier, weather examples and question remain byte-identical. Panahun independently includes weather. Both readers prefer the title and tie the body, with clear backtranslation and compatible title fidelity. No body-readability gain is claimed.",
+      "formal_item_id": "c170e15a63c07a8832e30b99bfb4e8a47",
+      "fidelity_item_id": "me550b0295e2e75b167e867ec",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32602",
+      "source_card_sha256": "d0bad2c178b44d19cce3eb4739383fed2da681e86aad39e7b3ad03427c5f71fc",
+      "candidate_card_sha256": "4a723fe33c678189557986d75a71e082109a74e3e908c1856398e3136b41bca5",
+      "before_card": {
+        "id": "ffct-32602",
+        "factId": "pagasa-history-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "PAGASA history and mission",
+        "terms": [
+          "pagasa",
+          "philippine atmospheric geophysical and astronomical services administration",
+          "1972",
+          "established",
+          "nagtayo",
+          "weather",
+          "geophysical",
+          "astronomical",
+          "philippines",
+          "pilipinas",
+          "forecast",
+          "disaster warning",
+          "mandate",
+          "layunin"
+        ],
+        "fact": {
+          "en": "PAGASA (Philippine Atmospheric, Geophysical and Astronomical Services Administration) was created in 1972 to give weather info and warnings that protect Filipino lives and property!",
+          "tl": "Ang PAGASA (Philippine Atmospheric, Geophysical and Astronomical Services Administration) ay itinatag noong 1972 para magbigay ng weather info at warnings na nagpoprotekta sa buhay at pag-aari ng mga Pilipino!",
+          "bis": "Ang PAGASA (Philippine Atmospheric, Geophysical and Astronomical Services Administration) natukod niadtong 1972 aron maghatag og weather info ug warnings nga nagpanalipod sa kinabuhi ug kabtangan sa mga Pilipino!"
+        },
+        "slug": "ffct-32602",
+        "source": "original",
+        "title": {
+          "tl": "PAGASA mula 1972",
+          "en": "PAGASA since 1972",
+          "bis": "PAGASA sukad 1972"
+        },
+        "cats": [
+          "weather"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-32602",
+        "factId": "pagasa-history-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "PAGASA history and mission",
+        "terms": [
+          "pagasa",
+          "philippine atmospheric geophysical and astronomical services administration",
+          "1972",
+          "established",
+          "nagtayo",
+          "weather",
+          "geophysical",
+          "astronomical",
+          "philippines",
+          "pilipinas",
+          "forecast",
+          "disaster warning",
+          "mandate",
+          "layunin"
+        ],
+        "fact": {
+          "en": "PAGASA (Philippine Atmospheric, Geophysical and Astronomical Services Administration) was created in 1972 to give weather info and warnings that protect Filipino lives and property!",
+          "tl": "Ang PAGASA (Philippine Atmospheric, Geophysical and Astronomical Services Administration) ay itinatag noong 1972 para magbigay ng weather info at warnings na nagpoprotekta sa buhay at pag-aari ng mga Pilipino!",
+          "bis": "Ang PAGASA (Philippine Atmospheric, Geophysical and Astronomical Services Administration) natukod niadtong 1972. Gitukod kini aron maghatag og weather info ug warnings nga nagpanalipod sa kinabuhi ug kabtangan sa mga Pilipino!"
+        },
+        "slug": "ffct-32602",
+        "source": "original",
+        "title": {
+          "tl": "PAGASA mula 1972",
+          "en": "PAGASA since 1972",
+          "bis": "PAGASA sukad 1972"
+        },
+        "cats": [
+          "weather"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Ends the founding sentence after 1972, then explicitly connects the protection purpose with Gitukod kini. The full institutional name, year and Filipino lives/property remain exact. Tukud supports founding an institution; PAGASA documents its establishment in 1972. Both readers prefer the body, tie the title, and fidelity/backtranslation retain the purpose. The repeated verb is accepted as a clear referent, not alleged mandatory grammar.",
+      "formal_item_id": "c62992adfc39940aa1ef4a38a295c90ac",
+      "fidelity_item_id": "m069eb6ae277f8059ded81d47",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32660",
+      "source_card_sha256": "8ec73ca3cadad22b82213e24e7c0f26265be703194e5499265aac0a1c18cacd5",
+      "candidate_card_sha256": "3ed6c1e3a92118e43e68034641488007063c29279a9c3e7ade891a9cc741c2b9",
+      "before_card": {
+        "id": "ffct-32660",
+        "factId": "weather-extreme-rainfall-record-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "highest rainfall records in Philippine history",
+        "terms": [
+          "record rainfall",
+          "highest rainfall",
+          "baguio",
+          "typhoon",
+          "bagyo",
+          "mm",
+          "millimeter",
+          "record",
+          "rekord",
+          "extreme event",
+          "heavy rain",
+          "pagasa",
+          "kasaysayan",
+          "historical",
+          "philippines"
+        ],
+        "fact": {
+          "en": "Baguio City holds a huge rainfall record! In 1911, 1,168 mm of rain fell in just 24 hours, one of the highest 24-hour totals in world history!",
+          "tl": "May malaking rainfall record ang Baguio City! Noong 1911, bumuhos ang 1,168 mm na ulan sa 24 na oras, isa sa pinakamataas na 24-hour rainfall record sa kasaysayan ng mundo!",
+          "bis": "Adunay dako nga rainfall record ang Baguio City! Niadtong 1911, mihulog ang 1,168 mm nga ulan sulod sa 24 ka oras, usa sa pinakataas nga 24-hour total sa kasaysayan sa kalibutan!"
+        },
+        "slug": "ffct-32660",
+        "source": "original",
+        "title": {
+          "tl": "Rekord ng Ulan sa Baguio",
+          "en": "Baguio's Rain Record",
+          "bis": "Rekord sa Ulan sa Baguio"
+        },
+        "cats": [
+          "weather"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-32660",
+        "factId": "weather-extreme-rainfall-record-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "highest rainfall records in Philippine history",
+        "terms": [
+          "record rainfall",
+          "highest rainfall",
+          "baguio",
+          "typhoon",
+          "bagyo",
+          "mm",
+          "millimeter",
+          "record",
+          "rekord",
+          "extreme event",
+          "heavy rain",
+          "pagasa",
+          "kasaysayan",
+          "historical",
+          "philippines"
+        ],
+        "fact": {
+          "en": "Baguio City holds a huge rainfall record! In 1911, 1,168 mm of rain fell in just 24 hours, one of the highest 24-hour totals in world history!",
+          "tl": "May malaking rainfall record ang Baguio City! Noong 1911, bumuhos ang 1,168 mm na ulan sa 24 na oras, isa sa pinakamataas na 24-hour rainfall record sa kasaysayan ng mundo!",
+          "bis": "Adunay dako nga rainfall record ang Baguio City! Niadtong 1911, mihulog ang 1,168 mm nga ulan sulod lang sa 24 ka oras. Usa kini sa pinakataas nga 24-hour total sa kasaysayan sa kalibutan!"
+        },
+        "slug": "ffct-32660",
+        "source": "original",
+        "title": {
+          "tl": "Rekord ng Ulan sa Baguio",
+          "en": "Baguio's Rain Record",
+          "bis": "Rekord sa Ulan sa Baguio"
+        },
+        "cats": [
+          "weather"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Separates the historical rainfall measurement from its comparison and restores English just with lang. The exact 1911, 1,168 mm and 24 hours are unchanged, as is the qualified one-of-highest wording. JICA reproduces PAGASA-derived historical rainfall analysis recording that amount in 24 hours in the 1911 Baguio storm. Lamang supports just; both readers prefer the split and meaning evidence matches. No current exact world rank or new record claim is added.",
+      "formal_item_id": "c05599d6a31452b3b6f582c240c42deb0",
+      "fidelity_item_id": "m0cf9ee4381dd8a5ed48c0192",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32713",
+      "source_card_sha256": "c4e3863b3b0351111af04841462dca1e52357a8bb4062f6c96a4a113642730aa",
+      "candidate_card_sha256": "c9cff4cf27effb120e6170f99e5001c701df54b2f4d404a1be88117e8f24e924",
+      "before_card": {
+        "id": "ffct-32713",
+        "factId": "mineral-streak-test-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "mineral streak test",
+        "terms": [
+          "streak",
+          "kulay ng pulbos",
+          "mineral test",
+          "streak plate",
+          "porcelain",
+          "identification",
+          "pagkilala ng mineral",
+          "streak color",
+          "tanda",
+          "linya",
+          "pulbos"
+        ],
+        "fact": {
+          "en": "What is a streak test, and why is it useful for identifying minerals?\n\nA mineral's streak is the color of its powder left on a porcelain plate when rubbed! It's more reliable than its surface color.",
+          "tl": "Ano ang streak test, at bakit ito kapaki-pakinabang sa pag-identify ng mga mineral?\n\nAng streak ng mineral ay ang kulay ng pulbos nito na naiwan sa porcelain plate kapag kiniskis! Mas maaasahan ito kaysa sa surface color nito.",
+          "bis": "Unsa ang streak test, ug nganong mapuslanon kini sa pag-ila sa mga mineral?\n\nAng streak sa mineral mao ang kolor sa pulbos niini nga nabilin sa porcelain plate kung kiskison! Mas kasaligan kini kaysa sa surface color niini."
+        },
+        "slug": "qa-ffct-32713",
+        "title": {
+          "en": "Mineral Streak Test",
+          "tl": "Streak Test Mineral",
+          "bis": "Streak Test Mineral"
+        },
+        "cats": [
+          "minerals",
+          "rocks"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "streak test"
+          ],
+          "en": [
+            "streak test"
+          ],
+          "bis": [
+            "streak test"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-32713",
+        "factId": "mineral-streak-test-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "mineral streak test",
+        "terms": [
+          "streak",
+          "kulay ng pulbos",
+          "mineral test",
+          "streak plate",
+          "porcelain",
+          "identification",
+          "pagkilala ng mineral",
+          "streak color",
+          "tanda",
+          "linya",
+          "pulbos"
+        ],
+        "fact": {
+          "en": "What is a streak test, and why is it useful for identifying minerals?\n\nA mineral's streak is the color of its powder left on a porcelain plate when rubbed! It's more reliable than its surface color.",
+          "tl": "Ano ang streak test, at bakit ito kapaki-pakinabang sa pag-identify ng mga mineral?\n\nAng streak ng mineral ay ang kulay ng pulbos nito na naiwan sa porcelain plate kapag kiniskis! Mas maaasahan ito kaysa sa surface color nito.",
+          "bis": "Unsa ang streak test, ug nganong mapuslanon kini sa pag-ila sa mga mineral?\n\nAng streak sa mineral mao ang kolor sa pulbos niini nga nabilin sa porcelain plate kung kiskison! Mas kasaligan kini kaysa sa surface color niini."
+        },
+        "slug": "qa-ffct-32713",
+        "title": {
+          "en": "Mineral Streak Test",
+          "tl": "Streak Test Mineral",
+          "bis": "Streak Test sa Mineral"
+        },
+        "cats": [
+          "minerals",
+          "rocks"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "streak test"
+          ],
+          "en": [
+            "streak test"
+          ],
+          "bis": [
+            "streak test"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title only: inserts sa to connect Streak Test and Mineral, matching the English relationship and unchanged explanatory body. The question, porcelain/powder description, surface-color comparison and exact emphasis span remain. Both readers prefer the connected title and tie the body, with compatible title fidelity. This is not a claim that all short keyword headings are grammatical defects.",
+      "formal_item_id": "c51335b7d6b7e46b0c9de98815dbff073",
+      "fidelity_item_id": "mb4ee13cb70be377cbbbd2acb",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32723",
+      "source_card_sha256": "c01b4722adba751cd3e504c324152e99a40803aee72eba79c613a662f6172baf",
+      "candidate_card_sha256": "4e06dd0171b2da39f233d8c06ad74faf404955306d8484c90642621b8adf5d70",
+      "before_card": {
+        "id": "ffct-32723",
+        "factId": "halite-evaporite-formation-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "halite rock salt mineral formation",
+        "terms": [
+          "halite",
+          "rock salt",
+          "asin",
+          "sodium chloride",
+          "evaporite",
+          "salt deposit",
+          "evaporation",
+          "asin-bato",
+          "salt mine",
+          "salty mineral",
+          "mineral formation",
+          "pagsingaw"
+        ],
+        "fact": {
+          "en": "How does nature make salt?\n\nHalite is the mineral form of table salt (sodium chloride)! It forms when salty sea or lake water evaporates, leaving solid salt deposits behind.",
+          "tl": "Paano gumagawa ang kalikasan ng asin?\n\nAng halite ay ang mineral na anyo ng table salt (sodium chloride)! Nabubuo ito kapag ang salty sea or lake water ay sumingaw, na nag-iiwan ng solidong deposito ng asin.",
+          "bis": "Unsaon paghimo sa kinaiyahan og asin?\n\nAng halite mao ang mineral nga porma sa table salt (sodium chloride)! Kini naporma kon ang salty sea or lake water mosingaw, nagbilin og solidong mga deposito sa asin."
+        },
+        "slug": "salt-crystals-on-evaporating-water",
+        "title": {
+          "en": "Halite Rock Salt",
+          "tl": "Halite Asin",
+          "bis": "Halite Asin"
+        },
+        "cats": [
+          "minerals"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "halite"
+          ],
+          "en": [
+            "Halite"
+          ],
+          "bis": [
+            "halite"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-32723",
+        "factId": "halite-evaporite-formation-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "halite rock salt mineral formation",
+        "terms": [
+          "halite",
+          "rock salt",
+          "asin",
+          "sodium chloride",
+          "evaporite",
+          "salt deposit",
+          "evaporation",
+          "asin-bato",
+          "salt mine",
+          "salty mineral",
+          "mineral formation",
+          "pagsingaw"
+        ],
+        "fact": {
+          "en": "How does nature make salt?\n\nHalite is the mineral form of table salt (sodium chloride)! It forms when salty sea or lake water evaporates, leaving solid salt deposits behind.",
+          "tl": "Paano gumagawa ang kalikasan ng asin?\n\nAng halite ay ang mineral na anyo ng table salt (sodium chloride)! Nabubuo ito kapag ang salty sea or lake water ay sumingaw, na nag-iiwan ng solidong deposito ng asin.",
+          "bis": "Unsaon paghimo sa kinaiyahan og asin?\n\nAng halite mao ang mineral nga porma sa table salt (sodium chloride)! Maporma kini kon mosingaw ang parat nga tubig sa dagat o lanaw, ug mabilin ang solidong mga deposito sa asin."
+        },
+        "slug": "salt-crystals-on-evaporating-water",
+        "title": {
+          "en": "Halite Rock Salt",
+          "tl": "Halite Asin",
+          "bis": "Halite Asin"
+        },
+        "cats": [
+          "minerals"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "halite"
+          ],
+          "en": [
+            "Halite"
+          ],
+          "bis": [
+            "halite"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Replaces the general English sea-or-lake-water clause with parat nga tubig sa dagat o lanaw and makes the remaining solid salt deposits an explicit linked result. Halite, sodium chloride, mineral form, title and emphasis remain exact. Wolff supports the main roots; Binisaya explicitly gives lanaw as lake and its indexed root dictionary gives singaw as evaporate. The direct singaw page was challenged, so this record cites the observed indexed headword table, not a successful full-page fetch. Both readers prefer the complete body and the meaning checks preserve evaporation and deposits. The unchanged shortened title is not claimed to translate rock independently.",
+      "formal_item_id": "c87604163e70ae8527514055e33fb599e",
+      "fidelity_item_id": "med9cb65c134cee3aec04040b",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-32755",
+      "source_card_sha256": "c5c68b09957515b0a747a75808cdbb868afc4ef53a04711a00576dbdc856949d",
+      "candidate_card_sha256": "8939b23f550445098dbbb474352241d0f18b58d2bc37bd3248b0f42103633bdc",
+      "before_card": {
+        "id": "ffct-32755",
+        "factId": "rain-gauge-measures-rain-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "a rain gauge measures rainfall",
+        "terms": [
+          "rain gauge",
+          "panukat sa ulan",
+          "panukat ng ulan",
+          "dami ng ulan",
+          "gidaghanon sa ulan",
+          "rainfall",
+          "milimetro",
+          "milliliter",
+          "nakolektang ulan",
+          "natipon nga ulan",
+          "baso nga may sukod",
+          "tubo",
+          "container"
+        ],
+        "fact": {
+          "en": "What tool measures how much rain has fallen?\n\nA rain gauge is a container with a scale that tells the amount of rainwater in millimeters!",
+          "tl": "Anong kasangkapan ang sumusukat kung gaano karaming ulan ang bumagsak?\n\nAng rain gauge ay isang lalagyan na may panukat na nagsasabi ng dami ng tubig-ulan sa milimetro!",
+          "bis": "Unsa nga galamiton ang mosukod kon unsa ka daghan ang ulan nga nahulog?\n\nAng rain gauge usa ka sudlanan nga adunay sukdanan nga magsulti sa gidaghanon sa tubig-ulan sa milimetro!"
+        },
+        "slug": "rain-gauge",
+        "title": {
+          "en": "Rain Gauge",
+          "tl": "Panukat ng Ulan",
+          "bis": "Sukod sa Ulan"
+        },
+        "cats": [
+          "weather",
+          "measurement"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "rain gauge"
+          ],
+          "en": [
+            "rain gauge"
+          ],
+          "bis": [
+            "rain gauge"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-32755",
+        "factId": "rain-gauge-measures-rain-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "a rain gauge measures rainfall",
+        "terms": [
+          "rain gauge",
+          "panukat sa ulan",
+          "panukat ng ulan",
+          "dami ng ulan",
+          "gidaghanon sa ulan",
+          "rainfall",
+          "milimetro",
+          "milliliter",
+          "nakolektang ulan",
+          "natipon nga ulan",
+          "baso nga may sukod",
+          "tubo",
+          "container"
+        ],
+        "fact": {
+          "en": "What tool measures how much rain has fallen?\n\nA rain gauge is a container with a scale that tells the amount of rainwater in millimeters!",
+          "tl": "Anong kasangkapan ang sumusukat kung gaano karaming ulan ang bumagsak?\n\nAng rain gauge ay isang lalagyan na may panukat na nagsasabi ng dami ng tubig-ulan sa milimetro!",
+          "bis": "Unsa nga galamiton ang mosukod kon unsa ka daghan ang ulan nga nahulog?\n\nAng rain gauge usa ka sudlanan nga adunay sukdanan. Kini nga sukdanan magsulti sa gidaghanon sa tubig-ulan sa milimetro!"
+        },
+        "slug": "rain-gauge",
+        "title": {
+          "en": "Rain Gauge",
+          "tl": "Panukat ng Ulan",
+          "bis": "Sukod sa Ulan"
+        },
+        "cats": [
+          "weather",
+          "measurement"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "rain gauge"
+          ],
+          "en": [
+            "rain gauge"
+          ],
+          "bis": [
+            "rain gauge"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Splits the container description from the scale function and repeats Kini nga sukdanan so the measuring scale is explicit. The tool question, millimeters unit, title and rain gauge emphasis remain unchanged. Sukud includes the measuring-standard derivative sukdanan. Both readers prefer the body, tie the title, and clear/equivalent meaning evidence agrees. The former nested clause is not declared universally ungrammatical.",
+      "formal_item_id": "cb63038f5daaa8b26425d6d7360c64000",
+      "fidelity_item_id": "m64a58efbbf249ed84cbabfda",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    }
+  ],
+  "held": [
+    {
+      "card_id": "ffct-32229",
+      "source_card_sha256": "617c349e867e215e5186ad2f586c32289ed438840007619e692fad22860cbda4",
+      "candidate_card_sha256": "11d9eeab7aa9ebf120ca4b3d426f598e1c2140a66cb5d9f2b6a4334b82663e78",
+      "before_card": {
+        "id": "ffct-32229",
+        "factId": "drought-cracked-farmer-sign-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "Farmers read cracks as a warning sign",
+        "terms": [
+          "drought-cracked",
+          "magsasaka",
+          "farmer",
+          "babala",
+          "warning",
+          "senyales",
+          "real-world use",
+          "kailangan ng tubig",
+          "paano nalalaman",
+          "ngano timailhan",
+          "mag-uuma",
+          "patubig",
+          "irrigation",
+          "tanda"
+        ],
+        "fact": {
+          "en": "Why is cracked ground a warning for farmers?\n\nIt’s like the ground getting thirsty! When soil cracks, crops are short of water, so farmers know they need to irrigate right away.",
+          "tl": "Bakit babala ang bitak na lupa para sa mga magsasaka?\n\nParang nauuhaw na ang lupa! Kapag pumipitak ito, kulang na sa tubig ang pananim, kaya kailangan na nilang magpatubig kaagad.",
+          "bis": "Ngano nga pasidaan ang liki nga yuta sa mga mag-uuma?\n\nSama sa giuhaw na nga yuta! Kon moliki ang yuta, kulang na sa tubig ang tanom, mao nga kinahanglan na nila kini patubigan dayon."
+        },
+        "slug": "drought-cracked-rice-field",
+        "title": {
+          "en": "Cracks Warn Farmers",
+          "tl": "Babala sa Magsasaka",
+          "bis": "Pasidaan sa Mag-uuma"
+        },
+        "cats": [
+          "soil",
+          "weather"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "bitak na lupa"
+          ],
+          "en": [
+            "cracked ground"
+          ],
+          "bis": [
+            "liki nga yuta"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-32229",
+        "factId": "drought-cracked-farmer-sign-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "Farmers read cracks as a warning sign",
+        "terms": [
+          "drought-cracked",
+          "magsasaka",
+          "farmer",
+          "babala",
+          "warning",
+          "senyales",
+          "real-world use",
+          "kailangan ng tubig",
+          "paano nalalaman",
+          "ngano timailhan",
+          "mag-uuma",
+          "patubig",
+          "irrigation",
+          "tanda"
+        ],
+        "fact": {
+          "en": "Why is cracked ground a warning for farmers?\n\nIt’s like the ground getting thirsty! When soil cracks, crops are short of water, so farmers know they need to irrigate right away.",
+          "tl": "Bakit babala ang bitak na lupa para sa mga magsasaka?\n\nParang nauuhaw na ang lupa! Kapag pumipitak ito, kulang na sa tubig ang pananim, kaya kailangan na nilang magpatubig kaagad.",
+          "bis": "Ngano nga pasidaan ang liki nga yuta sa mga mag-uuma?\n\nSama kini sa yuta nga giuhaw na! Kon moliki ang yuta, kulang na sa tubig ang mga tanom. Mao nga nahibalo ang mga mag-uuma nga kinahanglan na nila kining patubigan dayon."
+        },
+        "slug": "drought-cracked-rice-field",
+        "title": {
+          "en": "Cracks Warn Farmers",
+          "tl": "Babala sa Magsasaka",
+          "bis": "Pasidaan sa Mag-uuma"
+        },
+        "cats": [
+          "soil",
+          "weather"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "bitak na lupa"
+          ],
+          "en": [
+            "cracked ground"
+          ],
+          "bis": [
+            "liki nga yuta"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The sentence split is understandable, but the source and candidate present cracked ground as sufficient evidence that crops lack water and irrigation is needed immediately. PhilRice bases water management on monitored levels, growth stage and soil texture, including deliberate drying. Hold this unqualified agronomic inference for source review. This is not a claim that cracks never indicate water stress, or that the thirsty-ground analogy is a literal assertion; no new watering advice is substituted.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "cfb6bec2d316c8c3c79bffcc96ecd77be"
+    },
+    {
+      "card_id": "ffct-32319",
+      "source_card_sha256": "c7b9fdbb3da5438e4c2c3904e1f3129fb986509baca0d5345984fd63dde05141",
+      "candidate_card_sha256": "f02a44cf9cf4b131435b7c81c874965812a07690007f77ce7e420d5b50a4752b",
+      "before_card": {
+        "id": "ffct-32319",
+        "factId": "what-is-a-desert-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "deserts",
+        "terms": [
+          "disyerto",
+          "desert",
+          "tuyo",
+          "kakaunti ang ulan",
+          "mainit",
+          "buhangin",
+          "desyerto",
+          "uga",
+          "gamay ang ulan",
+          "init",
+          "balas",
+          "dry",
+          "little rain",
+          "sand"
+        ],
+        "fact": {
+          "en": "A desert is a very dry place that gets very little rain, so only a few plants and animals can live there.",
+          "tl": "Ang disyerto ay napakatuyong lugar na kakaunti lang ang ulan, kaya iilang halaman at hayop lang ang nakakatira roon.",
+          "bis": "Ang desyerto mao ang uga kaayo nga dapit nga gamay ra kaayo ang ulan, mao nga pipila ra ka tanom ug hayop ang makapuyo didto."
+        },
+        "slug": "ffct-32319",
+        "source": "original",
+        "title": {
+          "tl": "Tuyong Disyerto",
+          "en": "Dry Deserts",
+          "bis": "Uga nga Desyerto"
+        },
+        "cats": [
+          "landforms"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-32319",
+        "factId": "what-is-a-desert-g4",
+        "domain": "EARTH_SPACE",
+        "topic": "deserts",
+        "terms": [
+          "disyerto",
+          "desert",
+          "tuyo",
+          "kakaunti ang ulan",
+          "mainit",
+          "buhangin",
+          "desyerto",
+          "uga",
+          "gamay ang ulan",
+          "init",
+          "balas",
+          "dry",
+          "little rain",
+          "sand"
+        ],
+        "fact": {
+          "en": "A desert is a very dry place that gets very little rain, so only a few plants and animals can live there.",
+          "tl": "Ang disyerto ay napakatuyong lugar na kakaunti lang ang ulan, kaya iilang halaman at hayop lang ang nakakatira roon.",
+          "bis": "Ang desyerto usa ka dapit nga uga kaayo ug gamay ra kaayo ang ulan. Mao nga pipila ra ka tanom ug hayop ang makapuyo didto."
+        },
+        "slug": "ffct-32319",
+        "source": "original",
+        "title": {
+          "tl": "Tuyong Disyerto",
+          "en": "Dry Deserts",
+          "bis": "Uga nga Desyerto"
+        },
+        "cats": [
+          "landforms"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The split definition retains the source claim that only a few plants and animals can live in a desert. That wording leaves organism abundance versus species diversity unresolved, while NPS documents substantial adapted desert biodiversity. The evidence does not justify a blanket few-can-live-there statement. Hold for an English scope clarification across languages; the candidate is not labeled a Cebuano mistranslation or deserts declared universally lush.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c2faf577591e00fcb6efc7426a5ba995a"
+    },
+    {
+      "card_id": "ffct-32450",
+      "source_card_sha256": "980554d5c915535cc89f4dd9a6a328238074ae1405d0106c0441ed2fc8a6e5df",
+      "candidate_card_sha256": "aa4ed3468255501d9bd0167508cb3544b48878d39c4aee0a3bade1e911bbd189",
+      "before_card": {
+        "id": "ffct-32450",
+        "factId": "typhoon-storm-surge-mechanism-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "how storm surge forms during typhoons",
+        "terms": [
+          "storm surge",
+          "dagat-dagatan",
+          "sea level rise",
+          "low pressure",
+          "mababang presyon",
+          "wind push",
+          "hangin",
+          "coast",
+          "baybayin",
+          "flooding",
+          "baha",
+          "typhoon",
+          "bagyo",
+          "coastal",
+          "tacloban"
+        ],
+        "fact": {
+          "en": "What is a storm surge and why is it so dangerous?\n\nA storm surge is the rise in sea level caused by a typhoon's low pressure and wind pushing water to shore. It caused massive devastation in Tacloban during Yolanda.",
+          "tl": "Ano ang storm surge at bakit ito napakadelikado?\n\nAng storm surge ay ang pag-akyat ng dagat dahil sa mababang presyon at hangin ng bagyo na tumutulak ng tubig sa dalampasigan. Nagdulot ito ng malaking sakuna sa Tacloban noong Yolanda.",
+          "bis": "Unsa ang storm surge ug ngaino kini delikado kaayo?\n\nAng storm surge mao ang pagsaka sa dagat tungod sa ubos nga presyon ug hangin sa bagyo nga nagtulod sa tubig sa baybayon. Naghatag kini og dako nga kalamidad sa Tacloban niadtong Yolanda."
+        },
+        "slug": "ffct-36151",
+        "title": {
+          "en": "Storm Surge",
+          "tl": "Daluyong ng Bagyo",
+          "bis": "Daluyong sa Bagyo"
+        },
+        "cats": [
+          "weather",
+          "oceans"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "storm surge"
+          ],
+          "en": [
+            "storm surge"
+          ],
+          "bis": [
+            "storm surge"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-32450",
+        "factId": "typhoon-storm-surge-mechanism-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "how storm surge forms during typhoons",
+        "terms": [
+          "storm surge",
+          "dagat-dagatan",
+          "sea level rise",
+          "low pressure",
+          "mababang presyon",
+          "wind push",
+          "hangin",
+          "coast",
+          "baybayin",
+          "flooding",
+          "baha",
+          "typhoon",
+          "bagyo",
+          "coastal",
+          "tacloban"
+        ],
+        "fact": {
+          "en": "What is a storm surge and why is it so dangerous?\n\nA storm surge is the rise in sea level caused by a typhoon's low pressure and wind pushing water to shore. It caused massive devastation in Tacloban during Yolanda.",
+          "tl": "Ano ang storm surge at bakit ito napakadelikado?\n\nAng storm surge ay ang pag-akyat ng dagat dahil sa mababang presyon at hangin ng bagyo na tumutulak ng tubig sa dalampasigan. Nagdulot ito ng malaking sakuna sa Tacloban noong Yolanda.",
+          "bis": "Unsa ang storm surge ug ngaino kini delikado kaayo?\n\nAng storm surge mao ang pagsaka sa lebel sa dagat. Hinungdan niini ang ubos nga presyon sa bagyo, ug ang hangin sa bagyo nga nagtulod sa tubig paingon sa baybayon. Nagdala kini og dakong kalamidad sa Tacloban sa panahon sa Yolanda."
+        },
+        "slug": "ffct-36151",
+        "title": {
+          "en": "Storm Surge",
+          "tl": "Daluyong ng Bagyo",
+          "bis": "Daluyong sa Bagyo"
+        },
+        "cats": [
+          "weather",
+          "oceans"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "storm surge"
+          ],
+          "en": [
+            "storm surge"
+          ],
+          "bis": [
+            "storm surge"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The definition/cause split and explicit sea level are promising, but the proposal itself flags retained ngaino. Wolff and Binisaya attest nganu/ngano; the sole other machine-card ngaino occurrence is not independent authority for that form. Direct ngaino/daluyong dictionary fetches failed and do not prove invalidity. Keep this complete candidate on hold for the unresolved question word; neither silently fix it nor declare the possible variant definitively wrong.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c4c393feac769fc6c414258ce869a64be"
+    },
+    {
+      "card_id": "ffct-32480",
+      "source_card_sha256": "0e07f496159daf8010cac4a4ec0b353324bd5d82728da8aecca6e5a66d36e2c0",
+      "candidate_card_sha256": "64fcc36e59af9ee6a521ca0e5b8632243b6dbe0c2d4eb2ccba8aa38425f0dd1a",
+      "before_card": {
+        "id": "ffct-32480",
+        "factId": "humidity-relative-humidity-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "relative humidity definition",
+        "terms": [
+          "relative humidity",
+          "kahalumigmigan",
+          "humidity",
+          "water vapor",
+          "singaw",
+          "air",
+          "hangin",
+          "hygrometer",
+          "100%",
+          "saturated",
+          "puno ng singaw"
+        ],
+        "fact": {
+          "en": "What does \"relative humidity\" actually mean?\n\nIt is the percentage of water vapor in the air compared to the maximum possible at that temperature. At 100%, the air is fully saturated!",
+          "tl": "Ano ba ang ibig sabihin ng \"relative humidity\"?\n\nIto ay porsyento ng water vapor sa hangin kumpara sa pinakamataas na posible sa iyon na temperatura. Sa 100%, puno na ang hangin!",
+          "bis": "Unsa ba ang pasabot sa \"relative humidity\"?\n\nKini mao ang porsyento sa water vapor sa hangin kumpara sa labing taas nga posible sa maong temperatura. Sa 100%, puno na ang hangin!"
+        },
+        "slug": "ffct-32480",
+        "source": "original",
+        "title": {
+          "tl": "Ano ang Relative Humidity",
+          "en": "What Is Relative Humidity",
+          "bis": "Unsa ang Relative Humidity"
+        },
+        "cats": [
+          "weather"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-32480",
+        "factId": "humidity-relative-humidity-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "relative humidity definition",
+        "terms": [
+          "relative humidity",
+          "kahalumigmigan",
+          "humidity",
+          "water vapor",
+          "singaw",
+          "air",
+          "hangin",
+          "hygrometer",
+          "100%",
+          "saturated",
+          "puno ng singaw"
+        ],
+        "fact": {
+          "en": "What does \"relative humidity\" actually mean?\n\nIt is the percentage of water vapor in the air compared to the maximum possible at that temperature. At 100%, the air is fully saturated!",
+          "tl": "Ano ba ang ibig sabihin ng \"relative humidity\"?\n\nIto ay porsyento ng water vapor sa hangin kumpara sa pinakamataas na posible sa iyon na temperatura. Sa 100%, puno na ang hangin!",
+          "bis": "Unsa ba ang pasabot sa \"relative humidity\"?\n\nKini ang porsyento sa water vapor nga anaa sa hangin. Gikumpara kini sa pinakadaghang water vapor nga makaya sa hangin sa maong temperatura. Sa 100%, puno na gyud sa water vapor ang hangin!"
+        },
+        "slug": "ffct-32480",
+        "source": "original",
+        "title": {
+          "tl": "Ano ang Relative Humidity",
+          "en": "What Is Relative Humidity",
+          "bis": "Unsa ang Relative Humidity"
+        },
+        "cats": [
+          "weather"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Both readers favor the shorter sentences, but the first now defines humidity as a percentage of water vapor in air before Gikumpara kini introduces the maximum. The referent can become that already-formed percentage rather than the actual amount, obscuring the denominator of the ratio. The final puno ... sa water vapor also risks confusing saturation with air composition. NWS defines actual vapor relative to saturation at the same temperature. Hold for a precise candidate; do not override this with model agreement or claim the text literally says all air becomes vapor.",
+      "hold_kind": "hold_meaning",
+      "formal_item_id": "cc7a9e4e7bf1094b3a238dc1fd8a42f54"
+    }
+  ],
+  "prior_mandatory_missing_judgment_holds": [
+    "ffct-15686",
+    "ffct-24823",
+    "ffct-24184"
+  ],
+  "prior_mandatory_invalid_evidence_holds": [
+    "ffct-08459",
+    "ffct-09018",
+    "ffct-10152",
+    "ffct-18958"
+  ],
+  "native_verified": false,
+  "science_verified": false,
+  "released": false,
+  "source_precision_holds_require_cross_language_review": [
+    "ffct-32229",
+    "ffct-32319"
+  ],
+  "lexical_holds": [
+    "ffct-32450"
+  ],
+  "meaning_holds": [
+    "ffct-32480"
+  ]
+}

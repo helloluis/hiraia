@@ -1,0 +1,4556 @@
+{
+  "schema": "hiraia.cebuano-readability-reviewed-edits/v1",
+  "status": "reviewed_for_local_application",
+  "created_at": "2026-10-03T14:53:10.288534+00:00",
+  "reviewer": "Codex root, independent of Claude proposal/backtranslation/fidelity/readability calls; no separate Codex reviewer used for this window",
+  "scope": "Window 22: 31 individually reviewed exact Cebuano edits and 20 priority holds. Windows 1–21 were previously adjudicated. No score-only approval, native verification, exhaustive science certification or release permission. Prior invalid-evidence holds ffct-08459, ffct-09018 and ffct-10152 remain unchanged. Missing-fidelity card ffct-15686 remains a mandatory hold, with no synthesized judgment or repeated call.",
+  "window_id": "window-0022",
+  "window_accounting": {
+    "source_cards": 768,
+    "completed_assessments": 768,
+    "missing_fidelity_holds": 0,
+    "approved_exact_edits": 31,
+    "unchanged_keeps": 98,
+    "held": 639,
+    "held_from_priority_set": 20,
+    "preexisting_nonpriority_holds": 619
+  },
+  "input_pins": [
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0022/report.json",
+      "sha256": "067d96e32a88b80ffaa55fa0085abd0ae61df99f92944fa39c3ca8ba9ec55472",
+      "bytes": 27858747
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0022/clean-agreement.jsonl",
+      "sha256": "e2222b04d30bcf0cf7b829c50c95e171a5879d828cdeab37b19c8e7ff5f6c80a",
+      "bytes": 1494457
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0022/root-decisions.json",
+      "sha256": "d347ad7bbd3f2b5f04f040adec8d756c29e2cb83bd6f1709af71122bf1063ed5",
+      "bytes": 20236
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0022/corpus-lexical-evidence.json",
+      "sha256": "ee4ba8bc810e104eb01a5b205a03eb0eafa8802139cb480a709fb03a28f5dafd",
+      "bytes": 83241
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0022/dictionary-entries.json",
+      "sha256": "42266e65fa0c83fb1f144d32b917d9fa9663722aab6695851e925a55e3ec5ab2",
+      "bytes": 70748
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0022/dictionary-cross-references.json",
+      "sha256": "654bf2dfd20f59ff40db906828a6242e9694a6dfa522fd44a2ad76f37393a8d6",
+      "bytes": 8768
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0022/lexical-source-review.json",
+      "sha256": "be584f1b76b647cf14cd591bacf69a0e00d599c0ef288f1a8da6ccef4373b88e",
+      "bytes": 7320
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-gutenberg-40074.txt",
+      "sha256": "f80b888b24dd4ca7f5cb16276b4a53f9d22129a496b9ffb7f7efe17d3b9a1504",
+      "bytes": 5699379
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-retrieval.json",
+      "sha256": "bd713c5adf21541a0e7fd9c49f75fb6b9d4157fb88d41151a245165b8955b7da",
+      "bytes": 502
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0022/collect-evidence-001.py",
+      "sha256": "883f5785dc5f487e77d7499caba0343b459179180232ad7dccacf717ac268030",
+      "bytes": 5652
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0022/collect-cross-references-001.py",
+      "sha256": "33b6447925a72621c1cd0c9d1338edec4a436503528757dbe877940762b342de",
+      "bytes": 1863
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/show-dossiers-513e27eb.py",
+      "sha256": "acf4f3062a2853afce8c914b6985a581834540e370af73d250aaae0ee9fad0d3",
+      "bytes": 2187
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0022/write-root-records.py",
+      "sha256": "95b04d7f5563d617c96c15691870ce34ead97c1297ddaa2957812069e83c546b",
+      "bytes": 23659
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0022/create-root-approval.py",
+      "sha256": "e86f80c2adb746e7696c566565a510c1e8f8b25810a620deecf1c2f162bc298a",
+      "bytes": 6308
+    }
+  ],
+  "current_pool_before_application": {
+    "path": "rag/pipeline/cardsPool.app.json",
+    "sha256": "80c9b78426a12f617b040ba160cd0dc7aa6a64bd14851492878256d1b02005ad",
+    "bytes": 50643648
+  },
+  "accepted": [
+    {
+      "card_id": "ffct-16435",
+      "source_card_sha256": "4bfdf3387df23207b6e9e2d9827ea0d8577c49ae3fc61349be4be988f201b335",
+      "candidate_card_sha256": "fdba256a85f76969abc669e7d240295c59d67a2ab6dc2876bd0285de446bbb88",
+      "before_card": {
+        "id": "ffct-16435",
+        "factId": "rubber-synthetic-from-oil-g7",
+        "domain": "MATTER",
+        "topic": "synthetic rubber from petroleum",
+        "terms": [
+          "synthetic",
+          "sintetiko",
+          "artipisyal",
+          "petrolyo",
+          "petroleum",
+          "langis",
+          "lana",
+          "oil",
+          "pabrika",
+          "factory",
+          "goma",
+          "rubber"
+        ],
+        "fact": {
+          "en": "Not all rubber comes from trees! Some rubber is made by people in factories. This is called synthetic rubber, and it is created from petroleum.",
+          "tl": "Hindi lahat ng goma ay galing sa puno! May ginagawang goma ang mga tao sa pabrika. Ito ay tinatawag na synthetic rubber, na gawa sa petrolyo.",
+          "bis": "Dili tanan nga goma gikan sa kahoy! Adunay goma nga gihimo sa mga tawo sa pabrika. Kini gitawag og synthetic rubber, nga gibuhat gikan sa petrolyo."
+        },
+        "slug": "ffct-16435",
+        "source": "original",
+        "title": {
+          "tl": "Synthetic Rubber sa Petrolyo",
+          "en": "Synthetic Rubber Petroleum",
+          "bis": "Synthetic Rubber Petrolyo"
+        },
+        "cats": [
+          "materials",
+          "fossil-fuels"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16435",
+        "factId": "rubber-synthetic-from-oil-g7",
+        "domain": "MATTER",
+        "topic": "synthetic rubber from petroleum",
+        "terms": [
+          "synthetic",
+          "sintetiko",
+          "artipisyal",
+          "petrolyo",
+          "petroleum",
+          "langis",
+          "lana",
+          "oil",
+          "pabrika",
+          "factory",
+          "goma",
+          "rubber"
+        ],
+        "fact": {
+          "en": "Not all rubber comes from trees! Some rubber is made by people in factories. This is called synthetic rubber, and it is created from petroleum.",
+          "tl": "Hindi lahat ng goma ay galing sa puno! May ginagawang goma ang mga tao sa pabrika. Ito ay tinatawag na synthetic rubber, na gawa sa petrolyo.",
+          "bis": "Dili tanan nga goma gikan sa kahoy! Adunay goma nga gihimo sa mga tawo sa pabrika. Kini gitawag og synthetic rubber, nga gibuhat gikan sa petrolyo."
+        },
+        "slug": "ffct-16435",
+        "source": "original",
+        "title": {
+          "tl": "Synthetic Rubber sa Petrolyo",
+          "en": "Synthetic Rubber Petroleum",
+          "bis": "Synthetic Rubber gikan sa Petrolyo"
+        },
+        "cats": [
+          "materials",
+          "fossil-fuels"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title supplies the source relationship between synthetic rubber and petroleum. The full unchanged body introduces some factory-made rubber, rather than claiming every possible synthetic elastomer must have fossil feedstock. Both blind title preferences and fidelity support this exact title.",
+      "formal_item_id": "cdbdcf6e0baae2f71498d282f74470993",
+      "fidelity_item_id": "m9fa0c101d5437f69e748b71c",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16444",
+      "source_card_sha256": "5f865ee902651271a3637a67d896acb1d5f6411eb6005407a80d25a26f8e02d1",
+      "candidate_card_sha256": "4aa63721be284fafb45e84150d78757bf1b6c5da22b6d8bca5a242581d7e0d41",
+      "before_card": {
+        "id": "ffct-16444",
+        "factId": "paper-pressed-dried-flat-g4",
+        "domain": "MATTER",
+        "topic": "pulp is pressed and dried into sheets",
+        "terms": [
+          "papel",
+          "pulp",
+          "pisil",
+          "pressed",
+          "patuyo",
+          "dried",
+          "uga",
+          "manipis",
+          "thin",
+          "sheet",
+          "piga",
+          "pauga"
+        ],
+        "fact": {
+          "en": "What happens to the soggy pulp next?\n\nThe wet pulp gets squeezed really flat and dried out! This turns it into a thin, smooth sheet of paper.",
+          "tl": "Ano ang nangyayari sa basang pulp pagkatapos?\n\nPinipisil nang patag ang basang pulp at pinapatuyo! Ito ang nagiging manipis at makinis na pirasong papel.",
+          "bis": "Unsay mahitabo sa basa nga pulp human niini?\n\nGipiga nga patag ang basa nga pulp ug gipauga! Mao kini ang mahimong nipis ug hapsay nga piraso sa papel."
+        },
+        "slug": "ffct-16444",
+        "source": "original",
+        "title": {
+          "tl": "Pulp na Pinitit at Tinituyo",
+          "en": "Pulp Pressed to Sheets",
+          "bis": "Pulp sa Papel"
+        },
+        "cats": [
+          "materials"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16444",
+        "factId": "paper-pressed-dried-flat-g4",
+        "domain": "MATTER",
+        "topic": "pulp is pressed and dried into sheets",
+        "terms": [
+          "papel",
+          "pulp",
+          "pisil",
+          "pressed",
+          "patuyo",
+          "dried",
+          "uga",
+          "manipis",
+          "thin",
+          "sheet",
+          "piga",
+          "pauga"
+        ],
+        "fact": {
+          "en": "What happens to the soggy pulp next?\n\nThe wet pulp gets squeezed really flat and dried out! This turns it into a thin, smooth sheet of paper.",
+          "tl": "Ano ang nangyayari sa basang pulp pagkatapos?\n\nPinipisil nang patag ang basang pulp at pinapatuyo! Ito ang nagiging manipis at makinis na pirasong papel.",
+          "bis": "Unsay mahitabo sa basa nga pulp human niini?\n\nGipiga ang basa nga pulp hangtod patag kaayo, dayon gipauga! Mao kini ang mahimong nipis ug hapsay nga piraso sa papel."
+        },
+        "slug": "ffct-16444",
+        "source": "original",
+        "title": {
+          "tl": "Pulp na Pinitit at Tinituyo",
+          "en": "Pulp Pressed to Sheets",
+          "bis": "Gikan sa Pulp Ngadto sa Papel"
+        },
+        "cats": [
+          "materials"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The body explicitly identifies the wet pulp as what is pressed very flat and then dried. Wolff piga, patag and hapsay support pressing, flatness and smoothness in this complete paper-making context. The new title names the same pulp-to-paper sequence without changing the process.",
+      "formal_item_id": "cf8a1e823e1469f386ce809c6770275d6",
+      "fidelity_item_id": "me611e33a5ab6c7a228632f71",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16491",
+      "source_card_sha256": "4f66addd9ecb73a04695926288f52f634087f62c76ca04fdfb02a60c0183e0aa",
+      "candidate_card_sha256": "429981575cba39e12cbc3273c0e58fcd055bce247298b17e38828bce4a781729",
+      "before_card": {
+        "id": "ffct-16491",
+        "factId": "water-softener-swaps-minerals-g8",
+        "domain": "MATTER",
+        "topic": "how water softeners work",
+        "terms": [
+          "water softener",
+          "pampalambot ng tubig",
+          "pampahumok",
+          "softener",
+          "asin",
+          "salt",
+          "sodium",
+          "calcium",
+          "magnesium",
+          "pinapalitan",
+          "gibaylo",
+          "exchange",
+          "tinatanggal"
+        ],
+        "fact": {
+          "en": "How does a water softener work?\n\nIt swaps out the calcium and magnesium for sodium, which does not cause hardness!",
+          "tl": "Paano gumagana ang water softener?\n\nPinapalitan nito ang calcium at magnesium ng sodium, na hindi nagiging sanhi ng tigas!",
+          "bis": "Unsaon pagtrabaho sa water softener?\n\nGipulihan niini ang calcium ug magnesium og sodium, nga dili hinungdan sa kagahi!"
+        },
+        "slug": "ffct-16491",
+        "source": "original",
+        "title": {
+          "tl": "Water Softener Palit Sodium",
+          "en": "Softeners Swap Sodium",
+          "bis": "Water Softener Ilis Sodium"
+        },
+        "cats": [
+          "water"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16491",
+        "factId": "water-softener-swaps-minerals-g8",
+        "domain": "MATTER",
+        "topic": "how water softeners work",
+        "terms": [
+          "water softener",
+          "pampalambot ng tubig",
+          "pampahumok",
+          "softener",
+          "asin",
+          "salt",
+          "sodium",
+          "calcium",
+          "magnesium",
+          "pinapalitan",
+          "gibaylo",
+          "exchange",
+          "tinatanggal"
+        ],
+        "fact": {
+          "en": "How does a water softener work?\n\nIt swaps out the calcium and magnesium for sodium, which does not cause hardness!",
+          "tl": "Paano gumagana ang water softener?\n\nPinapalitan nito ang calcium at magnesium ng sodium, na hindi nagiging sanhi ng tigas!",
+          "bis": "Unsaon pagtrabaho sa water softener?\n\nGipulihan niini ang calcium ug magnesium og sodium. Ang sodium dili hinungdan sa kagahi sa tubig!"
+        },
+        "slug": "ffct-16491",
+        "source": "original",
+        "title": {
+          "tl": "Water Softener Palit Sodium",
+          "en": "Softeners Swap Sodium",
+          "bis": "Pag-ilis og Sodium sa Water Softener"
+        },
+        "cats": [
+          "water"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The split names sodium as the substance that does not cause the water hardness, restoring the explicit water referent. The calcium/magnesium-to-sodium exchange remains the same stated softener mechanism. Wolff ilis supports exchange/replacement; this is not a claim about every water-treatment technology.",
+      "formal_item_id": "c92337806ac71896c94018e45516a7911",
+      "fidelity_item_id": "m7e60d52be48847b5ea182d19",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16509",
+      "source_card_sha256": "86c28b3d17edb6f8355e81e4b36fc88cce220ff4223c7e09da6f85a5d36205fc",
+      "candidate_card_sha256": "c9fd35ad728b42c73c3e602a952400f127e6ad6aca2b5bf6d0fa62e70a834aa9",
+      "before_card": {
+        "id": "ffct-16509",
+        "factId": "crushing-object-same-mass-g6",
+        "domain": "MATTER",
+        "topic": "crushing or breaking keeps total mass",
+        "terms": [
+          "crush",
+          "durugin",
+          "dugmokon",
+          "break",
+          "sira",
+          "buak",
+          "tear",
+          "punit",
+          "gisi",
+          "pieces",
+          "piraso",
+          "tibuok",
+          "mass",
+          "timbang",
+          "gibug-aton"
+        ],
+        "fact": {
+          "en": "If you crush a cookie into crumbs, does it weigh less?\n\nNo way! The total weight of all the pieces stays exactly the same — no mass is lost when you crush or tear something!",
+          "tl": "Kung durugin mo ang isang cookie, bababa ba ang timbang nito?\n\nHindi! Pareho pa rin ang kabuuang timbang ng lahat ng piraso — walang masang nawawala kapag dinurog o pinunit mo ang isang bagay!",
+          "bis": "Kung dugmokon nimo ang usa ka cookie, maminusan ba ang gibug-aton niini?\n\nDili! Pareho gihapon ang kinatibuk-ang gibug-aton sa tanang piraso — walay masa nga mawala kung dugmokon o gision nimo ang usa ka butang!"
+        },
+        "slug": "ffct-16509",
+        "source": "original",
+        "title": {
+          "tl": "Durog Cookie Parehong Timbang",
+          "en": "Crushing Keeps Mass",
+          "bis": "Durog Parehas Timbang Masa"
+        },
+        "cats": [
+          "physical-changes"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16509",
+        "factId": "crushing-object-same-mass-g6",
+        "domain": "MATTER",
+        "topic": "crushing or breaking keeps total mass",
+        "terms": [
+          "crush",
+          "durugin",
+          "dugmokon",
+          "break",
+          "sira",
+          "buak",
+          "tear",
+          "punit",
+          "gisi",
+          "pieces",
+          "piraso",
+          "tibuok",
+          "mass",
+          "timbang",
+          "gibug-aton"
+        ],
+        "fact": {
+          "en": "If you crush a cookie into crumbs, does it weigh less?\n\nNo way! The total weight of all the pieces stays exactly the same — no mass is lost when you crush or tear something!",
+          "tl": "Kung durugin mo ang isang cookie, bababa ba ang timbang nito?\n\nHindi! Pareho pa rin ang kabuuang timbang ng lahat ng piraso — walang masang nawawala kapag dinurog o pinunit mo ang isang bagay!",
+          "bis": "Kung dugmokon nimo ang usa ka cookie, maminusan ba ang gibug-aton niini?\n\nDili! Pareho gihapon ang kinatibuk-ang gibug-aton sa tanang piraso. Walay masa nga mawala kung dugmokon o gision nimo ang usa ka butang!"
+        },
+        "slug": "ffct-16509",
+        "source": "original",
+        "title": {
+          "tl": "Durog Cookie Parehong Timbang",
+          "en": "Crushing Keeps Mass",
+          "bis": "Pareho ang Masa Bisan Dugmokon"
+        },
+        "cats": [
+          "physical-changes"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The sentence break preserves the crucial total of all pieces, then states the same conservation point. Wolff dugmuk supports crushing into pieces. The clearer title refers to that complete collection, without asserting that a weighed sample cannot lose scattered crumbs.",
+      "formal_item_id": "c8bb4e6bc14adaf1360dbdffd05f7fe6a",
+      "fidelity_item_id": "m0ff0d64a1d77c2d2af0f198d",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16511",
+      "source_card_sha256": "99b2a17c29d0572f3623a3da9ecaa1f801077f3c7b716ede7f8d612ac6fc04e6",
+      "candidate_card_sha256": "44a9605e66b746ad85e2f5abcfc7b7dd3aa64af5e210ef7dc6078166bacc6771",
+      "before_card": {
+        "id": "ffct-16511",
+        "factId": "why-conservation-matters-cooking-g7",
+        "domain": "MATTER",
+        "topic": "everyday cooking and conservation of mass",
+        "terms": [
+          "cooking",
+          "pagluluto",
+          "pagluto",
+          "boiling water",
+          "kumukulo",
+          "nagbukal",
+          "singaw",
+          "alisngaw",
+          "steam",
+          "kumukulong tubig",
+          "mass leaves",
+          "lumabas",
+          "mas gaan",
+          "timbang"
+        ],
+        "fact": {
+          "en": "When you boil water and the level drops, the mass isn't lost! It just turned into steam that floated up into the air.",
+          "tl": "Kapag pinakuluan ang tubig at bumaba ang level, hindi nawawala ang masa! Naging singaw lang ito na lumipad sa hangin.",
+          "bis": "Kung pabukalon ang tubig ug moubos ang level, wala mawala ang masa! Nahimo lang kining alisngaw nga milupad sa hangin."
+        },
+        "slug": "boiling-drinking-water-pot",
+        "title": {
+          "en": "Boiling Water Mass",
+          "tl": "Masa ng Kumukulo",
+          "bis": "Masa sa Nagbukal"
+        },
+        "cats": [
+          "states-of-matter",
+          "matter"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "masa"
+          ],
+          "en": [
+            "mass"
+          ],
+          "bis": [
+            "masa"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-16511",
+        "factId": "why-conservation-matters-cooking-g7",
+        "domain": "MATTER",
+        "topic": "everyday cooking and conservation of mass",
+        "terms": [
+          "cooking",
+          "pagluluto",
+          "pagluto",
+          "boiling water",
+          "kumukulo",
+          "nagbukal",
+          "singaw",
+          "alisngaw",
+          "steam",
+          "kumukulong tubig",
+          "mass leaves",
+          "lumabas",
+          "mas gaan",
+          "timbang"
+        ],
+        "fact": {
+          "en": "When you boil water and the level drops, the mass isn't lost! It just turned into steam that floated up into the air.",
+          "tl": "Kapag pinakuluan ang tubig at bumaba ang level, hindi nawawala ang masa! Naging singaw lang ito na lumipad sa hangin.",
+          "bis": "Kung pabukalon ang tubig ug moubos ang level, wala mawala ang masa! Nahimo lang kining alisngaw nga milupad sa hangin."
+        },
+        "slug": "boiling-drinking-water-pot",
+        "title": {
+          "en": "Boiling Water Mass",
+          "tl": "Masa ng Kumukulo",
+          "bis": "Masa sa Nagbukal nga Tubig"
+        },
+        "cats": [
+          "states-of-matter",
+          "matter"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "masa"
+          ],
+          "en": [
+            "mass"
+          ],
+          "bis": [
+            "masa"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title restores the missing water referent to boiling. The unchanged full body says the matter becomes steam and goes into the air, not that the remaining water in the pot keeps its mass. Prior reviewed bukal/alisngaw evidence supports those senses.",
+      "formal_item_id": "c9959a7a49bc99869329ba03cc0ca08bf",
+      "fidelity_item_id": "m42a2117ca4214cb69895c14b",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16524",
+      "source_card_sha256": "98c10e6b6de3fc3b4d6bdc6733726873e75de477eaa239af3b792c5196ce0288",
+      "candidate_card_sha256": "49e62279f8e1f87b8f7ab3cec16dc040410d80cb2f573cd5d6c27e1212198c76",
+      "before_card": {
+        "id": "ffct-16524",
+        "factId": "solid-broken-pieces-still-solid-g3",
+        "domain": "MATTER",
+        "topic": "broken solid pieces are still solids",
+        "terms": [
+          "solido",
+          "solid",
+          "pira-piraso",
+          "piraso",
+          "pieces",
+          "hiwa",
+          "putol",
+          "gibahinbahin",
+          "guba",
+          "basag",
+          "tipik",
+          "tisa",
+          "hugis",
+          "porma",
+          "tsokolate"
+        ],
+        "fact": {
+          "en": "When you break a solid like a chocolate bar, every single piece is still a solid and keeps its own shape!",
+          "tl": "Kapag binasag mo ang solido tulad ng tsokolate, bawat piraso ay solido pa rin at may sariling hugis!",
+          "bis": "Kung gub-on nimo ang solido sama sa tsokolate, ang matag piraso solido gihapon ug adunay kaugalingong porma!"
+        },
+        "slug": "ffct-16524",
+        "source": "original",
+        "title": {
+          "tl": "Basag Tsokolate Solido Hugis",
+          "en": "Broken Pieces Solids",
+          "bis": "Bali Tsokolate Solido"
+        },
+        "cats": [
+          "states-of-matter"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16524",
+        "factId": "solid-broken-pieces-still-solid-g3",
+        "domain": "MATTER",
+        "topic": "broken solid pieces are still solids",
+        "terms": [
+          "solido",
+          "solid",
+          "pira-piraso",
+          "piraso",
+          "pieces",
+          "hiwa",
+          "putol",
+          "gibahinbahin",
+          "guba",
+          "basag",
+          "tipik",
+          "tisa",
+          "hugis",
+          "porma",
+          "tsokolate"
+        ],
+        "fact": {
+          "en": "When you break a solid like a chocolate bar, every single piece is still a solid and keeps its own shape!",
+          "tl": "Kapag binasag mo ang solido tulad ng tsokolate, bawat piraso ay solido pa rin at may sariling hugis!",
+          "bis": "Kung gub-on nimo ang solido sama sa tsokolate, ang matag piraso solido gihapon ug adunay kaugalingong porma!"
+        },
+        "slug": "ffct-16524",
+        "source": "original",
+        "title": {
+          "tl": "Basag Tsokolate Solido Hugis",
+          "en": "Broken Pieces Solids",
+          "bis": "Solido Gihapon ang mga Piraso"
+        },
+        "cats": [
+          "states-of-matter"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title directly states that the pieces remain solid. The full body limits the example to breaking a chocolate solid and retains the separate shape of each piece. Wolff guba has the break/destroy homograph; it is not rejected because another homograph differs.",
+      "formal_item_id": "c85f894d320a1aaeb34d6e343118517e5",
+      "fidelity_item_id": "m51333737f60edae298e3d98e",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16529",
+      "source_card_sha256": "c8e4b606636d76e001fdaad487e1c815adcd1e2bccb1499918e99074dc2038f5",
+      "candidate_card_sha256": "9de35ab8cd2a1affa0e65e1e42acc8104bf817c99f576f82814eec3e6eb1533f",
+      "before_card": {
+        "id": "ffct-16529",
+        "factId": "bubbles-are-gas-inside-liquid-g4",
+        "domain": "MATTER",
+        "topic": "bubbles are gas trapped in liquid",
+        "terms": [
+          "bula",
+          "bubula",
+          "bubble",
+          "hangin",
+          "air",
+          "gas",
+          "tubig",
+          "water",
+          "likido",
+          "liquid",
+          "nakasingit",
+          "natanggong",
+          "lumalabas",
+          "sumasabog",
+          "nasipit"
+        ],
+        "fact": {
+          "en": "Bubbles in water are actually tiny pockets of gas trapped inside the liquid! They float up to the top and pop right into the air.",
+          "tl": "Ang mga bula sa tubig ay maliliit na bulsa ng gas na nakakulong sa loob ng likido! Pumapaibabaw sila at sumasabog sa hangin.",
+          "bis": "Ang mga bula sa tubig mao ang gagmay nga gas nga nakakulong sa likido! Mosaka sila sa ibabaw ug mobuto ngadto sa hangin."
+        },
+        "slug": "ffct-16529",
+        "source": "original",
+        "title": {
+          "tl": "Bula Gas Bulsa Likido",
+          "en": "Bubbles Gas in Liquid",
+          "bis": "Bula Gas Likido Sabog"
+        },
+        "cats": [
+          "states-of-matter"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16529",
+        "factId": "bubbles-are-gas-inside-liquid-g4",
+        "domain": "MATTER",
+        "topic": "bubbles are gas trapped in liquid",
+        "terms": [
+          "bula",
+          "bubula",
+          "bubble",
+          "hangin",
+          "air",
+          "gas",
+          "tubig",
+          "water",
+          "likido",
+          "liquid",
+          "nakasingit",
+          "natanggong",
+          "lumalabas",
+          "sumasabog",
+          "nasipit"
+        ],
+        "fact": {
+          "en": "Bubbles in water are actually tiny pockets of gas trapped inside the liquid! They float up to the top and pop right into the air.",
+          "tl": "Ang mga bula sa tubig ay maliliit na bulsa ng gas na nakakulong sa loob ng likido! Pumapaibabaw sila at sumasabog sa hangin.",
+          "bis": "Ang mga bula sa tubig mao ang gagmay nga gas nga nakakulong sa likido! Mosaka sila sa ibabaw ug mobuto ngadto sa hangin."
+        },
+        "slug": "ffct-16529",
+        "source": "original",
+        "title": {
+          "tl": "Bula Gas Bulsa Likido",
+          "en": "Bubbles Gas in Liquid",
+          "bis": "Mga Bula sa Tubig"
+        },
+        "cats": [
+          "states-of-matter"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title removes the noun pile and names bubbles in water. The full unchanged body identifies trapped gas, upward movement and release into air. Wolff kulung has a confinement sense, distinct from its curly-hair homograph; independent bodies corroborate trapped-air usage. This does not introduce a grammar normalization.",
+      "formal_item_id": "c16cc71ab7cf7477bb36b5c4f36e0c8a6",
+      "fidelity_item_id": "m33c485558745c6ac56d519ec",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16550",
+      "source_card_sha256": "6b7d0c037c3f682241a67fe5558d1324b03ba1dade6a8b643bebac4c920dd6a0",
+      "candidate_card_sha256": "6bfedc1460845717082b4f3789e2ca1d09cf715f7d84a9c6da018eac721fb6f8",
+      "before_card": {
+        "id": "ffct-16550",
+        "factId": "souring-milk-irreversible-g7",
+        "domain": "MATTER",
+        "topic": "milk turning sour is an irreversible chemical change",
+        "terms": [
+          "pagkasira ng gatas",
+          "sour milk",
+          "panis nga gatas",
+          "gatas",
+          "milk",
+          "gatas nga aslom",
+          "maasim",
+          "kemikal na pagbabago",
+          "hindi maibabalik",
+          "dili mabalik"
+        ],
+        "fact": {
+          "en": "Can sour milk turn back into fresh milk?\n\nNope! Milk turning sour or spoiling is a chemical change that cannot be undone back to fresh milk.",
+          "tl": "Maaari bang maging sariwang gatas ang naasim na gatas?\n\nHindi! Ang pagkaasim o pagkasira ng gatas ay kemikal na pagbabago na hindi na maibabalik sa sariwang gatas.",
+          "bis": "Mahimo ba nga lab-as nga gatas ang naaslom nga gatas?\n\nDili! Ang pag-aslom o pagkadunot sa gatas kay kemikal nga kausaban nga dili na mabalik sa lab-as nga gatas."
+        },
+        "slug": "souring-milk-curdling",
+        "title": {
+          "en": "Sour Milk",
+          "tl": "Maasim na Gatas",
+          "bis": "Maaslom nga Gatas"
+        },
+        "cats": [
+          "chemical-changes",
+          "food"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kemikal na pagbabago"
+          ],
+          "en": [
+            "chemical change"
+          ],
+          "bis": [
+            "kemikal nga kausaban"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-16550",
+        "factId": "souring-milk-irreversible-g7",
+        "domain": "MATTER",
+        "topic": "milk turning sour is an irreversible chemical change",
+        "terms": [
+          "pagkasira ng gatas",
+          "sour milk",
+          "panis nga gatas",
+          "gatas",
+          "milk",
+          "gatas nga aslom",
+          "maasim",
+          "kemikal na pagbabago",
+          "hindi maibabalik",
+          "dili mabalik"
+        ],
+        "fact": {
+          "en": "Can sour milk turn back into fresh milk?\n\nNope! Milk turning sour or spoiling is a chemical change that cannot be undone back to fresh milk.",
+          "tl": "Maaari bang maging sariwang gatas ang naasim na gatas?\n\nHindi! Ang pagkaasim o pagkasira ng gatas ay kemikal na pagbabago na hindi na maibabalik sa sariwang gatas.",
+          "bis": "Mabalik pa ba nga lab-as ang naaslom nga gatas?\n\nDili! Ang pag-aslom o pagkadunot sa gatas kay kemikal nga kausaban. Dili na mabalik nga lab-as ang gatas."
+        },
+        "slug": "souring-milk-curdling",
+        "title": {
+          "en": "Sour Milk",
+          "tl": "Maasim na Gatas",
+          "bis": "Maaslom nga Gatas"
+        },
+        "cats": [
+          "chemical-changes",
+          "food"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kemikal na pagbabago"
+          ],
+          "en": [
+            "chemical change"
+          ],
+          "bis": [
+            "kemikal nga kausaban"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The question now explicitly asks about returning to freshness, and the answer uses short sentences with milk as the referent. Wolff lab-as, aslum and dunut support freshness, sourness and spoilage. The irreversibility claim remains about spoiled milk, not every chemical change.",
+      "formal_item_id": "c175697bbaaebb3eee2e84840713091cd",
+      "fidelity_item_id": "mdd8421e1436cd9181f1a5e16",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16560",
+      "source_card_sha256": "53f92f616525bf8cc00737d8a59cc3d380c0bce7104cbd4f5302a7693d4a670f",
+      "candidate_card_sha256": "bafe6ccb5a3a4b96e98ac413579e98d87bed9134c1333b0da16ecd15974f020e",
+      "before_card": {
+        "id": "ffct-16560",
+        "factId": "weight-vs-mass-difference-g6",
+        "domain": "MATTER",
+        "topic": "mass and weight are different",
+        "terms": [
+          "mass",
+          "masa",
+          "weight",
+          "timbang",
+          "bigat",
+          "gibug-aton",
+          "gravity",
+          "grabidad",
+          "difference",
+          "kaibahan",
+          "kalainan"
+        ],
+        "fact": {
+          "en": "What's the difference between mass and weight?\n\nMass stays the same everywhere, but weight changes when the strength of gravity changes!",
+          "tl": "Ano ang pagkakaiba ng masa at timbang?\n\nAng masa ay laging pareho saanman, pero nagbabago ang timbang kapag nagbago ang lakas ng grabidad!",
+          "bis": "Unsay kalainan sa masa ug gibug-aton?\n\nAng masa kanunay parehas bisan asa, pero mausab ang gibug-aton kung mausab ang kusog sa grabidad!"
+        },
+        "slug": "",
+        "source": "original",
+        "title": {
+          "tl": "Masa vs Timbang Grabidad",
+          "en": "Mass vs Weight Gravity",
+          "bis": "Masa Parehas Timbang Gravity"
+        },
+        "cats": [
+          "matter",
+          "gravity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16560",
+        "factId": "weight-vs-mass-difference-g6",
+        "domain": "MATTER",
+        "topic": "mass and weight are different",
+        "terms": [
+          "mass",
+          "masa",
+          "weight",
+          "timbang",
+          "bigat",
+          "gibug-aton",
+          "gravity",
+          "grabidad",
+          "difference",
+          "kaibahan",
+          "kalainan"
+        ],
+        "fact": {
+          "en": "What's the difference between mass and weight?\n\nMass stays the same everywhere, but weight changes when the strength of gravity changes!",
+          "tl": "Ano ang pagkakaiba ng masa at timbang?\n\nAng masa ay laging pareho saanman, pero nagbabago ang timbang kapag nagbago ang lakas ng grabidad!",
+          "bis": "Unsay kalainan sa masa ug gibug-aton?\n\nAng masa kanunay parehas bisan asa, pero mausab ang gibug-aton kung mausab ang kusog sa grabidad!"
+        },
+        "slug": "",
+        "source": "original",
+        "title": {
+          "tl": "Masa vs Timbang Grabidad",
+          "en": "Mass vs Weight Gravity",
+          "bis": "Masa ug Gibug-aton"
+        },
+        "cats": [
+          "matter",
+          "gravity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title directly names mass and weight, matching the unchanged comparison across locations and gravitational strengths. The complete body does not assert that an object can never gain or lose mass through any process. No units or science terms are changed.",
+      "formal_item_id": "c136b28b3dd41702a25755eceb6f54c2d",
+      "fidelity_item_id": "me44e6dad79cd12d5ccc5c9ac",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16565",
+      "source_card_sha256": "013cb384a6c7de5a1f0b7ec8b7ec46669b03bc0f443ce8a4763bbe0f31e52638",
+      "candidate_card_sha256": "f9ca247b8db7528c2411f22d8306f24431abfd6894e7f4c3565faa2a72a52d34",
+      "before_card": {
+        "id": "ffct-16565",
+        "factId": "liquid-takes-container-shape-volume-g5",
+        "domain": "MATTER",
+        "topic": "liquid volume stays same in different containers",
+        "terms": [
+          "liquid",
+          "likido",
+          "tubig",
+          "volume",
+          "bolyum",
+          "container",
+          "lalagyan",
+          "sudlanan",
+          "baso",
+          "shape",
+          "hugis",
+          "porma",
+          "pareho",
+          "same"
+        ],
+        "fact": {
+          "en": "When you pour water into a different container, its shape changes, but its volume stays exactly the same!",
+          "tl": "Kapag ibinuhos mo ang tubig sa ibang lalagyan, nagbabago ang hugis nito, ngunit pareho pa rin ang bolyum!",
+          "bis": "Kung ibubo nimo ang tubig sa lahi nga sudlanan, mausab ang porma niini, apan parehas gihapon ang bolyum!"
+        },
+        "slug": "qa-ffct-16565",
+        "source": "original",
+        "title": {
+          "tl": "Bolyum sa Ibang Lalagyan",
+          "en": "Liquid Volume Same Containers",
+          "bis": "Volume Laing Sudlan"
+        },
+        "cats": [
+          "states-of-matter"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16565",
+        "factId": "liquid-takes-container-shape-volume-g5",
+        "domain": "MATTER",
+        "topic": "liquid volume stays same in different containers",
+        "terms": [
+          "liquid",
+          "likido",
+          "tubig",
+          "volume",
+          "bolyum",
+          "container",
+          "lalagyan",
+          "sudlanan",
+          "baso",
+          "shape",
+          "hugis",
+          "porma",
+          "pareho",
+          "same"
+        ],
+        "fact": {
+          "en": "When you pour water into a different container, its shape changes, but its volume stays exactly the same!",
+          "tl": "Kapag ibinuhos mo ang tubig sa ibang lalagyan, nagbabago ang hugis nito, ngunit pareho pa rin ang bolyum!",
+          "bis": "Kung ibubo nimo ang tubig sa lahi nga sudlanan, mausab ang porma niini, apan parehas gihapon ang bolyum!"
+        },
+        "slug": "qa-ffct-16565",
+        "source": "original",
+        "title": {
+          "tl": "Bolyum sa Ibang Lalagyan",
+          "en": "Liquid Volume Same Containers",
+          "bis": "Bolyum sa Laing Sudlanan"
+        },
+        "cats": [
+          "states-of-matter"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title clearly links volume to the different container. Wolff sulud explicitly includes sudlanan as container, so this is supported through the root entry rather than a surface-frequency vote. The unchanged body preserves the contrast between shape and volume.",
+      "formal_item_id": "c7620a2c9993f4f0a370903ab234a9a05",
+      "fidelity_item_id": "mb65949eaf7a1c0aeb279dc58",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16658",
+      "source_card_sha256": "b0836fa2ba7d22a5994bf38b207865e25511456be1b48951058e5241d9a0fd4e",
+      "candidate_card_sha256": "ab6b5b51b011dfef5c415f49e3aaff0d499031197f343366a1f3a455da070e80",
+      "before_card": {
+        "id": "ffct-16658",
+        "factId": "carbon-basis-of-life-g8",
+        "domain": "MATTER",
+        "topic": "carbon is the basis of living things",
+        "terms": [
+          "carbon",
+          "karbon",
+          "kahoy",
+          "buhay",
+          "living things",
+          "buhing butang",
+          "basis",
+          "saligan",
+          "element of life",
+          "elemento sa kinabuhi"
+        ],
+        "fact": {
+          "en": "Carbon is an element found in all living things, which is why it is called the element of life!",
+          "tl": "Ang carbon ay isang elementong makikita sa lahat ng nabubuhay, kaya tinatawag itong elemento ng buhay!",
+          "bis": "Ang carbon usa ka elemento nga makita sa tanang buhing butang, mao nga gitawag kining elemento sa kinabuhi!"
+        },
+        "slug": "ffct-16658",
+        "source": "original",
+        "title": {
+          "tl": "Carbon Elemento ng Buhay",
+          "en": "Carbon Element of Life",
+          "bis": "Carbon Elemento Kinabuhi"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16658",
+        "factId": "carbon-basis-of-life-g8",
+        "domain": "MATTER",
+        "topic": "carbon is the basis of living things",
+        "terms": [
+          "carbon",
+          "karbon",
+          "kahoy",
+          "buhay",
+          "living things",
+          "buhing butang",
+          "basis",
+          "saligan",
+          "element of life",
+          "elemento sa kinabuhi"
+        ],
+        "fact": {
+          "en": "Carbon is an element found in all living things, which is why it is called the element of life!",
+          "tl": "Ang carbon ay isang elementong makikita sa lahat ng nabubuhay, kaya tinatawag itong elemento ng buhay!",
+          "bis": "Ang carbon usa ka elemento nga makita sa tanang buhing butang, mao nga gitawag kining elemento sa kinabuhi!"
+        },
+        "slug": "ffct-16658",
+        "source": "original",
+        "title": {
+          "tl": "Carbon Elemento ng Buhay",
+          "en": "Carbon Element of Life",
+          "bis": "Carbon, Elemento sa Kinabuhi"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title restores the grammatical relationship between carbon and life. The unchanged body says carbon occurs in living things and gives the educational nickname; it does not call carbon the only element in organisms. Both blind title observations and fidelity agree.",
+      "formal_item_id": "c1701c93d119dc1ed778f075a25b301ec",
+      "fidelity_item_id": "mfa26916c4ebbafc229758c0c",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16659",
+      "source_card_sha256": "1d19730f6c4d6daa074dfebd8b810027d85b3d54e6ff004fedb243511b22c3ac",
+      "candidate_card_sha256": "1f1582b5b640afeaf6a2021a0d2f17a1818f1148d0a2fb2713c578abcca5b30a",
+      "before_card": {
+        "id": "ffct-16659",
+        "factId": "number-of-known-elements-g8",
+        "domain": "MATTER",
+        "topic": "there are over 100 known elements",
+        "terms": [
+          "118",
+          "mga elemento",
+          "elements",
+          "known elements",
+          "kilalang elemento",
+          "nailhan",
+          "bilang",
+          "gidaghanon",
+          "mahigit 100",
+          "kapin sa 100"
+        ],
+        "fact": {
+          "en": "There are more than 100 known elements, and 118 are currently listed on the periodic table!",
+          "tl": "May mahigit 100 kilalang elemento, at sa kasalukuyan ay 118 na ang nakatala sa periodic table!",
+          "bis": "Adunay kapin sa 100 ka nailhang elemento, ug 118 na ang nakalista karon sa periodic table!"
+        },
+        "slug": "ffct-16659",
+        "source": "original",
+        "title": {
+          "tl": "118 Elemento Nakatala",
+          "en": "118 Known Elements",
+          "bis": "118 Elemento Table"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16659",
+        "factId": "number-of-known-elements-g8",
+        "domain": "MATTER",
+        "topic": "there are over 100 known elements",
+        "terms": [
+          "118",
+          "mga elemento",
+          "elements",
+          "known elements",
+          "kilalang elemento",
+          "nailhan",
+          "bilang",
+          "gidaghanon",
+          "mahigit 100",
+          "kapin sa 100"
+        ],
+        "fact": {
+          "en": "There are more than 100 known elements, and 118 are currently listed on the periodic table!",
+          "tl": "May mahigit 100 kilalang elemento, at sa kasalukuyan ay 118 na ang nakatala sa periodic table!",
+          "bis": "Adunay kapin sa 100 ka nailhang elemento, ug 118 na ang nakalista karon sa periodic table!"
+        },
+        "slug": "ffct-16659",
+        "source": "original",
+        "title": {
+          "tl": "118 Elemento Nakatala",
+          "en": "118 Known Elements",
+          "bis": "118 ka Elemento sa Periodic Table"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title names 118 elements in the periodic table with the appropriate count construction. The currently served IUPAC table, linked as its latest release, includes elements through 118. The count is checked as of this review, not asserted to be permanently fixed.",
+      "formal_item_id": "c0ff67d90f4e38961fa4f2aaa93c52604",
+      "fidelity_item_id": "m31d71cbab76aa58623f72702",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16671",
+      "source_card_sha256": "856587b1d04062242a26e43161c3c8e89d4522e539b568d1556a37d2c471436e",
+      "candidate_card_sha256": "6991158b582d00fbfba88f69fc83ae2f6bd96f06de9dd4815b8c73aa5d0f585a",
+      "before_card": {
+        "id": "ffct-16671",
+        "factId": "carbon-in-living-things-g6",
+        "domain": "MATTER",
+        "topic": "carbon in living things",
+        "terms": [
+          "carbon",
+          "karbon",
+          "buhi",
+          "living things",
+          "lawas",
+          "katawan",
+          "pagkaon",
+          "food",
+          "halaman",
+          "hayop",
+          "elemento"
+        ],
+        "fact": {
+          "en": "Carbon is an amazing element found in all living things, including our very own bodies and our food!",
+          "tl": "Ang carbon ay isang elementong matatagpuan sa lahat ng nabubuhay, kasama ang ating sariling katawan at pagkain!",
+          "bis": "Ang karbon usa ka elemento nga makita sa tanang buhing butang, lakip ang atong kaugalingong lawas ug pagkaon!"
+        },
+        "slug": "ffct-16671",
+        "source": "original",
+        "title": {
+          "tl": "Carbon sa Buhay na Bagay",
+          "en": "Carbon in Living Things",
+          "bis": "Carbon Buhing Butang"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16671",
+        "factId": "carbon-in-living-things-g6",
+        "domain": "MATTER",
+        "topic": "carbon in living things",
+        "terms": [
+          "carbon",
+          "karbon",
+          "buhi",
+          "living things",
+          "lawas",
+          "katawan",
+          "pagkaon",
+          "food",
+          "halaman",
+          "hayop",
+          "elemento"
+        ],
+        "fact": {
+          "en": "Carbon is an amazing element found in all living things, including our very own bodies and our food!",
+          "tl": "Ang carbon ay isang elementong matatagpuan sa lahat ng nabubuhay, kasama ang ating sariling katawan at pagkain!",
+          "bis": "Ang karbon usa ka elemento nga makita sa tanang buhing butang, lakip ang atong kaugalingong lawas ug pagkaon!"
+        },
+        "slug": "ffct-16671",
+        "source": "original",
+        "title": {
+          "tl": "Carbon sa Buhay na Bagay",
+          "en": "Carbon in Living Things",
+          "bis": "Carbon sa Buhing Butang"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title adds the relation to living things while leaving the body unchanged. Binisaya explicitly lists carbon at the direct karbon headword, resolving the doubt raised by Wolff coal/carbon-paper entries. English WordNet descendants are not counted as separate Cebuano attestations.",
+      "formal_item_id": "c06fa87c499b4c3a591d3b5e13fe7fe7f",
+      "fidelity_item_id": "md18eb614e612ae19172fc992",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16674",
+      "source_card_sha256": "80dbac1ed344e564eb8db2e1a92ab1fdb0dc05d262913a6577a3cee45dd89ee0",
+      "candidate_card_sha256": "f55a2c9ee206990d15c9206ce4bcbd697c68707fea0709a0296a311139600be2",
+      "before_card": {
+        "id": "ffct-16674",
+        "factId": "carbon-dioxide-breathe-out-g6",
+        "domain": "MATTER",
+        "topic": "carbon in carbon dioxide",
+        "terms": [
+          "carbon",
+          "karbon",
+          "carbon dioxide",
+          "dioxide",
+          "huyop",
+          "hininga",
+          "breathe out",
+          "gas",
+          "halaman",
+          "tanom",
+          "ginabuga"
+        ],
+        "fact": {
+          "en": "When we breathe out, we release carbon dioxide, a special gas that contains carbon!",
+          "tl": "Kapag huminga tayo palabas, naglalabas tayo ng carbon dioxide, isang gas na may carbon!",
+          "bis": "Kon moginhawa kita pagawas, magbuga kita og carbon dioxide, usa ka gas nga adunay karbon!"
+        },
+        "slug": "ffct-16674",
+        "source": "original",
+        "title": {
+          "tl": "Carbon Dioxide sa Hininga",
+          "en": "Carbon in Carbon Dioxide",
+          "bis": "CO2 Ginhawa"
+        },
+        "cats": [
+          "gases",
+          "human-body"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16674",
+        "factId": "carbon-dioxide-breathe-out-g6",
+        "domain": "MATTER",
+        "topic": "carbon in carbon dioxide",
+        "terms": [
+          "carbon",
+          "karbon",
+          "carbon dioxide",
+          "dioxide",
+          "huyop",
+          "hininga",
+          "breathe out",
+          "gas",
+          "halaman",
+          "tanom",
+          "ginabuga"
+        ],
+        "fact": {
+          "en": "When we breathe out, we release carbon dioxide, a special gas that contains carbon!",
+          "tl": "Kapag huminga tayo palabas, naglalabas tayo ng carbon dioxide, isang gas na may carbon!",
+          "bis": "Kon moginhawa kita pagawas, magbuga kita og carbon dioxide, usa ka gas nga adunay karbon!"
+        },
+        "slug": "ffct-16674",
+        "source": "original",
+        "title": {
+          "tl": "Carbon Dioxide sa Hininga",
+          "en": "Carbon in Carbon Dioxide",
+          "bis": "CO2 sa Atong Ginhawa"
+        },
+        "cats": [
+          "gases",
+          "human-body"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title explicitly relates CO2 to our exhaled breath. The body retains carbon dioxide and carbon, with karbon supported by the direct Binisaya headword. Neither the gas identity nor the formula is altered; this does not say exhaled air is pure carbon dioxide.",
+      "formal_item_id": "c8c77e05113fb9041ce41fcfe31082456",
+      "fidelity_item_id": "mbd924d757bc545bd7e55308c",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16676",
+      "source_card_sha256": "0888423c684c99950953f26a5109cd2891975332f0546aaa1e9497d43f6cb2e8",
+      "candidate_card_sha256": "57ac92b0e788c69f4e10d0432eb3cb29798be8725e983cb53639969b366bbbc7",
+      "before_card": {
+        "id": "ffct-16676",
+        "factId": "iron-steel-mixture-g7",
+        "domain": "MATTER",
+        "topic": "iron makes steel",
+        "terms": [
+          "iron",
+          "bakal",
+          "puthaw",
+          "asero",
+          "steel",
+          "carbon",
+          "karbon",
+          "haluang metal",
+          "alloy",
+          "matigas",
+          "gahi",
+          "halo"
+        ],
+        "fact": {
+          "en": "How do we make iron even stronger?\n\nWhen a little carbon is mixed with iron, it becomes steel, which is harder and stronger!",
+          "tl": "Paano natin ginagawang mas matibay ang iron?\n\nKapag hinaluan ng kaunting carbon ang iron, nagiging asero ito na mas matigas at matibay!",
+          "bis": "Unsaon paghimo sa puthaw nga mas lig-on?\n\nKon sagolan og gamay nga karbon ang puthaw, mahimo kining asero nga mas gahi ug lig-on!"
+        },
+        "slug": "ffct-16676",
+        "source": "original",
+        "title": {
+          "tl": "Iron na Ginawang Asero",
+          "en": "Iron Makes Steel",
+          "bis": "Iron Asero"
+        },
+        "cats": [
+          "materials",
+          "mixtures"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16676",
+        "factId": "iron-steel-mixture-g7",
+        "domain": "MATTER",
+        "topic": "iron makes steel",
+        "terms": [
+          "iron",
+          "bakal",
+          "puthaw",
+          "asero",
+          "steel",
+          "carbon",
+          "karbon",
+          "haluang metal",
+          "alloy",
+          "matigas",
+          "gahi",
+          "halo"
+        ],
+        "fact": {
+          "en": "How do we make iron even stronger?\n\nWhen a little carbon is mixed with iron, it becomes steel, which is harder and stronger!",
+          "tl": "Paano natin ginagawang mas matibay ang iron?\n\nKapag hinaluan ng kaunting carbon ang iron, nagiging asero ito na mas matigas at matibay!",
+          "bis": "Unsaon nato paghimo nga mas lig-on pa ang puthaw?\n\nKon sagolan og gamay nga karbon ang puthaw, mahimo kining asero nga mas gahi ug mas lig-on!"
+        },
+        "slug": "ffct-16676",
+        "source": "original",
+        "title": {
+          "tl": "Iron na Ginawang Asero",
+          "en": "Iron Makes Steel",
+          "bis": "Ang Puthaw Nahimong Asero"
+        },
+        "cats": [
+          "materials",
+          "mixtures"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The body restores even stronger and makes both comparative properties explicit while retaining a little carbon mixed with iron. Wolff puthaw, asiru and lig-un plus Binisaya karbon support the material and strength senses. The full body supplies the condition for the title about iron becoming steel.",
+      "formal_item_id": "ce6fed5165b860ab64c11e77757f54894",
+      "fidelity_item_id": "m5a464a3d571e9a748c735946",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16683",
+      "source_card_sha256": "983e947fbdf76348149de7659d6ba33ea36b2df545602cb53607cde2cd3168c7",
+      "candidate_card_sha256": "916eebd68ad9136b958d3c121cb4e831c3ed416f350b84a6f1fbf8b60cb3ee46",
+      "before_card": {
+        "id": "ffct-16683",
+        "factId": "gold-philippine-mining-g8",
+        "domain": "MATTER",
+        "topic": "gold mining in the Philippines",
+        "terms": [
+          "gold",
+          "ginto",
+          "bulawan",
+          "minahan",
+          "mina",
+          "mining",
+          "pilipinas",
+          "pilipinhon",
+          "lupa",
+          "mindanao",
+          "ore",
+          "tunaw"
+        ],
+        "fact": {
+          "en": "Is the Philippines rich in gold?\n\nYes! The Philippines is rich in gold, and many mines here dig it right from the ground.",
+          "tl": "Mayaman ba ang Pilipinas sa gold?\n\nOo! Mayaman ang Pilipinas sa gold, at maraming minahan dito ang naghuhukay nito mula sa lupa.",
+          "bis": "Dato ba ang Pilipinas sa bulawan?\n\nOo! Dato ang Pilipinas sa bulawan, ug daghang minahan dinhi ang nagkalot niini gikan sa yuta."
+        },
+        "slug": "ffct-16683",
+        "source": "original",
+        "title": {
+          "tl": "Gold Mining sa Pilipinas",
+          "en": "Gold Mining Philippines",
+          "bis": "Bulawan Mina PH"
+        },
+        "cats": [
+          "minerals",
+          "geology"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16683",
+        "factId": "gold-philippine-mining-g8",
+        "domain": "MATTER",
+        "topic": "gold mining in the Philippines",
+        "terms": [
+          "gold",
+          "ginto",
+          "bulawan",
+          "minahan",
+          "mina",
+          "mining",
+          "pilipinas",
+          "pilipinhon",
+          "lupa",
+          "mindanao",
+          "ore",
+          "tunaw"
+        ],
+        "fact": {
+          "en": "Is the Philippines rich in gold?\n\nYes! The Philippines is rich in gold, and many mines here dig it right from the ground.",
+          "tl": "Mayaman ba ang Pilipinas sa gold?\n\nOo! Mayaman ang Pilipinas sa gold, at maraming minahan dito ang naghuhukay nito mula sa lupa.",
+          "bis": "Dato ba ang Pilipinas sa bulawan?\n\nOo! Dato ang Pilipinas sa bulawan, ug daghang minahan dinhi ang nagkalot niini gikan sa yuta."
+        },
+        "slug": "ffct-16683",
+        "source": "original",
+        "title": {
+          "tl": "Gold Mining sa Pilipinas",
+          "en": "Gold Mining Philippines",
+          "bis": "Pagmina og Bulawan sa Pilipinas"
+        },
+        "cats": [
+          "minerals",
+          "geology"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title directly identifies Philippine gold mining. The unchanged body is consistent with the MGB production evidence inspected, without adding an exact reserve, ranking or output figure. Wolff kalut supports the digging sense; this is not an assertion that extracted ore is pure gold.",
+      "formal_item_id": "c698a06d9bf0f0bef6f8416d1495fadb3",
+      "fidelity_item_id": "m9237d5fc1b53067da26a09e3",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16687",
+      "source_card_sha256": "62bca12ada87bbf807a7a8f5f27bc7fdda65679e2d8b770a3ee82b8ddce75837",
+      "candidate_card_sha256": "26e4aec2a5b35478cf03d33649d05e7729ad6efef18a61b0ee095f475303e29e",
+      "before_card": {
+        "id": "ffct-16687",
+        "factId": "mixture-variable-proportion-g6",
+        "domain": "MATTER",
+        "topic": "mixtures have variable proportions",
+        "terms": [
+          "mixture",
+          "proporsyon",
+          "proportion",
+          "dami",
+          "gidaghanon",
+          "iba-iba",
+          "lainlain",
+          "kape",
+          "kapeng",
+          "timpla",
+          "matamis",
+          "matam-is",
+          "asukal",
+          "compound",
+          "fixed"
+        ],
+        "fact": {
+          "en": "Can you change the parts in a mixture?\n\nYes! You can change the amounts. Coffee can be sweeter or more bitter depending on how much sugar you add!",
+          "tl": "Pwede mo bang baguhin ang mga bahagi ng isang mixture?\n\nOo! Pwede mong baguhin ang dami. Ang kape ay pwedeng mas matamis o mapait depende sa dami ng asukal na ilalagay mo!",
+          "bis": "Mahimo ba nimong usbon ang mga bahin sa usa ka mixture?\n\nOo! Mahimo nimong usbon ang gidaghanon. Ang kape mahimong mas tam-is o pait depende sa gidaghanon sa asukal nga imong ibutang!"
+        },
+        "slug": "ffct-16687",
+        "source": "original",
+        "title": {
+          "tl": "Mixture na Nababagong Proporsyon",
+          "en": "Mixtures Vary in Parts",
+          "bis": "Mixture sa Proporsyon"
+        },
+        "cats": [
+          "mixtures"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16687",
+        "factId": "mixture-variable-proportion-g6",
+        "domain": "MATTER",
+        "topic": "mixtures have variable proportions",
+        "terms": [
+          "mixture",
+          "proporsyon",
+          "proportion",
+          "dami",
+          "gidaghanon",
+          "iba-iba",
+          "lainlain",
+          "kape",
+          "kapeng",
+          "timpla",
+          "matamis",
+          "matam-is",
+          "asukal",
+          "compound",
+          "fixed"
+        ],
+        "fact": {
+          "en": "Can you change the parts in a mixture?\n\nYes! You can change the amounts. Coffee can be sweeter or more bitter depending on how much sugar you add!",
+          "tl": "Pwede mo bang baguhin ang mga bahagi ng isang mixture?\n\nOo! Pwede mong baguhin ang dami. Ang kape ay pwedeng mas matamis o mapait depende sa dami ng asukal na ilalagay mo!",
+          "bis": "Mahimo ba nimong usbon ang mga bahin sa usa ka mixture?\n\nOo! Mahimo nimong usbon ang gidaghanon. Ang kape mahimong mas tam-is o mas pait depende sa gidaghanon sa asukal nga imong ibutang!"
+        },
+        "slug": "ffct-16687",
+        "source": "original",
+        "title": {
+          "tl": "Mixture na Nababagong Proporsyon",
+          "en": "Mixtures Vary in Parts",
+          "bis": "Mausab ang mga Bahin sa Mixture"
+        },
+        "cats": [
+          "mixtures"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The second mas restores the English comparative more bitter and the title names variable mixture amounts. Wolff pait includes bitterness and a coffee example. The full body preserves dependence on the amount of sugar; it does not say that adding more sugar increases bitterness.",
+      "formal_item_id": "cd8b0ed3dcd03574e8be1fd389cf4653e",
+      "fidelity_item_id": "m503dc240938f31011b72843b",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16722",
+      "source_card_sha256": "0997ee37db9e93fe6514bd5f488c1bd55f1d133714f2d577583694b71ace056e",
+      "candidate_card_sha256": "201fe10e728ff7cdf752cb1c13987fc54e689bc45c3e7c17b448906f89c07c18",
+      "before_card": {
+        "id": "ffct-16722",
+        "factId": "milk-fridge-cold-slows-spoilage-g5",
+        "domain": "MATTER",
+        "topic": "refrigeration keeps milk fresh longer",
+        "terms": [
+          "gatas",
+          "repridyetor",
+          "malamig",
+          "bakterya",
+          "preska",
+          "milk",
+          "refrigerator",
+          "cold",
+          "fresh",
+          "bacteria",
+          "slow down",
+          "ref",
+          "bugnaw",
+          "presko nga gatas",
+          "pabagalon"
+        ],
+        "fact": {
+          "en": "Keeping milk in a cold refrigerator slows down the growth of bacteria, helping it stay fresh for a longer time!",
+          "tl": "Ang paglalagay ng gatas sa malamig na refrigerator ay nagpapabagal sa pagdami ng bacteria, kaya mas tumatagal itong presko!",
+          "bis": "Ang pagbutang sa gatas sa bugnaw nga refrigerator magpahinay sa pagdaghan sa bacteria, busa magpabilin kini nga presko sa mas dugay nga panahon!"
+        },
+        "slug": "ffct-16722",
+        "source": "original",
+        "title": {
+          "tl": "Ref sa Sariwang Gatas",
+          "en": "Fridges Keep Milk Fresh",
+          "bis": "Ref sa Gatas"
+        },
+        "cats": [
+          "microorganisms",
+          "chemical-changes"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16722",
+        "factId": "milk-fridge-cold-slows-spoilage-g5",
+        "domain": "MATTER",
+        "topic": "refrigeration keeps milk fresh longer",
+        "terms": [
+          "gatas",
+          "repridyetor",
+          "malamig",
+          "bakterya",
+          "preska",
+          "milk",
+          "refrigerator",
+          "cold",
+          "fresh",
+          "bacteria",
+          "slow down",
+          "ref",
+          "bugnaw",
+          "presko nga gatas",
+          "pabagalon"
+        ],
+        "fact": {
+          "en": "Keeping milk in a cold refrigerator slows down the growth of bacteria, helping it stay fresh for a longer time!",
+          "tl": "Ang paglalagay ng gatas sa malamig na refrigerator ay nagpapabagal sa pagdami ng bacteria, kaya mas tumatagal itong presko!",
+          "bis": "Kung ibutang ang gatas sa bugnaw nga refrigerator, mohinay ang pagdaghan sa bacteria. Busa magpabilin nga presko ang gatas sa mas dugay nga panahon!"
+        },
+        "slug": "ffct-16722",
+        "source": "original",
+        "title": {
+          "tl": "Ref sa Sariwang Gatas",
+          "en": "Fridges Keep Milk Fresh",
+          "bis": "Ref sa Gatas"
+        },
+        "cats": [
+          "microorganisms",
+          "chemical-changes"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The shorter conditional and explicit milk referent preserve slower bacterial growth and longer freshness. The claim remains comparative and does not promise sterilization or indefinite safety. Both blind body judgments and the complete English/backtranslation support the exact split.",
+      "formal_item_id": "c359586ee2855a9e5e7ebdef59d86d552",
+      "fidelity_item_id": "m64d055f7af22260c49c9b661",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16725",
+      "source_card_sha256": "283cc3bf658c4f85a56e1611563b0678995700d5379fd81f03167ad4f4afd6c0",
+      "candidate_card_sha256": "5d6a2b470db8079901079fe6316667560185a2e6e7a2171ec6c792b40e595bf5",
+      "before_card": {
+        "id": "ffct-16725",
+        "factId": "ice-melts-back-water-reversible-g5",
+        "domain": "MATTER",
+        "topic": "melting ice is a reversible change",
+        "terms": [
+          "yelo",
+          "natutunaw",
+          "tubig",
+          "maibabalik",
+          "init",
+          "ice",
+          "melt",
+          "water",
+          "reversible",
+          "warm",
+          "back to water",
+          "yelo natunaw",
+          "matunaw",
+          "mabalik",
+          "init nga tubig"
+        ],
+        "fact": {
+          "en": "Can melted ice turn back into solid ice?\n\nYes! Ice melting into water can be frozen back into ice when cooled, making it a reversible change.",
+          "tl": "Maaari bang maging yelo muli ang natunaw na yelo?\n\nOo! Ang natunaw na yelo ay maaaring i-freeze pabalik sa yelo kapag pinalamig, kaya ito ay reversible change.",
+          "bis": "Mahimong mabalik ba sa ice ang natunaw nga ice?\n\nOo! Ang natunaw nga ice mahimong i-freeze pabalik sa ice kung palamigon, busa kini reversible change."
+        },
+        "slug": "ice-melting-in-glass-heat",
+        "title": {
+          "en": "Melting Ice",
+          "tl": "Pagtunaw ng Yelo",
+          "bis": "Pagtunaw sa Yelo"
+        },
+        "cats": [
+          "states-of-matter",
+          "physical-changes"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "reversible change"
+          ],
+          "en": [
+            "reversible change"
+          ],
+          "bis": [
+            "reversible change"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-16725",
+        "factId": "ice-melts-back-water-reversible-g5",
+        "domain": "MATTER",
+        "topic": "melting ice is a reversible change",
+        "terms": [
+          "yelo",
+          "natutunaw",
+          "tubig",
+          "maibabalik",
+          "init",
+          "ice",
+          "melt",
+          "water",
+          "reversible",
+          "warm",
+          "back to water",
+          "yelo natunaw",
+          "matunaw",
+          "mabalik",
+          "init nga tubig"
+        ],
+        "fact": {
+          "en": "Can melted ice turn back into solid ice?\n\nYes! Ice melting into water can be frozen back into ice when cooled, making it a reversible change.",
+          "tl": "Maaari bang maging yelo muli ang natunaw na yelo?\n\nOo! Ang natunaw na yelo ay maaaring i-freeze pabalik sa yelo kapag pinalamig, kaya ito ay reversible change.",
+          "bis": "Mahimo bang mabalik sa ice ang natunaw nga ice?\n\nOo! Kung palamigon ang natunaw nga ice, mahimo kining i-freeze pabalik sa ice. Busa, usa kini ka reversible change."
+        },
+        "slug": "ice-melting-in-glass-heat",
+        "title": {
+          "en": "Melting Ice",
+          "tl": "Pagtunaw ng Yelo",
+          "bis": "Pagtunaw sa Yelo"
+        },
+        "cats": [
+          "states-of-matter",
+          "physical-changes"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "reversible change"
+          ],
+          "en": [
+            "reversible change"
+          ],
+          "bis": [
+            "reversible change"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The question order and split answer explicitly connect cooling, refreezing and reversibility of melted ice. Wolff tunaw and yilu support melting and becoming ice. The candidate retains the can/possibility condition and adds no numerical freezing threshold or different phase change.",
+      "formal_item_id": "c20b682857461a2d5645f6ed18ac05f8c",
+      "fidelity_item_id": "m7db415e6b5d215d06962aa87",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16773",
+      "source_card_sha256": "e20a16b1f3b59d24b2323a093ac12963c99b92d533f175a3540fdf21558852b1",
+      "candidate_card_sha256": "944d66f859c6145e32940a33aa43b9476d098beb68cd5806df80cebb6bb037bb",
+      "before_card": {
+        "id": "ffct-16773",
+        "factId": "water-surrounds-salt-pieces-g6",
+        "domain": "MATTER",
+        "topic": "water pulls apart and surrounds salt's tiny pieces",
+        "terms": [
+          "asin",
+          "salt",
+          "asukal",
+          "tubig",
+          "water",
+          "napaligiran",
+          "nilibutan",
+          "molibot",
+          "nahihila",
+          "mobira",
+          "naghihiwa-hiwalay",
+          "nagkalat",
+          "magkatag",
+          "tunaw",
+          "matunaw"
+        ],
+        "fact": {
+          "en": "When salt dissolves, water molecules pull on its tiny pieces, surround them, and carry them away until they spread through the water!",
+          "tl": "Kapag natutunaw ang asin, hinahatak at nililibutan ng mga molekula ng tubig ang maliliit na piraso nito at kinakalat sa buong tubig!",
+          "bis": "Kon matunaw ang asin, ang mga molekula sa tubig mobira sa gagmayng tipik niini, molibot, ug modala palayo hangtod magkatag sa tibuok tubig!"
+        },
+        "slug": "ffct-16773",
+        "source": "original",
+        "title": {
+          "tl": "Tubig na Lumilibot sa Asin",
+          "en": "Water Surrounds Salt Pieces",
+          "bis": "Tubig Libot Asin"
+        },
+        "cats": [
+          "solutions"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16773",
+        "factId": "water-surrounds-salt-pieces-g6",
+        "domain": "MATTER",
+        "topic": "water pulls apart and surrounds salt's tiny pieces",
+        "terms": [
+          "asin",
+          "salt",
+          "asukal",
+          "tubig",
+          "water",
+          "napaligiran",
+          "nilibutan",
+          "molibot",
+          "nahihila",
+          "mobira",
+          "naghihiwa-hiwalay",
+          "nagkalat",
+          "magkatag",
+          "tunaw",
+          "matunaw"
+        ],
+        "fact": {
+          "en": "When salt dissolves, water molecules pull on its tiny pieces, surround them, and carry them away until they spread through the water!",
+          "tl": "Kapag natutunaw ang asin, hinahatak at nililibutan ng mga molekula ng tubig ang maliliit na piraso nito at kinakalat sa buong tubig!",
+          "bis": "Kon matunaw ang asin, ang mga molekula sa tubig mobira sa gagmayng tipik niini. Libuton nila kining mga tipik ug dad-on palayo hangtod magkatag kini sa tibuok tubig!"
+        },
+        "slug": "ffct-16773",
+        "source": "original",
+        "title": {
+          "tl": "Tubig na Lumilibot sa Asin",
+          "en": "Water Surrounds Salt Pieces",
+          "bis": "Tubig nga Molibot sa Asin"
+        },
+        "cats": [
+          "solutions"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The split explicitly identifies water molecules as the agents and the tiny salt particles as what they surround and carry away. Wolff bira and libut support pulling and surrounding. It keeps the English particle-level explanation and does not add a claim that intact salt molecules dissolve unchanged.",
+      "formal_item_id": "c673b8c700b8ef9fe54c27f1fb5fbeaf7",
+      "fidelity_item_id": "m51c50ae08997b5fcafd44fc9",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16845",
+      "source_card_sha256": "3d006fe15e1a799aa1e351511370c78166098eb953cae908c54b23b7765724ea",
+      "candidate_card_sha256": "fd2253f7f1c9939d7e8035488e72ac79f52e47289be7d51b6ff3481e6abe302a",
+      "before_card": {
+        "id": "ffct-16845",
+        "factId": "march-fire-prevention-month-ph-g6",
+        "domain": "MATTER",
+        "topic": "Fire Prevention Month in the Philippines",
+        "terms": [
+          "sunog",
+          "kalayo",
+          "fire prevention",
+          "pag-iwas sa sunog",
+          "marso",
+          "buwan",
+          "bulan",
+          "bfp",
+          "pilipinas",
+          "tag-init",
+          "summer"
+        ],
+        "fact": {
+          "en": "Why is March Fire Prevention Month in the Philippines?\n\nIn the Philippines, March is Fire Prevention Month because fires happen more often in the hot, dry season!",
+          "tl": "Bakit Marso ang Fire Prevention Month sa Pilipinas?\n\nSa Pilipinas, ang Marso ang Fire Prevention Month dahil mas madalas ang sunog tuwing mainit at tuyong panahon!",
+          "bis": "Ngano nga Marso ang Fire Prevention Month sa Pilipinas?\n\nSa Pilipinas, ang Marso mao ang Fire Prevention Month kay mas kanunay ang sunog panahon sa init ug mala nga panahon!"
+        },
+        "slug": "ffct-16845",
+        "source": "original",
+        "title": {
+          "tl": "Marso Fire Prevention Month",
+          "en": "March Fire Prevention",
+          "bis": "Marso Fire Prevention PH"
+        },
+        "cats": [
+          "health"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16845",
+        "factId": "march-fire-prevention-month-ph-g6",
+        "domain": "MATTER",
+        "topic": "Fire Prevention Month in the Philippines",
+        "terms": [
+          "sunog",
+          "kalayo",
+          "fire prevention",
+          "pag-iwas sa sunog",
+          "marso",
+          "buwan",
+          "bulan",
+          "bfp",
+          "pilipinas",
+          "tag-init",
+          "summer"
+        ],
+        "fact": {
+          "en": "Why is March Fire Prevention Month in the Philippines?\n\nIn the Philippines, March is Fire Prevention Month because fires happen more often in the hot, dry season!",
+          "tl": "Bakit Marso ang Fire Prevention Month sa Pilipinas?\n\nSa Pilipinas, ang Marso ang Fire Prevention Month dahil mas madalas ang sunog tuwing mainit at tuyong panahon!",
+          "bis": "Ngano nga Marso ang Fire Prevention Month sa Pilipinas?\n\nSa Pilipinas, ang Marso mao ang Fire Prevention Month kay mas kanunay mahitabo ang sunog sa init ug mala nga panahon!"
+        },
+        "slug": "ffct-16845",
+        "source": "original",
+        "title": {
+          "tl": "Marso Fire Prevention Month",
+          "en": "March Fire Prevention",
+          "bis": "Marso ang Fire Prevention Month"
+        },
+        "cats": [
+          "health"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The body supplies the verb for fires happening and removes the repeated time phrase; the title directly names March. The PIA report of BFP confirms the observance and hot-season context. Wolff mala explicitly means dry, so it is retained rather than rejected by resemblance to another language.",
+      "formal_item_id": "cde3c3725c8809f6a18b05e2f9b9ebbba",
+      "fidelity_item_id": "me118d1454ccbddcfbd136a9b",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16851",
+      "source_card_sha256": "5b315456d058eb4fa5719be743d867c2c97909a5b188bb5167ec0c55a25d89e6",
+      "candidate_card_sha256": "5cd5b64c6d6f89e2aa62c83360d5f8655dd9878d680f38a797002f725981ae26",
+      "before_card": {
+        "id": "ffct-16851",
+        "factId": "ice-melting-is-endothermic-g7",
+        "domain": "MATTER",
+        "topic": "melting ice is endothermic",
+        "terms": [
+          "pagkatunaw",
+          "yelo",
+          "natutunaw",
+          "ice melting",
+          "endothermic",
+          "sumisipsip ng init",
+          "nagsuyop ug kainit",
+          "natunaw nga yelo",
+          "endotermiko",
+          "humihigop ng init"
+        ],
+        "fact": {
+          "en": "Melting ice is an endothermic change because it absorbs heat from its surroundings to melt!",
+          "tl": "Ang pagkatunaw ng yelo ay endothermic dahil sumisipsip ito ng init mula sa paligid upang matunaw!",
+          "bis": "Ang pagkatunaw sa yelo endothermic kay nagsuyop kini ug kainit gikan sa palibot aron matunaw!"
+        },
+        "slug": "ice-melting-in-glass-heat",
+        "title": {
+          "en": "Melting Ice",
+          "tl": "Natutunaw na Yelo",
+          "bis": "Natunaw nga Yelo"
+        },
+        "cats": [
+          "states-of-matter",
+          "heat"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "endothermic"
+          ],
+          "en": [
+            "endothermic"
+          ],
+          "bis": [
+            "endothermic"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-16851",
+        "factId": "ice-melting-is-endothermic-g7",
+        "domain": "MATTER",
+        "topic": "melting ice is endothermic",
+        "terms": [
+          "pagkatunaw",
+          "yelo",
+          "natutunaw",
+          "ice melting",
+          "endothermic",
+          "sumisipsip ng init",
+          "nagsuyop ug kainit",
+          "natunaw nga yelo",
+          "endotermiko",
+          "humihigop ng init"
+        ],
+        "fact": {
+          "en": "Melting ice is an endothermic change because it absorbs heat from its surroundings to melt!",
+          "tl": "Ang pagkatunaw ng yelo ay endothermic dahil sumisipsip ito ng init mula sa paligid upang matunaw!",
+          "bis": "Ang pagkatunaw sa yelo endothermic kay nagsuyop kini ug kainit gikan sa palibot aron matunaw!"
+        },
+        "slug": "ice-melting-in-glass-heat",
+        "title": {
+          "en": "Melting Ice",
+          "tl": "Natutunaw na Yelo",
+          "bis": "Pagkatunaw sa Yelo"
+        },
+        "cats": [
+          "states-of-matter",
+          "heat"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "endothermic"
+          ],
+          "en": [
+            "endothermic"
+          ],
+          "bis": [
+            "endothermic"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title names the process of ice melting rather than the already-melted result. The unchanged full body retains heat absorption from the surroundings and the endothermic classification. Wolff tunaw and suyup support the contextual senses.",
+      "formal_item_id": "c3ac8dae955baba6b7aee0304b2903349",
+      "fidelity_item_id": "m4b0f69de3d82d2c64cf3e883",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16860",
+      "source_card_sha256": "399c48b8c3fcd39d74d5dd92648df1341e4831f10ee33146540d738faf297f21",
+      "candidate_card_sha256": "f496ed97f2b3e974a53d9ba065da738d1e3f0adcf1146ec42e31006d72babe9e",
+      "before_card": {
+        "id": "ffct-16860",
+        "factId": "freezing-releases-heat-g9",
+        "domain": "MATTER",
+        "topic": "freezing is exothermic",
+        "terms": [
+          "pagyeyelo",
+          "pagkagyelo",
+          "freezing",
+          "tubig",
+          "tubig nga nagyelo",
+          "exothermic",
+          "naglalabas ng init",
+          "nagpagawas ug kainit",
+          "solido",
+          "nagiging yelo"
+        ],
+        "fact": {
+          "en": "Why is freezing water considered exothermic?\n\nFreezing of water is exothermic because it releases heat as it turns solid!",
+          "tl": "Bakit exothermic ang pagyeyelo ng tubig?\n\nAng pagyeyelo ng tubig ay exothermic dahil naglalabas ito ng init habang nagiging solido!",
+          "bis": "Nganong exothermic ang pagkagyelo sa tubig?\n\nAng pagkagyelo sa tubig exothermic kay nagpagawas kini ug kainit samtang mahimong gahi!"
+        },
+        "slug": "ffct-16860",
+        "source": "original",
+        "title": {
+          "tl": "Pagyeyelo Exothermic",
+          "en": "Freezing Is Exothermic",
+          "bis": "Yelo Exothermic Init"
+        },
+        "cats": [
+          "physical-changes",
+          "heat"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16860",
+        "factId": "freezing-releases-heat-g9",
+        "domain": "MATTER",
+        "topic": "freezing is exothermic",
+        "terms": [
+          "pagyeyelo",
+          "pagkagyelo",
+          "freezing",
+          "tubig",
+          "tubig nga nagyelo",
+          "exothermic",
+          "naglalabas ng init",
+          "nagpagawas ug kainit",
+          "solido",
+          "nagiging yelo"
+        ],
+        "fact": {
+          "en": "Why is freezing water considered exothermic?\n\nFreezing of water is exothermic because it releases heat as it turns solid!",
+          "tl": "Bakit exothermic ang pagyeyelo ng tubig?\n\nAng pagyeyelo ng tubig ay exothermic dahil naglalabas ito ng init habang nagiging solido!",
+          "bis": "Nganong exothermic ang pagkagyelo sa tubig?\n\nAng pagkagyelo sa tubig exothermic kay nagpagawas kini ug kainit samtang mahimong gahi!"
+        },
+        "slug": "ffct-16860",
+        "source": "original",
+        "title": {
+          "tl": "Pagyeyelo Exothermic",
+          "en": "Freezing Is Exothermic",
+          "bis": "Exothermic ang Pagkagyelo"
+        },
+        "cats": [
+          "physical-changes",
+          "heat"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title directly classifies water freezing as exothermic. The unchanged body retains heat release while water becomes solid; the water context constrains gahi rather than defining all solids as hard. Wolff yilu supports the freezing/ice family.",
+      "formal_item_id": "cb5612d00fc855b182b3285b92504f205",
+      "fidelity_item_id": "m44549927ba1334b5ad25717e",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16881",
+      "source_card_sha256": "828d8e80c346f807486f19eacb9fb4c31cf1a103c6f58a806d817992e920be11",
+      "candidate_card_sha256": "e3cc0463b6ee22ae533cefddd79a2f5c4cd79c616ee9445b39836f62a1505f85",
+      "before_card": {
+        "id": "ffct-16881",
+        "factId": "fractional-distillation-name-g8",
+        "domain": "MATTER",
+        "topic": "fractional distillation separates crude oil",
+        "terms": [
+          "fractional distillation",
+          "distillation",
+          "separate",
+          "boiling point",
+          "distilasyon",
+          "pagpainit",
+          "kumukulo",
+          "kulo",
+          "init",
+          "tubo",
+          "tower"
+        ],
+        "fact": {
+          "en": "How do we split crude oil into parts?\n\nWe use a method called fractional distillation! The oil is heated and separated based on the different boiling points of its parts.",
+          "tl": "Paano natin hinhiwalay ang crude oil?\n\nGinagamit natin ang paraan na tinatawag na fractional distillation! Pinapainit at pinaghihiwalay ang langis ayon sa kani-kanilang boiling point.",
+          "bis": "Unsaon pagbulag sa crude oil?\n\nGamiton nato ang paagi nga gitawag og fractional distillation! Gipainit ug gibulag ang lana sumala sa lainlaing boiling point sa mga bahin niini."
+        },
+        "slug": "qa-ffct-16881",
+        "source": "original",
+        "title": {
+          "tl": "Fractional Distillation Krudo",
+          "en": "Splitting Crude Oil",
+          "bis": "Distillation sa Oil"
+        },
+        "cats": [
+          "mixtures",
+          "chemistry"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16881",
+        "factId": "fractional-distillation-name-g8",
+        "domain": "MATTER",
+        "topic": "fractional distillation separates crude oil",
+        "terms": [
+          "fractional distillation",
+          "distillation",
+          "separate",
+          "boiling point",
+          "distilasyon",
+          "pagpainit",
+          "kumukulo",
+          "kulo",
+          "init",
+          "tubo",
+          "tower"
+        ],
+        "fact": {
+          "en": "How do we split crude oil into parts?\n\nWe use a method called fractional distillation! The oil is heated and separated based on the different boiling points of its parts.",
+          "tl": "Paano natin hinhiwalay ang crude oil?\n\nGinagamit natin ang paraan na tinatawag na fractional distillation! Pinapainit at pinaghihiwalay ang langis ayon sa kani-kanilang boiling point.",
+          "bis": "Unsaon nato pagbulag ang crude oil ngadto sa mga bahin?\n\nMogamit kita og paagi nga gitawag og fractional distillation! Gipainit ug gibulag ang lana sumala sa lainlaing boiling point sa mga bahin niini."
+        },
+        "slug": "qa-ffct-16881",
+        "source": "original",
+        "title": {
+          "tl": "Fractional Distillation Krudo",
+          "en": "Splitting Crude Oil",
+          "bis": "Pagbulag sa Crude Oil"
+        },
+        "cats": [
+          "mixtures",
+          "chemistry"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The question now explicitly asks about separating crude oil into parts, and the answer supplies the actor. Wolff bulag establishes separation; the unchanged fractional-distillation explanation retains different boiling points. Lana is retained in its previously reviewed oil sense.",
+      "formal_item_id": "cd5b698f8ac541a9d7bb46c26fae9ba64",
+      "fidelity_item_id": "med7a397a3e866de8e595a8ec",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16896",
+      "source_card_sha256": "222cd7e11194142cf429545e43dfa6199bc8a76e7f14aebc6b268fb438869609",
+      "candidate_card_sha256": "12d73167b9e5f735dbe77304e0bb9a6072a63e51e3f270bbfab10b8ebe429852",
+      "before_card": {
+        "id": "ffct-16896",
+        "factId": "crude-oil-nonrenewable-finite-g7",
+        "domain": "MATTER",
+        "topic": "crude oil is a finite non-renewable resource",
+        "terms": [
+          "non-renewable",
+          "finite",
+          "fossil fuel",
+          "limitado",
+          "hindi nababawi",
+          "mauubos",
+          "dili mabag-o",
+          "mahurot",
+          "milyong taon",
+          "langis",
+          "yaman",
+          "bahandi"
+        ],
+        "fact": {
+          "en": "Crude oil is a non-renewable resource that took millions of years to form. It will run out if we keep using it!",
+          "tl": "Ang crude oil ay isang hindi nababawing yaman na nabuo sa loob ng milyon-milyong taon. Mauubos ito kung patuloy nating gagamitin!",
+          "bis": "Ang crude oil usa ka dili mabag-o nga bahandi nga naporma sa milyon-milyong tuig. Mahurot kini kung magpadayon ta paggamit!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Crude Oil",
+          "tl": "Langis na Krudo",
+          "bis": "Lana nga Krudo"
+        },
+        "cats": [
+          "fossil-fuels",
+          "energy"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "hindi nababawing yaman"
+          ],
+          "en": [
+            "non-renewable resource"
+          ],
+          "bis": [
+            "dili mabag-o nga bahandi"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-16896",
+        "factId": "crude-oil-nonrenewable-finite-g7",
+        "domain": "MATTER",
+        "topic": "crude oil is a finite non-renewable resource",
+        "terms": [
+          "non-renewable",
+          "finite",
+          "fossil fuel",
+          "limitado",
+          "hindi nababawi",
+          "mauubos",
+          "dili mabag-o",
+          "mahurot",
+          "milyong taon",
+          "langis",
+          "yaman",
+          "bahandi"
+        ],
+        "fact": {
+          "en": "Crude oil is a non-renewable resource that took millions of years to form. It will run out if we keep using it!",
+          "tl": "Ang crude oil ay isang hindi nababawing yaman na nabuo sa loob ng milyon-milyong taon. Mauubos ito kung patuloy nating gagamitin!",
+          "bis": "Ang crude oil usa ka dili mabag-o nga bahandi. Milyon-milyong tuig ang gikinahanglan aron kini maporma. Mahurot kini kung padayon nato kining gamiton!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Crude Oil",
+          "tl": "Langis na Krudo",
+          "bis": "Lana nga Krudo"
+        },
+        "cats": [
+          "fossil-fuels",
+          "energy"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "hindi nababawing yaman"
+          ],
+          "en": [
+            "non-renewable resource"
+          ],
+          "bis": [
+            "dili mabag-o nga bahandi"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Three shorter sentences preserve nonrenewability, the millions-of-years formation timescale and conditional depletion. The indexed direct Binisaya bag-o derivative lists mabag-o as renewable; Wolff hurut supports running out. The complete context does not describe crude oil as chemically immutable.",
+      "formal_item_id": "c5c48a2c04b451605d432b8d720ee7d68",
+      "fidelity_item_id": "m648f77d6622dcc07d9674c99",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-16925",
+      "source_card_sha256": "9df431dc9a88860a92b60baa3c66a486cf68f0a9071f8188c8585e8666ae6b54",
+      "candidate_card_sha256": "1cf045b1c592b92457fd42eac598932f23e17b9b8042f06fc7e16a03885b2a3d",
+      "before_card": {
+        "id": "ffct-16925",
+        "factId": "solid-fixed-cut-still-solid-g4",
+        "domain": "MATTER",
+        "topic": "Cutting a solid makes smaller solids, shape stays",
+        "terms": [
+          "pinuputol",
+          "cut",
+          "hiniwa",
+          "hinati",
+          "pieces",
+          "piraso",
+          "smaller solid",
+          "mansanas",
+          "apple",
+          "bawat piraso solid",
+          "fixed shape",
+          "bakit solid pa rin",
+          "hiwa",
+          "still keeps shape",
+          "gamay nga bahin",
+          "putol"
+        ],
+        "fact": {
+          "en": "Does an apple turn into liquid when you cut it?\n\nNope! Each piece is still a solid with its own firm shape. Cutting an apple just makes many smaller solids—it doesn't turn into liquid!",
+          "tl": "Nagiging likido ba ang mansanas kapag hinati mo?\n\nHindi! Ang bawat piraso ay solid pa rin na may sariling matigas na hugis. Ang pagputol ng mansanas ay gumagawa lang ng mas maliliit na solid—hindi nagiging likido!",
+          "bis": "Nahimong likido ba ang mansanas kung putlon nimo?\n\nDili! Ang matag bahin solid gihapon nga adunay kaugalingong gahi nga porma. Ang pagputol sa mansanas naghimo lang og mas gagmay nga mga solid—dili mahimong likido!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Cutting Solids",
+          "tl": "Pagputol ng Solid",
+          "bis": "Pagputol sa Solid"
+        },
+        "cats": [
+          "states-of-matter"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "solid"
+          ],
+          "en": [
+            "solid"
+          ],
+          "bis": [
+            "solid"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-16925",
+        "factId": "solid-fixed-cut-still-solid-g4",
+        "domain": "MATTER",
+        "topic": "Cutting a solid makes smaller solids, shape stays",
+        "terms": [
+          "pinuputol",
+          "cut",
+          "hiniwa",
+          "hinati",
+          "pieces",
+          "piraso",
+          "smaller solid",
+          "mansanas",
+          "apple",
+          "bawat piraso solid",
+          "fixed shape",
+          "bakit solid pa rin",
+          "hiwa",
+          "still keeps shape",
+          "gamay nga bahin",
+          "putol"
+        ],
+        "fact": {
+          "en": "Does an apple turn into liquid when you cut it?\n\nNope! Each piece is still a solid with its own firm shape. Cutting an apple just makes many smaller solids—it doesn't turn into liquid!",
+          "tl": "Nagiging likido ba ang mansanas kapag hinati mo?\n\nHindi! Ang bawat piraso ay solid pa rin na may sariling matigas na hugis. Ang pagputol ng mansanas ay gumagawa lang ng mas maliliit na solid—hindi nagiging likido!",
+          "bis": "Mahimong likido ba ang mansanas kung putlon nimo?\n\nDili! Ang matag bahin solid gihapon nga adunay kaugalingong gahi nga porma. Kung putlon nimo ang mansanas, nakahimo ka lang og daghang mas gagmay nga solid—dili kini mahimong likido!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Cutting Solids",
+          "tl": "Pagputol ng Solid",
+          "bis": "Pagputol sa Solid"
+        },
+        "cats": [
+          "states-of-matter"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "solid"
+          ],
+          "en": [
+            "solid"
+          ],
+          "bis": [
+            "solid"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The question and conditional explicitly concern cutting the apple, with kini referring to the apple and daghang restoring many. The pieces still have their own shape and remain solid. The edit does not broaden this example into a rule about every kind of cutting or food processing.",
+      "formal_item_id": "c58c33f9bfef63de85046621f04f6f129",
+      "fidelity_item_id": "m3c86c131c9d566d9deccf2c0",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17022",
+      "source_card_sha256": "cc1da0f83023bbec47f766e4504727bdd21146e09f346bec646ff3188f8f860a",
+      "candidate_card_sha256": "5f8eae1fc7bb6d866f4d45520aa076f5dbb229f0af8d4cdbbcb72f89fbe581eb",
+      "before_card": {
+        "id": "ffct-17022",
+        "factId": "ionic-compounds-conduct-electricity-water-g9",
+        "domain": "MATTER",
+        "topic": "Ionic compounds conduct electricity when dissolved",
+        "terms": [
+          "kuryente",
+          "conduct electricity",
+          "natunaw sa tubig",
+          "dissolved",
+          "electricity",
+          "ion gumagalaw",
+          "tubig na may asin",
+          "saltwater",
+          "nagdadala ng kuryente",
+          "nakahatag og kuryente",
+          "tubig",
+          "water",
+          "nadudugtong"
+        ],
+        "fact": {
+          "en": "Can salt water carry electricity?\n\nYes! When salt dissolves in water, the ions move freely and carry the current. But remember, dry solid salt does NOT conduct electricity!",
+          "tl": "Nakakadaloy ba ng kuryente ang tubig na may asin?\n\nOo! Kapag natunaw ang asin sa tubig, malayang gumagalaw ang mga ion at nagdadala ng kuryente. Pero ang tuyong solid na asin ay HINDI nakakadaloy ng kuryente!",
+          "bis": "Makahatod ba og kuryente ang tubig nga naay asin?\n\nOo! Kung matunaw ang asin sa tubig, gawasnong molihok ang mga ion ug magdala og kuryente. Apan ang uga nga solid nga asin DILI makahatod og kuryente!"
+        },
+        "slug": "ffct-17022",
+        "source": "original",
+        "title": {
+          "tl": "Salt Water na Nagdadala",
+          "en": "Salt Water Conducts",
+          "bis": "Salt Water Kuryente"
+        },
+        "cats": [
+          "chemistry",
+          "solutions"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17022",
+        "factId": "ionic-compounds-conduct-electricity-water-g9",
+        "domain": "MATTER",
+        "topic": "Ionic compounds conduct electricity when dissolved",
+        "terms": [
+          "kuryente",
+          "conduct electricity",
+          "natunaw sa tubig",
+          "dissolved",
+          "electricity",
+          "ion gumagalaw",
+          "tubig na may asin",
+          "saltwater",
+          "nagdadala ng kuryente",
+          "nakahatag og kuryente",
+          "tubig",
+          "water",
+          "nadudugtong"
+        ],
+        "fact": {
+          "en": "Can salt water carry electricity?\n\nYes! When salt dissolves in water, the ions move freely and carry the current. But remember, dry solid salt does NOT conduct electricity!",
+          "tl": "Nakakadaloy ba ng kuryente ang tubig na may asin?\n\nOo! Kapag natunaw ang asin sa tubig, malayang gumagalaw ang mga ion at nagdadala ng kuryente. Pero ang tuyong solid na asin ay HINDI nakakadaloy ng kuryente!",
+          "bis": "Makahatod ba og kuryente ang tubig nga naay asin?\n\nOo! Kung matunaw ang asin sa tubig, gawasnong molihok ang mga ion ug magdala og kuryente. Apan ang uga nga solid nga asin DILI makahatod og kuryente!"
+        },
+        "slug": "ffct-17022",
+        "source": "original",
+        "title": {
+          "tl": "Salt Water na Nagdadala",
+          "en": "Salt Water Conducts",
+          "bis": "Makahatod og Kuryente ang Tubig nga Naay Asin"
+        },
+        "cats": [
+          "chemistry",
+          "solutions"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title explicitly states that salt water can carry current, matching the full body about mobile ions and the contrasting dry solid. Wolff hatud supports carrying/conveying. No electrical experiment or instruction to touch energized water is added, and all emphasis is preserved.",
+      "formal_item_id": "c4cd156a66ae15c6d76518dfd89e80645",
+      "fidelity_item_id": "md6dd44e9fff73d63e3b6c16a",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17095",
+      "source_card_sha256": "94c9096cfad432442559ce08ae3b5cb63e0f06694e460a04e43ce2b60e6ed45d",
+      "candidate_card_sha256": "8bf0838ccac8f164e0ba690007ba31c501a31549244f5f54711fc425a0b39714",
+      "before_card": {
+        "id": "ffct-17095",
+        "factId": "soap-made-saponification-name-g8",
+        "domain": "MATTER",
+        "topic": "The fat-plus-base reaction is called saponification",
+        "terms": [
+          "saponification",
+          "saponipikasyon",
+          "soap making",
+          "paggawa ng sabon",
+          "ano ang tawag",
+          "reaksyon",
+          "reaction",
+          "taba at base",
+          "fat base",
+          "tabang sabon",
+          "unsa tawag",
+          "sabon"
+        ],
+        "fact": {
+          "en": "Making soap from fat and a base has a special name: saponification! The word comes from the Latin word 'sapo,' which means soap.",
+          "tl": "Ang paggawa ng sabon mula sa taba at base ay may espesyal na pangalan: saponification! Ang salita ay galing sa Latin na 'sapo,' na ang ibig sabihin ay sabon.",
+          "bis": "Ang paghimo og sabon gikan sa tambok ug base adunay espesyal nga ngalan: saponification! Ang pulong gikan sa Latin nga 'sapo,' nga nagpasabot og sabon."
+        },
+        "slug": "ffct-17095",
+        "source": "original",
+        "title": {
+          "tl": "Saponification Taba Base",
+          "en": "Saponification Named",
+          "bis": "Saponification Tambok Base"
+        },
+        "cats": [
+          "chemical-reactions"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17095",
+        "factId": "soap-made-saponification-name-g8",
+        "domain": "MATTER",
+        "topic": "The fat-plus-base reaction is called saponification",
+        "terms": [
+          "saponification",
+          "saponipikasyon",
+          "soap making",
+          "paggawa ng sabon",
+          "ano ang tawag",
+          "reaksyon",
+          "reaction",
+          "taba at base",
+          "fat base",
+          "tabang sabon",
+          "unsa tawag",
+          "sabon"
+        ],
+        "fact": {
+          "en": "Making soap from fat and a base has a special name: saponification! The word comes from the Latin word 'sapo,' which means soap.",
+          "tl": "Ang paggawa ng sabon mula sa taba at base ay may espesyal na pangalan: saponification! Ang salita ay galing sa Latin na 'sapo,' na ang ibig sabihin ay sabon.",
+          "bis": "Ang paghimo og sabon gikan sa tambok ug base adunay espesyal nga ngalan: saponification! Ang pulong gikan sa Latin nga 'sapo,' nga nagpasabot og sabon."
+        },
+        "slug": "ffct-17095",
+        "source": "original",
+        "title": {
+          "tl": "Saponification Taba Base",
+          "en": "Saponification Named",
+          "bis": "Saponification: Ngalan sa Paghimo og Sabon"
+        },
+        "cats": [
+          "chemical-reactions"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title directly connects saponification with making soap. The unchanged fat/base description and Latin sapo etymology are supported by the ACS teaching reference inspected. Wolff sabun and tambuk support the contextual soap/fat senses; no recipe or handling instruction is added.",
+      "formal_item_id": "c5deb2bfdfcfb60f3d12a31a69809b592",
+      "fidelity_item_id": "m4a8b4443ef0597df0e92e763",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17124",
+      "source_card_sha256": "275d375b50956b7618b5697444ba6c3797710e8a2349191576a42183aa6f48e8",
+      "candidate_card_sha256": "3c54f8c4875ea49877d2f5b2155b7e7ebbcccea243f4f98c08a58aa00076742e",
+      "before_card": {
+        "id": "ffct-17124",
+        "factId": "water-filter-gravity-flow-g5",
+        "domain": "MATTER",
+        "topic": "Gravity pulls water down through layers",
+        "terms": [
+          "gravity",
+          "grabidad",
+          "bigat",
+          "pababa",
+          "downward",
+          "bakit pababa",
+          "why down",
+          "tulo",
+          "flow",
+          "umaagos",
+          "pull",
+          "hila",
+          "no pump",
+          "walang makina",
+          "top to bottom"
+        ],
+        "fact": {
+          "en": "In a typical filter, gravity pulls water down through stones, sand, and charcoal! That's why dirty water goes in the top and cleaner water comes out the bottom, with no machine needed!",
+          "tl": "Sa karaniwang filter, hinahila ng grabidad ang tubig pababa sa mga bato, buhangin, at uling! Kaya ang maruming tubig ay pumapasok sa itaas at mas malinis ang lumalabas sa ibaba, walang makina!",
+          "bis": "Sa kasagaran nga filter, gibira sa grabidad ang tubig paubos agi sa bato, balas, ug uling! Mao nga ang hugaw nga tubig mosulod sa ibabaw ug mas limpyo ang mogawas sa ilawom, walay makina!"
+        },
+        "slug": "ffct-16913",
+        "title": {
+          "en": "Gravity Water Filter",
+          "tl": "Grabidad sa Pansala",
+          "bis": "Grabidad sa Pagsala"
+        },
+        "cats": [
+          "gravity",
+          "water"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "grabidad"
+          ],
+          "en": [
+            "gravity"
+          ],
+          "bis": [
+            "grabidad"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-17124",
+        "factId": "water-filter-gravity-flow-g5",
+        "domain": "MATTER",
+        "topic": "Gravity pulls water down through layers",
+        "terms": [
+          "gravity",
+          "grabidad",
+          "bigat",
+          "pababa",
+          "downward",
+          "bakit pababa",
+          "why down",
+          "tulo",
+          "flow",
+          "umaagos",
+          "pull",
+          "hila",
+          "no pump",
+          "walang makina",
+          "top to bottom"
+        ],
+        "fact": {
+          "en": "In a typical filter, gravity pulls water down through stones, sand, and charcoal! That's why dirty water goes in the top and cleaner water comes out the bottom, with no machine needed!",
+          "tl": "Sa karaniwang filter, hinahila ng grabidad ang tubig pababa sa mga bato, buhangin, at uling! Kaya ang maruming tubig ay pumapasok sa itaas at mas malinis ang lumalabas sa ibaba, walang makina!",
+          "bis": "Sa kasagaran nga filter, gibira sa grabidad ang tubig paubos agi sa bato, balas, ug uling! Mao nga ang hugaw nga tubig mosulod sa ibabaw, ug ang mas limpyo nga tubig mogawas sa ilawom. Dili kinahanglan og makina!"
+        },
+        "slug": "ffct-16913",
+        "title": {
+          "en": "Gravity Water Filter",
+          "tl": "Grabidad sa Pansala",
+          "bis": "Grabidad sa Pagsala"
+        },
+        "cats": [
+          "gravity",
+          "water"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "grabidad"
+          ],
+          "en": [
+            "gravity"
+          ],
+          "bis": [
+            "grabidad"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The split makes water the explicit referent of cleaner and separates the no-machine statement. The full stated gravity-filter example retains the same media and direction. Cleaner stays comparative; the edit does not claim the result is safe to drink or add a purification recipe.",
+      "formal_item_id": "c0c3d1965a9b3dffbf2ac408f4f2a5519",
+      "fidelity_item_id": "m6592e07765cfb76fac63b145",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17145",
+      "source_card_sha256": "bd5a7a2608b44975c34c6926283fd13ff65326aba0062f0db942d49aba32acd7",
+      "candidate_card_sha256": "2d5e914ebcc9bb0ba5581f7d5da7f8622f8738a2dbc64a61fa6a4cb91126c846",
+      "before_card": {
+        "id": "ffct-17145",
+        "factId": "carbon-diamond-cutting-tools-g7",
+        "domain": "MATTER",
+        "topic": "Diamonds are used in cutting and drilling tools",
+        "terms": [
+          "cutting",
+          "panghiwa",
+          "drill",
+          "bumbarya",
+          "tools",
+          "gamit",
+          "industrial",
+          "saw",
+          "lagari",
+          "grind",
+          "gilingan",
+          "bakit ginagamit",
+          "ngano gamiton",
+          "hard",
+          "matigas",
+          "use",
+          "matter"
+        ],
+        "fact": {
+          "en": "Because diamond is super hard, tiny diamond pieces are put on saws, drills, and grinders to cut through rock, metal, and glass!",
+          "tl": "Dahil napakatigas ng diamante, ginagamit ang maliliit na piraso nito sa mga saw, drill, at grinder para maghiwa ng bato, metal, at salamin!",
+          "bis": "Tungod kay gahi kaayo ang diamante, ang gagmay nga piraso niini gibutang sa lagari, drill, ug grinder aron moputol sa bato, metal, ug salamin!"
+        },
+        "slug": "ffct-17145",
+        "source": "original",
+        "title": {
+          "tl": "Diamante sa Saw at Drill",
+          "en": "Diamonds Cutting Drilling Tools",
+          "bis": "Diamante Saw Drill"
+        },
+        "cats": [
+          "materials"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17145",
+        "factId": "carbon-diamond-cutting-tools-g7",
+        "domain": "MATTER",
+        "topic": "Diamonds are used in cutting and drilling tools",
+        "terms": [
+          "cutting",
+          "panghiwa",
+          "drill",
+          "bumbarya",
+          "tools",
+          "gamit",
+          "industrial",
+          "saw",
+          "lagari",
+          "grind",
+          "gilingan",
+          "bakit ginagamit",
+          "ngano gamiton",
+          "hard",
+          "matigas",
+          "use",
+          "matter"
+        ],
+        "fact": {
+          "en": "Because diamond is super hard, tiny diamond pieces are put on saws, drills, and grinders to cut through rock, metal, and glass!",
+          "tl": "Dahil napakatigas ng diamante, ginagamit ang maliliit na piraso nito sa mga saw, drill, at grinder para maghiwa ng bato, metal, at salamin!",
+          "bis": "Tungod kay gahi kaayo ang diamante, ang gagmay nga piraso niini gibutang sa lagari, drill, ug grinder aron moputol sa bato, metal, ug salamin!"
+        },
+        "slug": "ffct-17145",
+        "source": "original",
+        "title": {
+          "tl": "Diamante sa Saw at Drill",
+          "en": "Diamonds Cutting Drilling Tools",
+          "bis": "Diamante sa Lagari ug Drill"
+        },
+        "cats": [
+          "materials"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title clearly names saws and drills bearing diamond. Wolff lagari means saw; salamin here refers to glass objects being cut, within the attested object sense, unlike the held material-composition examples. The unchanged body introduces no claim that diamond is suitable for every metal or cutting condition.",
+      "formal_item_id": "c0b5001c7a73ccfc5bf19ee5234acbf42",
+      "fidelity_item_id": "m6d8622ea31a80875cddb5569",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17151",
+      "source_card_sha256": "4ce5a4dc182be884cc88329c7b9027f90efacc8545123282c05f86aea39957b9",
+      "candidate_card_sha256": "d9033f57d13c8a3af59d6298ff9c9198082a95729f89820e597417ca9275bb8b",
+      "before_card": {
+        "id": "ffct-17151",
+        "factId": "carbon-diamond-lab-grown-g8",
+        "domain": "MATTER",
+        "topic": "Diamonds can be made in a laboratory",
+        "terms": [
+          "lab grown",
+          "gawa sa lab",
+          "laboratory",
+          "laboratoryo",
+          "artificial",
+          "gawa-gawa",
+          "synthetic",
+          "made",
+          "ginawa",
+          "real",
+          "totoo",
+          "tunay",
+          "same",
+          "pareho",
+          "diamond",
+          "carbon",
+          "matter"
+        ],
+        "fact": {
+          "en": "Can scientists make real diamonds?\n\nYes! Scientists can now grow real diamonds in a lab using heat and pressure — and they are true carbon, just like ones from the ground!",
+          "tl": "Kaya bang gumawa ng totoong diamante ang mga siyentista?\n\nOo! Kaya na ngayong gumawa ng totoong diamante sa laboratoryo gamit ang init at presyon — at tunay na carbon din ito, tulad ng nasa lupa!",
+          "bis": "Makahimo ba ang mga siyentista og tinuod nga diamante?\n\nOo! Makahimo na karon ang mga siyentista og tinuod nga diamante sa laboratoryo gamit ang kainit ug presyon — ug tinuod gihapon kini nga carbon, sama sa gikan sa yuta!"
+        },
+        "slug": "ffct-17151",
+        "source": "original",
+        "title": {
+          "tl": "Diamante sa Laboratoryo",
+          "en": "Lab-Made Diamonds Real",
+          "bis": "Diamante Laboratoryo"
+        },
+        "cats": [
+          "crystals",
+          "chemistry"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17151",
+        "factId": "carbon-diamond-lab-grown-g8",
+        "domain": "MATTER",
+        "topic": "Diamonds can be made in a laboratory",
+        "terms": [
+          "lab grown",
+          "gawa sa lab",
+          "laboratory",
+          "laboratoryo",
+          "artificial",
+          "gawa-gawa",
+          "synthetic",
+          "made",
+          "ginawa",
+          "real",
+          "totoo",
+          "tunay",
+          "same",
+          "pareho",
+          "diamond",
+          "carbon",
+          "matter"
+        ],
+        "fact": {
+          "en": "Can scientists make real diamonds?\n\nYes! Scientists can now grow real diamonds in a lab using heat and pressure — and they are true carbon, just like ones from the ground!",
+          "tl": "Kaya bang gumawa ng totoong diamante ang mga siyentista?\n\nOo! Kaya na ngayong gumawa ng totoong diamante sa laboratoryo gamit ang init at presyon — at tunay na carbon din ito, tulad ng nasa lupa!",
+          "bis": "Makahimo ba ang mga siyentista og tinuod nga diamante?\n\nOo! Makahimo na karon ang mga siyentista og tinuod nga diamante sa laboratoryo gamit ang kainit ug presyon — ug tinuod gihapon kini nga carbon, sama sa gikan sa yuta!"
+        },
+        "slug": "ffct-17151",
+        "source": "original",
+        "title": {
+          "tl": "Diamante sa Laboratoryo",
+          "en": "Lab-Made Diamonds Real",
+          "bis": "Tinuod nga Diamante gikan sa Laboratoryo"
+        },
+        "cats": [
+          "crystals",
+          "chemistry"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title explicitly says real diamonds can come from a laboratory. The unchanged full body describes heat-and-pressure production and carbon identity; it does not claim this is the only laboratory method. Both blind title observations and full fidelity evidence support the exact title.",
+      "formal_item_id": "c24c14b63bcc37c45a44f552097e5e83e",
+      "fidelity_item_id": "m452c3eb7867512639ec386f2",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    }
+  ],
+  "held": [
+    {
+      "card_id": "ffct-16422",
+      "source_card_sha256": "d766d59f0f91ab8b04380e5127b158ea223683ec445a0ba849780c751e565297",
+      "candidate_card_sha256": "c98038d3aa3514c943a2ebe93e56b4f3026a40e97c31154434fa577b33822cb9",
+      "before_card": {
+        "id": "ffct-16422",
+        "factId": "rubber-bounces-energy-g6",
+        "domain": "MATTER",
+        "topic": "why a rubber ball bounces",
+        "terms": [
+          "bola",
+          "ball",
+          "talbog",
+          "lukso",
+          "bounce",
+          "bumabalik",
+          "balik",
+          "enerhiya",
+          "energy",
+          "kusog",
+          "compress",
+          "naipit",
+          "goma"
+        ],
+        "fact": {
+          "en": "A rubber ball bounces because it gets squeezed when it hits the ground! It then springs back to shape and pushes itself up.",
+          "tl": "Tumatalbog ang bolang goma dahil nadidiin ito sa pagbagsak! Pagkatapos, nagbabalik ang hugis at itinutulak nito ang sarili pataas.",
+          "bis": "Molukso ang bolang goma kay maipit kini kon mahagba sa yuta! Dayon mobalik ang porma ug motukmod sa kaugalingon paibabaw."
+        },
+        "slug": "ffct-16422",
+        "source": "original",
+        "title": {
+          "tl": "Rubber Ball sa Pag-bounce",
+          "en": "Why Rubber Balls Bounce",
+          "bis": "Rubber Ball sa Bounce"
+        },
+        "cats": [
+          "materials",
+          "forces-and-motion"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16422",
+        "factId": "rubber-bounces-energy-g6",
+        "domain": "MATTER",
+        "topic": "why a rubber ball bounces",
+        "terms": [
+          "bola",
+          "ball",
+          "talbog",
+          "lukso",
+          "bounce",
+          "bumabalik",
+          "balik",
+          "enerhiya",
+          "energy",
+          "kusog",
+          "compress",
+          "naipit",
+          "goma"
+        ],
+        "fact": {
+          "en": "A rubber ball bounces because it gets squeezed when it hits the ground! It then springs back to shape and pushes itself up.",
+          "tl": "Tumatalbog ang bolang goma dahil nadidiin ito sa pagbagsak! Pagkatapos, nagbabalik ang hugis at itinutulak nito ang sarili pataas.",
+          "bis": "Molukso ang bolang goma kay maipit kini kon mahagba sa yuta! Dayon mobalik ang porma ug motukmod sa kaugalingon paibabaw."
+        },
+        "slug": "ffct-16422",
+        "source": "original",
+        "title": {
+          "tl": "Rubber Ball sa Pag-bounce",
+          "en": "Why Rubber Balls Bounce",
+          "bis": "Nganong Molukso ang Bolang Goma"
+        },
+        "cats": [
+          "materials",
+          "forces-and-motion"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The title is clearer, but the unchanged English says the ball pushes itself upward. The Exploratorium explanation identifies the upward force from the floor. Hold the force-agent wording for English-led review; compression and elastic recovery are not disputed.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "ce4539b8896f154ee6ca6e5168e3050d6"
+    },
+    {
+      "card_id": "ffct-16471",
+      "source_card_sha256": "19fc5151242d5a8550a6c80f98692e59e354d15c0b50659027f0de6376e8129b",
+      "candidate_card_sha256": "5d725d9046c5f9766dad5300de90a9eaaca80ddc7153819ee994deb55b51da56",
+      "before_card": {
+        "id": "ffct-16471",
+        "factId": "rust-iron-plus-oxygen-name-g7",
+        "domain": "MATTER",
+        "topic": "oxidation and corrosion term",
+        "terms": [
+          "oksidasyon",
+          "corrosion",
+          "kalawang",
+          "bakal",
+          "reaksyon",
+          "oxidation",
+          "korosyon",
+          "puthaw",
+          "taya",
+          "reaksiyon",
+          "kemikal",
+          "metal"
+        ],
+        "fact": {
+          "en": "What is the scientific name for rusting?\n\nThe rusting of iron is a type of oxidation! It is part of what is called the corrosion of metal.",
+          "tl": "Ano ang tawag sa siyensya sa pagkakalawang?\n\nAng pagkakalawang ng bakal ay isang uri ng oksidasyon! Ito ay bahagi ng tinatawag na corrosion ng metal.",
+          "bis": "Unsay tawag sa siyensya sa pagkalawang?\n\nAng pagkalawang sa puthaw usa ka klase sa oksidasyon! Kabahin kini sa gitawag nga korosyon sa metal."
+        },
+        "slug": "ffct-16471",
+        "source": "original",
+        "title": {
+          "tl": "Oxidation at Corrosion ng Metal",
+          "en": "Oxidation Corrosion Terms",
+          "bis": "Oxidation Corrosion Metal"
+        },
+        "cats": [
+          "chemical-reactions"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16471",
+        "factId": "rust-iron-plus-oxygen-name-g7",
+        "domain": "MATTER",
+        "topic": "oxidation and corrosion term",
+        "terms": [
+          "oksidasyon",
+          "corrosion",
+          "kalawang",
+          "bakal",
+          "reaksyon",
+          "oxidation",
+          "korosyon",
+          "puthaw",
+          "taya",
+          "reaksiyon",
+          "kemikal",
+          "metal"
+        ],
+        "fact": {
+          "en": "What is the scientific name for rusting?\n\nThe rusting of iron is a type of oxidation! It is part of what is called the corrosion of metal.",
+          "tl": "Ano ang tawag sa siyensya sa pagkakalawang?\n\nAng pagkakalawang ng bakal ay isang uri ng oksidasyon! Ito ay bahagi ng tinatawag na corrosion ng metal.",
+          "bis": "Unsay tawag sa siyensya sa pagkalawang?\n\nAng pagkalawang sa puthaw usa ka klase sa oksidasyon! Kabahin kini sa gitawag nga korosyon sa metal."
+        },
+        "slug": "ffct-16471",
+        "source": "original",
+        "title": {
+          "tl": "Oxidation at Corrosion ng Metal",
+          "en": "Oxidation Corrosion Terms",
+          "bis": "Oksidasyon ug Korosyon"
+        },
+        "cats": [
+          "chemical-reactions"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The revised title is understandable, but the full body retains pagkalawang. Frozen bodies corroborate the rust sense, while the inspected Wolff entries and unsuccessful direct Binisaya lookup did not establish this usage in Cebu Cebuano. Hold for lexical confirmation; absence from a dictionary is not a ruling that a loanword is invalid.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "ceedbc72b05cdcbc60ef0221d3b97246b"
+    },
+    {
+      "card_id": "ffct-16476",
+      "source_card_sha256": "b8e3d605f7ce2ead01226c35f0ffed31089b19445f6f667c400ad4d28ca88b2a",
+      "candidate_card_sha256": "f6b69cb5a2b182ce7f077a21611355b3e812f7001aaf5588a67ee21d35db0881",
+      "before_card": {
+        "id": "ffct-16476",
+        "factId": "rust-prevention-keep-air-out-g6",
+        "domain": "MATTER",
+        "topic": "barriers block air and water",
+        "terms": [
+          "harang",
+          "balot",
+          "pigilan",
+          "kalawang",
+          "hangin",
+          "tubig",
+          "babag",
+          "haklap",
+          "puthaw",
+          "taya",
+          "barrier",
+          "coating"
+        ],
+        "fact": {
+          "en": "To stop rust, we build a barrier! This shield keeps air and water away from the iron.",
+          "tl": "Para pigilan ang kalawang, gumagawa tayo ng barrier! Ito ay pumipigil sa hangin at tubig na lapitan ang bakal.",
+          "bis": "Aron pugngan ang kalawang, naghimo kita og barrier! Kini mopugong sa hangin ug tubig nga moduol sa puthaw."
+        },
+        "slug": "ffct-16476",
+        "source": "original",
+        "title": {
+          "tl": "Harang laban sa Hangin Tubig",
+          "en": "Barriers Block Air Water",
+          "bis": "Babag batok sa Hangin Tubig"
+        },
+        "cats": [
+          "chemical-changes"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16476",
+        "factId": "rust-prevention-keep-air-out-g6",
+        "domain": "MATTER",
+        "topic": "barriers block air and water",
+        "terms": [
+          "harang",
+          "balot",
+          "pigilan",
+          "kalawang",
+          "hangin",
+          "tubig",
+          "babag",
+          "haklap",
+          "puthaw",
+          "taya",
+          "barrier",
+          "coating"
+        ],
+        "fact": {
+          "en": "To stop rust, we build a barrier! This shield keeps air and water away from the iron.",
+          "tl": "Para pigilan ang kalawang, gumagawa tayo ng barrier! Ito ay pumipigil sa hangin at tubig na lapitan ang bakal.",
+          "bis": "Aron pugngan ang kalawang, naghimo kita og barrier! Kini nga barrier mopugong sa hangin ug tubig nga moduol sa puthaw."
+        },
+        "slug": "ffct-16476",
+        "source": "original",
+        "title": {
+          "tl": "Harang laban sa Hangin Tubig",
+          "en": "Barriers Block Air Water",
+          "bis": "Babag batok sa Hangin ug Tubig"
+        },
+        "cats": [
+          "chemical-changes"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Making barrier explicit is plausible and Wolff balabag supports blocking, but the complete body has the same unresolved kalawang usage as ffct-16471. Keep the exact candidate unchanged pending that lexical question, consistently with the adjacent title proposal; do not substitute taya automatically.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c8540b5c260a2927707086de7eb0708cc"
+    },
+    {
+      "card_id": "ffct-16477",
+      "source_card_sha256": "e259196c17bede11797c8db7f17141a02d31df7709289e95046e5ecf30ec3126",
+      "candidate_card_sha256": "94b47f6598674e1593ee921ebac9d08620fe3a5d258f10ea8b403b942c1a1f1b",
+      "before_card": {
+        "id": "ffct-16477",
+        "factId": "rust-different-from-burning-g7",
+        "domain": "MATTER",
+        "topic": "rust is slow oxidation like burning",
+        "terms": [
+          "pagkasunog",
+          "mabagal",
+          "kalawang",
+          "oksidasyon",
+          "init",
+          "burning",
+          "hinay",
+          "taya",
+          "puthaw",
+          "oxidation",
+          "apoy",
+          "kalayo"
+        ],
+        "fact": {
+          "en": "Are rusting and burning the same?\n\nBoth are kinds of oxidation! But rusting is very slow and has no flame, unlike burning.",
+          "tl": "Pareho ba ang pagkakalawang at pagkasunog?\n\nPareho silang uri ng oxidation! Pero ang pagkakalawang ay napakabagal at walang apoy, hindi katulad ng pagsunog.",
+          "bis": "Pareho ba ang pagkalawang ug pagkasunog?\n\nPareho silang klase sa oxidation! Apan ang pagkalawang hinay kaayo ug walay kalayo, lahi sa pagkasunog."
+        },
+        "slug": "ffct-16477",
+        "source": "original",
+        "title": {
+          "tl": "Kalawang Mabagal na Oxidation",
+          "en": "Rust Slow Oxidation",
+          "bis": "Kalawang Hinay nga Oxidation"
+        },
+        "cats": [
+          "chemical-reactions",
+          "chemical-changes"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16477",
+        "factId": "rust-different-from-burning-g7",
+        "domain": "MATTER",
+        "topic": "rust is slow oxidation like burning",
+        "terms": [
+          "pagkasunog",
+          "mabagal",
+          "kalawang",
+          "oksidasyon",
+          "init",
+          "burning",
+          "hinay",
+          "taya",
+          "puthaw",
+          "oxidation",
+          "apoy",
+          "kalayo"
+        ],
+        "fact": {
+          "en": "Are rusting and burning the same?\n\nBoth are kinds of oxidation! But rusting is very slow and has no flame, unlike burning.",
+          "tl": "Pareho ba ang pagkakalawang at pagkasunog?\n\nPareho silang uri ng oxidation! Pero ang pagkakalawang ay napakabagal at walang apoy, hindi katulad ng pagsunog.",
+          "bis": "Pareho ba ang pagkalawang ug pagkasunog?\n\nPareho silang klase sa oxidation! Apan ang pagkalawang hinay kaayo ug walay kalayo, lahi sa pagkasunog."
+        },
+        "slug": "ffct-16477",
+        "source": "original",
+        "title": {
+          "tl": "Kalawang Mabagal na Oxidation",
+          "en": "Rust Slow Oxidation",
+          "bis": "Pagkalawang: Hinay nga Oxidation"
+        },
+        "cats": [
+          "chemical-reactions",
+          "chemical-changes"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The full English contrasts rusting without flame against burning, which can imply that burning always has flame. NIST describes smoldering as combustion without flame. Hold this science distinction for cross-language source review; no new version is synthesized here.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c53238276988f14008b0514b8d40e3d17"
+    },
+    {
+      "card_id": "ffct-16527",
+      "source_card_sha256": "7efc2db19fd6863e434070a971b7db1450b9b4d621e5374dd94fddddf8ba92aa",
+      "candidate_card_sha256": "d1c705e6c900e6eccb3d0579368b7dd4a7cb1bcd276fc7c0d8d6fe3ce3dbdbae",
+      "before_card": {
+        "id": "ffct-16527",
+        "factId": "liquids-gases-both-flow-fluids-g4",
+        "domain": "MATTER",
+        "topic": "liquids and gases both flow",
+        "terms": [
+          "likido",
+          "liquid",
+          "gas",
+          "umaagos",
+          "dumadaloy",
+          "modagayday",
+          "modaligdig",
+          "flow",
+          "fluid",
+          "fluwido",
+          "daloy",
+          "agos",
+          "tubig",
+          "hangin",
+          "kumakalat"
+        ],
+        "fact": {
+          "en": "Liquids and gases both flow and move from place to place. Because of this, both are called fluids!",
+          "tl": "Parehong umaagos at gumagalaw ang likido at gas mula sa isang lugar papunta sa iba. Kaya pareho silang tinatawag na fluid!",
+          "bis": "Parehong modagayday ug mobalhin ang likido ug gas gikan sa usa ka dapit ngadto sa lain. Mao nga pareho silang gitawag nga fluid!"
+        },
+        "slug": "ffct-16527",
+        "source": "original",
+        "title": {
+          "tl": "Likido Gas Umaagos Fluid",
+          "en": "Liquids Gases Flow",
+          "bis": "Likido Gas Agos Fluid"
+        },
+        "cats": [
+          "states-of-matter"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16527",
+        "factId": "liquids-gases-both-flow-fluids-g4",
+        "domain": "MATTER",
+        "topic": "liquids and gases both flow",
+        "terms": [
+          "likido",
+          "liquid",
+          "gas",
+          "umaagos",
+          "dumadaloy",
+          "modagayday",
+          "modaligdig",
+          "flow",
+          "fluid",
+          "fluwido",
+          "daloy",
+          "agos",
+          "tubig",
+          "hangin",
+          "kumakalat"
+        ],
+        "fact": {
+          "en": "Liquids and gases both flow and move from place to place. Because of this, both are called fluids!",
+          "tl": "Parehong umaagos at gumagalaw ang likido at gas mula sa isang lugar papunta sa iba. Kaya pareho silang tinatawag na fluid!",
+          "bis": "Parehong modagayday ug mobalhin ang likido ug gas gikan sa usa ka dapit ngadto sa lain. Mao nga pareho silang gitawag nga fluid!"
+        },
+        "slug": "ffct-16527",
+        "source": "original",
+        "title": {
+          "tl": "Likido Gas Umaagos Fluid",
+          "en": "Liquids Gases Flow",
+          "bis": "Fluid ang Likido ug Gas"
+        },
+        "cats": [
+          "states-of-matter"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Both blind judges favor the title, but the complete body applies modagayday equally to gas and liquid. Wolff and the direct Binisaya headword establish trickling or gradual flow away, with liquid examples; the broader gas-flow use remains unresolved. Hold for lexical confirmation, not a declaration that the form is wrong or rare.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c95e881fd1181fd27807106688db3e3b4"
+    },
+    {
+      "card_id": "ffct-16566",
+      "source_card_sha256": "8c32ec273614626d95d0d7b907d4c4c57239dae22e426593469affdb651e28a6",
+      "candidate_card_sha256": "af408a677c902c2948b533dd0f2189efd6c6c4f404425bc2907277e88650fa3a",
+      "before_card": {
+        "id": "ffct-16566",
+        "factId": "heavier-object-more-mass-g4",
+        "domain": "MATTER",
+        "topic": "heavier objects usually have more mass",
+        "terms": [
+          "heavy",
+          "mabigat",
+          "bug-at",
+          "mass",
+          "masa",
+          "weight",
+          "timbang",
+          "gibug-aton",
+          "more",
+          "marami",
+          "dako",
+          "light",
+          "magaan"
+        ],
+        "fact": {
+          "en": "Does a heavier object have more mass?\n\nYes! On Earth, a heavier object usually has more mass.",
+          "tl": "Ang bagay na mas mabigat ba ay may mas malaking masa?\n\nOo! Sa Lupa, ang bagay na mas mabigat ay karaniwang may mas malaking masa.",
+          "bis": "Ang butang nga mas bug-at ba adunay mas dako nga masa?\n\nOo! Sa Yuta, ang butang nga mas bug-at kasagaran adunay mas dako nga masa."
+        },
+        "slug": "ffct-16566",
+        "source": "original",
+        "title": {
+          "tl": "Mabigat na Bagay Malaking Masa",
+          "en": "Heavier More Mass",
+          "bis": "Bug-at Dako Masa"
+        },
+        "cats": [
+          "matter"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16566",
+        "factId": "heavier-object-more-mass-g4",
+        "domain": "MATTER",
+        "topic": "heavier objects usually have more mass",
+        "terms": [
+          "heavy",
+          "mabigat",
+          "bug-at",
+          "mass",
+          "masa",
+          "weight",
+          "timbang",
+          "gibug-aton",
+          "more",
+          "marami",
+          "dako",
+          "light",
+          "magaan"
+        ],
+        "fact": {
+          "en": "Does a heavier object have more mass?\n\nYes! On Earth, a heavier object usually has more mass.",
+          "tl": "Ang bagay na mas mabigat ba ay may mas malaking masa?\n\nOo! Sa Lupa, ang bagay na mas mabigat ay karaniwang may mas malaking masa.",
+          "bis": "Mas dako ba ang masa sa butang nga mas bug-at?\n\nOo! Sa Yuta, kasagaran mas dako ang masa sa butang nga mas bug-at."
+        },
+        "slug": "ffct-16566",
+        "source": "original",
+        "title": {
+          "tl": "Mabigat na Bagay Malaking Masa",
+          "en": "Heavier More Mass",
+          "bis": "Mas Bug-at, Mas Dako ang Masa"
+        },
+        "cats": [
+          "matter"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Both blind observations tie the changed body while favoring the new title. The exact candidate changes both fields, so it lacks the required body-improvement agreement. Keep the whole candidate on hold; do not splice an unassessed title-only version or weaken the approval contract.",
+      "hold_kind": "hold_readability",
+      "formal_item_id": "ccc55bfe4d54d30217a6ec4327fb39648"
+    },
+    {
+      "card_id": "ffct-16639",
+      "source_card_sha256": "b291aac8ea541dfb3074e47b3671440766fbb6f95b0264a02b09209ab62c07cf",
+      "candidate_card_sha256": "686887e39ec8451530de2a3164c15c08f6c729fd788a60f8ab599a468f280437",
+      "before_card": {
+        "id": "ffct-16639",
+        "factId": "curtain-translucent-soft-light-g4",
+        "domain": "MATTER",
+        "topic": "translucent curtains soften light",
+        "terms": [
+          "kurtina",
+          "curtain",
+          "translucent",
+          "malabo",
+          "tela",
+          "cloth",
+          "panapton",
+          "liwanag",
+          "light",
+          "kahayag",
+          "malambot",
+          "soft"
+        ],
+        "fact": {
+          "en": "A thin curtain is translucent, so soft light still comes in even when it is closed!",
+          "tl": "Ang manipis na kurtina ay translucent kaya pumapasok pa rin ang malambot na liwanag kahit nakasara ito!",
+          "bis": "Ang nipis nga kurtina translucent mao nga makasulod gihapon ang humok nga kahayag bisan sirado kini!"
+        },
+        "slug": "ffct-16639",
+        "source": "original",
+        "title": {
+          "tl": "Kurtina Translucent Liwanag",
+          "en": "Translucent Curtains",
+          "bis": "Kurtina Translucent Kahayag"
+        },
+        "cats": [
+          "light"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16639",
+        "factId": "curtain-translucent-soft-light-g4",
+        "domain": "MATTER",
+        "topic": "translucent curtains soften light",
+        "terms": [
+          "kurtina",
+          "curtain",
+          "translucent",
+          "malabo",
+          "tela",
+          "cloth",
+          "panapton",
+          "liwanag",
+          "light",
+          "kahayag",
+          "malambot",
+          "soft"
+        ],
+        "fact": {
+          "en": "A thin curtain is translucent, so soft light still comes in even when it is closed!",
+          "tl": "Ang manipis na kurtina ay translucent kaya pumapasok pa rin ang malambot na liwanag kahit nakasara ito!",
+          "bis": "Ang nipis nga kurtina kay translucent, mao nga makasulod gihapon ang humok nga kahayag bisan sirado kini!"
+        },
+        "slug": "ffct-16639",
+        "source": "original",
+        "title": {
+          "tl": "Kurtina Translucent Liwanag",
+          "en": "Translucent Curtains",
+          "bis": "Translucent nga Kurtina"
+        },
+        "cats": [
+          "light"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The linking word and title are clearer, but humok nga kahayag uses a soft-light sense not resolved by the inspected Wolff humuk entry. Machine-translated bodies provide examples but do not establish idiomatic authority. Hold this full context without declaring the metaphor incorrect.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "ca4d485e07c901dff41146226553b37cb"
+    },
+    {
+      "card_id": "ffct-16662",
+      "source_card_sha256": "b1049e23e218070e95e28940fc933ee891a08b0601c56f1301ac698845d6c580",
+      "candidate_card_sha256": "8368941bc6366495b69699333009f59934f0589a78c11db31ac4e2019862e7a6",
+      "before_card": {
+        "id": "ffct-16662",
+        "factId": "gold-iron-everyday-elements-g7",
+        "domain": "MATTER",
+        "topic": "familiar metals like gold and iron are elements",
+        "terms": [
+          "gold",
+          "ginto",
+          "bulawan",
+          "iron",
+          "bakal",
+          "puthaw",
+          "element",
+          "elemento",
+          "metal",
+          "pamilyar"
+        ],
+        "fact": {
+          "en": "Are gold and iron just regular materials?\n\nSurprise! Familiar materials like gold and iron are actually pure elements!",
+          "tl": "Mga ordinaryong materyal lang ba ang ginto at bakal?\n\nSurprise! Ang mga pamilyar na bagay gaya ng ginto at bakal ay talagang mga purong elemento!",
+          "bis": "Ordinaryong materyal lang ba ang bulawan ug puthaw?\n\nSurprise! Ang mga pamilyar nga butang sama sa bulawan ug puthaw mga lunsay gyud nga mga elemento!"
+        },
+        "slug": "ffct-16662",
+        "source": "original",
+        "title": {
+          "tl": "Ginto Bakal Purong Elemento",
+          "en": "Gold Iron Pure Elements",
+          "bis": "Bulawan Puthaw Elemento"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16662",
+        "factId": "gold-iron-everyday-elements-g7",
+        "domain": "MATTER",
+        "topic": "familiar metals like gold and iron are elements",
+        "terms": [
+          "gold",
+          "ginto",
+          "bulawan",
+          "iron",
+          "bakal",
+          "puthaw",
+          "element",
+          "elemento",
+          "metal",
+          "pamilyar"
+        ],
+        "fact": {
+          "en": "Are gold and iron just regular materials?\n\nSurprise! Familiar materials like gold and iron are actually pure elements!",
+          "tl": "Mga ordinaryong materyal lang ba ang ginto at bakal?\n\nSurprise! Ang mga pamilyar na bagay gaya ng ginto at bakal ay talagang mga purong elemento!",
+          "bis": "Ordinaryong materyal lang ba ang bulawan ug puthaw?\n\nSurprise! Ang pamilyar nga mga materyal sama sa bulawan ug puthaw lunsay diay nga mga elemento!"
+        },
+        "slug": "ffct-16662",
+        "source": "original",
+        "title": {
+          "tl": "Ginto Bakal Purong Elemento",
+          "en": "Gold Iron Pure Elements",
+          "bis": "Bulawan ug Puthaw, Lunsay nga Elemento"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Gold and iron are elements, but the full question and answer move from familiar materials to an unqualified purity claim. Everyday materials bearing those names can include alloys or impurities. Hold for source precision across languages; the issue is the material-versus-element referent, not lunsay or diay, both of which have relevant Wolff senses.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c1459287d905ce5116c28aedbc355d6ac"
+    },
+    {
+      "card_id": "ffct-16663",
+      "source_card_sha256": "84e40183190239705221802ce943037c62c1c191dd0a7afcfc03edb63cf4a375",
+      "candidate_card_sha256": "0c7e6239f26c43bd420d54720cc565e56f74e606484e1a79a98b7195ef12d12b",
+      "before_card": {
+        "id": "ffct-16663",
+        "factId": "same-group-similar-behavior-g9",
+        "domain": "MATTER",
+        "topic": "elements in the same group behave alike",
+        "terms": [
+          "group",
+          "pangkat",
+          "grupo",
+          "similar properties",
+          "magkatulad",
+          "susama",
+          "behave",
+          "kumikilos",
+          "kinaiya",
+          "valence",
+          "periodic pattern"
+        ],
+        "fact": {
+          "en": "Why do elements in the same group act alike?\n\nBecause they have the same number of electrons in their outer shell!",
+          "tl": "Bakit magkatulad ang ugali ng mga elemento sa iisang pangkat?\n\nDahil pareho ang bilang ng electron sa labas nilang shell!",
+          "bis": "Ngano managsama og pamatasan ang mga elemento sa samang grupo?\n\nTungod kay parehas ang gidaghanon sa electron sa ilang gawas nga shell!"
+        },
+        "slug": "ffct-16663",
+        "source": "original",
+        "title": {
+          "tl": "Magkatulad na Grupo ng Elemento",
+          "en": "Same Group Elements Alike",
+          "bis": "Parehas Grupo Element"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16663",
+        "factId": "same-group-similar-behavior-g9",
+        "domain": "MATTER",
+        "topic": "elements in the same group behave alike",
+        "terms": [
+          "group",
+          "pangkat",
+          "grupo",
+          "similar properties",
+          "magkatulad",
+          "susama",
+          "behave",
+          "kumikilos",
+          "kinaiya",
+          "valence",
+          "periodic pattern"
+        ],
+        "fact": {
+          "en": "Why do elements in the same group act alike?\n\nBecause they have the same number of electrons in their outer shell!",
+          "tl": "Bakit magkatulad ang ugali ng mga elemento sa iisang pangkat?\n\nDahil pareho ang bilang ng electron sa labas nilang shell!",
+          "bis": "Ngano managsama og pamatasan ang mga elemento sa samang grupo?\n\nTungod kay parehas ang gidaghanon sa electron sa ilang gawas nga shell!"
+        },
+        "slug": "ffct-16663",
+        "source": "original",
+        "title": {
+          "tl": "Magkatulad na Grupo ng Elemento",
+          "en": "Same Group Elements Alike",
+          "bis": "Elemento sa Samang Grupo"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The English explanation applies the same outer-electron count to every group without qualification. RSC lists helium in group 18 with 1s2, unlike neon in the same group. Hold this broad rule for English-led clarification; a clearer title cannot resolve the exception.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c620fb2ff30d9edb8d87824d42083dffd"
+    },
+    {
+      "card_id": "ffct-16766",
+      "source_card_sha256": "662054033771e484f7d32d9c5fe7dead76dfbbf6b22c0435bc1f65f7f61d61a7",
+      "candidate_card_sha256": "06d1d487adcf52a897e6ebbab7113c0a7424b906089d562d013cd18e1cfe9bdc",
+      "before_card": {
+        "id": "ffct-16766",
+        "factId": "diffusion-tea-bag-water-g6",
+        "domain": "MATTER",
+        "topic": "tea spreading in water",
+        "terms": [
+          "tsaa",
+          "tea",
+          "salabat",
+          "kape",
+          "coffee",
+          "tubig",
+          "water",
+          "kulay",
+          "kolor",
+          "kumalat",
+          "mikatag",
+          "diffusion",
+          "lasa",
+          "lami"
+        ],
+        "fact": {
+          "en": "When you soak a tea bag in hot water, watch the color and flavor spread through the whole cup by diffusion!",
+          "tl": "Kapag ibinabad mo ang tea bag sa mainit na tubig, kumakalat ang kulay at lasa sa buong tasa sa pamamagitan ng diffusion!",
+          "bis": "Kon ituslob nimo ang tea bag sa init nga tubig, mikatag ang kolor ug lami sa tibuok tasa pinaagi sa diffusion!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Tea in Water",
+          "tl": "Tsaa sa Tubig",
+          "bis": "Tsa sa Tubig"
+        },
+        "cats": [
+          "water",
+          "solutions"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "diffusion"
+          ],
+          "en": [
+            "diffusion"
+          ],
+          "bis": [
+            "diffusion"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-16766",
+        "factId": "diffusion-tea-bag-water-g6",
+        "domain": "MATTER",
+        "topic": "tea spreading in water",
+        "terms": [
+          "tsaa",
+          "tea",
+          "salabat",
+          "kape",
+          "coffee",
+          "tubig",
+          "water",
+          "kulay",
+          "kolor",
+          "kumalat",
+          "mikatag",
+          "diffusion",
+          "lasa",
+          "lami"
+        ],
+        "fact": {
+          "en": "When you soak a tea bag in hot water, watch the color and flavor spread through the whole cup by diffusion!",
+          "tl": "Kapag ibinabad mo ang tea bag sa mainit na tubig, kumakalat ang kulay at lasa sa buong tasa sa pamamagitan ng diffusion!",
+          "bis": "Kon ituslob nimo ang tea bag sa init nga tubig, mokatag ang kolor ug lami sa tibuok tasa pinaagi sa diffusion!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Tea in Water",
+          "tl": "Tsaa sa Tubig",
+          "bis": "Tsa sa Tubig"
+        },
+        "cats": [
+          "water",
+          "solutions"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "diffusion"
+          ],
+          "en": [
+            "diffusion"
+          ],
+          "bis": [
+            "diffusion"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The aspect edit is plausible, but the full source attributes visible spreading through hot tea to diffusion without distinguishing convection. The Utah State physics demonstration explicitly involves both processes. Hold the mechanism wording for clarification; diffusion is not being denied or declared absent.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "cfd75d9ad6c3cd663844f1ac59e1bd19c"
+    },
+    {
+      "card_id": "ffct-16814",
+      "source_card_sha256": "044f6189cf185431f077f5354c82c4348fe90e769797652920e516ff28b65594",
+      "candidate_card_sha256": "8cc264638c276ad3bba1a13e3a9bba1c638a89a68afc25d4eaf82f3f42cd5a93",
+      "before_card": {
+        "id": "ffct-16814",
+        "factId": "ph-scale-range-0-14-g7",
+        "domain": "MATTER",
+        "topic": "pH scale range",
+        "terms": [
+          "ph scale",
+          "acidic",
+          "basic",
+          "asido",
+          "asidiko",
+          "ubos",
+          "taas",
+          "sukatan",
+          "sukdanan",
+          "numero",
+          "bilang",
+          "sukat",
+          "gisukod",
+          "neutral"
+        ],
+        "fact": {
+          "en": "What does the pH scale measure?\n\nIt measures from 0 to 14 to tell how acidic or basic something is! Lower numbers are more acidic, and higher numbers are more basic.",
+          "tl": "Ano ang sinusukat ng pH scale?\n\nIto ay sukatan mula 0 hanggang 14 kung gaano ka-acid o ka-base ang isang bagay! Mas mababang numero ay mas acidic, mas mataas ay mas basic.",
+          "bis": "Unsay gisukod sa pH scale?\n\nKini usa ka sukdanan gikan sa 0 hangtod 14 kung unsa ka-asido o ka-base ang butang! Mas ubos nga numero mas asidiko, mas taas mas base."
+        },
+        "slug": "ffct-16814",
+        "source": "original",
+        "title": {
+          "tl": "pH Scale 0-14 Saklaw",
+          "en": "pH Scale 0 To 14",
+          "bis": "pH Scale 0-14"
+        },
+        "cats": [
+          "acids-and-bases"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16814",
+        "factId": "ph-scale-range-0-14-g7",
+        "domain": "MATTER",
+        "topic": "pH scale range",
+        "terms": [
+          "ph scale",
+          "acidic",
+          "basic",
+          "asido",
+          "asidiko",
+          "ubos",
+          "taas",
+          "sukatan",
+          "sukdanan",
+          "numero",
+          "bilang",
+          "sukat",
+          "gisukod",
+          "neutral"
+        ],
+        "fact": {
+          "en": "What does the pH scale measure?\n\nIt measures from 0 to 14 to tell how acidic or basic something is! Lower numbers are more acidic, and higher numbers are more basic.",
+          "tl": "Ano ang sinusukat ng pH scale?\n\nIto ay sukatan mula 0 hanggang 14 kung gaano ka-acid o ka-base ang isang bagay! Mas mababang numero ay mas acidic, mas mataas ay mas basic.",
+          "bis": "Unsay gisukod sa pH scale?\n\nNagsukod kini gikan sa 0 hangtod 14 aron mahibal-an kung unsa ka-asido o ka-base ang usa ka butang! Kon mas ubos ang numero, mas asidiko. Kon mas taas ang numero, mas base."
+        },
+        "slug": "ffct-16814",
+        "source": "original",
+        "title": {
+          "tl": "pH Scale 0-14 Saklaw",
+          "en": "pH Scale 0 To 14",
+          "bis": "pH Scale 0-14"
+        },
+        "cats": [
+          "acids-and-bases"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The shorter sentences preserve the source, but the source gives 0 to 14 as an unqualified pH limit. RSC teaching guidance explicitly notes values outside that range. Hold for a cross-language qualification; the familiar school range is not itself being rejected.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "ca7934a938158de6f015344827383d09f"
+    },
+    {
+      "card_id": "ffct-16880",
+      "source_card_sha256": "3113273a511abba1954e47ba588e75f9803269a075d1670ad7dfebf7d4cbf268",
+      "candidate_card_sha256": "6340ac1948c07c9983359d1ce25ec52a7dd9f644a2e62578eafcc6aa18ce56aa",
+      "before_card": {
+        "id": "ffct-16880",
+        "factId": "crude-oil-must-be-separated-g7",
+        "domain": "MATTER",
+        "topic": "crude oil is separated before use",
+        "terms": [
+          "crude oil",
+          "separate",
+          "useful",
+          "refinery",
+          "ihiwalay",
+          "paghimulag",
+          "bulagon",
+          "krudo",
+          "gamit",
+          "planta",
+          "produkto"
+        ],
+        "fact": {
+          "en": "Why do we need a refinery for crude oil?\n\nCrude oil isn't very useful on its own! We must separate it into different parts at a special plant called a refinery.",
+          "tl": "Bakit kailangan ng refinery para sa crude oil?\n\nHindi gaanong magamit ang crude oil nang mag-isa! Kailangan nating ihiwalay ito sa magkakaibang bahagi sa isang planta na tinatawag na refinery.",
+          "bis": "Nganong kinahanglan og refinery para sa crude oil?\n\nAng crude oil dili kaayo magamit kung mag-inusahan! Kinahanglan nato kining bulagon ngadto sa lainlaing bahin sa usa ka planta nga gitawag og refinery."
+        },
+        "slug": "ffct-16880",
+        "source": "original",
+        "title": {
+          "tl": "Refinery Hiwalay ng Crude Oil",
+          "en": "Refinery Separates Oil",
+          "bis": "Refinery Bulag sa Crude Oil"
+        },
+        "cats": [
+          "fossil-fuels",
+          "mixtures"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16880",
+        "factId": "crude-oil-must-be-separated-g7",
+        "domain": "MATTER",
+        "topic": "crude oil is separated before use",
+        "terms": [
+          "crude oil",
+          "separate",
+          "useful",
+          "refinery",
+          "ihiwalay",
+          "paghimulag",
+          "bulagon",
+          "krudo",
+          "gamit",
+          "planta",
+          "produkto"
+        ],
+        "fact": {
+          "en": "Why do we need a refinery for crude oil?\n\nCrude oil isn't very useful on its own! We must separate it into different parts at a special plant called a refinery.",
+          "tl": "Bakit kailangan ng refinery para sa crude oil?\n\nHindi gaanong magamit ang crude oil nang mag-isa! Kailangan nating ihiwalay ito sa magkakaibang bahagi sa isang planta na tinatawag na refinery.",
+          "bis": "Nganong kinahanglan og refinery para sa crude oil?\n\nAng crude oil dili kaayo magamit kung mag-inusahan! Kinahanglan nato kining bulagon ngadto sa lainlaing bahin. Buhaton kini sa usa ka espesyal nga planta nga gitawag og refinery."
+        },
+        "slug": "ffct-16880",
+        "source": "original",
+        "title": {
+          "tl": "Refinery Hiwalay ng Crude Oil",
+          "en": "Refinery Separates Oil",
+          "bis": "Refinery: Pagbulag sa Crude Oil"
+        },
+        "cats": [
+          "fossil-fuels",
+          "mixtures"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The split restores special plant, but the full candidate retains mag-inusahan for crude oil on its own. The inspected usa entry supports being alone through inusara, while the exact inusahan usage and unrefined-material sense remain uncertain; one other machine-translated body does not settle it. Hold without declaring the form ungrammatical.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c62869384968dace71268564621845189"
+    },
+    {
+      "card_id": "ffct-16931",
+      "source_card_sha256": "52271ba1e97fbf9f4c8b19861e1950442a39ba4c58964156e1962582219d71b7",
+      "candidate_card_sha256": "c25f12d88809ff6ede9b37455675a3ee64d3b3be01370401338c1f3f44c0bd35",
+      "before_card": {
+        "id": "ffct-16931",
+        "factId": "solid-fixed-stacking-g4",
+        "domain": "MATTER",
+        "topic": "Solids can be stacked because they hold shape",
+        "terms": [
+          "pagpapatong",
+          "stack",
+          "nakapatong",
+          "blocks",
+          "books",
+          "libro",
+          "kahon",
+          "boxes",
+          "nakatayo",
+          "fixed shape",
+          "bakit kayang patungin",
+          "hindi gumuho",
+          "keeps shape",
+          "tumpok",
+          "tinumpok",
+          "pwedeng salansanin"
+        ],
+        "fact": {
+          "en": "We can stack books because each one is a solid with a fixed shape. You cannot stack water — it would just flow right down!",
+          "tl": "Kayang salansanin ang mga libro dahil bawat isa ay solid na may fixed na hugis. Hindi mo kayang salansanin ang tubig — aagos lang ito pababa!",
+          "bis": "Masalansan ang mga libro kay ang matag usa solid nga adunay pirme nga porma. Dili nimo masalansan ang tubig — mag-agos lang kini paubos!"
+        },
+        "slug": "ffct-16931",
+        "source": "original",
+        "title": {
+          "tl": "Solid na Nakasalansan",
+          "en": "Solids Hold Their Shape",
+          "bis": "Solid sa Porma"
+        },
+        "cats": [
+          "states-of-matter"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16931",
+        "factId": "solid-fixed-stacking-g4",
+        "domain": "MATTER",
+        "topic": "Solids can be stacked because they hold shape",
+        "terms": [
+          "pagpapatong",
+          "stack",
+          "nakapatong",
+          "blocks",
+          "books",
+          "libro",
+          "kahon",
+          "boxes",
+          "nakatayo",
+          "fixed shape",
+          "bakit kayang patungin",
+          "hindi gumuho",
+          "keeps shape",
+          "tumpok",
+          "tinumpok",
+          "pwedeng salansanin"
+        ],
+        "fact": {
+          "en": "We can stack books because each one is a solid with a fixed shape. You cannot stack water — it would just flow right down!",
+          "tl": "Kayang salansanin ang mga libro dahil bawat isa ay solid na may fixed na hugis. Hindi mo kayang salansanin ang tubig — aagos lang ito pababa!",
+          "bis": "Masalansan ang mga libro kay ang matag usa solid nga adunay pirme nga porma. Dili nimo masalansan ang tubig — mag-agos lang kini paubos!"
+        },
+        "slug": "ffct-16931",
+        "source": "original",
+        "title": {
+          "tl": "Solid na Nakasalansan",
+          "en": "Solids Hold Their Shape",
+          "bis": "Magpabilin ang Porma sa Solid"
+        },
+        "cats": [
+          "states-of-matter"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The title is clearer, but the complete body retains masalansan for stacking. Only one independent frozen-body example was found; the Wolff and direct online lookups did not establish the Cebuano sense. Hold for lexical confirmation without using rarity or Tagalog resemblance as a defect verdict.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c79b8510f5aa15ae5f4585d3ba0b8b140"
+    },
+    {
+      "card_id": "ffct-16940",
+      "source_card_sha256": "f79170aa276f7a6c52c391078d323862b6178e3e2420efb53334adcf9f09b3a6",
+      "candidate_card_sha256": "bb2df708fe5974bbc4d4c7314ea2254b7e8ece28bffa0d6ec9dd1c63390ef695",
+      "before_card": {
+        "id": "ffct-16940",
+        "factId": "copper-best-insulation-coating-g5",
+        "domain": "MATTER",
+        "topic": "Plastic coating around copper keeps you safe",
+        "terms": [
+          "copper",
+          "tanso",
+          "insulation",
+          "plastik",
+          "plastic",
+          "balot",
+          "coating",
+          "ligtas",
+          "safe",
+          "kuryente",
+          "kuryente shock",
+          "bakit may plastik",
+          "why plastic",
+          "takip"
+        ],
+        "fact": {
+          "en": "Why is copper wire wrapped in plastic?\n\nThe copper inside carries the electricity, while the plastic wrapper blocks the current! This keeps us safe from getting shocked when we touch it.",
+          "tl": "Bakit may balot na plastic ang tansong wire?\n\nAng tanso sa loob ang nagdadala ng kuryente, pero ang plastic ang humahadlang! Kaya hindi tayo makukuryente kapag nahawakan natin ang wire.",
+          "bis": "Ngano nga giputos og plastik ang tumbaga nga wire?\n\nAng tumbaga sa sulod maoy nagdala og kuryente, pero ang plastik maoy nagbabag! Mao nga dili kita makuryente kung atong hikapon ang wire."
+        },
+        "slug": "ffct-16940",
+        "source": "original",
+        "title": {
+          "tl": "Plastic Coating sa Copper",
+          "en": "Plastic Keeps You Safe",
+          "bis": "Plastic sa Copper"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16940",
+        "factId": "copper-best-insulation-coating-g5",
+        "domain": "MATTER",
+        "topic": "Plastic coating around copper keeps you safe",
+        "terms": [
+          "copper",
+          "tanso",
+          "insulation",
+          "plastik",
+          "plastic",
+          "balot",
+          "coating",
+          "ligtas",
+          "safe",
+          "kuryente",
+          "kuryente shock",
+          "bakit may plastik",
+          "why plastic",
+          "takip"
+        ],
+        "fact": {
+          "en": "Why is copper wire wrapped in plastic?\n\nThe copper inside carries the electricity, while the plastic wrapper blocks the current! This keeps us safe from getting shocked when we touch it.",
+          "tl": "Bakit may balot na plastic ang tansong wire?\n\nAng tanso sa loob ang nagdadala ng kuryente, pero ang plastic ang humahadlang! Kaya hindi tayo makukuryente kapag nahawakan natin ang wire.",
+          "bis": "Ngano nga giputos og plastik ang tumbaga nga wire?\n\nAng tumbaga sa sulod maoy nagdala og kuryente, pero ang plastik nga putos maoy nagbabag sa kuryente! Mao nga dili kita makuryente kung atong hikapon ang wire."
+        },
+        "slug": "ffct-16940",
+        "source": "original",
+        "title": {
+          "tl": "Plastic Coating sa Copper",
+          "en": "Plastic Keeps You Safe",
+          "bis": "Plastic sa Copper"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The complete candidate keeps an unconditional statement that touching the wire will not shock us. The insulation condition and what exactly may be touched need to be explicit before a child-facing safety claim is approved. Hold for English/Cebuano source and referent review; no automatic retirement or new handling instruction is made.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c478251855ceaf7b7d3c0a268b8fc2177"
+    },
+    {
+      "card_id": "ffct-16988",
+      "source_card_sha256": "d67421e7e8a9c7a7d73601d4bbaf20e9f2f357390f862640199d6476311c84bc",
+      "candidate_card_sha256": "514fa00e51fd0d724850ac16b5f182a1e1dc3b0b16545fc2c271e214d1b96d9b",
+      "before_card": {
+        "id": "ffct-16988",
+        "factId": "glass-soda-not-the-drink-misconception-g6",
+        "domain": "MATTER",
+        "topic": "The soda in glass is not the soft drink",
+        "terms": [
+          "soda",
+          "softdrink",
+          "coke",
+          "maling akala",
+          "misconception",
+          "washing soda",
+          "sodium carbonate",
+          "hindi inumin",
+          "dili ilimnon",
+          "is it coke",
+          "bakit tinatawag soda",
+          "ngano soda",
+          "asin",
+          "kemikal"
+        ],
+        "fact": {
+          "en": "The 'soda' in glass isn't a soft drink! It's actually a white, salt-like powder called sodium carbonate. They just share a name!",
+          "tl": "Ang 'soda' sa salamin ay hindi softdrink! Ito ay isang puting pulbos na parang asin na tinatawag na sodium carbonate. Pareho lang ang pangalan!",
+          "bis": "Ang 'soda' sa salamin dili softdrink! Kini usa ka puti nga pulbos nga murag asin nga gitawag og sodium carbonate. Pareho lang ug ngalan!"
+        },
+        "slug": "ffct-16988",
+        "source": "original",
+        "title": {
+          "tl": "Soda Salamin Sodium Carbonate",
+          "en": "Soda Is Not a Drink",
+          "bis": "Soda Salamin Sodium"
+        },
+        "cats": [
+          "chemistry"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16988",
+        "factId": "glass-soda-not-the-drink-misconception-g6",
+        "domain": "MATTER",
+        "topic": "The soda in glass is not the soft drink",
+        "terms": [
+          "soda",
+          "softdrink",
+          "coke",
+          "maling akala",
+          "misconception",
+          "washing soda",
+          "sodium carbonate",
+          "hindi inumin",
+          "dili ilimnon",
+          "is it coke",
+          "bakit tinatawag soda",
+          "ngano soda",
+          "asin",
+          "kemikal"
+        ],
+        "fact": {
+          "en": "The 'soda' in glass isn't a soft drink! It's actually a white, salt-like powder called sodium carbonate. They just share a name!",
+          "tl": "Ang 'soda' sa salamin ay hindi softdrink! Ito ay isang puting pulbos na parang asin na tinatawag na sodium carbonate. Pareho lang ang pangalan!",
+          "bis": "Ang 'soda' sa salamin dili softdrink! Kini usa ka puti nga pulbos nga murag asin nga gitawag og sodium carbonate. Pareho lang ug ngalan!"
+        },
+        "slug": "ffct-16988",
+        "source": "original",
+        "title": {
+          "tl": "Soda Salamin Sodium Carbonate",
+          "en": "Soda Is Not a Drink",
+          "bis": "Ang Soda Dili Ilimnon"
+        },
+        "cats": [
+          "chemistry"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The full source concerns glass as a material and its soda ingredient. Wolff salamin establishes mirrors and objects made of glass, which does not by itself settle this material-composition use. Hold for lexical authority rather than expanding the dictionary sense by assumption.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c241bddd97b1d8000bf18a766d666fac0"
+    },
+    {
+      "card_id": "ffct-16995",
+      "source_card_sha256": "3d6930ae47811586140dedded2fa53deae204e9473f11027902c8939461b84bc",
+      "candidate_card_sha256": "5b917ffc0a4326a4da35f46d4bfde6e13eb4a5a7a29c1b22e48faaedf8f5ddea",
+      "before_card": {
+        "id": "ffct-16995",
+        "factId": "glass-soda-shaping-while-soft-g6",
+        "domain": "MATTER",
+        "topic": "How melted glass is shaped while soft",
+        "terms": [
+          "hugis",
+          "shape",
+          "hinuhubog",
+          "blow",
+          "hihip",
+          "bote",
+          "paano ginagawa",
+          "molten",
+          "malambot",
+          "soft",
+          "glassblowing",
+          "ihip",
+          "hinuhugis",
+          "how shaped",
+          "tunaw"
+        ],
+        "fact": {
+          "en": "Melted glass is soft like honey! It gets blown or pressed into a mold while hot, then cools and hardens into a perfect bottle or glass shape.",
+          "tl": "Ang natunaw na salamin ay malambot parang pulot! Hinihipan o hinuhulma ito habang mainit, tapos lumalamig at tumigas sa perpektong hugis ng bote o baso.",
+          "bis": "Ang natunaw nga salamin humok sama sa dugos! Gihuyop o gihulma kini samtang init, dayon mabugnaw ug magahi sa perpektong porma sa botelya o baso."
+        },
+        "slug": "ffct-16995",
+        "source": "original",
+        "title": {
+          "tl": "Natunaw Malambot Hulma Bote",
+          "en": "Shaping Melted Glass",
+          "bis": "Natunaw Humok Hulma Bote"
+        },
+        "cats": [
+          "physical-changes",
+          "materials"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-16995",
+        "factId": "glass-soda-shaping-while-soft-g6",
+        "domain": "MATTER",
+        "topic": "How melted glass is shaped while soft",
+        "terms": [
+          "hugis",
+          "shape",
+          "hinuhubog",
+          "blow",
+          "hihip",
+          "bote",
+          "paano ginagawa",
+          "molten",
+          "malambot",
+          "soft",
+          "glassblowing",
+          "ihip",
+          "hinuhugis",
+          "how shaped",
+          "tunaw"
+        ],
+        "fact": {
+          "en": "Melted glass is soft like honey! It gets blown or pressed into a mold while hot, then cools and hardens into a perfect bottle or glass shape.",
+          "tl": "Ang natunaw na salamin ay malambot parang pulot! Hinihipan o hinuhulma ito habang mainit, tapos lumalamig at tumigas sa perpektong hugis ng bote o baso.",
+          "bis": "Ang natunaw nga salamin humok sama sa dugos! Gihuyop o gihulma kini samtang init, dayon mabugnaw ug magahi sa perpektong porma sa botelya o baso."
+        },
+        "slug": "ffct-16995",
+        "source": "original",
+        "title": {
+          "tl": "Natunaw Malambot Hulma Bote",
+          "en": "Shaping Melted Glass",
+          "bis": "Paghulma sa Natunaw nga Salamin"
+        },
+        "cats": [
+          "physical-changes",
+          "materials"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The title introduces salamin prominently in the molten-glass manufacturing context. The inspected dictionary supports glass objects but leaves the bulk molten-material sense unresolved. Hold this exact candidate; the uncertainty is contextual and is not a blanket ban on salamin.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c3a0bc7cab314ced80ba18aa7f5eae956"
+    },
+    {
+      "card_id": "ffct-17085",
+      "source_card_sha256": "6b86a42a0ce6f9d6513d650eb74b53fc2989d2214a525b523e5de8f389196382",
+      "candidate_card_sha256": "2371a01a8c76773d1b0916a784df3a410935de94688c86affb76a7e222a6f0d8",
+      "before_card": {
+        "id": "ffct-17085",
+        "factId": "balloon-air-not-empty-misconception-g4",
+        "domain": "MATTER",
+        "topic": "Air is real stuff not nothing",
+        "terms": [
+          "walang laman",
+          "empty",
+          "hangin",
+          "air",
+          "may bigat",
+          "weight",
+          "totoo",
+          "real",
+          "matter",
+          "bagay",
+          "walang kuwenta",
+          "misconception",
+          "mali",
+          "hindi walang laman",
+          "timbang"
+        ],
+        "fact": {
+          "en": "Is an air-filled balloon really empty?\n\nNo! Air is real matter with weight that takes up space. That's why the balloon swells up and feels firm when you blow into it!",
+          "tl": "'Walang laman' ba talaga ang lobong puno ng hangin?\n\nHindi! Ang hangin ay tunay na bagay na may bigat at sumasakop ng espasyo. Kaya tumitigas at umaalsa ang lobo kapag hinipan mo!",
+          "bis": "'Walay sulod' ba gyud ang lobo nga puno og hangin?\n\nDili! Ang hangin tinuod nga butang nga adunay gibug-aton ug naghupot og luna. Mao nga motig-a ug mohubag ang lobo kung huypan nimo!"
+        },
+        "slug": "ffct-17085",
+        "source": "original",
+        "title": {
+          "tl": "Hangin Totoong Bagay Bigat",
+          "en": "Air Is Real Matter",
+          "bis": "Hangin Tinuod Butang Lobo"
+        },
+        "cats": [
+          "gases"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17085",
+        "factId": "balloon-air-not-empty-misconception-g4",
+        "domain": "MATTER",
+        "topic": "Air is real stuff not nothing",
+        "terms": [
+          "walang laman",
+          "empty",
+          "hangin",
+          "air",
+          "may bigat",
+          "weight",
+          "totoo",
+          "real",
+          "matter",
+          "bagay",
+          "walang kuwenta",
+          "misconception",
+          "mali",
+          "hindi walang laman",
+          "timbang"
+        ],
+        "fact": {
+          "en": "Is an air-filled balloon really empty?\n\nNo! Air is real matter with weight that takes up space. That's why the balloon swells up and feels firm when you blow into it!",
+          "tl": "'Walang laman' ba talaga ang lobong puno ng hangin?\n\nHindi! Ang hangin ay tunay na bagay na may bigat at sumasakop ng espasyo. Kaya tumitigas at umaalsa ang lobo kapag hinipan mo!",
+          "bis": "'Walay sulod' ba gyud ang lobo nga puno og hangin?\n\nDili! Ang hangin tinuod nga butang. Aduna kini gibug-aton, ug mokuha kini og luna. Mao nga mohubag ug motig-a ang lobo kung huypan nimo!"
+        },
+        "slug": "ffct-17085",
+        "source": "original",
+        "title": {
+          "tl": "Hangin Totoong Bagay Bigat",
+          "en": "Air Is Real Matter",
+          "bis": "Tinuod nga Butang ang Hangin"
+        },
+        "cats": [
+          "gases"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The sentence split is plausible, but the candidate changes occupying space to mokuha og luna. Wolff kuha establishes getting/taking; the retrieved exact-phrase examples were mostly translated web content and did not settle the physical occupying-space idiom. Hold the exact wording for lexical confirmation, without claiming the phrase is invalid.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "cddade4714c6811a3a696023589a4fdab"
+    },
+    {
+      "card_id": "ffct-17098",
+      "source_card_sha256": "3a39ac51ca56d13d1857dc3c2acd671ee353979034486154a42a966d35481684",
+      "candidate_card_sha256": "117d5d0d572eb949664d6314d11c3f45704838d8d92a51439951b81d02ac1412",
+      "before_card": {
+        "id": "ffct-17098",
+        "factId": "soap-made-lye-base-example-g9",
+        "domain": "MATTER",
+        "topic": "Lye is the common base used to make soap",
+        "terms": [
+          "lye",
+          "sodium hydroxide",
+          "base",
+          "halimbawa ng base",
+          "example",
+          "what base",
+          "anong base",
+          "sosa",
+          "caustic soda",
+          "lihiya",
+          "unsa base",
+          "pampagawa sabon"
+        ],
+        "fact": {
+          "en": "The base used to make bar soap is called lye, a form of sodium hydroxide. It is a very strong chemical, so never handle it without protection!",
+          "tl": "Ang base na ginagamit sa matigas na sabon ay lye, isang anyo ng sodium hydroxide. Ito ay napakalakas na kemikal, kaya huwag itong hawakan nang walang proteksyon!",
+          "bis": "Ang base nga gigamit sa gahi nga sabon mao ang lye, usa ka porma sa sodium hydroxide. Kusgan kaayo kini nga kemikal, busa ayaw kini hikapa nga walay proteksyon!"
+        },
+        "slug": "ffct-17098",
+        "source": "original",
+        "title": {
+          "tl": "Lye Sodium Hydroxide Sabon",
+          "en": "Lye Soap Base Strong",
+          "bis": "Lye Sodium Hydroxide Sabon"
+        },
+        "cats": [
+          "acids-and-bases"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17098",
+        "factId": "soap-made-lye-base-example-g9",
+        "domain": "MATTER",
+        "topic": "Lye is the common base used to make soap",
+        "terms": [
+          "lye",
+          "sodium hydroxide",
+          "base",
+          "halimbawa ng base",
+          "example",
+          "what base",
+          "anong base",
+          "sosa",
+          "caustic soda",
+          "lihiya",
+          "unsa base",
+          "pampagawa sabon"
+        ],
+        "fact": {
+          "en": "The base used to make bar soap is called lye, a form of sodium hydroxide. It is a very strong chemical, so never handle it without protection!",
+          "tl": "Ang base na ginagamit sa matigas na sabon ay lye, isang anyo ng sodium hydroxide. Ito ay napakalakas na kemikal, kaya huwag itong hawakan nang walang proteksyon!",
+          "bis": "Ang base nga gigamit sa gahi nga sabon mao ang lye, usa ka porma sa sodium hydroxide. Kusgan kaayo kini nga kemikal, busa ayaw gyud kini hikapa nga walay proteksyon!"
+        },
+        "slug": "ffct-17098",
+        "source": "original",
+        "title": {
+          "tl": "Lye Sodium Hydroxide Sabon",
+          "en": "Lye Soap Base Strong",
+          "bis": "Lye: Kusgan nga Base sa Sabon"
+        },
+        "cats": [
+          "acids-and-bases"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Both blind observations tie the body after gyud is added, while favoring the title. The current exact candidate therefore lacks agreement that its changed body is clearer. Preserve the original whole card; do not promote an unassessed title-only variant or treat a keep/tie as a defect.",
+      "hold_kind": "hold_readability",
+      "formal_item_id": "c6784dfea8c74123498430c387bcd4eb8"
+    },
+    {
+      "card_id": "ffct-17141",
+      "source_card_sha256": "fad462cdf69a4a165f7f9fc95e2671a60887aa7a19f73de98c5a2c7ffefd2e8f",
+      "candidate_card_sha256": "1ff6eff30e49064151eb48d56eec1ac1ebabad29edfbfcab6022b38c2eeb6470",
+      "before_card": {
+        "id": "ffct-17141",
+        "factId": "carbon-diamond-strong-bonds-g7",
+        "domain": "MATTER",
+        "topic": "Strong carbon bonds make diamond hard",
+        "terms": [
+          "bond",
+          "koneksyon",
+          "atomo",
+          "atom",
+          "carbon",
+          "strong bonds",
+          "paano matigas",
+          "bakit matigas",
+          "ngano gahi",
+          "tightly held",
+          "mahigpit",
+          "network",
+          "istraktura",
+          "structure",
+          "matter"
+        ],
+        "fact": {
+          "en": "Diamond is super hard because each carbon atom is tightly bonded to four other carbon atoms, forming a super-strong 3D network!",
+          "tl": "Sobrang tibay ng diamante dahil ang bawat carbon atom ay nakakabit nang mahigpit sa apat na carbon atoms, forming a super-strong 3D network!",
+          "bis": "Super gahi ang diamante kay ang matag carbon atom hugot nga nakadikit sa upat ka carbon atoms, forming a super-strong 3D network!"
+        },
+        "slug": "ffct-17141",
+        "source": "original",
+        "title": {
+          "tl": "Carbon Bond 3D Network",
+          "en": "Strong Carbon Network",
+          "bis": "Carbon Bond 3D Network"
+        },
+        "cats": [
+          "chemistry"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17141",
+        "factId": "carbon-diamond-strong-bonds-g7",
+        "domain": "MATTER",
+        "topic": "Strong carbon bonds make diamond hard",
+        "terms": [
+          "bond",
+          "koneksyon",
+          "atomo",
+          "atom",
+          "carbon",
+          "strong bonds",
+          "paano matigas",
+          "bakit matigas",
+          "ngano gahi",
+          "tightly held",
+          "mahigpit",
+          "network",
+          "istraktura",
+          "structure",
+          "matter"
+        ],
+        "fact": {
+          "en": "Diamond is super hard because each carbon atom is tightly bonded to four other carbon atoms, forming a super-strong 3D network!",
+          "tl": "Sobrang tibay ng diamante dahil ang bawat carbon atom ay nakakabit nang mahigpit sa apat na carbon atoms, forming a super-strong 3D network!",
+          "bis": "Super gahi ang diamante kay ang matag carbon atom hugot nga nakadikit sa upat ka laing carbon atom. Tungod niini, naporma ang usa ka lig-on kaayo nga 3D network!"
+        },
+        "slug": "ffct-17141",
+        "source": "original",
+        "title": {
+          "tl": "Carbon Bond 3D Network",
+          "en": "Strong Carbon Network",
+          "bis": "Lig-on nga 3D Network sa Carbon"
+        },
+        "cats": [
+          "chemistry"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The candidate restores other and translates the result clause, but nakadikit is central to its chemical-bond explanation. Wolff dikit establishes close contact/touching, which does not settle the stronger bonded-atom sense. Machine-translated chemistry examples are insufficient to lift that doubt; hold for lexical/fidelity clarification.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c61b8baf75c9ca2c538e108e1c9826522"
+    },
+    {
+      "card_id": "ffct-17177",
+      "source_card_sha256": "599462699e1d284beb6e4552cc3dade6d132474a087d261fca6d000ffe1f03ba",
+      "candidate_card_sha256": "f347fe314f1f3efc4e9c2cbb64c0a2bae4a7f83d7976c95e625e1281d26af218",
+      "before_card": {
+        "id": "ffct-17177",
+        "factId": "indicator-color-water-quality-realworld-g8",
+        "domain": "MATTER",
+        "topic": "indicators used to check water and pool safety",
+        "terms": [
+          "paggamit",
+          "gamit",
+          "real-world",
+          "tunay na gamit",
+          "pool",
+          "swimming",
+          "tubig",
+          "water",
+          "kalidad",
+          "kalinis",
+          "test kit",
+          "pagsusuri",
+          "aquarium",
+          "isda",
+          "ph",
+          "mahalaga",
+          "ligtas"
+        ],
+        "fact": {
+          "en": "How do we check if pool water is safe?\n\nTest kits use indicators to check water pH! Water that is too acidic or basic can hurt skin or fish.",
+          "tl": "Paano natin susuriin kung ligtas ang tubig sa pool?\n\nGumagamit ng indicator ang test kits para suriin ang pH! Masyadong acid o base na tubig ay makakapinsala sa balat o isda.",
+          "bis": "Unsaon pag-susi kon luwas ang tubig sa pool?\n\nMogamit og indicator ang test kits aron susihon ang pH! Tubig nga sobra ka acid o base makadaot sa panit o isda."
+        },
+        "slug": "",
+        "title": {
+          "en": "Water pH Test",
+          "tl": "pH Test ng Tubig",
+          "bis": "pH Test sa Tubig"
+        },
+        "cats": [
+          "acids-and-bases",
+          "water"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "indicator"
+          ],
+          "en": [
+            "indicators"
+          ],
+          "bis": [
+            "indicator"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-17177",
+        "factId": "indicator-color-water-quality-realworld-g8",
+        "domain": "MATTER",
+        "topic": "indicators used to check water and pool safety",
+        "terms": [
+          "paggamit",
+          "gamit",
+          "real-world",
+          "tunay na gamit",
+          "pool",
+          "swimming",
+          "tubig",
+          "water",
+          "kalidad",
+          "kalinis",
+          "test kit",
+          "pagsusuri",
+          "aquarium",
+          "isda",
+          "ph",
+          "mahalaga",
+          "ligtas"
+        ],
+        "fact": {
+          "en": "How do we check if pool water is safe?\n\nTest kits use indicators to check water pH! Water that is too acidic or basic can hurt skin or fish.",
+          "tl": "Paano natin susuriin kung ligtas ang tubig sa pool?\n\nGumagamit ng indicator ang test kits para suriin ang pH! Masyadong acid o base na tubig ay makakapinsala sa balat o isda.",
+          "bis": "Unsaon nato pagsusi kon luwas ba ang tubig sa pool?\n\nMogamit og indicator ang test kits aron susihon ang pH sa tubig! Ang tubig nga sobra ka acid o base makadaot sa panit o sa isda."
+        },
+        "slug": "",
+        "title": {
+          "en": "Water pH Test",
+          "tl": "pH Test ng Tubig",
+          "bis": "pH Test sa Tubig"
+        },
+        "cats": [
+          "acids-and-bases",
+          "water"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "indicator"
+          ],
+          "en": [
+            "indicators"
+          ],
+          "bis": [
+            "indicator"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The broad question asks whether pool water is safe, but the answer only checks pH. CDC water guidance requires disinfectant monitoring as well and does not treat pH alone as proof of safety. Hold for cross-language narrowing of the question or fuller source clarification; no unsupported safety assurance is added.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c1b70e7d9b3ceb952ebb7ecd2226052d4"
+    }
+  ],
+  "prior_mandatory_missing_judgment_holds": [
+    "ffct-15686"
+  ],
+  "native_verified": false,
+  "science_verified": false,
+  "released": false,
+  "source_precision_holds_require_cross_language_review": [
+    "ffct-16422",
+    "ffct-16477",
+    "ffct-16662",
+    "ffct-16663",
+    "ffct-16766",
+    "ffct-16814",
+    "ffct-16940",
+    "ffct-17177"
+  ],
+  "lexical_holds": [
+    "ffct-16471",
+    "ffct-16476",
+    "ffct-16527",
+    "ffct-16639",
+    "ffct-16880",
+    "ffct-16931",
+    "ffct-16988",
+    "ffct-16995",
+    "ffct-17085",
+    "ffct-17141"
+  ],
+  "fidelity_holds": [],
+  "readability_holds": [
+    "ffct-16566",
+    "ffct-17098"
+  ]
+}

@@ -46,7 +46,7 @@
     },
     "cards": {
       "path": "rag/pipeline/cardsPool.app.json",
-      "sha256": "7a9989363561c91ef5181abd0bf2428bd6b832412f20d4f678f8ab9c42d67b10"
+      "sha256": "9e52c84daf466863cdd843f1d17e95ba4b815df669687063163a73ce26b74f1f"
     },
     "curriculum": {
       "path": "rag/sources/curriculum-guides/matatag-elementary-competencies.json",
@@ -2217,7 +2217,7 @@
     },
     {
       "id": "ha-g4-0010",
-      "revision": 1,
+      "revision": 2,
       "batch_id": "003-grade4-living-things",
       "origin": "revise",
       "status": "source_checked",
@@ -2289,7 +2289,7 @@
           "fact": {
             "en": "Why is an energy pyramid pyramid-shaped?\n\nAn energy pyramid is wide at the bottom, where producers are, and narrow at the top, because energy is lost at each level of the food chain.",
             "tl": "Bakit hugis-piramide ang energy pyramid?\n\nAng energy pyramid ay malapad sa ibaba kung saan naroon ang mga producers, at makitid sa itaas dahil nawawalan ng enerhiya sa bawat antas ng food chain.",
-            "bis": "Ngano hugis-piramide ang energy pyramid?\n\nAng energy pyramid halapad sa ilawom diin naa ang mga producer, ug makipot sa taas tungod kay nawad-an og enerhiya sa matag lebel sa food chain."
+            "bis": "Ngano hugis-piramide ang energy pyramid?\n\nHalapad ang energy pyramid sa ilawom, diin naa ang mga producer. Makipot kini sa taas tungod kay nawad-an og enerhiya sa matag lebel sa food chain."
           },
           "bank_fact_id": "energy-pyramid-shape-g6",
           "bank_question": {
@@ -2333,6 +2333,10 @@
               "bis": "Ang mga producer naghimo sa ilang pagkaon, sama sa balili sa ilawom."
             },
             "difficulty": 0
+          },
+          "teaching_link_hold": {
+            "reason": "HOLD exposure: body places producers in a pyramid but does not identify grass or teach photosynthesis; related cards and source quiz support authorship, not exposure to this card alone.",
+            "review_receipt": "tools/cebuano-curriculum-alignment/assessment-link-decisions-001.json"
           }
         },
         "related": [
@@ -2806,7 +2810,7 @@
     },
     {
       "id": "ha-g4-0012",
-      "revision": 2,
+      "revision": 3,
       "batch_id": "003-grade4-living-things",
       "origin": "reuse",
       "status": "source_checked",
@@ -2927,7 +2931,7 @@
             "fact": {
               "en": "An organ is built from two or more different tissues working as a team — like your heart using muscle and nerve tissue to pump blood!",
               "tl": "Ang organ ay gawa sa dalawa o higit pang magkakaibang tissues na nagtutulungan — tulad ng puso na gumagamit ng muscle at nerve tissue para magbomba ng dugo!",
-              "bis": "Ang organ gihimo sa duha o daghan pang lain-laing tissues nga nagtinabangay — sama sa kasingkasing nga naggamit ug muscle ug nerve tissue aron magbomba ug dugo!"
+              "bis": "Ang organ gihimo sa duha o labaw pa nga lain-laing tissues nga nagtinabangay. Pananglitan, ang imong kasingkasing naggamit ug muscle ug nerve tissue aron magbomba ug dugo!"
             },
             "knowledge_claim": "Recalls that the heart pumps blood.",
             "knowledge_family_id": "heart-pumps-blood",
@@ -2942,7 +2946,7 @@
             "support": {
               "en": "An organ is built from two or more different tissues working as a team — like your heart using muscle and nerve tissue to pump blood!",
               "tl": "Ang organ ay gawa sa dalawa o higit pang magkakaibang tissues na nagtutulungan — tulad ng puso na gumagamit ng muscle at nerve tissue para magbomba ng dugo!",
-              "bis": "Ang organ gihimo sa duha o daghan pang lain-laing tissues nga nagtinabangay — sama sa kasingkasing nga naggamit ug muscle ug nerve tissue aron magbomba ug dugo!"
+              "bis": "Ang organ gihimo sa duha o labaw pa nga lain-laing tissues nga nagtinabangay. Pananglitan, ang imong kasingkasing naggamit ug muscle ug nerve tissue aron magbomba ug dugo!"
             },
             "conditions_note": "The organ example explicitly says the heart pumps blood in all three languages. The existing Grade 4 recall item can be linked to this Grade 7 shelf exposure without relabeling it as Grade 7 mastery."
           }
@@ -3274,7 +3278,7 @@
     },
     {
       "id": "ha-g4-0014",
-      "revision": 1,
+      "revision": 2,
       "batch_id": "003-grade4-living-things",
       "origin": "reuse",
       "status": "source_checked",
@@ -3342,7 +3346,7 @@
           "fact": {
             "en": "Blood vessels are the pathways, like roads in a city, that carry blood throughout the body.",
             "tl": "Ang blood vessels ang mga daanan, parang mga kalsada sa isang city, na nagdadala ng dugo sa buong katawan.",
-            "bis": "Ang blood vessels mao ang mga agianan, sama sa mga dalan sa usa ka city, nga nagdala ug dugo sa tibuok lawas."
+            "bis": "Ang blood vessels mga agianan nga nagdala ug dugo sa tibuok lawas. Sama kini sa mga dalan sa usa ka siyudad."
           },
           "bank_fact_id": "blood-vessels-g6",
           "bank_question": {

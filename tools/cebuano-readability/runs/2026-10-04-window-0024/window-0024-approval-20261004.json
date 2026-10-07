@@ -1,0 +1,3286 @@
+{
+  "schema": "hiraia.cebuano-readability-reviewed-edits/v1",
+  "status": "reviewed_for_local_application",
+  "created_at": "2026-10-03T17:29:12.761385+00:00",
+  "reviewer": "Codex root, independent of Claude proposal/backtranslation/fidelity/readability calls; no separate Codex reviewer used for this window",
+  "scope": "Window 24: 24 individually reviewed exact Cebuano edits and 12 priority holds. Windows 1–23 were previously adjudicated. No score-only approval, native verification, exhaustive science certification or release permission. Invalid-evidence holds ffct-08459, ffct-09018, ffct-10152 and ffct-18958 remain mandatory. Missing-fidelity card ffct-15686 remains held without a synthesized judgment or repeated call.",
+  "window_id": "window-0024",
+  "window_accounting": {
+    "source_cards": 768,
+    "completed_assessments": 768,
+    "missing_fidelity_holds": 0,
+    "approved_exact_edits": 24,
+    "unchanged_keeps": 84,
+    "held": 660,
+    "held_from_priority_set": 12,
+    "preexisting_nonpriority_holds": 648
+  },
+  "input_pins": [
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0024/report.json",
+      "sha256": "4fa732b71ee807713a377724686d999d7f504544517991a5d0a6c5506eba03c1",
+      "bytes": 28892312
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0024/clean-agreement.jsonl",
+      "sha256": "4a2dd8199dba8cd40d2b05c57cace03fcfe400ccd482f6a6804aa61e9686aa4e",
+      "bytes": 936139
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0024/root-decisions.json",
+      "sha256": "e0b75c24bfea97530ccdbafb4ab2c4d3e4bf1ae43343b1ccddc8b31bfcad1d89",
+      "bytes": 15530
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0024/corpus-lexical-evidence.json",
+      "sha256": "ca6e8b027cb3d83f5f77b708a5598a5d03fbbcb6e6d9f38f02b7bb56270655fc",
+      "bytes": 49601
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0024/dictionary-entries.json",
+      "sha256": "7ceabfb6d7afcad26df22e6006991a446cb1ee94a16f2c39c43141cdae303bac",
+      "bytes": 64949
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0024/dictionary-cross-references.json",
+      "sha256": "75e168b07729f82faca00b741236f24cefff56e4d6ca0dc428ab0c6df93dda38",
+      "bytes": 1369
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0024/lexical-source-review.json",
+      "sha256": "83c7f3e8188ce02ea7cc9198be80b176ef45e74f85fcf653d4dbbc0346c4998e",
+      "bytes": 6862
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-gutenberg-40074.txt",
+      "sha256": "f80b888b24dd4ca7f5cb16276b4a53f9d22129a496b9ffb7f7efe17d3b9a1504",
+      "bytes": 5699379
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-retrieval.json",
+      "sha256": "bd713c5adf21541a0e7fd9c49f75fb6b9d4157fb88d41151a245165b8955b7da",
+      "bytes": 502
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0024/collect-evidence-001.py",
+      "sha256": "b56b97fb638d89fc94bef6bea37b23f91d4350b0f740deb7ddf38141e845bb51",
+      "bytes": 5298
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/show-dossiers-d8817f77.py",
+      "sha256": "135b03be38d352fff0ce172e263ecd717d02e8cb2ed380cbdce945b7e5036e7e",
+      "bytes": 1885
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0024/write-root-records.py",
+      "sha256": "2cb5053c880151e64ebd9153d650efd8478e54b6f7eb98368a768c5524b24591",
+      "bytes": 20390
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0024/create-root-approval.py",
+      "sha256": "5d38d2258edce0e1ddd2ec4411b2f194aecb1200b1d7c0001b3f030ac3ab9b98",
+      "bytes": 6280
+    }
+  ],
+  "current_pool_before_application": {
+    "path": "rag/pipeline/cardsPool.app.json",
+    "sha256": "fe6360ddcd00e0b349b08f9153c7cbfba80d80fd4147c76b1db113e180a5f311",
+    "bytes": 50644358
+  },
+  "accepted": [
+    {
+      "card_id": "ffct-18074",
+      "source_card_sha256": "627969ed20cd65cf329b1c154c8889136d8b7081134dad5fb991bbb6b053d97e",
+      "candidate_card_sha256": "9e92a0af4eba6c77fbcae42a965daf6cb79e9b5c8b4bfbf626af66a8a09e23b6",
+      "before_card": {
+        "id": "ffct-18074",
+        "factId": "states-matter-particle-spacing-g4",
+        "domain": "MATTER",
+        "topic": "particles are closer together in solids than liquids or gases",
+        "terms": [
+          "solid",
+          "liquid",
+          "gas",
+          "particle",
+          "malayo",
+          "malapit",
+          "close together",
+          "far apart",
+          "density",
+          "vibrasi",
+          "vibrate"
+        ],
+        "fact": {
+          "en": "In solids, particles are packed tight and just vibrate. In liquids, they're close but move around. In gases, they're far apart and zoom quickly!",
+          "tl": "Sa solids, ang particles ay siksik at nagvi-vibrate lang. Sa liquids, malapit sila pero gumagalaw. Sa gases, malayo sila sa isa't isa at mabilis gumalaw!",
+          "bis": "Sa solids, ang particles siksik ug nagvibrate ra. Sa liquids, duol sila pero naglihok. Sa gases, layo sila ug paspas kaayo ang paglihok!"
+        },
+        "slug": "diagram-solid-liquid-gas-particles",
+        "title": {
+          "en": "Particle Spacing",
+          "tl": "Pagitan ng Partikulo",
+          "bis": "Gintang sa Partikulo"
+        },
+        "cats": [
+          "matter",
+          "states-of-matter"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "particles"
+          ],
+          "en": [
+            "particles"
+          ],
+          "bis": [
+            "particles"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-18074",
+        "factId": "states-matter-particle-spacing-g4",
+        "domain": "MATTER",
+        "topic": "particles are closer together in solids than liquids or gases",
+        "terms": [
+          "solid",
+          "liquid",
+          "gas",
+          "particle",
+          "malayo",
+          "malapit",
+          "close together",
+          "far apart",
+          "density",
+          "vibrasi",
+          "vibrate"
+        ],
+        "fact": {
+          "en": "In solids, particles are packed tight and just vibrate. In liquids, they're close but move around. In gases, they're far apart and zoom quickly!",
+          "tl": "Sa solids, ang particles ay siksik at nagvi-vibrate lang. Sa liquids, malapit sila pero gumagalaw. Sa gases, malayo sila sa isa't isa at mabilis gumalaw!",
+          "bis": "Sa solids, siksik ang particles ug nagvibrate ra sila. Sa liquids, duol sila sa usag usa pero naglihok-lihok. Sa gases, layo sila sa usag usa ug paspas kaayo ang ilang paglihok!"
+        },
+        "slug": "diagram-solid-liquid-gas-particles",
+        "title": {
+          "en": "Particle Spacing",
+          "tl": "Pagitan ng Partikulo",
+          "bis": "Gintang sa Partikulo"
+        },
+        "cats": [
+          "matter",
+          "states-of-matter"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "particles"
+          ],
+          "en": [
+            "particles"
+          ],
+          "bis": [
+            "particles"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate explicitly compares the particles with one another and separates the three states into clear clauses. The full solid/liquid/gas contrasts and motion are retained, including close packing, sliding past one another and free movement. Both blind judgments support the exact body and title changes; no general grammar ruling about the old phrasing is made.",
+      "formal_item_id": "ceb1167ff4d8a22bb14164bbb5894abde",
+      "fidelity_item_id": "medad5b289fb323491627f508",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18077",
+      "source_card_sha256": "eac7cd8373e79c32b18660d5a1aa5bc6154a06727a8c90aa6dd6dda02a98fcb7",
+      "candidate_card_sha256": "4b1494e2ce8762c9c4049686a0b5e92094845d32b808153a8824e75aed61db2a",
+      "before_card": {
+        "id": "ffct-18077",
+        "factId": "sublimation-dry-ice-g7",
+        "domain": "MATTER",
+        "topic": "sublimation is the change from solid directly to gas",
+        "terms": [
+          "sublimation",
+          "dry ice",
+          "solidong co2",
+          "solid",
+          "gas",
+          "walang liquid",
+          "no liquid",
+          "naphthalene",
+          "moth balls",
+          "iodine",
+          "change of state"
+        ],
+        "fact": {
+          "en": "Sublimation is when a solid changes directly into a gas, skipping the liquid state! For example, dry ice (solid CO2) turns straight into carbon dioxide gas.",
+          "tl": "Ang sublimation ay kapag ang isang solid ay direktang nagiging gas, nilaktawan ang liquid state! Halimbawa, ang dry ice (solid CO2) ay direktang nagiging carbon dioxide gas.",
+          "bis": "Ang sublimation mao ang direktang pagbag-o sa solid ngadto sa gas, gilaktawan ang liquid state! Pananglitan, ang dry ice (solid CO2) direktang nahimong carbon dioxide gas."
+        },
+        "slug": "ffct-20202",
+        "title": {
+          "en": "Sublimation",
+          "tl": "Sublimasyon",
+          "bis": "Sublimasyon"
+        },
+        "cats": [
+          "states-of-matter"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "sublimation"
+          ],
+          "en": [
+            "Sublimation"
+          ],
+          "bis": [
+            "sublimation"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-18077",
+        "factId": "sublimation-dry-ice-g7",
+        "domain": "MATTER",
+        "topic": "sublimation is the change from solid directly to gas",
+        "terms": [
+          "sublimation",
+          "dry ice",
+          "solidong co2",
+          "solid",
+          "gas",
+          "walang liquid",
+          "no liquid",
+          "naphthalene",
+          "moth balls",
+          "iodine",
+          "change of state"
+        ],
+        "fact": {
+          "en": "Sublimation is when a solid changes directly into a gas, skipping the liquid state! For example, dry ice (solid CO2) turns straight into carbon dioxide gas.",
+          "tl": "Ang sublimation ay kapag ang isang solid ay direktang nagiging gas, nilaktawan ang liquid state! Halimbawa, ang dry ice (solid CO2) ay direktang nagiging carbon dioxide gas.",
+          "bis": "Ang sublimation mao kon ang usa ka solid direktang mahimong gas. Dili na kini moagi sa liquid state! Pananglitan, ang dry ice (solid CO2) direktang mahimong carbon dioxide gas."
+        },
+        "slug": "ffct-20202",
+        "title": {
+          "en": "Sublimation",
+          "tl": "Sublimasyon",
+          "bis": "Sublimasyon"
+        },
+        "cats": [
+          "states-of-matter"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "sublimation"
+          ],
+          "en": [
+            "Sublimation"
+          ],
+          "bis": [
+            "sublimation"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Two sentences separate the definition of sublimation from the direct solid-to-gas transition. Bypassing the liquid state and the dry-ice carbon-dioxide example remain intact. The shorter wording does not change the physical process or emphasis.",
+      "formal_item_id": "c0b1d4d8a62d6fdcaca4fea534609fb1f",
+      "fidelity_item_id": "me8417d1c7a2144962b4710f1",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18110",
+      "source_card_sha256": "5f17defe563c07531147a3c7cc82e64fac41fdfba9c1c6cca6b1aa93dd66cf60",
+      "candidate_card_sha256": "3edce238d4378b804d28b4b6d42d7116eca9b2debd02ac614a844f26b17e7ffa",
+      "before_card": {
+        "id": "ffct-18110",
+        "factId": "soft-drink-carbonation-g6",
+        "domain": "MATTER",
+        "topic": "carbonated drinks have CO2 dissolved under pressure",
+        "terms": [
+          "carbonated drink",
+          "softdrink",
+          "co2",
+          "carbon dioxide",
+          "pressure",
+          "presyon",
+          "bubbles",
+          "bula",
+          "bottle",
+          "fizzy",
+          "dissolved gas"
+        ],
+        "fact": {
+          "en": "Carbonated drinks trap CO2 gas inside sealed bottles under high pressure! When you open the bottle, the pressure drops, and the CO2 escapes as fun bubbles.",
+          "tl": "Ang mga carbonated drinks ay nagtatago ng CO2 gas sa loob ng selyadong bote sa mataas na presyon! Kapag binuksan, bumababa ang presyon at lumalabas ang CO2 bilang mga bula.",
+          "bis": "Ang mga carbonated drink nagtipig og CO2 gas sulod sa selyado nga bote ubos sa taas nga presyon! Kon ablihan, mobaba ang presyon ug ang CO2 mogawas isip mga bula."
+        },
+        "slug": "ffct-18090",
+        "title": {
+          "en": "Carbonated Drinks",
+          "tl": "Karbonatadong Inumin",
+          "bis": "Soda nga Ilimnon"
+        },
+        "cats": [
+          "solutions",
+          "chemistry"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "CO2"
+          ],
+          "en": [
+            "CO2"
+          ],
+          "bis": [
+            "CO2"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-18110",
+        "factId": "soft-drink-carbonation-g6",
+        "domain": "MATTER",
+        "topic": "carbonated drinks have CO2 dissolved under pressure",
+        "terms": [
+          "carbonated drink",
+          "softdrink",
+          "co2",
+          "carbon dioxide",
+          "pressure",
+          "presyon",
+          "bubbles",
+          "bula",
+          "bottle",
+          "fizzy",
+          "dissolved gas"
+        ],
+        "fact": {
+          "en": "Carbonated drinks trap CO2 gas inside sealed bottles under high pressure! When you open the bottle, the pressure drops, and the CO2 escapes as fun bubbles.",
+          "tl": "Ang mga carbonated drinks ay nagtatago ng CO2 gas sa loob ng selyadong bote sa mataas na presyon! Kapag binuksan, bumababa ang presyon at lumalabas ang CO2 bilang mga bula.",
+          "bis": "Ang mga carbonated drink nagtipig og CO2 gas sulod sa selyado nga bote ubos sa taas nga presyon! Kon ablihan nimo ang bote, mobaba ang presyon ug mogawas ang CO2 isip mga bula."
+        },
+        "slug": "ffct-18090",
+        "title": {
+          "en": "Carbonated Drinks",
+          "tl": "Karbonatadong Inumin",
+          "bis": "Soda nga Ilimnon"
+        },
+        "cats": [
+          "solutions",
+          "chemistry"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "CO2"
+          ],
+          "en": [
+            "CO2"
+          ],
+          "bis": [
+            "CO2"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate gives opening the bottle an explicit subject and identifies escaping carbon dioxide as the bubbles. It retains the pressure decrease and the original cause-and-effect relationship, without adding a quantitative claim or an absolute statement about every drink.",
+      "formal_item_id": "c3d068e1fa45985bae7e11d0ef83286b5",
+      "fidelity_item_id": "m2bda2c8a00f78f7253c576f9",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18146",
+      "source_card_sha256": "f7d214015303c8090cf19405ee4519542d5160dc0ca099adf6408fadaf6f7a99",
+      "candidate_card_sha256": "a7a6b2aadcb9018ef86dd976a3bd8c025aa8984b6b67854fcba4d6380556d2f4",
+      "before_card": {
+        "id": "ffct-18146",
+        "factId": "osmosis-plant-cells-g7",
+        "domain": "MATTER",
+        "topic": "osmosis moves water from dilute to concentrated solutions across cell membranes",
+        "terms": [
+          "osmosis",
+          "osmosis",
+          "cell membrane",
+          "semi-permeable",
+          "concentration",
+          "water",
+          "tubig",
+          "plant",
+          "halaman",
+          "wilting",
+          "welts"
+        ],
+        "fact": {
+          "en": "How does water enter plant root cells?\n\nThrough osmosis! Water moves from a lower solute concentration to a higher one across a semi-permeable membrane, flowing right into the plant roots.",
+          "tl": "Paano pumapasok ang tubig sa mga selula ng ugat ng halaman?\n\nSa osmosis! Gumagalaw ang tubig mula sa mababang solute concentration patungo sa mas mataas sa pamamagitan ng semi-permeable membrane, papasok sa mga ugat ng halaman.",
+          "bis": "Unsaon pagsulod sa tubig sa mga selula sa gamot sa tanom?\n\nPinaagi sa osmosis! Molihok ang tubig gikan sa mas ubos nga solute concentration ngadto sa mas taas pinaagi sa semi-permeable membrane, mosulod sa mga gamot sa tanom."
+        },
+        "slug": "water-molecule",
+        "title": {
+          "en": "Osmosis",
+          "tl": "Osmosis",
+          "bis": "Osmosis"
+        },
+        "cats": [
+          "cells",
+          "water"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "osmosis"
+          ],
+          "en": [
+            "osmosis"
+          ],
+          "bis": [
+            "osmosis"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-18146",
+        "factId": "osmosis-plant-cells-g7",
+        "domain": "MATTER",
+        "topic": "osmosis moves water from dilute to concentrated solutions across cell membranes",
+        "terms": [
+          "osmosis",
+          "osmosis",
+          "cell membrane",
+          "semi-permeable",
+          "concentration",
+          "water",
+          "tubig",
+          "plant",
+          "halaman",
+          "wilting",
+          "welts"
+        ],
+        "fact": {
+          "en": "How does water enter plant root cells?\n\nThrough osmosis! Water moves from a lower solute concentration to a higher one across a semi-permeable membrane, flowing right into the plant roots.",
+          "tl": "Paano pumapasok ang tubig sa mga selula ng ugat ng halaman?\n\nSa osmosis! Gumagalaw ang tubig mula sa mababang solute concentration patungo sa mas mataas sa pamamagitan ng semi-permeable membrane, papasok sa mga ugat ng halaman.",
+          "bis": "Unsaon pagsulod sa tubig sa mga selula sa gamot sa tanom?\n\nPinaagi sa osmosis! Molihok ang tubig gikan sa mas ubos nga solute concentration ngadto sa mas taas. Moagi kini sa semi-permeable membrane ug mosulod sa mga gamot sa tanom."
+        },
+        "slug": "water-molecule",
+        "title": {
+          "en": "Osmosis",
+          "tl": "Osmosis",
+          "bis": "Osmosis"
+        },
+        "cats": [
+          "cells",
+          "water"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "osmosis"
+          ],
+          "en": [
+            "osmosis"
+          ],
+          "bis": [
+            "osmosis"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The split separates water uptake by roots from the osmosis explanation and its semi-permeable membrane. The movement from lower to higher solute concentration, the water referent and the root-cell context remain the same. This approves sentence clarity, not a new definition or an added claim about every plant-transport mechanism.",
+      "formal_item_id": "c9305eb3448589b02f7a881be8de14f4f",
+      "fidelity_item_id": "m55b0b6accca9b8435d9d64a6",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18266",
+      "source_card_sha256": "e5c7871d12b5a8bf26427d57c211b13302b49720ff54446c71c0a7e4e167011c",
+      "candidate_card_sha256": "e14127533759f68854ee0de02b1a88065ac8c1dbb4b4841b45af29fa6838156f",
+      "before_card": {
+        "id": "ffct-18266",
+        "factId": "matter-has-mass-g3",
+        "domain": "MATTER",
+        "topic": "all matter has mass",
+        "terms": [
+          "matter",
+          "mass",
+          "bigat",
+          "timbang",
+          "hangin",
+          "air",
+          "sangkap",
+          "lahat",
+          "balloon",
+          "matter"
+        ],
+        "fact": {
+          "en": "Can invisible air have mass and make a balloon heavier?\n\nYes! All matter has mass, even air! A balloon filled with air is actually heavier than an empty balloon.",
+          "tl": "May mass ba ang hindi nakikitang hangin at nakakapagpapabigat sa balloon?\n\nOo! Lahat ng matter ay may mass, kahit ang hangin! Ang balloon na puno ng hangin ay mas mabigat kaysa sa walang laman.",
+          "bis": "Adunay mass ba ang dili makita nga hangin ug makapabug-at sa balloon?\n\nOo! Tanan nga matter adunay mass, bisan ang hangin! Ang balloon nga puno sa hangin mas bug-at kaysa sa walay sulod."
+        },
+        "slug": "ffct-18266",
+        "source": "original",
+        "title": {
+          "tl": "Hangin na May Mass sa Balloon",
+          "en": "All Matter Has Mass Air",
+          "bis": "Hangin Mass Balloon"
+        },
+        "cats": [
+          "matter"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-18266",
+        "factId": "matter-has-mass-g3",
+        "domain": "MATTER",
+        "topic": "all matter has mass",
+        "terms": [
+          "matter",
+          "mass",
+          "bigat",
+          "timbang",
+          "hangin",
+          "air",
+          "sangkap",
+          "lahat",
+          "balloon",
+          "matter"
+        ],
+        "fact": {
+          "en": "Can invisible air have mass and make a balloon heavier?\n\nYes! All matter has mass, even air! A balloon filled with air is actually heavier than an empty balloon.",
+          "tl": "May mass ba ang hindi nakikitang hangin at nakakapagpapabigat sa balloon?\n\nOo! Lahat ng matter ay may mass, kahit ang hangin! Ang balloon na puno ng hangin ay mas mabigat kaysa sa walang laman.",
+          "bis": "Aduna bay mass ang hangin nga dili makita, ug makapabug-at ba kini sa balloon?\n\nOo! Tanan nga matter adunay mass, bisan ang hangin! Ang balloon nga puno sa hangin mas bug-at gyud kaysa sa balloon nga walay sulod."
+        },
+        "slug": "ffct-18266",
+        "source": "original",
+        "title": {
+          "tl": "Hangin na May Mass sa Balloon",
+          "en": "All Matter Has Mass Air",
+          "bis": "Ang Hangin Adunay Mass"
+        },
+        "cats": [
+          "matter"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate turns the stacked question into a direct comparison and makes the empty-balloon reference explicit. The body retains the source claim that adding air adds mass; it adds no floating claim, experiment or safety promise. The title and both blind observations match this exact clarification.",
+      "formal_item_id": "c0454dd2877d74b5d6b3c5655a7276f7a",
+      "fidelity_item_id": "mdb6d1e549ca7618b568c19e5",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18396",
+      "source_card_sha256": "67220c9b698ca3b6d54dd58a930c17f3e77e9ef227960a68d38c7d405456049f",
+      "candidate_card_sha256": "813c1f05e2a44d9360670bfab43a964cf0d07fd61e88c2c504ccbc598c1a4fa3",
+      "before_card": {
+        "id": "ffct-18396",
+        "factId": "volume-units-conversion-g5",
+        "domain": "MATTER",
+        "topic": "volume unit conversions",
+        "terms": [
+          "milliliter",
+          "ml",
+          "liter",
+          "l",
+          "cubic centimeter",
+          "cm3",
+          "1000",
+          "volume"
+        ],
+        "fact": {
+          "en": "Volume units for liquids: 1 litre (L) = 1,000 millilitres (mL), and 1 mL = 1 cubic centimetre (cm3). A 1.5 L bottle holds 1,500 mL or 1,500 cm3!",
+          "tl": "Volume units para sa liquids: 1 litre (L) = 1,000 millilitres (mL), at 1 mL = 1 cubic centimetre (cm3). Ang 1.5 L na bote ay may 1,500 mL o 1,500 cm3!",
+          "bis": "Volume units para sa liquids: 1 litre (L) = 1,000 millilitres (mL), ug 1 mL = 1 cubic centimetre (cm3). Ang 1.5 L nga bote adunay 1,500 mL o 1,500 cm3!"
+        },
+        "slug": "ffct-18396",
+        "source": "original",
+        "title": {
+          "tl": "Litro at Mililitro Conversion",
+          "en": "Volume Unit Conversions",
+          "bis": "Litro Mililitro"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-18396",
+        "factId": "volume-units-conversion-g5",
+        "domain": "MATTER",
+        "topic": "volume unit conversions",
+        "terms": [
+          "milliliter",
+          "ml",
+          "liter",
+          "l",
+          "cubic centimeter",
+          "cm3",
+          "1000",
+          "volume"
+        ],
+        "fact": {
+          "en": "Volume units for liquids: 1 litre (L) = 1,000 millilitres (mL), and 1 mL = 1 cubic centimetre (cm3). A 1.5 L bottle holds 1,500 mL or 1,500 cm3!",
+          "tl": "Volume units para sa liquids: 1 litre (L) = 1,000 millilitres (mL), at 1 mL = 1 cubic centimetre (cm3). Ang 1.5 L na bote ay may 1,500 mL o 1,500 cm3!",
+          "bis": "Volume units para sa liquids: 1 litre (L) = 1,000 millilitres (mL), ug 1 mL = 1 cubic centimetre (cm3). Ang 1.5 L nga bote adunay 1,500 mL o 1,500 cm3!"
+        },
+        "slug": "ffct-18396",
+        "source": "original",
+        "title": {
+          "tl": "Litro at Mililitro Conversion",
+          "en": "Volume Unit Conversions",
+          "bis": "Litro ug Mililitro"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title links litro and mililitro with ug; the complete body is unchanged. All conversions remain exact: one litre is one thousand millilitres, one millilitre is one cubic centimetre, and 1.5 litres is 1,500 millilitres. The ruling is a title-relationship improvement, not a ban on abbreviated unit labels.",
+      "formal_item_id": "cc4501d23c10c6e2df1be4c83f83b3a56",
+      "fidelity_item_id": "m943ef063de9dcdb902da93d4",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18523",
+      "source_card_sha256": "0ec6a85eaa619d7121b2c9357e6394dd02c8f8f13e5ce70e50ae06755ce2543f",
+      "candidate_card_sha256": "2362d1ab35cf6611d5646723dce16c4585c444a1b5f2451cc10e6ca435791d07",
+      "before_card": {
+        "id": "ffct-18523",
+        "factId": "coconut-maja-blanca-g5",
+        "domain": "MATTER",
+        "topic": "coconut milk thickening cornstarch gel",
+        "terms": [
+          "maja blanca",
+          "coconut",
+          "niyog",
+          "gata",
+          "coconut milk",
+          "cornstarch",
+          "gawgaw",
+          "lumalapot",
+          "thicken",
+          "gel",
+          "lugaw",
+          "pagkulo",
+          "init",
+          "lumapot",
+          "humigpit",
+          "almirol"
+        ],
+        "fact": {
+          "en": "Maja blanca thickens because the cornstarch in coconut milk absorbs water and swells when heated, forming a thick gel.",
+          "tl": "Lumalapot ang maja blanca dahil ang gawgaw (cornstarch) sa gata ay sumisipsip ng tubig at namamaga kapag pinainit, na bumubuo ng makapal na gel.",
+          "bis": "Molapot ang maja blanca tungod kay ang gawgaw (cornstarch) sa gata mosuyop ug tubig ug mohubag kon initon, nga maghimo ug baga nga gel."
+        },
+        "slug": "",
+        "title": {
+          "en": "Maja Blanca",
+          "tl": "Maja Blanca",
+          "bis": "Maja Blanca"
+        },
+        "cats": [
+          "food",
+          "mixtures"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "gawgaw"
+          ],
+          "en": [
+            "cornstarch"
+          ],
+          "bis": [
+            "gawgaw"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-18523",
+        "factId": "coconut-maja-blanca-g5",
+        "domain": "MATTER",
+        "topic": "coconut milk thickening cornstarch gel",
+        "terms": [
+          "maja blanca",
+          "coconut",
+          "niyog",
+          "gata",
+          "coconut milk",
+          "cornstarch",
+          "gawgaw",
+          "lumalapot",
+          "thicken",
+          "gel",
+          "lugaw",
+          "pagkulo",
+          "init",
+          "lumapot",
+          "humigpit",
+          "almirol"
+        ],
+        "fact": {
+          "en": "Maja blanca thickens because the cornstarch in coconut milk absorbs water and swells when heated, forming a thick gel.",
+          "tl": "Lumalapot ang maja blanca dahil ang gawgaw (cornstarch) sa gata ay sumisipsip ng tubig at namamaga kapag pinainit, na bumubuo ng makapal na gel.",
+          "bis": "Molapot ang maja blanca tungod sa gawgaw (cornstarch) sa gata. Kon initon, mosuyop kini og tubig ug mohubag, ug maporma ang baga nga gel."
+        },
+        "slug": "",
+        "title": {
+          "en": "Maja Blanca",
+          "tl": "Maja Blanca",
+          "bis": "Maja Blanca"
+        },
+        "cats": [
+          "food",
+          "mixtures"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "gawgaw"
+          ],
+          "en": [
+            "cornstarch"
+          ],
+          "bis": [
+            "gawgaw"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The split gives the cornstarch its own clause and connects heating, water uptake, swelling and the gel texture of maja blanca. Wolff gawgaw, hubag and suyup corroborate the starch, swelling and absorption senses. The exact candidate preserves the source mechanism and adds no universal temperature or recipe instruction.",
+      "formal_item_id": "c79dcb55f227868d7de4e81a38aa94ed7",
+      "fidelity_item_id": "ma945ca4d6e2df62f9d515392",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18527",
+      "source_card_sha256": "ebad0dc268e4905fe47fbbe2c171e544b267fbe85568a6580f70db3567a28a29",
+      "candidate_card_sha256": "8f7d5bbfc4924acb4c3d5754894dc10f8d36f3da9da021f4029d3e7dabccf185",
+      "before_card": {
+        "id": "ffct-18527",
+        "factId": "monay-bread-bun-g4",
+        "domain": "MATTER",
+        "topic": "yeast fermentation makes bread rise",
+        "terms": [
+          "monay",
+          "tinapay",
+          "pandesal",
+          "lebadura",
+          "yeast",
+          "pampaalsa",
+          "umaalsa",
+          "bread",
+          "fermentation",
+          "carbon dioxide",
+          "pan",
+          "pagluto"
+        ],
+        "fact": {
+          "en": "Monay is a soft bread bun that rises because yeast in the dough makes carbon dioxide gas, forming tiny air pockets inside.",
+          "tl": "Ang monay ay isang tinapay na umaalsa dahil ang lebadura sa masa ay gumagawa ng gas na carbon dioxide na nagdudulot ng maliliit na butas sa loob.",
+          "bis": "Ang monay usa ka humok nga tinapay nga mosaka tungod kay ang lebadura sa minasa naghimo ug gas nga carbon dioxide nga maghimo ug gagmay nga mga lungag sa sulod."
+        },
+        "slug": "",
+        "title": {
+          "en": "Yeast in Bread",
+          "tl": "Lebadura sa Tinapay",
+          "bis": "Lebadura sa Tinapay"
+        },
+        "cats": [
+          "microorganisms",
+          "food"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "carbon dioxide"
+          ],
+          "en": [
+            "carbon dioxide"
+          ],
+          "bis": [
+            "carbon dioxide"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-18527",
+        "factId": "monay-bread-bun-g4",
+        "domain": "MATTER",
+        "topic": "yeast fermentation makes bread rise",
+        "terms": [
+          "monay",
+          "tinapay",
+          "pandesal",
+          "lebadura",
+          "yeast",
+          "pampaalsa",
+          "umaalsa",
+          "bread",
+          "fermentation",
+          "carbon dioxide",
+          "pan",
+          "pagluto"
+        ],
+        "fact": {
+          "en": "Monay is a soft bread bun that rises because yeast in the dough makes carbon dioxide gas, forming tiny air pockets inside.",
+          "tl": "Ang monay ay isang tinapay na umaalsa dahil ang lebadura sa masa ay gumagawa ng gas na carbon dioxide na nagdudulot ng maliliit na butas sa loob.",
+          "bis": "Ang monay usa ka humok nga tinapay. Mosaka kini tungod kay ang lebadura sa minasa naghimo ug gas nga carbon dioxide. Kini nga gas mohimo ug gagmay nga mga lungag sa sulod."
+        },
+        "slug": "",
+        "title": {
+          "en": "Yeast in Bread",
+          "tl": "Lebadura sa Tinapay",
+          "bis": "Lebadura sa Tinapay"
+        },
+        "cats": [
+          "microorganisms",
+          "food"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "carbon dioxide"
+          ],
+          "en": [
+            "carbon dioxide"
+          ],
+          "bis": [
+            "carbon dioxide"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Three sentences separate yeast gas production from the pockets it creates in monay dough. Kini nga gas makes the referent explicit. Wolff libadura and masa support leaven and dough; the gas, bread and rising relationship remain unchanged.",
+      "formal_item_id": "c49fbcfec06fe15f5a6c2203710c0a827",
+      "fidelity_item_id": "m9bfd1dc4a9fb738236825528",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18535",
+      "source_card_sha256": "98ef7f492ae162bb6dc96c647ae3bf07f3a26ca3826b6a07abeb2699506b7642",
+      "candidate_card_sha256": "554f4d196db931e0d7721e9b7d24ceeb681229b18ed320b27ed333d100260130",
+      "before_card": {
+        "id": "ffct-18535",
+        "factId": "capillary-action-brick-wall-rising-damp-g6",
+        "domain": "MATTER",
+        "topic": "rising damp capillary action in walls",
+        "terms": [
+          "rising damp",
+          "basa sa dingding",
+          "capillary action",
+          "brick",
+          "bato",
+          "wall",
+          "dingding",
+          "moisture",
+          "kahalumigmigan",
+          "waterproof"
+        ],
+        "fact": {
+          "en": "Rising damp happens when water rises through bricks and mortar from wet ground via capillary action! To stop this, builders install a waterproof layer called a damp-proof course near the wall's base.",
+          "tl": "Ang rising damp ay nangyayari kapag umaangat ang tubig sa mga brick at mortar mula sa basang lupa dahil sa capillary action! Para pigilan ito, naglalagay ang mga builders ng waterproof layer (damp-proof course) sa ilalim ng pader.",
+          "bis": "Ang rising damp mahitabo kung motaas ang tubig sa mga brick ug mortar gikan sa basang yuta tungod sa capillary action! Aron pugngan kini, nagbutang ang mga builders og waterproof layer (damp-proof course) duol sa base sa dingding."
+        },
+        "slug": "ffct-18535",
+        "source": "original",
+        "title": {
+          "tl": "Rising Damp Capillary Walls",
+          "en": "Rising Damp Walls",
+          "bis": "Rising Damp Capillary"
+        },
+        "cats": [
+          "states-of-matter",
+          "water"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-18535",
+        "factId": "capillary-action-brick-wall-rising-damp-g6",
+        "domain": "MATTER",
+        "topic": "rising damp capillary action in walls",
+        "terms": [
+          "rising damp",
+          "basa sa dingding",
+          "capillary action",
+          "brick",
+          "bato",
+          "wall",
+          "dingding",
+          "moisture",
+          "kahalumigmigan",
+          "waterproof"
+        ],
+        "fact": {
+          "en": "Rising damp happens when water rises through bricks and mortar from wet ground via capillary action! To stop this, builders install a waterproof layer called a damp-proof course near the wall's base.",
+          "tl": "Ang rising damp ay nangyayari kapag umaangat ang tubig sa mga brick at mortar mula sa basang lupa dahil sa capillary action! Para pigilan ito, naglalagay ang mga builders ng waterproof layer (damp-proof course) sa ilalim ng pader.",
+          "bis": "Ang rising damp mahitabo kung motaas ang tubig sa mga brick ug mortar gikan sa basang yuta tungod sa capillary action! Aron pugngan kini, nagbutang ang mga builders og waterproof layer (damp-proof course) duol sa base sa dingding."
+        },
+        "slug": "ffct-18535",
+        "source": "original",
+        "title": {
+          "tl": "Rising Damp Capillary Walls",
+          "en": "Rising Damp Walls",
+          "bis": "Rising Damp sa Dingding"
+        },
+        "cats": [
+          "states-of-matter",
+          "water"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title identifies rising damp in the wall rather than leaving a compressed English/Cebuano noun string. The complete body is unchanged and keeps the capillary-water and barrier explanation. Wolff dingding supports wall. No new building prescription or safety guarantee is added.",
+      "formal_item_id": "c5d72f1454e9093cc2f37e01d4e505b97",
+      "fidelity_item_id": "m87e6425c39b8f2fa321fed84",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18540",
+      "source_card_sha256": "dc6bf73d6eb02f6da0179f7977a084a2cf9448cf3ecd7f1f0830bd0ecf2a9d99",
+      "candidate_card_sha256": "e50a40ffa3f279e91eb38a77f5ef6d6a19f80dd6e653a8f40f0d2b0a76217b2b",
+      "before_card": {
+        "id": "ffct-18540",
+        "factId": "matter-freezing-food-preservation-g4",
+        "domain": "MATTER",
+        "topic": "freezing preserves food by slowing microbes",
+        "terms": [
+          "freezing",
+          "nagyeyelo",
+          "food preservation",
+          "pag-iingat ng pagkain",
+          "microbe",
+          "mikrobyo",
+          "refrigerator",
+          "ref",
+          "freezer",
+          "slow down"
+        ],
+        "fact": {
+          "en": "How does the freezer keep our food from spoiling?\n\nFreezing food slows down spoilage! The extreme cold slows the growth of microbes and the chemical reactions that make food go bad.",
+          "tl": "Paano pinipigilan ng freezer ang pagkasira ng pagkain?\n\nAng pag-freeze sa pagkain ay nagpapabagal ng pagkasira! Ang sobrang lamig ay nagpapabagal sa paglago ng microbes at chemical reactions na sumisira nito.",
+          "bis": "Giunsa pagpugngan sa freezer ang pagkasira sa pagkaon?\n\nAng pag-freeze sa pagkaon nagpabagal sa pagkasira! Ang sobrang kabugnaw nagpabagal sa pagtubo sa mga microbes ug chemical reactions nga nagpapasama niini."
+        },
+        "slug": "ffct-18540",
+        "source": "original",
+        "title": {
+          "tl": "Freezer Microbes Mabagal Lamig",
+          "en": "Freezing Slows Spoilage",
+          "bis": "Freezer Microbes Hinay Lamig"
+        },
+        "cats": [
+          "microorganisms"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-18540",
+        "factId": "matter-freezing-food-preservation-g4",
+        "domain": "MATTER",
+        "topic": "freezing preserves food by slowing microbes",
+        "terms": [
+          "freezing",
+          "nagyeyelo",
+          "food preservation",
+          "pag-iingat ng pagkain",
+          "microbe",
+          "mikrobyo",
+          "refrigerator",
+          "ref",
+          "freezer",
+          "slow down"
+        ],
+        "fact": {
+          "en": "How does the freezer keep our food from spoiling?\n\nFreezing food slows down spoilage! The extreme cold slows the growth of microbes and the chemical reactions that make food go bad.",
+          "tl": "Paano pinipigilan ng freezer ang pagkasira ng pagkain?\n\nAng pag-freeze sa pagkain ay nagpapabagal ng pagkasira! Ang sobrang lamig ay nagpapabagal sa paglago ng microbes at chemical reactions na sumisira nito.",
+          "bis": "Giunsa sa freezer pagpugong nga madaot ang atong pagkaon?\n\nAng pag-freeze sa pagkaon mopahinay sa pagkadaot niini! Ang grabe nga kabugnaw mopahinay sa pagtubo sa microbes. Mopahinay usab kini sa chemical reactions nga makadaot sa pagkaon."
+        },
+        "slug": "ffct-18540",
+        "source": "original",
+        "title": {
+          "tl": "Freezer Microbes Mabagal Lamig",
+          "en": "Freezing Slows Spoilage",
+          "bis": "Freezer ug Pagkadaot sa Pagkaon"
+        },
+        "cats": [
+          "microorganisms"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate separates the slower microbial and chemical processes and uses the attested daut and hinay roots for spoilage and slowing. USDA freezing guidance corroborates inhibited microbial activity and slower enzyme activity; the card does not claim all organisms die or all reactions stop. Both blind observations and the full fidelity record support the exact wording.",
+      "formal_item_id": "cb9b258016a99fe37b4a7c884e8a6d5bc",
+      "fidelity_item_id": "m3ca257b4aeca53c47e3a3c90",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18594",
+      "source_card_sha256": "41ad021d8409ef9fa8eb02943a295715acbb111a19efecf6e02aa8951a2c4633",
+      "candidate_card_sha256": "ad60e6b68a8da9e358e2124aae525ecf98afa30a09d52874056921b850dc3a60",
+      "before_card": {
+        "id": "ffct-18594",
+        "factId": "formula-hydrochloric-acid-hcl-g8",
+        "domain": "MATTER",
+        "topic": "chemical formula of hydrochloric acid",
+        "terms": [
+          "hydrochloric acid",
+          "muriatic acid",
+          "hcl",
+          "chemical formula",
+          "pormula",
+          "ano ang pormula ng hydrochloric acid",
+          "unsa formula sa hydrochloric acid",
+          "asido",
+          "stomach acid",
+          "asido sa tiyan"
+        ],
+        "fact": {
+          "en": "The chemical formula of hydrochloric acid is HCl, made of one hydrogen and one chlorine!",
+          "tl": "Ang formula ng kemikal ng hydrochloric acid ay HCl, gawa sa isang hidroheno at isang klorin!",
+          "bis": "Ang kemikal nga pormula sa hydrochloric acid kay HCl, gihimo sa usa ka hidroheno ug usa ka klorin!"
+        },
+        "slug": "ffct-18594",
+        "source": "original",
+        "title": {
+          "tl": "HCl Hydrochloric Acid",
+          "en": "HCl Hydrochloric",
+          "bis": "HCl Hydrochloric Acid"
+        },
+        "cats": [
+          "acids-and-bases"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-18594",
+        "factId": "formula-hydrochloric-acid-hcl-g8",
+        "domain": "MATTER",
+        "topic": "chemical formula of hydrochloric acid",
+        "terms": [
+          "hydrochloric acid",
+          "muriatic acid",
+          "hcl",
+          "chemical formula",
+          "pormula",
+          "ano ang pormula ng hydrochloric acid",
+          "unsa formula sa hydrochloric acid",
+          "asido",
+          "stomach acid",
+          "asido sa tiyan"
+        ],
+        "fact": {
+          "en": "The chemical formula of hydrochloric acid is HCl, made of one hydrogen and one chlorine!",
+          "tl": "Ang formula ng kemikal ng hydrochloric acid ay HCl, gawa sa isang hidroheno at isang klorin!",
+          "bis": "Ang kemikal nga pormula sa hydrochloric acid kay HCl. Kini adunay usa ka hidroheno ug usa ka klorin!"
+        },
+        "slug": "ffct-18594",
+        "source": "original",
+        "title": {
+          "tl": "HCl Hydrochloric Acid",
+          "en": "HCl Hydrochloric",
+          "bis": "HCl Hydrochloric Acid"
+        },
+        "cats": [
+          "acids-and-bases"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The second sentence explicitly refers back to HCl with Kini and retains one hydrogen and one chlorine in the formula. The exact change clarifies the introductory composition statement without changing the 1:1 ratio, adding an acid-handling instruction or asserting that an aqueous solution contains only two particles.",
+      "formal_item_id": "ca9485993c2a0321867b1af0ec57d8b0e",
+      "fidelity_item_id": "ma253b9cb80acd612b0d4c76e",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18613",
+      "source_card_sha256": "ed387008a4bc1a0616b80e82ccea0f67a6325cb3d7b5b2fd4d068a1fdde8be4b",
+      "candidate_card_sha256": "a4f0c344bdc6ad2e69206e456ad5893908b2b4a7dd0c0bc7cb4cf9305c1e4b51",
+      "before_card": {
+        "id": "ffct-18613",
+        "factId": "palitaw-flat-cake-g5",
+        "domain": "MATTER",
+        "topic": "cooked dough floats when it is done",
+        "terms": [
+          "palitaw",
+          "malagkit",
+          "litaw",
+          "lutang",
+          "tubig",
+          "kumukulo",
+          "kakanin",
+          "pilit",
+          "lutaw",
+          "float",
+          "boil",
+          "glutinous rice",
+          "sticky rice"
+        ],
+        "fact": {
+          "en": "Why is it called palitaw?\n\nMade from ground glutinous rice, it floats to the top of boiling water when cooked, getting its name from 'litaw'!",
+          "tl": "Bakit ito tinawag na palitaw?\n\nGawa sa giling na malagkit na bigas, ito ay lumulutang sa kumukulong tubig kapag luto na, kaya nagmula ang pangalan nitong 'litaw'!",
+          "bis": "Nganong gitawag kining palitaw?\n\nHinimo gikan sa giniling nga pilit nga bugas, molutaw kini sa nagbukal nga tubig kon luto na, mao ang gigikanan sa ngalan niini gikan sa 'litaw'!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Palitaw Floats",
+          "tl": "Palitaw Lumulutang",
+          "bis": "Palitaw Molutaw"
+        },
+        "cats": [
+          "buoyancy",
+          "food"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "lumulutang"
+          ],
+          "en": [
+            "floats"
+          ],
+          "bis": [
+            "molutaw"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-18613",
+        "factId": "palitaw-flat-cake-g5",
+        "domain": "MATTER",
+        "topic": "cooked dough floats when it is done",
+        "terms": [
+          "palitaw",
+          "malagkit",
+          "litaw",
+          "lutang",
+          "tubig",
+          "kumukulo",
+          "kakanin",
+          "pilit",
+          "lutaw",
+          "float",
+          "boil",
+          "glutinous rice",
+          "sticky rice"
+        ],
+        "fact": {
+          "en": "Why is it called palitaw?\n\nMade from ground glutinous rice, it floats to the top of boiling water when cooked, getting its name from 'litaw'!",
+          "tl": "Bakit ito tinawag na palitaw?\n\nGawa sa giling na malagkit na bigas, ito ay lumulutang sa kumukulong tubig kapag luto na, kaya nagmula ang pangalan nitong 'litaw'!",
+          "bis": "Nganong gitawag kining palitaw?\n\nHinimo kini gikan sa giniling nga pilit nga bugas. Kon luto na, molutaw kini sa ibabaw sa nagbukal nga tubig. Mao nga gikan sa 'litaw' ang ngalan niini!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Palitaw Floats",
+          "tl": "Palitaw Lumulutang",
+          "bis": "Palitaw Molutaw"
+        },
+        "cats": [
+          "buoyancy",
+          "food"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "lumulutang"
+          ],
+          "en": [
+            "floats"
+          ],
+          "bis": [
+            "molutaw"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The three shorter clauses retain glutinous rice, cooking in boiling water and the floating palitaw name explanation. The candidate makes the surface explicit as in the English. Wolff pilit supports sticky rice and bukal boiling; the observed rewrite introduces no additional recipe step.",
+      "formal_item_id": "c2ed31e42de36d74e0ec8b2c969f7ca62",
+      "fidelity_item_id": "m5d32226ee469d96579133b8e",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18647",
+      "source_card_sha256": "90ac257c5165e3a3ec31bf487d34b7bea287dd4682e8754bd1c23eb7f1c729d9",
+      "candidate_card_sha256": "af084ad62105333fc34caa72548f29f2f137a961714f36d4bc7cb7ce036b32c7",
+      "before_card": {
+        "id": "ffct-18647",
+        "factId": "air-co2-formula-g7",
+        "domain": "MATTER",
+        "topic": "what is the chemical formula for carbon dioxide",
+        "terms": [
+          "carbon dioxide",
+          "co2",
+          "formula",
+          "pormula",
+          "chemical",
+          "kemikal",
+          "symbol",
+          "simbolo",
+          "ano pormula",
+          "gas"
+        ],
+        "fact": {
+          "en": "The chemical formula for carbon dioxide is CO2!",
+          "tl": "Ang chemical formula ng carbon dioxide ay CO2!",
+          "bis": "Ang chemical formula sa carbon dioxide mao ang CO2!"
+        },
+        "slug": "ffct-18647",
+        "source": "original",
+        "title": {
+          "tl": "CO2 Formula Carbon Dioxide",
+          "en": "CO2 Carbon Dioxide",
+          "bis": "CO2 Formula Carbon Dioxide"
+        },
+        "cats": [
+          "gases"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-18647",
+        "factId": "air-co2-formula-g7",
+        "domain": "MATTER",
+        "topic": "what is the chemical formula for carbon dioxide",
+        "terms": [
+          "carbon dioxide",
+          "co2",
+          "formula",
+          "pormula",
+          "chemical",
+          "kemikal",
+          "symbol",
+          "simbolo",
+          "ano pormula",
+          "gas"
+        ],
+        "fact": {
+          "en": "The chemical formula for carbon dioxide is CO2!",
+          "tl": "Ang chemical formula ng carbon dioxide ay CO2!",
+          "bis": "Ang chemical formula sa carbon dioxide mao ang CO2!"
+        },
+        "slug": "ffct-18647",
+        "source": "original",
+        "title": {
+          "tl": "CO2 Formula Carbon Dioxide",
+          "en": "CO2 Carbon Dioxide",
+          "bis": "CO2: Formula sa Carbon Dioxide"
+        },
+        "cats": [
+          "gases"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title explicitly connects CO2 to carbon dioxide as its formula; the full body is unchanged. The one-carbon/two-oxygen relation remains intact. This is a title-completeness improvement supported by both blind title observations.",
+      "formal_item_id": "cf37227791862f5354466f57a187148ae",
+      "fidelity_item_id": "m0d1e8e18e3c4654942f54ef8",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18651",
+      "source_card_sha256": "8c07238124ffa812c8a4b23fc56ffa3b53311d4cbeb60ea31c45883d0c2ea2a1",
+      "candidate_card_sha256": "945cf8e6129918a1f6a15de8af1590a63f4f4ff82f5d78a8fd7c15bf9cd1a147",
+      "before_card": {
+        "id": "ffct-18651",
+        "factId": "air-nitrogen-symbol-element-n-g7",
+        "domain": "MATTER",
+        "topic": "what is the element symbol for nitrogen",
+        "terms": [
+          "nitrogen",
+          "nitroheno",
+          "n",
+          "element symbol",
+          "simbolo ng elemento",
+          "simbolo sa elemento",
+          "periodic table",
+          "ano simbolo",
+          "letra"
+        ],
+        "fact": {
+          "en": "What letter stands for nitrogen on the periodic table?\n\nThe element symbol for nitrogen on the periodic table is the letter N!",
+          "tl": "Anong letra ang kumakatawan sa nitrogen sa periodic table?\n\nAng simbolo ng elementong nitrogen sa periodic table ay ang letrang N!",
+          "bis": "Unsa nga letra ang simbolo sa nitrogen sa periodic table?\n\nAng simbolo sa elemento nga nitrogen sa periodic table mao ang letrang N!"
+        },
+        "slug": "ffct-18651",
+        "source": "original",
+        "title": {
+          "tl": "N na Simbolo ng Nitrogen",
+          "en": "Nitrogen Symbol N",
+          "bis": "N Nitroheno"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-18651",
+        "factId": "air-nitrogen-symbol-element-n-g7",
+        "domain": "MATTER",
+        "topic": "what is the element symbol for nitrogen",
+        "terms": [
+          "nitrogen",
+          "nitroheno",
+          "n",
+          "element symbol",
+          "simbolo ng elemento",
+          "simbolo sa elemento",
+          "periodic table",
+          "ano simbolo",
+          "letra"
+        ],
+        "fact": {
+          "en": "What letter stands for nitrogen on the periodic table?\n\nThe element symbol for nitrogen on the periodic table is the letter N!",
+          "tl": "Anong letra ang kumakatawan sa nitrogen sa periodic table?\n\nAng simbolo ng elementong nitrogen sa periodic table ay ang letrang N!",
+          "bis": "Unsa nga letra ang simbolo sa nitrogen sa periodic table?\n\nAng simbolo sa elemento nga nitrogen sa periodic table mao ang letrang N!"
+        },
+        "slug": "ffct-18651",
+        "source": "original",
+        "title": {
+          "tl": "N na Simbolo ng Nitrogen",
+          "en": "Nitrogen Symbol N",
+          "bis": "N ang Simbolo sa Nitrogen"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title forms a complete relationship between N and nitrogen and leaves the body untouched. IUPAC lists N for nitrogen. The exact wording preserves symbol case and does not confuse the element symbol with a molecular formula.",
+      "formal_item_id": "c4f2d8f503404b25eb086ba8dcf736225",
+      "fidelity_item_id": "m6abe4f7b6ed866e5b2cbf697",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18656",
+      "source_card_sha256": "c2bbdf5b8122b2a022e951ef7e6644e2ac38470ab5b33d992969d36fe4026c65",
+      "candidate_card_sha256": "f24c3d20d2af237b0b33685c6e67c7695708e60c31d43bd341e63fbb3a2bf44e",
+      "before_card": {
+        "id": "ffct-18656",
+        "factId": "lightest-element-hydrogen-g7",
+        "domain": "MATTER",
+        "topic": "lightest element",
+        "terms": [
+          "lightest element",
+          "hydrogen",
+          "pinakamagaan na elemento",
+          "haydroheno",
+          "labing gaan nga elemento",
+          "element number 1",
+          "lightest atom",
+          "pinakagaan",
+          "hydrogen h"
+        ],
+        "fact": {
+          "en": "What is the lightest element in the periodic table?\n\nHydrogen is the lightest element in the periodic table! It is the lightest of them all.",
+          "tl": "Ano ang pinakamagaan na elemento sa periodic table?\n\nAng hydrogen ang pinakamagaan na elemento sa periodic table! Ito ang pinakagaan sa lahat.",
+          "bis": "Unsa ang labing gaan nga elemento sa periodic table?\n\nAng hydrogen mao ang labing gaan nga elemento sa periodic table! Kini ang labing gaan sa tanan."
+        },
+        "slug": "qa-ffct-18656",
+        "source": "original",
+        "title": {
+          "tl": "Pinakamagaang Hydrogen",
+          "en": "Lightest Element Hydrogen",
+          "bis": "Gaan Hydrogen"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-18656",
+        "factId": "lightest-element-hydrogen-g7",
+        "domain": "MATTER",
+        "topic": "lightest element",
+        "terms": [
+          "lightest element",
+          "hydrogen",
+          "pinakamagaan na elemento",
+          "haydroheno",
+          "labing gaan nga elemento",
+          "element number 1",
+          "lightest atom",
+          "pinakagaan",
+          "hydrogen h"
+        ],
+        "fact": {
+          "en": "What is the lightest element in the periodic table?\n\nHydrogen is the lightest element in the periodic table! It is the lightest of them all.",
+          "tl": "Ano ang pinakamagaan na elemento sa periodic table?\n\nAng hydrogen ang pinakamagaan na elemento sa periodic table! Ito ang pinakagaan sa lahat.",
+          "bis": "Unsa ang labing gaan nga elemento sa periodic table?\n\nAng hydrogen mao ang labing gaan nga elemento sa periodic table! Kini ang labing gaan sa tanan."
+        },
+        "slug": "qa-ffct-18656",
+        "source": "original",
+        "title": {
+          "tl": "Pinakamagaang Hydrogen",
+          "en": "Lightest Element Hydrogen",
+          "bis": "Hydrogen, ang Labing Gaan"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title restores the source superlative about hydrogen being the lightest; the full body and emphasis remain unchanged. Wolff gaan supplies the light-weight sense. No new density conditions or stronger claim about every hydrogen-containing substance is introduced.",
+      "formal_item_id": "c138f6d7d72518d4eeb1487f6f0e954ea",
+      "fidelity_item_id": "m4b94722785190e9f77be079f",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18664",
+      "source_card_sha256": "990debb4690460e70e0ddd68caca5db9f27adb93b7ce2f483bfdbc941b395555",
+      "candidate_card_sha256": "d8eb01b2125d1b614ee5c9c07f9889753a15f713bd8e136b7561d1674d499379",
+      "before_card": {
+        "id": "ffct-18664",
+        "factId": "periodic-table-number-of-periods-7-g8",
+        "domain": "MATTER",
+        "topic": "how many periods rows in the periodic table",
+        "terms": [
+          "how many periods periodic table",
+          "7 periods",
+          "ilang period",
+          "pito ka period",
+          "bilang ng yugto",
+          "7 rows",
+          "pitong hanay",
+          "pila ka period",
+          "periods 7"
+        ],
+        "fact": {
+          "en": "The periodic table is organized into 7 periods! These are the horizontal rows that neatly line up all the different elements.",
+          "tl": "Ang periodic table ay nakaayos sa 7 na period! Ito yung mga pahalang na hanay na naglilinya sa lahat ng elemento.",
+          "bis": "Ang periodic table gihimo sa 7 ka period! Kini mao ang pahigda nga laray nga naghan-ay sa tanan nga mga elemento."
+        },
+        "slug": "periodic-table-cell",
+        "title": {
+          "en": "Periodic Table Rows",
+          "tl": "Periodic Table Hanay",
+          "bis": "Periodic Table Laray"
+        },
+        "cats": [
+          "elements",
+          "chemistry"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "7 na period"
+          ],
+          "en": [
+            "7 periods"
+          ],
+          "bis": [
+            "7 ka period"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-18664",
+        "factId": "periodic-table-number-of-periods-7-g8",
+        "domain": "MATTER",
+        "topic": "how many periods rows in the periodic table",
+        "terms": [
+          "how many periods periodic table",
+          "7 periods",
+          "ilang period",
+          "pito ka period",
+          "bilang ng yugto",
+          "7 rows",
+          "pitong hanay",
+          "pila ka period",
+          "periods 7"
+        ],
+        "fact": {
+          "en": "The periodic table is organized into 7 periods! These are the horizontal rows that neatly line up all the different elements.",
+          "tl": "Ang periodic table ay nakaayos sa 7 na period! Ito yung mga pahalang na hanay na naglilinya sa lahat ng elemento.",
+          "bis": "Ang periodic table gibahin ngadto sa 7 ka period! Kini ang mga pahigda nga laray nga naghan-ay sa tanang lain-laing elemento."
+        },
+        "slug": "periodic-table-cell",
+        "title": {
+          "en": "Periodic Table Rows",
+          "tl": "Periodic Table Hanay",
+          "bis": "Mga Period sa Periodic Table"
+        },
+        "cats": [
+          "elements",
+          "chemistry"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "7 na period"
+          ],
+          "en": [
+            "7 periods"
+          ],
+          "bis": [
+            "7 ka period"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate expresses division into periods more directly and makes the rows and differences explicit. Wolff bahin and laray support the division and row senses; the IUPAC table supports the seven-period arrangement. Approval does not endorse the judge claim that an unmarked Cebuano noun is automatically ungrammatical or singular.",
+      "formal_item_id": "cd4c42e2933367ab7af747487a225d92f",
+      "fidelity_item_id": "m49c1e607d97eca51b3a0e612",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18667",
+      "source_card_sha256": "710a2d89d73852ecd518edb2dd1bbaaf117b67a807793045657b65b215558663",
+      "candidate_card_sha256": "c778bf08924763878307b08ef3235ff925a7ed2d676b88d16a9df46c8f1d8dfc",
+      "before_card": {
+        "id": "ffct-18667",
+        "factId": "metals-location-left-periodic-table-g8",
+        "domain": "MATTER",
+        "topic": "where metals are on the periodic table",
+        "terms": [
+          "where metals periodic table",
+          "metals left side",
+          "nasaan ang metal periodic table",
+          "metal kaliwa",
+          "asa ang metal",
+          "left side metals",
+          "kaliwang bahagi",
+          "wala nga bahin",
+          "metals location"
+        ],
+        "fact": {
+          "en": "If you want to find metals, look at the left side and the middle of the periodic table. That is their home!",
+          "tl": "Kung gusto mong hanapin ang mga metal, tingnan ang kaliwang bahagi at gitna ng periodic table. Doon sila nakatira!",
+          "bis": "Kung gusto nimo pangitaon ang mga metal, tan-awa ang wala nga bahin ug tunga sa periodic table. Didto sila nagpuyo!"
+        },
+        "slug": "periodic-table-cell",
+        "title": {
+          "en": "Metals on Table",
+          "tl": "Lokasyon ng Metal",
+          "bis": "Asa ang Metals"
+        },
+        "cats": [
+          "elements",
+          "chemistry"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "metal"
+          ],
+          "en": [
+            "metals"
+          ],
+          "bis": [
+            "metal"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-18667",
+        "factId": "metals-location-left-periodic-table-g8",
+        "domain": "MATTER",
+        "topic": "where metals are on the periodic table",
+        "terms": [
+          "where metals periodic table",
+          "metals left side",
+          "nasaan ang metal periodic table",
+          "metal kaliwa",
+          "asa ang metal",
+          "left side metals",
+          "kaliwang bahagi",
+          "wala nga bahin",
+          "metals location"
+        ],
+        "fact": {
+          "en": "If you want to find metals, look at the left side and the middle of the periodic table. That is their home!",
+          "tl": "Kung gusto mong hanapin ang mga metal, tingnan ang kaliwang bahagi at gitna ng periodic table. Doon sila nakatira!",
+          "bis": "Kung gusto nimo pangitaon ang mga metal, tan-awa ang wala nga bahin ug tunga sa periodic table. Didto sila nagpuyo!"
+        },
+        "slug": "periodic-table-cell",
+        "title": {
+          "en": "Metals on Table",
+          "tl": "Lokasyon ng Metal",
+          "bis": "Asa ang mga Metal"
+        },
+        "cats": [
+          "elements",
+          "chemistry"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "metal"
+          ],
+          "en": [
+            "metals"
+          ],
+          "bis": [
+            "metal"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title uses mga Metal consistently with the unchanged body and keeps the left-and-middle periodic-table context. This is the exact mild title improvement preferred by both blind observations, not a finding that the previous English plural was invalid or a policy against classroom English terms.",
+      "formal_item_id": "cd48e0727e571e3a07f1c0019f948d2db",
+      "fidelity_item_id": "mf2b91617b6e66f5d59d5ccd4",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18672",
+      "source_card_sha256": "bcd625fed99fa4bb9c1c98140a8a1676d9428ae52b1f857d57902de7ab615c27",
+      "candidate_card_sha256": "2799613983236a7ad8c30b0c622a996b06ae2a542ccc383059f50b203598be0a",
+      "before_card": {
+        "id": "ffct-18672",
+        "factId": "noble-gases-group-18-g9",
+        "domain": "MATTER",
+        "topic": "what group are the noble gases",
+        "terms": [
+          "noble gases group",
+          "group 18 noble gas",
+          "noble gas grupo",
+          "mga noble gas",
+          "noble gas pundok",
+          "helium neon argon",
+          "group 18",
+          "gasong maharlika",
+          "noble gases"
+        ],
+        "fact": {
+          "en": "Noble gases like helium and neon belong to group 18 of the periodic table!",
+          "tl": "Ang mga noble gas tulad ng helium at neon ay nasa group 18 ng periodic table!",
+          "bis": "Ang mga noble gas sama sa helium ug neon anaa sa group 18 sa periodic table!"
+        },
+        "slug": "ffct-18672",
+        "source": "original",
+        "title": {
+          "tl": "Group 18 ng Noble Gas",
+          "en": "Noble Gases Group 18",
+          "bis": "Group 18 Noble"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-18672",
+        "factId": "noble-gases-group-18-g9",
+        "domain": "MATTER",
+        "topic": "what group are the noble gases",
+        "terms": [
+          "noble gases group",
+          "group 18 noble gas",
+          "noble gas grupo",
+          "mga noble gas",
+          "noble gas pundok",
+          "helium neon argon",
+          "group 18",
+          "gasong maharlika",
+          "noble gases"
+        ],
+        "fact": {
+          "en": "Noble gases like helium and neon belong to group 18 of the periodic table!",
+          "tl": "Ang mga noble gas tulad ng helium at neon ay nasa group 18 ng periodic table!",
+          "bis": "Ang mga noble gas sama sa helium ug neon anaa sa group 18 sa periodic table!"
+        },
+        "slug": "ffct-18672",
+        "source": "original",
+        "title": {
+          "tl": "Group 18 ng Noble Gas",
+          "en": "Noble Gases Group 18",
+          "bis": "Noble Gas sa Group 18"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title completes the clipped Noble with the science term Noble Gas and keeps Group 18. The body and helium/neon examples remain unchanged and match the IUPAC arrangement. No additional chemical-reactivity claim is introduced.",
+      "formal_item_id": "cb9b407e3b41cac8e026864becf47e22c",
+      "fidelity_item_id": "md1aa2fafa1b8d454c6d354cc",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18673",
+      "source_card_sha256": "dafe5a3a6d3c477f472157e40a98a2392b5de0cf3b1f36671e0461ce568e81ac",
+      "candidate_card_sha256": "a7762b85fbdde5285541de2d9befb5ab7d347bdab4db5c7b94f18e568326b046",
+      "before_card": {
+        "id": "ffct-18673",
+        "factId": "second-element-helium-g8",
+        "domain": "MATTER",
+        "topic": "element number 2",
+        "terms": [
+          "element number 2",
+          "helium",
+          "pangalawang elemento",
+          "helyo",
+          "ikaduhang elemento",
+          "atomic number 2",
+          "helium he",
+          "second element",
+          "helium number 2"
+        ],
+        "fact": {
+          "en": "Helium is the second element in the periodic table, and it has an atomic number of 2!",
+          "tl": "Ang helium (helyo) ang pangalawang elemento sa periodic table, at may atomic number na 2!",
+          "bis": "Ang helium mao ang ikaduhang elemento sa periodic table, nga adunay atomic number nga 2!"
+        },
+        "slug": "ffct-18673",
+        "source": "original",
+        "title": {
+          "tl": "Ikalawang Elementong Helium",
+          "en": "Element Number 2 Helium",
+          "bis": "Ikaduha Helium"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-18673",
+        "factId": "second-element-helium-g8",
+        "domain": "MATTER",
+        "topic": "element number 2",
+        "terms": [
+          "element number 2",
+          "helium",
+          "pangalawang elemento",
+          "helyo",
+          "ikaduhang elemento",
+          "atomic number 2",
+          "helium he",
+          "second element",
+          "helium number 2"
+        ],
+        "fact": {
+          "en": "Helium is the second element in the periodic table, and it has an atomic number of 2!",
+          "tl": "Ang helium (helyo) ang pangalawang elemento sa periodic table, at may atomic number na 2!",
+          "bis": "Ang helium mao ang ikaduhang elemento sa periodic table, ug kini adunay atomic number nga 2!"
+        },
+        "slug": "ffct-18673",
+        "source": "original",
+        "title": {
+          "tl": "Ikalawang Elementong Helium",
+          "en": "Element Number 2 Helium",
+          "bis": "Helium, ang Ikaduhang Elemento"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate gives helium an explicit second clause for its atomic number and completes the title relationship. The value remains 2, as in the IUPAC table. Both blind body observations support the small referent improvement; all body information and emphasis are retained.",
+      "formal_item_id": "c6596fe11760c011bad4f01d8e1463953",
+      "fidelity_item_id": "m80d80e1d798b70800e9071f7",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18674",
+      "source_card_sha256": "aab5270bb64535741618333ceb0aaa63e1a13564793f30375d9cc9ea3c5a9e6b",
+      "candidate_card_sha256": "faaed2fa1b6e8f6130a651c296982c100e602741b77e7e9f4b69bdbcf274c2db",
+      "before_card": {
+        "id": "ffct-18674",
+        "factId": "newest-element-oganesson-118-g9",
+        "domain": "MATTER",
+        "topic": "highest atomic number element",
+        "terms": [
+          "element 118 oganesson",
+          "highest atomic number",
+          "oganesson 118",
+          "pinakamataas na atomic number",
+          "kataposang elemento",
+          "element number 118",
+          "oganesson og",
+          "pinakataas atomic number",
+          "element 118"
+        ],
+        "fact": {
+          "en": "Which element has the highest atomic number in the periodic table?\n\nOganesson! With an atomic number of 118, it holds the highest atomic number in the periodic table.",
+          "tl": "Anong elemento ang may pinakamataas na atomic number sa periodic table?\n\nOganesson! Na may atomic number na 118, ito ang elementong may pinakamataas na atomic number sa periodic table.",
+          "bis": "Unsa nga elemento ang may pinakataas nga atomic number sa periodic table?\n\nOganesson! Nga adunay atomic number nga 118, mao kini ang elemento nga may pinakataas nga atomic number sa periodic table."
+        },
+        "slug": "ffct-18674",
+        "source": "original",
+        "title": {
+          "tl": "Oganesson na Atomic 118",
+          "en": "Highest Atomic Oganesson",
+          "bis": "Oganesson 118"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-18674",
+        "factId": "newest-element-oganesson-118-g9",
+        "domain": "MATTER",
+        "topic": "highest atomic number element",
+        "terms": [
+          "element 118 oganesson",
+          "highest atomic number",
+          "oganesson 118",
+          "pinakamataas na atomic number",
+          "kataposang elemento",
+          "element number 118",
+          "oganesson og",
+          "pinakataas atomic number",
+          "element 118"
+        ],
+        "fact": {
+          "en": "Which element has the highest atomic number in the periodic table?\n\nOganesson! With an atomic number of 118, it holds the highest atomic number in the periodic table.",
+          "tl": "Anong elemento ang may pinakamataas na atomic number sa periodic table?\n\nOganesson! Na may atomic number na 118, ito ang elementong may pinakamataas na atomic number sa periodic table.",
+          "bis": "Unsang elemento ang may pinakataas nga atomic number sa periodic table?\n\nOganesson! Kini adunay atomic number nga 118, ang pinakataas nga atomic number sa periodic table."
+        },
+        "slug": "ffct-18674",
+        "source": "original",
+        "title": {
+          "tl": "Oganesson na Atomic 118",
+          "en": "Highest Atomic Oganesson",
+          "bis": "Oganesson 118"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Kini adunay supplies a subject where the old sentence began as a detached relative clause. The atomic number remains 118 and the title is unchanged. The current IUPAC page links the 4 May 2022 table, which ends at oganesson 118; the review does not invent a newer edition or change the source claim.",
+      "formal_item_id": "c419d587eda67daca494f2eb03508bfbd",
+      "fidelity_item_id": "mf561c72f6ccf26159d94d28f",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18691",
+      "source_card_sha256": "5a4c938dabb7e3f329e8d477c5632a19aa7dea386f9a5aafb6952aa89599bb4b",
+      "candidate_card_sha256": "aa4ecc481e2a6e40bffe4a7293d8d4ed77a22967240b4f0a10d2b1c82bc066e6",
+      "before_card": {
+        "id": "ffct-18691",
+        "factId": "boiling-point-altitude-lower-g7",
+        "domain": "MATTER",
+        "topic": "how altitude affects water's boiling point",
+        "terms": [
+          "boiling point",
+          "altitude",
+          "bundok mountain",
+          "kabukiran",
+          "lower than 100",
+          "mas mababa",
+          "ubos pa",
+          "high places mataas"
+        ],
+        "fact": {
+          "en": "At high places like mountains, water boils at a lower temperature than 100°C because the air pressure is lower!",
+          "tl": "Sa mataas na lugar gaya ng bundok, kumukulo ang tubig sa mas mababa sa 100°C dahil mas mababa ang presyon ng hangin!",
+          "bis": "Sa hataas nga lugar sama sa bukid, mobukal ang tubig sa mas ubos sa 100°C tungod kay mas ubos ang presyur sa hangin!"
+        },
+        "slug": "ffct-18691",
+        "source": "original",
+        "title": {
+          "tl": "Altitude sa Boiling Point",
+          "en": "Altitude Lowers Boiling",
+          "bis": "Altitude sa Boiling"
+        },
+        "cats": [
+          "states-of-matter"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-18691",
+        "factId": "boiling-point-altitude-lower-g7",
+        "domain": "MATTER",
+        "topic": "how altitude affects water's boiling point",
+        "terms": [
+          "boiling point",
+          "altitude",
+          "bundok mountain",
+          "kabukiran",
+          "lower than 100",
+          "mas mababa",
+          "ubos pa",
+          "high places mataas"
+        ],
+        "fact": {
+          "en": "At high places like mountains, water boils at a lower temperature than 100°C because the air pressure is lower!",
+          "tl": "Sa mataas na lugar gaya ng bundok, kumukulo ang tubig sa mas mababa sa 100°C dahil mas mababa ang presyon ng hangin!",
+          "bis": "Sa hataas nga lugar sama sa bukid, mobukal ang tubig sa mas ubos sa 100°C tungod kay mas ubos ang presyur sa hangin!"
+        },
+        "slug": "ffct-18691",
+        "source": "original",
+        "title": {
+          "tl": "Altitude sa Boiling Point",
+          "en": "Altitude Lowers Boiling",
+          "bis": "Pagbukal sa Hataas nga Lugar"
+        },
+        "cats": [
+          "states-of-matter"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title locates boiling at high altitude and leaves the full pressure explanation unchanged. Wolff taas includes the ha- form and bukal supplies boiling. The source direction remains lower atmospheric pressure and a lower boiling temperature; no altered number or new safety instruction is added.",
+      "formal_item_id": "c3072b4a15be1152023a0fcd437ea977c",
+      "fidelity_item_id": "m58a2f9bd05d7e6841c0db6c8",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18698",
+      "source_card_sha256": "f41b8732bd440e5374be8021a9f2c4c86579c01c7391e3b1bddf5545b640bbf8",
+      "candidate_card_sha256": "45b975c9130346a3ed0e4bc03c1c92af04a87b4b8ab9bfb352761acd956828c2",
+      "before_card": {
+        "id": "ffct-18698",
+        "factId": "paksiw-na-isda-g5",
+        "domain": "MATTER",
+        "topic": "vinegar acid helps preserve and cook fish",
+        "terms": [
+          "paksiw",
+          "isda",
+          "suka",
+          "asido",
+          "luto",
+          "pagkasira",
+          "preserba",
+          "paksiw na isda",
+          "fish",
+          "vinegar",
+          "acid",
+          "preserve",
+          "sour"
+        ],
+        "fact": {
+          "en": "In paksiw na isda, vinegar (an acid!) helps cook and preserve the fish. It slows down the microbes that cause spoiling.",
+          "tl": "Sa paksiw na isda, ang suka (isang acid!) ay tumutulong magluto at mag-preserba. Pinapabagal nito ang microbes na nakakasira.",
+          "bis": "Sa paksiw nga isda, ang suka (usa ka acid!) motabang magluto ug mag-preserba. Gipahinay niini ang mga mikrobyo nga makapadunot."
+        },
+        "slug": "",
+        "title": {
+          "en": "Vinegar in Paksiw",
+          "tl": "Suka sa Paksiw",
+          "bis": "Suka sa Paksiw"
+        },
+        "cats": [
+          "acids-and-bases",
+          "food"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "acid"
+          ],
+          "en": [
+            "acid"
+          ],
+          "bis": [
+            "acid"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-18698",
+        "factId": "paksiw-na-isda-g5",
+        "domain": "MATTER",
+        "topic": "vinegar acid helps preserve and cook fish",
+        "terms": [
+          "paksiw",
+          "isda",
+          "suka",
+          "asido",
+          "luto",
+          "pagkasira",
+          "preserba",
+          "paksiw na isda",
+          "fish",
+          "vinegar",
+          "acid",
+          "preserve",
+          "sour"
+        ],
+        "fact": {
+          "en": "In paksiw na isda, vinegar (an acid!) helps cook and preserve the fish. It slows down the microbes that cause spoiling.",
+          "tl": "Sa paksiw na isda, ang suka (isang acid!) ay tumutulong magluto at mag-preserba. Pinapabagal nito ang microbes na nakakasira.",
+          "bis": "Sa paksiw nga isda, ang suka (usa ka acid!) motabang sa pagluto ug sa pag-preserba sa isda. Gipahinay niini ang mga mikrobyo nga makapadunot."
+        },
+        "slug": "",
+        "title": {
+          "en": "Vinegar in Paksiw",
+          "tl": "Suka sa Paksiw",
+          "bis": "Suka sa Paksiw"
+        },
+        "cats": [
+          "acids-and-bases",
+          "food"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "acid"
+          ],
+          "en": [
+            "acid"
+          ],
+          "bis": [
+            "acid"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate explicitly names the fish affected by the vinegar and separates the acid and preservation explanation. It preserves helps and slows rather than asserting sterilisation or indefinite safety. The exact edit improves the referent and clause relationship without adding food-storage advice.",
+      "formal_item_id": "cf64606488218aadda555cd9efef2ede7",
+      "fidelity_item_id": "mc228ff3560de77d35bb98663",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18723",
+      "source_card_sha256": "1b19750e49fcfb9a268337cc2fe72e6710422a45eb8aa21ef67dc5e3fc3bb6b5",
+      "candidate_card_sha256": "ca4a396565acec75d29e4f59ec5bea39de660758258f36552b3a4fe67d4d556e",
+      "before_card": {
+        "id": "ffct-18723",
+        "factId": "thomson-nationality-g9",
+        "domain": "MATTER",
+        "topic": "what nationality was J.J. Thomson",
+        "terms": [
+          "thomson",
+          "j.j. thomson",
+          "english",
+          "british",
+          "ingles",
+          "taga-saan si thomson",
+          "unsa nasyonalidad ni thomson",
+          "scientist",
+          "siyentipiko"
+        ],
+        "fact": {
+          "en": "Meet J.J. Thomson! He was the English scientist who first discovered the tiny electron.",
+          "tl": "Kilalanin si J.J. Thomson! Siya ang English na siyentipiko na unang nakatuklas sa maliit na electron.",
+          "bis": "Ilha si J.J. Thomson! Siya ang English nga siyentipiko nga unang nakadiskobre sa gamay nga electron."
+        },
+        "slug": "ffct-18723",
+        "source": "original",
+        "title": {
+          "tl": "J.J. Thomson English Electron",
+          "en": "Thomson English Physicist",
+          "bis": "J.J. Thomson English Electron"
+        },
+        "cats": [
+          "atoms"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-18723",
+        "factId": "thomson-nationality-g9",
+        "domain": "MATTER",
+        "topic": "what nationality was J.J. Thomson",
+        "terms": [
+          "thomson",
+          "j.j. thomson",
+          "english",
+          "british",
+          "ingles",
+          "taga-saan si thomson",
+          "unsa nasyonalidad ni thomson",
+          "scientist",
+          "siyentipiko"
+        ],
+        "fact": {
+          "en": "Meet J.J. Thomson! He was the English scientist who first discovered the tiny electron.",
+          "tl": "Kilalanin si J.J. Thomson! Siya ang English na siyentipiko na unang nakatuklas sa maliit na electron.",
+          "bis": "Ilha si J.J. Thomson! Siya ang English nga siyentipiko nga unang nakadiskobre sa gamay nga electron."
+        },
+        "slug": "ffct-18723",
+        "source": "original",
+        "title": {
+          "tl": "J.J. Thomson English Electron",
+          "en": "Thomson English Physicist",
+          "bis": "Si J.J. Thomson ug ang Electron"
+        },
+        "cats": [
+          "atoms"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title connects J. J. Thomson with the electron using Si and ug and keeps the complete body unchanged. Nobel Prize historical material corroborates his electron discovery. This is the exact title improvement, not a rewritten historical claim.",
+      "formal_item_id": "cfd6b423a5f021986dc3957c93eaf3214",
+      "fidelity_item_id": "m4936400046504b9bbaa9a82f",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-18724",
+      "source_card_sha256": "7fe6de7e0c66876ca2727e32845398a759484bf517c09267e273528e68a3fd41",
+      "candidate_card_sha256": "b9f6723d55a6e9c6df43a0dfaf73d8985075153a8693d924dc3c72eb7e5c0cd2",
+      "before_card": {
+        "id": "ffct-18724",
+        "factId": "chadwick-nationality-g9",
+        "domain": "MATTER",
+        "topic": "what nationality was James Chadwick",
+        "terms": [
+          "chadwick",
+          "james chadwick",
+          "english",
+          "british",
+          "ingles",
+          "taga-saan si chadwick",
+          "unsa nasyonalidad ni chadwick",
+          "scientist",
+          "neutron"
+        ],
+        "fact": {
+          "en": "Who discovered the neutron?\n\nJames Chadwick did! He was an English scientist who discovered the neutron.",
+          "tl": "Sino ang nakatuklas ng neutron?\n\nSi James Chadwick! Siya ay isang English na siyentipiko na nakatuklas ng neutron.",
+          "bis": "Kinsa ang nakadiskobre sa neutron?\n\nSi James Chadwick! Siya usa ka English nga siyentipiko nga nakadiskobre sa neutron."
+        },
+        "slug": "ffct-18724",
+        "source": "original",
+        "title": {
+          "tl": "Chadwick English Neutron",
+          "en": "Chadwick Found Neutron",
+          "bis": "Chadwick English Neutron"
+        },
+        "cats": [
+          "atoms"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-18724",
+        "factId": "chadwick-nationality-g9",
+        "domain": "MATTER",
+        "topic": "what nationality was James Chadwick",
+        "terms": [
+          "chadwick",
+          "james chadwick",
+          "english",
+          "british",
+          "ingles",
+          "taga-saan si chadwick",
+          "unsa nasyonalidad ni chadwick",
+          "scientist",
+          "neutron"
+        ],
+        "fact": {
+          "en": "Who discovered the neutron?\n\nJames Chadwick did! He was an English scientist who discovered the neutron.",
+          "tl": "Sino ang nakatuklas ng neutron?\n\nSi James Chadwick! Siya ay isang English na siyentipiko na nakatuklas ng neutron.",
+          "bis": "Kinsa ang nakadiskobre sa neutron?\n\nSi James Chadwick! Siya usa ka English nga siyentipiko nga nakadiskobre sa neutron."
+        },
+        "slug": "ffct-18724",
+        "source": "original",
+        "title": {
+          "tl": "Chadwick English Neutron",
+          "en": "Chadwick Found Neutron",
+          "bis": "Nadiskobre ni Chadwick ang Neutron"
+        },
+        "cats": [
+          "atoms"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title makes Chadwick the agent of the neutron discovery and leaves the body unchanged. Wolff diskubri supports discover and Nobel Prize biographical material corroborates the discovery. The new title preserves the identity and object without changing chronology.",
+      "formal_item_id": "cdca2719eb7fe8efda53e92eed40c51ad",
+      "fidelity_item_id": "m27351fc77047a14ae6909668",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    }
+  ],
+  "held": [
+    {
+      "card_id": "ffct-18166",
+      "source_card_sha256": "a44a9eedc9b20fb45d21bc23516b6e386a993bbea0bee37f64ba0e65cd010e80",
+      "candidate_card_sha256": "8c67d4dde5f9b196c1605285e01233e29e84fd498aa2d7e78ee90ea400eec1c4",
+      "before_card": {
+        "id": "ffct-18166",
+        "factId": "bioluminescence-firefly-g7",
+        "domain": "MATTER",
+        "topic": "bioluminescence is light produced by living organisms through chemical reactions",
+        "terms": [
+          "bioluminescence",
+          "firefly",
+          "alitaptap",
+          "luciferin",
+          "chemical reaction",
+          "light",
+          "liwanag",
+          "ocean",
+          "deep sea",
+          "glow",
+          "chemical energy"
+        ],
+        "fact": {
+          "en": "What is bioluminescence?\n\nBioluminescence is light produced by a chemical reaction inside living organisms! Fireflies use it to communicate, while deep-sea creatures use it to attract prey.",
+          "tl": "Ano ang bioluminescence?\n\nAng bioluminescence ay liwanag na nagmumula sa isang chemical reaction sa loob ng mga buhay na bagay! Ang mga alitaptap ay gumagamit nito upang makipag-usap, habang ang mga nilalang sa kailaliman ng dagat ay gumagamit nito upang manghuli ng biktima.",
+          "bis": "Unsa ang bioluminescence?\n\nAng bioluminescence kahayag nga giproduser sa usa ka chemical reaction sulod sa mga buhay nga organismo! Ang mga alitaptap naggamit niini aron makipag-communicate, samtang ang mga nilalang sa kailalom sa dagat naggamit niini aron madani ang biktima."
+        },
+        "slug": "firefly-bioluminescence-night",
+        "title": {
+          "en": "Bioluminescence",
+          "tl": "Bioluminescence",
+          "bis": "Bioluminescence"
+        },
+        "cats": [
+          "light",
+          "animal-adaptations"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "bioluminescence"
+          ],
+          "en": [
+            "Bioluminescence"
+          ],
+          "bis": [
+            "bioluminescence"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-18166",
+        "factId": "bioluminescence-firefly-g7",
+        "domain": "MATTER",
+        "topic": "bioluminescence is light produced by living organisms through chemical reactions",
+        "terms": [
+          "bioluminescence",
+          "firefly",
+          "alitaptap",
+          "luciferin",
+          "chemical reaction",
+          "light",
+          "liwanag",
+          "ocean",
+          "deep sea",
+          "glow",
+          "chemical energy"
+        ],
+        "fact": {
+          "en": "What is bioluminescence?\n\nBioluminescence is light produced by a chemical reaction inside living organisms! Fireflies use it to communicate, while deep-sea creatures use it to attract prey.",
+          "tl": "Ano ang bioluminescence?\n\nAng bioluminescence ay liwanag na nagmumula sa isang chemical reaction sa loob ng mga buhay na bagay! Ang mga alitaptap ay gumagamit nito upang makipag-usap, habang ang mga nilalang sa kailaliman ng dagat ay gumagamit nito upang manghuli ng biktima.",
+          "bis": "Unsa ang bioluminescence?\n\nAng bioluminescence kahayag nga gihimo sa usa ka chemical reaction sulod sa mga buhay nga organismo! Ang mga aninipot naggamit niini aron makig-communicate, samtang ang mga binuhat sa kailalom sa dagat naggamit niini aron madani ang biktima."
+        },
+        "slug": "firefly-bioluminescence-night",
+        "title": {
+          "en": "Bioluminescence",
+          "tl": "Bioluminescence",
+          "bis": "Bioluminescence"
+        },
+        "cats": [
+          "light",
+          "animal-adaptations"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "bioluminescence"
+          ],
+          "en": [
+            "Bioluminescence"
+          ],
+          "bis": [
+            "bioluminescence"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The rewrites have plausible improvements, and Wolff aniniput and buhat-in- support firefly and creature. However, the full candidate retains buhay nga organismo. Wolff buhay is a verb for being allowed to live or thrive, whereas buhi explicitly supplies the living adjective. The frozen machine-translated bodies do not settle this exact use. Hold for lexical review without automatically replacing it or declaring all buhay uses wrong.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c9604a1e3ec9e14f3f39af41962c292b9"
+    },
+    {
+      "card_id": "ffct-18212",
+      "source_card_sha256": "26ddaee3d24f17f9834e8d44bdc89e5b49fbcfd3e743a44e4be1fd8537c08c2b",
+      "candidate_card_sha256": "e2cf156acf02449355068def978d770c7837eabba5959195ea33b8a05f4daf8c",
+      "before_card": {
+        "id": "ffct-18212",
+        "factId": "pickling-acid-metal-g8",
+        "domain": "MATTER",
+        "topic": "metal pickling uses acid to remove rust and scale",
+        "terms": [
+          "pickling",
+          "acid",
+          "metal",
+          "bakal",
+          "rust",
+          "kalawang",
+          "scale",
+          "manufacturing",
+          "hydrochloric acid",
+          "hcl",
+          "clean",
+          "surface treatment"
+        ],
+        "fact": {
+          "en": "Metal pickling uses acid (usually hydrochloric acid) to remove rust and surface scale from metal before painting! The acid reacts with and dissolves the iron oxide.",
+          "tl": "Ang metal pickling ay gumagamit ng acid (karaniwang hydrochloric acid) para tanggalin ang kalawang at surface scale mula sa metal bago magpinta! Ang acid ay nagre-react at nagdidissolve ng iron oxide.",
+          "bis": "Ang metal pickling naggamit og acid (kasagaran hydrochloric acid) aron tangtangon ang kalawang ug surface scale gikan sa metal sa wala pa pagpintal! Ang acid nag-react ug nag-dissolve sa iron oxide."
+        },
+        "slug": "metal-in-acid-bubbling",
+        "title": {
+          "en": "Metal Pickling",
+          "tl": "Pag-aatsara ng Metal",
+          "bis": "Pag-atsara sa Metal"
+        },
+        "cats": [
+          "acids-and-bases",
+          "chemical-reactions"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "metal pickling"
+          ],
+          "en": [
+            "Metal pickling"
+          ],
+          "bis": [
+            "metal pickling"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-18212",
+        "factId": "pickling-acid-metal-g8",
+        "domain": "MATTER",
+        "topic": "metal pickling uses acid to remove rust and scale",
+        "terms": [
+          "pickling",
+          "acid",
+          "metal",
+          "bakal",
+          "rust",
+          "kalawang",
+          "scale",
+          "manufacturing",
+          "hydrochloric acid",
+          "hcl",
+          "clean",
+          "surface treatment"
+        ],
+        "fact": {
+          "en": "Metal pickling uses acid (usually hydrochloric acid) to remove rust and surface scale from metal before painting! The acid reacts with and dissolves the iron oxide.",
+          "tl": "Ang metal pickling ay gumagamit ng acid (karaniwang hydrochloric acid) para tanggalin ang kalawang at surface scale mula sa metal bago magpinta! Ang acid ay nagre-react at nagdidissolve ng iron oxide.",
+          "bis": "Ang metal pickling naggamit og acid (kasagaran hydrochloric acid) aron tangtangon ang kalawang ug surface scale gikan sa metal. Gihimo kini sa dili pa pintalan ang metal! Ang acid nag-react sa iron oxide ug nag-dissolve niini."
+        },
+        "slug": "metal-in-acid-bubbling",
+        "title": {
+          "en": "Metal Pickling",
+          "tl": "Pag-aatsara ng Metal",
+          "bis": "Pag-atsara sa Metal"
+        },
+        "cats": [
+          "acids-and-bases",
+          "chemical-reactions"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "metal pickling"
+          ],
+          "en": [
+            "Metal pickling"
+          ],
+          "bis": [
+            "metal pickling"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The shortened pickling explanation retains kalawang in the rust context. Frozen-body examples corroborate the intended sense but the dictionary and direct lookup remain inconclusive about Cebu Cebuano usage, as in the earlier held cards. Hold the full candidate; absence from one dictionary does not prove invalidity and no automatic taya substitution is made.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c07947c977f17ce64001aeab7bb489126"
+    },
+    {
+      "card_id": "ffct-18253",
+      "source_card_sha256": "f02e369f538ecff4c2ef7882b5dd4de5b976b03c2b1081f540dbf9639111dc62",
+      "candidate_card_sha256": "1304b28d44d5b734980001e8f9e70fad78488b6f29777db18819a261a3f6466d",
+      "before_card": {
+        "id": "ffct-18253",
+        "factId": "states-matter-ph-everyday-g3",
+        "domain": "MATTER",
+        "topic": "states of matter Philippine daily life",
+        "terms": [
+          "solido",
+          "likido",
+          "gas",
+          "estado",
+          "tubig",
+          "yelo",
+          "singaw",
+          "halo-halo",
+          "tatlong uri",
+          "matter"
+        ],
+        "fact": {
+          "en": "In everyday Philippine life we see all three states of matter: ice in halo-halo is a solid, tap water is a liquid, and steam from cooking is a gas.",
+          "tl": "Sa ating pang-araw-araw na buhay sa Pilipinas makikita natin ang tatlong estado ng matter: ang yelo sa halo-halo ay solido, ang tubig mula sa gripo ay likido, at ang singaw mula sa pagluluto ay gas.",
+          "bis": "Sa atong adlaw-adlaw nga kinabuhi sa Pilipinas makita nato ang tulo ka estado sa matter: ang yelo sa halo-halo solido, ang gripo nga tubig likido, ug ang singaw gikan sa pagluto gas."
+        },
+        "slug": "ffct-18253",
+        "source": "original",
+        "title": {
+          "tl": "Halo-Halo Tubig Bapor Estado",
+          "en": "Three States in Halo-Halo",
+          "bis": "Halo-Halo sa Estado"
+        },
+        "cats": [
+          "states-of-matter"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-18253",
+        "factId": "states-matter-ph-everyday-g3",
+        "domain": "MATTER",
+        "topic": "states of matter Philippine daily life",
+        "terms": [
+          "solido",
+          "likido",
+          "gas",
+          "estado",
+          "tubig",
+          "yelo",
+          "singaw",
+          "halo-halo",
+          "tatlong uri",
+          "matter"
+        ],
+        "fact": {
+          "en": "In everyday Philippine life we see all three states of matter: ice in halo-halo is a solid, tap water is a liquid, and steam from cooking is a gas.",
+          "tl": "Sa ating pang-araw-araw na buhay sa Pilipinas makikita natin ang tatlong estado ng matter: ang yelo sa halo-halo ay solido, ang tubig mula sa gripo ay likido, at ang singaw mula sa pagluluto ay gas.",
+          "bis": "Sa atong adlaw-adlaw nga kinabuhi sa Pilipinas, makita nato ang tanang tulo ka estado sa matter. Ang yelo sa halo-halo usa ka solido. Ang tubig gikan sa gripo usa ka likido. Ang singaw gikan sa pagluto usa ka gas."
+        },
+        "slug": "ffct-18253",
+        "source": "original",
+        "title": {
+          "tl": "Halo-Halo Tubig Bapor Estado",
+          "en": "Three States in Halo-Halo",
+          "bis": "Tulo ka Estado sa Matter"
+        },
+        "cats": [
+          "states-of-matter"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The full source uses steam from cooking as a visible gas example while asking the learner to see the three states. ACS distinguishes invisible water vapour from visible condensed droplets. Hold the ambiguity for English-led review; the clearer Cebuano should not entrench a visible-mist-equals-gas interpretation.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "cbe776e506fff0ebed0270a94a0545f90"
+    },
+    {
+      "card_id": "ffct-18256",
+      "source_card_sha256": "351e5f48621d3dc3fabb902a63e6dce829385a2807e39dfe8315bcf91595b142",
+      "candidate_card_sha256": "4675bb6e5324c09fc518589f0c3747ee41d6eddd6353c9e77dc6174377fcd4d7",
+      "before_card": {
+        "id": "ffct-18256",
+        "factId": "halo-halo-dessert-g5",
+        "domain": "MATTER",
+        "topic": "shaved ice melts and mixtures",
+        "terms": [
+          "halo-halo",
+          "halohalo",
+          "dessert",
+          "kendi yelo",
+          "yelong kinayod",
+          "shaved ice",
+          "yelo",
+          "ice",
+          "natutunaw",
+          "natunaw",
+          "melt",
+          "halo",
+          "mixture",
+          "sagol",
+          "matamis",
+          "init",
+          "lamig"
+        ],
+        "fact": {
+          "en": "Halo-halo is a food mix where shaved ice slowly melts in the warmth, turning into a cold liquid with milk!",
+          "tl": "Ang halo-halo ay pinaghalong pagkain kung saan ang kinayod na yelo ay unti-unting natutunaw sa init, nagiging malamig na likido kasama ang gatas!",
+          "bis": "Ang halo-halo usa ka sagol nga pagkaon diin ang kinayod nga yelo hinay-hinay nga matunaw sa kainit, mahimong bugnaw nga likido uban sa gatas!"
+        },
+        "slug": "ice-melting-halo-halo",
+        "title": {
+          "en": "Halo-halo",
+          "tl": "Halo-halo",
+          "bis": "Halo-halo"
+        },
+        "cats": [
+          "mixtures",
+          "states-of-matter"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kinayod na yelo"
+          ],
+          "en": [
+            "shaved ice"
+          ],
+          "bis": [
+            "kinayod nga yelo"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-18256",
+        "factId": "halo-halo-dessert-g5",
+        "domain": "MATTER",
+        "topic": "shaved ice melts and mixtures",
+        "terms": [
+          "halo-halo",
+          "halohalo",
+          "dessert",
+          "kendi yelo",
+          "yelong kinayod",
+          "shaved ice",
+          "yelo",
+          "ice",
+          "natutunaw",
+          "natunaw",
+          "melt",
+          "halo",
+          "mixture",
+          "sagol",
+          "matamis",
+          "init",
+          "lamig"
+        ],
+        "fact": {
+          "en": "Halo-halo is a food mix where shaved ice slowly melts in the warmth, turning into a cold liquid with milk!",
+          "tl": "Ang halo-halo ay pinaghalong pagkain kung saan ang kinayod na yelo ay unti-unting natutunaw sa init, nagiging malamig na likido kasama ang gatas!",
+          "bis": "Ang halo-halo usa ka sagol nga pagkaon. Ang kinayod nga yelo niini hinay-hinay nga matunaw sa kainit ug mahimong bugnaw nga likido uban sa gatas!"
+        },
+        "slug": "ice-melting-halo-halo",
+        "title": {
+          "en": "Halo-halo",
+          "tl": "Halo-halo",
+          "bis": "Halo-halo"
+        },
+        "cats": [
+          "mixtures",
+          "states-of-matter"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kinayod na yelo"
+          ],
+          "en": [
+            "shaved ice"
+          ],
+          "bis": [
+            "kinayod nga yelo"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The sentence split preserves melting in halo-halo, but the full candidate retains kinayod nga yelo. The inspected Wolff kayud entry concerns hard work, while kagud covers scraping or shredding. This does not rule out a modern kinayod borrowing, but independent bodies and the consulted sources do not resolve its Cebu Cebuano sense here. Hold without converting it to an unassessed alternative.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "cd2d37ba7bf2f8eb9f4eb189747df05ae"
+    },
+    {
+      "card_id": "ffct-18312",
+      "source_card_sha256": "fe2a7c1ab83bd6c37913ab6f1df7be44e513fd5fa5af7801f88636dacc5d5d23",
+      "candidate_card_sha256": "a82e1a375a9d0bb9ad8af58c808d32485fbe4446d98b1d241bf426162dc5f9ef",
+      "before_card": {
+        "id": "ffct-18312",
+        "factId": "density-salt-water-vs-fresh-g5",
+        "domain": "MATTER",
+        "topic": "saltwater denser than freshwater",
+        "terms": [
+          "saltwater",
+          "dagat",
+          "freshwater",
+          "ilog",
+          "density",
+          "densidad",
+          "dead sea",
+          "float",
+          "lumulutang",
+          "asin"
+        ],
+        "fact": {
+          "en": "Why is it easier to float in the sea than in a river?\n\nSeawater is denser than freshwater because of dissolved salt! In the super salty Dead Sea, you can float effortlessly.",
+          "tl": "Bakit mas madaling lumutang sa dagat kaysa sa ilog?\n\nMas siksik ang tubig-dagat kaysa sariwang tubig dahil sa natunaw na asin! Sa sobrang alat na Dead Sea, walang pagsisikap kang lumulutang.",
+          "bis": "Ngano nga mas sayon mulutaw sa dagat kaysa sa suba?\n\nMas siksik ang tubig-dagat kaysa sariwang tubig tungod sa natunaw nga asin! Sa grabe ka alat nga Dead Sea, walay paningkamot kang mulutaw."
+        },
+        "slug": "ffct-18312",
+        "source": "original",
+        "title": {
+          "tl": "Saalat na Mas Malakas Density",
+          "en": "Saltwater Denser",
+          "bis": "Asin sa Density"
+        },
+        "cats": [
+          "buoyancy"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-18312",
+        "factId": "density-salt-water-vs-fresh-g5",
+        "domain": "MATTER",
+        "topic": "saltwater denser than freshwater",
+        "terms": [
+          "saltwater",
+          "dagat",
+          "freshwater",
+          "ilog",
+          "density",
+          "densidad",
+          "dead sea",
+          "float",
+          "lumulutang",
+          "asin"
+        ],
+        "fact": {
+          "en": "Why is it easier to float in the sea than in a river?\n\nSeawater is denser than freshwater because of dissolved salt! In the super salty Dead Sea, you can float effortlessly.",
+          "tl": "Bakit mas madaling lumutang sa dagat kaysa sa ilog?\n\nMas siksik ang tubig-dagat kaysa sariwang tubig dahil sa natunaw na asin! Sa sobrang alat na Dead Sea, walang pagsisikap kang lumulutang.",
+          "bis": "Ngano nga mas sayon mulutaw sa dagat kaysa sa suba?\n\nMas siksik ang tubig-dagat kaysa sariwang tubig tungod sa natunaw nga asin! Sa grabe ka alat nga Dead Sea, makalutaw ka bisan dili ka maningkamot."
+        },
+        "slug": "ffct-18312",
+        "source": "original",
+        "title": {
+          "tl": "Saalat na Mas Malakas Density",
+          "en": "Saltwater Denser",
+          "bis": "Mas Siksik ang Tubig-Dagat"
+        },
+        "cats": [
+          "buoyancy"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The density comparison and Dead Sea example remain coherent, but the full candidate retains sariwang tubig for non-saline water. The two other frozen-body sariwa uses concern freshness, not fresh water. Wolff tab-ang explicitly exemplifies fresh water; that does not authorize substituting it. Hold the unresolved intended sense without treating a possible borrowing as inherently wrong.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c9c2fdb65f172aee6eaaf697ee4c9137f"
+    },
+    {
+      "card_id": "ffct-18394",
+      "source_card_sha256": "96eb30521ac1258d728423cb69c313b3b3cc265bd154f224edebab5af05d5a00",
+      "candidate_card_sha256": "087d4f841c8244824de627dc5f04ea39829e9f34bb59e6b86a0e6b47ef7ce9f9",
+      "before_card": {
+        "id": "ffct-18394",
+        "factId": "volume-displacement-method-g5",
+        "domain": "MATTER",
+        "topic": "volume by displacement for irregular objects",
+        "terms": [
+          "volume",
+          "displacement",
+          "pagpapalabas",
+          "irregular",
+          "bato",
+          "rock",
+          "graduated cylinder",
+          "sukat-tubig",
+          "water level"
+        ],
+        "fact": {
+          "en": "To measure the volume of a rock: note the water level in a graduated cylinder, submerge the rock, and note the new level. The difference is the rock's volume!",
+          "tl": "Para sukatin ang volume ng bato: tandaan ang water level sa graduated cylinder, isawsaw ang bato, at tandaan ang bagong level. Ang pagkakaiba ay ang volume ng bato!",
+          "bis": "Aron sukton ang volume sa bato: timan-i ang water level sa graduated cylinder, ilubog ang bato, ug timan-i ang bag-ong level. Ang kalainan mao ang volume sa bato!"
+        },
+        "slug": "ffct-18394",
+        "source": "original",
+        "title": {
+          "tl": "Displacement sa Bato",
+          "en": "Volume Displacement Irregular",
+          "bis": "Displacement Bato"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-18394",
+        "factId": "volume-displacement-method-g5",
+        "domain": "MATTER",
+        "topic": "volume by displacement for irregular objects",
+        "terms": [
+          "volume",
+          "displacement",
+          "pagpapalabas",
+          "irregular",
+          "bato",
+          "rock",
+          "graduated cylinder",
+          "sukat-tubig",
+          "water level"
+        ],
+        "fact": {
+          "en": "To measure the volume of a rock: note the water level in a graduated cylinder, submerge the rock, and note the new level. The difference is the rock's volume!",
+          "tl": "Para sukatin ang volume ng bato: tandaan ang water level sa graduated cylinder, isawsaw ang bato, at tandaan ang bagong level. Ang pagkakaiba ay ang volume ng bato!",
+          "bis": "Aron sukton ang volume sa bato: timan-i ang water level sa graduated cylinder, ilubog ang bato, ug timan-i ang bag-ong level. Ang kalainan mao ang volume sa bato!"
+        },
+        "slug": "ffct-18394",
+        "source": "original",
+        "title": {
+          "tl": "Displacement sa Bato",
+          "en": "Volume Displacement Irregular",
+          "bis": "Displacement sa Bato"
+        },
+        "cats": [
+          "measurement"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Adding sa improves the title relationship, but the unchanged full body uses ilubog for submerging the rock. The inspected Wolff and Binisaya lubog/lubug senses concern lying down or murkiness, while machine-translated bodies also use it for sinking. That conflict remains unresolved. Hold the exact candidate without inferring that corpus frequency establishes the sense or changing sukton on spelling alone.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c6b97506eb389157c13243d2d9b060c54"
+    },
+    {
+      "card_id": "ffct-18405",
+      "source_card_sha256": "881487141d1d736eb6fc38b3c9d3d7d4a2d1e959355a6c3a65457dc739164c29",
+      "candidate_card_sha256": "aa5b9d391a2624be42ed3e2b521da59cfe6ad98646b8a72d709ac445307660b4",
+      "before_card": {
+        "id": "ffct-18405",
+        "factId": "boyles-law-pressure-volume-g7",
+        "domain": "MATTER",
+        "topic": "Boyle's law pressure and volume inverse",
+        "terms": [
+          "boyle's law",
+          "batas ni boyle",
+          "pressure",
+          "presyon",
+          "volume",
+          "gas",
+          "double pressure",
+          "half volume"
+        ],
+        "fact": {
+          "en": "How do pressure and volume relate in Boyle's Law?\n\nAccording to Boyle's Law, at constant temperature, increasing pressure decreases volume, and decreasing pressure increases volume. They are inversely proportional!",
+          "tl": "Paano magkaugnay ang pressure at volume sa Boyle's Law?\n\nAyon sa Batas ni Boyle, sa constant temperature, ang pagpapalaki ng pressure ay nagpapaliit ng volume, at ang pagpapaliit ng pressure ay nagpapalaki ng volume. Sila ay inversely proportional!",
+          "bis": "Unsaon pagkonektar ang pressure ug volume sa Batas ni Boyle?\n\nSumala sa Batas ni Boyle, sa constant temperature, ang pagdugang sa pressure nagpamenos sa volume, ug ang pagpamenos sa pressure nagdugang sa volume. Sila inversely proportional!"
+        },
+        "slug": "gas-laws-boyle",
+        "title": {
+          "en": "Boyle's Law",
+          "tl": "Batas ni Boyle",
+          "bis": "Balaod ni Boyle"
+        },
+        "cats": [
+          "gases",
+          "states-of-matter"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "inversely proportional"
+          ],
+          "en": [
+            "inversely proportional"
+          ],
+          "bis": [
+            "inversely proportional"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-18405",
+        "factId": "boyles-law-pressure-volume-g7",
+        "domain": "MATTER",
+        "topic": "Boyle's law pressure and volume inverse",
+        "terms": [
+          "boyle's law",
+          "batas ni boyle",
+          "pressure",
+          "presyon",
+          "volume",
+          "gas",
+          "double pressure",
+          "half volume"
+        ],
+        "fact": {
+          "en": "How do pressure and volume relate in Boyle's Law?\n\nAccording to Boyle's Law, at constant temperature, increasing pressure decreases volume, and decreasing pressure increases volume. They are inversely proportional!",
+          "tl": "Paano magkaugnay ang pressure at volume sa Boyle's Law?\n\nAyon sa Batas ni Boyle, sa constant temperature, ang pagpapalaki ng pressure ay nagpapaliit ng volume, at ang pagpapaliit ng pressure ay nagpapalaki ng volume. Sila ay inversely proportional!",
+          "bis": "Unsay relasyon sa pressure ug volume sa Batas ni Boyle?\n\nSumala sa Batas ni Boyle, sa constant temperature, mogamay ang volume kung dugangan ang pressure, ug modako ang volume kung pamenosan ang pressure. Sila inversely proportional!"
+        },
+        "slug": "gas-laws-boyle",
+        "title": {
+          "en": "Boyle's Law",
+          "tl": "Batas ni Boyle",
+          "bis": "Balaod ni Boyle"
+        },
+        "cats": [
+          "gases",
+          "states-of-matter"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "inversely proportional"
+          ],
+          "en": [
+            "inversely proportional"
+          ],
+          "bis": [
+            "inversely proportional"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The shorter conditional preserves the source, but the standalone Boyle-law account names constant temperature without fixing the amount of gas or clearly bounding the gas system. NASA states the fixed-mass and fixed-temperature conditions. Hold for canonical source precision; no qualifying text is silently added to only Cebuano.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "ce064c3a74a0a321dbd0039e66a7afbd1"
+    },
+    {
+      "card_id": "ffct-18518",
+      "source_card_sha256": "fb9a9994064390c2a88ef68c678ec02e96791902d9a87917d1787284965e8a17",
+      "candidate_card_sha256": "d9eb2199e5ee905512779a2a1e3ca6dac31ae486ef9b24cca5eead2925dcc57b",
+      "before_card": {
+        "id": "ffct-18518",
+        "factId": "density-substances-table-compare-g6",
+        "domain": "MATTER",
+        "topic": "comparing densities of common substances",
+        "terms": [
+          "density",
+          "densidad",
+          "gold",
+          "ginto",
+          "lead",
+          "iron",
+          "bakal",
+          "water",
+          "wood",
+          "compare"
+        ],
+        "fact": {
+          "en": "Check these densities: gold (19.3 g/cm3), iron (7.9 g/cm3), water (1.0 g/cm3), wood (~0.6 g/cm3), and ice (0.92 g/cm3). Objects below 1.0 g/cm3 float in water!",
+          "tl": "Tingnan ang mga densidad: ginto (19.3 g/cm3), bakal (7.9 g/cm3), tubig (1.0 g/cm3), kahoy (~0.6 g/cm3), at ice (0.92 g/cm3). Ang nasa ibaba ng 1.0 g/cm3 ay lumulutang!",
+          "bis": "Tan-awa ang mga densidad: ginto (19.3 g/cm3), bakal (7.9 g/cm3), tubig (1.0 g/cm3), kahoy (~0.6 g/cm3), ug yelo (0.92 g/cm3). Ang ubos sa 1.0 g/cm3 mulutaw sa tubig!"
+        },
+        "slug": "wood-floating-on-water",
+        "title": {
+          "en": "Density Comparison",
+          "tl": "Densidad ng Bagay",
+          "bis": "Densidad sa Butang"
+        },
+        "cats": [
+          "matter",
+          "buoyancy"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "densidad"
+          ],
+          "en": [
+            "densities"
+          ],
+          "bis": [
+            "densidad"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-18518",
+        "factId": "density-substances-table-compare-g6",
+        "domain": "MATTER",
+        "topic": "comparing densities of common substances",
+        "terms": [
+          "density",
+          "densidad",
+          "gold",
+          "ginto",
+          "lead",
+          "iron",
+          "bakal",
+          "water",
+          "wood",
+          "compare"
+        ],
+        "fact": {
+          "en": "Check these densities: gold (19.3 g/cm3), iron (7.9 g/cm3), water (1.0 g/cm3), wood (~0.6 g/cm3), and ice (0.92 g/cm3). Objects below 1.0 g/cm3 float in water!",
+          "tl": "Tingnan ang mga densidad: ginto (19.3 g/cm3), bakal (7.9 g/cm3), tubig (1.0 g/cm3), kahoy (~0.6 g/cm3), at ice (0.92 g/cm3). Ang nasa ibaba ng 1.0 g/cm3 ay lumulutang!",
+          "bis": "Tan-awa ang mga densidad: ginto (19.3 g/cm3), bakal (7.9 g/cm3), tubig (1.0 g/cm3), kahoy (~0.6 g/cm3), ug yelo (0.92 g/cm3). Ang mga butang nga ubos sa 1.0 g/cm3 ang densidad mulutaw sa tubig!"
+        },
+        "slug": "wood-floating-on-water",
+        "title": {
+          "en": "Density Comparison",
+          "tl": "Densidad ng Bagay",
+          "bis": "Densidad sa Butang"
+        },
+        "cats": [
+          "matter",
+          "buoyancy"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "densidad"
+          ],
+          "en": [
+            "densities"
+          ],
+          "bis": [
+            "densidad"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The candidate clarifies the density comparison and retains all numerical examples, but keeps ginto for gold. The small set of machine-translated body examples and unsuccessful dictionary lookup do not independently settle its Cebu Cebuano use. Hold without banning the possible loanword. Bakal is already attested and is not treated as a defect.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "cd2287ba87443e55b7a36274eea7ad180"
+    },
+    {
+      "card_id": "ffct-18612",
+      "source_card_sha256": "b632d0b995e643f3d041abbdd5c42d28a279cfd9114fa1493eedff310e98b09a",
+      "candidate_card_sha256": "0b2ab58ed2825eb79b0c0eda9e43f2e0b0059c835e9e41dd2bd193e10d47aa25",
+      "before_card": {
+        "id": "ffct-18612",
+        "factId": "pahiyas-kiping-chandelier-g5",
+        "domain": "MATTER",
+        "topic": "kiping is rice-flour dough shaped and dried",
+        "terms": [
+          "kiping",
+          "bigas",
+          "harina",
+          "dahon",
+          "hugis",
+          "bugas",
+          "kiping wafer",
+          "rice",
+          "leaf-shaped",
+          "wafer",
+          "pahiyas"
+        ],
+        "fact": {
+          "en": "How is kiping made?\n\nGround rice is turned into a paste, shaped like a leaf, and dried before coloring, showing how food changes form!",
+          "tl": "Paano ginagawa ang kiping?\n\nAng giniling na bigas ay ginawang masa, hinugis na parang dahon, at pinatuyo bago kulayan—isang halimbawa ng pagbabago ng anyo ng pagkain!",
+          "bis": "Unsaon paghimo sa kiping?\n\nAng giniling nga bugas gihimong masa, gihulma nga morag dahon, ug gipauga sa dili pa kolorohan—usa ka pananglitan sa pag-usab og porma sa pagkaon!"
+        },
+        "slug": "pahiyas-kiping-chandelier",
+        "title": {
+          "en": "Kiping Making",
+          "tl": "Paggawa ng Kiping",
+          "bis": "Paghimo sa Kiping"
+        },
+        "cats": [
+          "food",
+          "materials"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "pagbabago ng anyo"
+          ],
+          "en": [
+            "changes form"
+          ],
+          "bis": [
+            "pag-usab og porma"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-18612",
+        "factId": "pahiyas-kiping-chandelier-g5",
+        "domain": "MATTER",
+        "topic": "kiping is rice-flour dough shaped and dried",
+        "terms": [
+          "kiping",
+          "bigas",
+          "harina",
+          "dahon",
+          "hugis",
+          "bugas",
+          "kiping wafer",
+          "rice",
+          "leaf-shaped",
+          "wafer",
+          "pahiyas"
+        ],
+        "fact": {
+          "en": "How is kiping made?\n\nGround rice is turned into a paste, shaped like a leaf, and dried before coloring, showing how food changes form!",
+          "tl": "Paano ginagawa ang kiping?\n\nAng giniling na bigas ay ginawang masa, hinugis na parang dahon, at pinatuyo bago kulayan—isang halimbawa ng pagbabago ng anyo ng pagkain!",
+          "bis": "Unsaon paghimo sa kiping?\n\nAng giniling nga bugas gihimong masa, gihulma nga morag dahon, ug gipauga sa dili pa kolorohan. Kini usa ka pananglitan sa pag-usab og porma sa pagkaon!"
+        },
+        "slug": "pahiyas-kiping-chandelier",
+        "title": {
+          "en": "Kiping Making",
+          "tl": "Paggawa ng Kiping",
+          "bis": "Paghimo sa Kiping"
+        },
+        "cats": [
+          "food",
+          "materials"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "pagbabago ng anyo"
+          ],
+          "en": [
+            "changes form"
+          ],
+          "bis": [
+            "pag-usab og porma"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The full English and candidate put kiping drying before colouring. The inspected firsthand recipe adds food colour to the batter before spreading, steaming and drying it. This is sufficient to question the unqualified sequence, not to establish one universal recipe. Hold for English-led source review rather than approve a sentence split around the disputed sequence.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "ca91abf73b5d55ebd4f5a297451bde8a9"
+    },
+    {
+      "card_id": "ffct-18677",
+      "source_card_sha256": "74dacf25ade89dbbfb3d4d7660c312708205a34286788db6cb74f6065fc49dc3",
+      "candidate_card_sha256": "e5fd95c02f2aafa861202d11d6a32a547a3286b400164650ca933e845c23ccad",
+      "before_card": {
+        "id": "ffct-18677",
+        "factId": "condensation-gas-to-liquid-g5",
+        "domain": "MATTER",
+        "topic": "what condensation is and its direction",
+        "terms": [
+          "condensation",
+          "pagkondensa",
+          "pagtulo",
+          "gas to liquid",
+          "gas tungo likido",
+          "namamuo",
+          "hamog",
+          "dew water vapor"
+        ],
+        "fact": {
+          "en": "Condensation is the change from a gas to a liquid, like water vapor forming droplets on a cold glass!",
+          "tl": "Ang pagkondensa (condensation) ay ang pagbabago ng gas tungo sa likido, gaya ng singaw na nagiging patak ng tubig sa malamig na baso!",
+          "bis": "Ang pagkondensa (condensation) mao ang pagbag-o gikan sa gas ngadto sa likido, sama sa singaw nga mahimong tulo sa tubig sa bugnaw nga baso!"
+        },
+        "slug": "ffct-18677",
+        "source": "original",
+        "title": {
+          "tl": "Condensation sa Malamig na Baso",
+          "en": "What Condensation Is",
+          "bis": "Condensation Baso"
+        },
+        "cats": [
+          "states-of-matter"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-18677",
+        "factId": "condensation-gas-to-liquid-g5",
+        "domain": "MATTER",
+        "topic": "what condensation is and its direction",
+        "terms": [
+          "condensation",
+          "pagkondensa",
+          "pagtulo",
+          "gas to liquid",
+          "gas tungo likido",
+          "namamuo",
+          "hamog",
+          "dew water vapor"
+        ],
+        "fact": {
+          "en": "Condensation is the change from a gas to a liquid, like water vapor forming droplets on a cold glass!",
+          "tl": "Ang pagkondensa (condensation) ay ang pagbabago ng gas tungo sa likido, gaya ng singaw na nagiging patak ng tubig sa malamig na baso!",
+          "bis": "Ang pagkondensa (condensation) mao ang pagbag-o gikan sa gas ngadto sa likido. Sama kini sa singaw nga mahimong mga tulo sa tubig sa bugnaw nga baso!"
+        },
+        "slug": "ffct-18677",
+        "source": "original",
+        "title": {
+          "tl": "Condensation sa Malamig na Baso",
+          "en": "What Condensation Is",
+          "bis": "Condensation sa Bugnaw nga Baso"
+        },
+        "cats": [
+          "states-of-matter"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The two sentences correctly separate condensation from the cold-glass example, and Wolff tulu supports the droplets. However, the full candidate uses standalone singaw. The inspected authoritative entry is alisngaw, and root-substring corpus counts include that longer form. Direct singaw lookup was blocked and a general vocabulary site is insufficient authority. Hold this unresolved use without declaring it wrong or substituting alisngaw automatically.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "cd1631210b35fc307a3ea1e0f4ea8dacb"
+    },
+    {
+      "card_id": "ffct-18686",
+      "source_card_sha256": "f0437079ac62ed66e75c86f5f51e1d9d6db7d67bf9147985610569c56cb9d8cc",
+      "candidate_card_sha256": "170bddd2b75303fb70ea14d1477e726f70ec2d088f88ec784e6795639d80c61e",
+      "before_card": {
+        "id": "ffct-18686",
+        "factId": "melting-freezing-same-temp-g6",
+        "domain": "MATTER",
+        "topic": "why melting and freezing point are the same for water",
+        "terms": [
+          "melting point",
+          "freezing point",
+          "0°c",
+          "parehong temperatura",
+          "managsama nga temperatura",
+          "tunaw at yelo",
+          "same temperature",
+          "water 0 degrees"
+        ],
+        "fact": {
+          "en": "For water, the melting point and the freezing point are actually the exact same temperature, which is 0°C!",
+          "tl": "Para sa tubig, ang melting point at freezing point ay actually parehong temperatura, na parehong 0°C!",
+          "bis": "Alang sa tubig, ang melting point ug freezing point actually managsama nga temperatura, nga parehas nga 0°C!"
+        },
+        "slug": "ffct-18686",
+        "source": "original",
+        "title": {
+          "tl": "Magkapareho",
+          "en": "Same Point, Both Ways",
+          "bis": "Melting ug Freezing"
+        },
+        "cats": [
+          "states-of-matter"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-18686",
+        "factId": "melting-freezing-same-temp-g6",
+        "domain": "MATTER",
+        "topic": "why melting and freezing point are the same for water",
+        "terms": [
+          "melting point",
+          "freezing point",
+          "0°c",
+          "parehong temperatura",
+          "managsama nga temperatura",
+          "tunaw at yelo",
+          "same temperature",
+          "water 0 degrees"
+        ],
+        "fact": {
+          "en": "For water, the melting point and the freezing point are actually the exact same temperature, which is 0°C!",
+          "tl": "Para sa tubig, ang melting point at freezing point ay actually parehong temperatura, na parehong 0°C!",
+          "bis": "Alang sa tubig, ang melting point ug ang freezing point managsama gyud nga temperatura. Kini ang 0°C!"
+        },
+        "slug": "ffct-18686",
+        "source": "original",
+        "title": {
+          "tl": "Magkapareho",
+          "en": "Same Point, Both Ways",
+          "bis": "Melting ug Freezing"
+        },
+        "cats": [
+          "states-of-matter"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The source says water freezes and melts at exactly the same zero-degree-Celsius temperature without specifying pure water or relevant conditions. NOAA explicitly distinguishes salt water, whose freezing and melting point is lower. Hold the unqualified exactness for source precision; this is not a rejection of the usual pure-water classroom reference point.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c7b59400eba1bace5bdab2456ae8f6057"
+    },
+    {
+      "card_id": "ffct-18696",
+      "source_card_sha256": "64e74ce4093e398efd8d7286609828aec401222559dbaf24f2cc8a91f804aa2f",
+      "candidate_card_sha256": "05e3543e89e37af3fcbb1eb7f5576dbc55f44013de945a1776bf2199967b1b45",
+      "before_card": {
+        "id": "ffct-18696",
+        "factId": "pancit-canton-plate-g5",
+        "domain": "MATTER",
+        "topic": "canton noodles are made from wheat flour",
+        "terms": [
+          "pancit canton",
+          "trigo",
+          "harina",
+          "noodles",
+          "pansit",
+          "wheat",
+          "flour",
+          "egg noodles",
+          "canton"
+        ],
+        "fact": {
+          "en": "Pancit canton noodles are made from wheat flour! That’s what makes them different from bihon, which is made from rice.",
+          "tl": "Ang pancit canton ay gawa sa wheat flour noodles! Kaya iba ito sa bihon na gawa naman sa bigas.",
+          "bis": "Ang pancit canton hinimo gikan sa wheat flour noodles! Mao nga lahi kini sa bihon nga gihimo gikan sa bugas."
+        },
+        "slug": "",
+        "title": {
+          "en": "Canton Noodles",
+          "tl": "Pancit Canton",
+          "bis": "Pancit Canton"
+        },
+        "cats": [
+          "food"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "wheat flour"
+          ],
+          "en": [
+            "wheat flour"
+          ],
+          "bis": [
+            "wheat flour"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-18696",
+        "factId": "pancit-canton-plate-g5",
+        "domain": "MATTER",
+        "topic": "canton noodles are made from wheat flour",
+        "terms": [
+          "pancit canton",
+          "trigo",
+          "harina",
+          "noodles",
+          "pansit",
+          "wheat",
+          "flour",
+          "egg noodles",
+          "canton"
+        ],
+        "fact": {
+          "en": "Pancit canton noodles are made from wheat flour! That’s what makes them different from bihon, which is made from rice.",
+          "tl": "Ang pancit canton ay gawa sa wheat flour noodles! Kaya iba ito sa bihon na gawa naman sa bigas.",
+          "bis": "Ang noodles sa pancit canton hinimo gikan sa wheat flour! Mao nga lahi kini sa bihon nga gihimo gikan sa bugas."
+        },
+        "slug": "",
+        "title": {
+          "en": "Canton Noodles",
+          "tl": "Pancit Canton",
+          "bis": "Pancit Canton"
+        },
+        "cats": [
+          "food"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "wheat flour"
+          ],
+          "en": [
+            "wheat flour"
+          ],
+          "bis": [
+            "wheat flour"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The candidate clarifies the flour/noodle referent, but the full English makes bihon categorically rice-based. Cebu manufacturer Ngosiok explicitly sells cornstarch-based Super Q Golden Bihon and wheat-based pancit canton. Hold the blanket ingredient contrast for source review, without claiming no bihon is rice-based or replacing it with an unassessed brand-specific sentence.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "cc5694a70c03f5dc3b77f35bab1441357"
+    }
+  ],
+  "prior_mandatory_missing_judgment_holds": [
+    "ffct-15686"
+  ],
+  "native_verified": false,
+  "science_verified": false,
+  "released": false,
+  "source_precision_holds_require_cross_language_review": [
+    "ffct-18253",
+    "ffct-18405",
+    "ffct-18612",
+    "ffct-18686",
+    "ffct-18696"
+  ],
+  "lexical_holds": [
+    "ffct-18166",
+    "ffct-18212",
+    "ffct-18256",
+    "ffct-18312",
+    "ffct-18394",
+    "ffct-18518",
+    "ffct-18677"
+  ],
+  "fidelity_holds": [],
+  "readability_holds": []
+}

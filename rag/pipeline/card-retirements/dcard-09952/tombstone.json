@@ -1,0 +1,103 @@
+{
+  "schema": "hiraia.card-retirement-tombstone/v1",
+  "card_id": "dcard-09952",
+  "fact_id": "making-disinfectant-g7",
+  "original_english_sha256": "1267864a3240eacb306652c6fd8d8633285617aad736d08244a237d219acf6d9",
+  "created_at_utc": "2026-10-02T05:34:59.613896+00:00",
+  "decision": "retired",
+  "scope": "all_languages",
+  "languages_in_preserved_card": [
+    "en",
+    "tl",
+    "bis"
+  ],
+  "id_reuse_forbidden": true,
+  "reason_code": "unsafe_underspecified_general_home_hand_hygiene_instruction",
+  "reason": "The English and both translations present household bleach dilution as ordinary home hand sanitizer preparation without stock concentration or the essential emergency-only context. The reviewed WHO community guideline distinguishes routine hand hygiene from a narrowly constrained emergency fallback; ratios alone do not validate this general advice.",
+  "review_record": "Source review preserved unchanged below. Retirement was directed by the coordinating root agent after review; no replacement card or new translation is approved by this record.",
+  "original_card": {
+    "file": "card-retirements/dcard-09952/original-card.json",
+    "sha256": "45dd571ef4af0e0f75ba09b4aac64022d75e29ae09285bfc14faa5a4617f1c48",
+    "bytes": 1464
+  },
+  "original_merged_card": {
+    "file": "card-retirements/dcard-09952/original-merged-card.json",
+    "sha256": "725918961b1058d0168e4113d0d042a1778d33ce0b7587a932cef7e28954cd1e",
+    "bytes": 1464
+  },
+  "body_utf8_sha256": {
+    "en": "1267864a3240eacb306652c6fd8d8633285617aad736d08244a237d219acf6d9",
+    "tl": "b95e1a630b9ae71cedef2bd9b9f29275716c35933f857337181bb35838e5411f",
+    "bis": "43f24b7d323137f0fd0d1dbc88e8435ee77e24c5b2f7db8f7a6c2bd5a57ddf23"
+  },
+  "source_pool_at_freeze": {
+    "path": "rag/pipeline/cardsPool.app.json",
+    "sha256": "7a9989363561c91ef5181abd0bf2428bd6b832412f20d4f678f8ab9c42d67b10",
+    "bytes": 50724092
+  },
+  "merged_source_at_freeze": {
+    "path": "rag/pipeline/cardsPool.merged.json",
+    "sha256": "704337ae9a4bdaf728838dd6061f94b862d813555248ea4d85cee66b94fed286",
+    "bytes": 45409173
+  },
+  "source_module": "1p-9At4kedc-Q-Ujxa-TXA0tj2VVKg2pG",
+  "source_evidence": {
+    "source-safety-dcard-09952.proposed.json": {
+      "original": {
+        "path": "tools/cebuano-readability/runs/2026-10-02-pilot/source-safety-dcard-09952.proposed.json",
+        "sha256": "156b78c154b58725aa44dbf5f32db5280086c7c7bfea7ba32d1dfbe209f01e83",
+        "bytes": 9114
+      },
+      "preserved_copy": {
+        "file": "card-retirements/dcard-09952/source-safety-dcard-09952.proposed.json",
+        "sha256": "156b78c154b58725aa44dbf5f32db5280086c7c7bfea7ba32d1dfbe209f01e83",
+        "bytes": 9114
+      }
+    },
+    "source-safety-dcard-09952.source-catalogue.proposed.json": {
+      "original": {
+        "path": "tools/cebuano-readability/runs/2026-10-02-pilot/source-safety-dcard-09952.source-catalogue.proposed.json",
+        "sha256": "9b9bcda2b1c566148c9997174253dce849bb5c208bd661b8678f25ecd4a53375",
+        "bytes": 24534
+      },
+      "preserved_copy": {
+        "file": "card-retirements/dcard-09952/source-safety-dcard-09952.source-catalogue.proposed.json",
+        "sha256": "9b9bcda2b1c566148c9997174253dce849bb5c208bd661b8678f25ecd4a53375",
+        "bytes": 24534
+      }
+    },
+    "source-safety-dcard-09952.local-exposure.proposed.json": {
+      "original": {
+        "path": "tools/cebuano-readability/runs/2026-10-02-pilot/source-safety-dcard-09952.local-exposure.proposed.json",
+        "sha256": "ff59813a27f5c50f0eb013c6daae3a0c9af321761247db30f83674a458772c57",
+        "bytes": 4671
+      },
+      "preserved_copy": {
+        "file": "card-retirements/dcard-09952/source-safety-dcard-09952.local-exposure.proposed.json",
+        "sha256": "ff59813a27f5c50f0eb013c6daae3a0c9af321761247db30f83674a458772c57",
+        "bytes": 4671
+      }
+    }
+  },
+  "source_capture_limits": [
+    "CDC originals returned HTTP403; browser-rendered evidence is explicitly identified in the preserved source catalogue.",
+    "WHO2025 original PDF preserved; WHO2023 original not captured. No claim that chlorine is universally never used in hand hygiene."
+  ],
+  "historical_catalog": {
+    "policy": "Retain Tala historical card row, never prune or reuse the ID.",
+    "catalog_at_freeze": {
+      "path": "packages/tala/android/app/src/main/assets/card-catalog.tsv",
+      "sha256": "a91c30318711d270cf72e0004531c0483b0e884b9f05f999a42a050329f98e4d",
+      "bytes": 1876300
+    },
+    "exact_line": "C\tdcard-09952\t296"
+  },
+  "integration": {
+    "assembler": "Exclude only the matching retired identity before editorial transforms; abort on changed identity or duplicates.",
+    "database": "Reject a retired ID in the input pool before any output mutation; never silently filter it.",
+    "pool_removal": "Prepared separately; this record does not claim the live pool or shipped APK has been changed."
+  },
+  "pool_mutated_by_preparation": false,
+  "database_built_by_preparation": false,
+  "release_claim": "No release/deployment action or installed-device verification."
+}

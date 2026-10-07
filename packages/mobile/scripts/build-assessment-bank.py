@@ -21,6 +21,29 @@ def latest_authored_at(values):
     return max(datetime.fromisoformat(value) for value in values).isoformat(timespec='milliseconds')
 
 
+def teaching_candidates(item):
+    """A current snapshot is necessary, but cannot override a claim-link hold."""
+    primary = item['provenance']['primary']
+    family = item['relationships']['knowledge_family_id']
+
+    def held(source):
+        if 'teaching_link_hold' not in source:
+            return False
+        hold = source['teaching_link_hold']
+        assert isinstance(hold, dict) and all(
+            isinstance(hold.get(key), str) and hold[key].strip()
+            for key in ('reason', 'review_receipt')), 'Malformed teaching-link hold'
+        return True
+
+    candidates = [] if held(primary) else [
+        (card_id, primary['fact'], list(LANGS)) for card_id in primary['card_ids']]
+    for link in item['provenance'].get('additional_teaching_cards', []):
+        if (not held(link) and link.get('review_status') == 'author_source_checked'
+                and link.get('knowledge_family_id') == family):
+            candidates.append((link['card_id'], link['fact'], link.get('reviewed_languages', [])))
+    return candidates
+
+
 def foundation_bundle(pool):
     path = ROOT / 'tools/assessment-evaluation/review-foundation.py'
     spec = importlib.util.spec_from_file_location('foundation_review', path)
@@ -89,10 +112,7 @@ def compile_bank():
             family = item['relationships']['knowledge_family_id']
             eligible_cards = set(item['eligibility']['recent_learning']['source_card_ids'])
             links = []
-            candidates = [(card_id, primary['fact'], list(LANGS)) for card_id in primary['card_ids']]
-            for link in item['provenance'].get('additional_teaching_cards', []):
-                if link.get('review_status') == 'author_source_checked' and link.get('knowledge_family_id') == family:
-                    candidates.append((link['card_id'], link['fact'], link.get('reviewed_languages', [])))
+            candidates = teaching_candidates(item)
             for card_id, fact, reviewed_languages in candidates:
                 if card_id not in eligible_cards:
                     continue

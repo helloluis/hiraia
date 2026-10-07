@@ -1,0 +1,3409 @@
+{
+  "schema": "hiraia.cebuano-readability-reviewed-edits/v1",
+  "status": "reviewed_for_local_application",
+  "created_at": "2026-10-03T16:00:45.107908+00:00",
+  "reviewer": "Codex root, independent of Claude proposal/backtranslation/fidelity/readability calls; no separate Codex reviewer used for this window",
+  "scope": "Window 23: 21 individually reviewed exact Cebuano edits and 13 priority holds. Windows 1–22 were previously adjudicated. No score-only approval, native verification, exhaustive science certification or release permission. Prior invalid-evidence holds ffct-08459, ffct-09018, ffct-10152 and ffct-18958 remain mandatory holds. Missing-fidelity card ffct-15686 remains a mandatory hold, with no synthesized judgment or repeated call.",
+  "window_id": "window-0023",
+  "window_accounting": {
+    "source_cards": 768,
+    "completed_assessments": 768,
+    "missing_fidelity_holds": 0,
+    "approved_exact_edits": 21,
+    "unchanged_keeps": 73,
+    "held": 674,
+    "held_from_priority_set": 13,
+    "preexisting_nonpriority_holds": 661
+  },
+  "input_pins": [
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0023/report.json",
+      "sha256": "d7cbb15870c0f6e97c7b55fbabf31bf42660d8bde88b085a8a3d3130d3754402",
+      "bytes": 28911390
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0023/clean-agreement.jsonl",
+      "sha256": "e4b77d9c48ae0a1bbc96dff114280c8728802f822a98a6ad9fdcc7777002c96b",
+      "bytes": 889951
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0023/root-decisions.json",
+      "sha256": "5c1babb250d9700c5ee2452f67d869e2c89f1834350f122f9ba3a295c5734672",
+      "bytes": 15035
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0023/corpus-lexical-evidence.json",
+      "sha256": "5580ee5fe73bcacef3076de5335d1baea6da47747416d4da56d6051ed0b4cd9d",
+      "bytes": 41657
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0023/dictionary-entries.json",
+      "sha256": "0e888dd3aace7edcd25eb9afe5a150dc47e5ee2201892b07d4ce3f2422d6571c",
+      "bytes": 26057
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0023/dictionary-cross-references.json",
+      "sha256": "5259f6c358d280daf366b4fd1449c2507184e4514dcd0e00bc996d8760a83dd6",
+      "bytes": 9594
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0023/lexical-source-review.json",
+      "sha256": "e17b820de7ef0d533031f7c369f1e9d21602a069d80b3de4ad6012ac35437ed6",
+      "bytes": 9224
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-gutenberg-40074.txt",
+      "sha256": "f80b888b24dd4ca7f5cb16276b4a53f9d22129a496b9ffb7f7efe17d3b9a1504",
+      "bytes": 5699379
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-retrieval.json",
+      "sha256": "bd713c5adf21541a0e7fd9c49f75fb6b9d4157fb88d41151a245165b8955b7da",
+      "bytes": 502
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0023/collect-evidence-001.py",
+      "sha256": "8837d444e64c4878497eb38cb47bbcf3e25a440f5e3f9945642d07480e4d1fc1",
+      "bytes": 4538
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0023/collect-cross-references-001.py",
+      "sha256": "9191f75cf38ac446d3f3ea66381b1d7b5cceb8fae1f6c26f6a7804921c756145",
+      "bytes": 1851
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/show-dossiers-d8817f77.py",
+      "sha256": "135b03be38d352fff0ce172e263ecd717d02e8cb2ed380cbdce945b7e5036e7e",
+      "bytes": 1885
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0023/write-root-records.py",
+      "sha256": "614672b0aec2910816705b07a1d4102a7ef3115d9b0d1ef91cd78e95679ed6dd",
+      "bytes": 20979
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0023/create-root-approval.py",
+      "sha256": "e418636552524051d74f26fa283e7204ac7a2aec771750ccaf56e90df3ab0775",
+      "bytes": 6339
+    }
+  ],
+  "current_pool_before_application": {
+    "path": "rag/pipeline/cardsPool.app.json",
+    "sha256": "46d6f7ee2cd938d8698eed5cabe3092998a3a470d424cb860825092d6a93e8b7",
+    "bytes": 50644041
+  },
+  "accepted": [
+    {
+      "card_id": "ffct-17191",
+      "source_card_sha256": "1848b423215bebfa51a6447905c8fa3a6848de70725c50db360e7ff38ce829b3",
+      "candidate_card_sha256": "03a6b9d664768d2622e7688a26b0f70c9f9aca00637b7fbfaa3d1ea6de5f05f9",
+      "before_card": {
+        "id": "ffct-17191",
+        "factId": "elements-cannot-electrolysis-example-g8",
+        "domain": "MATTER",
+        "topic": "Electrolysis breaks compounds but not elements",
+        "terms": [
+          "electrolysis",
+          "kuryente",
+          "hatiin gamit kuryente",
+          "tubig",
+          "water splitting",
+          "compound mabungkag",
+          "element hindi",
+          "elektrolisis",
+          "paano hatiin",
+          "oxygen hydrogen",
+          "kuryente sa tubig",
+          "elektrisidad"
+        ],
+        "fact": {
+          "en": "Even using electricity in electrolysis to split water into hydrogen and oxygen, you still cannot break pure oxygen down into any simpler substance!",
+          "tl": "Kahit gamitin ang kuryente sa electrolysis para hatiin ang tubig sa hydrogen at oxygen, hindi mo pa rin mahahati ang purong oxygen sa anumang mas simpleng sangkap!",
+          "bis": "Bisan gamiton ang kuryente sa electrolysis aron bahinon ang tubig ngadto sa hydrogen ug oxygen, dili gihapon nimo mabahin ang lunsay nga oxygen ngadto sa bisan unsang mas yano!"
+        },
+        "slug": "ffct-17191",
+        "source": "original",
+        "title": {
+          "tl": "Electrolysis ng Tubig",
+          "en": "Electrolysis of Water",
+          "bis": "Electrolysis sa Tubig"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17191",
+        "factId": "elements-cannot-electrolysis-example-g8",
+        "domain": "MATTER",
+        "topic": "Electrolysis breaks compounds but not elements",
+        "terms": [
+          "electrolysis",
+          "kuryente",
+          "hatiin gamit kuryente",
+          "tubig",
+          "water splitting",
+          "compound mabungkag",
+          "element hindi",
+          "elektrolisis",
+          "paano hatiin",
+          "oxygen hydrogen",
+          "kuryente sa tubig",
+          "elektrisidad"
+        ],
+        "fact": {
+          "en": "Even using electricity in electrolysis to split water into hydrogen and oxygen, you still cannot break pure oxygen down into any simpler substance!",
+          "tl": "Kahit gamitin ang kuryente sa electrolysis para hatiin ang tubig sa hydrogen at oxygen, hindi mo pa rin mahahati ang purong oxygen sa anumang mas simpleng sangkap!",
+          "bis": "Sa electrolysis, gamiton ang kuryente aron bahinon ang tubig ngadto sa hydrogen ug oxygen. Apan bisan pa niini, dili gihapon nimo mabahin ang lunsay nga oxygen ngadto sa bisan unsang mas yano nga substansiya!"
+        },
+        "slug": "ffct-17191",
+        "source": "original",
+        "title": {
+          "tl": "Electrolysis ng Tubig",
+          "en": "Electrolysis of Water",
+          "bis": "Electrolysis sa Tubig"
+        },
+        "cats": [
+          "elements"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The split separates the water-electrolysis example from the statement that the resulting oxygen is an element. It restores substance explicitly as substansiya, attested at the direct Binisaya headword, and preserves the chemical-process qualification. Wolff lunsay supports pure; no claim about nuclear processes is introduced.",
+      "formal_item_id": "c1029c53945c6b4a03e36d6cf33c49485",
+      "fidelity_item_id": "mc9ba9f5e1b1d6f1f51a9e2a4",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17210",
+      "source_card_sha256": "0f69d2aae6a82144290cfee5ccb1fb4d2f173b93de4958769b837faa910b4b58",
+      "candidate_card_sha256": "2e5279219850086483ec1683be47bdd64321e1f524a79202fb3c83052505c7d3",
+      "before_card": {
+        "id": "ffct-17210",
+        "factId": "filtration-setup-diagram-g4",
+        "domain": "MATTER",
+        "topic": "filtration separates solids from liquids",
+        "terms": [
+          "pagsasala",
+          "filtration",
+          "salaan",
+          "filter paper",
+          "naghihiwalay ng solid sa likido",
+          "residue",
+          "filtrate",
+          "naipon na buhangin",
+          "pagsala",
+          "pag-igo",
+          "limpyo nga tubig",
+          "funnel"
+        ],
+        "fact": {
+          "en": "In filtration, the liquid passes through a filter while larger solid pieces like sand are trapped and left on top!",
+          "tl": "Sa pagsasala, dumadaan ang likido sa salaan ngunit naiiwan ang mas malalaking solidong piraso tulad ng buhangin sa ibabaw!",
+          "bis": "Sa pagsala, moagi ang likido sa salaan apan mabilin ang mas dagkong solidong tipik sama sa balas sa ibabaw!"
+        },
+        "slug": "ffct-21773",
+        "title": {
+          "en": "Filtration",
+          "tl": "Pagsasala",
+          "bis": "Pagsala"
+        },
+        "cats": [
+          "mixtures",
+          "water"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "pagsasala"
+          ],
+          "en": [
+            "filtration"
+          ],
+          "bis": [
+            "pagsala"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-17210",
+        "factId": "filtration-setup-diagram-g4",
+        "domain": "MATTER",
+        "topic": "filtration separates solids from liquids",
+        "terms": [
+          "pagsasala",
+          "filtration",
+          "salaan",
+          "filter paper",
+          "naghihiwalay ng solid sa likido",
+          "residue",
+          "filtrate",
+          "naipon na buhangin",
+          "pagsala",
+          "pag-igo",
+          "limpyo nga tubig",
+          "funnel"
+        ],
+        "fact": {
+          "en": "In filtration, the liquid passes through a filter while larger solid pieces like sand are trapped and left on top!",
+          "tl": "Sa pagsasala, dumadaan ang likido sa salaan ngunit naiiwan ang mas malalaking solidong piraso tulad ng buhangin sa ibabaw!",
+          "bis": "Sa pagsala, moagi ang likido sa salaan, apan mabilin sa ibabaw ang mas dagkong solidong tipik sama sa balas!"
+        },
+        "slug": "ffct-21773",
+        "title": {
+          "en": "Filtration",
+          "tl": "Pagsasala",
+          "bis": "Pagsala"
+        },
+        "cats": [
+          "mixtures",
+          "water"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "pagsasala"
+          ],
+          "en": [
+            "filtration"
+          ],
+          "bis": [
+            "pagsala"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The word order puts sa ibabaw next to what is retained and separates the contrasting liquid clause. Wolff sala explicitly means filtering liquids. The complete example retains the larger sand particles while water passes through the filter, with the same emphasis and no claim that every contaminant is removed.",
+      "formal_item_id": "c0d45d6e664e35364a9c2962eff8f3aa1",
+      "fidelity_item_id": "me08922d54973882ff97048f0",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17214",
+      "source_card_sha256": "603049cd7c2bf7ac819b466b42b6410109a9b27b99a806199bb2e6d8e6455297",
+      "candidate_card_sha256": "f09ed9ad775e850e10c7c1200972c2d311b98e817c56e494fdd89cc002d5034e",
+      "before_card": {
+        "id": "ffct-17214",
+        "factId": "dissolving-rate-temperature-g5",
+        "domain": "MATTER",
+        "topic": "temperature affects dissolving rate",
+        "terms": [
+          "bilis ng pagkatunaw",
+          "dissolving rate",
+          "mainit na tubig",
+          "temperatura",
+          "mas mabilis matunaw",
+          "asukal",
+          "init ng tubig",
+          "kaspas sa pagkatunaw",
+          "init nga tubig",
+          "temperature",
+          "solute"
+        ],
+        "fact": {
+          "en": "Sugar dissolves faster in hot water than in cold water because the particles in hot water move more quickly!",
+          "tl": "Mas mabilis natutunaw ang asukal sa mainit na tubig kaysa sa malamig, dahil mas mabilis gumagalaw ang mga particle ng mainit na tubig!",
+          "bis": "Mas paspas matunaw ang asukar sa init nga tubig kay sa bugnaw, kay mas paspas molihok ang mga partikulo sa init nga tubig!"
+        },
+        "slug": "ffct-17927",
+        "title": {
+          "en": "Dissolving Rate",
+          "tl": "Bilis ng Pagtunaw",
+          "bis": "Katulin sa Pagtunaw"
+        },
+        "cats": [
+          "solutions",
+          "matter"
+        ],
+        "source": "original"
+      },
+      "after_card": {
+        "id": "ffct-17214",
+        "factId": "dissolving-rate-temperature-g5",
+        "domain": "MATTER",
+        "topic": "temperature affects dissolving rate",
+        "terms": [
+          "bilis ng pagkatunaw",
+          "dissolving rate",
+          "mainit na tubig",
+          "temperatura",
+          "mas mabilis matunaw",
+          "asukal",
+          "init ng tubig",
+          "kaspas sa pagkatunaw",
+          "init nga tubig",
+          "temperature",
+          "solute"
+        ],
+        "fact": {
+          "en": "Sugar dissolves faster in hot water than in cold water because the particles in hot water move more quickly!",
+          "tl": "Mas mabilis natutunaw ang asukal sa mainit na tubig kaysa sa malamig, dahil mas mabilis gumagalaw ang mga particle ng mainit na tubig!",
+          "bis": "Mas paspas matunaw ang asukar sa init nga tubig kaysa sa bugnaw nga tubig. Kini tungod kay mas paspas molihok ang mga partikulo sa init nga tubig!"
+        },
+        "slug": "ffct-17927",
+        "title": {
+          "en": "Dissolving Rate",
+          "tl": "Bilis ng Pagtunaw",
+          "bis": "Katulin sa Pagtunaw"
+        },
+        "cats": [
+          "solutions",
+          "matter"
+        ],
+        "source": "original"
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The exact candidate distinguishes the comparison with cold water from the causal explanation and breaks the long sentence. The source remains a comparison of dissolution speed, not an assertion that cold water cannot dissolve sugar. Both blind body observations and the complete fidelity record support the change.",
+      "formal_item_id": "ce9a8dcedcdf4f6341abea0afd55550a8",
+      "fidelity_item_id": "m69ca12ade76fc3bfd20d331c",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17221",
+      "source_card_sha256": "e64ef9c5628476df54d4c527daf2cbcdbab85bfeb6610cf919b46ce36207c31f",
+      "candidate_card_sha256": "cfcbe12e6883ef23d619550ec498936d30075eae976b54f7dc2fe0791418da66",
+      "before_card": {
+        "id": "ffct-17221",
+        "factId": "dissolving-salt-saturation-limit-g7",
+        "domain": "MATTER",
+        "topic": "water can only dissolve so much salt",
+        "terms": [
+          "limit",
+          "hangganan",
+          "sobra",
+          "puno",
+          "saturated",
+          "hindi-na",
+          "dili-na",
+          "lumulubog",
+          "molunod",
+          "bottom",
+          "ilalom",
+          "ilawom",
+          "ngano",
+          "asin",
+          "matunaw"
+        ],
+        "fact": {
+          "en": "Water can't dissolve salt forever! When there's too much salt, the extra won't dissolve and settles at the bottom — the water is saturated.",
+          "tl": "Hindi kayang tunawin ng tubig ang asin nang walang katapusan! Kapag sobra na, hindi na matutunaw ang extra at lulubog sa ilalim — saturated na ang tubig.",
+          "bis": "Dili makatunaw ang tubig sa asin nga walay katapusan! Kon sobra na, dili na matunaw ang extra ug molunod sa ilawom — saturated na ang tubig."
+        },
+        "slug": "ffct-15952",
+        "title": {
+          "en": "Salt Limit in Water",
+          "tl": "Limit ng Asin",
+          "bis": "Limit sa Asin"
+        },
+        "cats": [
+          "solutions"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "saturated"
+          ],
+          "en": [
+            "saturated"
+          ],
+          "bis": [
+            "saturated"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-17221",
+        "factId": "dissolving-salt-saturation-limit-g7",
+        "domain": "MATTER",
+        "topic": "water can only dissolve so much salt",
+        "terms": [
+          "limit",
+          "hangganan",
+          "sobra",
+          "puno",
+          "saturated",
+          "hindi-na",
+          "dili-na",
+          "lumulubog",
+          "molunod",
+          "bottom",
+          "ilalom",
+          "ilawom",
+          "ngano",
+          "asin",
+          "matunaw"
+        ],
+        "fact": {
+          "en": "Water can't dissolve salt forever! When there's too much salt, the extra won't dissolve and settles at the bottom — the water is saturated.",
+          "tl": "Hindi kayang tunawin ng tubig ang asin nang walang katapusan! Kapag sobra na, hindi na matutunaw ang extra at lulubog sa ilalim — saturated na ang tubig.",
+          "bis": "Dili makatunaw ang tubig sa asin nga walay katapusan! Kon sobra na ang asin, dili na matunaw ang extra ug molunod kini sa ilawom — saturated na ang tubig."
+        },
+        "slug": "ffct-15952",
+        "title": {
+          "en": "Salt Limit in Water",
+          "tl": "Limit ng Asin",
+          "bis": "Limit sa Asin"
+        },
+        "cats": [
+          "solutions"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "saturated"
+          ],
+          "en": [
+            "saturated"
+          ],
+          "bis": [
+            "saturated"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate names salt as the material that stops dissolving and keeps the excess salt as the referent of the sinking clause. Wolff lunud includes sinking of objects, so that root is not restricted to drowning people. The saturation condition and science term remain intact.",
+      "formal_item_id": "cfa8f30eb3d0be350c14659cca435002a",
+      "fidelity_item_id": "m1fd274ca15db26b5f4d7111b",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17225",
+      "source_card_sha256": "4aaef1ca356edebb2c722fe5d04b94990beaeaf15c372352ddb35ce1162f4aa6",
+      "candidate_card_sha256": "ca574dd076ebf7867ff9da99e3c9561ecefab430d4f5f6dc0466293a501011c1",
+      "before_card": {
+        "id": "ffct-17225",
+        "factId": "dissolving-salt-bagoong-asin-ph-g6",
+        "domain": "MATTER",
+        "topic": "making asin from seawater in the Philippines",
+        "terms": [
+          "asin",
+          "seawater",
+          "tubig-dagat",
+          "dagat",
+          "pilipinas",
+          "philippines",
+          "sea-salt",
+          "himo",
+          "evaporate",
+          "sumingaw",
+          "araw",
+          "init",
+          "crystals",
+          "kristal",
+          "pangasinan"
+        ],
+        "fact": {
+          "en": "In the Philippines, we make salt from seawater! We put it in shallow salt beds and let the sun's heat evaporate the water, leaving behind beautiful white salt crystals.",
+          "tl": "Sa Pilipinas, ginagawa ang asin mula sa seawater! Inilalagay ito sa mababaw na salt beds at pinapasingawan ng init ng araw, na nag-iiwan ng mga puting salt crystals.",
+          "bis": "Sa Pilipinas, ang asin gihimo gikan sa seawater! Ibutang kini sa mabaw nga salt beds ug pasagdan nga moalisngaw sa init sa adlaw, mabilin ang puti nga salt crystals."
+        },
+        "slug": "",
+        "title": {
+          "en": "Salt from Seawater",
+          "tl": "Asin mula sa Dagat",
+          "bis": "Asin Gikan sa Dagat"
+        },
+        "cats": [
+          "solutions",
+          "oceans"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "salt crystals"
+          ],
+          "en": [
+            "salt crystals"
+          ],
+          "bis": [
+            "salt crystals"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-17225",
+        "factId": "dissolving-salt-bagoong-asin-ph-g6",
+        "domain": "MATTER",
+        "topic": "making asin from seawater in the Philippines",
+        "terms": [
+          "asin",
+          "seawater",
+          "tubig-dagat",
+          "dagat",
+          "pilipinas",
+          "philippines",
+          "sea-salt",
+          "himo",
+          "evaporate",
+          "sumingaw",
+          "araw",
+          "init",
+          "crystals",
+          "kristal",
+          "pangasinan"
+        ],
+        "fact": {
+          "en": "In the Philippines, we make salt from seawater! We put it in shallow salt beds and let the sun's heat evaporate the water, leaving behind beautiful white salt crystals.",
+          "tl": "Sa Pilipinas, ginagawa ang asin mula sa seawater! Inilalagay ito sa mababaw na salt beds at pinapasingawan ng init ng araw, na nag-iiwan ng mga puting salt crystals.",
+          "bis": "Sa Pilipinas, naghimo kita og asin gikan sa seawater! Ibutang nato kini sa mabaw nga salt beds. Dayon pasagdan nato nga moalisngaw ang tubig tungod sa init sa adlaw. Ang mabilin mao ang puti nga salt crystals."
+        },
+        "slug": "",
+        "title": {
+          "en": "Salt from Seawater",
+          "tl": "Asin mula sa Dagat",
+          "bis": "Asin Gikan sa Dagat"
+        },
+        "cats": [
+          "solutions",
+          "oceans"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "salt crystals"
+          ],
+          "en": [
+            "salt crystals"
+          ],
+          "bis": [
+            "salt crystals"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The four shorter sentences preserve the seawater-to-salt sequence: shallow ponds, sunlight, evaporation and the remaining white crystals. Wolff asin and alisngaw support the salt and evaporation senses. No quantity, process step or new scientific claim is introduced.",
+      "formal_item_id": "c2cde240e0102011e9e1034cb234f448c",
+      "fidelity_item_id": "m46b50d7aca9880e40bf6f6c2",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17228",
+      "source_card_sha256": "1f3663bdf3e57949641750cc8a09e6b7f76c2075ee2281f4105bd1fb4c8a54e0",
+      "candidate_card_sha256": "ab2d79d46b0884b3ce855fda8aa64cce24a419c327ffc8a72a07c86be53e493f",
+      "before_card": {
+        "id": "ffct-17228",
+        "factId": "dissolving-salt-sugar-also-dissolves-g6",
+        "domain": "MATTER",
+        "topic": "sugar dissolves in water like salt",
+        "terms": [
+          "asukal",
+          "sugar",
+          "dissolve",
+          "matunaw",
+          "compare",
+          "kapareho",
+          "pareho",
+          "tubig",
+          "water",
+          "tamis",
+          "sweet",
+          "tam-is",
+          "alat",
+          "salt",
+          "timpla",
+          "particle"
+        ],
+        "fact": {
+          "en": "Is salt the only thing that dissolves in water?\n\nNope, sugar does too! Just like salt, sugar breaks into tiny particles and spreads through the water, making it taste sweet.",
+          "tl": "Asin lang ba ang natutunaw sa tubig?\n\nHindi, pati asukal! Kapareho ng asin, naghihiwa-hiwalay ang asukal sa maliliit na particle at kumakalat sa tubig, kaya nagiging matamis ang lasa.",
+          "bis": "Asin ra ba ang matunaw sa tubig?\n\nDili, apil ang asukal! Sama sa asin, mabahin ang asukal sa gagmayng particle ug mokatag sa tubig, mao nga mahimong tam-is ang lami."
+        },
+        "slug": "sugar-dissolving-in-water",
+        "title": {
+          "en": "Sugar Dissolves Too",
+          "tl": "Asukal, Natutunaw",
+          "bis": "Asukal, Matunaw"
+        },
+        "cats": [
+          "solutions"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "natutunaw"
+          ],
+          "en": [
+            "dissolves"
+          ],
+          "bis": [
+            "matunaw"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-17228",
+        "factId": "dissolving-salt-sugar-also-dissolves-g6",
+        "domain": "MATTER",
+        "topic": "sugar dissolves in water like salt",
+        "terms": [
+          "asukal",
+          "sugar",
+          "dissolve",
+          "matunaw",
+          "compare",
+          "kapareho",
+          "pareho",
+          "tubig",
+          "water",
+          "tamis",
+          "sweet",
+          "tam-is",
+          "alat",
+          "salt",
+          "timpla",
+          "particle"
+        ],
+        "fact": {
+          "en": "Is salt the only thing that dissolves in water?\n\nNope, sugar does too! Just like salt, sugar breaks into tiny particles and spreads through the water, making it taste sweet.",
+          "tl": "Asin lang ba ang natutunaw sa tubig?\n\nHindi, pati asukal! Kapareho ng asin, naghihiwa-hiwalay ang asukal sa maliliit na particle at kumakalat sa tubig, kaya nagiging matamis ang lasa.",
+          "bis": "Asin ra ba ang matunaw sa tubig?\n\nDili, matunaw usab ang asukal! Sama sa asin, mabahin ang asukal sa gagmayng particle. Dayon mokatag kini sa tubig, mao nga mahimong tam-is ang lami sa tubig."
+        },
+        "slug": "sugar-dissolving-in-water",
+        "title": {
+          "en": "Sugar Dissolves Too",
+          "tl": "Asukal, Natutunaw",
+          "bis": "Matunaw Usab ang Asukal"
+        },
+        "cats": [
+          "solutions"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "natutunaw"
+          ],
+          "en": [
+            "dissolves"
+          ],
+          "bis": [
+            "matunaw"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title and body explicitly state that sugar also dissolves, then separate the particle-spreading explanation from the sweet taste result. The candidate keeps the source account of sugar dispersing through water; it does not say that sugar molecules chemically split into new substances.",
+      "formal_item_id": "cd5b97d639f2e56d31286887c00270403",
+      "fidelity_item_id": "md7d1c52998a48ac709ce3e1d",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17260",
+      "source_card_sha256": "c31698ec5bf910a97ca26b037c7251a64e33c2a2f8bb5c15ce928c99d77928cf",
+      "candidate_card_sha256": "4b14949d2ec7d901e4d8b09b0af2a1b4b48843f5a487149073c20a38b57e710d",
+      "before_card": {
+        "id": "ffct-17260",
+        "factId": "why-rubber-insulator-electricity-g7",
+        "domain": "MATTER",
+        "topic": "Rubber does not let electricity pass, so it protects us",
+        "terms": [
+          "insulator",
+          "insulator goma",
+          "kuryente",
+          "electricity",
+          "goma",
+          "rubber",
+          "hindi dumadaloy",
+          "gloves",
+          "guwantes",
+          "wire",
+          "kable",
+          "bakit-ligtas",
+          "ngano-luwas",
+          "protektado",
+          "why-rubber",
+          "kuryente-goma"
+        ],
+        "fact": {
+          "en": "Electricity cannot pass easily through rubber, making it a great insulator! That is why rubber wraps electrical wires and is used in electricians' gloves to prevent shocks.",
+          "tl": "Hindi madaling dumaan ang kuryente sa goma, kaya magandang insulator ito! Kaya binabalot ng goma ang mga kable at ginagamit sa electricians' gloves para iwas kuryente.",
+          "bis": "Dili dali moagi ang kuryente sa goma, maong maayo kini nga insulator! Mao nga giputos sa goma ang mga kable ug gigamit sa electricians' gloves aron malikayan ang kuryente."
+        },
+        "slug": "ffct-17260",
+        "source": "original",
+        "title": {
+          "tl": "Goma Insulator Kuryente",
+          "en": "Rubber Electric Insulator",
+          "bis": "Goma Insulator Kuryente"
+        },
+        "cats": [
+          "electricity",
+          "materials"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17260",
+        "factId": "why-rubber-insulator-electricity-g7",
+        "domain": "MATTER",
+        "topic": "Rubber does not let electricity pass, so it protects us",
+        "terms": [
+          "insulator",
+          "insulator goma",
+          "kuryente",
+          "electricity",
+          "goma",
+          "rubber",
+          "hindi dumadaloy",
+          "gloves",
+          "guwantes",
+          "wire",
+          "kable",
+          "bakit-ligtas",
+          "ngano-luwas",
+          "protektado",
+          "why-rubber",
+          "kuryente-goma"
+        ],
+        "fact": {
+          "en": "Electricity cannot pass easily through rubber, making it a great insulator! That is why rubber wraps electrical wires and is used in electricians' gloves to prevent shocks.",
+          "tl": "Hindi madaling dumaan ang kuryente sa goma, kaya magandang insulator ito! Kaya binabalot ng goma ang mga kable at ginagamit sa electricians' gloves para iwas kuryente.",
+          "bis": "Dili dali moagi ang kuryente sa goma, maong maayo kini nga insulator! Mao nga giputos sa goma ang mga kable. Gigamit usab kini sa electricians' gloves aron malikayan ang pagkakuryente."
+        },
+        "slug": "ffct-17260",
+        "source": "original",
+        "title": {
+          "tl": "Goma Insulator Kuryente",
+          "en": "Rubber Electric Insulator",
+          "bis": "Ang Goma, Insulator sa Kuryente"
+        },
+        "cats": [
+          "electricity",
+          "materials"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The split distinguishes insulation around wires from electricians wearing protective rubber gloves and restores the shock referent through pagkakuryente. Wolff kuryinti includes getting an electric shock; OSHA explicitly covers rubber insulating gloves used as electrical protective equipment. The full card concerns electricians protective gloves, not arbitrary household gloves or an instruction for children to touch live wires.",
+      "formal_item_id": "c6c58bf3e500782b179e50538ab5d4cb9",
+      "fidelity_item_id": "md11a44837bfe8212c38c3ccf",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17287",
+      "source_card_sha256": "ea90633bb274f5d4c21c129afae16d55073172ba2a37239681d222e23bd5bc7e",
+      "candidate_card_sha256": "154e90d4d3205fdf52b5eb0c3aa12dd38fc1c5e7512d17d9021ffd4b9830f4b5",
+      "before_card": {
+        "id": "ffct-17287",
+        "factId": "homogeneous-heterogeneous-visible-parts-g7",
+        "domain": "MATTER",
+        "topic": "Why heterogeneous mixtures show separate parts",
+        "terms": [
+          "heterogeneous",
+          "magkaiba",
+          "nagkalainlain",
+          "makita",
+          "salad",
+          "halo-halo",
+          "buhangin",
+          "balas",
+          "parts",
+          "bahagi",
+          "bakit magkaiba",
+          "ngano lahi",
+          "uneven",
+          "hindi pantay",
+          "patse-patse"
+        ],
+        "fact": {
+          "en": "A mixture is heterogeneous when you can still see its different parts! In a salad or halo-halo, you can see the fruits, veggies, and ice because they are not fully blended.",
+          "tl": "Ang halo ay heterogeneous kapag nakikita mo pa ang mga bahagi nito! Sa salad o halo-halo, makita mo ang prutas, gulay, at yelo dahil hindi sila ganap na nahalo.",
+          "bis": "Ang sagol heterogeneous kung makita pa nimo ang lainlaing bahin niini! Sa salad o halo-halo, makita nimo ang prutas, utanon, ug yelo kay dili sila hingpit nga nasagol."
+        },
+        "slug": "ffct-17287",
+        "source": "original",
+        "title": {
+          "tl": "Halo-halo na Heterogeneous",
+          "en": "Halo-Halo Mixtures",
+          "bis": "Halo-halo nga Hetero"
+        },
+        "cats": [
+          "mixtures"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17287",
+        "factId": "homogeneous-heterogeneous-visible-parts-g7",
+        "domain": "MATTER",
+        "topic": "Why heterogeneous mixtures show separate parts",
+        "terms": [
+          "heterogeneous",
+          "magkaiba",
+          "nagkalainlain",
+          "makita",
+          "salad",
+          "halo-halo",
+          "buhangin",
+          "balas",
+          "parts",
+          "bahagi",
+          "bakit magkaiba",
+          "ngano lahi",
+          "uneven",
+          "hindi pantay",
+          "patse-patse"
+        ],
+        "fact": {
+          "en": "A mixture is heterogeneous when you can still see its different parts! In a salad or halo-halo, you can see the fruits, veggies, and ice because they are not fully blended.",
+          "tl": "Ang halo ay heterogeneous kapag nakikita mo pa ang mga bahagi nito! Sa salad o halo-halo, makita mo ang prutas, gulay, at yelo dahil hindi sila ganap na nahalo.",
+          "bis": "Ang sagol heterogeneous kung makita pa nimo ang lainlaing bahin niini! Sa salad o halo-halo, makita nimo ang prutas, utanon, ug yelo kay dili sila hingpit nga nasagol."
+        },
+        "slug": "ffct-17287",
+        "source": "original",
+        "title": {
+          "tl": "Halo-halo na Heterogeneous",
+          "en": "Halo-Halo Mixtures",
+          "bis": "Halo-halo nga Heterogeneous"
+        },
+        "cats": [
+          "mixtures"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title expands the clipped Hetero to the heterogeneous-mixture term already used by the complete body. The body and emphasis are unchanged. This is an exact title-completeness improvement, not a general assertion that shortened terms are ungrammatical or that every heterogeneous mixture is visible to an unaided eye.",
+      "formal_item_id": "c0a97f65ae3865d841532c532d28044ac",
+      "fidelity_item_id": "md74e21087713bad6faca6bfe",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17297",
+      "source_card_sha256": "05b69a05172d53902e06bea3ec391d8fd6f6f2adcc2713e28bee2f4b2271f19b",
+      "candidate_card_sha256": "e6ff95973cecb8465590ba639a0526442f94ff317726628466d5589ec88bf9ef",
+      "before_card": {
+        "id": "ffct-17297",
+        "factId": "electrolysis-of-water-g8",
+        "domain": "MATTER",
+        "topic": "electrolysis splits water",
+        "terms": [
+          "electrolysis",
+          "elektrolisis",
+          "paghahati ng tubig",
+          "hydrogen at oxygen",
+          "kuryente sa tubig",
+          "electric current",
+          "bula ng gas",
+          "tubig na nahahati",
+          "pagbahin sa tubig",
+          "hydrogen",
+          "oxygen",
+          "elektrisidad"
+        ],
+        "fact": {
+          "en": "In electrolysis, electric current passes through water to split it into two gases: hydrogen at one electrode and oxygen at the other!",
+          "tl": "Sa electrolysis, dinadaanan ng kuryente ang tubig para mahati ito sa dalawang gas: hydrogen sa isang electrode at oxygen sa kabila!",
+          "bis": "Sa electrolysis, moagi ang kuryente sa tubig aron mabahin kini sa duha ka gas: hydrogen sa usa ka electrode ug oxygen sa pikas!"
+        },
+        "slug": "ffct-17191",
+        "title": {
+          "en": "Water Electrolysis",
+          "tl": "Tubig Elektrolisis",
+          "bis": "Tubig Elektrolisis"
+        },
+        "cats": [
+          "chemical-reactions",
+          "water"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "electrolysis"
+          ],
+          "en": [
+            "electrolysis"
+          ],
+          "bis": [
+            "electrolysis"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-17297",
+        "factId": "electrolysis-of-water-g8",
+        "domain": "MATTER",
+        "topic": "electrolysis splits water",
+        "terms": [
+          "electrolysis",
+          "elektrolisis",
+          "paghahati ng tubig",
+          "hydrogen at oxygen",
+          "kuryente sa tubig",
+          "electric current",
+          "bula ng gas",
+          "tubig na nahahati",
+          "pagbahin sa tubig",
+          "hydrogen",
+          "oxygen",
+          "elektrisidad"
+        ],
+        "fact": {
+          "en": "In electrolysis, electric current passes through water to split it into two gases: hydrogen at one electrode and oxygen at the other!",
+          "tl": "Sa electrolysis, dinadaanan ng kuryente ang tubig para mahati ito sa dalawang gas: hydrogen sa isang electrode at oxygen sa kabila!",
+          "bis": "Sa electrolysis, moagi ang kuryente sa tubig aron mabahin kini sa duha ka gas: hydrogen sa usa ka electrode ug oxygen sa pikas!"
+        },
+        "slug": "ffct-17191",
+        "title": {
+          "en": "Water Electrolysis",
+          "tl": "Tubig Elektrolisis",
+          "bis": "Electrolysis sa Tubig"
+        },
+        "cats": [
+          "chemical-reactions",
+          "water"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "electrolysis"
+          ],
+          "en": [
+            "electrolysis"
+          ],
+          "bis": [
+            "electrolysis"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title supplies the relationship between electrolysis and water and matches the body science term. The complete unchanged body retains hydrogen and oxygen at opposite electrodes. The ruling does not declare the earlier adapted spelling invalid or change the experiment.",
+      "formal_item_id": "c0ee1b06afad9d3eeb03231de45f89e85",
+      "fidelity_item_id": "m42c999b79b435f2bb8a4a333",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17300",
+      "source_card_sha256": "acf63e641b7de18d53d0724a74c7faea6f16258ccc40b6a93eac33f6d23a5f99",
+      "candidate_card_sha256": "7566ae7eb57e8c67a87ff538914633b96c86d5c13f24557c3bff4d06718b4505",
+      "before_card": {
+        "id": "ffct-17300",
+        "factId": "evaporating-saltwater-dish-g4",
+        "domain": "MATTER",
+        "topic": "evaporating saltwater leaves salt",
+        "terms": [
+          "pagsingaw ng tubig",
+          "evaporation",
+          "tubig-alat",
+          "saltwater",
+          "naiwang asin",
+          "salt left behind",
+          "araw na nagpapainit",
+          "asin",
+          "pag-alisngaw",
+          "naghimo ug asin",
+          "salt pan",
+          "evaporating dish"
+        ],
+        "fact": {
+          "en": "How do we get salt from saltwater?\n\nWhen saltwater evaporates, only water leaves as vapor! The salt is left behind, which is exactly how salt is made in salt beds.",
+          "tl": "Paano nakukuha ang asin mula sa tubig-alat?\n\nKapag sumisingaw ang tubig-alat, naglalaho lang ang tubig bilang vapor! Naiiwan ang asin, na siyang paraan ng paggawa ng asin sa mga aluwagan.",
+          "bis": "Unsaon pagkuha ug asin gikan sa tubig-asin?\n\nKon moalisngaw ang tubig-asin, ang tubig lang ang mawala isip vapor! Ang asin mabilin, nga mao ang pamaagi sa paghimo ug asin sa mga asinan."
+        },
+        "slug": "ffct-36179",
+        "title": {
+          "en": "Salt from Saltwater",
+          "tl": "Asin mula sa Tubig",
+          "bis": "Asin Gikan sa Tubig"
+        },
+        "cats": [
+          "mixtures",
+          "water"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "sumisingaw"
+          ],
+          "en": [
+            "evaporates"
+          ],
+          "bis": [
+            "moalisngaw"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-17300",
+        "factId": "evaporating-saltwater-dish-g4",
+        "domain": "MATTER",
+        "topic": "evaporating saltwater leaves salt",
+        "terms": [
+          "pagsingaw ng tubig",
+          "evaporation",
+          "tubig-alat",
+          "saltwater",
+          "naiwang asin",
+          "salt left behind",
+          "araw na nagpapainit",
+          "asin",
+          "pag-alisngaw",
+          "naghimo ug asin",
+          "salt pan",
+          "evaporating dish"
+        ],
+        "fact": {
+          "en": "How do we get salt from saltwater?\n\nWhen saltwater evaporates, only water leaves as vapor! The salt is left behind, which is exactly how salt is made in salt beds.",
+          "tl": "Paano nakukuha ang asin mula sa tubig-alat?\n\nKapag sumisingaw ang tubig-alat, naglalaho lang ang tubig bilang vapor! Naiiwan ang asin, na siyang paraan ng paggawa ng asin sa mga aluwagan.",
+          "bis": "Unsaon pagkuha ug asin gikan sa tubig-asin?\n\nKon moalisngaw ang tubig-asin, ang tubig lang ang mawala isip vapor! Ang asin ang mabilin. Mao gyud kini ang paagi sa paghimo ug asin sa mga asinan."
+        },
+        "slug": "ffct-36179",
+        "title": {
+          "en": "Salt from Saltwater",
+          "tl": "Asin mula sa Tubig",
+          "bis": "Asin Gikan sa Tubig"
+        },
+        "cats": [
+          "mixtures",
+          "water"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "sumisingaw"
+          ],
+          "en": [
+            "evaporates"
+          ],
+          "bis": [
+            "moalisngaw"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate separates the salt remaining after evaporation from the sentence identifying this as the salt-making method. Wolff asin explicitly includes making salt and salt beds; alisngaw supports evaporation. The pronoun now points to the process rather than leaving a stacked relative clause.",
+      "formal_item_id": "c7436fb7fbc162610b3c7a08cda52d355",
+      "fidelity_item_id": "mc77eb7ec1721fe1e88252147",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17397",
+      "source_card_sha256": "184b6b489e6ddb8e740262707e4d46edc8112a78a7a53ba26b87f274acdb907c",
+      "candidate_card_sha256": "0b64a360fc0f6a2ca1d87332c333b045163554131db3b0ad2481bc7011bb34a6",
+      "before_card": {
+        "id": "ffct-17397",
+        "factId": "distilled-water-double-distilled-purer-g8",
+        "domain": "MATTER",
+        "topic": "distilling twice makes water even purer",
+        "terms": [
+          "distiladong tubig",
+          "double distilled",
+          "dalawang beses",
+          "double distill",
+          "mas puro",
+          "mas lunsay",
+          "ulit-uliting distilasyon",
+          "laboratoryo",
+          "sensitive experiment",
+          "balik-balikon",
+          "mas limpyo",
+          "purer water",
+          "eksperimento",
+          "tubig"
+        ],
+        "fact": {
+          "en": "Sometimes water gets distilled twice—called double-distilled! This makes it extra pure, because a tiny bit of impurity can sneak through the first time.",
+          "tl": "Minsan dinidistila ng dalawang beses ang tubig—tinatawag itong double-distilled! Mas puro ito, dahil may kaunting dumi na pwedeng makalusot sa unang distilasyon.",
+          "bis": "Usahay i-distill og kaduha ang tubig—gitawag og double-distilled! Mas putli kini, kay adunay gamay nga hugaw nga pwede makalusot sa unang distillation."
+        },
+        "slug": "ffct-17397",
+        "source": "original",
+        "title": {
+          "tl": "Double-Distilled na Mas Puro",
+          "en": "Double-Distilled Purity",
+          "bis": "Double-Distilled sa Tubig"
+        },
+        "cats": [
+          "water"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17397",
+        "factId": "distilled-water-double-distilled-purer-g8",
+        "domain": "MATTER",
+        "topic": "distilling twice makes water even purer",
+        "terms": [
+          "distiladong tubig",
+          "double distilled",
+          "dalawang beses",
+          "double distill",
+          "mas puro",
+          "mas lunsay",
+          "ulit-uliting distilasyon",
+          "laboratoryo",
+          "sensitive experiment",
+          "balik-balikon",
+          "mas limpyo",
+          "purer water",
+          "eksperimento",
+          "tubig"
+        ],
+        "fact": {
+          "en": "Sometimes water gets distilled twice—called double-distilled! This makes it extra pure, because a tiny bit of impurity can sneak through the first time.",
+          "tl": "Minsan dinidistila ng dalawang beses ang tubig—tinatawag itong double-distilled! Mas puro ito, dahil may kaunting dumi na pwedeng makalusot sa unang distilasyon.",
+          "bis": "Usahay i-distill og kaduha ang tubig—gitawag og double-distilled! Mas putli kini, kay adunay gamay nga hugaw nga pwede makalusot sa unang distillation."
+        },
+        "slug": "ffct-17397",
+        "source": "original",
+        "title": {
+          "tl": "Double-Distilled na Mas Puro",
+          "en": "Double-Distilled Purity",
+          "bis": "Double-Distilled nga Tubig"
+        },
+        "cats": [
+          "water"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title uses the linking construction to identify water that is double distilled; the body is unchanged. Wolff nga supports the linker and the direct Binisaya putli headword supports physical purity, including water. The source describes repeated purification and possible carryover, not an absolute 100-percent purity guarantee.",
+      "formal_item_id": "c67661e919501f8bc81ed40e13cc2ca00",
+      "fidelity_item_id": "md644bd37c607dc76c2304c9e",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17535",
+      "source_card_sha256": "eac20d244575cc21a5b33e5a3111cdc7d48f215850707d1bf67bc8fea098bf7f",
+      "candidate_card_sha256": "5701cc2114c84ad857e59504670afc43b58d56bbf2ffa513873fd2f7b73a323c",
+      "before_card": {
+        "id": "ffct-17535",
+        "factId": "freezing-melting-misconception-cold-flows-g6",
+        "domain": "MATTER",
+        "topic": "Cold is not a thing that flows in",
+        "terms": [
+          "mali",
+          "misconception",
+          "lamig",
+          "cold",
+          "init",
+          "heat",
+          "hindi pumapasok ang lamig",
+          "lumalabas",
+          "yelo",
+          "akala",
+          "tama",
+          "nawawala ang init"
+        ],
+        "fact": {
+          "en": "Many think 'cold' flows into water to freeze it, but really, only heat flows out! Losing heat is what actually cools the water and turns it solid.",
+          "tl": "Maraming nag-aakala na 'lamig' ang pumapasok para mag-yelo ang tubig, pero ang totoo, init lang ang lumalabas! Ang pagkawala ng init ang nagpapalamig at nagpapatigas sa tubig.",
+          "bis": "Daghan ang naghunahuna nga 'katugnaw' ang mosulod aron mag-yelo ang tubig, apan ang tinuod, kainit lang ang mogawas! Ang pagkawala sa kainit maoy nagpabugnaw ug nagpagahi sa tubig."
+        },
+        "slug": "ffct-17535",
+        "source": "original",
+        "title": {
+          "tl": "Init na Lumalabas hindi Cold",
+          "en": "Heat Flows Out, Not Cold",
+          "bis": "Kainit sa Paggawas"
+        },
+        "cats": [
+          "heat",
+          "states-of-matter"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17535",
+        "factId": "freezing-melting-misconception-cold-flows-g6",
+        "domain": "MATTER",
+        "topic": "Cold is not a thing that flows in",
+        "terms": [
+          "mali",
+          "misconception",
+          "lamig",
+          "cold",
+          "init",
+          "heat",
+          "hindi pumapasok ang lamig",
+          "lumalabas",
+          "yelo",
+          "akala",
+          "tama",
+          "nawawala ang init"
+        ],
+        "fact": {
+          "en": "Many think 'cold' flows into water to freeze it, but really, only heat flows out! Losing heat is what actually cools the water and turns it solid.",
+          "tl": "Maraming nag-aakala na 'lamig' ang pumapasok para mag-yelo ang tubig, pero ang totoo, init lang ang lumalabas! Ang pagkawala ng init ang nagpapalamig at nagpapatigas sa tubig.",
+          "bis": "Daghan ang naghunahuna nga 'katugnaw' ang mosulod sa tubig aron kini mag-yelo. Apan ang tinuod, kainit lang ang mogawas! Ang pagkawala sa kainit maoy nagpabugnaw ug nagpagahi sa tubig."
+        },
+        "slug": "ffct-17535",
+        "source": "original",
+        "title": {
+          "tl": "Init na Lumalabas hindi Cold",
+          "en": "Heat Flows Out, Not Cold",
+          "bis": "Kainit ang Mogawas, Dili Katugnaw"
+        },
+        "cats": [
+          "heat",
+          "states-of-matter"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The split and title make the misconception and correction explicit: heat leaves the water during freezing rather than cold flowing into it. The water referent, direction of energy transfer and negation remain intact. Both blind observations favor the exact changed fields.",
+      "formal_item_id": "c210b36be1ead0225b33648eb7934b207",
+      "fidelity_item_id": "mc83745132597779213e8674b",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17538",
+      "source_card_sha256": "a14b62127b7093aa85fdeda811144df3de0a58c1a5170108b8ba1aa8f77775ea",
+      "candidate_card_sha256": "e5cebf514e41e461d95ae42ccf33f4c61302034bf15423c59f0081b49bc16e5e",
+      "before_card": {
+        "id": "ffct-17538",
+        "factId": "freezing-melting-followup-time-g6",
+        "domain": "MATTER",
+        "topic": "Why some things freeze faster than others",
+        "terms": [
+          "mas mabilis",
+          "nagyeyelo",
+          "tubig",
+          "kaunti",
+          "dami",
+          "mainit na tubig",
+          "mabagal",
+          "oras",
+          "time",
+          "freezer",
+          "mas malamig",
+          "kapal"
+        ],
+        "fact": {
+          "en": "A small amount of water freezes faster than a large amount because it loses heat more easily. That is why a thin ice candy hardens faster than a big container of water!",
+          "tl": "Mas mabilis mag-yelo ang kaunting tubig kaysa maraming tubig dahil mas madali itong mawalan ng init. Kaya mas mabilis tumigas ang manipis na ice candy kaysa malaking lalagyan ng tubig!",
+          "bis": "Mas paspas mag-yelo ang gamay nga tubig kaysa daghan kay mas sayon mawad-an ug kainit. Mao nga mas paspas mogahi ang nipis nga ice candy kaysa dako nga sudlanan sa tubig!"
+        },
+        "slug": "ffct-17538",
+        "source": "original",
+        "title": {
+          "tl": "Kaunting Tubig Mabilis Yelo",
+          "en": "Small Amounts Freeze Fast",
+          "bis": "Gamay nga Tubig Paspas Yelo"
+        },
+        "cats": [
+          "states-of-matter",
+          "heat"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17538",
+        "factId": "freezing-melting-followup-time-g6",
+        "domain": "MATTER",
+        "topic": "Why some things freeze faster than others",
+        "terms": [
+          "mas mabilis",
+          "nagyeyelo",
+          "tubig",
+          "kaunti",
+          "dami",
+          "mainit na tubig",
+          "mabagal",
+          "oras",
+          "time",
+          "freezer",
+          "mas malamig",
+          "kapal"
+        ],
+        "fact": {
+          "en": "A small amount of water freezes faster than a large amount because it loses heat more easily. That is why a thin ice candy hardens faster than a big container of water!",
+          "tl": "Mas mabilis mag-yelo ang kaunting tubig kaysa maraming tubig dahil mas madali itong mawalan ng init. Kaya mas mabilis tumigas ang manipis na ice candy kaysa malaking lalagyan ng tubig!",
+          "bis": "Mas paspas mag-yelo ang gamay nga tubig kaysa daghang tubig, kay mas dali kining mawad-an ug kainit. Mao nga mas paspas mogahi ang nipis nga ice candy kaysa dakong sudlanan sa tubig!"
+        },
+        "slug": "ffct-17538",
+        "source": "original",
+        "title": {
+          "tl": "Kaunting Tubig Mabilis Yelo",
+          "en": "Small Amounts Freeze Fast",
+          "bis": "Paspas Mag-yelo ang Gamay nga Tubig"
+        },
+        "cats": [
+          "states-of-matter",
+          "heat"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The comparison explicitly contrasts the small, thin ice-candy package with a large amount of water and separates the size explanation. UGA extension guidance corroborates that smaller packages freeze more quickly and large containers freeze slowly. The ordinary household example adds no absolute time, always-claim or new temperature condition; the full title names that same comparison.",
+      "formal_item_id": "c995a23747affd27a2d1b5e42325939e9",
+      "fidelity_item_id": "mef297f134a64eca2d742e5c6",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17546",
+      "source_card_sha256": "7141a075eb9209cbc0009bb95780c8e397ba286e347bb521d769ca0f452b0f2c",
+      "candidate_card_sha256": "f097d1611f7c3b2f898d07b0247052dfbc44c484597591105d39f6f3ac75185b",
+      "before_card": {
+        "id": "ffct-17546",
+        "factId": "leche-flan-egg-yolk-richness-g6",
+        "domain": "MATTER",
+        "topic": "egg yolks make leche flan rich and yellow",
+        "terms": [
+          "leche flan",
+          "pula ng itlog",
+          "egg yolk",
+          "yolk",
+          "dilaw",
+          "yellow",
+          "makinis",
+          "creamy",
+          "fat",
+          "taba",
+          "puti ng itlog",
+          "egg white",
+          "kulay",
+          "pulang itlog",
+          "lami",
+          "ngano dilaw"
+        ],
+        "fact": {
+          "en": "Leche flan uses lots of egg yolks, making it yellow and rich! The fat in the yolks gives a smooth, creamy taste, unlike using only egg whites.",
+          "tl": "Maraming egg yolks ang leche flan, kaya ito dilaw at rich! Ang taba sa yolk ang nagbibigay ng smooth at creamy na lasa, kumpara sa paggamit lang ng egg whites.",
+          "bis": "Daghang egg yolks ang leche flan, maong dalag ug rich kini! Ang tambok sa yolk ang naghatag og smooth ug creamy nga lami, kaysa puro egg whites lang."
+        },
+        "slug": "",
+        "title": {
+          "en": "Egg Yolks in Flan",
+          "tl": "Mga Itlog sa Flan",
+          "bis": "Mga Itlog sa Flan"
+        },
+        "cats": [
+          "food"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "egg yolks"
+          ],
+          "en": [
+            "egg yolks"
+          ],
+          "bis": [
+            "egg yolks"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-17546",
+        "factId": "leche-flan-egg-yolk-richness-g6",
+        "domain": "MATTER",
+        "topic": "egg yolks make leche flan rich and yellow",
+        "terms": [
+          "leche flan",
+          "pula ng itlog",
+          "egg yolk",
+          "yolk",
+          "dilaw",
+          "yellow",
+          "makinis",
+          "creamy",
+          "fat",
+          "taba",
+          "puti ng itlog",
+          "egg white",
+          "kulay",
+          "pulang itlog",
+          "lami",
+          "ngano dilaw"
+        ],
+        "fact": {
+          "en": "Leche flan uses lots of egg yolks, making it yellow and rich! The fat in the yolks gives a smooth, creamy taste, unlike using only egg whites.",
+          "tl": "Maraming egg yolks ang leche flan, kaya ito dilaw at rich! Ang taba sa yolk ang nagbibigay ng smooth at creamy na lasa, kumpara sa paggamit lang ng egg whites.",
+          "bis": "Daghang egg yolks ang leche flan, maong dalag ug rich kini! Ang tambok sa yolk maoy mohatag og smooth ug creamy nga lami, dili sama kung puro egg whites lang ang gamiton."
+        },
+        "slug": "",
+        "title": {
+          "en": "Egg Yolks in Flan",
+          "tl": "Mga Itlog sa Flan",
+          "bis": "Mga Itlog sa Flan"
+        },
+        "cats": [
+          "food"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "egg yolks"
+          ],
+          "en": [
+            "egg yolks"
+          ],
+          "bis": [
+            "egg yolks"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate completes the comparison with using only egg whites and separates the fat contribution to the creamy leche-flan texture. Wolff dalag includes yellow, with unrelated homographs retained in the evidence. The decision relies on exact sentence clarity, not the judge unsupported general rule about naghatag aspect.",
+      "formal_item_id": "cb62d51e13afde5bebf8402192dcaf0ff",
+      "fidelity_item_id": "m1c3c4cdbf26202e6eef2d15b",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17566",
+      "source_card_sha256": "1fb1ec2f10841e51e3faa869b8132ce3deb45d1247fac65414e24daa2977d37f",
+      "candidate_card_sha256": "8dced51d58ef4e942105f25229e15e08f2810a095a90c67d2aaae97ffb467e60",
+      "before_card": {
+        "id": "ffct-17566",
+        "factId": "molecule-models-g8",
+        "domain": "MATTER",
+        "topic": "molecule models showing bonded atoms",
+        "terms": [
+          "molecule models",
+          "molekula",
+          "molecule",
+          "atom",
+          "atomo",
+          "bono",
+          "bond",
+          "model",
+          "modelo",
+          "bola",
+          "balls and sticks",
+          "compound",
+          "sumpay",
+          "modelo sa molekula",
+          "molekula nga modelo"
+        ],
+        "fact": {
+          "en": "A molecule model uses balls and sticks to show how atoms join together through bonds to form a cool molecule!",
+          "tl": "Ang molecule model ay gumagamit ng balls and sticks para ipakita kung paano nagkakabit ang atoms sa pamamagitan ng bonds para gumawa ng molecule!",
+          "bis": "Ang molecule model naggamit ug balls and sticks aron ipakita kon giunsa pagdugtong sa atoms pinaagi sa bonds aron maporma ang usa ka molecule!"
+        },
+        "slug": "molecule-models",
+        "title": {
+          "en": "Molecule Models",
+          "tl": "Modelo ng Molecule",
+          "bis": "Modelo sa Molecule"
+        },
+        "cats": [
+          "chemistry",
+          "atoms"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "molecule model"
+          ],
+          "en": [
+            "molecule model"
+          ],
+          "bis": [
+            "molecule model"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-17566",
+        "factId": "molecule-models-g8",
+        "domain": "MATTER",
+        "topic": "molecule models showing bonded atoms",
+        "terms": [
+          "molecule models",
+          "molekula",
+          "molecule",
+          "atom",
+          "atomo",
+          "bono",
+          "bond",
+          "model",
+          "modelo",
+          "bola",
+          "balls and sticks",
+          "compound",
+          "sumpay",
+          "modelo sa molekula",
+          "molekula nga modelo"
+        ],
+        "fact": {
+          "en": "A molecule model uses balls and sticks to show how atoms join together through bonds to form a cool molecule!",
+          "tl": "Ang molecule model ay gumagamit ng balls and sticks para ipakita kung paano nagkakabit ang atoms sa pamamagitan ng bonds para gumawa ng molecule!",
+          "bis": "Ang molecule model naggamit ug balls and sticks. Nagpakita kini kon giunsa pagdugtong sa atoms pinaagi sa bonds aron maporma ang usa ka molecule!"
+        },
+        "slug": "molecule-models",
+        "title": {
+          "en": "Molecule Models",
+          "tl": "Modelo ng Molecule",
+          "bis": "Modelo sa Molecule"
+        },
+        "cats": [
+          "chemistry",
+          "atoms"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "molecule model"
+          ],
+          "en": [
+            "molecule model"
+          ],
+          "bis": [
+            "molecule model"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The shorter clauses distinguish the balls, the sticks and what the model helps a learner see. Wolff dugtung supports joining/linking, with the bonds explicitly named in the source. The exact change preserves the model relationship and does not claim this construction describes every type of molecular model.",
+      "formal_item_id": "cb5b9c49bd14c85984d3ee740096666d9",
+      "fidelity_item_id": "md78062361484c5505528c776",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17723",
+      "source_card_sha256": "9676e0853c5f497e0d49abc02e7511d5cee74bb7487b5c11a728ebbeae573b85",
+      "candidate_card_sha256": "cc6ded818200d97d61f9977d4af732280491d3de89cf4829e527a27abdcf9567",
+      "before_card": {
+        "id": "ffct-17723",
+        "factId": "paper-made-recycle-reuse-g4",
+        "domain": "MATTER",
+        "topic": "Old paper can be recycled into new paper",
+        "terms": [
+          "paper",
+          "papel",
+          "recycle",
+          "recycling",
+          "i-recycle",
+          "luma",
+          "old",
+          "bago",
+          "new",
+          "muli",
+          "balik",
+          "basura",
+          "trees",
+          "puno",
+          "save",
+          "ginagamit ulit",
+          "lumang papel"
+        ],
+        "fact": {
+          "en": "Old paper can be mashed back into water to become pulp again and turned into new paper! This saves us from cutting down too many trees.",
+          "tl": "Ang lumang papel ay pwedeng durugin muli sa tubig para maging pulp at gawing bagong papel! Sa ganitong paraan, hindi tayo masyadong pumuputol ng mga puno.",
+          "bis": "Ang daang papel pwede nga durugon balik sa tubig aron mahimong pulp ug himuon og bag-ong papel! Niini nga paagi, dili kaayo ta magputol og mga kahoy."
+        },
+        "slug": "ffct-17723",
+        "source": "original",
+        "title": {
+          "tl": "Lumang Papel Panibago Pulp",
+          "en": "Old Paper New Again",
+          "bis": "Daang Papel Bag-o Pulp"
+        },
+        "cats": [
+          "recycling"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17723",
+        "factId": "paper-made-recycle-reuse-g4",
+        "domain": "MATTER",
+        "topic": "Old paper can be recycled into new paper",
+        "terms": [
+          "paper",
+          "papel",
+          "recycle",
+          "recycling",
+          "i-recycle",
+          "luma",
+          "old",
+          "bago",
+          "new",
+          "muli",
+          "balik",
+          "basura",
+          "trees",
+          "puno",
+          "save",
+          "ginagamit ulit",
+          "lumang papel"
+        ],
+        "fact": {
+          "en": "Old paper can be mashed back into water to become pulp again and turned into new paper! This saves us from cutting down too many trees.",
+          "tl": "Ang lumang papel ay pwedeng durugin muli sa tubig para maging pulp at gawing bagong papel! Sa ganitong paraan, hindi tayo masyadong pumuputol ng mga puno.",
+          "bis": "Ang daang papel pwede nga durugon balik sa tubig aron mahimong pulp ug himuon og bag-ong papel! Niini nga paagi, dili kaayo ta magputol og mga kahoy."
+        },
+        "slug": "ffct-17723",
+        "source": "original",
+        "title": {
+          "tl": "Lumang Papel Panibago Pulp",
+          "en": "Old Paper New Again",
+          "bis": "Ang Daang Papel Mahimong Bag-o"
+        },
+        "cats": [
+          "recycling"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title states the source idea that old paper can become new paper, while leaving the body unchanged. Wolff durug and its duldug cross-reference support breaking or mashing into fine pieces in the pulp context. No unlimited-recycling claim is added.",
+      "formal_item_id": "c62a4e096d946902e62c39b8f1e1b6f0d",
+      "fidelity_item_id": "m58fa4f564d3e2bac0f80f143",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17725",
+      "source_card_sha256": "1791e58b9b5ddac5f1e28446edfd2643f5b7d3b7e4b9a9405e80a85492eb9712",
+      "candidate_card_sha256": "2578d973516dfe709ca29c4c396f1cf00812fb2b64d09a845d200bbce633e8a5",
+      "before_card": {
+        "id": "ffct-17725",
+        "factId": "paper-made-other-plants-g5",
+        "domain": "MATTER",
+        "topic": "Paper can also be made from plants besides trees",
+        "terms": [
+          "paper",
+          "papel",
+          "halaman",
+          "plants",
+          "kawayan",
+          "bamboo",
+          "abaca",
+          "kugon",
+          "cogon",
+          "hibla",
+          "fibers",
+          "puno lang ba",
+          "puro kahoy",
+          "iba",
+          "lain",
+          "not only trees"
+        ],
+        "fact": {
+          "en": "Paper isn't just from trees! It can also be made from fibrous plants like bamboo and abaca. What matters is strong plant fibers.",
+          "tl": "Hindi lang sa puno gawa ang papel! Pwede rin itong gawin mula sa ibang halamang may hibla tulad ng kawayan at abaca. Ang mahalaga ay matibay na hibla ang halaman.",
+          "bis": "Dili lang sa kahoy hinimo ang papel! Mahimo usab kini gikan sa ubang tanom nga adunay hibla sama sa kawayan ug abaka. Ang importante naa kini lig-on nga hibla."
+        },
+        "slug": "abaca-plant",
+        "title": {
+          "en": "Paper From Plants",
+          "tl": "Papel sa Halaman",
+          "bis": "Papel Gikan sa Tanom"
+        },
+        "cats": [
+          "materials",
+          "plants"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "hibla"
+          ],
+          "en": [
+            "fibers"
+          ],
+          "bis": [
+            "hibla"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-17725",
+        "factId": "paper-made-other-plants-g5",
+        "domain": "MATTER",
+        "topic": "Paper can also be made from plants besides trees",
+        "terms": [
+          "paper",
+          "papel",
+          "halaman",
+          "plants",
+          "kawayan",
+          "bamboo",
+          "abaca",
+          "kugon",
+          "cogon",
+          "hibla",
+          "fibers",
+          "puno lang ba",
+          "puro kahoy",
+          "iba",
+          "lain",
+          "not only trees"
+        ],
+        "fact": {
+          "en": "Paper isn't just from trees! It can also be made from fibrous plants like bamboo and abaca. What matters is strong plant fibers.",
+          "tl": "Hindi lang sa puno gawa ang papel! Pwede rin itong gawin mula sa ibang halamang may hibla tulad ng kawayan at abaca. Ang mahalaga ay matibay na hibla ang halaman.",
+          "bis": "Dili lang gikan sa kahoy ang papel! Mahimo usab kining himoon gikan sa ubang tanom nga adunay hibla, sama sa kawayan ug abaka. Ang importante, adunay lig-on nga hibla ang tanom."
+        },
+        "slug": "abaca-plant",
+        "title": {
+          "en": "Paper From Plants",
+          "tl": "Papel sa Halaman",
+          "bis": "Papel Gikan sa Tanom"
+        },
+        "cats": [
+          "materials",
+          "plants"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "hibla"
+          ],
+          "en": [
+            "fibers"
+          ],
+          "bis": [
+            "hibla"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The split explicitly identifies the plant being used to make paper and retains bamboo and abaca as examples. The direct Binisaya hibla headword means strand, with the natural/synthetic filament sense, corroborated by independent frozen-body fiber examples. A WordNet child entry is not counted as separate Cebuano attestation.",
+      "formal_item_id": "cc732bca5ccdcc5899ee6e4f907c0a4a7",
+      "fidelity_item_id": "m91a4b23766a9e17057a4a1ba",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17735",
+      "source_card_sha256": "8b89936d0b9b823d649d2509c8b726b82a0da276c815f4cc938ba1a4902b070f",
+      "candidate_card_sha256": "0f98a4ffe54039654b5fa9918c4a22c264c01f83a18242f07b241a0c541e005c",
+      "before_card": {
+        "id": "ffct-17735",
+        "factId": "bakya-wooden-clogs-g4",
+        "domain": "MATTER",
+        "topic": "wood as a clog material",
+        "terms": [
+          "bakya",
+          "wooden clogs",
+          "wood",
+          "kahoy",
+          "sandals",
+          "tsinelas",
+          "santol",
+          "lightweight",
+          "magaan",
+          "material",
+          "sapatos",
+          "gaan",
+          "panit",
+          "tuyo"
+        ],
+        "fact": {
+          "en": "Bakya clogs are carved from light wood like santol. They are shaped to fit your foot perfectly and topped with a rubber or cloth strap!",
+          "tl": "Ang mga bakya ay inuukit mula sa magaan na kahoy tulad ng santol. Hinihugis ito sa paa at tinutumbasan ng goma o telang strap!",
+          "bis": "Ang mga bakya gikulit gikan sa gaan nga kahoy sama sa santol. Gihugis kini aron haom sa tiil ug gibutangan ug goma o panapton nga strap!"
+        },
+        "slug": "bakya-wooden-clogs",
+        "title": {
+          "en": "Wooden Clogs Bakya",
+          "tl": "Bakyang Kahoy",
+          "bis": "Bakyang Kahoy"
+        },
+        "cats": [
+          "materials"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "magaan na kahoy"
+          ],
+          "en": [
+            "light wood"
+          ],
+          "bis": [
+            "gaan nga kahoy"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-17735",
+        "factId": "bakya-wooden-clogs-g4",
+        "domain": "MATTER",
+        "topic": "wood as a clog material",
+        "terms": [
+          "bakya",
+          "wooden clogs",
+          "wood",
+          "kahoy",
+          "sandals",
+          "tsinelas",
+          "santol",
+          "lightweight",
+          "magaan",
+          "material",
+          "sapatos",
+          "gaan",
+          "panit",
+          "tuyo"
+        ],
+        "fact": {
+          "en": "Bakya clogs are carved from light wood like santol. They are shaped to fit your foot perfectly and topped with a rubber or cloth strap!",
+          "tl": "Ang mga bakya ay inuukit mula sa magaan na kahoy tulad ng santol. Hinihugis ito sa paa at tinutumbasan ng goma o telang strap!",
+          "bis": "Ang mga bakya gikulit gikan sa gaan nga kahoy sama sa santol. Gihugis kini aron haom kaayo sa imong tiil. Gibutangan usab kini ug strap nga goma o panapton!"
+        },
+        "slug": "bakya-wooden-clogs",
+        "title": {
+          "en": "Wooden Clogs Bakya",
+          "tl": "Bakyang Kahoy",
+          "bis": "Bakyang Kahoy"
+        },
+        "cats": [
+          "materials"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "magaan na kahoy"
+          ],
+          "en": [
+            "light wood"
+          ],
+          "bis": [
+            "gaan nga kahoy"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The candidate splits shaping the clog from fitting its rubber or cloth strap and restores your and the degree of fit. Wolff kulit, haum and gaan support carving, fitting and lightness. The Bureau of Forestry primary bulletin names santol among woods used for bakya and describes the group as relatively light; no exact weight or claim that every manufactured clog fits every foot is added.",
+      "formal_item_id": "cc44809acf96c89cc37418e1ca8dcaa4b",
+      "fidelity_item_id": "ma5a4c69aa2c24180f9022995",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17736",
+      "source_card_sha256": "f48737fb9088c5d393f0c71fa7e07d596924d340949ab9777070e7174d0cd61a",
+      "candidate_card_sha256": "c5ce6628715af5b712b2ef19f4424a246ce4fcecb5a6a94fe0bbeeaee30d2a6f",
+      "before_card": {
+        "id": "ffct-17736",
+        "factId": "paper-made-burns-from-wood-g4",
+        "domain": "MATTER",
+        "topic": "Paper burns easily because it comes from wood",
+        "terms": [
+          "paper",
+          "papel",
+          "sunog",
+          "burn",
+          "nasusunog",
+          "masunog",
+          "apoy",
+          "fire",
+          "kalayo",
+          "kahoy",
+          "wood",
+          "bakit nasusunog",
+          "ngano masunog",
+          "mainit",
+          "kayo",
+          "init"
+        ],
+        "fact": {
+          "en": "Paper burns easily because it comes from wood, which also burns! Always keep paper away from fire and candles to stay safe.",
+          "tl": "Madaling masunog ang papel dahil galing ito sa kahoy na nasusunog din! Laging itago ang papel malayo sa apoy at kandila para safe.",
+          "bis": "Dali masunog ang papel kay gikan kini sa kahoy nga masunog usab! Kanunay itago ang papel palayo sa kalayo ug kandila para safe."
+        },
+        "slug": "ffct-17736",
+        "source": "original",
+        "title": {
+          "tl": "Papel Kay Kahoy Madaling Sunog",
+          "en": "Paper Burns Like Wood",
+          "bis": "Papel Kay Kahoy Dali Sunog"
+        },
+        "cats": [
+          "materials"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17736",
+        "factId": "paper-made-burns-from-wood-g4",
+        "domain": "MATTER",
+        "topic": "Paper burns easily because it comes from wood",
+        "terms": [
+          "paper",
+          "papel",
+          "sunog",
+          "burn",
+          "nasusunog",
+          "masunog",
+          "apoy",
+          "fire",
+          "kalayo",
+          "kahoy",
+          "wood",
+          "bakit nasusunog",
+          "ngano masunog",
+          "mainit",
+          "kayo",
+          "init"
+        ],
+        "fact": {
+          "en": "Paper burns easily because it comes from wood, which also burns! Always keep paper away from fire and candles to stay safe.",
+          "tl": "Madaling masunog ang papel dahil galing ito sa kahoy na nasusunog din! Laging itago ang papel malayo sa apoy at kandila para safe.",
+          "bis": "Dali masunog ang papel kay gikan kini sa kahoy nga masunog usab! Kanunay itago ang papel palayo sa kalayo ug kandila para safe."
+        },
+        "slug": "ffct-17736",
+        "source": "original",
+        "title": {
+          "tl": "Papel Kay Kahoy Madaling Sunog",
+          "en": "Paper Burns Like Wood",
+          "bis": "Masunog ang Papel Sama sa Kahoy"
+        },
+        "cats": [
+          "materials"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title turns the clipped paper/wood/burn sequence into the relationship explained by the unchanged body. The body retains the caution about flames and candles. The decision is an exact title improvement, not a claim that all possible paper products have identical composition or burn behavior.",
+      "formal_item_id": "c01a34a376bacf029c99f995da8fbcc93",
+      "fidelity_item_id": "m0b59436afa4f5fd54503ca5e",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17867",
+      "source_card_sha256": "8fc228710c9528d8aee48144617bea32b06d122e20aeff11dfc797760fd44c02",
+      "candidate_card_sha256": "81a10a56bdf6b8f92fb95418e8ce0e6938b65ed4d8a400e43bb2176775db259d",
+      "before_card": {
+        "id": "ffct-17867",
+        "factId": "recycling-reduces-ph-junk-shop-g5",
+        "domain": "MATTER",
+        "topic": "Filipino junk shops let recycling reduce waste",
+        "terms": [
+          "junk shop",
+          "bote dyaryo",
+          "bote-dyaryo",
+          "pilipinas",
+          "philippines",
+          "basura",
+          "bote",
+          "lata",
+          "dyaryo",
+          "newspaper",
+          "karton",
+          "nagbebenta",
+          "pera",
+          "recycle",
+          "i-recycle",
+          "saan dinadala ang lata",
+          "asa dad-on ang lata"
+        ],
+        "fact": {
+          "en": "In the Philippines, junk shops or \"bote-dyaryo\" buy old bottles, cans, and newspapers to send to recycling factories — so less waste ends up on streets and in rivers.",
+          "tl": "Sa Pilipinas, ang mga junk shop o \"bote-dyaryo\" ay bumibili ng lumang bottles, cans, at newspapers para ipadala sa recycling factories — kaya mas kaunting basura ang napupunta sa kalsada at ilog.",
+          "bis": "Sa Pilipinas, ang mga junk shop o \"bote-dyaryo\" mopalit og daan nga bottles, cans, ug newspapers aron ipadala sa recycling factories — busa mas gamay nga basura ang maadto sa kalsada ug suba."
+        },
+        "slug": "ffct-17867",
+        "source": "original",
+        "title": {
+          "tl": "Junk Shop Bote-Dyaryo Recycle",
+          "en": "Bote-Dyaryo Junk Shops",
+          "bis": "Junk Shop Bote-Dyaryo Recycle"
+        },
+        "cats": [
+          "recycling"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17867",
+        "factId": "recycling-reduces-ph-junk-shop-g5",
+        "domain": "MATTER",
+        "topic": "Filipino junk shops let recycling reduce waste",
+        "terms": [
+          "junk shop",
+          "bote dyaryo",
+          "bote-dyaryo",
+          "pilipinas",
+          "philippines",
+          "basura",
+          "bote",
+          "lata",
+          "dyaryo",
+          "newspaper",
+          "karton",
+          "nagbebenta",
+          "pera",
+          "recycle",
+          "i-recycle",
+          "saan dinadala ang lata",
+          "asa dad-on ang lata"
+        ],
+        "fact": {
+          "en": "In the Philippines, junk shops or \"bote-dyaryo\" buy old bottles, cans, and newspapers to send to recycling factories — so less waste ends up on streets and in rivers.",
+          "tl": "Sa Pilipinas, ang mga junk shop o \"bote-dyaryo\" ay bumibili ng lumang bottles, cans, at newspapers para ipadala sa recycling factories — kaya mas kaunting basura ang napupunta sa kalsada at ilog.",
+          "bis": "Sa Pilipinas, ang mga junk shop o \"bote-dyaryo\" mopalit og daan nga bottles, cans, ug newspapers aron ipadala sa recycling factories. Busa mas gamay nga basura ang maadto sa kalsada ug suba."
+        },
+        "slug": "ffct-17867",
+        "source": "original",
+        "title": {
+          "tl": "Junk Shop Bote-Dyaryo Recycle",
+          "en": "Bote-Dyaryo Junk Shops",
+          "bis": "Mga Junk Shop o Bote-Dyaryo"
+        },
+        "cats": [
+          "recycling"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The body splits the long dash-linked explanation of the junk shop and bote-dyaryo collector; the title names the same recycling role. Bottles, cans and newspapers stay the same examples. This accepts the observed sentence improvement and does not impose a blanket ban on familiar English or regional school terms.",
+      "formal_item_id": "c7b580deb02ac0f50a6b81c23777c1767",
+      "fidelity_item_id": "mc2e433595035fe750a5d2661",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    },
+    {
+      "card_id": "ffct-17871",
+      "source_card_sha256": "3f8f03e8ffb0bcf92b5ae06136a58492d0b9bd9b5d36df6563fc36efb4072d9c",
+      "candidate_card_sha256": "764416bd8b3bbb4476b6dd9ca34f43b52c1fb60fd91ad7018448750ef66adcc3",
+      "before_card": {
+        "id": "ffct-17871",
+        "factId": "recycling-reduces-school-paper-g5",
+        "domain": "MATTER",
+        "topic": "recycling at school reduces paper waste",
+        "terms": [
+          "school",
+          "papel",
+          "paper",
+          "scratch",
+          "likod ng papel",
+          "recycle",
+          "i-recycle",
+          "basurahan",
+          "kahon",
+          "drop box",
+          "nababawasan",
+          "bakit mag-ipon ng papel",
+          "ngano magtigom og papel",
+          "gamitin muli"
+        ],
+        "fact": {
+          "en": "How can your school help save trees?\n\nPut a separate box for used paper at school! It gets collected and sent for recycling — so less paper is wasted and more trees are saved.",
+          "tl": "Paano makakatulong ang school niyo sa pag-save ng trees?\n\nMaglagay ng hiwalay na box para sa used paper sa school! Ito ay kinokolekta at ipinapadala for recycling — kaya mas kaunting paper ang sinasayang at mas maraming trees ang nai-save.",
+          "bis": "Unsaon makatabang ang inyong school sa pag-save sa mga trees?\n\nPagbutang og lahi nga box para sa used paper sa school! Kini kolektahon ug ipadala for recycling — busa mas gamay nga paper ang mausik ug mas daghang trees ang maluwas."
+        },
+        "slug": "ffct-17871",
+        "source": "original",
+        "title": {
+          "tl": "School Paper Box Save Puno",
+          "en": "School Paper Recycling",
+          "bis": "School Paper Box Luwas Kahoy"
+        },
+        "cats": [
+          "recycling",
+          "conservation"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17871",
+        "factId": "recycling-reduces-school-paper-g5",
+        "domain": "MATTER",
+        "topic": "recycling at school reduces paper waste",
+        "terms": [
+          "school",
+          "papel",
+          "paper",
+          "scratch",
+          "likod ng papel",
+          "recycle",
+          "i-recycle",
+          "basurahan",
+          "kahon",
+          "drop box",
+          "nababawasan",
+          "bakit mag-ipon ng papel",
+          "ngano magtigom og papel",
+          "gamitin muli"
+        ],
+        "fact": {
+          "en": "How can your school help save trees?\n\nPut a separate box for used paper at school! It gets collected and sent for recycling — so less paper is wasted and more trees are saved.",
+          "tl": "Paano makakatulong ang school niyo sa pag-save ng trees?\n\nMaglagay ng hiwalay na box para sa used paper sa school! Ito ay kinokolekta at ipinapadala for recycling — kaya mas kaunting paper ang sinasayang at mas maraming trees ang nai-save.",
+          "bis": "Sa unsang paagi makatabang ang inyong school sa pagluwas sa mga kahoy?\n\nPagbutang og lahi nga box para sa nagamit na nga papel sa school! Kolektahon kini ug ipadala aron i-recycle. Busa mas gamay nga papel ang mausik ug mas daghang kahoy ang maluwas."
+        },
+        "slug": "ffct-17871",
+        "source": "original",
+        "title": {
+          "tl": "School Paper Box Save Puno",
+          "en": "School Paper Recycling",
+          "bis": "Pag-recycle sa Papel sa School"
+        },
+        "cats": [
+          "recycling",
+          "conservation"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The question and separate result clause clarify what the classroom paper box is for and connect recycling to saving trees. Wolff kahuy supports tree/wood and luwas supports saving. The candidate does not promise an exact number of trees or declare code-switching inherently wrong.",
+      "formal_item_id": "c78650ea99242c34375201ea2744754ac",
+      "fidelity_item_id": "med3c6ab0da3713d9d54a27ba",
+      "readability_resolution": "Full individual root review of English, original/candidate Cebuano, backtranslation, fidelity, both blind observations and resolved evidence. Exact candidate only; no native certification or bulk lexical ruling."
+    }
+  ],
+  "held": [
+    {
+      "card_id": "ffct-17255",
+      "source_card_sha256": "dfb81494426a9bd211fad23a9cfa09292e3edeb2fee05aa5f04cf5a7b2050037",
+      "candidate_card_sha256": "44a3c40d555efd8b94a90ae5557ef29d5d5f7b99ed1f0350736f2fe797a10f71",
+      "before_card": {
+        "id": "ffct-17255",
+        "factId": "why-rubber-slippers-tsinelas-g5",
+        "domain": "MATTER",
+        "topic": "Filipino rubber slippers show why rubber grips and cushions",
+        "terms": [
+          "tsinelas",
+          "slippers",
+          "goma",
+          "rubber",
+          "pinoy",
+          "pilipinas",
+          "sapatos",
+          "grip",
+          "kapit",
+          "cushion",
+          "malambot",
+          "bakit-goma",
+          "ngano-goma",
+          "tsinelas-goma",
+          "why-rubber",
+          "step"
+        ],
+        "fact": {
+          "en": "Why do many Filipinos wear rubber tsinelas?\n\nBecause rubber is soft to cushion your feet, and it grips wet floors so you won't slip! It's much better and safer than hard materials.",
+          "tl": "Bakit maraming Pilipino ang nagsusuot ng rubber tsinelas?\n\nKasi malambot ang goma kaya komportable sa paa, at may kapit sa basang sahig para hindi madulas! Mas maganda at ligtas ito kaysa sa matigas na materyales.",
+          "bis": "Ngano nga daghang Pilipino ang nagsul-ob og rubber tsinelas?\n\nTungod kay humok ang goma busa komportable sa tiil, ug mokapyot sa basa nga salog aron dili madakin-as! Mas maayo ug luwas kini kaysa sa gahi nga materyales."
+        },
+        "slug": "tsinelas-rubber-slippers",
+        "title": {
+          "en": "Rubber Slippers Grip",
+          "tl": "Tsinelas na Goma",
+          "bis": "Tsinelas nga Goma"
+        },
+        "cats": [
+          "materials",
+          "forces"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "malambot"
+          ],
+          "en": [
+            "soft"
+          ],
+          "bis": [
+            "humok"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-17255",
+        "factId": "why-rubber-slippers-tsinelas-g5",
+        "domain": "MATTER",
+        "topic": "Filipino rubber slippers show why rubber grips and cushions",
+        "terms": [
+          "tsinelas",
+          "slippers",
+          "goma",
+          "rubber",
+          "pinoy",
+          "pilipinas",
+          "sapatos",
+          "grip",
+          "kapit",
+          "cushion",
+          "malambot",
+          "bakit-goma",
+          "ngano-goma",
+          "tsinelas-goma",
+          "why-rubber",
+          "step"
+        ],
+        "fact": {
+          "en": "Why do many Filipinos wear rubber tsinelas?\n\nBecause rubber is soft to cushion your feet, and it grips wet floors so you won't slip! It's much better and safer than hard materials.",
+          "tl": "Bakit maraming Pilipino ang nagsusuot ng rubber tsinelas?\n\nKasi malambot ang goma kaya komportable sa paa, at may kapit sa basang sahig para hindi madulas! Mas maganda at ligtas ito kaysa sa matigas na materyales.",
+          "bis": "Ngano nga daghang Pilipino ang nagsul-ob og rubber tsinelas?\n\nTungod kay humok ang goma, komportable kini sa tiil. Mokapyot usab kini sa basa nga salog aron dili ka madakin-as! Labi pa kining maayo ug luwas kaysa gahi nga materyales."
+        },
+        "slug": "tsinelas-rubber-slippers",
+        "title": {
+          "en": "Rubber Slippers Grip",
+          "tl": "Tsinelas na Goma",
+          "bis": "Tsinelas nga Goma"
+        },
+        "cats": [
+          "materials",
+          "forces"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "malambot"
+          ],
+          "en": [
+            "soft"
+          ],
+          "bis": [
+            "humok"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The unchanged English promises that rubber slippers grip wet floors so the wearer will not slip, and calls them better and safer than hard materials without conditions. HSE identifies tread, compound, surface contamination and wear as relevant. Hold the unconditional safety comparison for source review; clearer Cebuano cannot establish it.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "cfe9973abe97b113ea7a783c2f9307c2a"
+    },
+    {
+      "card_id": "ffct-17350",
+      "source_card_sha256": "d266ed4992507f1d5dde379c2d66e09a1b848226469078b233ac300eeaf4400b",
+      "candidate_card_sha256": "266d8cdc83833faafefca57dcd92d96ece6e00ad634fb1379e08945704c10b58",
+      "before_card": {
+        "id": "ffct-17350",
+        "factId": "recycling-plastic-pet-bottles-common-g6",
+        "domain": "MATTER",
+        "topic": "PET water bottles are the most recycled plastic",
+        "terms": [
+          "pet",
+          "plastik",
+          "plastic",
+          "bote",
+          "botelya",
+          "bottle",
+          "tubig",
+          "water",
+          "number 1",
+          "numero 1",
+          "manipis",
+          "malinaw",
+          "clear",
+          "pinaka-recycle",
+          "most recycled",
+          "most common"
+        ],
+        "fact": {
+          "en": "The plastic marked with number 1 inside the triangle is PET for clear water and soft drink bottles! It's the most recycled plastic because it's clean, strong, and easy to remelt.",
+          "tl": "Ang plastic na may numerong 1 sa loob ng tatsulok ay PET, ginagamit sa malinaw na bote ng tubig at softdrinks! Ito ang pinakamadalas na-recycle dahil malinis, malakas, at madaling tunawin muli.",
+          "bis": "Ang plastik nga adunay numerong 1 sa sulod sa triyanggulo gitawag og PET, gigamit sa tin-aw nga botelya sa tubig ug softdrinks! Kini ang labing kasagarang ma-recycle kay limpyo, kusgan, ug sayon tunawon pag-usab."
+        },
+        "slug": "ffct-17965",
+        "title": {
+          "en": "PET Plastic Bottles",
+          "tl": "Bote ng PET",
+          "bis": "Botelya nga PET"
+        },
+        "cats": [
+          "recycling",
+          "materials"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "PET"
+          ],
+          "en": [
+            "PET"
+          ],
+          "bis": [
+            "PET"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-17350",
+        "factId": "recycling-plastic-pet-bottles-common-g6",
+        "domain": "MATTER",
+        "topic": "PET water bottles are the most recycled plastic",
+        "terms": [
+          "pet",
+          "plastik",
+          "plastic",
+          "bote",
+          "botelya",
+          "bottle",
+          "tubig",
+          "water",
+          "number 1",
+          "numero 1",
+          "manipis",
+          "malinaw",
+          "clear",
+          "pinaka-recycle",
+          "most recycled",
+          "most common"
+        ],
+        "fact": {
+          "en": "The plastic marked with number 1 inside the triangle is PET for clear water and soft drink bottles! It's the most recycled plastic because it's clean, strong, and easy to remelt.",
+          "tl": "Ang plastic na may numerong 1 sa loob ng tatsulok ay PET, ginagamit sa malinaw na bote ng tubig at softdrinks! Ito ang pinakamadalas na-recycle dahil malinis, malakas, at madaling tunawin muli.",
+          "bis": "Ang plastik nga adunay numerong 1 sa sulod sa triyanggulo gitawag og PET. Gigamit kini sa tin-aw nga botelya sa tubig ug softdrinks! Kini ang labing kasagarang ma-recycle kay limpyo, kusgan, ug sayon tunawon pag-usab."
+        },
+        "slug": "ffct-17965",
+        "title": {
+          "en": "PET Plastic Bottles",
+          "tl": "Bote ng PET",
+          "bis": "Botelya nga PET"
+        },
+        "cats": [
+          "recycling",
+          "materials"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "PET"
+          ],
+          "en": [
+            "PET"
+          ],
+          "bis": [
+            "PET"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The candidate is shorter, but the full English gives an unqualified most-recycled ranking for PET and explains it as clean, strong and easy to remelt. The inspected EPA material is location- and period-specific and does not substantiate that global ranking or causal wording. Hold for source provenance and scope; this is not a finding that PET is unrecyclable.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "cca00afd504f83e6fc10573039c82fe76"
+    },
+    {
+      "card_id": "ffct-17379",
+      "source_card_sha256": "ddef58d5ef9e6ac63fbff0725369c0e89e70272beded678f36daddf19016e5a7",
+      "candidate_card_sha256": "26025276e498566beff1e3e7d80b1e8281711adefecacdcc02a0f668aaf2292d",
+      "before_card": {
+        "id": "ffct-17379",
+        "factId": "stainless-steel-fingerprint-smudge-g7",
+        "domain": "MATTER",
+        "topic": "Why stainless steel shows fingerprints",
+        "terms": [
+          "stainless steel",
+          "fingerprints",
+          "bakas ng daliri",
+          "smudge",
+          "mantsa",
+          "bakit nagkakabakas",
+          "ref",
+          "refrigerator",
+          "langis sa kamay",
+          "cebuano",
+          "marka sa tudlo",
+          "mantsa sa kamay",
+          "oily",
+          "everyday",
+          "why smudge"
+        ],
+        "fact": {
+          "en": "Ever notice fingerprints on shiny stainless steel like a fridge door? Those aren't rust—just a bit of oil and sweat from our fingers sticking to the smooth surface. They wipe off easily with a cloth and a little soap!",
+          "tl": "Napansin mo ba ang bakas ng daliri sa makintab na stainless steel tulad ng pinto ng ref? Hindi ito kalawang—konting langis at pawis lang mula sa daliri na dumidikit sa makinis na ibabaw. Madali itong matanggal sa basahan at kaunting sabon!",
+          "bis": "Namatikdan ba nimo ang marka sa tudlo sa sinaw nga stainless steel sama sa pultahan sa ref? Dili kana kalawang—gamay lang nga lana ug singot gikan sa tudlo nga motapot sa hamis nga ibabaw. Dali ra kini mapahid sa trapo ug gamay nga sabon!"
+        },
+        "slug": "ffct-17379",
+        "source": "original",
+        "title": {
+          "tl": "Fingerprints sa Kintab",
+          "en": "Why It Shows Fingerprints",
+          "bis": "Fingerprint sa Stainless"
+        },
+        "cats": [
+          "materials"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17379",
+        "factId": "stainless-steel-fingerprint-smudge-g7",
+        "domain": "MATTER",
+        "topic": "Why stainless steel shows fingerprints",
+        "terms": [
+          "stainless steel",
+          "fingerprints",
+          "bakas ng daliri",
+          "smudge",
+          "mantsa",
+          "bakit nagkakabakas",
+          "ref",
+          "refrigerator",
+          "langis sa kamay",
+          "cebuano",
+          "marka sa tudlo",
+          "mantsa sa kamay",
+          "oily",
+          "everyday",
+          "why smudge"
+        ],
+        "fact": {
+          "en": "Ever notice fingerprints on shiny stainless steel like a fridge door? Those aren't rust—just a bit of oil and sweat from our fingers sticking to the smooth surface. They wipe off easily with a cloth and a little soap!",
+          "tl": "Napansin mo ba ang bakas ng daliri sa makintab na stainless steel tulad ng pinto ng ref? Hindi ito kalawang—konting langis at pawis lang mula sa daliri na dumidikit sa makinis na ibabaw. Madali itong matanggal sa basahan at kaunting sabon!",
+          "bis": "Namatikdan ba nimo ang marka sa tudlo sa sinaw nga stainless steel sama sa pultahan sa ref? Dili kana kalawang. Gamay lang kana nga lana ug singot gikan sa atong mga tudlo nga motapot sa hamis nga ibabaw. Dali ra kini mapahid sa trapo ug gamay nga sabon!"
+        },
+        "slug": "ffct-17379",
+        "source": "original",
+        "title": {
+          "tl": "Fingerprints sa Kintab",
+          "en": "Why It Shows Fingerprints",
+          "bis": "Fingerprint sa Stainless"
+        },
+        "cats": [
+          "materials"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The sentence split is plausible, but the full body retains kalawang in the rust context. Independent frozen bodies corroborate the intended sense; the inspected dictionary and unsuccessful direct lookup do not settle its Cebu Cebuano use. Keep this consistent with the existing lexical holds, without treating absence or resemblance to Tagalog as proof of invalidity.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "ca93aaae1b1a517e5e2db56dba34ec8df"
+    },
+    {
+      "card_id": "ffct-17395",
+      "source_card_sha256": "7335ee89dc51584957b4f7c1c494f46f9d5397e94b0bc4e087eaee557c13772e",
+      "candidate_card_sha256": "ce3063ce20ce3c4fc8de9c6196fb5dc8bbee3d60da6e2a9b11a14d5096859474",
+      "before_card": {
+        "id": "ffct-17395",
+        "factId": "distilled-water-mineral-vs-tap-compare-g7",
+        "domain": "MATTER",
+        "topic": "distilled water compared to mineral water",
+        "terms": [
+          "distiladong tubig",
+          "mineral water",
+          "tubig na may mineral",
+          "pagkakaiba",
+          "difference",
+          "tubig sa gripo",
+          "tap water",
+          "walang mineral",
+          "may sustansya",
+          "sustansiya",
+          "ihambing",
+          "ikumpara",
+          "kalainan",
+          "tubig"
+        ],
+        "fact": {
+          "en": "Distilled water and mineral water are totally different! Distilled water has zero minerals, but mineral water is packed with natural or added minerals like calcium and magnesium.",
+          "tl": "Iba ang distiladong tubig sa mineral water! Walang mineral ang distilled water, pero puno ng natural o idinagdag na mineral tulad ng calcium at magnesium ang mineral water.",
+          "bis": "Lahi ang distiladong tubig sa mineral water! Walay mineral ang distilled water, pero puno og natural o gidugang nga mineral sama sa calcium ug magnesium ang mineral water."
+        },
+        "slug": "ffct-17395",
+        "source": "original",
+        "title": {
+          "tl": "Distilled vs Mineral Water",
+          "en": "Distilled vs Mineral",
+          "bis": "Distilled vs Mineral"
+        },
+        "cats": [
+          "water"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17395",
+        "factId": "distilled-water-mineral-vs-tap-compare-g7",
+        "domain": "MATTER",
+        "topic": "distilled water compared to mineral water",
+        "terms": [
+          "distiladong tubig",
+          "mineral water",
+          "tubig na may mineral",
+          "pagkakaiba",
+          "difference",
+          "tubig sa gripo",
+          "tap water",
+          "walang mineral",
+          "may sustansya",
+          "sustansiya",
+          "ihambing",
+          "ikumpara",
+          "kalainan",
+          "tubig"
+        ],
+        "fact": {
+          "en": "Distilled water and mineral water are totally different! Distilled water has zero minerals, but mineral water is packed with natural or added minerals like calcium and magnesium.",
+          "tl": "Iba ang distiladong tubig sa mineral water! Walang mineral ang distilled water, pero puno ng natural o idinagdag na mineral tulad ng calcium at magnesium ang mineral water.",
+          "bis": "Lahi kaayo ang distiladong tubig ug ang mineral water! Walay mineral ang distiladong tubig. Pero ang mineral water puno og natural o gidugang nga mineral, sama sa calcium ug magnesium."
+        },
+        "slug": "ffct-17395",
+        "source": "original",
+        "title": {
+          "tl": "Distilled vs Mineral Water",
+          "en": "Distilled vs Mineral",
+          "bis": "Distilled vs Mineral"
+        },
+        "cats": [
+          "water"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The complete source contrasts absolute absence of minerals in distilled water with mineral water packed with natural or added minerals. It needs more precise purity and product-category scope. Codex distinguishes natural mineral waters from other packaged drinking waters; the candidate does not resolve that ambiguity, and no foreign rule is silently applied as Philippine law.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c7bcdc74f893fde8c8e30d49401975096"
+    },
+    {
+      "card_id": "ffct-17460",
+      "source_card_sha256": "43bbe21f89737014e6c90d80e084ba275f4d8e439820a01111c6c4d8b3877086",
+      "candidate_card_sha256": "28453c2807e0080da40a22605dd16af2d84842f1863b2be1bc6e4356e950125f",
+      "before_card": {
+        "id": "ffct-17460",
+        "factId": "silk-thread-not-from-plant-misconception-g4",
+        "domain": "MATTER",
+        "topic": "Silk is from an animal not from a plant",
+        "terms": [
+          "silk",
+          "sutla",
+          "halaman ba",
+          "tanom ba",
+          "from plant",
+          "hayop",
+          "animal",
+          "mali",
+          "sayop",
+          "hindi galing halaman",
+          "misconception",
+          "saan galing",
+          "asa gikan",
+          "cotton vs silk",
+          "uod"
+        ],
+        "fact": {
+          "en": "Silk doesn't come from a plant like cotton! It actually comes from an animal, the tiny silkworm.",
+          "tl": "Hindi galing sa halaman tulad ng koton ang sutla! Galing ito sa isang hayop, ang maliit na silkworm.",
+          "bis": "Dili gikan sa tanom sama sa gapas ang sutla! Gikan kini sa hayop, ang gamay nga silkworm."
+        },
+        "slug": "qa-ffct-17460",
+        "source": "original",
+        "title": {
+          "tl": "Sutla mula sa Uod",
+          "en": "Silk from Silkworms",
+          "bis": "Sutla gikan Uod"
+        },
+        "cats": [
+          "insects",
+          "materials"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17460",
+        "factId": "silk-thread-not-from-plant-misconception-g4",
+        "domain": "MATTER",
+        "topic": "Silk is from an animal not from a plant",
+        "terms": [
+          "silk",
+          "sutla",
+          "halaman ba",
+          "tanom ba",
+          "from plant",
+          "hayop",
+          "animal",
+          "mali",
+          "sayop",
+          "hindi galing halaman",
+          "misconception",
+          "saan galing",
+          "asa gikan",
+          "cotton vs silk",
+          "uod"
+        ],
+        "fact": {
+          "en": "Silk doesn't come from a plant like cotton! It actually comes from an animal, the tiny silkworm.",
+          "tl": "Hindi galing sa halaman tulad ng koton ang sutla! Galing ito sa isang hayop, ang maliit na silkworm.",
+          "bis": "Dili gikan sa tanom sama sa gapas ang sutla! Gikan kini sa hayop, ang gamay nga silkworm."
+        },
+        "slug": "qa-ffct-17460",
+        "source": "original",
+        "title": {
+          "tl": "Sutla mula sa Uod",
+          "en": "Silk from Silkworms",
+          "bis": "Sutla gikan sa Silkworm"
+        },
+        "cats": [
+          "insects",
+          "materials"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The title adds sa and the more specific silkworm, but the full card retains sutla. Frozen-body examples do not independently establish its Cebu Cebuano use; Wolff and direct lookup were inconclusive. A historical scholarly lead was found but its primary text was unavailable. Hold without adopting the proposer unsupported claim that uod is automatically invalid.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "ccd4b860ff47c3fa16d5ef601fa2bb5c6"
+    },
+    {
+      "card_id": "ffct-17466",
+      "source_card_sha256": "b09d990b6e67bed1da682eddbf30d5b961bd99b6cb13426549905484c6b0994e",
+      "candidate_card_sha256": "0fc4cc1a6b83c7f787097c4bbca4ddb87f72064862d9b2cd299e11a70d52f5e6",
+      "before_card": {
+        "id": "ffct-17466",
+        "factId": "invisible-ink-calamansi-g6",
+        "domain": "MATTER",
+        "topic": "calamansi juice as invisible ink",
+        "terms": [
+          "invisible ink",
+          "kalamansi",
+          "calamansi",
+          "katas",
+          "tinta",
+          "lihim na sulat",
+          "naninilaw",
+          "init",
+          "browning",
+          "acid",
+          "asido",
+          "hidden writing",
+          "duga",
+          "duga sa kalamansi",
+          "nagbrown",
+          "tinago nga sulat"
+        ],
+        "fact": {
+          "en": "Calamansi juice works as invisible ink! The writing stays hidden until you heat the paper, making the juice turn brown and appear.",
+          "tl": "Pwedeng gamitin ang calamansi juice bilang invisible ink! Nakatago ang sulat hanggang painitin ang papel, na magpapabrown at magpapakita nito.",
+          "bis": "Ang calamansi juice pwede gamiton isip invisible ink! Nakatago ang sulat hangtod init-on ang papel, nga mopabrown ug mopakita niini."
+        },
+        "slug": "",
+        "title": {
+          "en": "Invisible Ink",
+          "tl": "Lihim na Tinta",
+          "bis": "Lihim nga Tinta"
+        },
+        "cats": [
+          "chemical-reactions",
+          "heat"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "invisible ink"
+          ],
+          "en": [
+            "invisible ink"
+          ],
+          "bis": [
+            "invisible ink"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-17466",
+        "factId": "invisible-ink-calamansi-g6",
+        "domain": "MATTER",
+        "topic": "calamansi juice as invisible ink",
+        "terms": [
+          "invisible ink",
+          "kalamansi",
+          "calamansi",
+          "katas",
+          "tinta",
+          "lihim na sulat",
+          "naninilaw",
+          "init",
+          "browning",
+          "acid",
+          "asido",
+          "hidden writing",
+          "duga",
+          "duga sa kalamansi",
+          "nagbrown",
+          "tinago nga sulat"
+        ],
+        "fact": {
+          "en": "Calamansi juice works as invisible ink! The writing stays hidden until you heat the paper, making the juice turn brown and appear.",
+          "tl": "Pwedeng gamitin ang calamansi juice bilang invisible ink! Nakatago ang sulat hanggang painitin ang papel, na magpapabrown at magpapakita nito.",
+          "bis": "Ang calamansi juice pwede gamiton isip invisible ink! Nakatago ang sulat hangtod nga imong init-on ang papel. Ang kainit mopabrown sa juice, ug motungha ang sulat!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Invisible Ink",
+          "tl": "Lihim na Tinta",
+          "bis": "Lihim nga Tinta"
+        },
+        "cats": [
+          "chemical-reactions",
+          "heat"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "invisible ink"
+          ],
+          "en": [
+            "invisible ink"
+          ],
+          "bis": [
+            "invisible ink"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The source asks a child to heat invisible-ink paper without specifying a safe method or adult handling. The ACS teaching activity supplies explicit adult heating precautions. Wolff tungha supports appear, so the concern is the missing experimental context rather than the candidate vocabulary. No new safety procedure or retirement is invented here.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "cebc96c91703cce2da09e61ae9fa95b6b"
+    },
+    {
+      "card_id": "ffct-17563",
+      "source_card_sha256": "397e5aa9fb33b337cd80f39ad6845146b5c36a780d93a2b0251c18a808bd36ac",
+      "candidate_card_sha256": "ad1b2159dd41cfe561103b580e56d3da34ace503f16be322e1cda5ba28a11d8f",
+      "before_card": {
+        "id": "ffct-17563",
+        "factId": "making-tubig-buko-juice-mixture-g4",
+        "domain": "MATTER",
+        "topic": "making buko juice mixture",
+        "terms": [
+          "buko juice",
+          "tubig buko",
+          "buko",
+          "coconut water",
+          "halo",
+          "mixture",
+          "natunaw",
+          "asukal",
+          "dissolve",
+          "naghahalo",
+          "inumin",
+          "solution",
+          "nagtunaw",
+          "sagol",
+          "tubig sa lubi",
+          "magsagol"
+        ],
+        "fact": {
+          "en": "How does buko juice become a sweet drink?\n\nIt becomes sweet when sugar is mixed in and dissolves, spreading evenly through the liquid to form a yummy mixture!",
+          "tl": "Paano nagiging matamis ang buko juice?\n\nNagiging matamis ito kapag hinaluan ng asukal na natutunaw at kumakalat nang pantay sa buong likido para gumawa ng masarap na mixture!",
+          "bis": "Unsaon pagkahimong tam-is ang tubig buko?\n\nMahimo kining tam-is kon sagolan ug asukal nga matunaw ug mokatag nga patas sa tibuok likido aron makahimo ug lami nga mixture!"
+        },
+        "slug": "buko-juice-glass",
+        "title": {
+          "en": "Buko Juice Mix",
+          "tl": "Buko Juice na Halo",
+          "bis": "Buko Juice nga Halo"
+        },
+        "cats": [
+          "mixtures",
+          "solutions"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "natutunaw"
+          ],
+          "en": [
+            "dissolves"
+          ],
+          "bis": [
+            "matunaw"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-17563",
+        "factId": "making-tubig-buko-juice-mixture-g4",
+        "domain": "MATTER",
+        "topic": "making buko juice mixture",
+        "terms": [
+          "buko juice",
+          "tubig buko",
+          "buko",
+          "coconut water",
+          "halo",
+          "mixture",
+          "natunaw",
+          "asukal",
+          "dissolve",
+          "naghahalo",
+          "inumin",
+          "solution",
+          "nagtunaw",
+          "sagol",
+          "tubig sa lubi",
+          "magsagol"
+        ],
+        "fact": {
+          "en": "How does buko juice become a sweet drink?\n\nIt becomes sweet when sugar is mixed in and dissolves, spreading evenly through the liquid to form a yummy mixture!",
+          "tl": "Paano nagiging matamis ang buko juice?\n\nNagiging matamis ito kapag hinaluan ng asukal na natutunaw at kumakalat nang pantay sa buong likido para gumawa ng masarap na mixture!",
+          "bis": "Unsaon pagkahimong tam-is ang tubig buko?\n\nMahimo kining tam-is kon sagolan ug asukal. Ang asukal matunaw ug mokatag nga patas sa tibuok likido, ug mahimo kining lami nga mixture!"
+        },
+        "slug": "buko-juice-glass",
+        "title": {
+          "en": "Buko Juice Mix",
+          "tl": "Buko Juice na Halo",
+          "bis": "Buko Juice nga Halo"
+        },
+        "cats": [
+          "mixtures",
+          "solutions"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "natutunaw"
+          ],
+          "en": [
+            "dissolves"
+          ],
+          "bis": [
+            "matunaw"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The English says coconut water becomes sweet when sugar is added, which obscures its existing natural sugars. The inspected DOST/UPLB research measures free sugars already present in coconut water. Hold the source distinction between becoming sweet and becoming sweeter; do not synthesize an unassessed correction.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c36cc8ed9082a0f2d36af16cb22db4edb"
+    },
+    {
+      "card_id": "ffct-17582",
+      "source_card_sha256": "2dc48d8a9d7dd511f803e0547814ece440824d815684289252ccf36e841f9116",
+      "candidate_card_sha256": "6ea213034b6fc425882863549cf6c272f2af9593a01a1b912885f7c5bc562299",
+      "before_card": {
+        "id": "ffct-17582",
+        "factId": "chromatography-separates-spot-placement-g7",
+        "domain": "MATTER",
+        "topic": "Why the ink dot must stay above the water",
+        "terms": [
+          "chromatography",
+          "tuldok",
+          "spot",
+          "dot",
+          "tubig",
+          "water",
+          "babaw",
+          "above",
+          "hindi lulubog",
+          "not submerged",
+          "paraan",
+          "method",
+          "tamang gawa",
+          "line",
+          "hugna",
+          "ngano"
+        ],
+        "fact": {
+          "en": "Important: the ink dot must sit above the water line! If it dips into the water, it just dissolves away instead of climbing up and separating neatly.",
+          "tl": "Mahalaga: ang tuldok ng tinta ay dapat nasa itaas ng linya ng tubig! Kung lulubog ito, matutunaw lang sa halos aakyat at maghihiwalay nang maayos.",
+          "bis": "Importante: ang tuldok sa tinta kinahanglan ibabaw sa linya sa tubig! Kung mounlod, matunaw lang kini didto imbes nga mosaka ug mabulag og maayo."
+        },
+        "slug": "ffct-15936",
+        "title": {
+          "en": "Ink Dot Placement",
+          "tl": "Posisyon ng Ink Dot",
+          "bis": "Posisyon sa Ink Dot"
+        },
+        "cats": [
+          "mixtures",
+          "chemistry"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "itaas"
+          ],
+          "en": [
+            "above"
+          ],
+          "bis": [
+            "ibabaw"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-17582",
+        "factId": "chromatography-separates-spot-placement-g7",
+        "domain": "MATTER",
+        "topic": "Why the ink dot must stay above the water",
+        "terms": [
+          "chromatography",
+          "tuldok",
+          "spot",
+          "dot",
+          "tubig",
+          "water",
+          "babaw",
+          "above",
+          "hindi lulubog",
+          "not submerged",
+          "paraan",
+          "method",
+          "tamang gawa",
+          "line",
+          "hugna",
+          "ngano"
+        ],
+        "fact": {
+          "en": "Important: the ink dot must sit above the water line! If it dips into the water, it just dissolves away instead of climbing up and separating neatly.",
+          "tl": "Mahalaga: ang tuldok ng tinta ay dapat nasa itaas ng linya ng tubig! Kung lulubog ito, matutunaw lang sa halos aakyat at maghihiwalay nang maayos.",
+          "bis": "Importante: ang tuldok sa tinta kinahanglan anaa sa ibabaw sa linya sa tubig! Kung mounlod kini sa tubig, matunaw lang kini didto imbes nga mosaka ug mabulag og maayo."
+        },
+        "slug": "ffct-15936",
+        "title": {
+          "en": "Ink Dot Placement",
+          "tl": "Posisyon ng Ink Dot",
+          "bis": "Posisyon sa Ink Dot"
+        },
+        "cats": [
+          "mixtures",
+          "chemistry"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "itaas"
+          ],
+          "en": [
+            "above"
+          ],
+          "bis": [
+            "ibabaw"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The candidate makes the water referent explicit, but the standalone full card never introduces the paper-chromatography setup or suitable soluble ink. RSC instructions provide that apparatus and solvent context before requiring the spot above the water line. Hold the missing context rather than assume an unseen preceding card; no experimental procedure is added.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "cf83fdff626d88e06edd22bf7ef08f024"
+    },
+    {
+      "card_id": "ffct-17728",
+      "source_card_sha256": "3ddb936c88b63ba8b143a81843d6420d97602ffe50fa92217e34987f1d0ffe74",
+      "candidate_card_sha256": "a53fbfe3cbbf64ba5c5de0e846ea220be9c2d17d4034ee8d1f1e19fdd820f72c",
+      "before_card": {
+        "id": "ffct-17728",
+        "factId": "water-refilling-station-scene-g5",
+        "domain": "MATTER",
+        "topic": "water purification refilling station",
+        "terms": [
+          "refilling station",
+          "water station",
+          "purified water",
+          "tubig",
+          "purified na tubig",
+          "ligtas inumin",
+          "pagsala ng tubig",
+          "filter",
+          "limpyo nga tubig",
+          "tubig sa refilling",
+          "gisala nga tubig",
+          "filtration",
+          "drinking water"
+        ],
+        "fact": {
+          "en": "How does a water refilling station clean our water?\n\nWater passes through filters and sometimes ultraviolet light to remove dirt and germs, making it safe to drink!",
+          "tl": "Paano nililinis ng water refilling station ang tubig?\n\nDumadaan ito sa mga filter at minsan sa ultraviolet light para alisin ang dumi at mikrobyo, kaya ligtas na inumin!",
+          "bis": "Giunsa paglimpyo sa water refilling station ang tubig?\n\nMoagi kini sa mga filter ug usahay sa ultraviolet light aron makuha ang hugaw ug mikrobyo, aron luwas na imnon!"
+        },
+        "slug": "ffct-16913",
+        "title": {
+          "en": "Water Purification",
+          "tl": "Paglilinis ng Tubig",
+          "bis": "Paglimpyo sa Tubig"
+        },
+        "cats": [
+          "water",
+          "health"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "filter",
+            "ultraviolet light"
+          ],
+          "en": [
+            "filters",
+            "ultraviolet light"
+          ],
+          "bis": [
+            "filter",
+            "ultraviolet light"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-17728",
+        "factId": "water-refilling-station-scene-g5",
+        "domain": "MATTER",
+        "topic": "water purification refilling station",
+        "terms": [
+          "refilling station",
+          "water station",
+          "purified water",
+          "tubig",
+          "purified na tubig",
+          "ligtas inumin",
+          "pagsala ng tubig",
+          "filter",
+          "limpyo nga tubig",
+          "tubig sa refilling",
+          "gisala nga tubig",
+          "filtration",
+          "drinking water"
+        ],
+        "fact": {
+          "en": "How does a water refilling station clean our water?\n\nWater passes through filters and sometimes ultraviolet light to remove dirt and germs, making it safe to drink!",
+          "tl": "Paano nililinis ng water refilling station ang tubig?\n\nDumadaan ito sa mga filter at minsan sa ultraviolet light para alisin ang dumi at mikrobyo, kaya ligtas na inumin!",
+          "bis": "Giunsa paglimpyo sa water refilling station ang tubig?\n\nAng tubig moagi sa mga filter ug usahay sa ultraviolet light aron makuha ang hugaw ug mikrobyo. Mao nga luwas na kini imnon!"
+        },
+        "slug": "ffct-16913",
+        "title": {
+          "en": "Water Purification",
+          "tl": "Paglilinis ng Tubig",
+          "bis": "Paglimpyo sa Tubig"
+        },
+        "cats": [
+          "water",
+          "health"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "filter",
+            "ultraviolet light"
+          ],
+          "en": [
+            "filters",
+            "ultraviolet light"
+          ],
+          "bis": [
+            "filter",
+            "ultraviolet light"
+          ]
+        }
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The complete source moves from generic filters and sometimes UV treatment to an unconditional safe-to-drink conclusion. CDC distinguishes treatment capabilities and states that UV does not remove chemicals. Hold the safety guarantee for English-led review; the sentence split does not prove that any particular refill station meets water-quality requirements.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c5e268605c0102e933c35eeb1744fde71"
+    },
+    {
+      "card_id": "ffct-17739",
+      "source_card_sha256": "90a9f690d38ecd7c36c7fee804c196b1beee070ae7ec748ee1cb0cc3e8e303ef",
+      "candidate_card_sha256": "292887c351f71ba98089041bd7002d94fca873a9dad9cda68d8a9f4a553f2aac",
+      "before_card": {
+        "id": "ffct-17739",
+        "factId": "paper-made-color-white-g4",
+        "domain": "MATTER",
+        "topic": "Plain paper is often whitened during making",
+        "terms": [
+          "paper",
+          "papel",
+          "puti",
+          "white",
+          "kulay",
+          "color",
+          "bakit puti",
+          "ngano puti",
+          "kahoy",
+          "wood",
+          "brown",
+          "kayumanggi",
+          "linis",
+          "bleach",
+          "pinaputi",
+          "manila",
+          "recycled"
+        ],
+        "fact": {
+          "en": "Why is ordinary paper white if wood is naturally brown?\n\nOrdinary paper is made white so writing shows clearly! But some paper stays brown, like cardboard and recycled paper.",
+          "tl": "Bakit puti ang karaniwang papel kung kayumanggi naman ang kahoy?\n\nGinagawang puti ang karaniwang papel para malinaw ang sinusulat! Pero may papel na nananatiling kayumanggi, gaya ng karton at recycled paper.",
+          "bis": "Ngano puti ang ordinaryo nga papel kung kayumanggi man ang kahoy?\n\nGihimong puti ang ordinaryo nga papel aron klaro ang gisulat! Apan adunay papel nga nagpabiling kayumanggi, sama sa karton ug recycled paper."
+        },
+        "slug": "qa-ffct-17739",
+        "source": "original",
+        "title": {
+          "tl": "Papel Puti Karton Kayumanggi",
+          "en": "Why Paper Is White",
+          "bis": "Papel Puti Karton Kayumanggi"
+        },
+        "cats": [
+          "materials"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17739",
+        "factId": "paper-made-color-white-g4",
+        "domain": "MATTER",
+        "topic": "Plain paper is often whitened during making",
+        "terms": [
+          "paper",
+          "papel",
+          "puti",
+          "white",
+          "kulay",
+          "color",
+          "bakit puti",
+          "ngano puti",
+          "kahoy",
+          "wood",
+          "brown",
+          "kayumanggi",
+          "linis",
+          "bleach",
+          "pinaputi",
+          "manila",
+          "recycled"
+        ],
+        "fact": {
+          "en": "Why is ordinary paper white if wood is naturally brown?\n\nOrdinary paper is made white so writing shows clearly! But some paper stays brown, like cardboard and recycled paper.",
+          "tl": "Bakit puti ang karaniwang papel kung kayumanggi naman ang kahoy?\n\nGinagawang puti ang karaniwang papel para malinaw ang sinusulat! Pero may papel na nananatiling kayumanggi, gaya ng karton at recycled paper.",
+          "bis": "Ngano puti ang ordinaryo nga papel kung kayumanggi man ang kahoy?\n\nGihimong puti ang ordinaryo nga papel aron klaro ang gisulat! Apan adunay papel nga nagpabiling kayumanggi, sama sa karton ug recycled paper."
+        },
+        "slug": "qa-ffct-17739",
+        "source": "original",
+        "title": {
+          "tl": "Papel Puti Karton Kayumanggi",
+          "en": "Why Paper Is White",
+          "bis": "Nganong Puti ang Papel"
+        },
+        "cats": [
+          "materials"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The title is clearer but the full body keeps kayumanggi for brown. The proposer also requested native review. Corpus examples alone and an unreliable general vocabulary page do not resolve the lexical question; Wolff and direct lookup did not establish it. Hold without ruling the word invalid or automatically replacing it.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c9b427bce8ed06d72062157caecd786dc"
+    },
+    {
+      "card_id": "ffct-17740",
+      "source_card_sha256": "b57c5515769f46828e1829cd8b28864109dbee24ce86602d9e0b6a17ac7d19e4",
+      "candidate_card_sha256": "b2fa4902136bd30b9467c8231ff5600f6259e7281802d2aae2a7d982ec4a2bfb",
+      "before_card": {
+        "id": "ffct-17740",
+        "factId": "paper-made-uses-everyday-g3",
+        "domain": "MATTER",
+        "topic": "Paper is used for many everyday things",
+        "terms": [
+          "paper",
+          "papel",
+          "gamit",
+          "uses",
+          "ginagamit",
+          "libro",
+          "book",
+          "notebook",
+          "kwaderno",
+          "sulat",
+          "writing",
+          "tisyu",
+          "tissue",
+          "pera",
+          "money",
+          "para saan",
+          "unsa gamit",
+          "diary"
+        ],
+        "fact": {
+          "en": "What everyday things are made from paper?\n\nPaper becomes books, notebooks, tissue, boxes, and even money! All of these amazing items come from the same wood fibers.",
+          "tl": "Anong mga gamit sa araw-araw ang gawa sa papel?\n\nAng papel ay ginagawang libro, kwaderno, tisyu, kahon, at maging pera! Lahat ng ito ay nagmula sa parehong hibla ng kahoy.",
+          "bis": "Unsa nga mga gamit sa adlaw-adlaw ang hinimo sa papel?\n\nAng papel gihimong libro, kwaderno, tisyu, kahon, ug bisan kwarta! Tanan kini gikan sa parehong hibla sa kahoy."
+        },
+        "slug": "ffct-17740",
+        "source": "original",
+        "title": {
+          "tl": "Papel Libro Tisyu Kahon Pera",
+          "en": "Everyday Paper Things",
+          "bis": "Papel Libro Tisyu Kahon"
+        },
+        "cats": [
+          "materials"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17740",
+        "factId": "paper-made-uses-everyday-g3",
+        "domain": "MATTER",
+        "topic": "Paper is used for many everyday things",
+        "terms": [
+          "paper",
+          "papel",
+          "gamit",
+          "uses",
+          "ginagamit",
+          "libro",
+          "book",
+          "notebook",
+          "kwaderno",
+          "sulat",
+          "writing",
+          "tisyu",
+          "tissue",
+          "pera",
+          "money",
+          "para saan",
+          "unsa gamit",
+          "diary"
+        ],
+        "fact": {
+          "en": "What everyday things are made from paper?\n\nPaper becomes books, notebooks, tissue, boxes, and even money! All of these amazing items come from the same wood fibers.",
+          "tl": "Anong mga gamit sa araw-araw ang gawa sa papel?\n\nAng papel ay ginagawang libro, kwaderno, tisyu, kahon, at maging pera! Lahat ng ito ay nagmula sa parehong hibla ng kahoy.",
+          "bis": "Unsa nga mga gamit sa adlaw-adlaw ang hinimo sa papel?\n\nAng papel gihimong libro, kwaderno, tisyu, kahon, ug bisan kwarta! Tanan kini gikan sa parehong hibla sa kahoy."
+        },
+        "slug": "ffct-17740",
+        "source": "original",
+        "title": {
+          "tl": "Papel Libro Tisyu Kahon Pera",
+          "en": "Everyday Paper Things",
+          "bis": "Mga Gamit nga Hinimo sa Papel"
+        },
+        "cats": [
+          "materials"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The full English places money among paper products made of the same wood fibers. BSP documents cotton/abaca paper banknotes and polymer banknotes, so this is not a defensible general Philippine money example. Hold for a canonical English correction across languages; do not apply only the clearer Cebuano.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c0a2b2e7a68251759e92efe4ea6ee269f"
+    },
+    {
+      "card_id": "ffct-17776",
+      "source_card_sha256": "737daf73a351d737c74591b862f970675cc950d780306d7620edc88e1c960d66",
+      "candidate_card_sha256": "94e7dce553a1a479a36230fd62787983926a865b882b20f957c67026874fb543",
+      "before_card": {
+        "id": "ffct-17776",
+        "factId": "natural-fibers-strength-test-g5",
+        "domain": "MATTER",
+        "topic": "Why some natural fibers are stronger than others",
+        "terms": [
+          "strength",
+          "lakas",
+          "matibay",
+          "bakit matibay",
+          "abaca strong",
+          "cotton mahina",
+          "fiber strength",
+          "mahaba ang hibla",
+          "long fiber",
+          "pull test",
+          "hila",
+          "tibay ng hibla",
+          "matatag"
+        ],
+        "fact": {
+          "en": "Some natural fibers are stronger because their strands are longer and thicker! Abaca is stronger than cotton, making it perfect for ropes, while cotton is for clothes. Longer fibers are harder to tear!",
+          "tl": "Mas matibay ang ibang natural fiber dahil mas mahaba at makapal ang himaymay! Mas matibay ang abaca kaysa cotton, kaya pang-lubid ito habang pang-damit lang ang cotton. Mas mahaba ang hibla, mas mahirap putulin!",
+          "bis": "Mas lig-on ang ubang natural fiber kay mas taas ug baga ang himaymay! Mas lig-on ang abaca kaysa cotton, mao nga pang-pisi kini samtang pang-sinina ang cotton. Mas taas ang himaymay, mas lisod bugtoon!"
+        },
+        "slug": "ffct-17776",
+        "source": "original",
+        "title": {
+          "tl": "Abaca Strand Taba Lakas",
+          "en": "Abaca Stronger Than Cotton",
+          "bis": "Abaca sa Kusog"
+        },
+        "cats": [
+          "materials"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17776",
+        "factId": "natural-fibers-strength-test-g5",
+        "domain": "MATTER",
+        "topic": "Why some natural fibers are stronger than others",
+        "terms": [
+          "strength",
+          "lakas",
+          "matibay",
+          "bakit matibay",
+          "abaca strong",
+          "cotton mahina",
+          "fiber strength",
+          "mahaba ang hibla",
+          "long fiber",
+          "pull test",
+          "hila",
+          "tibay ng hibla",
+          "matatag"
+        ],
+        "fact": {
+          "en": "Some natural fibers are stronger because their strands are longer and thicker! Abaca is stronger than cotton, making it perfect for ropes, while cotton is for clothes. Longer fibers are harder to tear!",
+          "tl": "Mas matibay ang ibang natural fiber dahil mas mahaba at makapal ang himaymay! Mas matibay ang abaca kaysa cotton, kaya pang-lubid ito habang pang-damit lang ang cotton. Mas mahaba ang hibla, mas mahirap putulin!",
+          "bis": "Mas lig-on ang ubang natural fiber kay mas taas ug baga ang himaymay! Mas lig-on ang abaca kaysa cotton, mao nga pang-pisi kini samtang pang-sinina ang cotton. Mas taas ang himaymay, mas lisod bugtoon!"
+        },
+        "slug": "ffct-17776",
+        "source": "original",
+        "title": {
+          "tl": "Abaca Strand Taba Lakas",
+          "en": "Abaca Stronger Than Cotton",
+          "bis": "Mas Lig-on ang Abaca kaysa Cotton"
+        },
+        "cats": [
+          "materials"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The source gives a blanket longer-fiber-means-harder-to-tear explanation for abaca versus cotton. Primary abaca research identifies material grade, width and cell-wall architecture among relevant mechanical factors; it does not establish the stated length-only rule. Hold the causal simplification without claiming abaca is weaker than cotton or rejecting himaymay merely because its entry was unavailable.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c95443455a5061f4c343bb6c14424bed8"
+    },
+    {
+      "card_id": "ffct-17952",
+      "source_card_sha256": "4a2f8c527970d4f1197d9b634a2c46e16adea23facbdbc7c08dcd49a8a2b6d46",
+      "candidate_card_sha256": "03a40eb172450fbb7927312aa1070b7f3e67f9256b3d578115851915cb31098e",
+      "before_card": {
+        "id": "ffct-17952",
+        "factId": "nickel-silver-alloy-g7",
+        "domain": "MATTER",
+        "topic": "nickel silver contains no real silver",
+        "terms": [
+          "nickel silver",
+          "copper",
+          "zinc",
+          "nickel",
+          "alloy",
+          "haluang metal",
+          "silver color",
+          "kulay pilak",
+          "kutsilyo",
+          "flatware",
+          "utensils"
+        ],
+        "fact": {
+          "en": "Does nickel silver have real silver?\n\nNope! It's an alloy of copper, zinc, and nickel that just looks like silver. It's used for cutlery and decorations!",
+          "tl": "May tunay ba pilak ang nickel silver?\n\nWala! Ito ay alloy ng tanso, zinc, at nickel na mukhang pilak lang. Ginagamit ito sa kubyertos at dekorasyon!",
+          "bis": "Naay tinuod ba nga pilak ang nickel silver?\n\nWala! Kini usa ka alloy sa tanso, zinc, ug nickel nga morag pilak. Gigamit kini sa kubyertos ug dekorasyon!"
+        },
+        "slug": "qa-ffct-17952",
+        "source": "original",
+        "title": {
+          "tl": "Nickel Silver na Walang Pilak",
+          "en": "Nickel Silver No Silver",
+          "bis": "Nickel Silver Pilak"
+        },
+        "cats": [
+          "materials"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-17952",
+        "factId": "nickel-silver-alloy-g7",
+        "domain": "MATTER",
+        "topic": "nickel silver contains no real silver",
+        "terms": [
+          "nickel silver",
+          "copper",
+          "zinc",
+          "nickel",
+          "alloy",
+          "haluang metal",
+          "silver color",
+          "kulay pilak",
+          "kutsilyo",
+          "flatware",
+          "utensils"
+        ],
+        "fact": {
+          "en": "Does nickel silver have real silver?\n\nNope! It's an alloy of copper, zinc, and nickel that just looks like silver. It's used for cutlery and decorations!",
+          "tl": "May tunay ba pilak ang nickel silver?\n\nWala! Ito ay alloy ng tanso, zinc, at nickel na mukhang pilak lang. Ginagamit ito sa kubyertos at dekorasyon!",
+          "bis": "Naa bay tinuod nga pilak sa nickel silver?\n\nWala! Alloy kini sa tanso, zinc, ug nickel nga morag pilak lang. Gigamit kini sa kubyertos ug dekorasyon!"
+        },
+        "slug": "qa-ffct-17952",
+        "source": "original",
+        "title": {
+          "tl": "Nickel Silver na Walang Pilak",
+          "en": "Nickel Silver No Silver",
+          "bis": "Nickel Silver nga Walay Pilak"
+        },
+        "cats": [
+          "materials"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The question and title correctly clarify the absence of silver in nickel silver, but the full body retains tanso for copper. Wolff pilak supports silver; the tanso lookup and corpus examples did not establish the Cebu Cebuano sense. Hold the exact candidate without banning a possible loanword or automatically substituting tumbaga.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c038f83c53ee4f6a3d51c2f1807320f9f"
+    }
+  ],
+  "prior_mandatory_missing_judgment_holds": [
+    "ffct-15686"
+  ],
+  "native_verified": false,
+  "science_verified": false,
+  "released": false,
+  "source_precision_holds_require_cross_language_review": [
+    "ffct-17255",
+    "ffct-17350",
+    "ffct-17395",
+    "ffct-17466",
+    "ffct-17563",
+    "ffct-17582",
+    "ffct-17728",
+    "ffct-17740",
+    "ffct-17776"
+  ],
+  "lexical_holds": [
+    "ffct-17379",
+    "ffct-17460",
+    "ffct-17739",
+    "ffct-17952"
+  ],
+  "fidelity_holds": [],
+  "readability_holds": []
+}

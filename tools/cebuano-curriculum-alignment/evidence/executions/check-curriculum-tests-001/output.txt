@@ -1,0 +1,127 @@
+✔ Calendar tap honors every visible topic: fresh (111.722084ms)
+✔ Calendar tap honors every visible topic: completed-persisted (68.489167ms)
+✔ Calendar tap honors every visible topic: completed-session (40.66625ms)
+✔ Calendar tap honors every visible topic: only-current-unseen (40.068209ms)
+✔ Calendar subcategories stay scoped and resume correctly: Grade 3 (3.967833ms)
+✔ Calendar subcategories stay scoped and resume correctly: Grade 4 (2.368875ms)
+✔ Calendar subcategories stay scoped and resume correctly: Grade 5 (2.72ms)
+✔ Calendar subcategories stay scoped and resume correctly: Grade 6 (4.003708ms)
+✔ Calendar subcategories stay scoped and resume correctly: Grade 7 (2.601292ms)
+✔ Calendar subcategories stay scoped and resume correctly: Grade 8 (2.753042ms)
+✔ Calendar subcategories stay scoped and resume correctly: Grade 9 (3.856708ms)
+✔ Calendar subcategories stay scoped and resume correctly: Grade 10 (3.09275ms)
+✔ manual Calendar selection defers old-topic reinforcement without dropping it (401.944958ms)
+✔ an old quiz continuation respects the latest manual Calendar destination (0.2295ms)
+✔ Calendar subcategory pills are title-cased, linkers intact, never truncated (5.541916ms)
+✔ titleCase leaves the deck’s linkers alone (0.092292ms)
+✔ Thin subcategories are hidden from the sheet but still resolve (13.885292ms)
+✔ The Calendar mounts a bounded number of pills per grade (2.21675ms)
+✔ calendar estimates stay in the selected grade and advance through quarter topics (7.524375ms)
+✖ curriculum successors stay in topic without keyword forks, then advance and review (13.974667ms)
+✔ reviewed sleep-pressure card remains available but is excluded from plant reproduction (0.808542ms)
+✔ all listed BOW competencies retain reviewed teaching and quiz anchors across all terms (66.613917ms)
+✔ known incidental matches cannot re-enter reviewed lessons (0.170916ms)
+✔ Grade 10 covers all 45 competencies, all categories and every core quiz slot (119.266917ms)
+✔ Grade 10 real feed walks each planned lesson, restores after every card and wraps (24.804041ms)
+✔ Grade 10 reserves are all eventually reachable without dropping coverage or duplicating facts (1.421917ms)
+✔ Grade 10 additions are offline, trilingual, scoped correctly and do not activate unsupported grades (2.345584ms)
+✔ Grade 10 supplemental cards and lessons follow the rotated quarter order in real feed weights (77.334209ms)
+✔ Grade 3 covers all 34 competencies, all categories and every core quiz slot (113.564334ms)
+✔ Grade 3 real feed walks each planned lesson, restores after every card and wraps (25.4055ms)
+✔ Grade 3 reserves are all eventually reachable without dropping coverage or duplicating facts (1.190334ms)
+✔ Grade 3 additions are offline, trilingual, scoped correctly and do not activate unsupported grades (1.02975ms)
+✔ Grade 4 covers all 33 competencies, all categories and every core quiz slot (107.682042ms)
+✔ Grade 4 real feed walks each planned lesson, restores after every card and wraps (20.550125ms)
+✔ Grade 4 reserves are all eventually reachable without dropping coverage or duplicating facts (1.07925ms)
+✔ Grade 4 additions are offline, trilingual, scoped correctly and do not activate unsupported grades (1.216291ms)
+✔ all forty curriculum competencies have teaching and quiz candidates in the required calendar (20.953125ms)
+✔ real feed completes each bounded run in order, resumes exactly, and keeps reserve cards (20.829583ms)
+✔ small reviewed lessons repeat only their approved cards; invalid saves rebuild; profiles do not share progress (0.335417ms)
+✔ supplemental erosion activity and all new quizzes work offline in all three languages (0.749333ms)
+✔ broader runs keep coverage, use additional examples and exhaust every eligible fact over revisits (1.95275ms)
+✔ reviewed pools preserve relevance and scoped exclusions (0.997708ms)
+✔ adding related inventory preserves a valid in-progress core-only saved run (0.103541ms)
+✔ Grade 6 covers all 37 competencies, all categories and every core quiz slot (114.05225ms)
+✔ Grade 6 real feed walks every planned card, defers an adjacent repeat, restores and wraps (28.834584ms)
+✔ Grade 6 reserves are all eventually reachable without dropping coverage or duplicating facts (3.621417ms)
+✔ Grade 6 additions are offline, trilingual, scoped correctly and do not activate unsupported grades (1.960875ms)
+✔ Grade 7 covers all 45 competencies, all categories and every core quiz slot (111.203542ms)
+✔ Grade 7 real feed walks each planned lesson, restores after every card and wraps (23.651541ms)
+✔ Grade 7 reserves are all eventually reachable without dropping coverage or duplicating facts (1.392542ms)
+✔ Grade 7 additions are offline, trilingual, scoped correctly and do not activate unsupported grades (2.224916ms)
+✔ Grade 8 covers all 44 competencies, all categories and every core quiz slot (106.141416ms)
+✔ Grade 8 real feed walks each planned lesson, restores after every card and wraps (22.48075ms)
+✔ Grade 8 reserves are all eventually reachable without dropping coverage or duplicating facts (1.426375ms)
+✔ Grade 8 additions are offline, trilingual, scoped correctly and do not activate unsupported grades (2.331208ms)
+✔ Grade 8 supplemental cards and lessons follow the rotated quarter order in real feed weights (76.428916ms)
+✔ Grade 9 covers all 46 competencies, all categories and every core quiz slot (110.39025ms)
+✔ Grade 9 real feed walks each planned lesson, restores after every card and wraps (25.817458ms)
+✔ Grade 9 reserves are all eventually reachable without dropping coverage or duplicating facts (1.466959ms)
+✔ Grade 9 additions are offline, trilingual, scoped correctly and do not activate unsupported grades (2.145292ms)
+✔ Grade 9 supplemental cards and lessons follow the rotated quarter order in real feed weights (80.044125ms)
+Planned 2472 real lessons in 38 ms (Node, not phone)
+✔ all grades retain objective quizzes, eligibility, bounds and distinct facts across seeds (39.542084ms)
+✔ rich lessons vary optional examples and order, including after everything has been seen (2.222292ms)
+✔ old saves and new seeded saves resume exactly even with another seed or graph revision (0.237833ms)
+✔ remaining unseen optional facts win even when they are semantically repetitive (0.296458ms)
+✔ LaBSE hints demote a known similar fact; absent and stale hints do not (0.20675ms)
+✔ similarity artifact matches all frozen content inputs and has bounded valid edges (100.892625ms)
+✔ 20 unique viewed cards create 3 questions; repeated views and unavailable quizzes do not pad sets (1.826417ms)
+✔ coincident topic and checkpoint triggers create one bounded recap of the completed topic (0.147916ms)
+✔ answers, option order and summaries survive serialization; double grading is ignored (1.082667ms)
+✔ missed quizzes queue source cards for reinforcement and completed topics earn stars (0.16525ms)
+✔ defer preserves an unfinished set and repeats become eligible only after spacing (0.141ms)
+✔ pending sets do not reserve the same quiz twice; correct repeats require spacing (0.18175ms)
+✔ only a strict-majority topic failure selects a remediation subcategory (0.15025ms)
+✔ remedial cards create a recap; a majority pass restores declared-grade flow (0.175292ms)
+✔ a failed remedial recap repeats the lower-level run without changing declared grade (0.105666ms)
+✔ single quizzes at 5, 10 and 15 cards coexist with a 20-card series containing one repeat and two new questions (0.723333ms)
+✔ repeat slot prefers a missed answer and does not reuse a just-answered quiz (0.137125ms)
+✔ sparse question banks still offer available singles and never manufacture quiz content (0.137417ms)
+✔ topics below 20 cards omit the third standalone round and keep their closing review (2.0465ms)
+✔ standalone allowance resets on a new short topic (0.124167ms)
+✔ a recap uses distinct lesson objectives even when competency labels are identical (0.219333ms)
+✔ pilot scope includes every official block overlapping Term 2 weeks 4–9 (15.137917ms)
+✔ scheduled pilot lessons use reviewed candidates and preserve quiz anchors across seeds (29.472042ms)
+✔ known false matches cannot return through core or reserve selections (0.173834ms)
+✔ new teaching diagram remains available with optional art absent (0.769875ms)
+✔ term inference respects boundaries, Christmas review, and year-end blocks (2.516875ms)
+✔ all old codes remain addressable; BOW coverage excludes supporting objectives (1.365208ms)
+✔ Grade 3 uses the official 10/10/14 split; Grade 10 starts with chemistry (0.621375ms)
+✔ Grade 5 adaptations split by term, retaining old key and objective IDs (0.399875ms)
+✔ unchanged lesson saved runs preserve exact cards and completion after rescheduling (1.160166ms)
+✔ feed favours actual terms even when two competencies share the same old quarter (0.201416ms)
+ℹ tests 92
+ℹ suites 0
+ℹ pass 91
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 20975.6665
+
+✖ failing tests:
+
+test at scripts/curriculum-default.test.mts:1:646
+✖ curriculum successors stay in topic without keyword forks, then advance and review (13.974667ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!seen.has(next[0].factId))
+  
+      at TestContext.<anonymous> (/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile/scripts/curriculum-default.test.mts:41:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+undefined
+/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/packages/mobile:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: tsx --test --test-concurrency=1 scripts/grade3-lessons.test.mts scripts/grade4-lessons.test.mts scripts/grade5-lessons.test.mts scripts/grade6-lessons.test.mts scripts/grade7-lessons.test.mts scripts/grade8-lessons.test.mts scripts/grade9-lessons.test.mts scripts/grade10-lessons.test.mts scripts/calendar-selection.test.mts scripts/curriculum-default.test.mts scripts/review-series.test.mts scripts/term2-pilot.test.mts scripts/three-term-curriculum.test.mts scripts/full-year-curriculum.test.mts scripts/lesson-variety.test.mts

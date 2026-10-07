@@ -1,0 +1,1508 @@
+{
+  "schema": "hiraia.cebuano-curriculum-alignment-completion/v1",
+  "recorded_at": "2026-10-07T04:21:01.699907+00:00",
+  "status": "local_alignment_complete",
+  "branch": "codex/cebuano-curriculum-alignment-20261007",
+  "base_commit": "a2ce8367182c09055c2d5936418ad2c7212d70b0",
+  "worktree": "/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007",
+  "historical_approved_edits_carried": 3986,
+  "curriculum_records_reviewed": 137,
+  "curriculum_records_edited": 26,
+  "cebuano_leaves_edited": 47,
+  "active_cards": 49155,
+  "retirement": "dcard-09952",
+  "mandatory_holds_preserved": [
+    "ffct-15686",
+    "ffct-24184",
+    "ffct-24823",
+    "ffct-08459",
+    "ffct-09018",
+    "ffct-10152",
+    "ffct-18958",
+    "ffct-34595"
+  ],
+  "assessment_source_links_reviewed": 79,
+  "assessment_items_with_links_reviewed": 77,
+  "foundation_items_reviewed": 2,
+  "unsupported_exposure_link_held": "ha-g4-0010",
+  "english_filipino_and_answer_keys_unchanged": true,
+  "curriculum_membership_and_english_review_lock_unchanged": true,
+  "new_grounding_vectors": 2,
+  "unchanged_vectors_verified": 159064,
+  "required_local_checks_passed": 30,
+  "tests": {
+    "curriculum": 92,
+    "assessment_runtime": 84,
+    "public_browser": 3,
+    "historical_guards": 47,
+    "pipeline_integration": 3,
+    "english_review_guards": 4,
+    "assessment_compiler": 6,
+    "application_guards": 8
+  },
+  "evidence": [
+    {
+      "path": "tools/cebuano-curriculum-alignment/import-001.json",
+      "bytes": 24414,
+      "sha256": "da51aa0a3cf9c65a4bf63f2f96c677b7a72e4ff2ed4356a8299accf5ef831c38"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/carry-approved-001.json",
+      "bytes": 589,
+      "sha256": "82edb1ad503ac0f6b3f2412963891bad222cf381be0186e8468f8efbe7723f17"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/reviewed-edits-001.json",
+      "bytes": 114570,
+      "sha256": "b561ba83cd0420586fe97364aca155f1e3df81e8f6bc73bac3a3efebd9b5dc17"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/review-application-001.json",
+      "bytes": 2577,
+      "sha256": "075922f4ceb7b7dac1ac3fd4f27b9af4912cfc12c1db157d4ab90e2f72010674"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/source-reconciliation-001.json",
+      "bytes": 4906882,
+      "sha256": "89171eef7fad374d715df4e379baffbca7edb4f056378114e55ceea277166d31"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/assessment-link-decisions-001.json",
+      "bytes": 411304,
+      "sha256": "9eb3956aae8331f3fb3dd349cf87aaf094a79d6dc659cdbbf805ba726623c9fc"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/assessment-source-validation-001.json",
+      "bytes": 9783,
+      "sha256": "cea4eab34a6539179514b1cbe2597cb7e5cde1a6f15235c1fdfed3b1377b9c31"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/vector-refresh-001.json",
+      "bytes": 828,
+      "sha256": "f9d30b39a66c681c6cc9b49141de2597a50cdfd9aa456ea40633775ab89390dd"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/final-verification-001.json",
+      "bytes": 3287,
+      "sha256": "2b0957fa22b7779b2a494fcce739be96d7a0d39e735d60585e0162d9d7d5a7b5"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/validation-evidence-001.json",
+      "bytes": 26658,
+      "sha256": "ba5ac02f39add96b2d7ff6829cb25428353a5139188aaa5aa1404814f8c4668c"
+    }
+  ],
+  "packaging_actual_exit": {
+    "path": "tools/cebuano-curriculum-alignment/evidence/executions/package-results-001/execution.json",
+    "bytes": 439,
+    "sha256": "48bf8b4584358a9d11fda2c13d961207f9ce6854828efb21d24ff895d76eb051"
+  },
+  "release_asset": {
+    "path": "build/cebuano-curriculum-alignment/release/vectors-labse-3a36094d18d2.i8.bin",
+    "bytes": 122162688,
+    "sha256": "67912d4fd3270876ab2922316b20f8dad4109ac26eac2234cdb1728a6d59405b",
+    "filename": "vectors-labse-3a36094d18d2.i8.bin",
+    "md5": "3d555f7450025a208ca65f2f02436759",
+    "published": false
+  },
+  "release_required": "Publish and read-back verify the new immutable vector asset before distributing a build from this branch.",
+  "native_certified": false,
+  "classroom_validated": false,
+  "assessment_production_enabled": false,
+  "provider_calls": 0,
+  "committed": false,
+  "uploaded": false,
+  "deployed": false,
+  "final_changed_files": [
+    {
+      "path": "docs/CEBUANO-CURRICULUM-ALIGNMENT-20261007.md",
+      "bytes": 7919,
+      "sha256": "8155edc18445e83fd88b4c2d318e9cad63c94706945d4ac0e69c649470fdeca9"
+    },
+    {
+      "path": "docs/FULL-YEAR-CEBUANO-HANDOFF.md",
+      "bytes": 16890,
+      "sha256": "c4deaa841c3ab4147908283bab19bcd33c5d5a05986ac21f5f164386491b2ec6"
+    },
+    {
+      "path": "docs/TERM2-PILOT-CEBUANO-HANDOFF.md",
+      "bytes": 11476,
+      "sha256": "98f07c3851d87856bd0a7fcafd5e61350834028321d9fcad80fd79d03b8cf258"
+    },
+    {
+      "path": "docs/TRANSLATION-LEXICON-DEFECTS.md",
+      "bytes": 6421,
+      "sha256": "15a7a8f0c8a6a0e6f0b7d17f52df32d25b3530e644e731decc93463829f3e2b2"
+    },
+    {
+      "path": "packages/mobile/assets/rag/vectors-labse.i8.bin",
+      "bytes": 122162688,
+      "sha256": "67912d4fd3270876ab2922316b20f8dad4109ac26eac2234cdb1728a6d59405b"
+    },
+    {
+      "path": "packages/mobile/assets/rag/vectors-labse.meta.json",
+      "bytes": 196,
+      "sha256": "fa50e23c1636d90c86a20626b63c07dd1f18055ca594f9b31ce8f4b37e8414ba"
+    },
+    {
+      "path": "packages/mobile/scripts/build-assessment-bank.py",
+      "bytes": 10414,
+      "sha256": "ad09c8c47e5c76e879b5ce40c0a880138d1082af8fea89338fdb4afae965625e"
+    },
+    {
+      "path": "packages/mobile/scripts/curriculum-default.test.mts",
+      "bytes": 3179,
+      "sha256": "9d4f7059803325164e91e34365caaada6a7785c870cbff17fb84712e3f1841bf"
+    },
+    {
+      "path": "packages/mobile/scripts/test_assessment_bank_compiler.py",
+      "bytes": 3251,
+      "sha256": "1ed55cbdd8cf4386927e8e9b992bf39e186190d378df35726eeff70c747dfd22"
+    },
+    {
+      "path": "packages/mobile/src/assessment/bank.generated.json",
+      "bytes": 4064813,
+      "sha256": "33e4fc4950adea90ac2c359d2ea4b0774776ec65877cd4b45a6b3505d28d0843"
+    },
+    {
+      "path": "packages/mobile/src/config/edition.ts",
+      "bytes": 2747,
+      "sha256": "d30f0010a82f100d8ed0da9ba918fb95c75eef01b5c318a87715e45934da3b02"
+    },
+    {
+      "path": "packages/mobile/src/data/cards-questions.json",
+      "bytes": 33712209,
+      "sha256": "9b485d844897e18cf494576b0fb5637a4cb2cdbba9daa4f520e4b21812c6b179"
+    },
+    {
+      "path": "packages/mobile/src/data/grade10LessonSupplement.json",
+      "bytes": 129731,
+      "sha256": "9d4892eebb028b18e57616f18004cd14a322931caf1740b854a2bcec8fbdfb97"
+    },
+    {
+      "path": "packages/mobile/src/data/grade3LessonSupplement.json",
+      "bytes": 62776,
+      "sha256": "f35d4440b0000d89b8a213f8f8970397ee648415d1c89beac434f4911b428e96"
+    },
+    {
+      "path": "packages/mobile/src/data/grade4LessonSupplement.json",
+      "bytes": 84897,
+      "sha256": "90a314244e35664e40869ac2c25b1d583b3daeed7657874c3aa9fae008af38c8"
+    },
+    {
+      "path": "packages/mobile/src/data/grade5LessonSupplement.json",
+      "bytes": 86413,
+      "sha256": "93639e37ba1914edea417669376ade371f29762d9ac887964dbe8b4f43d192c2"
+    },
+    {
+      "path": "packages/mobile/src/data/grade6LessonSupplement.json",
+      "bytes": 94679,
+      "sha256": "0f52e214f6d8c1744eb03310516b5ea6f3b48740848ed93b734dc11dd049a08b"
+    },
+    {
+      "path": "packages/mobile/src/data/grade7LessonSupplement.json",
+      "bytes": 119244,
+      "sha256": "a47e8ef86540bd1245549a8dcfddd3d1e2c8ca2ac928e887ff472f98b9a14196"
+    },
+    {
+      "path": "packages/mobile/src/data/grade8LessonSupplement.json",
+      "bytes": 128142,
+      "sha256": "c020d6d775e92cdb085a3d73133ac6467c364594a63cba3fc52dd0c7bc193319"
+    },
+    {
+      "path": "packages/mobile/src/data/grade9LessonSupplement.json",
+      "bytes": 121799,
+      "sha256": "815df42f16e0cac049b72c7d6a7d163c0b0df8b3f723e077f29c52f189b13891"
+    },
+    {
+      "path": "packages/mobile/src/generated/cardsIndex.generated.json",
+      "bytes": 16717222,
+      "sha256": "edc8f64d77fd8846bddecbad7567eaed6debe07fc4b2c955b40b32d0f97cf883"
+    },
+    {
+      "path": "packages/mobile/src/generated/lessonSimilarity.generated.json",
+      "bytes": 58154,
+      "sha256": "69acaa91bdecd844c79bd489e8c7761f93ce8c1c242c586ff0b0004d8c0d22f7"
+    },
+    {
+      "path": "packages/web/public/competencies/ph-revised-k12.json",
+      "bytes": 342067,
+      "sha256": "07ad3b5c626b0e607efcee0b68f60eb3e401195ddada299b357c941bce45ab3c"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/001-grade3-foundations.json",
+      "bytes": 131472,
+      "sha256": "b75f27f5fbd4b32f10c5b800db2d0a093d566e4b9f83005ad47c254a96abd48d"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/002-grade3-materials.json",
+      "bytes": 209089,
+      "sha256": "8c7e352b02882d576a1c62be5cb56fb9b08af9bab37c49f7766b16de737c92ef"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/003-grade4-living-things.json",
+      "bytes": 215814,
+      "sha256": "8b0e84f43ebde1552e224ae08b4a56e125ebfd12fc434beb5dac61715179bffa"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/004-grade3-motion-light-sky.json",
+      "bytes": 213832,
+      "sha256": "2147ab10bc73b92512a6f25be9f3797cfd6d632af71a31cbc79de15f129a00a6"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/005-grade3-living-things.json",
+      "bytes": 212658,
+      "sha256": "440deeef823640e63e267440397a31e80c2d5895325c8f854cf773dcc1532975"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/006-grade4-motion-magnets-energy.json",
+      "bytes": 207420,
+      "sha256": "dd5f5a6984d97b04f906ddb3c923f07c3f6f1a674ad1a0f4cc7e2593c3a8110a"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/007-grade4-soil-weather-sun.json",
+      "bytes": 217802,
+      "sha256": "4666f81eed1639a26affd810b31718c706e6163e3f13ddffb6727471973f0662"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/008-grade3-rotation-gaps.json",
+      "bytes": 45138,
+      "sha256": "0f96fe22b970892a069eb9466077e23cf4cfffcac1a6c21afc58a48e8ba3d586"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/009-grade4-materials-and-investigation.json",
+      "bytes": 219174,
+      "sha256": "23e2b560c9cdd697f8f37292c4951aad8c890439e715f84e15ad651a5a30c82f"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/010-grade5-matter-measurement.json",
+      "bytes": 213018,
+      "sha256": "9b5c54592952aa2a202bbc97c9a9cf7b73d572089be704a25816bb32f243ba15"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/011-grade5-living-things.json",
+      "bytes": 211372,
+      "sha256": "16173910e1d30e29298033a5c856fa8067151b19a8badd21909fd3194b707c93"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/012-grade5-forces-and-circuits.json",
+      "bytes": 221962,
+      "sha256": "9adc9ddf30448c83fea5c170101207c623551b30aaf991478768f05e8174a9cf"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/013-grade5-earth-and-space.json",
+      "bytes": 220898,
+      "sha256": "f28cb41e382cf2e6b559802b45c1a1a98e2bde4f3400974c9f96f90d4c9dbbf8"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/014-grade6-matter-mixtures-investigation.json",
+      "bytes": 212021,
+      "sha256": "1e623ed15fc14889f7a76e4d7cf70793c61420e557b47495643a0c517d068fa4"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/015-grade6-living-things.json",
+      "bytes": 222227,
+      "sha256": "74f39ce2a286075784868e905cb6456de9fd28ed2f7c27f8683c0f64536b5465"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/016-grade6-machines-and-waves.json",
+      "bytes": 214428,
+      "sha256": "1ec2546e84d7cb0b41ef9be2d5ab31039ec7f1e4bb753a5d4cdb49d2f9f43fdc"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/017-grade6-earth-and-space.json",
+      "bytes": 249600,
+      "sha256": "4783d6b37db6d11261e21bd4a3fd9e9544003781ba26224f5f39d5e017fd73c1"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/018-grade7-matter-and-investigation.json",
+      "bytes": 202749,
+      "sha256": "0d4f5939ed740f24dc8d15cd55312001ba332e9408299a54761349e65c1cc858"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/019-grade7-cells-and-life-organization.json",
+      "bytes": 215394,
+      "sha256": "777fc5731916a1fc01bcb09075de22a06ffc437b92d12313f2df18ee42304c38"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/020-grade7-motion-and-heat.json",
+      "bytes": 200987,
+      "sha256": "72e9025db16f0929de86f9fcb6636592096cbf1cfcf094ea04dba6a089c23036"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/021-grade7-earthquakes-and-weather.json",
+      "bytes": 213287,
+      "sha256": "0ea09f544e98e16daca481d8c9d9e76f1f17c44ca5bc8be8e9592f444acd6fea"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/022-grade8-atoms-and-periodic-table.json",
+      "bytes": 206684,
+      "sha256": "2fa0c90cfd3f94156dd22dda524830b1d8295e2bdd641b5992526a53fe54acb3"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/023-grade8-systems-and-inheritance.json",
+      "bytes": 219521,
+      "sha256": "f9c29bc856e5680aafa14f5d3a856f0d80ba89ea5349a88b5813109443441591"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/024-grade8-motion-energy-and-light.json",
+      "bytes": 214031,
+      "sha256": "5ca1c408423d83ece1ba70dd3fe4af39a05a696576af1c8a19d215ca38b7e5fb"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/025-grade8-earth-oceans-and-storms.json",
+      "bytes": 217387,
+      "sha256": "57e4982dd25c78a25de3f4c14f125fe93f5c57900f5410ab4d2bd0888679a667"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/026-grade9-bonding-and-compounds.json",
+      "bytes": 210451,
+      "sha256": "fd0e763da4127ec6b56e1b54e392f1edba121e9e896d8ae0442c5443c9e04fff"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/027-grade9-genetics-and-biodiversity.json",
+      "bytes": 215405,
+      "sha256": "c020c5f847c0c30dc43749bf4b312b1ec4c9e7c2b479c621c52ada9279b20b5c"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/028-grade9-forces-circuits-and-radiation.json",
+      "bytes": 215031,
+      "sha256": "716f2ecd8223a740a183a123121e0b04097263d551d44ca1b1b9074fb1affdc2"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/029-grade9-earth-history-and-space.json",
+      "bytes": 223541,
+      "sha256": "fec7f8f5383178bb382b340909f18a0c801d836e8f62d1e05c87b12b2ac90507"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/030-grade10-reactions-and-rates.json",
+      "bytes": 220377,
+      "sha256": "1091b2bb5bd0632e87203ec8239c902436d8863c5fdcfd8a4d9554dbb395f51f"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/031-grade10-homeostasis-evolution-and-biotechnology.json",
+      "bytes": 234146,
+      "sha256": "974bbf5cd55fa9da9948d6124a1413a195dd162ef0e4523c6a148a479e2f33f3"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/032-grade10-momentum-and-electricity.json",
+      "bytes": 235236,
+      "sha256": "c195b9786c902db4684ba47a7936fa3fc2e8b86333190a2e08f91d2b39d15439"
+    },
+    {
+      "path": "rag/assessment-authoring/batches/033-grade10-plates-climate-and-energy.json",
+      "bytes": 228730,
+      "sha256": "29660d8cd6841910b68be425693a87696a09b49c515ff6a4c3bedf412efddb0e"
+    },
+    {
+      "path": "rag/assessment-authoring/exposure-fixtures.json",
+      "bytes": 6847,
+      "sha256": "f06c3082a0511d5b6e35d6c8120f430b2dd359bb5d41ca8cc91685ed61defaf6"
+    },
+    {
+      "path": "rag/assessment-authoring/foundation/living-materials.json",
+      "bytes": 168640,
+      "sha256": "22b712da0c7bfda1fd1d4ceacaa9ccca521e732adedaad0ed62b7786bbf3509f"
+    },
+    {
+      "path": "rag/bank/quiz-bank.jsonl",
+      "bytes": 49804289,
+      "sha256": "0c3bf1c0df9d877c7f2db03165d399ecea781b7a348aad5f28d0f761342c1efa"
+    },
+    {
+      "path": "rag/bank/science-facts.jsonl",
+      "bytes": 46085176,
+      "sha256": "5010a449b49fe144a9a1b31f40fdf1ea310301d6250fda84818c6f27aa4f7b46"
+    },
+    {
+      "path": "rag/pipeline/apply-patches.py",
+      "bytes": 1679,
+      "sha256": "bf4cd1c1e09de7b2b434c9519449cc0d5f1b8bcea4cef3fbf93232ff94916c08"
+    },
+    {
+      "path": "rag/pipeline/build-cards-db.py",
+      "bytes": 19462,
+      "sha256": "eaa352b89de63c7f9e0d33aaaa3c6c48e47183cb40703b01b3135b68d45453d1"
+    },
+    {
+      "path": "rag/pipeline/card-language-patches.json",
+      "bytes": 9658561,
+      "sha256": "c0b0f85abc42c07564cb078b5c6f5f96fb33dc914749234ba39545a113bafd24"
+    },
+    {
+      "path": "rag/pipeline/card-retirements.json",
+      "bytes": 861,
+      "sha256": "909c74debf31edd4e42712ed9ad7da526769919b178ff9faaefd5d879eebfc8b"
+    },
+    {
+      "path": "rag/pipeline/card-retirements/dcard-09952/original-card.json",
+      "bytes": 1464,
+      "sha256": "45dd571ef4af0e0f75ba09b4aac64022d75e29ae09285bfc14faa5a4617f1c48"
+    },
+    {
+      "path": "rag/pipeline/card-retirements/dcard-09952/tombstone.json",
+      "bytes": 5086,
+      "sha256": "0eeaa908fec8fba28d8fc695dd244770a15b5f8d9830bfdde89b7d16853317dc"
+    },
+    {
+      "path": "rag/pipeline/card_language_patches.py",
+      "bytes": 7638,
+      "sha256": "05d3f1d36b185acfaafe4359d565b5ff577af8bad22b3b14c763ebf635d4b408"
+    },
+    {
+      "path": "rag/pipeline/card_presentation_patches.py",
+      "bytes": 1730,
+      "sha256": "054b19a604ed4b2fdab6e26ffad3c0b71645ab537e6a261f2dcab889c6ae5c20"
+    },
+    {
+      "path": "rag/pipeline/card_retirement.py",
+      "bytes": 6340,
+      "sha256": "5f0076df1053ccd7a4cb6d75aefa969e9af65aa615bae19f004c6a64d468e5f2"
+    },
+    {
+      "path": "rag/pipeline/cardsPool.app.json",
+      "bytes": 50690630,
+      "sha256": "9e52c84daf466863cdd843f1d17e95ba4b815df669687063163a73ce26b74f1f"
+    },
+    {
+      "path": "rag/pipeline/cardsPool.merged.json",
+      "bytes": 45794799,
+      "sha256": "b353653ec6e14ef4d0a1ef3e05c48d85478c43b05ba998fc094725593ba1ee80"
+    },
+    {
+      "path": "rag/pipeline/editorial.json",
+      "bytes": 4696433,
+      "sha256": "c537a989498aeb54c166dd28df98c874402cb60eec1020c0e8e4856c36f609d6"
+    },
+    {
+      "path": "rag/pipeline/original-art-chosen.json",
+      "bytes": 690099,
+      "sha256": "86647a5e1592caf5e31505119c7e03a6cad3e0f50d085363d4321c9fe6fd1b04"
+    },
+    {
+      "path": "rag/pipeline/pilot-content-corrections.json",
+      "bytes": 37542,
+      "sha256": "069b3bc12af92f6bf52902c01089b3247c1a07e96999590e462835762fb83e09"
+    },
+    {
+      "path": "rag/pipeline/test_card_language_patches.py",
+      "bytes": 10558,
+      "sha256": "16c9d24548b864b252b09217bf6a7cbca1e9dba94a5ce16264569dbbdb00db05"
+    },
+    {
+      "path": "rag/pipeline/test_card_presentation_patches.py",
+      "bytes": 3598,
+      "sha256": "5b69ed5350323a77b401074d6bf3d101f9a3c4e184117ab0bb68cfb3579915f8"
+    },
+    {
+      "path": "rag/pipeline/test_card_retirement.py",
+      "bytes": 12501,
+      "sha256": "7e5b4c244c533986b36046f1726f9149f2c90823f711012ea598fddd7c74acf0"
+    },
+    {
+      "path": "rag/pipeline/test_curriculum_language_alignment.py",
+      "bytes": 2611,
+      "sha256": "dcb25b365abfcd383d056e45755184dc93814af8fd4d44f39b673e81a54ca21b"
+    },
+    {
+      "path": "rag/pipeline/wire-app-pool.py",
+      "bytes": 10264,
+      "sha256": "7fb3274c5432ea29a28413d1d0c3ec1181a9407834310efefd25c6d15c5762c8"
+    },
+    {
+      "path": "tools/assessment-evaluation/review-authoring.py",
+      "bytes": 28310,
+      "sha256": "4b7b8deda42d3564d0d36e5da7cb27b200f135359606220c6210e70e5f451a49"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/README.md",
+      "bytes": 2341,
+      "sha256": "a0360a1400b1e88058ae1b2d25cda0b1bc1d93d8892ce8186a93a78384758c59"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/apply_review.py",
+      "bytes": 4397,
+      "sha256": "500c454875fe064ecdd28c64152e447f61201df473df441544a7dde48e819997"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/assessment-link-decisions-001.json",
+      "bytes": 411304,
+      "sha256": "9eb3956aae8331f3fb3dd349cf87aaf094a79d6dc659cdbbf805ba726623c9fc"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/assessment-link-review-inventory-001.json",
+      "bytes": 229308,
+      "sha256": "b267c76aa9feb9a1bee76e4ce6cef7f4e05d665a714ebd4a5bbeabf3ae45924a"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/assessment-related-review-inventory-001.json",
+      "bytes": 17010,
+      "sha256": "a9a0cac5725cb2dd8ad0d43d559eae94ec56fe0be7948998b9ec204fc37da9d5"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/assessment-source-validation-001.json",
+      "bytes": 9783,
+      "sha256": "cea4eab34a6539179514b1cbe2597cb7e5cde1a6f15235c1fdfed3b1377b9c31"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/carry-approved-001.json",
+      "bytes": 589,
+      "sha256": "82edb1ad503ac0f6b3f2412963891bad222cf381be0186e8468f8efbe7723f17"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/carry_approved.py",
+      "bytes": 2651,
+      "sha256": "cd65030c51a9b640c6c6f36f3ba6fe7bc905ff26ccb2baf4bcae2ba35992797c"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/check-failure-diagnosis-001.json",
+      "bytes": 2383,
+      "sha256": "96d791a21b254707b215df67b02831d283a9a98e9860c04dcdaa06d7291eb63d"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/check_alignment.py",
+      "bytes": 3280,
+      "sha256": "19935420d90cc74b829b445fce477af7d38f6440fa46702cdf3423121505d10c"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/card-language-patches.json",
+      "bytes": 9710617,
+      "sha256": "93532d37f761d8b1a9cac825a89961130615100d8f37592e6c1c10232b65331e"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/dictionary-001.json",
+      "bytes": 1075,
+      "sha256": "38fbe7249e186517072e627092f473de9a1ea4ae4bd3355d3967c35773b780d2"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/dictionary-002.json",
+      "bytes": 11929,
+      "sha256": "70338729ee06afb2a65b5052016145429232a9ce5cec4ad4620181d81f4911bc"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/dictionary-003.json",
+      "bytes": 7349,
+      "sha256": "9a4bebe6b977e7d3a2b977d1082fdf5fba830e1ef4dfec6f59b0e208b23a5e60"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/dictionary-004.json",
+      "bytes": 10973,
+      "sha256": "52c0cb4ffcc114dac719407fddfc2a70d1b7ca697ce2f90889135f6c30e73fd8"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/assessment-compiler-tests-001/execution.json",
+      "bytes": 511,
+      "sha256": "3ee9f12ba296a4a4e2a19bc0f8a4b53906dbc279e536030e0200a3edb425f559"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/assessment-compiler-tests-001/output.txt",
+      "bytes": 104,
+      "sha256": "dcd2147edfda2291b456dfb6d9f3021f0fed07760d5a1c8869fc5446f30e28fe"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/assessment-source-validation-001/execution.json",
+      "bytes": 448,
+      "sha256": "338cb536bf9ed488ef951a339ade34f284109164493f31acb80af6827fe2adea"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/assessment-source-validation-001/output.txt",
+      "bytes": 95,
+      "sha256": "26d359cbf08af0ab7da4c5de4ea2f18a5a242e17e8d0dd618037a1aad2ae2c4c"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/assessments-001/execution.json",
+      "bytes": 435,
+      "sha256": "0fcb716591a97e4fe8676ef7b5c50dfcfd740a7cd13892d8ff20f6a32d2e70b2"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/assessments-001/output.txt",
+      "bytes": 1134,
+      "sha256": "02a5ab01a3b2cc2c937132b29f7adbef86b0a72df4e7a80a5d6e4652f8f35d0d"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/assessments-002/execution.json",
+      "bytes": 434,
+      "sha256": "4b7752eec813b609888802e4eb672faee0637b55c095fbb5699585532349278d"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/assessments-002/output.txt",
+      "bytes": 151,
+      "sha256": "43497b67559c9dd2300c23335b38cc9336bd2d3ddbbca3d33fd2269effa5c4dd"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/cards-db-001/execution.json",
+      "bytes": 416,
+      "sha256": "ac0d0dc4b77464d94d1817ef14aeebf457e7b62b5724aaa43fbc2bf61790c6aa"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/cards-db-001/output.txt",
+      "bytes": 800,
+      "sha256": "465d9099a071090c68276e26e860501cde5e330d4971d2e18e5b68e59a6c9c9c"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-assessment-compiled-001/execution.json",
+      "bytes": 449,
+      "sha256": "733d6e9c2dc35770822ef9da78eeb77bd35713f002d21f797540b200803b6a6f"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-assessment-compiled-001/output.txt",
+      "bytes": 151,
+      "sha256": "43497b67559c9dd2300c23335b38cc9336bd2d3ddbbca3d33fd2269effa5c4dd"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-assessment-tests-001/execution.json",
+      "bytes": 820,
+      "sha256": "703469854a5a23f1f7d79ba0cf69db212adb6b5bf8e1aad6b9a1f7165a47cc72"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-assessment-tests-001/output.txt",
+      "bytes": 12646,
+      "sha256": "800b08a010a530b458e449acdc8253c30573e78ba1b500d88df5f7ee757707d9"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-assessment-tests-002/execution.json",
+      "bytes": 819,
+      "sha256": "0d704e613a0b09998e54c9c65336ac2131d0ea411674de5dedf164a8cfd793d1"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-assessment-tests-002/output.txt",
+      "bytes": 8241,
+      "sha256": "c8be61779f9e9c30f940c1feb3d1ab9a948ba5342e51aa6a30c571befb9c58c4"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-curriculum-tests-001/execution.json",
+      "bytes": 1083,
+      "sha256": "acd8af8bebad10d1b314a226aeb084145c599da8062d1e6b07797bc38226dc89"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-curriculum-tests-001/output.txt",
+      "bytes": 10805,
+      "sha256": "bda391c8b22a286c12452453a10c66bb63bfd400ba254f52f73629cd44497200"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-curriculum-tests-002/execution.json",
+      "bytes": 1082,
+      "sha256": "9f635709242d7cca586452f4afb3d10e217a32da0cd8523929d0ab1c6f08eb8f"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-curriculum-tests-002/output.txt",
+      "bytes": 9112,
+      "sha256": "3ffe2d148a9d244da845e17b56085f6791e975526a93f4479d1111b03de7a624"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-desktop-types-001/execution.json",
+      "bytes": 491,
+      "sha256": "70da3ad0c0d96493fcaf60da4f9f11dcf8b5fac367f89ac5fbb2d7b70040d3a6"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-desktop-types-001/output.txt",
+      "bytes": 904,
+      "sha256": "ce394d49fcb715cc712696c2eecb68ce28855f7755752d98f1e7c524068a213c"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-desktop-types-002/execution.json",
+      "bytes": 489,
+      "sha256": "9563b2de229bdb2f661c0fa92e7c9b39200a328bb8825ef5eec713c1213f99a0"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-desktop-types-002/output.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-english-review-guards-001/execution.json",
+      "bytes": 501,
+      "sha256": "285cf4c768245fdbccbdaa8e38b06f3d7d45a05ea513e23f96dce4301568a922"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-english-review-guards-001/output.txt",
+      "bytes": 102,
+      "sha256": "d2bccf12ad0620006f076a858ae459f095d161a1ef73cf987aba6bddacc17386"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-facts-db-001/execution.json",
+      "bytes": 431,
+      "sha256": "3419c4e239b2c1942c487ab197e7112eded253c12eb143ae10e9170969784919"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-facts-db-001/output.txt",
+      "bytes": 735,
+      "sha256": "d02d77ca937636cf4bd70af37859a65a1e924019c88db3c76a6d27e903eb0e87"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade10-compiled-001/execution.json",
+      "bytes": 458,
+      "sha256": "4e9d1076d791c4f248d750285aede85c1ddaa36a3370e325166bf6efca1a511d"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade10-compiled-001/output.txt",
+      "bytes": 1389,
+      "sha256": "b6a99da21dccb598d2c1384f95ffc4a792b9432f6bb8c87ca69ea97368dcc177"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade3-compiled-001/execution.json",
+      "bytes": 457,
+      "sha256": "9760ddd118a839e50715db652dcfeb23ecf90046c2d0a542e7e37945eb588420"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade3-compiled-001/output.txt",
+      "bytes": 1198,
+      "sha256": "d9c7f15f68c5ce9c7f7a54b5e65f286c898d4f2665aa3f07b6de914318667b68"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade4-compiled-001/execution.json",
+      "bytes": 457,
+      "sha256": "c525be0dcb7145d4f5031f4de9bd0799ffdddf02abb4d110da3eea8e39a40859"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade4-compiled-001/output.txt",
+      "bytes": 1312,
+      "sha256": "2a9cc189ffe97d968389a2abc0a83265b9d6abe1eb4a96321e14c2582821b696"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade5-compiled-001/execution.json",
+      "bytes": 457,
+      "sha256": "d360f88b5fe36567a8733b08965233cac8f244630bbe239d7f8d2596f6e1fa43"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade5-compiled-001/output.txt",
+      "bytes": 1169,
+      "sha256": "bb79bf06194fc51408a319479c1a4454a9a1edb3004daba97dbab4cfbabe1d67"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade6-compiled-001/execution.json",
+      "bytes": 457,
+      "sha256": "1e422bf3f54cd351f9b18ae3b05b8297068b2dfa13426f18a3dc33c619f36452"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade6-compiled-001/output.txt",
+      "bytes": 1547,
+      "sha256": "41f2331954fcd53b227abc0051cbda8e5e4f8dc32a7bbdcee1f59dc8d8e24656"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade7-compiled-001/execution.json",
+      "bytes": 457,
+      "sha256": "1c08340184fff28dad5da884ef27832b8c3c00de32895ef82567d9198bc06846"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade7-compiled-001/output.txt",
+      "bytes": 1868,
+      "sha256": "7a90a171657c01e7aa5788bb482553e666429a6c8a0f4ec14eab094e8bea2e34"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade8-compiled-001/execution.json",
+      "bytes": 457,
+      "sha256": "d2219da64681db7d1372409d202922290c5f8326db03a87250f57121ea77d7c9"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade8-compiled-001/output.txt",
+      "bytes": 1805,
+      "sha256": "3f85cfb7c54a1388eb65ef34c5f047d212cdd92e14b57dfdea3ed97dea98ae1c"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade9-compiled-001/execution.json",
+      "bytes": 457,
+      "sha256": "0da4d9ccc0a650539ea070913ba5c63096f457751736a3f96b0000c1e1b00705"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade9-compiled-001/output.txt",
+      "bytes": 1374,
+      "sha256": "0741a94bca869797f6e892def0ed2277ca6f43b9f82522459eb672b6cd1588cc"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-mobile-types-001/execution.json",
+      "bytes": 452,
+      "sha256": "b1fafe7babaa439da85652ef6fd9e2d3f5156b1c1e50f94bb751c62bbc5ce90f"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-mobile-types-001/output.txt",
+      "bytes": 879,
+      "sha256": "0f2ac5f9f30ed7169ac3d2445669a13c9779c1248873de370efd000fed6412de"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-mobile-types-002/execution.json",
+      "bytes": 450,
+      "sha256": "2fcf409010b47bd63d588da6a40e40d12b4deccafae2dc7f141d8ded6f7bdc24"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-mobile-types-002/output.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-pipeline-guards-001/execution.json",
+      "bytes": 493,
+      "sha256": "fb97a91ccd32f78148472137895a695031f9efa7584785d1d9bf3f4c92106325"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-pipeline-guards-001/output.txt",
+      "bytes": 3356,
+      "sha256": "0e0136fe78b252efec279954d2ced61d9144362f79d3be249b2488442a492d0c"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-pipeline-integration-001/execution.json",
+      "bytes": 515,
+      "sha256": "f69d37f867de674ba633069e7491281570d66029be59758a9a56aa82b566fb94"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-pipeline-integration-001/output.txt",
+      "bytes": 101,
+      "sha256": "edb4e2159c923ea45a32656078835cdf531c3d7b414c670dd786978875cb0678"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-similarity-compiled-001/execution.json",
+      "bytes": 450,
+      "sha256": "cb4f23df9f48a7439ca767c911b519d13d6d78279041b354f97d336f8a2612e8"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-similarity-compiled-001/output.txt",
+      "bytes": 82,
+      "sha256": "20dcc763f66b602072ff513d917b54eae3cd99f6afa0c531eab2a5af2e03edf7"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-tala-catalog-001/execution.json",
+      "bytes": 442,
+      "sha256": "52baeabd7c9fc4b1d6bbf15f7b4cd5b6a060d85c3a552bbfe55ead4db3f1ff40"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-tala-catalog-001/output.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-web-competencies-001/execution.json",
+      "bytes": 440,
+      "sha256": "cb465e098e82a25e1fdd2af11228ab62fb72335ab46bf62a6715451a5e6c523f"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-web-competencies-001/output.txt",
+      "bytes": 78,
+      "sha256": "6ba38c543907b2deee3d2a5471acf64e679a0b1f1f3b575ffd1a4282b2ea8179"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-web-terms-tests-001/execution.json",
+      "bytes": 520,
+      "sha256": "a656de64798ea5e8bd3de378b1a4af59c7d79cd274e6c8ac291abb4fd1f782ba"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-web-terms-tests-001/output.txt",
+      "bytes": 379,
+      "sha256": "62edca9bfb5fbdc2cb8607fbd95b7990f487d9ab7c9c53dbe9f8bc517522c413"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-web-types-001/execution.json",
+      "bytes": 447,
+      "sha256": "b792f693e904a09fbfd78b06a219c5feec3cf235d8271c19ab8ab01338e08db5"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-web-types-001/output.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/checks-001/execution.json",
+      "bytes": 465,
+      "sha256": "2e326d363a1dbc9a33da62718a63ce02f3f46daacb4a70712ccc1956e1b219cf"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/checks-001/output.txt",
+      "bytes": 39412,
+      "sha256": "4cee0ef7bacfcf6f238878f205e0555f279036df12906d6eb189c1d35ed9728f"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/checks-002/execution.json",
+      "bytes": 568,
+      "sha256": "377b64efd7c473ba907cfcad2b8e96f30096229e364adeeb3c1eea1b767ed633"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/checks-002/output.txt",
+      "bytes": 12888,
+      "sha256": "c8d48feed077ffd822292d333c066be27ff7ce59944e8f84a7cffaedb8ce7e2e"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/competencies-001/execution.json",
+      "bytes": 439,
+      "sha256": "dffa11caa12c52abf9b0bf88ba773ea7adb5133d8a6be200e51045f851b931dc"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/competencies-001/output.txt",
+      "bytes": 242,
+      "sha256": "56a1ea25a4f4bf16a25ac67861a3c3bab8d3179da35b4b5a0a4f3468c1c65fb0"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/content-corrections-001/execution.json",
+      "bytes": 420,
+      "sha256": "90945a3bc43f5cd863de7a1a03e8e50474d01e680725557c2e4fe294b824e419"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/content-corrections-001/output.txt",
+      "bytes": 72,
+      "sha256": "080dac7fb737064785e8f7cbe388b19ce75b3954cee26809c5ace5f1c441f2c3"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/dependencies-001/execution.json",
+      "bytes": 457,
+      "sha256": "cac2c1186058e63ef33f3c53c5c4c533f90d607d819f748af3e6b7c91a4c2cde"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/dependencies-001/output.txt",
+      "bytes": 1517,
+      "sha256": "693e164965970a662f1e141577d1503650c37dea76e1098e64689c2cdb3a402f"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/final-verification-001/execution.json",
+      "bytes": 520,
+      "sha256": "033badf03dbd24d8ec56609fee8c83b117c906981b3a301f03cc309cd5eeb53a"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/final-verification-001/output.txt",
+      "bytes": 3287,
+      "sha256": "2b0957fa22b7779b2a494fcce739be96d7a0d39e735d60585e0162d9d7d5a7b5"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/full-year-audit-001/execution.json",
+      "bytes": 434,
+      "sha256": "a536b1123dbb256c946b8bfa8dc52fa2cea6d21c6459e7b2fbe96070f07115dd"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/full-year-audit-001/output.txt",
+      "bytes": 60,
+      "sha256": "ce78cf9086fd7f29616af7f5e56d548de891de9b21593fe524d727a03329625f"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/lessons-001/execution.json",
+      "bytes": 542,
+      "sha256": "fcc272ceeb1e887d603fc9673195a0fd95c2a576f104e75bafacc84aa6ee949f"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/lessons-001/output.txt",
+      "bytes": 11662,
+      "sha256": "c45e8885227beeb87e6fd786c6ad9f3a9215134032624696a646cbc605128046"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/normal-source-final-001/execution.json",
+      "bytes": 415,
+      "sha256": "afed9edfda4219fdeec196899b9a0c144a1c026699ad07757a7b092067afdb5f"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/normal-source-final-001/output.txt",
+      "bytes": 740,
+      "sha256": "2644c1313d222acd16bba0620323be53146e1627890bace7a504b6e2c263a987"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/package-results-001/execution.json",
+      "bytes": 439,
+      "sha256": "48bf8b4584358a9d11fda2c13d961207f9ce6854828efb21d24ff895d76eb051"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/package-results-001/output.txt",
+      "bytes": 605,
+      "sha256": "382bdbdf03dca3f231b7b96c2090271432d01ff21846b7368279dc80c9efdc24"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/questions-001/execution.json",
+      "bytes": 421,
+      "sha256": "bb9d6c65fd815335cc3a25e4699cebd5608ca318f5d692237c53bce9336b84c1"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/questions-001/output.txt",
+      "bytes": 139,
+      "sha256": "3b2fe66fc1c35d3ff5561bc2f350778f0d6a3286a8d5f21a806f010ff1d3e6c6"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/similarity-001/execution.json",
+      "bytes": 435,
+      "sha256": "2fb65a1230de897fbfdfcdc706b2dbbd6a7f612362fde3ad8381f7142640753c"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/similarity-001/output.txt",
+      "bytes": 83,
+      "sha256": "2dae93848f8c42bc40147d5fab421d46ee80e4a4789d264eb3d4238906974aae"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/vectors-001/execution.json",
+      "bytes": 720,
+      "sha256": "cf13dcce0e6e15a3d2b29242b40bb128d32422005b04ccec3664cd707a7930d2"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/executions/vectors-001/output.txt",
+      "bytes": 850,
+      "sha256": "1c084a4fdfa42ccceee608bb4003ea58be4e7d6d78412a7ad28b3d89926fac9a"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/final-completion-receipt-001.json",
+      "bytes": 6193,
+      "sha256": "5d7f319547ed317866cbf9713eeb1d0922e4af134b86c3db3d1025990d27a6b7"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/import-attempt-001-failure.json",
+      "bytes": 686,
+      "sha256": "94832f0b3386dfb33bf1388d5d778cf07d43a7c693d1b775c247d558b0e4be88"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/lexical-corpus-001.json",
+      "bytes": 12654,
+      "sha256": "05a33e7ed15cf60ca2398a45aaf0ef96e787a3697fecc607517a75ca2b4f69af"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/quantity-attestation-001.json",
+      "bytes": 993,
+      "sha256": "28676aea9fba547c97df8dac1454adb1519f5c52817058204d5bc890d69ac4c3"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/quantity-corpus-001.json",
+      "bytes": 1281,
+      "sha256": "d2f5719a40c2895272cd2adb76a625e913517879bd37889a247382bc40309580"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/source-drift-001.json",
+      "bytes": 162529,
+      "sha256": "d7170652a1538f08ebaf0cf638cf088facaee049bf2e4d7321e944374e16cb78"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/source-first-trial-mismatches.json",
+      "bytes": 19,
+      "sha256": "c28fc7140fc462a822a5d8d514d66aa7a559ea5e7a5c77dedb39fc4108cca4ff"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/evidence/window64-root-checkpoint-proof-001.json",
+      "bytes": 12253,
+      "sha256": "102a5dc401e06e40c489859e74e3b819690efa7116f4f8c21b9ed7fe246ea6f3"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/final-verification-001.json",
+      "bytes": 3287,
+      "sha256": "2b0957fa22b7779b2a494fcce739be96d7a0d39e735d60585e0162d9d7d5a7b5"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/full-readings-001.json",
+      "bytes": 18717,
+      "sha256": "68e848f27c1ca36f5a2ddd06aa30b43c2356b0242e280aaa92edeb90c43035de"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/full-readings-002.json",
+      "bytes": 21066,
+      "sha256": "eaa9b2cd152c4521fd793a175a0823e57c460891f4bb51f00fb8de696ae8c829"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/full-readings-003.json",
+      "bytes": 16445,
+      "sha256": "e694e739012d916e04c7a749cef6ea57934531bde74e89928e77984d309bb13d"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/import-001.json",
+      "bytes": 24414,
+      "sha256": "da51aa0a3cf9c65a4bf63f2f96c677b7a72e4ff2ed4356a8299accf5ef831c38"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/lexical-resolution-addendum-001.json",
+      "bytes": 930,
+      "sha256": "27d01c5443b7bff5d114c6328db215e6d819ffec3be10dd36ef58a2a9e052f9c"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/package_results.py",
+      "bytes": 4201,
+      "sha256": "93181cd16199343bbeb24ae39438f5338fbc2a1c2b36d7b344c747daab6a8617"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/reconcile_sources.py",
+      "bytes": 7198,
+      "sha256": "a9601811314bdae718d67628b2460ab8c4240b54addf4c0cf3d1cdd59bfd52ac"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/resolve_review.py",
+      "bytes": 13845,
+      "sha256": "b4362b375aca1fd291744ef2fb44e2d8d8884e113e3073db535bd77970c5562a"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/review-application-001.json",
+      "bytes": 2577,
+      "sha256": "075922f4ceb7b7dac1ac3fd4f27b9af4912cfc12c1db157d4ab90e2f72010674"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/review-inventory-001.json",
+      "bytes": 441098,
+      "sha256": "6af0bb9f292c72a5d9c9ba7d38872e91b4881dea2ddd7c4e8af1c6a9fbe5ff0c"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/review_inventory.py",
+      "bytes": 5772,
+      "sha256": "662ba7577e8607295e5230c986fb11442e7be8250b262c89b5260118a670123d"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/reviewed-edits-001.json",
+      "bytes": 114570,
+      "sha256": "b561ba83cd0420586fe97364aca155f1e3df81e8f6bc73bac3a3efebd9b5dc17"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/run_local.py",
+      "bytes": 1445,
+      "sha256": "35862014e47050bb694424d05fbb7a72634101f2b01722ee3acbc3512d098ba1"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/seal_completion.py",
+      "bytes": 4260,
+      "sha256": "69752323b89be5a97641f3b3c8d9e1443a6236e0843587e13f25f5bf7cca5ebe"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/source-reconciliation-001.json",
+      "bytes": 4906882,
+      "sha256": "89171eef7fad374d715df4e379baffbca7edb4f056378114e55ceea277166d31"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/test_apply_review.py",
+      "bytes": 2576,
+      "sha256": "7f847065a391a470e7c272b576def6679e254b222ac7512105172d8e183172e3"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/validation-evidence-001.json",
+      "bytes": 26658,
+      "sha256": "ba5ac02f39add96b2d7ff6829cb25428353a5139188aaa5aa1404814f8c4668c"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/vector-refresh-001.json",
+      "bytes": 828,
+      "sha256": "f9d30b39a66c681c6cc9b49141de2597a50cdfd9aa456ea40633775ab89390dd"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/verify_assessment_sources.py",
+      "bytes": 2070,
+      "sha256": "608ebde042a7a6dc9f2be4682fe8add6ee5e908f68346b4e72a2e9b091f999a8"
+    },
+    {
+      "path": "tools/cebuano-curriculum-alignment/verify_final.py",
+      "bytes": 10333,
+      "sha256": "fe0457c043789ea21bd3338498abc8bb96fe43ec68374340d15b3629f0e43e09"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-02-pilot/pilot-approval-20261002.json",
+      "bytes": 20177,
+      "sha256": "e104e3cc2e768973eabfb5839abc0d129c172ffb3c2a206feaefae0c70ed3511"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-02-pilot/pilot-supplemental-approval-20261002.json",
+      "bytes": 55765,
+      "sha256": "b71757b164ba3a8e382ffd0a4d077164ebc023448dbccc6df30d3a8c692ad8ec"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-02-window-0001/window-0001-approval-20261002.json",
+      "bytes": 217934,
+      "sha256": "90146ca041ee81c95f1673631fb551e324dd74bb9af6bbfed42742294e10cc21"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-02-window-0002/window-0002-approval-20261002.json",
+      "bytes": 170365,
+      "sha256": "f198165761b1b19c574dbd840d669f2a4fcfd1ad7a683d294ef0f063e6e6c0d8"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-02-window-0003/window-0003-approval-20261002.json",
+      "bytes": 190043,
+      "sha256": "20260489a861878908fe06fb97000adec3842f9ca2ff969d2d995c25f94c8e4b"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-02-window-0004/window-0004-approval-20261002.json",
+      "bytes": 197387,
+      "sha256": "0262f0867039c52e2b6b4fbe84bdbf5c3352321b5c3feee86a24b701b46c8f72"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-02-window-0005/window-0005-approval-20261002.json",
+      "bytes": 199037,
+      "sha256": "62f1f581b9981bcfa55d248b796ec7be59676a683b4d06318919a624ac084c41"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-02-window-0006/window-0006-approval-20261002.json",
+      "bytes": 235652,
+      "sha256": "ec2028ee42911d733b8b55bd8ba06b5879af5e2c08a5c1f1baa165536c1ef06b"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-02-window-0007/window-0007-approval-20261002.json",
+      "bytes": 165450,
+      "sha256": "6dc5dde8292061fb2a86130e7eca18a08f8d8b71c504c5bdc1d43ae8dedad05c"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0008/window-0008-approval-20261003.json",
+      "bytes": 191510,
+      "sha256": "7277b86c9e95e6e2d46eca95f3fc2be2539495cdc27631bcb18d9c2c04ef8f3f"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0009/window-0009-approval-20261003.json",
+      "bytes": 221019,
+      "sha256": "cbfe095a2160131ae192cb585c1db9d9d7c17b9f57f22cdd6e1887f444301750"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0010/window-0010-approval-20261003.json",
+      "bytes": 221809,
+      "sha256": "4c9818a89b2661d6dfa3f7744badbe454354fe0d58169af22ac3b37fe3c5ddf1"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0011/window-0011-approval-20261003.json",
+      "bytes": 198183,
+      "sha256": "e5a4a651de980d8b9a4fdd42165cb54a5b166a608405559d707c022dca31fe70"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0012/window-0012-approval-20261003.json",
+      "bytes": 220636,
+      "sha256": "1ebb75bef68e56b1f45ed2fc716725fc01f186cd8dae5afe76b8a430370e3961"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0013/window-0013-approval-20261003.json",
+      "bytes": 175116,
+      "sha256": "b380287248ca96d816b9112f572ab813ba6aa71680da1c54ae0c34af85adc811"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0014/window-0014-approval-20261003.json",
+      "bytes": 273536,
+      "sha256": "cca086630e2dfe9e4ae841afdd745cb94f64af916dbd60937db581ac59f55eda"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0015/window-0015-approval-20261003.json",
+      "bytes": 221025,
+      "sha256": "3b310803ce106f22d4ef71a335bb5beb1add589c62889918efed5b02492e0021"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0016/window-0016-approval-20261003.json",
+      "bytes": 229562,
+      "sha256": "a1b1505c1b47f81a1ec40989cc93b8dc2241f48f5e41d6c4694f6d87c617c93d"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0017/window-0017-approval-20261003.json",
+      "bytes": 156680,
+      "sha256": "a244f788ea213a0dcb8e2da7ebb053dedc8c09f293c22786046f9090d2ddc753"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0018/window-0018-approval-20261003.json",
+      "bytes": 281216,
+      "sha256": "47b98a1f6a8ee391e6302a599b3a6750356b79c467cc525c27f969957b5c6f61"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0019/window-0019-approval-20261003.json",
+      "bytes": 208028,
+      "sha256": "307dab7189e30fac02f6c925d5d70f1e922ddb82fcf07aad5434cd0ddfd86421"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0020/window-0020-approval-20261003.json",
+      "bytes": 143234,
+      "sha256": "ade714987c1efd347aa8082e5d8f383c30a45cea95a0609ab35b3454805199b8"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0021/window-0021-approval-20261003.json",
+      "bytes": 187512,
+      "sha256": "387ac083b99cac4fffcce73f37e4a049c283d13c58e0de465419083b73316fff"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0022/window-0022-approval-20261003.json",
+      "bytes": 185105,
+      "sha256": "de67e5c8e0db209a77a8e7d402b399f903101d49a6939bd934b6268f1ac5fa7a"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-03-window-0023/window-0023-approval-20261003.json",
+      "bytes": 138400,
+      "sha256": "4ed59f5cce2e4cd949a4f68865d3c058f0f8368c83094038a0332fae3f1f9519"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0024/window-0024-approval-20261004.json",
+      "bytes": 135854,
+      "sha256": "d6f360ee13b295d7ee3e1db227cb8acb2a7d3cfa1f89cd2d6a1e724a60195923"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0025/window-0025-approval-20261004.json",
+      "bytes": 317928,
+      "sha256": "549357fa1ab7dc8505ec7d6db0b433612da3f0c37baac576f90c5efaf166b70f"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0026/window-0026-approval-20261004.json",
+      "bytes": 193487,
+      "sha256": "d7404c3a77c6ed9246e13c1e8a6429ae2dc89a1327a74b15f5c6ce467f96e393"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0027/window-0027-approval-20261004.json",
+      "bytes": 167905,
+      "sha256": "8b6444b57549caa75e56f0ff4984b272669917f6c0da3560a1b39594e77eaaf0"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0028/window-0028-approval-20261004.json",
+      "bytes": 194847,
+      "sha256": "3f566b01727088e21bce9b939c1d3a66d4ef31f544a591e3afc8b6aa364627ef"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0029/window-0029-approval-20261004.json",
+      "bytes": 193773,
+      "sha256": "fcf8c9813c797eaafc9209d944835321e16b2101431399e41cb049574a824174"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0030/window-0030-approval-20261004.json",
+      "bytes": 203152,
+      "sha256": "6795cb1cbf61665c5224688bf0a12fa451989479b01a070564bdc0125c1238ad"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0031/window-0031-approval-20261004.json",
+      "bytes": 194340,
+      "sha256": "6190c193876e87ced8653ee4e68b08ea03860c9f5e4ed9e1f93ba67271b95e7b"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0032/window-0032-approval-20261004.json",
+      "bytes": 105983,
+      "sha256": "69afc7f49a0ef96b1dc1890f16dbe912c6238963b62190f053c8c8b5d619a3a2"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0033/window-0033-approval-20261004.json",
+      "bytes": 133198,
+      "sha256": "733e1250ff506bdb01baccfaeb0ad25c44d86d9995e92e235e2fc4bb41a8f3f7"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0034/window-0034-approval-20261004.json",
+      "bytes": 333534,
+      "sha256": "c225f03ae93152fc75a4a4a0cd06e3d70b2939b37a34fdf008a7fe571399704d"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0035/window-0035-approval-20261004.json",
+      "bytes": 155177,
+      "sha256": "244a9532d81834001b8aef2f2d3232ada4a9a3d23dc7417dfe679c3e44831602"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0036/window-0036-approval-20261004.json",
+      "bytes": 101327,
+      "sha256": "3df07affbea9ba740f62e56aee009656edb4f128164bba93a14a00de49600b67"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0037/window-0037-approval-20261004.json",
+      "bytes": 121421,
+      "sha256": "e90d6135d7dc43280e78ee4ef7490472f590cde987ba659e1ef0acb40733e831"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0038/window-0038-approval-20261004.json",
+      "bytes": 156925,
+      "sha256": "e5b365e1bb4f2e6c1986b8a01ed3a563ee78a286b063e2f454f67df281d5db0e"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0039/window-0039-approval-20261004.json",
+      "bytes": 166552,
+      "sha256": "0b1b3bfaa0ebded1ff3e4e5a24fe7da46c50f226af1c4f35137fc4622555adac"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0040/window-0040-approval-20261004.json",
+      "bytes": 153853,
+      "sha256": "b20fde4096097de9342d99a9f73d770007c0bac200b9fed618c9a4b664f8d2f9"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0041/window-0041-approval-20261005.json",
+      "bytes": 102773,
+      "sha256": "ac40a95455c58230e480c3cc4a0f8a1a1bd1810c69902e58e925d3a388834409"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0042/window-0042-approval-20261005.json",
+      "bytes": 121458,
+      "sha256": "c90c2c8f789fd69bdf78deedf1cae89c30dd3849e773793071d62e47ed909963"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0043/window-0043-approval-20261005.json",
+      "bytes": 93717,
+      "sha256": "c6d0f7d04c93461acad40dad8287c43d885de68153f5b3a1b7e19a703f99997b"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0044/window-0044-approval-20261005.json",
+      "bytes": 228067,
+      "sha256": "1482492c41260b3cb0ce4f526e475d11c371f5a50fcdafe779981633077642d6"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0045/window-0045-approval-20261005.json",
+      "bytes": 195286,
+      "sha256": "f43376b7808825d3695dcd9b9e5b8a9c41ecc4c333628f1994aa119ed7aac173"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0046/window-0046-approval-20261005.json",
+      "bytes": 117293,
+      "sha256": "8bae99e0c92ce58c996047f8d8d0b07bdf93ba384ed832dfaed4fbc2e2a2fb8b"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0047/window-0047-approval-20261005.json",
+      "bytes": 277399,
+      "sha256": "4e5ab2e8a43707597812d2e5a5b6845b65334db67479da18441c3ac9bc14495b"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0048/window-0048-approval-20261005.json",
+      "bytes": 548598,
+      "sha256": "a8c88d8b7f530c25b4d7ed6af0686062069b478489208146d4a4711aa1b6f8a6"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0049/window-0049-astra-approval-001.json",
+      "bytes": 622772,
+      "sha256": "b8b21c6e9c1716dd9f8e1756553c958e4d071789dc51ca8d41c0562abae10148"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0050/window-0050-astra-approval-001.json",
+      "bytes": 609364,
+      "sha256": "d3bfcf09c7f63c4bd58efee3a61e86b76b0935d4765e5ff1fb5a4ff46350b42d"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0051/window-0051-astra-approval-001.json",
+      "bytes": 598633,
+      "sha256": "98ab3012ccd9580b7ddc3008a9823156ed25c83fd32754aa65f88192bb38e0e2"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0052/window-0052-astra-approval-001.json",
+      "bytes": 610757,
+      "sha256": "0477c357b9e480226cc708cec7c4003c85cb9741262b9728108c6b94a36ddd89"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-06-window-0053/window-0053-approval-20261006.json",
+      "bytes": 647683,
+      "sha256": "33a141b8c374fb499683d8792ef24963a391cd1b43d89f89e17805008afeb8f3"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-06-window-0054/window-0054-approval-20261006.json",
+      "bytes": 710686,
+      "sha256": "f688c2a6a617f89fb1e01c72bfc92e4c8c3881166a62502a18533fa809824576"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-06-window-0055/window-0055-approval-20261006.json",
+      "bytes": 693371,
+      "sha256": "7f4a4b1018a8275714199abce1749e27eed077467ceab6758d5102db8666fb2e"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-06-window-0056/window-0056-approval-20261006.json",
+      "bytes": 744571,
+      "sha256": "3393a4ed8e89da5f4cdf85a9573450efc5ea9234b7f248875059c600d3f34aa3"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-06-window-0057/window-0057-approval-20261006.json",
+      "bytes": 743413,
+      "sha256": "4b27db24fc66bb7fdc928d676b609f71293e28b661e28083584579266dfcf685"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-06-window-0058/window-0058-approval-20261006.json",
+      "bytes": 606712,
+      "sha256": "3a5b13811e22b83e318601b48b444c833f189c10e501703def0c38abc49e0128"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-06-window-0059/window-0059-approval-20261006.json",
+      "bytes": 574079,
+      "sha256": "d39ee6a9b5b729c0f5e32fd927460bb0c55c6465dabe394c3247e97ac4c9497e"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-06-window-0060/window-0060-approval-20261006.json",
+      "bytes": 662758,
+      "sha256": "357d06127a5c4339e12d35331b8cfaa0bd0a40ce48d4bf7f0676f3f51e712c6f"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-06-window-0061/window-0061-approval-20261006.json",
+      "bytes": 520646,
+      "sha256": "7ed8e6250ee8655fc2a741c0388b45026470efa9924d3686f825410f3e687059"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-06-window-0062/window-0062-approval-20261006.json",
+      "bytes": 449123,
+      "sha256": "f9eef71e4b84f69e8446322f9381a8c9f94fb1f783cde49d146a263bbb16b2da"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-07-window-0063/window-0063-approval-20261007.json",
+      "bytes": 399234,
+      "sha256": "99a8863e5955938b4dc34d455e6685e91ba5caefc5d95e85d735541b9f2ae47d"
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-07-window-0064/window-0064-approval-20261007.json",
+      "bytes": 357798,
+      "sha256": "c26abd828d8941a9e9d4576d4c5d8d9fae3028dac1f78d653523a66bdc1ca917"
+    }
+  ]
+}

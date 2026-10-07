@@ -1,0 +1,2241 @@
+{
+  "schema": "hiraia.cebuano-readability-reviewed-edits/v1",
+  "status": "reviewed_for_local_application",
+  "created_at": "2026-10-04T22:29:17.568772+00:00",
+  "reviewer": "Codex root, separate from the Claude proposal and judgment calls",
+  "window_id": "window-0043",
+  "input_pins": [
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0043/preview-replay-comparison.json",
+      "sha256": "f8dd7bf76a3bec8c207214d029ef4229ae0e30583ceb45e363b6fe634ea993e5",
+      "bytes": 1886
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0043/report.json",
+      "sha256": "9855a991b26a098d2597b2eb4355fc461eafa4b3ff2d0a0f2d2d232c6da4d558",
+      "bytes": 55993010
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0043/clean-agreement.jsonl",
+      "sha256": "74d26ede1893b529f07919d844519d638125913f750c517e84e30b32e5050567",
+      "bytes": 660807
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/04664df2-7a6b-449c-9e89-2449033c9d1d/window43-initial-reading-001.json",
+      "sha256": "8cc9f82c9c64c5329604d301fcebe84be793732ad5101054c3e7920dddc5064b",
+      "bytes": 838212
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/04664df2-7a6b-449c-9e89-2449033c9d1d/window43-reading-decisions-001.json",
+      "sha256": "bf5c220cc75c8f2a7fdd1e538082241ed301ea7c9a0a5f914fd13e20062eff4a",
+      "bytes": 10651
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/5ef63dcb-50ca-40e5-b26f-53a36ddd1cdb/window43-reading-correction-001.json",
+      "sha256": "1bc5c9d54fdfba5b1295aecb80e22cfff96ac0736e79d6227299714c77972f19",
+      "bytes": 2397
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-gutenberg-40074.txt",
+      "sha256": "f80b888b24dd4ca7f5cb16276b4a53f9d22129a496b9ffb7f7efe17d3b9a1504",
+      "bytes": 5699379
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-05-window-0043/root-decisions.json",
+      "sha256": "2a807dfe5e68e76ee6a39cb648eae4cd91016e5e5e3ace886ee950ffcd2ff027",
+      "bytes": 8553
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/5ef63dcb-50ca-40e5-b26f-53a36ddd1cdb/create-reviewed-43-44-002.py",
+      "sha256": "8134e847f8335fd4810b2a4d88f5c7ab605dc02ceaa490669af34f9f3e321e91",
+      "bytes": 9923
+    }
+  ],
+  "current_pool_before_application": {
+    "path": "rag/pipeline/cardsPool.app.json",
+    "sha256": "0922544c6297598aef38fcbe2c1e09109a4402077bda96747d5bcea6cabb94a7",
+    "bytes": 50652016
+  },
+  "accepted": [
+    {
+      "card_id": "ffct-33099",
+      "source_card_sha256": "5a5db0f18fd8dc5857fa6bdedce5c1f1b115f0c9dcb2a3a4531e9ca1e69e80d6",
+      "candidate_card_sha256": "a338009b2d72405af9e700e8a5f4fe27f1624976accd1585b7fd6d457841ef0c",
+      "before_card": {
+        "id": "ffct-33099",
+        "factId": "freshwater-marsh-wetland-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "freshwater marsh wetland habitat",
+        "terms": [
+          "latian",
+          "marsh",
+          "wetland",
+          "basa-basang lupa",
+          "tubig-tabang",
+          "tirahan ng ibon",
+          "halamang-tubig",
+          "nagsasala ng tubig",
+          "freshwater marsh",
+          "habitat",
+          "lapok",
+          "kalamakan",
+          "basa nga yuta",
+          "tubig tab-ang",
+          "puy-anan sa langgam",
+          "tanom sa tubig"
+        ],
+        "fact": {
+          "en": "A freshwater marsh is a low, watery wetland packed with water plants — it's home to lots of birds and fish, and it even helps clean the water!",
+          "tl": "Ang freshwater marsh ay isang mababang, basang lupain na puno ng water plants — tahanan ito ng maraming ibon at isda, at tumutulong pa ring linisin ang tubig!",
+          "bis": "Ang freshwater marsh usa ka ubos, basa nga yuta nga puno sa water plants — panimalay kini sa daghang langgam ug isda, ug motabang pa gani sa paglimpyo sa tubig!"
+        },
+        "slug": "freshwater-marsh-wetland-scene",
+        "title": {
+          "en": "Freshwater Marsh",
+          "tl": "Latian",
+          "bis": "Kalapukan"
+        },
+        "cats": [
+          "ecosystems",
+          "water"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "freshwater marsh"
+          ],
+          "en": [
+            "freshwater marsh"
+          ],
+          "bis": [
+            "freshwater marsh"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-33099",
+        "factId": "freshwater-marsh-wetland-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "freshwater marsh wetland habitat",
+        "terms": [
+          "latian",
+          "marsh",
+          "wetland",
+          "basa-basang lupa",
+          "tubig-tabang",
+          "tirahan ng ibon",
+          "halamang-tubig",
+          "nagsasala ng tubig",
+          "freshwater marsh",
+          "habitat",
+          "lapok",
+          "kalamakan",
+          "basa nga yuta",
+          "tubig tab-ang",
+          "puy-anan sa langgam",
+          "tanom sa tubig"
+        ],
+        "fact": {
+          "en": "A freshwater marsh is a low, watery wetland packed with water plants — it's home to lots of birds and fish, and it even helps clean the water!",
+          "tl": "Ang freshwater marsh ay isang mababang, basang lupain na puno ng water plants — tahanan ito ng maraming ibon at isda, at tumutulong pa ring linisin ang tubig!",
+          "bis": "Ang freshwater marsh usa ka ubos ug basa nga yuta nga puno sa water plants. Puy-anan kini sa daghang langgam ug isda. Motabang pa gani kini sa paglimpyo sa tubig!"
+        },
+        "slug": "freshwater-marsh-wetland-scene",
+        "title": {
+          "en": "Freshwater Marsh",
+          "tl": "Latian",
+          "bis": "Kalapukan"
+        },
+        "cats": [
+          "ecosystems",
+          "water"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "freshwater marsh"
+          ],
+          "en": [
+            "freshwater marsh"
+          ],
+          "bis": [
+            "freshwater marsh"
+          ]
+        }
+      },
+      "reason": "Split the habitat/cleaning facts into complete shorter sentences. Puy-anan is dictionary-attested for a dwelling; water plants, birds, fish and water cleaning remain.",
+      "formal_item_id": "cb1fdf24f1f8c5ef1a452ad8ea74eba05",
+      "decision": "apply_reviewed_cebuano_edit",
+      "fidelity_item_id": "m63f739b67c86e7728ad62b24",
+      "readability_resolution": "Individual root reading matched byte-for-byte to full replay. Both complete blind observations, backtranslation, fidelity, dictionary roots and targeted source evidence were reviewed. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-33101",
+      "source_card_sha256": "49d6001cb9a8425dc1c18d4d967b6df953828964daab904e5361c5a2498fa977",
+      "candidate_card_sha256": "bfc9eecaee58eacf72a017c24573518e5ca63fe7837168c36b02354cabff33e2",
+      "before_card": {
+        "id": "ffct-33101",
+        "factId": "illegal-logging-truck-scene-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "illegal logging harms forests",
+        "terms": [
+          "illegal logging",
+          "pagtotroso",
+          "kalbong gubat",
+          "deforestation",
+          "kagubatan",
+          "erosion",
+          "logging",
+          "forest loss",
+          "puno",
+          "iligal nga pagputol",
+          "kalasangan",
+          "kakahoyan",
+          "pagguba sa lasang"
+        ],
+        "fact": {
+          "en": "Illegal logging cuts down trees from the forest, causing soil erosion, flooding, and taking away the homes where animals live.",
+          "tl": "Ang illegal logging ay nagpuputol ng mga puno sa kagubatan, na nagdudulot ng soil erosion, pagbaha, at pagkawala ng mga tahanan ng mga hayop.",
+          "bis": "Ang illegal logging nagputol og mga kahoy sa lasang, nga nagdala og soil erosion, pagbaha, ug pagkawala sa mga puy-anan sa mga mananap."
+        },
+        "slug": "erosion-soil-slope-water",
+        "title": {
+          "en": "Illegal Logging",
+          "tl": "Iligal na Pagtotroso",
+          "bis": "Ilegal nga Pagputol"
+        },
+        "cats": [
+          "environment",
+          "trees"
+        ],
+        "source": "original",
+        "emphasis": {
+          "en": [
+            "Illegal logging"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-33101",
+        "factId": "illegal-logging-truck-scene-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "illegal logging harms forests",
+        "terms": [
+          "illegal logging",
+          "pagtotroso",
+          "kalbong gubat",
+          "deforestation",
+          "kagubatan",
+          "erosion",
+          "logging",
+          "forest loss",
+          "puno",
+          "iligal nga pagputol",
+          "kalasangan",
+          "kakahoyan",
+          "pagguba sa lasang"
+        ],
+        "fact": {
+          "en": "Illegal logging cuts down trees from the forest, causing soil erosion, flooding, and taking away the homes where animals live.",
+          "tl": "Ang illegal logging ay nagpuputol ng mga puno sa kagubatan, na nagdudulot ng soil erosion, pagbaha, at pagkawala ng mga tahanan ng mga hayop.",
+          "bis": "Ang illegal logging nagputol sa mga kahoy sa lasang. Tungod niini, mahitabo ang soil erosion ug pagbaha, ug mawala ang mga puy-anan sa mga mananap."
+        },
+        "slug": "erosion-soil-slope-water",
+        "title": {
+          "en": "Illegal Logging",
+          "tl": "Iligal na Pagtotroso",
+          "bis": "Ilegal nga Pagputol sa Kahoy"
+        },
+        "cats": [
+          "environment",
+          "trees"
+        ],
+        "source": "original",
+        "emphasis": {
+          "en": [
+            "Illegal logging"
+          ]
+        },
+        "poster": true
+      },
+      "reason": "Separate the three illegal-logging effects with explicit cause/referents; the title names trees. No new effect or legal claim added.",
+      "formal_item_id": "c2a6a4f6ba00950624e6393c3e491e0e3",
+      "decision": "apply_reviewed_cebuano_edit",
+      "fidelity_item_id": "m98669ac832c39304d3eecb41",
+      "readability_resolution": "Individual root reading matched byte-for-byte to full replay. Both complete blind observations, backtranslation, fidelity, dictionary roots and targeted source evidence were reviewed. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-33106",
+      "source_card_sha256": "3002a5e08b23e4dcff989e559922001530876369d10c072eeb1a298b0382b606",
+      "candidate_card_sha256": "533ffd0f31b031a39cbb7c327d6a2fec071708c8996a5a808c6b23fa1f19732f",
+      "before_card": {
+        "id": "ffct-33106",
+        "factId": "asteroid-tumbling-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "asteroids",
+        "terms": [
+          "asteroid",
+          "bato sa kalawakan",
+          "asteroid belt",
+          "araw",
+          "umiikot",
+          "space rock",
+          "mars",
+          "jupiter",
+          "umiinog",
+          "asteroid sa kalawakan",
+          "nagtuyok nga bato",
+          "naglibot sa adlaw"
+        ],
+        "fact": {
+          "en": "What is an asteroid?\n\nAn asteroid is a rocky object orbiting the Sun — most of them hang out in the asteroid belt between Mars and Jupiter!",
+          "tl": "Ano ang asteroid?\n\nAng asteroid ay isang mabatong bagay na umiikot sa Araw — karamihan sa kanila ay nasa asteroid belt sa pagitan ng Mars at Jupiter!",
+          "bis": "Unsa ang asteroid?\n\nAng asteroid usa ka batoon nga butang nga naglibot sa Adlaw — ang kadaghanan niini anaa sa asteroid belt tali sa Mars ug Jupiter!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Asteroids",
+          "tl": "Mga Asteroid",
+          "bis": "Asteroyd"
+        },
+        "cats": [
+          "space",
+          "solar-system"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "asteroid"
+          ],
+          "en": [
+            "asteroid"
+          ],
+          "bis": [
+            "asteroid"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-33106",
+        "factId": "asteroid-tumbling-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "asteroids",
+        "terms": [
+          "asteroid",
+          "bato sa kalawakan",
+          "asteroid belt",
+          "araw",
+          "umiikot",
+          "space rock",
+          "mars",
+          "jupiter",
+          "umiinog",
+          "asteroid sa kalawakan",
+          "nagtuyok nga bato",
+          "naglibot sa adlaw"
+        ],
+        "fact": {
+          "en": "What is an asteroid?\n\nAn asteroid is a rocky object orbiting the Sun — most of them hang out in the asteroid belt between Mars and Jupiter!",
+          "tl": "Ano ang asteroid?\n\nAng asteroid ay isang mabatong bagay na umiikot sa Araw — karamihan sa kanila ay nasa asteroid belt sa pagitan ng Mars at Jupiter!",
+          "bis": "Unsa ang asteroid?\n\nAng asteroid usa ka batoon nga butang nga naglibot sa Adlaw. Ang kadaghanan sa mga asteroid anaa sa asteroid belt tali sa Mars ug Jupiter!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Asteroids",
+          "tl": "Mga Asteroid",
+          "bis": "Asteroyd"
+        },
+        "cats": [
+          "space",
+          "solar-system"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "asteroid"
+          ],
+          "en": [
+            "asteroid"
+          ],
+          "bis": [
+            "asteroid"
+          ]
+        },
+        "poster": true
+      },
+      "reason": "Name the asteroids explicitly after the sentence break instead of an ambiguous most-of-it reference. Sun orbit and Mars/Jupiter location remain.",
+      "formal_item_id": "c2ca88f4e12cec95f78b28b7b2388e129",
+      "decision": "apply_reviewed_cebuano_edit",
+      "fidelity_item_id": "m67493c06fce6a82a25dc7a22",
+      "readability_resolution": "Individual root reading matched byte-for-byte to full replay. Both complete blind observations, backtranslation, fidelity, dictionary roots and targeted source evidence were reviewed. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-33108",
+      "source_card_sha256": "3cb66288c37795cce05ea1dbb63c2ab031a8162ca4fe77d0aa7e4b56015b619b",
+      "candidate_card_sha256": "6ae8f02ab81946a79621a6ab696027dadaa53328096f39c6f485f99ab55ffa65",
+      "before_card": {
+        "id": "ffct-33108",
+        "factId": "gravity-weightlessness-freefall-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "weightlessness is freefall not absence of gravity",
+        "terms": [
+          "weightlessness",
+          "freefall",
+          "microgravity",
+          "iss",
+          "astronaut",
+          "gravity",
+          "walang bigat",
+          "floating",
+          "orbit",
+          "spacecraft"
+        ],
+        "fact": {
+          "en": "Astronauts on the International Space Station feel weightless because they and the station are in freefall around Earth together. Gravity is still there, they are just falling together!",
+          "tl": "Nararamdaman ng mga astronaut sa International Space Station ang weightlessness dahil sila at ang station ay parehong nasa freefall sa paligid ng Earth. May gravity pa rin, pero sabay silang nahuhulog!",
+          "bis": "Gibati sa mga astronaut sa International Space Station ang weightlessness tungod kay sila ug ang station parehong nasa freefall sa palibot sa Yuta. Aduna pay gravity, pero sabay silang nahulog!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Weightlessness",
+          "tl": "Kawalan ng Timbang",
+          "bis": "Kawalay sa Timbang"
+        },
+        "cats": [
+          "space",
+          "gravity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "weightlessness"
+          ],
+          "en": [
+            "weightless"
+          ],
+          "bis": [
+            "weightlessness"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-33108",
+        "factId": "gravity-weightlessness-freefall-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "weightlessness is freefall not absence of gravity",
+        "terms": [
+          "weightlessness",
+          "freefall",
+          "microgravity",
+          "iss",
+          "astronaut",
+          "gravity",
+          "walang bigat",
+          "floating",
+          "orbit",
+          "spacecraft"
+        ],
+        "fact": {
+          "en": "Astronauts on the International Space Station feel weightless because they and the station are in freefall around Earth together. Gravity is still there, they are just falling together!",
+          "tl": "Nararamdaman ng mga astronaut sa International Space Station ang weightlessness dahil sila at ang station ay parehong nasa freefall sa paligid ng Earth. May gravity pa rin, pero sabay silang nahuhulog!",
+          "bis": "Gibati sa mga astronaut sa International Space Station ang weightlessness. Tungod kini kay sila ug ang station dungan nga anaa sa freefall palibot sa Yuta. Anaa pa gihapon ang gravity, pero dungan lang silang nahulog!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Weightlessness",
+          "tl": "Kawalan ng Timbang",
+          "bis": "Kawalay sa Timbang"
+        },
+        "cats": [
+          "space",
+          "gravity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "weightlessness"
+          ],
+          "en": [
+            "weightless"
+          ],
+          "bis": [
+            "weightlessness"
+          ]
+        },
+        "poster": true
+      },
+      "reason": "Separate floating from the gravity explanation; dungan expresses falling together and anaa expresses location. Gravity still acts. Approval must not repeat an unsupported claim that sabay is wrong.",
+      "formal_item_id": "c633182abd94e2d27ba1986c41a559e8f",
+      "decision": "apply_reviewed_cebuano_edit",
+      "fidelity_item_id": "m14b88ab6dae64bad4e0bfa01",
+      "readability_resolution": "Individual root reading matched byte-for-byte to full replay. Both complete blind observations, backtranslation, fidelity, dictionary roots and targeted source evidence were reviewed. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-33139",
+      "source_card_sha256": "3a5e160eece1b131c20fe7d58be195e2f90f290b3daf6fbbab88d872090866e8",
+      "candidate_card_sha256": "937cd1cc71375129b65d16386a4be54d9d608afd12b0c0d0cfde6770dfecab42",
+      "before_card": {
+        "id": "ffct-33139",
+        "factId": "asteroid-belt-between-mars-jupiter-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "asteroid belt location between Mars and Jupiter",
+        "terms": [
+          "asteroid belt",
+          "mars",
+          "jupiter",
+          "rocky debris",
+          "ceres",
+          "millions of asteroids",
+          "maliit na bato",
+          "solar system",
+          "gravity of jupiter",
+          "never formed planet"
+        ],
+        "fact": {
+          "en": "The asteroid belt sits between Mars and Jupiter, packed with millions of small rocky bodies. Jupiter's strong gravitational pull stopped them from joining together to form a planet!",
+          "tl": "Ang asteroid belt ay nasa pagitan ng Mars at Jupiter, puno ng milyon-milyong maliliit na rocky bodies. Pinigilan ng malakas na gravitational pull ng Jupiter na magsama-sama sila at maging planeta!",
+          "bis": "Ang asteroid belt nagpuyo sa taliwala sa Mars ug Jupiter, puno sa milyon-milyong gamay nga rocky bodies. Gipugngan sa gamhanan nga gravitational pull sa Jupiter nga maghiusa sila aron mahimong planeta!"
+        },
+        "slug": "asteroid-belt",
+        "title": {
+          "en": "Asteroid Belt",
+          "tl": "Sinturon ng Asteroid",
+          "bis": "Bakus sa Asteroid"
+        },
+        "cats": [
+          "space",
+          "solar-system"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "asteroid belt"
+          ],
+          "en": [
+            "asteroid belt"
+          ],
+          "bis": [
+            "asteroid belt"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-33139",
+        "factId": "asteroid-belt-between-mars-jupiter-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "asteroid belt location between Mars and Jupiter",
+        "terms": [
+          "asteroid belt",
+          "mars",
+          "jupiter",
+          "rocky debris",
+          "ceres",
+          "millions of asteroids",
+          "maliit na bato",
+          "solar system",
+          "gravity of jupiter",
+          "never formed planet"
+        ],
+        "fact": {
+          "en": "The asteroid belt sits between Mars and Jupiter, packed with millions of small rocky bodies. Jupiter's strong gravitational pull stopped them from joining together to form a planet!",
+          "tl": "Ang asteroid belt ay nasa pagitan ng Mars at Jupiter, puno ng milyon-milyong maliliit na rocky bodies. Pinigilan ng malakas na gravitational pull ng Jupiter na magsama-sama sila at maging planeta!",
+          "bis": "Ang asteroid belt anaa sa taliwala sa Mars ug Jupiter. Puno kini sa milyon-milyong gagmay nga rocky bodies. Ang kusog nga gravitational pull sa Jupiter ang nagpugong kanila nga maghiusa aron mahimong planeta!"
+        },
+        "slug": "asteroid-belt",
+        "title": {
+          "en": "Asteroid Belt",
+          "tl": "Sinturon ng Asteroid",
+          "bis": "Bakus sa Asteroid"
+        },
+        "cats": [
+          "space",
+          "solar-system"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "asteroid belt"
+          ],
+          "en": [
+            "asteroid belt"
+          ],
+          "bis": [
+            "asteroid belt"
+          ]
+        }
+      },
+      "reason": "Clarify the belt location and explicitly name Jupiter's gravity as the preventing force. Source mechanism supported by NASA; do not label the old plural construction ungrammatical from judge preference alone.",
+      "formal_item_id": "c1e60eb1a372701e4cb76a6b8345ee1f1",
+      "decision": "apply_reviewed_cebuano_edit",
+      "fidelity_item_id": "m66b869ea35d66e610c83c5a4",
+      "readability_resolution": "Individual root reading matched byte-for-byte to full replay. Both complete blind observations, backtranslation, fidelity, dictionary roots and targeted source evidence were reviewed. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-33221",
+      "source_card_sha256": "b6b19898da53b4c0d28bf5ce691bd79abbe99c6f9bc7eed78501c3324819a9d8",
+      "candidate_card_sha256": "53a2aa0c5538985bbd44665bc53e995bc07c262cf823596edd2741a916d07fa9",
+      "before_card": {
+        "id": "ffct-33221",
+        "factId": "exoplanet-count-thousands-kepler-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "thousands of exoplanets confirmed by Kepler and TESS",
+        "terms": [
+          "exoplanet count",
+          "thousands",
+          "kepler telescope",
+          "tess",
+          "confirmed exoplanet",
+          "planet beyond solar system",
+          "habitable zone",
+          "planet search",
+          "transit",
+          "discovery"
+        ],
+        "fact": {
+          "en": "How many exoplanets have we found around other stars?\n\nOver 5,000 confirmed exoplanets! Most were found by NASA's Kepler space telescope and TESS mission using the transit method.",
+          "tl": "Ilang exoplanet ang nahanap na natin sa ibang bituin?\n\nHigit sa 5,000 confirmed exoplanets! Karamihan ay natuklasan ng NASA's Kepler space telescope at TESS mission gamit ang transit method.",
+          "bis": "Pila ka exoplanet ang nakit-an na nato sa laing mga bituin?\n\nLabaw sa 5,000 ka naconfirm nga exoplanet! Kadaghanan nadiskubre sa NASA's Kepler space telescope ug TESS mission gamit ang transit method."
+        },
+        "slug": "ffct-33221",
+        "source": "original",
+        "title": {
+          "tl": "5,000 Exoplanet",
+          "en": "Over 5,000 Exoplanets",
+          "bis": "5,000 Exoplanet"
+        },
+        "cats": [
+          "planets"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-33221",
+        "factId": "exoplanet-count-thousands-kepler-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "thousands of exoplanets confirmed by Kepler and TESS",
+        "terms": [
+          "exoplanet count",
+          "thousands",
+          "kepler telescope",
+          "tess",
+          "confirmed exoplanet",
+          "planet beyond solar system",
+          "habitable zone",
+          "planet search",
+          "transit",
+          "discovery"
+        ],
+        "fact": {
+          "en": "How many exoplanets have we found around other stars?\n\nOver 5,000 confirmed exoplanets! Most were found by NASA's Kepler space telescope and TESS mission using the transit method.",
+          "tl": "Ilang exoplanet ang nahanap na natin sa ibang bituin?\n\nHigit sa 5,000 confirmed exoplanets! Karamihan ay natuklasan ng NASA's Kepler space telescope at TESS mission gamit ang transit method.",
+          "bis": "Pila ka exoplanet ang nakit-an na nato sa laing mga bituin?\n\nLabaw sa 5,000 ka naconfirm nga exoplanet! Kadaghanan nadiskubre sa NASA's Kepler space telescope ug TESS mission gamit ang transit method."
+        },
+        "slug": "ffct-33221",
+        "source": "original",
+        "title": {
+          "tl": "5,000 Exoplanet",
+          "en": "Over 5,000 Exoplanets",
+          "bis": "Labaw sa 5,000 ka Exoplanet"
+        },
+        "cats": [
+          "planets"
+        ]
+      },
+      "reason": "Title-only edit restores the more-than qualifier for 5,000 exoplanets. Body unchanged; this is a lower-bound claim, not an updated census.",
+      "formal_item_id": "cd0da917e1a21525d0331b6b2984b3853",
+      "decision": "apply_reviewed_cebuano_edit",
+      "fidelity_item_id": "m50eb2b0d2c3f6990a09c32af",
+      "readability_resolution": "Individual root reading matched byte-for-byte to full replay. Both complete blind observations, backtranslation, fidelity, dictionary roots and targeted source evidence were reviewed. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-33273",
+      "source_card_sha256": "c3d037558205d1f986b235cda172bb697f9ac46c37f92f9401a6f66135f7504e",
+      "candidate_card_sha256": "a60f0c45adf07b1d43e63df9d8ce58c4bc7ab14fa0c2f80d4f31bab41dec3f9b",
+      "before_card": {
+        "id": "ffct-33273",
+        "factId": "day-night-rotation-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "Day and night from Earth's rotation",
+        "terms": [
+          "day and night",
+          "araw at gabi",
+          "pag-ikot ng mundo",
+          "rotation",
+          "earth spins",
+          "globo",
+          "flashlight",
+          "umaga",
+          "gabi",
+          "adlaw ug gabii",
+          "pagtuyok sa kalibotan",
+          "24 oras",
+          "araw umiikot",
+          "naglibot ang yuta",
+          "axis"
+        ],
+        "fact": {
+          "en": "Why do we have day and night?\n\nWe have day and night because Earth spins on its own axis once every 24 hours. The side facing the Sun has daytime while the other side has night!",
+          "tl": "Bakit may araw at gabi?\n\nMay araw at gabi tayo dahil umiikot ang Daigdig sa sarili nitong axis isang beses kada 24 oras. Ang nakaharap sa Araw ay araw, ang nasa likod ay gabi!",
+          "bis": "Nganong adunay adlaw ug gabii?\n\nAdunay adlaw ug gabii tungod kay magtuyok ang Kalibotan sa kaugalingong axis kausa matag 24 oras. Ang nag-atubang sa Adlaw adlaw, ang likod gabii!"
+        },
+        "slug": "ffct-29490",
+        "title": {
+          "en": "Day and Night",
+          "tl": "Araw at Gabi",
+          "bis": "Adlaw ug Gabii"
+        },
+        "cats": [
+          "earth",
+          "space"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "24 oras"
+          ],
+          "en": [
+            "24 hours"
+          ],
+          "bis": [
+            "24 oras"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-33273",
+        "factId": "day-night-rotation-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "Day and night from Earth's rotation",
+        "terms": [
+          "day and night",
+          "araw at gabi",
+          "pag-ikot ng mundo",
+          "rotation",
+          "earth spins",
+          "globo",
+          "flashlight",
+          "umaga",
+          "gabi",
+          "adlaw ug gabii",
+          "pagtuyok sa kalibotan",
+          "24 oras",
+          "araw umiikot",
+          "naglibot ang yuta",
+          "axis"
+        ],
+        "fact": {
+          "en": "Why do we have day and night?\n\nWe have day and night because Earth spins on its own axis once every 24 hours. The side facing the Sun has daytime while the other side has night!",
+          "tl": "Bakit may araw at gabi?\n\nMay araw at gabi tayo dahil umiikot ang Daigdig sa sarili nitong axis isang beses kada 24 oras. Ang nakaharap sa Araw ay araw, ang nasa likod ay gabi!",
+          "bis": "Nganong adunay adlaw ug gabii?\n\nAdunay adlaw ug gabii tungod kay magtuyok ang Kalibotan sa kaugalingong axis kausa matag 24 oras. Ang bahin nga nag-atubang sa Adlaw adunay adlaw, samtang ang pikas bahin adunay gabii!"
+        },
+        "slug": "ffct-29490",
+        "title": {
+          "en": "Day and Night",
+          "tl": "Araw at Gabi",
+          "bis": "Adlaw ug Gabii"
+        },
+        "cats": [
+          "earth",
+          "space"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "24 oras"
+          ],
+          "en": [
+            "24 hours"
+          ],
+          "bis": [
+            "24 oras"
+          ]
+        }
+      },
+      "reason": "Make the Sun-facing/opposite sides and day/night contrast explicit while retaining the approximate 24-hour account.",
+      "formal_item_id": "c1e2ae0ab2f2114233ca914df0327ed98",
+      "decision": "apply_reviewed_cebuano_edit",
+      "fidelity_item_id": "mfb76ac6886f6dab219870c90",
+      "readability_resolution": "Individual root reading matched byte-for-byte to full replay. Both complete blind observations, backtranslation, fidelity, dictionary roots and targeted source evidence were reviewed. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-33366",
+      "source_card_sha256": "de3beb249b5f62aa53919e7eff1a75af96b2138c4b875f63025592cbb4be2e0d",
+      "candidate_card_sha256": "18dfa992e5b60f96417aa19f340c1caf0b35da277a2a6bc4976490043fd23b4b",
+      "before_card": {
+        "id": "ffct-33366",
+        "factId": "mercury-day-176-days-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "how long is a day on Mercury",
+        "terms": [
+          "mercury day",
+          "176 earth days",
+          "araw sa mercury",
+          "176 araw ng mundo",
+          "adlaw sa mercury",
+          "176 ka adlaw",
+          "mercury day-night",
+          "gaano katagal araw mercury",
+          "mercury solar day",
+          "mercury adlaw"
+        ],
+        "fact": {
+          "en": "One full day on Mercury, from sunset to sunset, lasts about 176 Earth days! That is a really long day!",
+          "tl": "Tumatagal ng halos 176 araw ng Mundo ang isang araw sa Mercury, mula sunset hanggang sunset! Ang tagal nito!",
+          "bis": "Motagal ug mga 176 ka adlaw sa Yuta ang usa ka adlaw sa Mercury, gikan sa pagsalop hangtod sa sunod nga pagsalop!"
+        },
+        "slug": "ffct-33366",
+        "source": "original",
+        "title": {
+          "tl": "Mahabang Araw sa Mercury",
+          "en": "Long Days on Mercury",
+          "bis": "Taas nga Adlaw Mercury"
+        },
+        "cats": [
+          "planets"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-33366",
+        "factId": "mercury-day-176-days-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "how long is a day on Mercury",
+        "terms": [
+          "mercury day",
+          "176 earth days",
+          "araw sa mercury",
+          "176 araw ng mundo",
+          "adlaw sa mercury",
+          "176 ka adlaw",
+          "mercury day-night",
+          "gaano katagal araw mercury",
+          "mercury solar day",
+          "mercury adlaw"
+        ],
+        "fact": {
+          "en": "One full day on Mercury, from sunset to sunset, lasts about 176 Earth days! That is a really long day!",
+          "tl": "Tumatagal ng halos 176 araw ng Mundo ang isang araw sa Mercury, mula sunset hanggang sunset! Ang tagal nito!",
+          "bis": "Motagal ug mga 176 ka adlaw sa Yuta ang usa ka tibuok adlaw sa Mercury, gikan sa pagsalop hangtod sa sunod nga pagsalop! Taas gyud kaayo kana nga adlaw!"
+        },
+        "slug": "ffct-33366",
+        "source": "original",
+        "title": {
+          "tl": "Mahabang Araw sa Mercury",
+          "en": "Long Days on Mercury",
+          "bis": "Taas nga Adlaw sa Mercury"
+        },
+        "cats": [
+          "planets"
+        ]
+      },
+      "reason": "Clarify the full Mercury solar-day cycle and preserve about 176 Earth days. The restored closing emphasis adds no new physical claim.",
+      "formal_item_id": "c44b4f79f7400e55f98586ce021a1c599",
+      "decision": "apply_reviewed_cebuano_edit",
+      "fidelity_item_id": "m907c3db84637fbaedac8414d",
+      "readability_resolution": "Individual root reading matched byte-for-byte to full replay. Both complete blind observations, backtranslation, fidelity, dictionary roots and targeted source evidence were reviewed. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-33372",
+      "source_card_sha256": "abc2e7c8ee50f65cee0c367f5ae6da465da499420a9d77eaddfeebf19365b2ac",
+      "candidate_card_sha256": "c8ac6b8c15e76c59d7cf4b912084b415438b0772bfe91fff501f3790c0362d1c",
+      "before_card": {
+        "id": "ffct-33372",
+        "factId": "earth-sun-distance-150-million-km-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "average distance from Earth to the Sun",
+        "terms": [
+          "earth sun distance",
+          "layo ng araw",
+          "gilay-on sa adlaw",
+          "150 million km",
+          "150 milyong kilometro",
+          "150 ka milyon",
+          "distance to sun",
+          "gaano kalayo ang araw",
+          "unsa kalayo ang adlaw",
+          "kilometers",
+          "kilometro",
+          "1 au"
+        ],
+        "fact": {
+          "en": "How far away is the Sun from our planet Earth on average?\n\nThe average distance from Earth to the Sun is about 150 million kilometers!",
+          "tl": "Gaano kalayo ang Araw mula sa Daigdig sa karaniwan?\n\nAng karaniwang layo ng Daigdig sa Araw ay mga 150 milyong kilometro!",
+          "bis": "Unsa kasagaran ang gilay-on sa Adlaw gikan sa Yuta?\n\nAng kasagarang gilay-on sa Yuta gikan sa Adlaw maoy mga 150 ka milyon ka kilometro!"
+        },
+        "slug": "sun-earth-size",
+        "title": {
+          "en": "Earth-Sun Distance",
+          "tl": "Distansya ng Araw",
+          "bis": "Distansya sa Adlaw"
+        },
+        "cats": [
+          "space",
+          "planets"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "150 milyong kilometro"
+          ],
+          "en": [
+            "150 million kilometers"
+          ],
+          "bis": [
+            "150 ka milyon ka kilometro"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-33372",
+        "factId": "earth-sun-distance-150-million-km-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "average distance from Earth to the Sun",
+        "terms": [
+          "earth sun distance",
+          "layo ng araw",
+          "gilay-on sa adlaw",
+          "150 million km",
+          "150 milyong kilometro",
+          "150 ka milyon",
+          "distance to sun",
+          "gaano kalayo ang araw",
+          "unsa kalayo ang adlaw",
+          "kilometers",
+          "kilometro",
+          "1 au"
+        ],
+        "fact": {
+          "en": "How far away is the Sun from our planet Earth on average?\n\nThe average distance from Earth to the Sun is about 150 million kilometers!",
+          "tl": "Gaano kalayo ang Araw mula sa Daigdig sa karaniwan?\n\nAng karaniwang layo ng Daigdig sa Araw ay mga 150 milyong kilometro!",
+          "bis": "Sa kasagaran, unsa kalayo ang Adlaw gikan sa atong planeta nga Yuta?\n\nAng kasagarang gilay-on sa Yuta gikan sa Adlaw maoy mga 150 ka milyon ka kilometro!"
+        },
+        "slug": "sun-earth-size",
+        "title": {
+          "en": "Earth-Sun Distance",
+          "tl": "Distansya ng Araw",
+          "bis": "Distansya sa Adlaw"
+        },
+        "cats": [
+          "space",
+          "planets"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "150 milyong kilometro"
+          ],
+          "en": [
+            "150 million kilometers"
+          ],
+          "bis": [
+            "150 ka milyon ka kilometro"
+          ]
+        },
+        "poster": true
+      },
+      "reason": "Clarify the average-distance question and planet referent. The answer remains about 150 million km.",
+      "formal_item_id": "cbe149a47ee5e026033dcc51652fa1bb8",
+      "decision": "apply_reviewed_cebuano_edit",
+      "fidelity_item_id": "mf71fad71999d24a2d574131c",
+      "readability_resolution": "Individual root reading matched byte-for-byte to full replay. Both complete blind observations, backtranslation, fidelity, dictionary roots and targeted source evidence were reviewed. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-33377",
+      "source_card_sha256": "e92d93880a6ff34b7c3e2b904dec6da8311bfd87d8204c5aa4c9bd70ff6aa19f",
+      "candidate_card_sha256": "95e5f3466f4c3701eade06aa209cb1e2be814d220a4cc68b9c1f6ea386c47f81",
+      "before_card": {
+        "id": "ffct-33377",
+        "factId": "nearest-star-proxima-4-light-years-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "distance to the nearest star (other than the Sun)",
+        "terms": [
+          "nearest star",
+          "pinakamalapit na bituin",
+          "labing duol nga bituon",
+          "proxima centauri",
+          "4 light-years",
+          "4.2 light years",
+          "4 taon ng liwanag",
+          "gaano kalayo",
+          "unsa kalayo",
+          "star distance",
+          "bituin",
+          "bituon"
+        ],
+        "fact": {
+          "en": "What is the nearest star to us other than the Sun?\n\nThe nearest star other than the Sun, Proxima Centauri, is about 4 light-years away!",
+          "tl": "Ano ang pinakamalapit na bituin sa atin bukod sa Araw?\n\nAng pinakamalapit na bituin bukod sa Araw, ang Proxima Centauri, ay mga 4 na light-years ang layo!",
+          "bis": "Unsa ang labing duol nga bituon kanato gawas sa Adlaw?\n\nAng labing duol nga bituon gawas sa Adlaw, ang Proxima Centauri, mga 4 ka light-years ang gilay-on!"
+        },
+        "slug": "ffct-33377",
+        "source": "original",
+        "title": {
+          "tl": "Proxima Centauri 4 ly",
+          "en": "Proxima 4 Light-Years",
+          "bis": "Proxima 4 ly"
+        },
+        "cats": [
+          "stars"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-33377",
+        "factId": "nearest-star-proxima-4-light-years-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "distance to the nearest star (other than the Sun)",
+        "terms": [
+          "nearest star",
+          "pinakamalapit na bituin",
+          "labing duol nga bituon",
+          "proxima centauri",
+          "4 light-years",
+          "4.2 light years",
+          "4 taon ng liwanag",
+          "gaano kalayo",
+          "unsa kalayo",
+          "star distance",
+          "bituin",
+          "bituon"
+        ],
+        "fact": {
+          "en": "What is the nearest star to us other than the Sun?\n\nThe nearest star other than the Sun, Proxima Centauri, is about 4 light-years away!",
+          "tl": "Ano ang pinakamalapit na bituin sa atin bukod sa Araw?\n\nAng pinakamalapit na bituin bukod sa Araw, ang Proxima Centauri, ay mga 4 na light-years ang layo!",
+          "bis": "Unsa ang labing duol nga bituon kanato gawas sa Adlaw?\n\nGawas sa Adlaw, ang labing duol nga bituon mao ang Proxima Centauri. Mga 4 ka light-years ang gilay-on niini!"
+        },
+        "slug": "ffct-33377",
+        "source": "original",
+        "title": {
+          "tl": "Proxima Centauri 4 ly",
+          "en": "Proxima 4 Light-Years",
+          "bis": "Proxima Centauri, 4 ka Light-Years"
+        },
+        "cats": [
+          "stars"
+        ]
+      },
+      "reason": "Split the nearest-star answer and name Proxima in the title. Preserve exclusion of the Sun and about four light-years.",
+      "formal_item_id": "c43bbab792d89eacaf42b753ada3136a9",
+      "decision": "apply_reviewed_cebuano_edit",
+      "fidelity_item_id": "m0f98df4d03c5b50ec3872881",
+      "readability_resolution": "Individual root reading matched byte-for-byte to full replay. Both complete blind observations, backtranslation, fidelity, dictionary roots and targeted source evidence were reviewed. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-33378",
+      "source_card_sha256": "68ebf520b33ecbcadb2720ebf11e7fe85e732a37a1bae441067c3bac2a9abe40",
+      "candidate_card_sha256": "15e7a2c9c641fe7b0447beadf5797164b7aae02bdf43fc98a8c16e710d007da3",
+      "before_card": {
+        "id": "ffct-33378",
+        "factId": "earth-circumference-40000-km-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "how far around the Earth is (circumference)",
+        "terms": [
+          "earth circumference",
+          "palibot ng daigdig",
+          "libot sa yuta",
+          "40000 km",
+          "40,000 kilometers",
+          "around the world",
+          "gaano kalaki",
+          "unsa kalayo palibot",
+          "circumference",
+          "ekwador",
+          "equator",
+          "kilometro"
+        ],
+        "fact": {
+          "en": "The distance around the Earth (its circumference) at the equator is about 40,000 kilometers!",
+          "tl": "Ang palibot ng Daigdig (circumference) sa ekwador ay mga 40,000 kilometro!",
+          "bis": "Ang palibot sa Yuta (circumference) sa ekwador maoy mga 40,000 ka kilometro!"
+        },
+        "slug": "ffct-33378",
+        "source": "original",
+        "title": {
+          "tl": "40,000 km Palibot ng Mundo",
+          "en": "40,000 km Around Earth",
+          "bis": "40,000 km sa Yuta"
+        },
+        "cats": [
+          "earth"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-33378",
+        "factId": "earth-circumference-40000-km-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "how far around the Earth is (circumference)",
+        "terms": [
+          "earth circumference",
+          "palibot ng daigdig",
+          "libot sa yuta",
+          "40000 km",
+          "40,000 kilometers",
+          "around the world",
+          "gaano kalaki",
+          "unsa kalayo palibot",
+          "circumference",
+          "ekwador",
+          "equator",
+          "kilometro"
+        ],
+        "fact": {
+          "en": "The distance around the Earth (its circumference) at the equator is about 40,000 kilometers!",
+          "tl": "Ang palibot ng Daigdig (circumference) sa ekwador ay mga 40,000 kilometro!",
+          "bis": "Ang palibot sa Yuta (circumference) sa ekwador maoy mga 40,000 ka kilometro!"
+        },
+        "slug": "ffct-33378",
+        "source": "original",
+        "title": {
+          "tl": "40,000 km Palibot ng Mundo",
+          "en": "40,000 km Around Earth",
+          "bis": "40,000 km ang Palibot sa Yuta"
+        },
+        "cats": [
+          "earth"
+        ]
+      },
+      "reason": "Title-only palibot restores the around/circumference relation. Body and approximate equatorial number unchanged.",
+      "formal_item_id": "ceab2783839948a3ae1e93763897cdd06",
+      "decision": "apply_reviewed_cebuano_edit",
+      "fidelity_item_id": "m13efffc381e07787682b1cc2",
+      "readability_resolution": "Individual root reading matched byte-for-byte to full replay. Both complete blind observations, backtranslation, fidelity, dictionary roots and targeted source evidence were reviewed. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-33386",
+      "source_card_sha256": "0abe620da6211eb39f88185c17e2150ffc6831315ae924cbeba1dda3202611fe",
+      "candidate_card_sha256": "fc43810dc9c4ef7861e810976d8f3524984f678232ec46732a98b74fbe174496",
+      "before_card": {
+        "id": "ffct-33386",
+        "factId": "sun-diameter-km-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "what is the diameter of the Sun",
+        "terms": [
+          "1,392,000 km",
+          "diameter ng araw",
+          "sun diameter",
+          "lapad ng araw",
+          "diyametro sa adlaw",
+          "1.39 million km",
+          "how wide is the sun",
+          "1392000"
+        ],
+        "fact": {
+          "en": "Just how wide is the Sun from edge to edge?\n\nThe diameter of the Sun is truly massive, measuring about 1,392,000 kilometers all the way across!",
+          "tl": "Gaano kalapad ang Araw mula dulo hanggang dulo?\n\nAng diyametro ng Araw ay napakalaki, humigit-kumulang 1,392,000 kilometro ang lapad nito!",
+          "bis": "Unsa kadako ang gilapdon sa Adlaw gikan sa usa ka kilid ngadto sa lain?\n\nAng diyametro sa Adlaw dako kaayo, ug mga 1,392,000 ka kilometro ang gilapdon niini!"
+        },
+        "slug": "ffct-33386",
+        "source": "original",
+        "title": {
+          "tl": "Diyametro ng Araw sa km",
+          "en": "The Sun's Huge Diameter",
+          "bis": "Diyametro sa Adlaw"
+        },
+        "cats": [
+          "stars"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-33386",
+        "factId": "sun-diameter-km-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "what is the diameter of the Sun",
+        "terms": [
+          "1,392,000 km",
+          "diameter ng araw",
+          "sun diameter",
+          "lapad ng araw",
+          "diyametro sa adlaw",
+          "1.39 million km",
+          "how wide is the sun",
+          "1392000"
+        ],
+        "fact": {
+          "en": "Just how wide is the Sun from edge to edge?\n\nThe diameter of the Sun is truly massive, measuring about 1,392,000 kilometers all the way across!",
+          "tl": "Gaano kalapad ang Araw mula dulo hanggang dulo?\n\nAng diyametro ng Araw ay napakalaki, humigit-kumulang 1,392,000 kilometro ang lapad nito!",
+          "bis": "Unsa kalapad ang Adlaw gikan sa usa ka kilid ngadto sa pikas?\n\nDako gyud kaayo ang diyametro sa Adlaw! Mga 1,392,000 ka kilometro kini gikan sa usa ka kilid ngadto sa pikas."
+        },
+        "slug": "ffct-33386",
+        "source": "original",
+        "title": {
+          "tl": "Diyametro ng Araw sa km",
+          "en": "The Sun's Huge Diameter",
+          "bis": "Diyametro sa Adlaw"
+        },
+        "cats": [
+          "stars"
+        ]
+      },
+      "reason": "Clarify width from one side to the other using attested pikas and a sentence break. Preserve the Sun's approximate 1,392,000 km diameter.",
+      "formal_item_id": "c4b42f83e2036a025a2e034b401612177",
+      "decision": "apply_reviewed_cebuano_edit",
+      "fidelity_item_id": "mf67ce3df223e15eddc079ae8",
+      "readability_resolution": "Individual root reading matched byte-for-byte to full replay. Both complete blind observations, backtranslation, fidelity, dictionary roots and targeted source evidence were reviewed. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-33390",
+      "source_card_sha256": "b18c4a7a8782c7ef155d15ecffe7b7181166dda6af00f2cc682afcc107e31efe",
+      "candidate_card_sha256": "ca5a7890c4c2a75541b56051264a38481d3841d2cfffbc78225c3825f27a863c",
+      "before_card": {
+        "id": "ffct-33390",
+        "factId": "sunlight-8-minutes-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "how long does sunlight take to reach Earth",
+        "terms": [
+          "8 minutes",
+          "8 minuto",
+          "liwanag ng araw",
+          "sunlight to earth",
+          "kahayag sa adlaw",
+          "8 ka minuto",
+          "how long sunlight reach earth",
+          "ilaw ng araw"
+        ],
+        "fact": {
+          "en": "How long does it take for sunlight to reach us?\n\nIt travels super fast! Sunlight takes about 8 minutes to reach Earth.",
+          "tl": "Gaano katagal bago marating sa atin ang liwanag ng Araw?\n\nSobrang bilis ng biyahe nito! Mga 8 minuto ang inaabot ng liwanag ng Araw bago marating ang Lupa.",
+          "bis": "Unsa kadugay ang abuton sa kahayag sa Adlaw aron makaabot kanato?\n\nDali kaayo ang biyahe niini! Mga 8 ka minuto ang abuton sa kahayag sa Adlaw aron makaabot sa Yuta."
+        },
+        "slug": "ffct-33390",
+        "source": "original",
+        "title": {
+          "tl": "8 Minutong Liwanag",
+          "en": "8 Minutes of Sunlight",
+          "bis": "8 Minuto Kahayag"
+        },
+        "cats": [
+          "space"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-33390",
+        "factId": "sunlight-8-minutes-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "how long does sunlight take to reach Earth",
+        "terms": [
+          "8 minutes",
+          "8 minuto",
+          "liwanag ng araw",
+          "sunlight to earth",
+          "kahayag sa adlaw",
+          "8 ka minuto",
+          "how long sunlight reach earth",
+          "ilaw ng araw"
+        ],
+        "fact": {
+          "en": "How long does it take for sunlight to reach us?\n\nIt travels super fast! Sunlight takes about 8 minutes to reach Earth.",
+          "tl": "Gaano katagal bago marating sa atin ang liwanag ng Araw?\n\nSobrang bilis ng biyahe nito! Mga 8 minuto ang inaabot ng liwanag ng Araw bago marating ang Lupa.",
+          "bis": "Unsa kadugay ang abuton sa kahayag sa Adlaw aron makaabot kanato?\n\nDali kaayo ang biyahe niini! Mga 8 ka minuto ang abuton sa kahayag sa Adlaw aron makaabot sa Yuta."
+        },
+        "slug": "ffct-33390",
+        "source": "original",
+        "title": {
+          "tl": "8 Minutong Liwanag",
+          "en": "8 Minutes of Sunlight",
+          "bis": "8 Minuto sa Kahayag sa Adlaw"
+        },
+        "cats": [
+          "space"
+        ]
+      },
+      "reason": "Title linking words and Sun referent improve the phrase without changing the approximately eight-minute body.",
+      "formal_item_id": "c11b8c2dcda0e0f5ee513452bdd436d4d",
+      "decision": "apply_reviewed_cebuano_edit",
+      "fidelity_item_id": "m25544eda7c2112ebb33a4f89",
+      "readability_resolution": "Individual root reading matched byte-for-byte to full replay. Both complete blind observations, backtranslation, fidelity, dictionary roots and targeted source evidence were reviewed. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-33393",
+      "source_card_sha256": "53e34156ef992ac013fdd2a82944b6ebfb96872f9270f756c6fa4064196691bf",
+      "candidate_card_sha256": "f954522473c1a55d8c8077f94efda6e73fd61c36032f742f8f2b9b209be2f3c5",
+      "before_card": {
+        "id": "ffct-33393",
+        "factId": "moon-diameter-km-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "what is the diameter of the Moon",
+        "terms": [
+          "3,474 km",
+          "diameter ng buwan",
+          "moon diameter",
+          "lapad ng buwan",
+          "diyametro sa bulan",
+          "3474",
+          "how wide is the moon",
+          "3,474 kilometro"
+        ],
+        "fact": {
+          "en": "How wide is the Moon from end to end?\n\nThe diameter of the Moon is about 3,474 kilometers!",
+          "tl": "Gaano kalapad ang Buwan mula dulo hanggang dulo?\n\nAng diyametro ng Buwan ay humigit-kumulang 3,474 kilometro!",
+          "bis": "Unsa kalapad ang Bulan gikan sa usa ka tumoy ngadto sa lain?\n\nAng diyametro sa Bulan mga 3,474 ka kilometro!"
+        },
+        "slug": "ffct-33393",
+        "source": "original",
+        "title": {
+          "tl": "3,474 km Diyametro ng Buwan",
+          "en": "Moon's 3,474 km Diameter",
+          "bis": "3,474 km sa Bulan"
+        },
+        "cats": [
+          "the-moon"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-33393",
+        "factId": "moon-diameter-km-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "what is the diameter of the Moon",
+        "terms": [
+          "3,474 km",
+          "diameter ng buwan",
+          "moon diameter",
+          "lapad ng buwan",
+          "diyametro sa bulan",
+          "3474",
+          "how wide is the moon",
+          "3,474 kilometro"
+        ],
+        "fact": {
+          "en": "How wide is the Moon from end to end?\n\nThe diameter of the Moon is about 3,474 kilometers!",
+          "tl": "Gaano kalapad ang Buwan mula dulo hanggang dulo?\n\nAng diyametro ng Buwan ay humigit-kumulang 3,474 kilometro!",
+          "bis": "Unsa kalapad ang Bulan gikan sa usa ka tumoy ngadto sa pikas?\n\nAng diyametro sa Bulan mga 3,474 ka kilometro!"
+        },
+        "slug": "ffct-33393",
+        "source": "original",
+        "title": {
+          "tl": "3,474 km Diyametro ng Buwan",
+          "en": "Moon's 3,474 km Diameter",
+          "bis": "3,474 km ang Diyametro sa Bulan"
+        },
+        "cats": [
+          "the-moon"
+        ]
+      },
+      "reason": "The diameter question uses attested pikas for the other side and the title names diameter. Preserve about 3,474 km.",
+      "formal_item_id": "cbb199c84de4ea0f8c84dadc74cdf42a7",
+      "decision": "apply_reviewed_cebuano_edit",
+      "fidelity_item_id": "m4c68a5da543dc85f3d8150ae",
+      "readability_resolution": "Individual root reading matched byte-for-byte to full replay. Both complete blind observations, backtranslation, fidelity, dictionary roots and targeted source evidence were reviewed. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-33426",
+      "source_card_sha256": "02a1c6e39f65fc740489f7e3c76730ee4b29d10147249f100d727da13698775f",
+      "candidate_card_sha256": "51bd051f2098aa8198cd84c2d40d0275942c3d2049342fab240c3a6355caf9af",
+      "before_card": {
+        "id": "ffct-33426",
+        "factId": "tereshkova-spacecraft-vostok6-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "spacecraft of the first woman in space",
+        "terms": [
+          "vostok 6",
+          "tereshkova",
+          "spacecraft",
+          "unang babae",
+          "first woman spacecraft",
+          "sakyanan",
+          "1963",
+          "vostok"
+        ],
+        "fact": {
+          "en": "Valentina Tereshkova flew through space aboard the awesome spacecraft Vostok 6 in 1963!",
+          "tl": "Lumipad si Valentina Tereshkova sa kalawakan na nakasakay sa spacecraft na Vostok 6 noong 1963!",
+          "bis": "Milupad si Valentina Tereshkova sa kawanangan nga naka sakay sa spacecraft nga Vostok 6 niadtong 1963!"
+        },
+        "slug": "ffct-33426",
+        "source": "original",
+        "title": {
+          "tl": "Si Valentina Tereshkova",
+          "en": "Valentina Tereshkova",
+          "bis": "Si Valentina Tereshkova"
+        },
+        "cats": [
+          "space-exploration"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-33426",
+        "factId": "tereshkova-spacecraft-vostok6-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "spacecraft of the first woman in space",
+        "terms": [
+          "vostok 6",
+          "tereshkova",
+          "spacecraft",
+          "unang babae",
+          "first woman spacecraft",
+          "sakyanan",
+          "1963",
+          "vostok"
+        ],
+        "fact": {
+          "en": "Valentina Tereshkova flew through space aboard the awesome spacecraft Vostok 6 in 1963!",
+          "tl": "Lumipad si Valentina Tereshkova sa kalawakan na nakasakay sa spacecraft na Vostok 6 noong 1963!",
+          "bis": "Milupad si Valentina Tereshkova sa kawanangan nga nakasakay sa spacecraft nga Vostok 6 niadtong 1963!"
+        },
+        "slug": "ffct-33426",
+        "source": "original",
+        "title": {
+          "tl": "Si Valentina Tereshkova",
+          "en": "Valentina Tereshkova",
+          "bis": "Si Valentina Tereshkova"
+        },
+        "cats": [
+          "space-exploration"
+        ]
+      },
+      "reason": "Join only naka sakay to nakasakay; sakay's ride/board sense is attested. Tereshkova, Vostok 6, 1963 and all other wording remain.",
+      "formal_item_id": "c0a2dd8e98eb85b4b4f63a202dea528ec",
+      "decision": "apply_reviewed_cebuano_edit",
+      "fidelity_item_id": "m9dbb1a84715df284834cd6c2",
+      "readability_resolution": "Individual root reading matched byte-for-byte to full replay. Both complete blind observations, backtranslation, fidelity, dictionary roots and targeted source evidence were reviewed. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-33492",
+      "source_card_sha256": "4c119a4f935998ad9a0d26c1ffe06ab820ffb5413be0743ef2ba6bdb8da087c3",
+      "candidate_card_sha256": "2cd6af1cf063c2a5f6f2ada198e480fc0deef05ee13472a1f195a2facc7cf917",
+      "before_card": {
+        "id": "ffct-33492",
+        "factId": "pluto-discovered-who-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "who discovered Pluto",
+        "terms": [
+          "pluto",
+          "pluton",
+          "clyde tombaugh",
+          "tombaugh",
+          "discovered",
+          "natuklasan",
+          "sino nakatuklas",
+          "kinsa nakadiskobre",
+          "astronomer",
+          "1930",
+          "who found pluto"
+        ],
+        "fact": {
+          "en": "Who discovered Pluto?\n\nThe American astronomer Clyde Tombaugh discovered Pluto in 1930! He was the one who found it.",
+          "tl": "Sino ang nakatuklas ng Pluto?\n\nAng Amerikanong astronomo na si Clyde Tombaugh ang nakatuklas ng Pluto noong 1930! Siya ang nakakita nito.",
+          "bis": "Kinsa ang nakadiskobre sa Pluto?\n\nAng Amerikanong astronomo nga si Clyde Tombaugh ang nakadiskobre sa Pluto niadtong 1930! Siya ang nakakita niini."
+        },
+        "slug": "qa-ffct-33492",
+        "source": "original",
+        "title": {
+          "tl": "Si Clyde Tombaugh at Pluto",
+          "en": "Clyde Tombaugh Found Pluto",
+          "bis": "Si Clyde Tombaugh Pluto"
+        },
+        "cats": [
+          "planets",
+          "space"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-33492",
+        "factId": "pluto-discovered-who-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "who discovered Pluto",
+        "terms": [
+          "pluto",
+          "pluton",
+          "clyde tombaugh",
+          "tombaugh",
+          "discovered",
+          "natuklasan",
+          "sino nakatuklas",
+          "kinsa nakadiskobre",
+          "astronomer",
+          "1930",
+          "who found pluto"
+        ],
+        "fact": {
+          "en": "Who discovered Pluto?\n\nThe American astronomer Clyde Tombaugh discovered Pluto in 1930! He was the one who found it.",
+          "tl": "Sino ang nakatuklas ng Pluto?\n\nAng Amerikanong astronomo na si Clyde Tombaugh ang nakatuklas ng Pluto noong 1930! Siya ang nakakita nito.",
+          "bis": "Kinsa ang nakadiskobre sa Pluto?\n\nAng Amerikanong astronomo nga si Clyde Tombaugh ang nakadiskobre sa Pluto niadtong 1930! Siya ang nakakita niini."
+        },
+        "slug": "qa-ffct-33492",
+        "source": "original",
+        "title": {
+          "tl": "Si Clyde Tombaugh at Pluto",
+          "en": "Clyde Tombaugh Found Pluto",
+          "bis": "Si Clyde Tombaugh ug ang Pluto"
+        },
+        "cats": [
+          "planets",
+          "space"
+        ]
+      },
+      "reason": "Title-only linking of Clyde Tombaugh and Pluto; body and 1930 discovery relation remain unchanged.",
+      "formal_item_id": "cc4e9b259dff754a216c68cd785bd357d",
+      "decision": "apply_reviewed_cebuano_edit",
+      "fidelity_item_id": "mbab8a872c256244f3d241b47",
+      "readability_resolution": "Individual root reading matched byte-for-byte to full replay. Both complete blind observations, backtranslation, fidelity, dictionary roots and targeted source evidence were reviewed. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-33528",
+      "source_card_sha256": "5d446da69c0045f0907ea0675f13e1b844006517c3138860849c3f29da60c1b0",
+      "candidate_card_sha256": "8a30d46c0e141d36f11e43abb94bcb9b6fce48dde53fc7bb21e27952ad9274e3",
+      "before_card": {
+        "id": "ffct-33528",
+        "factId": "pinatubo-second-largest-20thcentury-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "how big was the Pinatubo eruption ranked",
+        "terms": [
+          "second largest eruption",
+          "pinatubo 20th century",
+          "pangalawang pinakamalaki",
+          "bulkang pinatubo",
+          "ika-20 siglo",
+          "ikaduhang pinakadako",
+          "pagbuto sa pinatubo",
+          "second largest 20th century",
+          "1991 eruption",
+          "pinakamalaking pagsabog"
+        ],
+        "fact": {
+          "en": "The 1991 Pinatubo eruption was huge! It was the second-largest volcanic eruption of the 20th century. 🌍",
+          "tl": "Ang pagsabog ng Pinatubo noong 1991 ay napakalaki! Ito ang pangalawang pinakamalaking pagsabog ng bulkan noong ika-20 siglo. 🌍",
+          "bis": "Ang pagbuto sa Pinatubo niadtong 1991 dako kaayo! Mao kini ang ikaduhang pinakadako nga pagbuto sa bulkan sa ika-20 nga siglo. 🌍"
+        },
+        "slug": "ffct-33528",
+        "source": "original",
+        "title": {
+          "tl": "Ikalawang Malaking Pagsabog",
+          "en": "Second-Largest Eruption",
+          "bis": "Ikaduhang Dako Buto"
+        },
+        "cats": [
+          "volcanoes"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-33528",
+        "factId": "pinatubo-second-largest-20thcentury-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "how big was the Pinatubo eruption ranked",
+        "terms": [
+          "second largest eruption",
+          "pinatubo 20th century",
+          "pangalawang pinakamalaki",
+          "bulkang pinatubo",
+          "ika-20 siglo",
+          "ikaduhang pinakadako",
+          "pagbuto sa pinatubo",
+          "second largest 20th century",
+          "1991 eruption",
+          "pinakamalaking pagsabog"
+        ],
+        "fact": {
+          "en": "The 1991 Pinatubo eruption was huge! It was the second-largest volcanic eruption of the 20th century. 🌍",
+          "tl": "Ang pagsabog ng Pinatubo noong 1991 ay napakalaki! Ito ang pangalawang pinakamalaking pagsabog ng bulkan noong ika-20 siglo. 🌍",
+          "bis": "Ang pagbuto sa Pinatubo niadtong 1991 dako kaayo! Mao kini ang ikaduhang pinakadako nga pagbuto sa bulkan sa ika-20 nga siglo. 🌍"
+        },
+        "slug": "ffct-33528",
+        "source": "original",
+        "title": {
+          "tl": "Ikalawang Malaking Pagsabog",
+          "en": "Second-Largest Eruption",
+          "bis": "Ikaduhang Pinakadakong Pagbuto"
+        },
+        "cats": [
+          "volcanoes"
+        ]
+      },
+      "reason": "Restore second-largest in the title. Body retains the twentieth-century scope and Pinatubo's 1991 eruption.",
+      "formal_item_id": "ca6b548a34ce81a81d06a5a25ded6497c",
+      "decision": "apply_reviewed_cebuano_edit",
+      "fidelity_item_id": "maeff051fcf92a42197f0f825",
+      "readability_resolution": "Individual root reading matched byte-for-byte to full replay. Both complete blind observations, backtranslation, fidelity, dictionary roots and targeted source evidence were reviewed. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-33538",
+      "source_card_sha256": "d73e9bb3bfc163eb8af6207d97d6d8f1a3f9560c27481ccb36502836e5bc37f3",
+      "candidate_card_sha256": "3950aacde75088d693eb82d363173bb77e93751fb1f9ad9574be4dd9e20de75a",
+      "before_card": {
+        "id": "ffct-33538",
+        "factId": "pagasa-signal5-wind-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "wind speed of Signal No. 5",
+        "terms": [
+          "signal no. 5",
+          "185 km/h",
+          "super typhoon",
+          "hangin",
+          "wind speed",
+          "bilis ng hangin",
+          "pagasa",
+          "signal lima",
+          "185",
+          "super bagyo",
+          "kakusog sa hangin"
+        ],
+        "fact": {
+          "en": "Signal No. 5 means winds of 185 km/h or higher, the level of a super typhoon!",
+          "tl": "Sa Signal No. 5, ang lakas ng hangin ay 185 km/h o higit pa (super typhoon)!",
+          "bis": "Sa Signal No. 5, ang kakusog sa hangin kay 185 km/h o labaw pa (super typhoon)!"
+        },
+        "slug": "ffct-33538",
+        "source": "original",
+        "title": {
+          "tl": "Hangin sa Signal No. 5",
+          "en": "Winds of Signal No. 5",
+          "bis": "Hangin sa Signal No. 5"
+        },
+        "cats": [
+          "weather"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-33538",
+        "factId": "pagasa-signal5-wind-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "wind speed of Signal No. 5",
+        "terms": [
+          "signal no. 5",
+          "185 km/h",
+          "super typhoon",
+          "hangin",
+          "wind speed",
+          "bilis ng hangin",
+          "pagasa",
+          "signal lima",
+          "185",
+          "super bagyo",
+          "kakusog sa hangin"
+        ],
+        "fact": {
+          "en": "Signal No. 5 means winds of 185 km/h or higher, the level of a super typhoon!",
+          "tl": "Sa Signal No. 5, ang lakas ng hangin ay 185 km/h o higit pa (super typhoon)!",
+          "bis": "Sa Signal No. 5, ang kakusog sa hangin kay 185 km/h o labaw pa. Kini ang lebel sa super typhoon!"
+        },
+        "slug": "ffct-33538",
+        "source": "original",
+        "title": {
+          "tl": "Hangin sa Signal No. 5",
+          "en": "Winds of Signal No. 5",
+          "bis": "Hangin sa Signal No. 5"
+        },
+        "cats": [
+          "weather"
+        ]
+      },
+      "reason": "Replace the bare super-typhoon parenthesis with the source's explicit level sentence; retain at least 185 km/h. Current PAGASA table supports the threshold; this is not a claim about currently measured winds.",
+      "formal_item_id": "cf47c339596329a05e6f68610f8acb0c9",
+      "decision": "apply_reviewed_cebuano_edit",
+      "fidelity_item_id": "md2f9914457360bbf7eecae79",
+      "readability_resolution": "Individual root reading matched byte-for-byte to full replay. Both complete blind observations, backtranslation, fidelity, dictionary roots and targeted source evidence were reviewed. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-33547",
+      "source_card_sha256": "915a711dbd85008c2c752b416a51dadf31f57c985cb447abd1616854f85ff50e",
+      "candidate_card_sha256": "c1118c20bbdb159a2fe08a94919421b07be79c07f6839d9e15d8b0905fee6b7d",
+      "before_card": {
+        "id": "ffct-33547",
+        "factId": "pagasa-full-name-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "what does PAGASA stand for",
+        "terms": [
+          "pagasa",
+          "full name",
+          "ahensya ng panahon",
+          "weather agency",
+          "philippine atmospheric geophysical astronomical services administration",
+          "ano ang pagasa",
+          "unsa ang pagasa",
+          "panahon",
+          "weather bureau",
+          "forecast",
+          "ahensya sa panahon"
+        ],
+        "fact": {
+          "en": "Do you know what PAGASA stands for?\n\nIt means Philippine Atmospheric, Geophysical and Astronomical Services Administration, our country's official weather agency!",
+          "tl": "Alam mo ba kung ano ang ibig sabihin ng PAGASA?\n\nIbig sabihin ay Philippine Atmospheric, Geophysical and Astronomical Services Administration, ang opisyal na ahensya ng panahon ng Pilipinas!",
+          "bis": "Nahibaw-an ba nimo unsay buot ipasabot sa PAGASA?\n\nPasabot niini Philippine Atmospheric, Geophysical and Astronomical Services Administration, ang opisyal nga ahensya sa panahon sa Pilipinas!"
+        },
+        "slug": "ffct-33547",
+        "source": "original",
+        "title": {
+          "tl": "Kahulugan ng PAGASA",
+          "en": "What PAGASA Stands For",
+          "bis": "Kahulogan sa PAGASA"
+        },
+        "cats": [
+          "weather"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-33547",
+        "factId": "pagasa-full-name-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "what does PAGASA stand for",
+        "terms": [
+          "pagasa",
+          "full name",
+          "ahensya ng panahon",
+          "weather agency",
+          "philippine atmospheric geophysical astronomical services administration",
+          "ano ang pagasa",
+          "unsa ang pagasa",
+          "panahon",
+          "weather bureau",
+          "forecast",
+          "ahensya sa panahon"
+        ],
+        "fact": {
+          "en": "Do you know what PAGASA stands for?\n\nIt means Philippine Atmospheric, Geophysical and Astronomical Services Administration, our country's official weather agency!",
+          "tl": "Alam mo ba kung ano ang ibig sabihin ng PAGASA?\n\nIbig sabihin ay Philippine Atmospheric, Geophysical and Astronomical Services Administration, ang opisyal na ahensya ng panahon ng Pilipinas!",
+          "bis": "Nahibaw-an ba nimo unsay buot ipasabot sa PAGASA?\n\nAng PAGASA nagpasabot og Philippine Atmospheric, Geophysical and Astronomical Services Administration. Kini ang opisyal nga ahensya sa panahon sa Pilipinas!"
+        },
+        "slug": "ffct-33547",
+        "source": "original",
+        "title": {
+          "tl": "Kahulugan ng PAGASA",
+          "en": "What PAGASA Stands For",
+          "bis": "Kahulogan sa PAGASA"
+        },
+        "cats": [
+          "weather"
+        ]
+      },
+      "reason": "Use two explicit-subject sentences for PAGASA's role and agency name. The full proper name remains unchanged.",
+      "formal_item_id": "cf23eb394816d1db54833b387864c4555",
+      "decision": "apply_reviewed_cebuano_edit",
+      "fidelity_item_id": "m3a6381e330f33085ac8a0a1b",
+      "readability_resolution": "Individual root reading matched byte-for-byte to full replay. Both complete blind observations, backtranslation, fidelity, dictionary roots and targeted source evidence were reviewed. Exact candidate only; no native certification."
+    }
+  ],
+  "held": [
+    {
+      "card_id": "ffct-32850",
+      "source_card_sha256": "a7250fd6bd07b1fe81b16cb9f172ec54e5928b9231f67e6d606c3133f212b542",
+      "candidate_card_sha256": "32e5d7070d344cf90d6bce18b908c02905c599f860592cb2c2b363e4889bc619",
+      "before_card": {
+        "id": "ffct-32850",
+        "factId": "fresh-vs-salt-water-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "most water is salty",
+        "terms": [
+          "tubig-tabang",
+          "tubig-alat",
+          "kaunti",
+          "maiinom",
+          "karagatan",
+          "tab-ang nga tubig",
+          "parat nga tubig",
+          "gamay",
+          "mainom",
+          "fresh water",
+          "salt water",
+          "drinkable",
+          "most is salty"
+        ],
+        "fact": {
+          "en": "Is most of Earth's water okay for us to drink?\n\nNope! Most of Earth's water is salty seawater. Only a small part is fresh water that we can actually drink!",
+          "tl": "Karamihan ba sa tubig sa Mundo ay pwedeng inumin natin?\n\nHindi! Karamihan ng tubig sa Mundo ay maalat na tubig-dagat. Kakaunti lang ang sariwang tubig na maaari nating inumin!",
+          "bis": "Kadaghanan ba sa tubig sa Kalibutan pwede nato mainom?\n\nDili! Kadaghanan sa tubig sa Kalibutan parat nga tubig-dagat. Gamay ra ang tab-ang nga tubig nga atong mainom!"
+        },
+        "slug": "ffct-32850",
+        "source": "original",
+        "title": {
+          "tl": "Tubig-Dagat vs Inumin",
+          "en": "Seawater vs Drinking",
+          "bis": "Tubig-Dagat vs Inom"
+        },
+        "cats": [
+          "oceans",
+          "water"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-32850",
+        "factId": "fresh-vs-salt-water-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "most water is salty",
+        "terms": [
+          "tubig-tabang",
+          "tubig-alat",
+          "kaunti",
+          "maiinom",
+          "karagatan",
+          "tab-ang nga tubig",
+          "parat nga tubig",
+          "gamay",
+          "mainom",
+          "fresh water",
+          "salt water",
+          "drinkable",
+          "most is salty"
+        ],
+        "fact": {
+          "en": "Is most of Earth's water okay for us to drink?\n\nNope! Most of Earth's water is salty seawater. Only a small part is fresh water that we can actually drink!",
+          "tl": "Karamihan ba sa tubig sa Mundo ay pwedeng inumin natin?\n\nHindi! Karamihan ng tubig sa Mundo ay maalat na tubig-dagat. Kakaunti lang ang sariwang tubig na maaari nating inumin!",
+          "bis": "Mainom ba nato ang kadaghanan sa tubig sa Kalibutan?\n\nDili! Ang kadaghanan sa tubig sa Kalibutan parat nga tubig-dagat. Gamay ra nga bahin ang tab-ang nga tubig nga atong mainom!"
+        },
+        "slug": "ffct-32850",
+        "source": "original",
+        "title": {
+          "tl": "Tubig-Dagat vs Inumin",
+          "en": "Seawater vs Drinking",
+          "bis": "Tubig-Dagat ug Tubig nga Mainom"
+        },
+        "cats": [
+          "oceans",
+          "water"
+        ]
+      },
+      "reason": "The fresh-water/drinking contrast may be read as a potability rule. The edit preserves that ambiguity. Hold for a source-level decision, without asserting that the original literally says all fresh water is drinkable.",
+      "formal_item_id": "c4d6fd3fc6f34f2784b989e613109d585",
+      "decision": "hold_no_pool_change",
+      "hold_kind": "hold_source"
+    },
+    {
+      "card_id": "ffct-33020",
+      "source_card_sha256": "0b6d7bf7e64646294843b472fc1b6913c315b1043dd48f9b7f5005fbe78f047e",
+      "candidate_card_sha256": "2c202bf1ba107718befeacf4db338adffdf48240eeb4fab1a106f5f6e5454792",
+      "before_card": {
+        "id": "ffct-33020",
+        "factId": "karst-tower-bohol-chocolate-hills-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "Chocolate Hills karst geology Bohol",
+        "terms": [
+          "chocolate hills",
+          "bohol",
+          "limestone",
+          "karst",
+          "conical hills",
+          "tsokolate",
+          "puting bato",
+          "unesco",
+          "geological monument",
+          "ubos sa ulan"
+        ],
+        "fact": {
+          "en": "The Chocolate Hills in Bohol are rounded limestone mounds. In summer, their grass turns brown, making them look like giant chocolates — a unique karst landform!",
+          "tl": "Ang Chocolate Hills sa Bohol ay mga bilog na limestone na burol. Sa tag-araw, nagiging kayumanggi ang damo — kaya mukhang mga higanteng tsokolate! Isang natatanging karst landform.",
+          "bis": "Ang Chocolate Hills sa Bohol mga biluon nga bungtod nga limestone. Sa ting-init, ang sagbot mahimong brown — morag mga higante nga tsokolate! Usa ka talagsaon nga karst landform."
+        },
+        "slug": "chocolate-hills-bohol",
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "Chocolate Hills"
+          ],
+          "en": [
+            "Chocolate Hills"
+          ],
+          "bis": [
+            "Chocolate Hills"
+          ]
+        },
+        "title": {
+          "tl": "Chocolate Hills ng Bohol",
+          "en": "Chocolate Hills of Bohol",
+          "bis": "Chocolate Hills sa Bohol"
+        },
+        "cats": [
+          "landforms"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-33020",
+        "factId": "karst-tower-bohol-chocolate-hills-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "Chocolate Hills karst geology Bohol",
+        "terms": [
+          "chocolate hills",
+          "bohol",
+          "limestone",
+          "karst",
+          "conical hills",
+          "tsokolate",
+          "puting bato",
+          "unesco",
+          "geological monument",
+          "ubos sa ulan"
+        ],
+        "fact": {
+          "en": "The Chocolate Hills in Bohol are rounded limestone mounds. In summer, their grass turns brown, making them look like giant chocolates — a unique karst landform!",
+          "tl": "Ang Chocolate Hills sa Bohol ay mga bilog na limestone na burol. Sa tag-araw, nagiging kayumanggi ang damo — kaya mukhang mga higanteng tsokolate! Isang natatanging karst landform.",
+          "bis": "Ang Chocolate Hills sa Bohol mga biluon nga bungtod nga limestone. Sa ting-init, mahimong brown ang ilang sagbot, mao nga morag mga higante nga tsokolate sila! Usa kini ka talagsaon nga karst landform."
+        },
+        "slug": "chocolate-hills-bohol",
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "Chocolate Hills"
+          ],
+          "en": [
+            "Chocolate Hills"
+          ],
+          "bis": [
+            "Chocolate Hills"
+          ]
+        },
+        "title": {
+          "tl": "Chocolate Hills ng Bohol",
+          "en": "Chocolate Hills of Bohol",
+          "bis": "Chocolate Hills sa Bohol"
+        },
+        "cats": [
+          "landforms"
+        ]
+      },
+      "reason": "Clearer grass ownership and hill referents are supported, but unchanged biluon is not yet grounded as rounded. Both model judges passing it is insufficient lexical evidence.",
+      "formal_item_id": "c9d427a3a8f236792297c8ec75e6f0fdd",
+      "decision": "hold_no_pool_change",
+      "hold_kind": "hold_lexical"
+    },
+    {
+      "card_id": "ffct-33126",
+      "source_card_sha256": "89796d33ff121ad43e999678364c3428f3e14f5bcf4fdf9a6ee38e18a3703245",
+      "candidate_card_sha256": "30808e3d93d2c120db287fde7a64bbb7d17e84a51d9c9e71579825966ab09127",
+      "before_card": {
+        "id": "ffct-33126",
+        "factId": "light-year-distance-unit-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "light-year as unit of astronomical distance",
+        "terms": [
+          "light-year",
+          "distansya",
+          "speed of light",
+          "astronomical distance",
+          "proxima centauri",
+          "4.2 light-years",
+          "bituin",
+          "measurement",
+          "9.46 trillion km",
+          "kalawakan"
+        ],
+        "fact": {
+          "en": "A light-year is how far light travels in one year—about 9.46 trillion kilometres! It measures vast space distances. Proxima Centauri, the nearest star to our Sun, is 4.2 light-years away.",
+          "tl": "Ang light-year ay ang distansya na nilalakbay ng ilaw sa isang taon—mga 9.46 trilyong kilometro! Ginagamit ito para sa malalayong distansya sa kalawakan. Ang Proxima Centauri, pinakamalapit na bituin sa Araw, ay 4.2 light-years ang layo.",
+          "bis": "Ang light-year mao ang distansya nga gilakbay sa suga sulod sa usa ka tuig—mga 9.46 trilyon ka kilometro! Gigamit kini para sa layo nga distansya sa kalawakan. Ang Proxima Centauri, pinaka-duol nga bituin sa Adlaw, 4.2 light-years ang kalayoan."
+        },
+        "slug": "ffct-33126",
+        "source": "original",
+        "title": {
+          "tl": "Light-Year na Sukat",
+          "en": "What Is a Light-Year",
+          "bis": "Light-Year nga Sukat"
+        },
+        "cats": [
+          "space"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-33126",
+        "factId": "light-year-distance-unit-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "light-year as unit of astronomical distance",
+        "terms": [
+          "light-year",
+          "distansya",
+          "speed of light",
+          "astronomical distance",
+          "proxima centauri",
+          "4.2 light-years",
+          "bituin",
+          "measurement",
+          "9.46 trillion km",
+          "kalawakan"
+        ],
+        "fact": {
+          "en": "A light-year is how far light travels in one year—about 9.46 trillion kilometres! It measures vast space distances. Proxima Centauri, the nearest star to our Sun, is 4.2 light-years away.",
+          "tl": "Ang light-year ay ang distansya na nilalakbay ng ilaw sa isang taon—mga 9.46 trilyong kilometro! Ginagamit ito para sa malalayong distansya sa kalawakan. Ang Proxima Centauri, pinakamalapit na bituin sa Araw, ay 4.2 light-years ang layo.",
+          "bis": "Ang light-year mao ang distansya nga gilakbay sa suga sulod sa usa ka tuig—mga 9.46 trilyon ka kilometro! Gigamit kini sa pagsukod sa layo kaayo nga mga distansya sa kalawakan. Ang Proxima Centauri, ang pinaka-duol nga bituin sa atong Adlaw, 4.2 light-years ang kalayoan."
+        },
+        "slug": "ffct-33126",
+        "source": "original",
+        "title": {
+          "tl": "Light-Year na Sukat",
+          "en": "What Is a Light-Year",
+          "bis": "Light-Year nga Sukat"
+        },
+        "cats": [
+          "space"
+        ]
+      },
+      "reason": "The improved body preserves the English and both blind readers prefer it, but the complete candidate retains the title Light-Year nga Sukat. That measurement sense of sukat remains unresolved under the same dictionary evidence used to hold ffct-33229 and ffct-33514. Keep the exact whole-card proposal held pending lexical review; no claim that sukat is necessarily incorrect and no title/body splicing.",
+      "formal_item_id": "c8024887183a0ae13b17c1703e42901d2",
+      "decision": "hold_no_pool_change",
+      "hold_kind": "hold_lexical"
+    },
+    {
+      "card_id": "ffct-33146",
+      "source_card_sha256": "75a875c69fc65092e2a2f241866f20efa6073c1b6f95245ed5191c04d4e8e77a",
+      "candidate_card_sha256": "8d7f70ba8817a2fee0f78ddd9f18814311d632cf6a45c1244cfc69e0c459cf4b",
+      "before_card": {
+        "id": "ffct-33146",
+        "factId": "penumbra-partial-eclipse-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "penumbra partial shadow during eclipse",
+        "terms": [
+          "penumbra",
+          "umbra",
+          "partial eclipse",
+          "eclipse shadow",
+          "partial solar eclipse",
+          "penumbra ng buwan",
+          "shadow region",
+          "outer shadow",
+          "eclipse zone",
+          "madilim"
+        ],
+        "fact": {
+          "en": "During an eclipse, shadows have two parts: the dark center called umbra and the lighter outer part called penumbra. People standing in the penumbra see only a partial eclipse!",
+          "tl": "Sa panahon ng eclipse, ang anino ay may dalawang bahagi: ang madilim na gitna na tinatawag na umbra at ang mas maliwanag na panlabas na bahagi na penumbra. Ang mga taong nasa penumbra ay nakakakita lamang ng partial eclipse!",
+          "bis": "Panahon sa eclipse, ang anino adunay duha ka bahin: ang itom nga sentro nga gitawag og umbra ug ang mas hayag nga gawas nga bahin nga penumbra. Ang mga tawo nga naa sa penumbra makakita lamang og partial eclipse!"
+        },
+        "slug": "qa-ffct-33146",
+        "source": "original",
+        "title": {
+          "tl": "Umbra at Penumbra ng Eclipse",
+          "en": "Umbra and Penumbra",
+          "bis": "Umbra ug Penumbra"
+        },
+        "cats": [
+          "eclipses"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-33146",
+        "factId": "penumbra-partial-eclipse-g6",
+        "domain": "EARTH_SPACE",
+        "topic": "penumbra partial shadow during eclipse",
+        "terms": [
+          "penumbra",
+          "umbra",
+          "partial eclipse",
+          "eclipse shadow",
+          "partial solar eclipse",
+          "penumbra ng buwan",
+          "shadow region",
+          "outer shadow",
+          "eclipse zone",
+          "madilim"
+        ],
+        "fact": {
+          "en": "During an eclipse, shadows have two parts: the dark center called umbra and the lighter outer part called penumbra. People standing in the penumbra see only a partial eclipse!",
+          "tl": "Sa panahon ng eclipse, ang anino ay may dalawang bahagi: ang madilim na gitna na tinatawag na umbra at ang mas maliwanag na panlabas na bahagi na penumbra. Ang mga taong nasa penumbra ay nakakakita lamang ng partial eclipse!",
+          "bis": "Sa panahon sa eclipse, ang anino adunay duha ka bahin: ang ngitngit nga sentro nga gitawag og umbra, ug ang mas hayag nga gawas nga bahin nga gitawag og penumbra. Ang mga tawo nga naa sa penumbra makakita lamang og partial eclipse!"
+        },
+        "slug": "qa-ffct-33146",
+        "source": "original",
+        "title": {
+          "tl": "Umbra at Penumbra ng Eclipse",
+          "en": "Umbra and Penumbra",
+          "bis": "Umbra ug Penumbra"
+        },
+        "cats": [
+          "eclipses"
+        ]
+      },
+      "reason": "The dark/light terminology is supported, but the English leaves the eclipse scope unqualified. NASA's two-part account is solar-context teaching; annular geometry adds antumbra. Keep the exact proposal pending source scope review.",
+      "formal_item_id": "c3dd82b4b2fb919c26bece9156588b760",
+      "decision": "hold_no_pool_change",
+      "hold_kind": "hold_source"
+    },
+    {
+      "card_id": "ffct-33229",
+      "source_card_sha256": "1f6c205c983de8c11e23fd1ef1251e97c50187c7f63be421f0c7d43fa3b29ede",
+      "candidate_card_sha256": "3f0ca4b973f0a2d84868a0263cf1fdca09f67eb3d0377dec94046c26598f2271",
+      "before_card": {
+        "id": "ffct-33229",
+        "factId": "tidal-friction-moon-moving-away-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "Moon slowly moving away from Earth 3.8 cm per year",
+        "terms": [
+          "moon recession",
+          "3.8 cm per year",
+          "tidal friction",
+          "moon distance increasing",
+          "lunar laser ranging",
+          "apollo reflectors",
+          "tidal locking",
+          "orbital mechanics",
+          "moon orbit",
+          "buwan lumayo"
+        ],
+        "fact": {
+          "en": "Is the Moon really drifting away from Earth?\n\nYes! The Moon moves about 3.8 centimetres farther each year due to tidal friction transferring Earth's rotational energy into the Moon's orbit — measured by laser reflectors left by Apollo astronauts!",
+          "tl": "Totoong lumalayo ang Moon sa Earth?\n\nOo! Ang Moon ay lumalayo ng mga 3.8 sentimetro bawat taon dahil sa tidal friction na naglilipat ng rotational energy ng Earth sa orbit ng Moon — sinusukat gamit ang laser reflectors na iniwan ng Apollo astronauts!",
+          "bis": "Tinuod ba nga nagpalayo ang Moon gikan sa Yuta?\n\nOo! Ang Moon nagpalayo og mga 3.8 sentimetro matag tuig tungod sa tidal friction nga nagbalhin sa rotational energy sa Yuta ngadto sa orbit sa Moon — gisukat gamit ang laser reflectors nga gibiyaan sa Apollo astronauts!"
+        },
+        "slug": "earth-moon-distance-scale",
+        "title": {
+          "en": "Moon Drifting Away",
+          "tl": "Paglayo ng Buwan",
+          "bis": "Pagpalayo sa Bulan"
+        },
+        "cats": [
+          "space",
+          "the-moon"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "3.8 sentimetro"
+          ],
+          "en": [
+            "3.8 centimetres"
+          ],
+          "bis": [
+            "3.8 sentimetro"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-33229",
+        "factId": "tidal-friction-moon-moving-away-g8",
+        "domain": "EARTH_SPACE",
+        "topic": "Moon slowly moving away from Earth 3.8 cm per year",
+        "terms": [
+          "moon recession",
+          "3.8 cm per year",
+          "tidal friction",
+          "moon distance increasing",
+          "lunar laser ranging",
+          "apollo reflectors",
+          "tidal locking",
+          "orbital mechanics",
+          "moon orbit",
+          "buwan lumayo"
+        ],
+        "fact": {
+          "en": "Is the Moon really drifting away from Earth?\n\nYes! The Moon moves about 3.8 centimetres farther each year due to tidal friction transferring Earth's rotational energy into the Moon's orbit — measured by laser reflectors left by Apollo astronauts!",
+          "tl": "Totoong lumalayo ang Moon sa Earth?\n\nOo! Ang Moon ay lumalayo ng mga 3.8 sentimetro bawat taon dahil sa tidal friction na naglilipat ng rotational energy ng Earth sa orbit ng Moon — sinusukat gamit ang laser reflectors na iniwan ng Apollo astronauts!",
+          "bis": "Tinuod ba nga nagpalayo ang Moon gikan sa Yuta?\n\nOo! Ang Moon nagpalayo og mga 3.8 sentimetro matag tuig. Tungod kini sa tidal friction nga nagbalhin sa rotational energy sa Yuta ngadto sa orbit sa Moon. Gisukat kini gamit ang laser reflectors nga gibiyaan sa Apollo astronauts!"
+        },
+        "slug": "earth-moon-distance-scale",
+        "title": {
+          "en": "Moon Drifting Away",
+          "tl": "Paglayo ng Buwan",
+          "bis": "Pagpalayo sa Bulan"
+        },
+        "cats": [
+          "space",
+          "the-moon"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "3.8 sentimetro"
+          ],
+          "en": [
+            "3.8 centimetres"
+          ],
+          "bis": [
+            "3.8 sentimetro"
+          ]
+        },
+        "poster": true
+      },
+      "reason": "The sentence split preserves about 3.8 cm/year and the tidal-energy mechanism, but the proposer explicitly retained uncertain gisukat. Dictionary contrast does not resolve the measurement sense. Hold instead of silently changing the proposed wording.",
+      "formal_item_id": "c6f4ca10641d65c2cf6fc20941a373f49",
+      "decision": "hold_no_pool_change",
+      "hold_kind": "hold_lexical"
+    },
+    {
+      "card_id": "ffct-33514",
+      "source_card_sha256": "a465fa0793f3a1884be5872b909bf96836a1c7fde472b4028a49c8102ecbe48e",
+      "candidate_card_sha256": "5ac57e779f9f5e355ab2cdfb423dae0bef245e9120b59f1d25f6f3294d031061",
+      "before_card": {
+        "id": "ffct-33514",
+        "factId": "earth-circumference-40075-km-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "what is Earth's circumference",
+        "terms": [
+          "sukat sa palibot",
+          "circumference",
+          "40,075 km",
+          "40075",
+          "earth circumference",
+          "gilis ng daigdig",
+          "palibot ng daigdig",
+          "kilometro",
+          "ekwador",
+          "equator",
+          "palibot sa kalibotan"
+        ],
+        "fact": {
+          "en": "How big is the trip around the Earth's equator?\n\nEarth's circumference around the equator is about 40,075 kilometers long!",
+          "tl": "Gaano kalaki ang biyahe sa palibot ng ekwador ng Daigdig?\n\nAng sukat sa palibot ng Daigdig sa ekwador ay mga 40,075 kilometro!",
+          "bis": "Unsa kadako ang biyahe sa palibot sa ekwador sa Kalibotan?\n\nAng sukat sa palibot sa Kalibotan sa ekwador mga 40,075 ka kilometro!"
+        },
+        "slug": "ffct-33514",
+        "source": "original",
+        "title": {
+          "tl": "40,075 km sa Ekwador",
+          "en": "40,075 km Equator Trip",
+          "bis": "40,075 km Ekwador"
+        },
+        "cats": [
+          "earth"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-33514",
+        "factId": "earth-circumference-40075-km-g7",
+        "domain": "EARTH_SPACE",
+        "topic": "what is Earth's circumference",
+        "terms": [
+          "sukat sa palibot",
+          "circumference",
+          "40,075 km",
+          "40075",
+          "earth circumference",
+          "gilis ng daigdig",
+          "palibot ng daigdig",
+          "kilometro",
+          "ekwador",
+          "equator",
+          "palibot sa kalibotan"
+        ],
+        "fact": {
+          "en": "How big is the trip around the Earth's equator?\n\nEarth's circumference around the equator is about 40,075 kilometers long!",
+          "tl": "Gaano kalaki ang biyahe sa palibot ng ekwador ng Daigdig?\n\nAng sukat sa palibot ng Daigdig sa ekwador ay mga 40,075 kilometro!",
+          "bis": "Unsa kadako ang biyahe sa palibot sa ekwador sa Kalibotan?\n\nAng sukat sa palibot sa Kalibotan sa ekwador mga 40,075 ka kilometro!"
+        },
+        "slug": "ffct-33514",
+        "source": "original",
+        "title": {
+          "tl": "40,075 km sa Ekwador",
+          "en": "40,075 km Equator Trip",
+          "bis": "40,075 km Libot sa Ekwador"
+        },
+        "cats": [
+          "earth"
+        ]
+      },
+      "reason": "The title adds the source's around-the-equator relation correctly, but the full unchanged body uses sukat for measurement. Keep the whole-card approval pending the same unresolved lexical sense.",
+      "formal_item_id": "c37231d8cb551c77b3cfe67cbcd28d248",
+      "decision": "hold_no_pool_change",
+      "hold_kind": "hold_lexical"
+    }
+  ],
+  "window_accounting": {
+    "source_cards": 768,
+    "completed_assessments": 768,
+    "missing_fidelity_holds": 0,
+    "approved_exact_edits": 19,
+    "unchanged_keeps": 142,
+    "held": 607,
+    "held_from_priority_set": 6,
+    "preexisting_nonpriority_holds": 601
+  },
+  "scope": "Window 43: exact individually reviewed candidates only. No score-only approval or release authorization; all earlier approvals and mandatory holds are preserved.",
+  "prior_mandatory_missing_judgment_holds": [
+    "ffct-15686",
+    "ffct-24823",
+    "ffct-24184"
+  ],
+  "prior_mandatory_invalid_evidence_holds": [
+    "ffct-08459",
+    "ffct-09018",
+    "ffct-10152",
+    "ffct-18958",
+    "ffct-34595"
+  ],
+  "native_verified": false,
+  "science_verified": false,
+  "released": false
+}

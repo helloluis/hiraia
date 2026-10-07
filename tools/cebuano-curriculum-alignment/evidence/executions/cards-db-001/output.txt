@@ -1,0 +1,16 @@
+  tokeniser: /[a-z0-9ñ]+/ (parsed from searchTokens), 91 stop words
+  tokens.bin: 1,991,334 slots, 8.2 MB
+  search_token: 59,846 tokens, 1,991,334 postings (+4.0 MB of salience ranks + slot widths, widest slot 12)
+  search_meta:  head sizes for 49,155 cards, widest head 44 tokens
+  card_question: 25,751 keyed by factId
+  fact:       53,022 rows, bankHash 3a36094d18d2
+  fact_token: 60,038 tokens, 2,500,565 postings
+  tala card catalog: 443 subcategories, 49,279 cards, 26,016 quiz facts (1.88 MB) — unchanged
+  dbVersion: a486f1a7be0c
+
+  was inlined in the JS bundle :   84.4 MB of JSON (~2x as bytecode)
+  resident index (bundled)     :   16.7 MB
+  tokens.bin (asset)           :    8.2 MB
+  cards.db (asset on disk)     :  146.6 MB
+    deflates in the APK to about :   47.9 MB
+  49,155 cards

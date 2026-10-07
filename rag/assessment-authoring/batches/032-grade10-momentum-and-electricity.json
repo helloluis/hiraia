@@ -140,7 +140,7 @@
     },
     "cards": {
       "path": "rag/pipeline/cardsPool.app.json",
-      "sha256": "7a9989363561c91ef5181abd0bf2428bd6b832412f20d4f678f8ab9c42d67b10"
+      "sha256": "9e52c84daf466863cdd843f1d17e95ba4b815df669687063163a73ce26b74f1f"
     },
     "curriculum": {
       "path": "rag/sources/curriculum-guides/matatag-jhs-competencies.json",
@@ -1071,7 +1071,7 @@
     },
     {
       "id": "ha-g10-0045",
-      "revision": 2,
+      "revision": 3,
       "batch_id": "032-grade10-momentum-and-electricity",
       "origin": "revise",
       "status": "source_checked",
@@ -1140,9 +1140,9 @@
             "ffct-21914"
           ],
           "fact": {
-            "en": "In an inelastic collision, objects stick together or get dented, turning some motion energy into heat and sound, but total momentum is still conserved!",
-            "tl": "Sa inelastic collision, nagdidikit o nalulukot ang mga bagay, na nagiging heat at sound ang ibang motion energy, pero ang total momentum ay conserved pa rin!",
-            "bis": "Sa inelastic collision, magdikit o malukot ang mga butang, mahimong heat ug sound ang ubang motion energy, pero ang total momentum conserved gihapon!"
+            "en": "In an inelastic collision, total kinetic energy is not conserved: some becomes deformation, thermal energy or sound. The objects may rebound; sticking together is the special case called perfectly inelastic. Total momentum is conserved if the system has negligible net external impulse. Energy does not disappear.",
+            "tl": "Sa inelastic collision, hindi nananatili ang kabuuang kinetic energy: ang ilan ay napupunta sa deformation, thermal energy o tunog. Maaaring tumalbog ang mga bagay; espesyal na kasong perfectly inelastic ang pagdikit nila. Nananatili ang kabuuang momentum kung napakaliit ng net external impulse sa system. Hindi nawawala ang energy.",
+            "bis": "Sa inelastic collision, dili magpabilin ang kinatibuk-ang kinetic energy: ang pipila mahimong deformation, thermal energy o tingog. Mahimong motalbog ang mga butang; espesyal nga kaso nga perfectly inelastic ang ilang pagdikit. Magpabilin ang kinatibuk-ang momentum kon gamay kaayo ang net external impulse sa system. Dili mawala ang energy."
           },
           "bank_fact_id": "inelastic-collision-g10",
           "bank_question": {
@@ -2219,7 +2219,7 @@
     },
     {
       "id": "ha-g10-0050",
-      "revision": 1,
+      "revision": 2,
       "batch_id": "032-grade10-momentum-and-electricity",
       "origin": "revise",
       "status": "source_checked",
@@ -2287,7 +2287,7 @@
           "fact": {
             "en": "In an isolated system, where no external forces like friction or air resistance act, the total momentum of all objects before an event equals the total momentum after.",
             "tl": "Sa isang isolated system, kung saan walang external forces tulad ng friction o air resistance na kumikilos, ang total momentum ng lahat ng bagay bago ang isang pangyayari ay katumbas ng total momentum pagkatapos.",
-            "bis": "Sa usa ka isolated system, diin walay external forces sama sa friction o air resistance nga molihok, ang total momentum sa tanang butang sa wala pa ang usa ka panghitabo parehas sa total momentum pagkahuman."
+            "bis": "Sa usa ka isolated system, walay external forces sama sa friction o air resistance nga molihok sa mga butang. Ang total momentum sa tanang butang sa wala pa ang usa ka panghitabo parehas sa total momentum pagkahuman."
           },
           "bank_fact_id": "isolated-system-momentum-g9",
           "bank_question": {
@@ -2434,7 +2434,7 @@
     },
     {
       "id": "ha-g10-0051",
-      "revision": 1,
+      "revision": 2,
       "batch_id": "032-grade10-momentum-and-electricity",
       "origin": "revise",
       "status": "source_checked",
@@ -2502,7 +2502,7 @@
           "fact": {
             "en": "Step-up transformers increase voltage for long-distance transmission, which keeps the current lower and reduces power loss in the wires.",
             "tl": "Itinataas ng step-up transformers ang voltage para sa malayuang transmission, kaya bumababa ang current at nababawasan ang power loss sa mga wire.",
-            "bis": "Gipataas sa step-up transformers ang voltage para sa layo nga transmission, busa mopaubos ang current ug momenos ang power loss sa mga wire."
+            "bis": "Ang step-up transformers mopataas sa voltage para sa transmission sa layo nga distansya. Busa mas ubos ang current ug mas gamay ang power loss sa mga wire."
           },
           "bank_fact_id": "step-up-transformers-g10",
           "bank_question": {
@@ -3779,7 +3779,7 @@
     },
     {
       "id": "ha-g10-0057",
-      "revision": 1,
+      "revision": 2,
       "batch_id": "032-grade10-momentum-and-electricity",
       "origin": "revise",
       "status": "source_checked",
@@ -3851,7 +3851,7 @@
           "fact": {
             "en": "How does a generator make electricity?\n\nA generator changes the mechanical energy of a spinning turbine into electrical energy by turning a magnet near coils of wire.",
             "tl": "Paano gumagawa ng kuryente ang generator?\n\nGinagawa ito ng generator sa pagbabago ng mechanical energy ng umiikot na turbine tungong electrical energy, sa pamamagitan ng pagpapaikot ng magnet malapit sa mga kawad.",
-            "bis": "Unsaon paghimo og kuryente sa generator?\n\nAng generator magbalhin sa mechanical energy sa nagtuyok nga turbine ngadto sa electrical energy pinaagi sa pagtuyok sa magnet duol sa mga koil sa alambre."
+            "bis": "Giunsa paghimo sa generator og kuryente?\n\nAng generator nagtuyok og magnet duol sa mga koil sa alambre. Pinaagi niini, ang mechanical energy sa nagtuyok nga turbine mahimong electrical energy."
           },
           "bank_fact_id": "generator-mechanical-to-electrical-g9",
           "bank_question": {

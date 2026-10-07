@@ -1,0 +1,29 @@
+................................/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/rag/pipeline/build-cards-db.py:57: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/6c/tws616rj0fjgvb9vtml26l3h0000gn/T/hiraia-card-retirement-lmzzcxyd/app.json' mode='r' encoding='UTF-8'>
+  pool = json.load(open(POOL))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+............./Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/rag/pipeline/wire-app-pool.py:60: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/6c/tws616rj0fjgvb9vtml26l3h0000gn/T/hiraia-card-retirement-nkyk9yaz/merged.json' mode='r' encoding='UTF-8'>
+  pool = json.load(open(SRC))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/rag/pipeline/wire-app-pool.py:60: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/6c/tws616rj0fjgvb9vtml26l3h0000gn/T/hiraia-card-retirement-nkyk9yaz/merged.json' mode='r' encoding='UTF-8'>
+  pool = json.load(open(SRC))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/rag/pipeline/wire-app-pool.py:60: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/6c/tws616rj0fjgvb9vtml26l3h0000gn/T/hiraia-card-retirement-hvadpk42/merged.json' mode='r' encoding='UTF-8'>
+  pool = json.load(open(SRC))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/rag/pipeline/wire-app-pool.py:66: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/6c/tws616rj0fjgvb9vtml26l3h0000gn/T/hiraia-card-retirement-hvadpk42/imageMap.ts' mode='r' encoding='UTF-8'>
+  bundled = set(re.findall(r'"([^"]+)":\s*require', open(IMAGEMAP).read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/rag/pipeline/wire-app-pool.py:73: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/6c/tws616rj0fjgvb9vtml26l3h0000gn/T/hiraia-card-retirement-hvadpk42/editorial.json' mode='r' encoding='UTF-8'>
+  ed = json.load(open(ED)) if os.path.exists(ED) else {}
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/rag/pipeline/wire-app-pool.py:82: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/6c/tws616rj0fjgvb9vtml26l3h0000gn/T/hiraia-card-retirement-hvadpk42/art.json' mode='r' encoding='UTF-8'>
+  art = json.load(open(ART)) if os.path.exists(ART) else {}
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/luis/Code/hiraia/build/cebuano-curriculum-alignment-20261007/rag/pipeline/wire-app-pool.py:173: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/6c/tws616rj0fjgvb9vtml26l3h0000gn/T/hiraia-card-retirement-hvadpk42/app.json' mode='w' encoding='UTF-8'>
+  json.dump({'cards': out, 'taxonomy': pool.get('taxonomy') or []},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.
+----------------------------------------------------------------------
+Ran 47 tests in 0.162s
+
+OK

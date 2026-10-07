@@ -1,0 +1,2801 @@
+{
+  "schema": "hiraia.cebuano-readability-reviewed-edits/v1",
+  "status": "reviewed_for_local_application",
+  "created_at": "2026-10-04T12:56:23.976182+00:00",
+  "reviewer": "Codex root, independent of Claude proposal/backtranslation/fidelity/readability calls; no separate reviewer used for this window",
+  "scope": "Window 37: 24 individually reviewed exact edits and seven priority holds. Windows 1–36 and 38 were previously reviewed. No score-only approval, native verification, exhaustive science certification or release permission. All seven prior missing-fidelity/invalid-evidence holds remain mandatory.",
+  "window_id": "window-0037",
+  "window_accounting": {
+    "source_cards": 768,
+    "completed_assessments": 768,
+    "missing_fidelity_holds": 0,
+    "approved_exact_edits": 24,
+    "unchanged_keeps": 80,
+    "held": 664,
+    "held_from_priority_set": 7,
+    "preexisting_nonpriority_holds": 657
+  },
+  "input_pins": [
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0037/report.json",
+      "sha256": "5bedb321e12f2996994e6a293c8215084d585d7ed54e8ddcc394b41976928785",
+      "bytes": 50052006
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0037/clean-agreement.jsonl",
+      "sha256": "b048d55910e7ac3d9bad6d4ca76865797c41347e63384121bd300c5b279c62bc",
+      "bytes": 921029
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0037/replay/fidelity/judgments.jsonl",
+      "sha256": "73374095c1e66765cab230677462bfb8a33797d08c14554688a1aae220ee799d",
+      "bytes": 810851
+    },
+    {
+      "path": "build/cebuano-readability/campaign-20261002-v1/windows/window-0037/fidelity-inputs/private-map.json",
+      "sha256": "81dc8ea9a1414527557a24b52108f5d61dcfba7f37404a405b0da1c2c9222906",
+      "bytes": 758074
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0037/root-decisions.json",
+      "sha256": "e8da09eb51d1ae18bbb65b4f490492e133e6f74f2a6021fdcb627668afe209d7",
+      "bytes": 16817
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0037/corpus-lexical-evidence.json",
+      "sha256": "6b7c498cf6ed07c911b375f1f5f8456989846b52fcc7b872e98077e3cdaf838b",
+      "bytes": 75796
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0037/dictionary-entries.json",
+      "sha256": "3c340bd4ba22abf75e606c0f760a9b45bb1f354b7966dbef74c99071a810bd92",
+      "bytes": 84053
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0037/dictionary-supplement-001.json",
+      "sha256": "98c9074c910699e443b7773843b911d59d739380a4a241b5f6f621f8e2a72339",
+      "bytes": 8354
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0037/lexical-source-review.json",
+      "sha256": "6cde52223541f89dab680a13773970de4e12109fa42f53c9f73d6c325983abf6",
+      "bytes": 11298
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0037/source-evidence-001.json",
+      "sha256": "a610d251146d70e01bbe0da6f10a6270e67fabb1a180748d68120f0fb51f36a6",
+      "bytes": 10188
+    },
+    {
+      "path": "tools/cebuano-readability/runs/2026-10-04-window-0037/preview-replay-comparison.json",
+      "sha256": "2c0607c95c3da8e2d58bad65112303033d1e0f41101920cfb14694ce6355edac",
+      "bytes": 865
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0037/root-notes-final-001.json",
+      "sha256": "2b6b17d506c2405699c88a01dc868e795b8ce9c832b0b873e1905ba0fadc18d1",
+      "bytes": 15254
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-gutenberg-40074.txt",
+      "sha256": "f80b888b24dd4ca7f5cb16276b4a53f9d22129a496b9ffb7f7efe17d3b9a1504",
+      "bytes": 5699379
+    },
+    {
+      "path": "build/cebuano-readability/adjudication-20261002/window-0005/dictionaries/wolff-retrieval.json",
+      "sha256": "bd713c5adf21541a0e7fd9c49f75fb6b9d4157fb88d41151a245165b8955b7da",
+      "bytes": 502
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/511e6ea0-3777-4991-8e0d-02c58c138a57/window37-initial-reading-001.json",
+      "sha256": "5a55273115f827eedade04c596fce4cb0b29a3126ec2c966065dcd142cc8cd85",
+      "bytes": 1168330
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/511e6ea0-3777-4991-8e0d-02c58c138a57/read-dossiers.py",
+      "sha256": "4fe046a5ad83f7653a08478821b0091dc4c4305b4d25295dd82f71f48e785811",
+      "bytes": 1400
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/511e6ea0-3777-4991-8e0d-02c58c138a57/collect-window37-evidence-001.py",
+      "sha256": "7780ef29472ecaef7e83335e419082ba0aa43ade62195b753a6e76f4d3476774",
+      "bytes": 6609
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/511e6ea0-3777-4991-8e0d-02c58c138a57/collect-window37-supplement-001.py",
+      "sha256": "7d5ca980059e348a9bc1cd4739b890c8398623faee02cf2ec459dc7a83b6ce9a",
+      "bytes": 1646
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/511e6ea0-3777-4991-8e0d-02c58c138a57/write-window37-root-records-001.py",
+      "sha256": "e528da24aa3d27d1413cfd0972c73bb83c7defb838a01856951bae73f144ee47",
+      "bytes": 22999
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/511e6ea0-3777-4991-8e0d-02c58c138a57/register-reviewed-001.py",
+      "sha256": "740719d0ff2790b5e6d72418f2fd29605073d7596a328bf89d8e472d0701ade1",
+      "bytes": 4201
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/511e6ea0-3777-4991-8e0d-02c58c138a57/verify-local-001.py",
+      "sha256": "89c734f59c7414b7124757060412bed5a8909e12fd7d8d26f1db0a849795fb10",
+      "bytes": 7684
+    },
+    {
+      "path": "build/cebuano-readability/heartbeat-reviews/511e6ea0-3777-4991-8e0d-02c58c138a57/create-window37-root-approval-001.py",
+      "sha256": "51f8d4ec5c5e9cf38cad79f52141f5550653b76061fe7eb05d1110f5be706eda",
+      "bytes": 6633
+    }
+  ],
+  "current_pool_before_application": {
+    "path": "rag/pipeline/cardsPool.app.json",
+    "sha256": "78e0c7a19b889b6b7c3954d199141a5f35fded6b3103e59f8a84cedb0615f10c",
+    "bytes": 50650185
+  },
+  "accepted": [
+    {
+      "card_id": "ffct-28120",
+      "source_card_sha256": "4157f5edd89ca08190e9e85e69a0f7ff994f1198601ed2b1874a46e58d5308c5",
+      "candidate_card_sha256": "3e10d1d2f63a5a1cdbbd1c48b1e86f6efe28f9e3b2830872361321cf1a6fb260",
+      "before_card": {
+        "id": "ffct-28120",
+        "factId": "fwg2-lever-lifting-1230",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Lever-Lifting",
+        "terms": [
+          "lever",
+          "lifting",
+          "process",
+          "first",
+          "class",
+          "like",
+          "seesaw",
+          "applying",
+          "downward",
+          "force"
+        ],
+        "fact": {
+          "en": "Push down on the effort arm of a first-class lever like a seesaw, and it creates an upward force on the load arm to lift things up!",
+          "tl": "Sa first-class lever tulad ng seesaw, kapag pinindot mo pababa ang effort arm, lumilikha ito ng upward force sa load arm para makaangat!",
+          "bis": "Sa first-class lever sama sa seesaw, kung i-push nimo paubos ang effort arm, mag-create kini og upward force sa load arm para maka-alsa!"
+        },
+        "slug": "ffct-28120",
+        "source": "original",
+        "title": {
+          "tl": "Effort Arm ng Seesaw",
+          "en": "Seesaw Effort Arm",
+          "bis": "Effort Arm Seesaw"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28120",
+        "factId": "fwg2-lever-lifting-1230",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Lever-Lifting",
+        "terms": [
+          "lever",
+          "lifting",
+          "process",
+          "first",
+          "class",
+          "like",
+          "seesaw",
+          "applying",
+          "downward",
+          "force"
+        ],
+        "fact": {
+          "en": "Push down on the effort arm of a first-class lever like a seesaw, and it creates an upward force on the load arm to lift things up!",
+          "tl": "Sa first-class lever tulad ng seesaw, kapag pinindot mo pababa ang effort arm, lumilikha ito ng upward force sa load arm para makaangat!",
+          "bis": "Sa first-class lever sama sa seesaw, kung itulod nimo paubos ang effort arm, makahimo kini og upward force sa load arm aron maalsa ang mga butang!"
+        },
+        "slug": "ffct-28120",
+        "source": "original",
+        "title": {
+          "tl": "Effort Arm ng Seesaw",
+          "en": "Seesaw Effort Arm",
+          "bis": "Effort Arm sa Seesaw"
+        },
+        "cats": [
+          "simple-machines"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Itulod and makahimo express pushing and making, with the upward force still acting on the load arm. The final clause explicitly names the things lifted. Wolff tulud, himu and alsa and independent bodies support these meanings. Both blind readers prefer the changed title and body; full backtranslation preserves the downward/upward directions and first-class lever. English science terms remain permitted; this is not a ban on borrowed verbs.",
+      "formal_item_id": "c97d48f17051aebef5b1c7a0caeae05de",
+      "fidelity_item_id": "m6529181d8ad630a13a2c3d96",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28281",
+      "source_card_sha256": "54e30baf273c9c27ffe167e7ee823713f24dce385153572409c1520477140256",
+      "candidate_card_sha256": "ea0b37ac66e2cb75affe834cb5339a90edbe1b808dec11f550f64c45c1b5e006",
+      "before_card": {
+        "id": "ffct-28281",
+        "factId": "fwg2-friction-1604",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Friction",
+        "terms": [
+          "friction",
+          "actually",
+          "helpful",
+          "walking",
+          "provides",
+          "necessary",
+          "grip",
+          "between",
+          "your",
+          "rubber"
+        ],
+        "fact": {
+          "en": "Friction is super helpful for walking! It gives your rubber shoes the grip they need on the ground.",
+          "tl": "Nakakatulong talaga ang friction sa paglakad! Binibigyan nito ng grip ang iyong rubber shoes sa lupa.",
+          "bis": "Makatabang gyud ang friction sa paglakaw! Naghatag kini og grip para sa imong rubber shoes sa yuta."
+        },
+        "slug": "ffct-28281",
+        "source": "original",
+        "title": {
+          "tl": "Friction Grip Sapatos Lakad Lupa",
+          "en": "Friction Grip for Walking",
+          "bis": "Friction Grip Lakad Yuta"
+        },
+        "cats": [
+          "friction"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28281",
+        "factId": "fwg2-friction-1604",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Friction",
+        "terms": [
+          "friction",
+          "actually",
+          "helpful",
+          "walking",
+          "provides",
+          "necessary",
+          "grip",
+          "between",
+          "your",
+          "rubber"
+        ],
+        "fact": {
+          "en": "Friction is super helpful for walking! It gives your rubber shoes the grip they need on the ground.",
+          "tl": "Nakakatulong talaga ang friction sa paglakad! Binibigyan nito ng grip ang iyong rubber shoes sa lupa.",
+          "bis": "Makatabang gyud ang friction sa paglakaw! Naghatag kini og grip para sa imong rubber shoes sa yuta."
+        },
+        "slug": "ffct-28281",
+        "source": "original",
+        "title": {
+          "tl": "Friction Grip Sapatos Lakad Lupa",
+          "en": "Friction Grip for Walking",
+          "bis": "Friction sa Paglakaw"
+        },
+        "cats": [
+          "friction"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title now names friction in walking, matching the unchanged body’s shoe grip example. Wolff lakaw and independent body examples support paglakaw. Both blind title preferences agree and bodies tie. No change to the friction mechanism or claim that the old code-mixing alone was erroneous.",
+      "formal_item_id": "ce85057f1cb9134dea7720b9bba38ff88",
+      "fidelity_item_id": "m2b8fcd0cf2f7762f908e7809",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28286",
+      "source_card_sha256": "a582eda919f888f5f64998a63ed796e37f69c39af053a241d333624f1a0ac722",
+      "candidate_card_sha256": "36c5192bb05bcc0f085f33b2e96824fc8ffee85523cb4eb78fa07ec2bfca70b9",
+      "before_card": {
+        "id": "ffct-28286",
+        "factId": "fwg2-gravity-1462",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Gravity",
+        "terms": [
+          "gravity",
+          "weaker",
+          "moon",
+          "compared",
+          "earth",
+          "causes",
+          "astronaut",
+          "weigh",
+          "less",
+          "jump"
+        ],
+        "fact": {
+          "en": "Because the Moon has weaker gravity than Earth, an astronaut weighs less and can jump higher on the lunar surface!",
+          "tl": "Dahil mas mahina ang gravity ng Moon kaysa Earth, mas magaan ang timbang ng astronaut at mas mataas ang talon niya sa lunar surface!",
+          "bis": "Tungod sa mas huyang gravity sa Moon kaysa Earth, mas gaan ang timbang sa astronaut ug makalukso siya og mas taas sa lunar surface!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Moon Gravity",
+          "tl": "Grabidad sa Buwan",
+          "bis": "Grabidad sa Buwan"
+        },
+        "cats": [
+          "gravity",
+          "the-moon"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "gravity"
+          ],
+          "en": [
+            "gravity"
+          ],
+          "bis": [
+            "gravity"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-28286",
+        "factId": "fwg2-gravity-1462",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Gravity",
+        "terms": [
+          "gravity",
+          "weaker",
+          "moon",
+          "compared",
+          "earth",
+          "causes",
+          "astronaut",
+          "weigh",
+          "less",
+          "jump"
+        ],
+        "fact": {
+          "en": "Because the Moon has weaker gravity than Earth, an astronaut weighs less and can jump higher on the lunar surface!",
+          "tl": "Dahil mas mahina ang gravity ng Moon kaysa Earth, mas magaan ang timbang ng astronaut at mas mataas ang talon niya sa lunar surface!",
+          "bis": "Tungod kay mas huyang ang gravity sa Moon kaysa sa Earth, mas gaan ang timbang sa astronaut, ug makalukso siya og mas taas sa lunar surface!"
+        },
+        "slug": "",
+        "title": {
+          "en": "Moon Gravity",
+          "tl": "Grabidad sa Buwan",
+          "bis": "Grabidad sa Buwan"
+        },
+        "cats": [
+          "gravity",
+          "the-moon"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "gravity"
+          ],
+          "en": [
+            "gravity"
+          ],
+          "bis": [
+            "gravity"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The causal clause explicitly connects the Moon’s weaker gravity with lower weight and higher jumping, adding the subject marker and comparison marker. Both body preferences agree, and the title ties. Wolff huyang supports weak; its phonology section and lunud entry attest buwan as a Cebuano variant of bulan. The unchanged title is not rejected as a Tagalog false friend. Mass is not said to change.",
+      "formal_item_id": "cec49a16196adc0a00138d5e839e682fb",
+      "fidelity_item_id": "me5d64f71ca4075c9fcfb1d3e",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28292",
+      "source_card_sha256": "70a2b0ba90bf3714f90ed17bfedb85846456bbd6828d900bfa0b43ed8afdcdaf",
+      "candidate_card_sha256": "b596eeca07cc1f4de2b71fdbf546f26a9b8eb578341bb7f45cffe80c5312e18a",
+      "before_card": {
+        "id": "ffct-28292",
+        "factId": "fwg2-friction-1542",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Friction",
+        "terms": [
+          "friction",
+          "during",
+          "hand",
+          "rubbing",
+          "step",
+          "converts",
+          "kinetic",
+          "energy",
+          "thermal",
+          "causing"
+        ],
+        "fact": {
+          "en": "Why do your hands get warm when you rub them together?\n\nDuring hand-rubbing, friction converts kinetic energy into thermal energy, causing your skin temperature to noticeably rise!",
+          "tl": "Bakit umiinit ang iyong mga kamay kapag pinagdikit at kinikiskis?\n\nSa pagkiskis ng kamay, ang friction ay nagko-convert ng kinetic energy sa thermal energy, kaya tumataas ang temperatura ng balat!",
+          "bis": "Nganong mo-init ang imong mga kamot kung imo kining gikiskis?\n\nSa pagkiskis sa kamot, ang friction nag-convert sa kinetic energy ngadto sa thermal energy, maong mosaka ang temperatura sa panit!"
+        },
+        "slug": "rubbing-hands-warm",
+        "title": {
+          "en": "Friction",
+          "tl": "Alitan",
+          "bis": "Pagkiskis"
+        },
+        "cats": [
+          "friction",
+          "heat"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "friction"
+          ],
+          "en": [
+            "friction"
+          ],
+          "bis": [
+            "friction"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-28292",
+        "factId": "fwg2-friction-1542",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Friction",
+        "terms": [
+          "friction",
+          "during",
+          "hand",
+          "rubbing",
+          "step",
+          "converts",
+          "kinetic",
+          "energy",
+          "thermal",
+          "causing"
+        ],
+        "fact": {
+          "en": "Why do your hands get warm when you rub them together?\n\nDuring hand-rubbing, friction converts kinetic energy into thermal energy, causing your skin temperature to noticeably rise!",
+          "tl": "Bakit umiinit ang iyong mga kamay kapag pinagdikit at kinikiskis?\n\nSa pagkiskis ng kamay, ang friction ay nagko-convert ng kinetic energy sa thermal energy, kaya tumataas ang temperatura ng balat!",
+          "bis": "Nganong mo-init ang imong mga kamot kung imo kining gikiskis?\n\nKung magkiskis ka sa imong mga kamot, ang friction mag-convert sa kinetic energy ngadto sa thermal energy. Mao nga mamatikdan nimo nga mosaka ang temperatura sa imong panit!"
+        },
+        "slug": "rubbing-hands-warm",
+        "title": {
+          "en": "Friction",
+          "tl": "Alitan",
+          "bis": "Pagkiskis"
+        },
+        "cats": [
+          "friction",
+          "heat"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "friction"
+          ],
+          "en": [
+            "friction"
+          ],
+          "bis": [
+            "friction"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Separates rubbing/energy conversion from the noticeable skin-temperature result and restores the reader’s hands and skin. Wolff matikud and panit support noticing and skin; Binisaya’s direct kiskis root supports rub, supplementing Wolff’s scrape entry. Both body readers prefer the explicit two-step explanation; the question, kinetic-to-thermal direction and title remain intact.",
+      "formal_item_id": "cf6427022e0aba9916d78d9ca2c588eb9",
+      "fidelity_item_id": "mc95d970f26d2b2b2d0b4fb21",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28355",
+      "source_card_sha256": "7d4e3cafc1b23ef6043df921e1c2473cb93d9b4d173f3d940e7ee4225a68ecdc",
+      "candidate_card_sha256": "3d7bed270cdb5fdd3562125b9f7ed37d622c5129fcfa208b6ad91e04c657da0b",
+      "before_card": {
+        "id": "ffct-28355",
+        "factId": "fwg2-sound-transmission-1064",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Sound Transmission",
+        "terms": [
+          "sound",
+          "transmission",
+          "hearing",
+          "process",
+          "vibrating",
+          "waves",
+          "travel",
+          "through",
+          "strike",
+          "eardrum"
+        ],
+        "fact": {
+          "en": "When you hear, vibrating sound waves travel through the air and strike your eardrum, causing it to vibrate too!",
+          "tl": "Sa pakikinig, ang gumagalaw na sound waves ay dumadaan sa hangin at tumatama sa eardrum, kaya ito ay umiyanig din!",
+          "bis": "Sa pagpaminaw, ang nag-uyog nga sound waves moagi sa hangin ug moigo sa eardrum, nga magpahimo niini nga mag-uyog usab!"
+        },
+        "slug": "how-ear-hears-sound",
+        "title": {
+          "en": "Sound Waves",
+          "tl": "Mga Alon ng Tunog",
+          "bis": "Mga Balod sa Tunog"
+        },
+        "cats": [
+          "sound"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "sound waves"
+          ],
+          "en": [
+            "sound waves"
+          ],
+          "bis": [
+            "sound waves"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-28355",
+        "factId": "fwg2-sound-transmission-1064",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Sound Transmission",
+        "terms": [
+          "sound",
+          "transmission",
+          "hearing",
+          "process",
+          "vibrating",
+          "waves",
+          "travel",
+          "through",
+          "strike",
+          "eardrum"
+        ],
+        "fact": {
+          "en": "When you hear, vibrating sound waves travel through the air and strike your eardrum, causing it to vibrate too!",
+          "tl": "Sa pakikinig, ang gumagalaw na sound waves ay dumadaan sa hangin at tumatama sa eardrum, kaya ito ay umiyanig din!",
+          "bis": "Kung makadungog ka, ang nag-uyog nga sound waves moagi sa hangin ug moigo sa imong eardrum. Tungod niini, mouyog usab ang imong eardrum!"
+        },
+        "slug": "how-ear-hears-sound",
+        "title": {
+          "en": "Sound Waves",
+          "tl": "Mga Alon ng Tunog",
+          "bis": "Mga Balod sa Tunog"
+        },
+        "cats": [
+          "sound"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "sound waves"
+          ],
+          "en": [
+            "sound waves"
+          ],
+          "bis": [
+            "sound waves"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Repeats imong eardrum instead of leaving the pronoun attached to the preceding wave clause. Wolff dungug and uyug support hearing and vibration. Both body preferences agree; backtranslation retains propagation through air, impact on the eardrum and resulting vibration. The title is unchanged and no claim that the eardrum itself interprets sound is added.",
+      "formal_item_id": "c68e3ba34dbbd394358462d0ada0d1c16",
+      "fidelity_item_id": "m5d4dfe8e6f7563bdc7e1a4df",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28400",
+      "source_card_sha256": "4d5f85eedc868926e4211519479e50c326be0b870d501ff60333d6d28ede7ff7",
+      "candidate_card_sha256": "2296e8a9b34fd6e33f721e3535312972d88871dee57dbefbc595003ebcc30d32",
+      "before_card": {
+        "id": "ffct-28400",
+        "factId": "fwg2-friction-1626",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Friction",
+        "terms": [
+          "friction",
+          "weavers",
+          "ilocos",
+          "region",
+          "rely",
+          "between",
+          "tightly",
+          "packed",
+          "cotton",
+          "threads"
+        ],
+        "fact": {
+          "en": "How do weavers make strong abel Iloco fabric?\n\nThey rely on friction between tightly packed cotton threads to weave durable abel Iloco fabrics!",
+          "tl": "Paano gumagawa ng matibay na abel Iloco ang mga weaver?\n\nUmaasa sila sa friction ng masisikip na cotton threads para makagawa ng matibay na abel Iloco!",
+          "bis": "Unsaon paghimo sa mga weaver ug lig-on nga abel Iloco?\n\nNagsalig sila sa friction sa higpit nga pagkahugpong sa cotton threads aron makahimo ug lig-on nga abel Iloco!"
+        },
+        "slug": "ffct-28400",
+        "source": "original",
+        "title": {
+          "tl": "Abel Iloco Cotton Friction",
+          "en": "Abel Fabric Friction",
+          "bis": "Abel sa Friction"
+        },
+        "cats": [
+          "friction"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28400",
+        "factId": "fwg2-friction-1626",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Friction",
+        "terms": [
+          "friction",
+          "weavers",
+          "ilocos",
+          "region",
+          "rely",
+          "between",
+          "tightly",
+          "packed",
+          "cotton",
+          "threads"
+        ],
+        "fact": {
+          "en": "How do weavers make strong abel Iloco fabric?\n\nThey rely on friction between tightly packed cotton threads to weave durable abel Iloco fabrics!",
+          "tl": "Paano gumagawa ng matibay na abel Iloco ang mga weaver?\n\nUmaasa sila sa friction ng masisikip na cotton threads para makagawa ng matibay na abel Iloco!",
+          "bis": "Unsaon paghimo sa mga weaver ug lig-on nga abel Iloco?\n\nNagsalig sila sa friction sa higpit nga pagkahugpong sa cotton threads aron makahimo ug lig-on nga abel Iloco!"
+        },
+        "slug": "ffct-28400",
+        "source": "original",
+        "title": {
+          "tl": "Abel Iloco Cotton Friction",
+          "en": "Abel Fabric Friction",
+          "bis": "Friction sa Abel Iloco"
+        },
+        "cats": [
+          "friction"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title-only edit makes friction in Abel Iloco the relationship. The unchanged body refers to closely joined cotton threads. Wolff hugpung supports bunching long things together, and Binisaya’s direct higpit root gives tight; it does not warrant rejecting pagkahugpong simply because the proposer doubted its register. National Museum evidence supports the cotton-thread weaving context; the friction inference is elementary physical reasoning, not a claimed textile durability experiment. Both titles prefer the candidate; bodies tie.",
+      "formal_item_id": "c5e8e7614f74c464b04f91f74043bfb4e",
+      "fidelity_item_id": "m4dacf00195c8435dcb47820f",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28413",
+      "source_card_sha256": "65f16703dc3f9a747c15d2a7f7520ce6616eed8657cb15f4890614ac3ffa0fb5",
+      "candidate_card_sha256": "9cb14638f18ac6df85685d9ae5d25348820783daa1bf58391456ec77beda7ed6",
+      "before_card": {
+        "id": "ffct-28413",
+        "factId": "fwg2-mirrors-1645",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Mirrors",
+        "terms": [
+          "mirrors",
+          "plane",
+          "actually",
+          "reverse",
+          "left",
+          "right",
+          "instead",
+          "image",
+          "front",
+          "back"
+        ],
+        "fact": {
+          "en": "Plane mirrors don't actually reverse left and right! Instead, they reverse the image front-to-back along the axis perpendicular to the glass.",
+          "tl": "Hindi talaga binabaliktad ng plane mirror ang kaliwa at kanan! Sa halip, binabaliktad nito ang imahe mula harap papuntang likod sa axis na perpendicular sa glass.",
+          "bis": "Ang plane mirror dili gyud nagbaliktad sa wala ug tuo! Hinuon, nagbaliktad kini sa imahe gikan sa atubangan paingon sa likod sa axis nga perpendicular sa salamin."
+        },
+        "slug": "",
+        "source": "original",
+        "title": {
+          "tl": "Plane Mirror Front-Back Reverse",
+          "en": "Mirrors Front-Back Flip",
+          "bis": "Salamin sa Flip"
+        },
+        "cats": [
+          "light"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28413",
+        "factId": "fwg2-mirrors-1645",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Mirrors",
+        "terms": [
+          "mirrors",
+          "plane",
+          "actually",
+          "reverse",
+          "left",
+          "right",
+          "instead",
+          "image",
+          "front",
+          "back"
+        ],
+        "fact": {
+          "en": "Plane mirrors don't actually reverse left and right! Instead, they reverse the image front-to-back along the axis perpendicular to the glass.",
+          "tl": "Hindi talaga binabaliktad ng plane mirror ang kaliwa at kanan! Sa halip, binabaliktad nito ang imahe mula harap papuntang likod sa axis na perpendicular sa glass.",
+          "bis": "Ang plane mirror dili gyud nagbaliktad sa wala ug tuo! Hinuon, nagbaliktad kini sa imahe gikan sa atubangan paingon sa likod sa axis nga perpendicular sa salamin."
+        },
+        "slug": "",
+        "source": "original",
+        "title": {
+          "tl": "Plane Mirror Front-Back Reverse",
+          "en": "Mirrors Front-Back Flip",
+          "bis": "Salamin: Baliktad ang Atubangan ug Likod"
+        },
+        "cats": [
+          "light"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title explicitly names front/back reversal, matching the unchanged body’s perpendicular-axis explanation and its denial of left/right reversal. Wolff baliktad, atubang and likud support the directions and reversal. Both title preferences agree; identical bodies and emphasis remain. No left/right swap is introduced.",
+      "formal_item_id": "cd0befedf4666f223638151062a2a3ad7",
+      "fidelity_item_id": "mbdeec74ec28c615e1f840624",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28414",
+      "source_card_sha256": "4ab40f69dca2882e5db1ff78cdd95a095013e67a5d7cdcd61460a3b5e271dfe7",
+      "candidate_card_sha256": "002b708a6f7baa62c249741d33c53da81336709a84320f8973eb8e5f6d604c04",
+      "before_card": {
+        "id": "ffct-28414",
+        "factId": "fwg2-friction-1869",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "friction",
+        "terms": [
+          "friction",
+          "basketball",
+          "players",
+          "araneta",
+          "coliseum",
+          "wear",
+          "rubber",
+          "soled",
+          "shoes",
+          "increase"
+        ],
+        "fact": {
+          "en": "Basketball players at the Araneta Coliseum wear rubber-soled shoes to increase friction and prevent slipping on the smooth hardwood court!",
+          "tl": "Ang mga basketball player sa Araneta Coliseum ay nagsusuot ng rubber-soled shoes para tumaas ang friction at hindi madulas sa makinis na hardwood court!",
+          "bis": "Ang mga basketball players sa Araneta Coliseum nagsul-ob og rubber-soled shoes aron mosaka ang friction ug dili madulas sa hapsay nga hardwood court!"
+        },
+        "slug": "ffct-28414",
+        "source": "original",
+        "title": {
+          "tl": "Araneta Rubber Sole Court",
+          "en": "Rubber Soles on Courts",
+          "bis": "Araneta sa Sole"
+        },
+        "cats": [
+          "friction"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28414",
+        "factId": "fwg2-friction-1869",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "friction",
+        "terms": [
+          "friction",
+          "basketball",
+          "players",
+          "araneta",
+          "coliseum",
+          "wear",
+          "rubber",
+          "soled",
+          "shoes",
+          "increase"
+        ],
+        "fact": {
+          "en": "Basketball players at the Araneta Coliseum wear rubber-soled shoes to increase friction and prevent slipping on the smooth hardwood court!",
+          "tl": "Ang mga basketball player sa Araneta Coliseum ay nagsusuot ng rubber-soled shoes para tumaas ang friction at hindi madulas sa makinis na hardwood court!",
+          "bis": "Ang mga basketball players sa Araneta Coliseum nagsul-ob og rubber-soled shoes aron mosaka ang friction ug dili madulas sa hapsay nga hardwood court!"
+        },
+        "slug": "ffct-28414",
+        "source": "original",
+        "title": {
+          "tl": "Araneta Rubber Sole Court",
+          "en": "Rubber Soles on Courts",
+          "bis": "Rubber nga Sole sa Court"
+        },
+        "cats": [
+          "friction"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title names rubber soles and the court rather than the prior unclear location/sole relation. Body is unchanged. Wolff hapsay explicitly includes a smooth unblemished surface, so the court adjective is supported despite the proposer’s doubt. Both title readers agree with body ties. The proper location, material, friction and slip-prevention relationship remain intact.",
+      "formal_item_id": "c0db3bd3c7df5868f85c78fa84dff8bbb",
+      "fidelity_item_id": "mcb0b614bf877a11f3cd89ff5",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28418",
+      "source_card_sha256": "68a4efe961d9808f8bff8c16b7d0d5f531b2fe97fa5c464c90e67f479af7151a",
+      "candidate_card_sha256": "dc64816d95e525d9c15ad2f0af90ae3ffb138440aba28a5e9e8ee9499e39c451",
+      "before_card": {
+        "id": "ffct-28418",
+        "factId": "fwg2-chemical-energy-1534",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Chemical Energy",
+        "terms": [
+          "chemical",
+          "energy",
+          "burning",
+          "dried",
+          "coconut",
+          "husks",
+          "bunot",
+          "backyard",
+          "quezon",
+          "province"
+        ],
+        "fact": {
+          "en": "When you burn dried coconut husks or bunot in a Quezon backyard, it converts the plant's chemical energy into heat and light energy!",
+          "tl": "Kapag sinunog ang tuyong bunot sa bakuran sa Quezon, nagiging init at liwanag ang chemical energy na nakatago sa loob ng halaman!",
+          "bis": "Kung sunogon ang uga nga bunot sa likod-balay sa Quezon, ang chemical energy sa tanom ma-convert ngadto sa kainit ug kahayag!"
+        },
+        "slug": "ffct-28418",
+        "source": "original",
+        "title": {
+          "tl": "Bunot Coconut Chemical Init",
+          "en": "Burning Bunot Energy",
+          "bis": "Bunot sa Kainit"
+        },
+        "cats": [
+          "energy"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28418",
+        "factId": "fwg2-chemical-energy-1534",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Chemical Energy",
+        "terms": [
+          "chemical",
+          "energy",
+          "burning",
+          "dried",
+          "coconut",
+          "husks",
+          "bunot",
+          "backyard",
+          "quezon",
+          "province"
+        ],
+        "fact": {
+          "en": "When you burn dried coconut husks or bunot in a Quezon backyard, it converts the plant's chemical energy into heat and light energy!",
+          "tl": "Kapag sinunog ang tuyong bunot sa bakuran sa Quezon, nagiging init at liwanag ang chemical energy na nakatago sa loob ng halaman!",
+          "bis": "Kung sunogon ang uga nga bunot sa likod-balay sa Quezon, ang chemical energy sa tanom ma-convert ngadto sa kainit ug kahayag!"
+        },
+        "slug": "ffct-28418",
+        "source": "original",
+        "title": {
+          "tl": "Bunot Coconut Chemical Init",
+          "en": "Burning Bunot Energy",
+          "bis": "Enerhiya sa Pagsunog sa Bunot"
+        },
+        "cats": [
+          "energy"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title-only edit names energy in burning coconut husk. Wolff sunug and bunut support burn and husk. The unchanged body retains chemical energy converted to heat and light; both body judgments tie and both titles prefer the candidate. No instructions to conduct a burning experiment or new claim about all plant materials is added.",
+      "formal_item_id": "c307fc08c9fc05d16b9ac46387ded1c45",
+      "fidelity_item_id": "m3672117a0f1d92a28c665b18",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28448",
+      "source_card_sha256": "8f94c4fd0462d86e829df32d87c6d94dff1fcbd89d3c1ec667d8ca429955ecfd",
+      "candidate_card_sha256": "73337ab3b6228fe31898ed1c0d1cf182600aa8e9de645e90f5435fb99462504d",
+      "before_card": {
+        "id": "ffct-28448",
+        "factId": "fwg2-friction-braking-1497",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Friction: Braking",
+        "terms": [
+          "friction",
+          "braking",
+          "stage",
+          "bicycle",
+          "rubber",
+          "brake",
+          "pads",
+          "apply",
+          "against",
+          "metal"
+        ],
+        "fact": {
+          "en": "When you squeeze a bicycle's brakes, rubber brake pads press against the metal wheel rim. This friction slows your bike down!",
+          "tl": "Kapag pinipisil mo ang preno ng bisikleta, pumipilit ang rubber brake pads sa metal wheel rim. Ang friction na ito ang nagpapabagal sa bisikleta mo!",
+          "bis": "Kong pisilon nimo ang preno sa bisikleta, mo-press ang rubber brake pads batok sa metal wheel rim. Kini nga friction ang mopahinay sa imong bisikleta!"
+        },
+        "slug": "ffct-28448",
+        "source": "original",
+        "title": {
+          "tl": "Preno Bisikleta Friction",
+          "en": "Bike Brake Friction",
+          "bis": "Preno Bisikleta"
+        },
+        "cats": [
+          "friction"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28448",
+        "factId": "fwg2-friction-braking-1497",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Friction: Braking",
+        "terms": [
+          "friction",
+          "braking",
+          "stage",
+          "bicycle",
+          "rubber",
+          "brake",
+          "pads",
+          "apply",
+          "against",
+          "metal"
+        ],
+        "fact": {
+          "en": "When you squeeze a bicycle's brakes, rubber brake pads press against the metal wheel rim. This friction slows your bike down!",
+          "tl": "Kapag pinipisil mo ang preno ng bisikleta, pumipilit ang rubber brake pads sa metal wheel rim. Ang friction na ito ang nagpapabagal sa bisikleta mo!",
+          "bis": "Kong pisilon nimo ang preno sa bisikleta, mo-press ang rubber brake pads batok sa metal wheel rim. Kini nga friction ang mopahinay sa imong bisikleta!"
+        },
+        "slug": "ffct-28448",
+        "source": "original",
+        "title": {
+          "tl": "Preno Bisikleta Friction",
+          "en": "Bike Brake Friction",
+          "bis": "Friction sa Preno sa Bisikleta"
+        },
+        "cats": [
+          "friction"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title now connects friction, brakes and bicycle. The body still describes the specific rubber-pad/metal-rim mechanism and slowing result. Wolff prinu supports brake; independent bodies corroborate the term. Both title preferences agree with body ties. The unchanged spelling Kong is not treated as a grammar defect, and the example does not claim every bicycle uses rim brakes.",
+      "formal_item_id": "cc8ef5404702bb522b6b7ad6b4bda8460",
+      "fidelity_item_id": "m6f0de3ff6408b7afec3f0f13",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28480",
+      "source_card_sha256": "934ec4da9306f0e53784fe18e418a50b2e0d6fb52b1e91650961f9cfb700ac59",
+      "candidate_card_sha256": "10b1ca0eabebb2e1ee05f93cf570a5259a5fe8b6b68ab7fa227be2eb6ca3d844",
+      "before_card": {
+        "id": "ffct-28480",
+        "factId": "fwg2-gravity-1852",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Gravity",
+        "terms": [
+          "gravity",
+          "weighed",
+          "hundred",
+          "pounds",
+          "earth",
+          "would",
+          "weigh",
+          "fifty",
+          "three",
+          "massive"
+        ],
+        "fact": {
+          "en": "If you weighed 100 pounds on Earth, you'd weigh a whopping 253 pounds on massive Jupiter!",
+          "tl": "Kung 100 pounds ang bigat mo sa Earth, magiging 253 pounds ka sa napakalaking Jupiter!",
+          "bis": "Kung 100 pounds ang gibug-aton nimo sa Earth, mahimong 253 pounds ka sa dako kaayo nga Jupiter!"
+        },
+        "slug": "ffct-28480",
+        "source": "original",
+        "title": {
+          "tl": "100 Pounds Earth 253 Jupiter",
+          "en": "Jupiter Weight 253 Pounds",
+          "bis": "100 Pounds Kalibutan 253 Jupiter"
+        },
+        "cats": [
+          "gravity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28480",
+        "factId": "fwg2-gravity-1852",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Gravity",
+        "terms": [
+          "gravity",
+          "weighed",
+          "hundred",
+          "pounds",
+          "earth",
+          "would",
+          "weigh",
+          "fifty",
+          "three",
+          "massive"
+        ],
+        "fact": {
+          "en": "If you weighed 100 pounds on Earth, you'd weigh a whopping 253 pounds on massive Jupiter!",
+          "tl": "Kung 100 pounds ang bigat mo sa Earth, magiging 253 pounds ka sa napakalaking Jupiter!",
+          "bis": "Kung 100 pounds ang gibug-aton nimo sa Earth, mahimong 253 pounds ka sa dako kaayo nga Jupiter!"
+        },
+        "slug": "ffct-28480",
+        "source": "original",
+        "title": {
+          "tl": "100 Pounds Earth 253 Jupiter",
+          "en": "Jupiter Weight 253 Pounds",
+          "bis": "100 Pounds sa Earth, 253 sa Jupiter"
+        },
+        "cats": [
+          "gravity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title-only edit supplies the missing relations between the two weights and planets; numbers and the complete hypothetical body are unchanged. NASA Space Place gives this same 100-to-253-pound classroom comparison, and JPL lists the corresponding conventional gravity values. Different effective/mean-gravity conventions in other fact sheets do not alone refute this example. Both title preferences agree; no assertion of a solid Jovian surface is added.",
+      "formal_item_id": "cc7dc272a3c015900e1535babf1ce087b",
+      "fidelity_item_id": "m9bbfc3faef90de0952296749",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28543",
+      "source_card_sha256": "1c452b7fd5368d722182244ff3f6ca3199ea4631325c82d0a0e0e9d28ab3571e",
+      "candidate_card_sha256": "cab322c2fd6bc9039cd50be648d0f1b919618071c07a1452adf9713191782fb2",
+      "before_card": {
+        "id": "ffct-28543",
+        "factId": "fwg2-electrical-fire-prevention-1524",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Electrical Fire Prevention",
+        "terms": [
+          "electrical",
+          "fire",
+          "prevention",
+          "unplugging",
+          "toaster",
+          "pulling",
+          "plastic",
+          "plug",
+          "prevents",
+          "cord"
+        ],
+        "fact": {
+          "en": "Unplugging a toaster by pulling the plastic plug prevents cord damage that could cause dangerous electrical fires!",
+          "tl": "Ang pag-unplug ng toaster sa pamamagitan ng paghila sa plastic plug ay pumipigil sa pagkasira ng cord na maaaring magdulot ng mapanganib na electrical fire!",
+          "bis": "Ang pag-unplug sa toaster pinaagi sa pag-pull sa plastic plug makalikay sa pagkadaut sa cord nga mahimong hinungdan sa delikado nga electrical fire!"
+        },
+        "slug": "ffct-28543",
+        "source": "original",
+        "title": {
+          "tl": "Plug Pull Toaster Ligtas",
+          "en": "Safe Toaster Unplugging",
+          "bis": "Plug sa Toaster"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28543",
+        "factId": "fwg2-electrical-fire-prevention-1524",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Electrical Fire Prevention",
+        "terms": [
+          "electrical",
+          "fire",
+          "prevention",
+          "unplugging",
+          "toaster",
+          "pulling",
+          "plastic",
+          "plug",
+          "prevents",
+          "cord"
+        ],
+        "fact": {
+          "en": "Unplugging a toaster by pulling the plastic plug prevents cord damage that could cause dangerous electrical fires!",
+          "tl": "Ang pag-unplug ng toaster sa pamamagitan ng paghila sa plastic plug ay pumipigil sa pagkasira ng cord na maaaring magdulot ng mapanganib na electrical fire!",
+          "bis": "Ang pag-unplug sa toaster pinaagi sa pagbira sa plastic plug makalikay sa pagkadaut sa cord. Ang cord nga nadaut mahimong hinungdan sa delikado nga electrical fire!"
+        },
+        "slug": "ffct-28543",
+        "source": "original",
+        "title": {
+          "tl": "Plug Pull Toaster Ligtas",
+          "en": "Safe Toaster Unplugging",
+          "bis": "Luwas nga Pag-unplug sa Toaster"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Pagbira directly expresses pulling the plastic plug, and a separate sentence names damage to the cord as the possible fire cause. Wolff bira and daut support pull and damage; CPSC explicitly advises pulling the plug rather than the cord. Both readers prefer the candidate. Mahimong preserves could; neither fire certainty nor an instruction to touch damaged wiring is added.",
+      "formal_item_id": "c2aa68120ef9f078f523294f98624dbdb",
+      "fidelity_item_id": "m8d7b852fe8c53446648725b2",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28544",
+      "source_card_sha256": "de17ef3d7830a95cedd9429beb9ad2761ad639830410306706a01faa1840d857",
+      "candidate_card_sha256": "02e37b5d04167cbec732afd2c06e59c4af17422790a2caf82cb4d04a1ff30e2f",
+      "before_card": {
+        "id": "ffct-28544",
+        "factId": "fwg2-light-and-vision-1590",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Light and Vision",
+        "terms": [
+          "light",
+          "vision",
+          "during",
+          "process",
+          "reflects",
+          "object",
+          "enters",
+          "pupil",
+          "forms",
+          "image"
+        ],
+        "fact": {
+          "en": "When you look at something, light reflects off it, enters your pupil, and forms an image on your retina!",
+          "tl": "Kapag tumitingin ka, ang liwanag ay nag-reflect mula sa bagay, pumapasok sa pupil, at gumagawa ng larawan sa retina!",
+          "bis": "Kung motan-aw ka, ang kahayag mo-reflect gikan sa butang, mosulod sa pupil, ug maghimo og imahe sa retina!"
+        },
+        "slug": "ffct-28544",
+        "source": "original",
+        "title": {
+          "tl": "Pupil Retina Image Mata",
+          "en": "How Eyes See Objects",
+          "bis": "Pupil sa Retina"
+        },
+        "cats": [
+          "light",
+          "senses"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28544",
+        "factId": "fwg2-light-and-vision-1590",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Light and Vision",
+        "terms": [
+          "light",
+          "vision",
+          "during",
+          "process",
+          "reflects",
+          "object",
+          "enters",
+          "pupil",
+          "forms",
+          "image"
+        ],
+        "fact": {
+          "en": "When you look at something, light reflects off it, enters your pupil, and forms an image on your retina!",
+          "tl": "Kapag tumitingin ka, ang liwanag ay nag-reflect mula sa bagay, pumapasok sa pupil, at gumagawa ng larawan sa retina!",
+          "bis": "Kung motan-aw ka, ang kahayag mo-reflect gikan sa butang, mosulod sa pupil, ug maghimo og imahe sa retina!"
+        },
+        "slug": "ffct-28544",
+        "source": "original",
+        "title": {
+          "tl": "Pupil Retina Image Mata",
+          "en": "How Eyes See Objects",
+          "bis": "Giunsa Makakita ang Mata"
+        },
+        "cats": [
+          "light",
+          "senses"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Title-only edit asks how the eye sees, matching its English title and unchanged pupil-to-retina body. Wolff kita and mata support seeing and eye; NEI describes light entering through the pupil and focusing on the retina. Both title preferences agree with body ties. No claim that the pupil focuses the image is added.",
+      "formal_item_id": "c4e70f5499e4640887b45a08d4bee7df4",
+      "fidelity_item_id": "m518ed9d31757ef5cfcbc8d2e",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28545",
+      "source_card_sha256": "bfc28fdd57d7872b5ecc9cd735f1c21b479f5d635e63126145d737416cc9be71",
+      "candidate_card_sha256": "8c2dab5db77e6ea2455b944a3d4e27447f0c39e41bb71fdbd79dce19b604db44",
+      "before_card": {
+        "id": "ffct-28545",
+        "factId": "fwg2-sound-waves-1628",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Sound Waves",
+        "terms": [
+          "sound",
+          "waves",
+          "during",
+          "compression",
+          "stage",
+          "wave",
+          "molecules",
+          "pushed",
+          "closely",
+          "together"
+        ],
+        "fact": {
+          "en": "During the compression stage of a sound wave, a vibrating object pushes air molecules closely together!",
+          "tl": "Sa compression stage ng sound wave, ang isang vibrating na bagay ay pinipilit ang mga air molecules na magsiksik!",
+          "bis": "Sa compression stage sa sound wave, ang nag-vibrate nga butang nagpush sa mga air molecules nga magtapok duol!"
+        },
+        "slug": "sound-waves",
+        "title": {
+          "en": "Sound Compression",
+          "tl": "Pagpisil ng Tunog",
+          "bis": "Compression sa Tunog"
+        },
+        "cats": [
+          "sound"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "compression"
+          ],
+          "en": [
+            "compression"
+          ],
+          "bis": [
+            "compression"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-28545",
+        "factId": "fwg2-sound-waves-1628",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Sound Waves",
+        "terms": [
+          "sound",
+          "waves",
+          "during",
+          "compression",
+          "stage",
+          "wave",
+          "molecules",
+          "pushed",
+          "closely",
+          "together"
+        ],
+        "fact": {
+          "en": "During the compression stage of a sound wave, a vibrating object pushes air molecules closely together!",
+          "tl": "Sa compression stage ng sound wave, ang isang vibrating na bagay ay pinipilit ang mga air molecules na magsiksik!",
+          "bis": "Sa compression stage sa sound wave, ang butang nga nag-vibrate nagduso sa mga air molecules hangtod magduol-duol kini sa usag usa!"
+        },
+        "slug": "sound-waves",
+        "title": {
+          "en": "Sound Compression",
+          "tl": "Pagpisil ng Tunog",
+          "bis": "Compression sa Tunog"
+        },
+        "cats": [
+          "sound"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "compression"
+          ],
+          "en": [
+            "compression"
+          ],
+          "bis": [
+            "compression"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Names the vibrating object before the pushing action and explicitly states air molecules get closer to each other. Wolff dusu and duul support push and closeness; independent bodies corroborate the roots. Both body preferences agree; sound-wave compression, not the whole wave or rarefaction, remains the scope. No change to the title.",
+      "formal_item_id": "cced183529aed3d8c63b794220818bbbe",
+      "fidelity_item_id": "m677c78501d264c6bc6ace5a8",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28549",
+      "source_card_sha256": "63dc663e75ebb147426ff0ed2b158e74b29b00b06f91ad29f7527df0782ce24e",
+      "candidate_card_sha256": "a42abc6dc3c28e5f6e518a565246152cbee522c617fbfa1c41ed90b2be16800c",
+      "before_card": {
+        "id": "ffct-28549",
+        "factId": "fwg2-electricity-heart-monitoring-1189",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Electricity: Heart Monitoring",
+        "terms": [
+          "electricity",
+          "heart",
+          "monitoring",
+          "electrocardiogram",
+          "medical",
+          "test",
+          "measures",
+          "tiny",
+          "electrical",
+          "signals"
+        ],
+        "fact": {
+          "en": "An electrocardiogram, or ECG, is a medical test that measures the tiny electrical signals your heart generates to pump blood!",
+          "tl": "Ang electrocardiogram o ECG ay isang medical test na sumusukat sa maliliit na electrical signals na ginagawa ng puso para magbomba ng dugo!",
+          "bis": "Ang electrocardiogram o ECG usa ka medical test nga nagsukod sa gagmay nga electrical signals nga gihimo sa kasingkasing aron magpump og dugo!"
+        },
+        "slug": "ffct-28549",
+        "source": "original",
+        "title": {
+          "tl": "ECG Puso Electrical Signal",
+          "en": "The ECG Heart Test",
+          "bis": "ECG sa Kasingkasing"
+        },
+        "cats": [
+          "electricity",
+          "circulatory-system"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28549",
+        "factId": "fwg2-electricity-heart-monitoring-1189",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Electricity: Heart Monitoring",
+        "terms": [
+          "electricity",
+          "heart",
+          "monitoring",
+          "electrocardiogram",
+          "medical",
+          "test",
+          "measures",
+          "tiny",
+          "electrical",
+          "signals"
+        ],
+        "fact": {
+          "en": "An electrocardiogram, or ECG, is a medical test that measures the tiny electrical signals your heart generates to pump blood!",
+          "tl": "Ang electrocardiogram o ECG ay isang medical test na sumusukat sa maliliit na electrical signals na ginagawa ng puso para magbomba ng dugo!",
+          "bis": "Ang electrocardiogram o ECG usa ka medical test. Gisukod niini ang gagmay nga electrical signals nga gihimo sa imong kasingkasing aron mobomba og dugo!"
+        },
+        "slug": "ffct-28549",
+        "source": "original",
+        "title": {
+          "tl": "ECG Puso Electrical Signal",
+          "en": "The ECG Heart Test",
+          "bis": "ECG sa Kasingkasing"
+        },
+        "cats": [
+          "electricity",
+          "circulatory-system"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Splits the ECG definition from what it measures, explicitly restores your heart and uses mobomba for pump. Wolff bumba has a distinct pump entry; its unrelated homographs do not invalidate this context. NHLBI identifies ECG as recording the heart’s electrical activity. Both body preferences agree, title ties, and backtranslation retains tiny signals and pumping blood without turning ECG into treatment.",
+      "formal_item_id": "c1936a7fef33d1eb0b226b8550afcbbf4",
+      "fidelity_item_id": "mbddaa6e7002a60607a7708f4",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28642",
+      "source_card_sha256": "432a8ecc856749f54a3ef471d690483c526fda5bee40f1cff00044527666b6ea",
+      "candidate_card_sha256": "a103ae5a2d6d2000597ab057196dc0fac6ff4748e6a90f69dc61ea55fcd4e779",
+      "before_card": {
+        "id": "ffct-28642",
+        "factId": "fwg2-electricity-1770",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "electricity",
+        "terms": [
+          "electricity",
+          "electrocardiogram",
+          "measures",
+          "natural",
+          "electrical",
+          "impulses",
+          "generated",
+          "your",
+          "heart",
+          "muscle"
+        ],
+        "fact": {
+          "en": "An electrocardiogram measures the natural electrical impulses from your heart muscle to check your cardiovascular health!",
+          "tl": "Ang electrocardiogram ay sumusukat ng natural na electrical impulses mula sa heart muscle mo para i-check ang cardiovascular health!",
+          "bis": "Ang electrocardiogram nagsukod sa natural nga electrical impulses gikan sa imong heart muscle aron i-check ang cardiovascular health!"
+        },
+        "slug": "qa-ffct-28642",
+        "source": "original",
+        "title": {
+          "tl": "Electrocardiogram ng Puso",
+          "en": "Heart ECG Checks",
+          "bis": "ECG Kasingkasing"
+        },
+        "cats": [
+          "electricity",
+          "circulatory-system"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28642",
+        "factId": "fwg2-electricity-1770",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "electricity",
+        "terms": [
+          "electricity",
+          "electrocardiogram",
+          "measures",
+          "natural",
+          "electrical",
+          "impulses",
+          "generated",
+          "your",
+          "heart",
+          "muscle"
+        ],
+        "fact": {
+          "en": "An electrocardiogram measures the natural electrical impulses from your heart muscle to check your cardiovascular health!",
+          "tl": "Ang electrocardiogram ay sumusukat ng natural na electrical impulses mula sa heart muscle mo para i-check ang cardiovascular health!",
+          "bis": "Ang electrocardiogram nagsukod sa natural nga electrical impulses gikan sa imong heart muscle aron i-check ang cardiovascular health!"
+        },
+        "slug": "qa-ffct-28642",
+        "source": "original",
+        "title": {
+          "tl": "Electrocardiogram ng Puso",
+          "en": "Heart ECG Checks",
+          "bis": "ECG sa Kasingkasing"
+        },
+        "cats": [
+          "electricity",
+          "circulatory-system"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Adds sa to connect ECG with the heart in the title. Body is byte-identical and retains natural impulses, heart muscle and the health-check purpose. Wolff kasingkasing supports heart, and NHLBI’s ECG description supports the test. Both title preferences agree and both bodies tie.",
+      "formal_item_id": "ceb7ab838b3d92d1d8ca6d56d02fcc410",
+      "fidelity_item_id": "m682b9473c49ea48fb92450e8",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28644",
+      "source_card_sha256": "a5117b04a394eb231b87d86f28058b1687a44dd19893200dfeadda06ea63e1a5",
+      "candidate_card_sha256": "faf431f1e44e30cf9234b080dba47879cf771c364df745ee4753587195858a95",
+      "before_card": {
+        "id": "ffct-28644",
+        "factId": "fwg2-motion-1529",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "motion",
+        "terms": [
+          "motion",
+          "crash",
+          "test",
+          "dummies",
+          "used",
+          "national",
+          "highway",
+          "traffic",
+          "safety",
+          "administration"
+        ],
+        "fact": {
+          "en": "Crash test dummies used by the National Highway Traffic Safety Administration demonstrate Newton's first law of inertia by jerking forward during simulated collisions!",
+          "tl": "Ang mga crash test dummy ng National Highway Traffic Safety Administration ay nagpapakita ng unang batas ni Newton tungkol sa inertia sa pamamagitan ng pag-jerk forward sa simulated collisions!",
+          "bis": "Ang mga crash test dummies sa National Highway Traffic Safety Administration nagpakita sa unang balaod ni Newton sa inertia pinaagi sa pag-jerk forward sa simulated collisions!"
+        },
+        "slug": "qa-ffct-28644",
+        "source": "original",
+        "title": {
+          "tl": "Crash Dummy at Inertia",
+          "en": "Crash Dummies Inertia",
+          "bis": "Crash Dummy Inertia"
+        },
+        "cats": [
+          "motion",
+          "forces"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28644",
+        "factId": "fwg2-motion-1529",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "motion",
+        "terms": [
+          "motion",
+          "crash",
+          "test",
+          "dummies",
+          "used",
+          "national",
+          "highway",
+          "traffic",
+          "safety",
+          "administration"
+        ],
+        "fact": {
+          "en": "Crash test dummies used by the National Highway Traffic Safety Administration demonstrate Newton's first law of inertia by jerking forward during simulated collisions!",
+          "tl": "Ang mga crash test dummy ng National Highway Traffic Safety Administration ay nagpapakita ng unang batas ni Newton tungkol sa inertia sa pamamagitan ng pag-jerk forward sa simulated collisions!",
+          "bis": "Ang mga crash test dummies nga gigamit sa National Highway Traffic Safety Administration kalit nga moabante sa simulated collisions. Kini nga paglihok nagpakita sa unang balaod ni Newton bahin sa inertia!"
+        },
+        "slug": "qa-ffct-28644",
+        "source": "original",
+        "title": {
+          "tl": "Crash Dummy at Inertia",
+          "en": "Crash Dummies Inertia",
+          "bis": "Crash Dummy ug Inertia"
+        },
+        "cats": [
+          "motion",
+          "forces"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "States the dummy’s sudden forward movement and then links that movement to Newton’s first law. Wolff kalit and abanti support sudden and forward; independent bodies corroborate the usage. NHTSA documents its dummies’ role in measuring movement in crashes. The inertia reading is relative to the decelerating vehicle, not a new physical forward force. Both changed-field preferences and backtranslation agree; the complete agency name remains.",
+      "formal_item_id": "c19a732510250d8a705498b1de51a812d",
+      "fidelity_item_id": "mb5b01f112ae8036e60036a09",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28650",
+      "source_card_sha256": "e907a5c7a7dbdd79131afd1167bdf293e1f407df8ce32f3931af24c73a851396",
+      "candidate_card_sha256": "6d21c540ace0a965641f13e2b4db6268394aaec18fa364304cb717be970502e6",
+      "before_card": {
+        "id": "ffct-28650",
+        "factId": "fwg2-conduction-transfer-993",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Conduction transfer",
+        "terms": [
+          "conduction",
+          "transfer",
+          "during",
+          "stage",
+          "cooking",
+          "thermal",
+          "energy",
+          "transfers",
+          "directly",
+          "metal"
+        ],
+        "fact": {
+          "en": "How does a hot pan cook a raw egg?\n\nThrough conduction! Thermal energy transfers directly from the hot metal pan to the raw egg through physical contact.",
+          "tl": "Paano niluluto ng mainit na kawali ang hilaw na itlog?\n\nSa pamamagitan ng conduction! Ang thermal energy ay direktang lumilipat mula sa mainit na metal na kawali papunta sa hilaw na itlog dahil nagkakontak sila.",
+          "bis": "Giunsa pagluto sa init nga kawali sa hilaw nga itlog?\n\nPinaagi sa conduction! Ang thermal energy diretso nga mo-transfer gikan sa init nga metal nga kawali ngadto sa hilaw nga itlog tungod kay nag-contact sila."
+        },
+        "slug": "ffct-28650",
+        "source": "original",
+        "title": {
+          "tl": "Kawali sa Itlog Conduction",
+          "en": "Pan-to-Egg Conduction",
+          "bis": "Kawali Itlog"
+        },
+        "cats": [
+          "heat"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28650",
+        "factId": "fwg2-conduction-transfer-993",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Conduction transfer",
+        "terms": [
+          "conduction",
+          "transfer",
+          "during",
+          "stage",
+          "cooking",
+          "thermal",
+          "energy",
+          "transfers",
+          "directly",
+          "metal"
+        ],
+        "fact": {
+          "en": "How does a hot pan cook a raw egg?\n\nThrough conduction! Thermal energy transfers directly from the hot metal pan to the raw egg through physical contact.",
+          "tl": "Paano niluluto ng mainit na kawali ang hilaw na itlog?\n\nSa pamamagitan ng conduction! Ang thermal energy ay direktang lumilipat mula sa mainit na metal na kawali papunta sa hilaw na itlog dahil nagkakontak sila.",
+          "bis": "Giunsa pagluto sa init nga kawali sa hilaw nga itlog?\n\nPinaagi sa conduction! Ang thermal energy diretsong mobalhin gikan sa init nga metal nga kawali ngadto sa hilaw nga itlog. Mahitabo kini kay nagtandog sila."
+        },
+        "slug": "ffct-28650",
+        "source": "original",
+        "title": {
+          "tl": "Kawali sa Itlog Conduction",
+          "en": "Pan-to-Egg Conduction",
+          "bis": "Conduction sa Kawali ug Itlog"
+        },
+        "cats": [
+          "heat"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Separates direct thermal-energy transfer from contact as its cause, replacing borrowed verbs with attested balhin and tandug. Wolff supports transfer and touch; both readers prefer the changed title and body. Full backtranslation preserves the hot-metal-pan to raw-egg direction and conduction. It adds no instruction to touch the pan.",
+      "formal_item_id": "c17ebee154acc9b472ba2b508be5f92e4",
+      "fidelity_item_id": "m00760c693948d880a6866271",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28683",
+      "source_card_sha256": "bfaf62c9e98483d8d5a720ac6f80afb92e2e6769cf36733254471bfca5978227",
+      "candidate_card_sha256": "7fe881166b7eb1e399458f7112c691dc7ae5fc352eaf8814a20697276c610647",
+      "before_card": {
+        "id": "ffct-28683",
+        "factId": "fwg2-static-electricity-1182",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Static Electricity",
+        "terms": [
+          "static",
+          "electricity",
+          "discharge",
+          "stage",
+          "occurs",
+          "accumulated",
+          "electrons",
+          "suddenly",
+          "jump",
+          "across"
+        ],
+        "fact": {
+          "en": "During the discharge stage of static electricity, accumulated electrons suddenly jump across a gap to create a visible spark!",
+          "tl": "Ang yugto ng discharge ng static electricity ay nangyayari kapag biglaang tumalon ang naipong mga electron sa isang puwang, na nagdudulot ng nakikitang spark!",
+          "bis": "Ang discharge stage sa static electricity mahitabo kung ang naipon nga mga electron kalit nga molukso sa usa ka gap, nga nagmugna og makita nga spark!"
+        },
+        "slug": "ffct-28683",
+        "source": "original",
+        "title": {
+          "tl": "Electron Jump Gap Discharge",
+          "en": "Static Discharge Stage",
+          "bis": "Electron sa Jump"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28683",
+        "factId": "fwg2-static-electricity-1182",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Static Electricity",
+        "terms": [
+          "static",
+          "electricity",
+          "discharge",
+          "stage",
+          "occurs",
+          "accumulated",
+          "electrons",
+          "suddenly",
+          "jump",
+          "across"
+        ],
+        "fact": {
+          "en": "During the discharge stage of static electricity, accumulated electrons suddenly jump across a gap to create a visible spark!",
+          "tl": "Ang yugto ng discharge ng static electricity ay nangyayari kapag biglaang tumalon ang naipong mga electron sa isang puwang, na nagdudulot ng nakikitang spark!",
+          "bis": "Sa discharge stage sa static electricity, ang naipon nga mga electron kalit nga molukso latas sa usa ka gap. Kini ang naghimo og spark nga atong makita!"
+        },
+        "slug": "ffct-28683",
+        "source": "original",
+        "title": {
+          "tl": "Electron Jump Gap Discharge",
+          "en": "Static Discharge Stage",
+          "bis": "Ang Static Discharge"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Latas makes across explicit; the separate second sentence identifies the visible spark as the result. Wolff latas supports traversing across; independent bodies corroborate that sense. Both changed-field preferences agree. The accumulated electrons and sudden event remain, and the specific spark example is not extended to every possible static discharge.",
+      "formal_item_id": "c10bf3fea11800938d568eddb030666ed",
+      "fidelity_item_id": "m8421f21d8a755cb91a2e5fc6",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28796",
+      "source_card_sha256": "fc4a7826af254417e5bc49a91bc1a75ce678cd992d15635fa3fc365cb5192388",
+      "candidate_card_sha256": "c56d5d20257a9068f357eeac6e669c69c521d71aeeca1e1c83b10e965ce03b49",
+      "before_card": {
+        "id": "ffct-28796",
+        "factId": "em-wave-no-medium-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "electromagnetic waves need no medium",
+        "terms": [
+          "walang medium",
+          "walang kailangang medium",
+          "dili kinahanglan ug medium",
+          "vacuum",
+          "bakwum",
+          "kawalan",
+          "space",
+          "kalawakan",
+          "kawanangan",
+          "sound needs medium",
+          "tunog kailangan medium",
+          "naglalakbay sa space",
+          "mobiyahe sa wanang",
+          "em wave space",
+          "araw liwanag space"
+        ],
+        "fact": {
+          "en": "Unlike sound, an electromagnetic wave needs no medium! It travels right through the vacuum of space, which is why light from the Sun and stars reaches us.",
+          "tl": "Hindi tulad ng tunog, ang electromagnetic wave ay hindi nangangailangan ng medium! Dumadaan ito sa vacuum ng kalawakan, kaya naaabot tayo ng liwanag ng araw at mga bituin.",
+          "bis": "Dili sama sa tingog, ang electromagnetic wave dili magkinahanglan ug medium! Makaagi kini sa vacuum sa kawanangan, mao nga ang kahayag sa adlaw ug mga bituon makaabot kanato."
+        },
+        "slug": "ffct-28796",
+        "source": "original",
+        "title": {
+          "tl": "EM Wave Walang Medium",
+          "en": "EM Needs No Medium",
+          "bis": "EM Wave Medium"
+        },
+        "cats": [
+          "light"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28796",
+        "factId": "em-wave-no-medium-g9",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "electromagnetic waves need no medium",
+        "terms": [
+          "walang medium",
+          "walang kailangang medium",
+          "dili kinahanglan ug medium",
+          "vacuum",
+          "bakwum",
+          "kawalan",
+          "space",
+          "kalawakan",
+          "kawanangan",
+          "sound needs medium",
+          "tunog kailangan medium",
+          "naglalakbay sa space",
+          "mobiyahe sa wanang",
+          "em wave space",
+          "araw liwanag space"
+        ],
+        "fact": {
+          "en": "Unlike sound, an electromagnetic wave needs no medium! It travels right through the vacuum of space, which is why light from the Sun and stars reaches us.",
+          "tl": "Hindi tulad ng tunog, ang electromagnetic wave ay hindi nangangailangan ng medium! Dumadaan ito sa vacuum ng kalawakan, kaya naaabot tayo ng liwanag ng araw at mga bituin.",
+          "bis": "Dili sama sa tingog, ang electromagnetic wave dili magkinahanglan ug medium! Makaagi kini sa vacuum sa kawanangan, mao nga ang kahayag sa adlaw ug mga bituon makaabot kanato."
+        },
+        "slug": "ffct-28796",
+        "source": "original",
+        "title": {
+          "tl": "EM Wave Walang Medium",
+          "en": "EM Needs No Medium",
+          "bis": "Dili Kinahanglan og Medium ang EM Wave"
+        },
+        "cats": [
+          "light"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The title now includes the essential no-medium negation instead of an ambiguous noun stack. Unchanged body contrasts sound with electromagnetic propagation through vacuum. Wolff wanang explicitly lists kawanangan as outer space and kinahangan/kinahanglan means need; the derivative/root evidence supports the retained wording. Both title preferences agree with body ties. No assertion that sound propagates through a vacuum.",
+      "formal_item_id": "c7c5d04f130b6b3a8993eb720ab59dec8",
+      "fidelity_item_id": "mb7efa2a33b4162bc2290470a",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28833",
+      "source_card_sha256": "95e2283590d2f3a9fb7df4290140e02a80a8bc4e9c3227e6773cf3435e008767",
+      "candidate_card_sha256": "a03792283d291a00931f026b4b5eedb16c367052cb9a7e5e1f1d95639c6f43cd",
+      "before_card": {
+        "id": "ffct-28833",
+        "factId": "parallel-lower-total-resistance-g10",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "parallel circuit has lower total resistance",
+        "terms": [
+          "mas mababang resistance",
+          "parallel circuit",
+          "dagdag na daanan",
+          "mas maraming landas",
+          "lower resistance",
+          "ubos nga resistance",
+          "dugang agianan",
+          "mas daghan agianan",
+          "more paths",
+          "nabawasan ang resistance",
+          "mas gamay ang resistance"
+        ],
+        "fact": {
+          "en": "Adding more branches to a parallel circuit gives the current more paths to flow! Because of this, the total resistance goes down.",
+          "tl": "Ang pagdaragdag ng mga sanga sa isang parallel circuit ay nagbibigay ng mas maraming landas para sa current! Kaya bumababa ang kabuuang resistance.",
+          "bis": "Ang pagdugang ug mga sanga sa usa ka parallel circuit naghatag ug mas daghang agianan alang sa current! Mokunhod ang kinatibuk-ang resistance."
+        },
+        "slug": "ffct-28831",
+        "title": {
+          "en": "Parallel Resistance",
+          "tl": "Paralelo Resistansya",
+          "bis": "Parallel Resistansya"
+        },
+        "cats": [
+          "electricity",
+          "circuits"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "parallel circuit"
+          ],
+          "en": [
+            "parallel circuit"
+          ],
+          "bis": [
+            "parallel circuit"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-28833",
+        "factId": "parallel-lower-total-resistance-g10",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "parallel circuit has lower total resistance",
+        "terms": [
+          "mas mababang resistance",
+          "parallel circuit",
+          "dagdag na daanan",
+          "mas maraming landas",
+          "lower resistance",
+          "ubos nga resistance",
+          "dugang agianan",
+          "mas daghan agianan",
+          "more paths",
+          "nabawasan ang resistance",
+          "mas gamay ang resistance"
+        ],
+        "fact": {
+          "en": "Adding more branches to a parallel circuit gives the current more paths to flow! Because of this, the total resistance goes down.",
+          "tl": "Ang pagdaragdag ng mga sanga sa isang parallel circuit ay nagbibigay ng mas maraming landas para sa current! Kaya bumababa ang kabuuang resistance.",
+          "bis": "Kung dugangan nato ang mga sanga sa usa ka parallel circuit, mas daghan ang agianan sa current! Tungod niini, mokunhod ang kinatibuk-ang resistance."
+        },
+        "slug": "ffct-28831",
+        "title": {
+          "en": "Parallel Resistance",
+          "tl": "Paralelo Resistansya",
+          "bis": "Resistance sa Parallel Circuit"
+        },
+        "cats": [
+          "electricity",
+          "circuits"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "parallel circuit"
+          ],
+          "en": [
+            "parallel circuit"
+          ],
+          "bis": [
+            "parallel circuit"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Moves branch addition into a direct condition and marks the reduced-resistance result with Tungod niini. Wolff dugang and kunhud support add and decrease; independent circuit bodies corroborate the sense. Both changed-field preferences agree, preserving more paths and total resistance. This approves the exact wording, not a rule that Resistansya or the old construction is inherently wrong.",
+      "formal_item_id": "cc113b34086b23b119eeee542707138ee",
+      "fidelity_item_id": "m1d7d68a200e2211ff08692db",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28837",
+      "source_card_sha256": "3d13220435da83b15f27b3ef4783d074ed614bcf7d48dc4e3894056bb47e8f19",
+      "candidate_card_sha256": "f7ba77bc00bbe26a0faeda748075581ec8a26fb3d03dacefa918b78d6e08fdc4",
+      "before_card": {
+        "id": "ffct-28837",
+        "factId": "electrical-energy-kilowatt-hour-g10",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "electrical energy measured in kilowatt-hours",
+        "terms": [
+          "kilowatt-hour",
+          "kwh",
+          "kuryente sa metro",
+          "electric bill",
+          "enerhiya gamit oras",
+          "konsumo ng kuryente",
+          "kilowatt oras",
+          "kuryenteng metro",
+          "singil sa kuryente",
+          "power times time",
+          "enerhiya kada oras",
+          "metro sa kuryente"
+        ],
+        "fact": {
+          "en": "Electrical energy equals power multiplied by time, measured in kilowatt-hours (kWh)—the unit you see on your electric bill!",
+          "tl": "Ang enerhiyang kuryente ay power na pinarami sa oras, sinusukat sa kilowatt-hours (kWh)—ang yunit na nakikita sa electric bill mo!",
+          "bis": "Ang enerhiya sa kuryente mao ang power nga gipadaghan sa oras, sukod sa kilowatt-hours (kWh)—ang yunit nga makita sa imong electric bill!"
+        },
+        "slug": "kilowatt-hour-meter",
+        "title": {
+          "en": "Kilowatt-Hours",
+          "tl": "Kilowatt-Oras",
+          "bis": "Kilowatt-Oras"
+        },
+        "cats": [
+          "energy",
+          "electricity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kilowatt-hours"
+          ],
+          "en": [
+            "kilowatt-hours"
+          ],
+          "bis": [
+            "kilowatt-hours"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-28837",
+        "factId": "electrical-energy-kilowatt-hour-g10",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "electrical energy measured in kilowatt-hours",
+        "terms": [
+          "kilowatt-hour",
+          "kwh",
+          "kuryente sa metro",
+          "electric bill",
+          "enerhiya gamit oras",
+          "konsumo ng kuryente",
+          "kilowatt oras",
+          "kuryenteng metro",
+          "singil sa kuryente",
+          "power times time",
+          "enerhiya kada oras",
+          "metro sa kuryente"
+        ],
+        "fact": {
+          "en": "Electrical energy equals power multiplied by time, measured in kilowatt-hours (kWh)—the unit you see on your electric bill!",
+          "tl": "Ang enerhiyang kuryente ay power na pinarami sa oras, sinusukat sa kilowatt-hours (kWh)—ang yunit na nakikita sa electric bill mo!",
+          "bis": "Ang enerhiya sa kuryente mao ang power nga gipadaghan sa oras. Gisukod kini sa kilowatt-hours (kWh)—ang yunit nga makita nimo sa imong electric bill!"
+        },
+        "slug": "kilowatt-hour-meter",
+        "title": {
+          "en": "Kilowatt-Hours",
+          "tl": "Kilowatt-Oras",
+          "bis": "Kilowatt-Oras"
+        },
+        "cats": [
+          "energy",
+          "electricity"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "kilowatt-hours"
+          ],
+          "en": [
+            "kilowatt-hours"
+          ],
+          "bis": [
+            "kilowatt-hours"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "The sentence break and Gisukod kini explicitly attach kilowatt-hours to electrical energy. Binisaya’s direct padaghan entry includes numerical multiplication, corroborating the unchanged mathematical verb; Wolff daghan alone would not settle that technical sense. Both body preferences agree with title ties. Power-times-time and the exact kWh unit remain the elementary constant/average-power relation, without asserting that power itself is measured in kWh.",
+      "formal_item_id": "c40844ceb616836b631d1608fc111cb97",
+      "fidelity_item_id": "m595c42c6d8896f0af5295602",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28864",
+      "source_card_sha256": "7fd361b0c109b727ed8539ca2f6b7fbcef524971f651482346690fbfa508c979",
+      "candidate_card_sha256": "961008ba9ed1d6d024cf51530e5347e93273505dfa66c91daba968ef254673fb",
+      "before_card": {
+        "id": "ffct-28864",
+        "factId": "mercury-planet-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "the planet Mercury",
+        "terms": [
+          "mercury",
+          "mercurio",
+          "planeta",
+          "pinakamaliit",
+          "pinakagamay",
+          "pinakamalapit",
+          "pinakaduol",
+          "araw",
+          "adlaw",
+          "smallest",
+          "closest",
+          "sun"
+        ],
+        "fact": {
+          "en": "Mercury is the smallest planet and closest to the Sun! With almost no air, it is scorching by day and freezing at night.",
+          "tl": "Ang Mercury ang pinakamaliit na planeta at pinakamalapit sa Araw! Halos walang hangin dito, kaya napakainit sa araw at napakalamig sa gabi.",
+          "bis": "Ang Mercury mao ang pinakagamay nga planeta ug pinakaduol sa Adlaw! Halos walay hangin busa init kaayo kon adlaw ug bugnaw kaayo kon gabii."
+        },
+        "slug": "mercury-planet",
+        "title": {
+          "en": "Planet Mercury",
+          "tl": "Planeta Mercury",
+          "bis": "Planeta Mercury"
+        },
+        "cats": [
+          "planets",
+          "solar-system"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "pinakamaliit na planeta"
+          ],
+          "en": [
+            "smallest planet"
+          ],
+          "bis": [
+            "pinakagamay nga planeta"
+          ]
+        }
+      },
+      "after_card": {
+        "id": "ffct-28864",
+        "factId": "mercury-planet-g5",
+        "domain": "EARTH_SPACE",
+        "topic": "the planet Mercury",
+        "terms": [
+          "mercury",
+          "mercurio",
+          "planeta",
+          "pinakamaliit",
+          "pinakagamay",
+          "pinakamalapit",
+          "pinakaduol",
+          "araw",
+          "adlaw",
+          "smallest",
+          "closest",
+          "sun"
+        ],
+        "fact": {
+          "en": "Mercury is the smallest planet and closest to the Sun! With almost no air, it is scorching by day and freezing at night.",
+          "tl": "Ang Mercury ang pinakamaliit na planeta at pinakamalapit sa Araw! Halos walang hangin dito, kaya napakainit sa araw at napakalamig sa gabi.",
+          "bis": "Ang Mercury mao ang pinakagamay nga planeta ug pinakaduol sa Adlaw! Halos walay hangin sa Mercury, busa init kaayo kini kon adlaw ug bugnaw kaayo kon gabii."
+        },
+        "slug": "mercury-planet",
+        "title": {
+          "en": "Planet Mercury",
+          "tl": "Planeta Mercury",
+          "bis": "Planeta Mercury"
+        },
+        "cats": [
+          "planets",
+          "solar-system"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "pinakamaliit na planeta"
+          ],
+          "en": [
+            "smallest planet"
+          ],
+          "bis": [
+            "pinakagamay nga planeta"
+          ]
+        }
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Repeats Mercury after the almost-no-air phrase and adds an explicit result subject. NASA supports the smallest/closest planet and its near-airless hot-day/cold-night description. Wolff init and bugnaw support hot and cold. Both body preferences agree with title ties; almost is retained rather than changed to an absolute vacuum.",
+      "formal_item_id": "ce61b4a85008e8e7c6cb17d780c10f272",
+      "fidelity_item_id": "m1c1f3528a62aa55096e510eb",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    },
+    {
+      "card_id": "ffct-28889",
+      "source_card_sha256": "38d4d6d7794cc3da28ae4d77ef44e6bdab8377fa6eb3b26abb96b6a5da200497",
+      "candidate_card_sha256": "fc1682b76a98c4f6cd3c359f86916b35ae9d3d737f94d08f0fa44ec672a3b85d",
+      "before_card": {
+        "id": "ffct-28889",
+        "factId": "mitigation-vs-adaptation-g10",
+        "domain": "EARTH_SPACE",
+        "topic": "mitigation versus adaptation climate",
+        "terms": [
+          "mitigation",
+          "adaptation",
+          "pag-angkop",
+          "pagpahiangay",
+          "pagbabawas ng carbon",
+          "pagharap sa epekto",
+          "seawall",
+          "harang sa dagat",
+          "pananim na matibay",
+          "drought-resistant crops",
+          "early warning",
+          "babala",
+          "pasidaan",
+          "pagdepensa",
+          "coping",
+          "pagsagubang",
+          "dalawang paraan",
+          "duha ka paagi",
+          "solusyon sa klima"
+        ],
+        "fact": {
+          "en": "We deal with climate change in two ways: mitigation reduces greenhouse gases, while adaptation prepares for impacts, like building seawalls and growing crops that survive drought!",
+          "tl": "May dalawang paraan tayong harapin ang climate change: ang mitigation na nagbabawas ng greenhouse gases, at ang adaptation na naghahanda sa epekto, tulad ng paggawa ng seawalls at pagtatanim ng pananim na kayang makaligtas sa tagtuyot!",
+          "bis": "Adunay duha ka paagi ang tawo sa pag-atubang sa climate change: ang mitigation nga nagpaminus sa greenhouse gases, ug ang adaptation nga nag-andam sa mga epekto, sama sa paghimo og seawalls ug pagtanom og pananom nga makalahutay sa huwaw!"
+        },
+        "slug": "ffct-28889",
+        "source": "original",
+        "title": {
+          "tl": "Mitigation vs Adaptation Klima",
+          "en": "Mitigation vs Adaptation",
+          "bis": "Mitigation ug Adaptation"
+        },
+        "cats": [
+          "climate"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28889",
+        "factId": "mitigation-vs-adaptation-g10",
+        "domain": "EARTH_SPACE",
+        "topic": "mitigation versus adaptation climate",
+        "terms": [
+          "mitigation",
+          "adaptation",
+          "pag-angkop",
+          "pagpahiangay",
+          "pagbabawas ng carbon",
+          "pagharap sa epekto",
+          "seawall",
+          "harang sa dagat",
+          "pananim na matibay",
+          "drought-resistant crops",
+          "early warning",
+          "babala",
+          "pasidaan",
+          "pagdepensa",
+          "coping",
+          "pagsagubang",
+          "dalawang paraan",
+          "duha ka paagi",
+          "solusyon sa klima"
+        ],
+        "fact": {
+          "en": "We deal with climate change in two ways: mitigation reduces greenhouse gases, while adaptation prepares for impacts, like building seawalls and growing crops that survive drought!",
+          "tl": "May dalawang paraan tayong harapin ang climate change: ang mitigation na nagbabawas ng greenhouse gases, at ang adaptation na naghahanda sa epekto, tulad ng paggawa ng seawalls at pagtatanim ng pananim na kayang makaligtas sa tagtuyot!",
+          "bis": "Moatubang kita sa climate change sa duha ka paagi. Ang mitigation nagpaminus sa greenhouse gases. Ang adaptation nag-andam sa mga epekto, sama sa paghimo og seawalls ug pagtanom og pananom nga makalahutay sa huwaw!"
+        },
+        "slug": "ffct-28889",
+        "source": "original",
+        "title": {
+          "tl": "Mitigation vs Adaptation Klima",
+          "en": "Mitigation vs Adaptation",
+          "bis": "Mitigation ug Adaptation"
+        },
+        "cats": [
+          "climate"
+        ]
+      },
+      "decision": "apply_reviewed_cebuano_edit",
+      "reason": "Three sentences separate the two responses to climate change and retain an inclusive we. Wolff atubang, minus, lahutay and hulaw/huwaw support facing, reducing, enduring and drought. NASA distinguishes mitigation from preparing for impacts. Both body preferences agree; seawalls and drought-surviving crops remain adaptation examples, not mitigation or guaranteed protection. Title and emphasis are unchanged.",
+      "formal_item_id": "c87bd83069c153b2c455147387a14c028",
+      "fidelity_item_id": "ma52bea2a99ffc0c9d4f7fa26",
+      "readability_resolution": "Individual root review of complete English, original/candidate Cebuano, both blind observations, backtranslation, fidelity and lexical/source evidence. Exact candidate only; no native certification."
+    }
+  ],
+  "held": [
+    {
+      "card_id": "ffct-28267",
+      "source_card_sha256": "6b84ff0907afb74e637a456c05cc3445e2aaf54ce5f3ef5f7c48b8b711dd62e8",
+      "candidate_card_sha256": "d4ecdde2acf675239c5e6a951bfcbeedee7a0023cf9f067b14da5598df27923d",
+      "before_card": {
+        "id": "ffct-28267",
+        "factId": "fwg2-battery-energy-1286",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "battery-energy",
+        "terms": [
+          "battery",
+          "energy",
+          "standard",
+          "stores",
+          "joules",
+          "powering",
+          "watt",
+          "three",
+          "hours",
+          "whereas"
+        ],
+        "fact": {
+          "en": "How much energy does a standard AA battery hold?\n\nA standard AA battery stores 10,800 joules — enough to power a 1-watt LED for three hours, but a 10-watt bulb drains it in just 18 minutes!",
+          "tl": "Gaano karaming energy ang nasa loob ng karaniwang AA battery?\n\nAng karaniwang AA battery ay may 10,800 joules — kaya nito paganahin ang 1-watt LED ng tatlong oras, pero ang 10-watt na bombilya ay mauubos ito sa 18 minuto!",
+          "bis": "Unsa kadaghan nga energy ang sulod sa ordinaryong AA battery?\n\nAng ordinaryong AA battery nagtipig ug 10,800 joules — makapadagan og 1-watt LED sulod sa tulo ka oras, pero ang 10-watt nga bombilya makapahurot niini sulod sa 18 ka minuto!"
+        },
+        "slug": "ffct-28267",
+        "source": "original",
+        "title": {
+          "tl": "AA 10800 Joules LED Tatlong Oras",
+          "en": "AA 10800 Joules LED",
+          "bis": "AA 10800 Joules LED Oras"
+        },
+        "cats": [
+          "energy"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28267",
+        "factId": "fwg2-battery-energy-1286",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "battery-energy",
+        "terms": [
+          "battery",
+          "energy",
+          "standard",
+          "stores",
+          "joules",
+          "powering",
+          "watt",
+          "three",
+          "hours",
+          "whereas"
+        ],
+        "fact": {
+          "en": "How much energy does a standard AA battery hold?\n\nA standard AA battery stores 10,800 joules — enough to power a 1-watt LED for three hours, but a 10-watt bulb drains it in just 18 minutes!",
+          "tl": "Gaano karaming energy ang nasa loob ng karaniwang AA battery?\n\nAng karaniwang AA battery ay may 10,800 joules — kaya nito paganahin ang 1-watt LED ng tatlong oras, pero ang 10-watt na bombilya ay mauubos ito sa 18 minuto!",
+          "bis": "Unsa kadaghan nga energy ang sulod sa ordinaryong AA battery?\n\nAng ordinaryong AA battery nagtipig ug 10,800 joules. Igo kini aron mapadagan ang 1-watt LED sulod sa tulo ka oras. Pero ang 10-watt nga bombilya makapahurot niini sulod lang sa 18 ka minuto!"
+        },
+        "slug": "ffct-28267",
+        "source": "original",
+        "title": {
+          "tl": "AA 10800 Joules LED Tatlong Oras",
+          "en": "AA 10800 Joules LED",
+          "bis": "10800 Joules sa AA Battery"
+        },
+        "cats": [
+          "energy"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The split sentences and title are clearer, and 1 watt times three hours equals 10,800 joules; dividing that energy by 10 watts gives 18 minutes. However the source presents one fixed energy and runtime for an unspecified standard AA battery. Energizer’s primary E91 datasheet specifies chemistry, nominal voltage, load, cutoff and temperature for its service tests. These calculations do not establish actual AA runtime, especially at the different loads. Hold for cross-language source clarification; no new English fact or retirement is applied.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c6c12b2f5e838f640f765c0108c396608"
+    },
+    {
+      "card_id": "ffct-28482",
+      "source_card_sha256": "b86111b4f1e868dac281913bf7222051acb50bf95e366c4849f616ca75ac7238",
+      "candidate_card_sha256": "14db7b19defe1438d370bc568b6e4413f0eff891c6b130e324ebc571a06d6606",
+      "before_card": {
+        "id": "ffct-28482",
+        "factId": "fwg2-electricity-batteries-972",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Electricity (Batteries)",
+        "terms": [
+          "electricity",
+          "batteries",
+          "standard",
+          "alkaline",
+          "battery",
+          "stores",
+          "coulombs",
+          "electrical",
+          "charge",
+          "enough"
+        ],
+        "fact": {
+          "en": "A regular AA alkaline battery holds about 7,200 coulombs of electrical charge — enough to power a small LED flashlight for over 50 hours!",
+          "tl": "Ang karaniwang AA alkaline battery ay nag-iimbak ng mga 7,200 coulombs ng electrical charge — sapat para sa maliit na LED flashlight nang higit 50 oras!",
+          "bis": "Ang ordinaryong AA alkaline battery nagtipig ug mga 7,200 coulombs nga electrical charge — igo na para sa gamay nga LED flashlight sulod kapin 50 ka oras!"
+        },
+        "slug": "ffct-28482",
+        "source": "original",
+        "title": {
+          "tl": "AA 7200 Coulombs LED 50 Oras",
+          "en": "AA 7200 Coulombs Charge",
+          "bis": "AA 7200 Coulombs LED Oras"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28482",
+        "factId": "fwg2-electricity-batteries-972",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Electricity (Batteries)",
+        "terms": [
+          "electricity",
+          "batteries",
+          "standard",
+          "alkaline",
+          "battery",
+          "stores",
+          "coulombs",
+          "electrical",
+          "charge",
+          "enough"
+        ],
+        "fact": {
+          "en": "A regular AA alkaline battery holds about 7,200 coulombs of electrical charge — enough to power a small LED flashlight for over 50 hours!",
+          "tl": "Ang karaniwang AA alkaline battery ay nag-iimbak ng mga 7,200 coulombs ng electrical charge — sapat para sa maliit na LED flashlight nang higit 50 oras!",
+          "bis": "Ang ordinaryong AA alkaline battery nagtipig ug mga 7,200 coulombs nga electrical charge — igo na para sa gamay nga LED flashlight sulod kapin 50 ka oras!"
+        },
+        "slug": "ffct-28482",
+        "source": "original",
+        "title": {
+          "tl": "AA 7200 Coulombs LED 50 Oras",
+          "en": "AA 7200 Coulombs Charge",
+          "bis": "7200 Coulombs sa AA Battery"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The title is clearer and the approximate 7,200 coulombs equals 2 amp-hours, but that capacity alone does not establish more than 50 hours for an unspecified small LED flashlight. Energizer reports service under explicit loads and cutoff conditions. Preserve the whole original card and request a specified battery/load or qualified source; a title-only change is not enough to settle the complete card’s source concern.",
+      "hold_kind": "hold_source",
+      "formal_item_id": "c07c62644498d73a5b35f5e4a84492b6f"
+    },
+    {
+      "card_id": "ffct-28538",
+      "source_card_sha256": "6d81d96fea052be4c2a6438cdb9635545db105d02d1c20d0aad3303bea746b51",
+      "candidate_card_sha256": "edcc691538118e497e1ef01f9da7075a5dfc6c093afdca73dc7046ab0d8875b6",
+      "before_card": {
+        "id": "ffct-28538",
+        "factId": "fwg2-electrical-insulators-1752",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Electrical Insulators",
+        "terms": [
+          "electrical",
+          "insulators",
+          "wires",
+          "coated",
+          "rubber",
+          "plastic",
+          "safely",
+          "trap",
+          "electric",
+          "current"
+        ],
+        "fact": {
+          "en": "Electrical wires are coated in rubber or plastic insulators to safely trap the electric current inside and prevent you from getting shocked!",
+          "tl": "Ang mga kable ng kuryente ay nilalagyan ng goma o plastic na insulators para ligtas na ma-trap ang electric current sa loob at hindi ka ma-shock!",
+          "bis": "Ang mga kable sa kuryente gibutangan og goma o plastic nga insulators aron luwas nga ma-trap ang electric current sulod ug malikayan nga ma-shock ka!"
+        },
+        "slug": "ffct-28538",
+        "source": "original",
+        "title": {
+          "tl": "Rubber Coat Wire Insulator",
+          "en": "Insulated Wire Coating",
+          "bis": "Rubber sa Wire"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28538",
+        "factId": "fwg2-electrical-insulators-1752",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Electrical Insulators",
+        "terms": [
+          "electrical",
+          "insulators",
+          "wires",
+          "coated",
+          "rubber",
+          "plastic",
+          "safely",
+          "trap",
+          "electric",
+          "current"
+        ],
+        "fact": {
+          "en": "Electrical wires are coated in rubber or plastic insulators to safely trap the electric current inside and prevent you from getting shocked!",
+          "tl": "Ang mga kable ng kuryente ay nilalagyan ng goma o plastic na insulators para ligtas na ma-trap ang electric current sa loob at hindi ka ma-shock!",
+          "bis": "Ang mga kable sa kuryente gibalutan og goma o plastic nga insulators. Gibuhat kini aron luwas nga ma-trap ang electric current sa sulod ug dili ka ma-shock!"
+        },
+        "slug": "ffct-28538",
+        "source": "original",
+        "title": {
+          "tl": "Rubber Coat Wire Insulator",
+          "en": "Insulated Wire Coating",
+          "bis": "Balot sa Kable sa Kuryente"
+        },
+        "cats": [
+          "electricity"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The split purpose statement is clearer, but the proposed body and title introduce gibalutan and balot for insulation. Wolff and Binisaya’s direct balut/balot entry identify the egg, not wrapping; this review did not establish the proposed covering sense with Cebuano lexical authority. The broad body regex also matches unrelated baluti armor, and machine-translated commercial pages do not resolve the borrowing. Hold without declaring the word universally invalid or substituting an unreviewed alternative.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "cdbd11f1e99c2279f2ae6d54a379e6d65"
+    },
+    {
+      "card_id": "ffct-28749",
+      "source_card_sha256": "b5985b6c8d582698edba5d8cba1d635dd0a975c7bf6ebb933742149b54108adf",
+      "candidate_card_sha256": "3c6e91f0a6373ebf22c5c732d64fc2d1500fe9fa712de4803ebf8316baf21a26",
+      "before_card": {
+        "id": "ffct-28749",
+        "factId": "fwg2-led-parol-electricity-1303",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "LED Parol Electricity",
+        "terms": [
+          "parol",
+          "electricity",
+          "modern",
+          "parols",
+          "electrical",
+          "energy",
+          "power",
+          "bulbs",
+          "convert",
+          "directly"
+        ],
+        "fact": {
+          "en": "How do modern parols light up so brightly?\n\nThey use electrical energy to power LED bulbs, which convert that electricity directly into bright light!",
+          "tl": "Paano nagniningning nang maliwanag ang mga modernong parol?\n\nGumagamit sila ng electrical energy para sa LED bulbs, na direktang nagko-convert ng kuryente into bright light!",
+          "bis": "Unsaon pagdan-ag ka hayag sa mga modernong parol?\n\nNaggamit kini og electrical energy para sa LED bulbs, nga direkta nga nag-convert sa elektrisidad ngadto sa bright light!"
+        },
+        "slug": "ffct-28749",
+        "source": "original",
+        "title": {
+          "tl": "LED Parol Kuryente Bright",
+          "en": "LED Parol Lights",
+          "bis": "LED sa Parol"
+        },
+        "cats": [
+          "electricity",
+          "light"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28749",
+        "factId": "fwg2-led-parol-electricity-1303",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "LED Parol Electricity",
+        "terms": [
+          "parol",
+          "electricity",
+          "modern",
+          "parols",
+          "electrical",
+          "energy",
+          "power",
+          "bulbs",
+          "convert",
+          "directly"
+        ],
+        "fact": {
+          "en": "How do modern parols light up so brightly?\n\nThey use electrical energy to power LED bulbs, which convert that electricity directly into bright light!",
+          "tl": "Paano nagniningning nang maliwanag ang mga modernong parol?\n\nGumagamit sila ng electrical energy para sa LED bulbs, na direktang nagko-convert ng kuryente into bright light!",
+          "bis": "Unsaon pagdan-ag ka hayag sa mga modernong parol?\n\nNaggamit kini og electrical energy aron mopagana sa LED bulbs. Ang LED bulbs direkta nga nag-convert sa maong elektrisidad ngadto sa bright light!"
+        },
+        "slug": "ffct-28749",
+        "source": "original",
+        "title": {
+          "tl": "LED Parol Kuryente Bright",
+          "en": "LED Parol Lights",
+          "bis": "LED sa Parol"
+        },
+        "cats": [
+          "electricity",
+          "light"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Both readers prefer the clearer answer, but the unchanged opening Unsaon pagdan-ag ka hayag remains explicitly questioned by the proposer. Wolff supports the individual light/brightness roots; that does not validate this entire interrogative construction or its degree phrase. Hold for an authoritative phrasing judgment without claiming that rarity proves an error or silently replacing the question with an unreviewed candidate.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c1932b346a701d8e3c18706d72bd9e11b"
+    },
+    {
+      "card_id": "ffct-28834",
+      "source_card_sha256": "7b1b857735eee9dfd9e35f3a0237e36fcf7769a18ba98e6bdd3709df64c78052",
+      "candidate_card_sha256": "2cdd47ce1d01fcc3ce98130267e2e089766a995fec08f78efc16d4251111c45d",
+      "before_card": {
+        "id": "ffct-28834",
+        "factId": "homes-wired-in-parallel-g10",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "house wiring uses parallel circuits",
+        "terms": [
+          "kableng pambahay",
+          "parallel ang bahay",
+          "wiring sa bahay",
+          "house wiring",
+          "magkahiwalay na switch",
+          "kableng sa balay",
+          "parallel nga balay",
+          "independent appliances",
+          "hiwalay na gamit",
+          "magamit nga mag-isa",
+          "kuryente sa bahay"
+        ],
+        "fact": {
+          "en": "Why are houses wired in parallel circuits?\n\nHouses are wired in parallel circuits so each light and appliance can be switched on or off separately without affecting the others!",
+          "tl": "Bakit nakakable sa parallel circuit ang mga bahay?\n\nNakakable sa parallel circuit ang mga bahay para ang bawat ilaw at kagamitan ay maaaring buksan o patayin nang hiwalay nang hindi naaapektuhan ang iba!",
+          "bis": "Nganong gikable sa parallel circuit ang mga balay?\n\nGikable sa parallel circuit ang mga balay aron ang matag suga ug gamit mahimong sindihan o palongon nga bulag nga dili maapektuhan ang uban!"
+        },
+        "slug": "ffct-28834",
+        "source": "original",
+        "title": {
+          "tl": "Bahay Parallel Circuit",
+          "en": "Houses Wired Parallel",
+          "bis": "Balay Parallel Circuit"
+        },
+        "cats": [
+          "circuits",
+          "electricity"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28834",
+        "factId": "homes-wired-in-parallel-g10",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "house wiring uses parallel circuits",
+        "terms": [
+          "kableng pambahay",
+          "parallel ang bahay",
+          "wiring sa bahay",
+          "house wiring",
+          "magkahiwalay na switch",
+          "kableng sa balay",
+          "parallel nga balay",
+          "independent appliances",
+          "hiwalay na gamit",
+          "magamit nga mag-isa",
+          "kuryente sa bahay"
+        ],
+        "fact": {
+          "en": "Why are houses wired in parallel circuits?\n\nHouses are wired in parallel circuits so each light and appliance can be switched on or off separately without affecting the others!",
+          "tl": "Bakit nakakable sa parallel circuit ang mga bahay?\n\nNakakable sa parallel circuit ang mga bahay para ang bawat ilaw at kagamitan ay maaaring buksan o patayin nang hiwalay nang hindi naaapektuhan ang iba!",
+          "bis": "Nganong gikable sa parallel circuit ang mga balay?\n\nGikable sa parallel circuit ang mga balay aron mahimo nimong sindihan o palongon ang matag suga ug gamit nga tagsa-tagsa, nga dili maapektuhan ang uban!"
+        },
+        "slug": "ffct-28834",
+        "source": "original",
+        "title": {
+          "tl": "Bahay Parallel Circuit",
+          "en": "Houses Wired Parallel",
+          "bis": "Parallel Circuit sa Balay"
+        },
+        "cats": [
+          "circuits",
+          "electricity"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The direct clause, tagsa-tagsa and linked title are clearer. However the proposer explicitly notes sindihan is loose for appliances. Wolff’s direct sindi entry supports lighting a pressure lantern; the available direct online retrieval did not establish turning on arbitrary electrical appliances. Machine-translated circuit examples cannot settle that broader sense. Hold for lexical authority, without banning sindi for lights or inventing a replacement.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c76533b470f7a5cd103a1e196b9c88158"
+    },
+    {
+      "card_id": "ffct-28877",
+      "source_card_sha256": "277142f20a4c0b93836c3ee2754f1659f202ac4e6dc591f32c4ee7c2045f31f8",
+      "candidate_card_sha256": "ab60d69c0e1d0b3a58ad46d8bec2b93cc686eb465e951ff8b238ad449ff65e55",
+      "before_card": {
+        "id": "ffct-28877",
+        "factId": "fossil-fuels-raise-co2-g9",
+        "domain": "EARTH_SPACE",
+        "topic": "burning fossil fuels increases carbon dioxide",
+        "terms": [
+          "fossil fuel",
+          "fossil fuels",
+          "uling",
+          "coal",
+          "langis",
+          "oil",
+          "petrolyo",
+          "gasolina",
+          "pagsunog",
+          "burning",
+          "pagdaghan sa carbon dioxide",
+          "carbon dioxide",
+          "co2",
+          "industriya",
+          "pabrika",
+          "sasakyan",
+          "sunog nga uling",
+          "pagsunog sa langis",
+          "dumadami ang carbon dioxide",
+          "nagdadagdag",
+          "human activity",
+          "ginawa ng tao"
+        ],
+        "fact": {
+          "en": "Why is there more carbon dioxide in the air now?\n\nBurning fossil fuels like coal, oil, and natural gas for electricity and vehicles is the main reason carbon dioxide has been rising for the past century!",
+          "tl": "Bakit mas maraming carbon dioxide sa hangin ngayon?\n\nAng pagsunog ng fossil fuels tulad ng uling, langis, at natural gas para sa kuryente at sasakyan ang pangunahing dahilan kung bakit tumataas ang carbon dioxide sa nakaraang siglo!",
+          "bis": "Nganong mas daghan na ang carbon dioxide sa hangin karon?\n\nAng pagsunog sa fossil fuel sama sa uling, langis, ug natural gas para sa koryente ug mga sakyanan ang nag-unang hinungdan nganong nagsaka ang carbon dioxide sa miaging siglo!"
+        },
+        "slug": "ffct-28877",
+        "source": "original",
+        "title": {
+          "tl": "CO2 mula Fossil Fuel",
+          "en": "CO2 From Fossil Fuels",
+          "bis": "CO2 gikan Fossil Fuel"
+        },
+        "cats": [
+          "fossil-fuels",
+          "climate"
+        ]
+      },
+      "after_card": {
+        "id": "ffct-28877",
+        "factId": "fossil-fuels-raise-co2-g9",
+        "domain": "EARTH_SPACE",
+        "topic": "burning fossil fuels increases carbon dioxide",
+        "terms": [
+          "fossil fuel",
+          "fossil fuels",
+          "uling",
+          "coal",
+          "langis",
+          "oil",
+          "petrolyo",
+          "gasolina",
+          "pagsunog",
+          "burning",
+          "pagdaghan sa carbon dioxide",
+          "carbon dioxide",
+          "co2",
+          "industriya",
+          "pabrika",
+          "sasakyan",
+          "sunog nga uling",
+          "pagsunog sa langis",
+          "dumadami ang carbon dioxide",
+          "nagdadagdag",
+          "human activity",
+          "ginawa ng tao"
+        ],
+        "fact": {
+          "en": "Why is there more carbon dioxide in the air now?\n\nBurning fossil fuels like coal, oil, and natural gas for electricity and vehicles is the main reason carbon dioxide has been rising for the past century!",
+          "tl": "Bakit mas maraming carbon dioxide sa hangin ngayon?\n\nAng pagsunog ng fossil fuels tulad ng uling, langis, at natural gas para sa kuryente at sasakyan ang pangunahing dahilan kung bakit tumataas ang carbon dioxide sa nakaraang siglo!",
+          "bis": "Nganong mas daghan na ang carbon dioxide sa hangin karon?\n\nAng nag-unang hinungdan mao ang pagsunog sa fossil fuel sama sa uling, langis, ug natural gas para sa koryente ug mga sakyanan. Tungod niini, nagsaka ang carbon dioxide sulod sa miaging siglo!"
+        },
+        "slug": "ffct-28877",
+        "source": "original",
+        "title": {
+          "tl": "CO2 mula Fossil Fuel",
+          "en": "CO2 From Fossil Fuels",
+          "bis": "CO2 gikan sa Fossil Fuel"
+        },
+        "cats": [
+          "fossil-fuels",
+          "climate"
+        ]
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "The two-step cause/result explanation and title link are clearer, but uling renders geological coal in a list of fossil fuels. Wolff and Binisaya’s direct headword give charcoal, including coconut-shell examples; independent machine bodies use the word for both coal and charcoal and are not decisive authority. Hold the complete candidate pending confirmation of the fossil-coal sense. This does not dispute fossil-fuel-driven CO2 increases or authorize a bulk coal-term replacement.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "c439ec0a9c1593bc329dd0219697f3ca1"
+    },
+    {
+      "card_id": "ffct-28878",
+      "source_card_sha256": "061a3a6b4dc1b503e55bdc372971b6494d56f0747a2f53382ae128e0cc3d3fa6",
+      "candidate_card_sha256": "95df116638710923c5cad62e5398c5cf3a7dc205fc65b3198a00a351d7d27de6",
+      "before_card": {
+        "id": "ffct-28878",
+        "factId": "global-warming-definition-g9",
+        "domain": "EARTH_SPACE",
+        "topic": "global warming rising average temperature",
+        "terms": [
+          "global warming",
+          "pag-init ng mundo",
+          "pag-init sa kalibutan",
+          "average temperature",
+          "karaniwang temperatura",
+          "tumataas na init",
+          "rising temperature",
+          "greenhouse gases",
+          "tao",
+          "human activity",
+          "ginawa ng tao",
+          "binabalewala",
+          "pagtaas sa kainit",
+          "nagsaka nga temperatura",
+          "klima",
+          "climate change",
+          "pagbabago ng klima"
+        ],
+        "fact": {
+          "en": "Global warming is the ongoing rise in Earth's average surface temperature, mainly caused by increasing greenhouse gases from human activity.",
+          "tl": "Ang global warming ay ang patuloy na pagtaas ng karaniwang temperatura sa ibabaw ng Mundo, pangunahing dulot ng dumaraming greenhouse gases mula sa gawain ng tao.",
+          "bis": "Ang global warming mao ang nagpadayon nga pagsaka sa kasagaran nga temperatura sa nawong sa Kalibutan, panguna nga gipahinabo sa nagkadaghan nga greenhouse gases gikan sa kalihokan sa tawo."
+        },
+        "slug": "ffct-15788",
+        "title": {
+          "en": "Global Warming",
+          "tl": "Pag-init ng Mundo",
+          "bis": "Pag-init sa Yuta"
+        },
+        "cats": [
+          "climate",
+          "environment"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "global warming"
+          ],
+          "en": [
+            "Global warming"
+          ],
+          "bis": [
+            "global warming"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-28878",
+        "factId": "global-warming-definition-g9",
+        "domain": "EARTH_SPACE",
+        "topic": "global warming rising average temperature",
+        "terms": [
+          "global warming",
+          "pag-init ng mundo",
+          "pag-init sa kalibutan",
+          "average temperature",
+          "karaniwang temperatura",
+          "tumataas na init",
+          "rising temperature",
+          "greenhouse gases",
+          "tao",
+          "human activity",
+          "ginawa ng tao",
+          "binabalewala",
+          "pagtaas sa kainit",
+          "nagsaka nga temperatura",
+          "klima",
+          "climate change",
+          "pagbabago ng klima"
+        ],
+        "fact": {
+          "en": "Global warming is the ongoing rise in Earth's average surface temperature, mainly caused by increasing greenhouse gases from human activity.",
+          "tl": "Ang global warming ay ang patuloy na pagtaas ng karaniwang temperatura sa ibabaw ng Mundo, pangunahing dulot ng dumaraming greenhouse gases mula sa gawain ng tao.",
+          "bis": "Ang global warming mao ang nagpadayon nga pagsaka sa kasagaran nga temperatura sa nawong sa Kalibutan. Ang nag-unang hinungdan niini mao ang nagkadaghan nga greenhouse gases gikan sa kalihokan sa tawo."
+        },
+        "slug": "ffct-15788",
+        "title": {
+          "en": "Global Warming",
+          "tl": "Pag-init ng Mundo",
+          "bis": "Pag-init sa Yuta"
+        },
+        "cats": [
+          "climate",
+          "environment"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "global warming"
+          ],
+          "en": [
+            "Global warming"
+          ],
+          "bis": [
+            "global warming"
+          ]
+        },
+        "poster": true
+      },
+      "decision": "hold_no_pool_change",
+      "reason": "Splitting definition and cause preserves the intended argument, but kasagaran still represents the technical average in global surface temperature. Wolff sagad/kasagaran and Binisaya support common, usual and most; this review did not establish the required statistical-mean sense. Machine corpus frequency cannot resolve that distinction. Hold for lexical authority without declaring kasagaran invalid in all average/usual contexts.",
+      "hold_kind": "hold_lexical",
+      "formal_item_id": "cd082e662472d7918cdb42dc603083ff3"
+    }
+  ],
+  "prior_mandatory_missing_judgment_holds": [
+    "ffct-15686",
+    "ffct-24823",
+    "ffct-24184"
+  ],
+  "prior_mandatory_invalid_evidence_holds": [
+    "ffct-08459",
+    "ffct-09018",
+    "ffct-10152",
+    "ffct-18958"
+  ],
+  "native_verified": false,
+  "science_verified": false,
+  "released": false,
+  "source_precision_holds_require_cross_language_review": [
+    "ffct-28267",
+    "ffct-28482"
+  ],
+  "lexical_holds": [
+    "ffct-28538",
+    "ffct-28749",
+    "ffct-28834",
+    "ffct-28877",
+    "ffct-28878"
+  ]
+}

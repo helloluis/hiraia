@@ -1,0 +1,139 @@
+{
+  "schema": "hiraia.cebuano-final-completion-receipt/v1",
+  "recorded_at_utc": "2026-10-06T16:47:51.118444+00:00",
+  "status": "complete_local_job_with_explicit_unchanged_holds",
+  "completion_owner": "4cc08221-b896-4e3a-9ff2-c4a6afbd2e0d",
+  "reviewer": "GPT-6 Astra",
+  "science_worker_model": "gpt-6.1-sol",
+  "science_worker_effort": "medium",
+  "completion": {
+    "recorded_at_utc": "2026-10-06T16:47:04.623106+00:00",
+    "reviewer": "GPT-6 Astra",
+    "science_worker_profile": {
+      "model": "gpt-6.1-sol",
+      "effort": "medium"
+    },
+    "source_cards_with_dispositions": 49156,
+    "observed_complete_assessments": 49153,
+    "assessment_count_scope": "Matches authoritative observer: completed automated dispositions include explicit invalid-evidence holds; not scientific certification. Three missing judgments remain separately incomplete.",
+    "dispositions": {
+      "hold_unchanged": 36637,
+      "keep_unchanged": 8532,
+      "applied_exact_edit": 3986,
+      "retired_source_safety": 1
+    },
+    "missing_judgment_holds": [
+      "ffct-15686",
+      "ffct-24184",
+      "ffct-24823"
+    ],
+    "invalid_fidelity_evidence_holds": [
+      "ffct-08459",
+      "ffct-09018",
+      "ffct-10152",
+      "ffct-18958",
+      "ffct-34595"
+    ],
+    "unreviewed_priority_candidates": 0,
+    "remaining_holds": {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/final-disposition-reconciliation-001/remaining-holds.jsonl",
+      "sha256": "210c9b0b80ed868ffce37190a48234c6cb20dbf329537723bbaeee9f389049a3",
+      "bytes": 96382241
+    },
+    "all_dispositions": {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/final-disposition-reconciliation-001/all-dispositions.jsonl",
+      "sha256": "2e18f661f0039009c688dca6179ec4161336e172b79b5f1805621806aa95094f",
+      "bytes": 115276820
+    },
+    "all_root_windows_verified": 64,
+    "local_only": true,
+    "native_verified": false,
+    "released": false
+  },
+  "accounting": {
+    "charged_and_reserved": 4632,
+    "production_attempts": 4615,
+    "production_successes": 4610,
+    "production_unsuccessful": 5,
+    "new_production_unsuccessful": 0,
+    "inherited_production_unsuccessful": 5,
+    "unknown_batches": 0,
+    "active_batches": 0,
+    "remaining": 25909
+  },
+  "proofs": [
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/final-disposition-reconciliation-001/report.json",
+      "sha256": "900aab75e9d0f0ad595ff79f3dd8fc46e8727db57c1d24d311bdf16ed4c50d9d",
+      "bytes": 132471
+    },
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/final-disposition-actual-execution-001.json",
+      "sha256": "f830fba7136c041c87edb08d703b5266fba8e99ee7135e1fecd55f40be61dcdc",
+      "bytes": 819
+    },
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/final-completion-checkpoint-proof-001.json",
+      "sha256": "c581f65b83f7d31ed7d211c5e39bd17cc3aae7951862cf776c80478b95d7850a",
+      "bytes": 1034
+    },
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/final-completion-metadata-001/applied.json",
+      "sha256": "f4474dd037c78a032e1f8516d4713b35ba0c0c9ab78f58786312073059568465",
+      "bytes": 2282
+    },
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/final-completion-metadata-actual-execution-001.json",
+      "sha256": "1123305f46a34413427bedfa6ab1d59d6129a1fb7b759b69c7dfaeda725174d1",
+      "bytes": 912
+    },
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/final-readme-consistency-correction-001.json",
+      "sha256": "b7dcf8e9ffc972e3d95302bb60b2906d1b94e634ce472ea41f4062f64bb6dd72",
+      "bytes": 1894
+    },
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/window64-root-checkpoint-proof-001.json",
+      "sha256": "102a5dc401e06e40c489859e74e3b819690efa7116f4f8c21b9ed7fe246ea6f3",
+      "bytes": 12253
+    },
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/campaign-20261002-v1/gpt61-migration-20261005-001/window64-root-metadata-001/applied.json",
+      "sha256": "4d3bdcb7fbbdaf57a2a8a474d307921b2a57c157f4d1eee9dd2421bb1993ad20",
+      "bytes": 2492
+    },
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/adjudication-20261002/window-0064/local-verification-001.json",
+      "sha256": "ffd50f789e230de65c42405046c67c41249e1ddb49061a1485d4bb5998e9bd79",
+      "bytes": 2802
+    },
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/adjudication-20261002/window-0064/source-regeneration-002/verification.json",
+      "sha256": "45ffb767fc6800c64bad101c85181e293eca72efe6fa0cfdf74d403efc97db66",
+      "bytes": 3155
+    },
+    {
+      "path": "/Users/luis/Code/hiraia/tools/cebuano-readability/STATUS.json",
+      "sha256": "d0023df9b2c67709cdbf736885d22cabb64e1e86be2b6f81529b181a8791175e",
+      "bytes": 1129563
+    },
+    {
+      "path": "/Users/luis/Code/hiraia/tools/cebuano-readability/README.md",
+      "sha256": "f3ac0aae0d67ea90d9af3629bf5284161b9d7891612c9ebd268e26c113ec4845",
+      "bytes": 103982
+    },
+    {
+      "path": "/Users/luis/Code/hiraia/build/cebuano-readability/review-full-campaign/index.html",
+      "sha256": "b5f04abc7cbc189185245acdf347ce4b7e58b3ba730e9488f13c36ce80a45a67",
+      "bytes": 11826432
+    }
+  ],
+  "new_provider_calls_in_final_reconciliation": 0,
+  "unreviewed_priority_candidates": 0,
+  "remaining_work_within_authorized_review": null,
+  "hold_scope": "Holds are explicit unchanged dispositions, not approved improvements or claims of scientific/native verification. Three historical missing judgments remain incomplete.",
+  "committed": false,
+  "deployed": false,
+  "native_certified": false,
+  "supervision_may_retire_heartbeat": "95723015"
+}

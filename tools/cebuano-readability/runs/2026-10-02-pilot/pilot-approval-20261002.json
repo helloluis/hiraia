@@ -1,0 +1,519 @@
+{
+  "schema": "hiraia.cebuano-readability-reviewed-edits/v1",
+  "status": "reviewed_for_local_application",
+  "created_at": "2026-10-02T05:37:26.168406+00:00",
+  "reviewer": "Codex root, with independent Codex source comparison",
+  "scope": "Only the four individually reviewed pilot edits; this is not native certification or release authorization.",
+  "input_pins": [
+    {
+      "path": "build/cebuano-readability/pilot-20261002-v2/screened-v3-001/screened-proposals.jsonl",
+      "sha256": "2243a67ffb349434d05b7984d41b5a4fd8c26d6403ea6bf94bc867d13230d42a",
+      "bytes": 589607
+    },
+    {
+      "path": "build/cebuano-readability/pilot-20261002-v2/readability-both-validated-001/report.json",
+      "sha256": "0c64d5a0e221258f096d3963f3adec3b12cfa06a5d2d614c1dbf242e7cf25576",
+      "bytes": 106047
+    },
+    {
+      "path": "build/cebuano-readability/pilot-20261002-v2/readability-both-validated-001/cross-stage-comparisons.jsonl",
+      "sha256": "891886f16e5594b61fffc5fecb9c672589c55849d624837e3c88221c4e039f3f",
+      "bytes": 53876
+    },
+    {
+      "path": "build/cebuano-readability/pilot-20261002-v2/fidelity-validated-001/judgments.jsonl",
+      "sha256": "edc0cc8b08c58ed65c1aa7101f0ab4393170f9671abdba37563b7f7e00963a32",
+      "bytes": 118457
+    },
+    {
+      "path": "build/cebuano-readability/pilot-20261002-v2/fidelity-validated-001/control-review.json",
+      "sha256": "7dbc6542f0966d99bf6dfa056ef2792a9d462ad41e6e0526f8607fc1ad6233f5",
+      "bytes": 5032
+    },
+    {
+      "path": "build/cebuano-readability/pilot-20261002-v2/root-source-review-001.json",
+      "sha256": "55c78795fa2332f0ef38755888173ce9f777b1ffe41b0fd4f445f6accb938d12",
+      "bytes": 1606
+    }
+  ],
+  "accepted": [
+    {
+      "card_id": "dcard-05252",
+      "decision": "apply_reviewed_cebuano_edit",
+      "source_card_sha256": "c2bcb7be4a4aaa8433379d302ebfc61b12b0c27ed434bd671c659ab17de5d391",
+      "candidate_card_sha256": "41835fc8363db6b27a5cfd9dfe6c38383ed3b797ccd0d67e31f52b2eb87c78ec",
+      "before_card": {
+        "id": "dcard-05252",
+        "factId": "communicating-observations-g9",
+        "domain": "MATTER",
+        "topic": "Communicating Scientific Findings",
+        "terms": [
+          "communicating",
+          "describing",
+          "observations",
+          "paglalarawan",
+          "pagpasabot"
+        ],
+        "fact": {
+          "en": "Why do scientists need to describe things so carefully?\n\nCommunicating means describing an object or event in enough detail that another person can identify it, so others can understand exactly what you observed.",
+          "tl": "Bakit kailangang ilarawan ng mga scientist ang mga bagay nang maingat?\n\nAng communicating ay ang paglalarawan ng isang bagay o pangyayari nang may sapat na detalye upang makilala ito ng ibang tao, para maintindihan nila ang eksaktong na-observe mo.",
+          "bis": "Ngano kinahanglan nga ihulagway pag-ayo sa mga scientist ang mga butang?\n\nAng communicating mao ang paghulagway sa usa ka butang o panghitabo nga adunay igong detalye aron maila kini sa laing tawo, aron masabtan nila ang eksaktong imong na-obserbahan."
+        },
+        "title": {
+          "en": "Communicating Observations",
+          "tl": "Pagbabahagi ng Obserbasyon",
+          "bis": "Pagpakigbahin sa Obserbasyon"
+        },
+        "cats": [
+          "g9-matter-scientific-investigations"
+        ],
+        "grade": 9,
+        "quarter": 4,
+        "competency": null,
+        "source_module": "1OSgczAaDPaJCjr64sbnEKss8H38P7Yjw",
+        "source": "deped",
+        "emphasis": {
+          "tl": [
+            "communicating"
+          ],
+          "en": [
+            "Communicating"
+          ],
+          "bis": [
+            "communicating"
+          ]
+        },
+        "poster": true,
+        "slug": ""
+      },
+      "after_card": {
+        "id": "dcard-05252",
+        "factId": "communicating-observations-g9",
+        "domain": "MATTER",
+        "topic": "Communicating Scientific Findings",
+        "terms": [
+          "communicating",
+          "describing",
+          "observations",
+          "paglalarawan",
+          "pagpasabot"
+        ],
+        "fact": {
+          "en": "Why do scientists need to describe things so carefully?\n\nCommunicating means describing an object or event in enough detail that another person can identify it, so others can understand exactly what you observed.",
+          "tl": "Bakit kailangang ilarawan ng mga scientist ang mga bagay nang maingat?\n\nAng communicating ay ang paglalarawan ng isang bagay o pangyayari nang may sapat na detalye upang makilala ito ng ibang tao, para maintindihan nila ang eksaktong na-observe mo.",
+          "bis": "Ngano kinahanglan nga ihulagway pag-ayo sa mga scientist ang mga butang?\n\nAng communicating mao ang paghulagway sa usa ka butang o panghitabo nga adunay igong detalye aron maila kini sa laing tawo. Pinaagi niini, masabtan sa uban ang eksakto nga imong na-obserbahan."
+        },
+        "title": {
+          "en": "Communicating Observations",
+          "tl": "Pagbabahagi ng Obserbasyon",
+          "bis": "Pagpakigbahin sa Obserbasyon"
+        },
+        "cats": [
+          "g9-matter-scientific-investigations"
+        ],
+        "grade": 9,
+        "quarter": 4,
+        "competency": null,
+        "source_module": "1OSgczAaDPaJCjr64sbnEKss8H38P7Yjw",
+        "source": "deped",
+        "emphasis": {
+          "tl": [
+            "communicating"
+          ],
+          "en": [
+            "Communicating"
+          ],
+          "bis": [
+            "communicating"
+          ]
+        },
+        "poster": true,
+        "slug": ""
+      },
+      "reason": "Splits the two nested purpose clauses into sentences; retains the object/event, enough detail, identification by another person and exact observation.",
+      "readability": {
+        "judge-one": {
+          "item_id": "p5e2f2b962afeaf695d45e34b4aa7a09b",
+          "preferences": {
+            "body_winner": "candidate",
+            "title_winner": "tie",
+            "winner": "candidate"
+          }
+        },
+        "judge-two": {
+          "item_id": "p9a5b0c0e0467a55259d44c0a93aeab9b",
+          "preferences": {
+            "body_winner": "candidate",
+            "title_winner": "tie",
+            "winner": "candidate"
+          }
+        }
+      },
+      "fidelity_item_id": "m8fb05d179952e599cac71c65"
+    },
+    {
+      "card_id": "dcard-05537",
+      "decision": "apply_reviewed_cebuano_edit",
+      "source_card_sha256": "8c51fefeab28270ae4653a343bb5ec1a41c3eaa66063299c423cb64e9702f106",
+      "candidate_card_sha256": "d90614a0bb4e95b2f124e8606887db7d8ec51389408fc3a2620230b0010ae63d",
+      "before_card": {
+        "id": "dcard-05537",
+        "factId": "carbon-dioxide-bonds-g9",
+        "domain": "MATTER",
+        "topic": "Carbon Dioxide Molecule",
+        "terms": [
+          "carbon dioxide",
+          "co2",
+          "carbon",
+          "oxygen",
+          "bonding pairs",
+          "lone pairs"
+        ],
+        "fact": {
+          "en": "In carbon dioxide, one carbon atom with 4 valence electrons shares two electron pairs with each of two oxygen atoms, making 4 bonding pairs and leaving 4 lone pairs on the oxygen atoms.",
+          "tl": "Sa carbon dioxide, ang isang carbon atom na may 4 valence electrons ay nagbabahagi ng dalawang electron pairs sa bawat isa sa dalawang oxygen atoms, kaya nabubuo ang 4 bonding pairs at natitira ang 4 lone pairs sa mga oxygen atoms.",
+          "bis": "Sa carbon dioxide, ang usa ka carbon atom nga adunay 4 ka valence electrons mipaambit og duha ka electron pairs sa matag usa sa duha ka oxygen atoms, nga naghimo og 4 ka bonding pairs ug nagbilin og 4 ka lone pairs sa mga oxygen atoms."
+        },
+        "title": {
+          "en": "Carbon Dioxide Bonds",
+          "tl": "Mga Bond ng Carbon Dioxide",
+          "bis": "Mga Bond sa Carbon Dioxide"
+        },
+        "cats": [
+          "g9-matter-covalent-bonds"
+        ],
+        "grade": 9,
+        "quarter": 4,
+        "competency": null,
+        "source_module": "1QQVPx5gTh9yEEAXDkBGgrjBjPXg_itUY",
+        "source": "deped",
+        "emphasis": {
+          "tl": [
+            "4 valence electrons"
+          ],
+          "en": [
+            "4 valence electrons"
+          ],
+          "bis": [
+            "4 ka valence electrons"
+          ]
+        },
+        "slug": "ffct-20547"
+      },
+      "after_card": {
+        "id": "dcard-05537",
+        "factId": "carbon-dioxide-bonds-g9",
+        "domain": "MATTER",
+        "topic": "Carbon Dioxide Molecule",
+        "terms": [
+          "carbon dioxide",
+          "co2",
+          "carbon",
+          "oxygen",
+          "bonding pairs",
+          "lone pairs"
+        ],
+        "fact": {
+          "en": "In carbon dioxide, one carbon atom with 4 valence electrons shares two electron pairs with each of two oxygen atoms, making 4 bonding pairs and leaving 4 lone pairs on the oxygen atoms.",
+          "tl": "Sa carbon dioxide, ang isang carbon atom na may 4 valence electrons ay nagbabahagi ng dalawang electron pairs sa bawat isa sa dalawang oxygen atoms, kaya nabubuo ang 4 bonding pairs at natitira ang 4 lone pairs sa mga oxygen atoms.",
+          "bis": "Sa carbon dioxide, ang usa ka carbon atom adunay 4 ka valence electrons. Nagpaambit kini og duha ka electron pairs sa matag usa sa duha ka oxygen atoms. Busa adunay 4 ka bonding pairs, ug may 4 ka lone pairs nga nahibilin sa mga oxygen atoms."
+        },
+        "title": {
+          "en": "Carbon Dioxide Bonds",
+          "tl": "Mga Bond ng Carbon Dioxide",
+          "bis": "Mga Bond sa Carbon Dioxide"
+        },
+        "cats": [
+          "g9-matter-covalent-bonds"
+        ],
+        "grade": 9,
+        "quarter": 4,
+        "competency": null,
+        "source_module": "1QQVPx5gTh9yEEAXDkBGgrjBjPXg_itUY",
+        "source": "deped",
+        "emphasis": {
+          "tl": [
+            "4 valence electrons"
+          ],
+          "en": [
+            "4 valence electrons"
+          ],
+          "bis": [
+            "4 ka valence electrons"
+          ]
+        },
+        "slug": "ffct-20547"
+      },
+      "reason": "Separates carbon valence, electron-pair sharing and resulting bonds/lone pairs; keeps one carbon, two oxygens, two shared pairs per oxygen, four bonding pairs and four lone pairs.",
+      "readability": {
+        "judge-one": {
+          "item_id": "p17584a7be0066cc53b3c76d4cffd907c",
+          "preferences": {
+            "body_winner": "candidate",
+            "title_winner": "tie",
+            "winner": "candidate"
+          }
+        },
+        "judge-two": {
+          "item_id": "p9970f012100e8ad5a4c9f6d7067fecc6",
+          "preferences": {
+            "body_winner": "candidate",
+            "title_winner": "tie",
+            "winner": "candidate"
+          }
+        }
+      },
+      "fidelity_item_id": "mdbc53d194f4e8af06300add1"
+    },
+    {
+      "card_id": "ffct-06157",
+      "decision": "apply_reviewed_cebuano_edit",
+      "source_card_sha256": "2f9aeae7eba559f7e96bab4b95b51986494725eb4180da2fa8dd517b26059d90",
+      "candidate_card_sha256": "9db907a5735723c542e1dff353689d3bde74a59225216c8af77d1d17525dc840",
+      "before_card": {
+        "id": "ffct-06157",
+        "factId": "germs-spread-crowded-places-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "why germs spread faster in crowded places",
+        "terms": [
+          "matao",
+          "crowded",
+          "siksikan",
+          "dami ng tao",
+          "school",
+          "palengke",
+          "market",
+          "jeep",
+          "mrt",
+          "sarado",
+          "ventilation",
+          "mas mabilis",
+          "kumakalat",
+          "ph"
+        ],
+        "fact": {
+          "en": "Germs spread faster in crowded places like schools, markets, and jeepneys or trains because people are close together and air is sometimes trapped — that's why fresh air and wearing a mask when sick matter.",
+          "tl": "Mas mabilis kumakalat ang germs sa matataong lugar tulad ng paaralan, palengke, at sasakyan gaya ng jeep o tren dahil malapit ang mga tao at minsan sarado ang hangin — kaya mahalaga ang sariwang hangin at pagsuot ng mask kapag may sakit.",
+          "bis": "Mas paspas mokatag ang germs sa daghang tawo nga lugar sama sa eskuylahan, merkado, ug sakyanan sama sa jeep o tren tungod kay duol ang mga tawo ug usahay sirado ang hangin — mao nga importante ang presko nga hangin ug pagsul-ob og mask kon nagsakit."
+        },
+        "slug": "jeepney-passengers-scene",
+        "title": {
+          "en": "Germs in Crowds",
+          "tl": "Mikrobyo sa Matao",
+          "bis": "Kagaw sa Daghang"
+        },
+        "cats": [
+          "germs",
+          "health"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "germs"
+          ],
+          "en": [
+            "Germs"
+          ],
+          "bis": [
+            "germs"
+          ]
+        },
+        "poster": true
+      },
+      "after_card": {
+        "id": "ffct-06157",
+        "factId": "germs-spread-crowded-places-g6",
+        "domain": "LIVING_THINGS",
+        "topic": "why germs spread faster in crowded places",
+        "terms": [
+          "matao",
+          "crowded",
+          "siksikan",
+          "dami ng tao",
+          "school",
+          "palengke",
+          "market",
+          "jeep",
+          "mrt",
+          "sarado",
+          "ventilation",
+          "mas mabilis",
+          "kumakalat",
+          "ph"
+        ],
+        "fact": {
+          "en": "Germs spread faster in crowded places like schools, markets, and jeepneys or trains because people are close together and air is sometimes trapped — that's why fresh air and wearing a mask when sick matter.",
+          "tl": "Mas mabilis kumakalat ang germs sa matataong lugar tulad ng paaralan, palengke, at sasakyan gaya ng jeep o tren dahil malapit ang mga tao at minsan sarado ang hangin — kaya mahalaga ang sariwang hangin at pagsuot ng mask kapag may sakit.",
+          "bis": "Mas paspas mokatag ang germs sa mga lugar nga daghang tawo, sama sa eskuylahan, merkado, ug sakyanan sama sa jeep o tren. Tungod kini kay duol ang mga tawo ug usahay sirado ang hangin. Mao nga importante ang presko nga hangin ug pagsul-ob og mask kon nagsakit."
+        },
+        "slug": "jeepney-passengers-scene",
+        "title": {
+          "en": "Germs in Crowds",
+          "tl": "Mikrobyo sa Matao",
+          "bis": "Kagaw sa Daghang Tawo"
+        },
+        "cats": [
+          "germs",
+          "health"
+        ],
+        "source": "original",
+        "emphasis": {
+          "tl": [
+            "germs"
+          ],
+          "en": [
+            "Germs"
+          ],
+          "bis": [
+            "germs"
+          ]
+        },
+        "poster": true
+      },
+      "reason": "Splits location, cause and precautions; retains all locations, close contact, sometimes trapped air, fresh air and mask when sick. Completes the clipped title with Tawo.",
+      "readability": {
+        "judge-one": {
+          "item_id": "p7b2247cc92831d1d56111ea25dc4c9ca",
+          "preferences": {
+            "body_winner": "candidate",
+            "title_winner": "candidate",
+            "winner": "candidate"
+          }
+        },
+        "judge-two": {
+          "item_id": "pf61530e57d22990c2237bd4ee6968cb3",
+          "preferences": {
+            "body_winner": "candidate",
+            "title_winner": "candidate",
+            "winner": "candidate"
+          }
+        }
+      },
+      "fidelity_item_id": "m1a3703cf1494b9cdde2a77ff"
+    },
+    {
+      "card_id": "dcard-06293",
+      "decision": "apply_reviewed_cebuano_edit",
+      "source_card_sha256": "5f2cd3d597fe719db52654b4cf98293c0115259cf48577fee8475ddf837a4609",
+      "candidate_card_sha256": "c2da00738896e5849eb444eb4f73344f476a9eb957faa0b248d6a4428201bcfd",
+      "before_card": {
+        "id": "dcard-06293",
+        "factId": "parts-of-a-lever-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Lever",
+        "terms": [
+          "lever",
+          "fulcrum",
+          "effort",
+          "load",
+          "bar",
+          "suporta"
+        ],
+        "fact": {
+          "en": "A lever is a bar that turns or lifts on a support called a fulcrum, and it has two other parts: the effort, which is the force you apply, and the load, which is the weight being moved.",
+          "tl": "Ang lever ay isang bar na umiikot o bumubuhat sa isang suporta na tinatawag na fulcrum, at mayroon itong dalawang iba pang bahagi: ang effort, na siyang puwersang inilalapat mo, at ang load, na siyang bigat na ginagalaw.",
+          "bis": "Ang lever usa ka bar nga motuyok o moalsa sa usa ka suporta nga gitawag og fulcrum, ug aduna kini duha pa ka parte: ang effort, nga mao ang puwersa nga imong gigamit, ug ang load, nga mao ang gibug-aton nga gilihok."
+        },
+        "title": {
+          "en": "Parts of a Lever",
+          "tl": "Mga Bahagi ng Lever",
+          "bis": "Mga Parte sa Lever"
+        },
+        "cats": [
+          "g6-force_motion_energy-simple-machines"
+        ],
+        "grade": 6,
+        "quarter": 3,
+        "competency": "S6FE-IIIg-",
+        "source_module": "1UjUSHe1lYrRvhFooUBZRXGZsiP5eP9gA",
+        "source": "deped",
+        "emphasis": {
+          "tl": [
+            "fulcrum"
+          ],
+          "en": [
+            "fulcrum"
+          ],
+          "bis": [
+            "fulcrum"
+          ]
+        },
+        "poster": true,
+        "slug": "ffct-27337"
+      },
+      "after_card": {
+        "id": "dcard-06293",
+        "factId": "parts-of-a-lever-g6",
+        "domain": "FORCE_MOTION_ENERGY",
+        "topic": "Lever",
+        "terms": [
+          "lever",
+          "fulcrum",
+          "effort",
+          "load",
+          "bar",
+          "suporta"
+        ],
+        "fact": {
+          "en": "A lever is a bar that turns or lifts on a support called a fulcrum, and it has two other parts: the effort, which is the force you apply, and the load, which is the weight being moved.",
+          "tl": "Ang lever ay isang bar na umiikot o bumubuhat sa isang suporta na tinatawag na fulcrum, at mayroon itong dalawang iba pang bahagi: ang effort, na siyang puwersang inilalapat mo, at ang load, na siyang bigat na ginagalaw.",
+          "bis": "Ang lever usa ka bar nga motuyok o moalsa sa usa ka suporta nga gitawag og fulcrum. Aduna kini duha pa ka parte. Ang effort mao ang puwersa nga imong gigamit. Ang load mao ang gibug-aton nga gilihok."
+        },
+        "title": {
+          "en": "Parts of a Lever",
+          "tl": "Mga Bahagi ng Lever",
+          "bis": "Mga Parte sa Lever"
+        },
+        "cats": [
+          "g6-force_motion_energy-simple-machines"
+        ],
+        "grade": 6,
+        "quarter": 3,
+        "competency": "S6FE-IIIg-",
+        "source_module": "1UjUSHe1lYrRvhFooUBZRXGZsiP5eP9gA",
+        "source": "deped",
+        "emphasis": {
+          "tl": [
+            "fulcrum"
+          ],
+          "en": [
+            "fulcrum"
+          ],
+          "bis": [
+            "fulcrum"
+          ]
+        },
+        "poster": true,
+        "slug": "ffct-27337"
+      },
+      "reason": "Separates the lever, fulcrum, effort and load definitions into direct sentences; no added part or changed role.",
+      "readability": {
+        "judge-one": {
+          "item_id": "pdc8ec3d38dd4b4b68ef4d4ef8f1b5e92",
+          "preferences": {
+            "body_winner": "candidate",
+            "title_winner": "tie",
+            "winner": "candidate"
+          }
+        },
+        "judge-two": {
+          "item_id": "pd2a86c534c8fe2067095fbc67194be14",
+          "preferences": {
+            "body_winner": "candidate",
+            "title_winner": "tie",
+            "winner": "candidate"
+          }
+        }
+      },
+      "fidelity_item_id": "m8c531b7f6c1f3a7b6923b0cd"
+    }
+  ],
+  "pilot_dispositions": {
+    "sample": 96,
+    "applied_by_this_plan": 4,
+    "not_approved_by_this_plan": 92,
+    "explanation": "Includes unchanged cards and unresolved source/language/measurement holds. No raw judgment was edited or discarded."
+  },
+  "native_verified": false,
+  "released": false
+}

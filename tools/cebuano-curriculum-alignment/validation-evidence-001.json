@@ -1,0 +1,668 @@
+{
+  "recorded_at": "2026-10-07T04:19:12.889167+00:00",
+  "required_successes": [
+    "assessments-002",
+    "assessment-source-validation-001",
+    "cards-db-001",
+    "full-year-audit-001",
+    "normal-source-final-001",
+    "vectors-001",
+    "final-verification-001",
+    "check-pipeline-guards-001",
+    "check-pipeline-integration-001",
+    "check-english-review-guards-001",
+    "check-facts-db-001",
+    "check-assessment-compiled-001",
+    "check-similarity-compiled-001",
+    "check-tala-catalog-001",
+    "check-curriculum-tests-002",
+    "check-assessment-tests-002",
+    "check-web-competencies-001",
+    "check-web-terms-tests-001",
+    "check-mobile-types-002",
+    "check-desktop-types-002",
+    "check-web-types-001",
+    "assessment-compiler-tests-001",
+    "check-grade3-compiled-001",
+    "check-grade4-compiled-001",
+    "check-grade5-compiled-001",
+    "check-grade6-compiled-001",
+    "check-grade7-compiled-001",
+    "check-grade8-compiled-001",
+    "check-grade9-compiled-001",
+    "check-grade10-compiled-001"
+  ],
+  "executions": [
+    {
+      "name": "assessment-compiler-tests-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/assessment-compiler-tests-001/execution.json",
+        "bytes": 511,
+        "sha256": "3ee9f12ba296a4a4e2a19bc0f8a4b53906dbc279e536030e0200a3edb425f559"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/assessment-compiler-tests-001/output.txt",
+        "bytes": 104,
+        "sha256": "dcd2147edfda2291b456dfb6d9f3021f0fed07760d5a1c8869fc5446f30e28fe"
+      }
+    },
+    {
+      "name": "assessment-source-validation-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/assessment-source-validation-001/execution.json",
+        "bytes": 448,
+        "sha256": "338cb536bf9ed488ef951a339ade34f284109164493f31acb80af6827fe2adea"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/assessment-source-validation-001/output.txt",
+        "bytes": 95,
+        "sha256": "26d359cbf08af0ab7da4c5de4ea2f18a5a242e17e8d0dd618037a1aad2ae2c4c"
+      }
+    },
+    {
+      "name": "assessments-001",
+      "actual_exit_code": 1,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/assessments-001/execution.json",
+        "bytes": 435,
+        "sha256": "0fcb716591a97e4fe8676ef7b5c50dfcfd740a7cd13892d8ff20f6a32d2e70b2"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/assessments-001/output.txt",
+        "bytes": 1134,
+        "sha256": "02a5ab01a3b2cc2c937132b29f7adbef86b0a72df4e7a80a5d6e4652f8f35d0d"
+      }
+    },
+    {
+      "name": "assessments-002",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/assessments-002/execution.json",
+        "bytes": 434,
+        "sha256": "4b7752eec813b609888802e4eb672faee0637b55c095fbb5699585532349278d"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/assessments-002/output.txt",
+        "bytes": 151,
+        "sha256": "43497b67559c9dd2300c23335b38cc9336bd2d3ddbbca3d33fd2269effa5c4dd"
+      }
+    },
+    {
+      "name": "cards-db-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/cards-db-001/execution.json",
+        "bytes": 416,
+        "sha256": "ac0d0dc4b77464d94d1817ef14aeebf457e7b62b5724aaa43fbc2bf61790c6aa"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/cards-db-001/output.txt",
+        "bytes": 800,
+        "sha256": "465d9099a071090c68276e26e860501cde5e330d4971d2e18e5b68e59a6c9c9c"
+      }
+    },
+    {
+      "name": "check-assessment-compiled-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-assessment-compiled-001/execution.json",
+        "bytes": 449,
+        "sha256": "733d6e9c2dc35770822ef9da78eeb77bd35713f002d21f797540b200803b6a6f"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-assessment-compiled-001/output.txt",
+        "bytes": 151,
+        "sha256": "43497b67559c9dd2300c23335b38cc9336bd2d3ddbbca3d33fd2269effa5c4dd"
+      }
+    },
+    {
+      "name": "check-assessment-tests-001",
+      "actual_exit_code": 1,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-assessment-tests-001/execution.json",
+        "bytes": 820,
+        "sha256": "703469854a5a23f1f7d79ba0cf69db212adb6b5bf8e1aad6b9a1f7165a47cc72"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-assessment-tests-001/output.txt",
+        "bytes": 12646,
+        "sha256": "800b08a010a530b458e449acdc8253c30573e78ba1b500d88df5f7ee757707d9"
+      }
+    },
+    {
+      "name": "check-assessment-tests-002",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-assessment-tests-002/execution.json",
+        "bytes": 819,
+        "sha256": "0d704e613a0b09998e54c9c65336ac2131d0ea411674de5dedf164a8cfd793d1"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-assessment-tests-002/output.txt",
+        "bytes": 8241,
+        "sha256": "c8be61779f9e9c30f940c1feb3d1ab9a948ba5342e51aa6a30c571befb9c58c4"
+      }
+    },
+    {
+      "name": "check-curriculum-tests-001",
+      "actual_exit_code": 1,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-curriculum-tests-001/execution.json",
+        "bytes": 1083,
+        "sha256": "acd8af8bebad10d1b314a226aeb084145c599da8062d1e6b07797bc38226dc89"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-curriculum-tests-001/output.txt",
+        "bytes": 10805,
+        "sha256": "bda391c8b22a286c12452453a10c66bb63bfd400ba254f52f73629cd44497200"
+      }
+    },
+    {
+      "name": "check-curriculum-tests-002",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-curriculum-tests-002/execution.json",
+        "bytes": 1082,
+        "sha256": "9f635709242d7cca586452f4afb3d10e217a32da0cd8523929d0ab1c6f08eb8f"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-curriculum-tests-002/output.txt",
+        "bytes": 9112,
+        "sha256": "3ffe2d148a9d244da845e17b56085f6791e975526a93f4479d1111b03de7a624"
+      }
+    },
+    {
+      "name": "check-desktop-types-001",
+      "actual_exit_code": 1,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-desktop-types-001/execution.json",
+        "bytes": 491,
+        "sha256": "70da3ad0c0d96493fcaf60da4f9f11dcf8b5fac367f89ac5fbb2d7b70040d3a6"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-desktop-types-001/output.txt",
+        "bytes": 904,
+        "sha256": "ce394d49fcb715cc712696c2eecb68ce28855f7755752d98f1e7c524068a213c"
+      }
+    },
+    {
+      "name": "check-desktop-types-002",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-desktop-types-002/execution.json",
+        "bytes": 489,
+        "sha256": "9563b2de229bdb2f661c0fa92e7c9b39200a328bb8825ef5eec713c1213f99a0"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-desktop-types-002/output.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "check-english-review-guards-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-english-review-guards-001/execution.json",
+        "bytes": 501,
+        "sha256": "285cf4c768245fdbccbdaa8e38b06f3d7d45a05ea513e23f96dce4301568a922"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-english-review-guards-001/output.txt",
+        "bytes": 102,
+        "sha256": "d2bccf12ad0620006f076a858ae459f095d161a1ef73cf987aba6bddacc17386"
+      }
+    },
+    {
+      "name": "check-facts-db-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-facts-db-001/execution.json",
+        "bytes": 431,
+        "sha256": "3419c4e239b2c1942c487ab197e7112eded253c12eb143ae10e9170969784919"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-facts-db-001/output.txt",
+        "bytes": 735,
+        "sha256": "d02d77ca937636cf4bd70af37859a65a1e924019c88db3c76a6d27e903eb0e87"
+      }
+    },
+    {
+      "name": "check-grade10-compiled-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade10-compiled-001/execution.json",
+        "bytes": 458,
+        "sha256": "4e9d1076d791c4f248d750285aede85c1ddaa36a3370e325166bf6efca1a511d"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade10-compiled-001/output.txt",
+        "bytes": 1389,
+        "sha256": "b6a99da21dccb598d2c1384f95ffc4a792b9432f6bb8c87ca69ea97368dcc177"
+      }
+    },
+    {
+      "name": "check-grade3-compiled-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade3-compiled-001/execution.json",
+        "bytes": 457,
+        "sha256": "9760ddd118a839e50715db652dcfeb23ecf90046c2d0a542e7e37945eb588420"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade3-compiled-001/output.txt",
+        "bytes": 1198,
+        "sha256": "d9c7f15f68c5ce9c7f7a54b5e65f286c898d4f2665aa3f07b6de914318667b68"
+      }
+    },
+    {
+      "name": "check-grade4-compiled-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade4-compiled-001/execution.json",
+        "bytes": 457,
+        "sha256": "c525be0dcb7145d4f5031f4de9bd0799ffdddf02abb4d110da3eea8e39a40859"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade4-compiled-001/output.txt",
+        "bytes": 1312,
+        "sha256": "2a9cc189ffe97d968389a2abc0a83265b9d6abe1eb4a96321e14c2582821b696"
+      }
+    },
+    {
+      "name": "check-grade5-compiled-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade5-compiled-001/execution.json",
+        "bytes": 457,
+        "sha256": "d360f88b5fe36567a8733b08965233cac8f244630bbe239d7f8d2596f6e1fa43"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade5-compiled-001/output.txt",
+        "bytes": 1169,
+        "sha256": "bb79bf06194fc51408a319479c1a4454a9a1edb3004daba97dbab4cfbabe1d67"
+      }
+    },
+    {
+      "name": "check-grade6-compiled-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade6-compiled-001/execution.json",
+        "bytes": 457,
+        "sha256": "1e422bf3f54cd351f9b18ae3b05b8297068b2dfa13426f18a3dc33c619f36452"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade6-compiled-001/output.txt",
+        "bytes": 1547,
+        "sha256": "41f2331954fcd53b227abc0051cbda8e5e4f8dc32a7bbdcee1f59dc8d8e24656"
+      }
+    },
+    {
+      "name": "check-grade7-compiled-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade7-compiled-001/execution.json",
+        "bytes": 457,
+        "sha256": "1c08340184fff28dad5da884ef27832b8c3c00de32895ef82567d9198bc06846"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade7-compiled-001/output.txt",
+        "bytes": 1868,
+        "sha256": "7a90a171657c01e7aa5788bb482553e666429a6c8a0f4ec14eab094e8bea2e34"
+      }
+    },
+    {
+      "name": "check-grade8-compiled-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade8-compiled-001/execution.json",
+        "bytes": 457,
+        "sha256": "d2219da64681db7d1372409d202922290c5f8326db03a87250f57121ea77d7c9"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade8-compiled-001/output.txt",
+        "bytes": 1805,
+        "sha256": "3f85cfb7c54a1388eb65ef34c5f047d212cdd92e14b57dfdea3ed97dea98ae1c"
+      }
+    },
+    {
+      "name": "check-grade9-compiled-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade9-compiled-001/execution.json",
+        "bytes": 457,
+        "sha256": "0da4d9ccc0a650539ea070913ba5c63096f457751736a3f96b0000c1e1b00705"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-grade9-compiled-001/output.txt",
+        "bytes": 1374,
+        "sha256": "0741a94bca869797f6e892def0ed2277ca6f43b9f82522459eb672b6cd1588cc"
+      }
+    },
+    {
+      "name": "check-mobile-types-001",
+      "actual_exit_code": 1,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-mobile-types-001/execution.json",
+        "bytes": 452,
+        "sha256": "b1fafe7babaa439da85652ef6fd9e2d3f5156b1c1e50f94bb751c62bbc5ce90f"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-mobile-types-001/output.txt",
+        "bytes": 879,
+        "sha256": "0f2ac5f9f30ed7169ac3d2445669a13c9779c1248873de370efd000fed6412de"
+      }
+    },
+    {
+      "name": "check-mobile-types-002",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-mobile-types-002/execution.json",
+        "bytes": 450,
+        "sha256": "2fcf409010b47bd63d588da6a40e40d12b4deccafae2dc7f141d8ded6f7bdc24"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-mobile-types-002/output.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "check-pipeline-guards-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-pipeline-guards-001/execution.json",
+        "bytes": 493,
+        "sha256": "fb97a91ccd32f78148472137895a695031f9efa7584785d1d9bf3f4c92106325"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-pipeline-guards-001/output.txt",
+        "bytes": 3356,
+        "sha256": "0e0136fe78b252efec279954d2ced61d9144362f79d3be249b2488442a492d0c"
+      }
+    },
+    {
+      "name": "check-pipeline-integration-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-pipeline-integration-001/execution.json",
+        "bytes": 515,
+        "sha256": "f69d37f867de674ba633069e7491281570d66029be59758a9a56aa82b566fb94"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-pipeline-integration-001/output.txt",
+        "bytes": 101,
+        "sha256": "edb4e2159c923ea45a32656078835cdf531c3d7b414c670dd786978875cb0678"
+      }
+    },
+    {
+      "name": "check-similarity-compiled-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-similarity-compiled-001/execution.json",
+        "bytes": 450,
+        "sha256": "cb4f23df9f48a7439ca767c911b519d13d6d78279041b354f97d336f8a2612e8"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-similarity-compiled-001/output.txt",
+        "bytes": 82,
+        "sha256": "20dcc763f66b602072ff513d917b54eae3cd99f6afa0c531eab2a5af2e03edf7"
+      }
+    },
+    {
+      "name": "check-tala-catalog-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-tala-catalog-001/execution.json",
+        "bytes": 442,
+        "sha256": "52baeabd7c9fc4b1d6bbf15f7b4cd5b6a060d85c3a552bbfe55ead4db3f1ff40"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-tala-catalog-001/output.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "check-web-competencies-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-web-competencies-001/execution.json",
+        "bytes": 440,
+        "sha256": "cb465e098e82a25e1fdd2af11228ab62fb72335ab46bf62a6715451a5e6c523f"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-web-competencies-001/output.txt",
+        "bytes": 78,
+        "sha256": "6ba38c543907b2deee3d2a5471acf64e679a0b1f1f3b575ffd1a4282b2ea8179"
+      }
+    },
+    {
+      "name": "check-web-terms-tests-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-web-terms-tests-001/execution.json",
+        "bytes": 520,
+        "sha256": "a656de64798ea5e8bd3de378b1a4af59c7d79cd274e6c8ac291abb4fd1f782ba"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-web-terms-tests-001/output.txt",
+        "bytes": 379,
+        "sha256": "62edca9bfb5fbdc2cb8607fbd95b7990f487d9ab7c9c53dbe9f8bc517522c413"
+      }
+    },
+    {
+      "name": "check-web-types-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-web-types-001/execution.json",
+        "bytes": 447,
+        "sha256": "b792f693e904a09fbfd78b06a219c5feec3cf235d8271c19ab8ab01338e08db5"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/check-web-types-001/output.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "checks-001",
+      "actual_exit_code": 1,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/checks-001/execution.json",
+        "bytes": 465,
+        "sha256": "2e326d363a1dbc9a33da62718a63ce02f3f46daacb4a70712ccc1956e1b219cf"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/checks-001/output.txt",
+        "bytes": 39412,
+        "sha256": "4cee0ef7bacfcf6f238878f205e0555f279036df12906d6eb189c1d35ed9728f"
+      }
+    },
+    {
+      "name": "checks-002",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/checks-002/execution.json",
+        "bytes": 568,
+        "sha256": "377b64efd7c473ba907cfcad2b8e96f30096229e364adeeb3c1eea1b767ed633"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/checks-002/output.txt",
+        "bytes": 12888,
+        "sha256": "c8d48feed077ffd822292d333c066be27ff7ce59944e8f84a7cffaedb8ce7e2e"
+      }
+    },
+    {
+      "name": "competencies-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/competencies-001/execution.json",
+        "bytes": 439,
+        "sha256": "dffa11caa12c52abf9b0bf88ba773ea7adb5133d8a6be200e51045f851b931dc"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/competencies-001/output.txt",
+        "bytes": 242,
+        "sha256": "56a1ea25a4f4bf16a25ac67861a3c3bab8d3179da35b4b5a0a4f3468c1c65fb0"
+      }
+    },
+    {
+      "name": "content-corrections-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/content-corrections-001/execution.json",
+        "bytes": 420,
+        "sha256": "90945a3bc43f5cd863de7a1a03e8e50474d01e680725557c2e4fe294b824e419"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/content-corrections-001/output.txt",
+        "bytes": 72,
+        "sha256": "080dac7fb737064785e8f7cbe388b19ce75b3954cee26809c5ace5f1c441f2c3"
+      }
+    },
+    {
+      "name": "dependencies-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/dependencies-001/execution.json",
+        "bytes": 457,
+        "sha256": "cac2c1186058e63ef33f3c53c5c4c533f90d607d819f748af3e6b7c91a4c2cde"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/dependencies-001/output.txt",
+        "bytes": 1517,
+        "sha256": "693e164965970a662f1e141577d1503650c37dea76e1098e64689c2cdb3a402f"
+      }
+    },
+    {
+      "name": "final-verification-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/final-verification-001/execution.json",
+        "bytes": 520,
+        "sha256": "033badf03dbd24d8ec56609fee8c83b117c906981b3a301f03cc309cd5eeb53a"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/final-verification-001/output.txt",
+        "bytes": 3287,
+        "sha256": "2b0957fa22b7779b2a494fcce739be96d7a0d39e735d60585e0162d9d7d5a7b5"
+      }
+    },
+    {
+      "name": "full-year-audit-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/full-year-audit-001/execution.json",
+        "bytes": 434,
+        "sha256": "a536b1123dbb256c946b8bfa8dc52fa2cea6d21c6459e7b2fbe96070f07115dd"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/full-year-audit-001/output.txt",
+        "bytes": 60,
+        "sha256": "ce78cf9086fd7f29616af7f5e56d548de891de9b21593fe524d727a03329625f"
+      }
+    },
+    {
+      "name": "lessons-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/lessons-001/execution.json",
+        "bytes": 542,
+        "sha256": "fcc272ceeb1e887d603fc9673195a0fd95c2a576f104e75bafacc84aa6ee949f"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/lessons-001/output.txt",
+        "bytes": 11662,
+        "sha256": "c45e8885227beeb87e6fd786c6ad9f3a9215134032624696a646cbc605128046"
+      }
+    },
+    {
+      "name": "normal-source-final-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/normal-source-final-001/execution.json",
+        "bytes": 415,
+        "sha256": "afed9edfda4219fdeec196899b9a0c144a1c026699ad07757a7b092067afdb5f"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/normal-source-final-001/output.txt",
+        "bytes": 740,
+        "sha256": "2644c1313d222acd16bba0620323be53146e1627890bace7a504b6e2c263a987"
+      }
+    },
+    {
+      "name": "questions-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/questions-001/execution.json",
+        "bytes": 421,
+        "sha256": "bb9d6c65fd815335cc3a25e4699cebd5608ca318f5d692237c53bce9336b84c1"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/questions-001/output.txt",
+        "bytes": 139,
+        "sha256": "3b2fe66fc1c35d3ff5561bc2f350778f0d6a3286a8d5f21a806f010ff1d3e6c6"
+      }
+    },
+    {
+      "name": "similarity-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/similarity-001/execution.json",
+        "bytes": 435,
+        "sha256": "2fb65a1230de897fbfdfcdc706b2dbbd6a7f612362fde3ad8381f7142640753c"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/similarity-001/output.txt",
+        "bytes": 83,
+        "sha256": "2dae93848f8c42bc40147d5fab421d46ee80e4a4789d264eb3d4238906974aae"
+      }
+    },
+    {
+      "name": "vectors-001",
+      "actual_exit_code": 0,
+      "execution": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/vectors-001/execution.json",
+        "bytes": 720,
+        "sha256": "cf13dcce0e6e15a3d2b29242b40bb128d32422005b04ccec3664cd707a7930d2"
+      },
+      "output": {
+        "path": "tools/cebuano-curriculum-alignment/evidence/executions/vectors-001/output.txt",
+        "bytes": 850,
+        "sha256": "1c084a4fdfa42ccceee608bb4003ea58be4e7d6d78412a7ad28b3d89926fac9a"
+      }
+    }
+  ],
+  "release_asset": {
+    "path": "build/cebuano-curriculum-alignment/release/vectors-labse-3a36094d18d2.i8.bin",
+    "bytes": 122162688,
+    "sha256": "67912d4fd3270876ab2922316b20f8dad4109ac26eac2234cdb1728a6d59405b",
+    "filename": "vectors-labse-3a36094d18d2.i8.bin",
+    "md5": "3d555f7450025a208ca65f2f02436759",
+    "published": false
+  },
+  "earlier_application_tests": {
+    "cases": 8,
+    "actual_exit_code": 0,
+    "actual_tool_chunk": "d18039",
+    "evidence_kind": "Actual tool result in this alignment session; predates the execution-log wrapper."
+  },
+  "initial_source_failures": [
+    {
+      "actual_exit_code": 1,
+      "actual_tool_chunk": "048b55",
+      "reason": "Normal generation exposed ffct-00580 source-context drift."
+    },
+    {
+      "actual_exit_code": 1,
+      "actual_tool_chunk": "40ca0b",
+      "reason": "First isolated trial reactivated one stale concise-editorial entry on dcard-08517."
+    }
+  ],
+  "provider_calls": 0,
+  "committed": false,
+  "deployed": false
+}
