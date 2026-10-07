@@ -37,6 +37,15 @@ Setup retains certificate SHA-256
 Windows has not been packaged or tested for this candidate. The local APKs are
 pre-commit candidates; do not pair them with unrelated CI Windows evidence.
 
+The first CI dispatch (`37589755470`, commit `20ff8588c658cf3e61244b3ab30c8aa3168571bf`)
+stopped in the installed runner hook before checkout: its trusted-branch gate only
+accepted `main` and `hiraia-unified`. No app test or build ran. The versioned runner
+hook now permits an operator-approved manual dispatch bound to an exact branch,
+commit and expiry (maximum 24 hours), using an owner-only approval outside the
+checkout. Seven boundary tests pass, including wrong commit, event, repository,
+workflow, expired approval and insecure file rejection. This uses the user's
+explicit branch-CI authorization without trusting arbitrary branch code.
+
 ## Existing fleet and mirror
 
 The existing server identity and registry were backed up with an integrity-checked

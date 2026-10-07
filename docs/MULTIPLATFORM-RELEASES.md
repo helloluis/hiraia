@@ -54,6 +54,15 @@ other workflows before steps run. The runner environment sets
 `ACTIONS_RUNNER_HOOK_JOB_STARTED=~/.hiraia/native-runner-hooks/job-started.sh` using the
 expanded absolute path. Guard tests cover the allowed and rejected cases.
 
+For an explicitly approved release on another branch, the operator can create
+`approved-dispatch.json` beside the installed hook. This is an owner-only (0600)
+file in the owner-only hook directory, outside the checkout. Its exact shape is
+`{"schema":1,"ref":"refs/heads/<reviewed-branch>","sha":"<40-character-commit>","issued_at":<Unix-seconds>,"expires_at":<Unix-seconds>}`.
+The approval expires within 24 hours and admits only manual dispatches of that
+exact commit through the existing repository/workflow gate. It does not authorize
+push events, later branch commits, forks or pull requests. Remove the approval
+after validation. Never install the hook or write approvals from a workflow step.
+
 Runner model servers use ports 18088/18090 to avoid interactive development.
 Native builds run at nice priority 10 with two Gradle workers and no retained daemon,
 so a completed build releases its 6 GB Gradle heap on the shared Mac. Stop or
