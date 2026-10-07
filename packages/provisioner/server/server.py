@@ -1542,7 +1542,7 @@ PAGE = """<!doctype html><meta charset="utf-8"><title>{title}</title>{refresh}
 
 def _local_time(stamp: str) -> str:
     try:
-        return dt.datetime.fromisoformat(stamp).astimezone().strftime('%a %H:%M:%S')
+        return dt.datetime.fromisoformat(stamp).astimezone().strftime('%d %b %Y, %H:%M:%S %z')
     except (TypeError, ValueError):
         return ''
 

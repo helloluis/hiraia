@@ -88,11 +88,18 @@ from the old saved laptop address. The dashboard and enrollment secrets remain
 restricted to loopback access.
 
 Active immutable service snapshot:
-`~/.hiraia/provisioner/releases/0.4.40-e3950be7c721791d`.
+`~/.hiraia/provisioner/releases/0.4.40-20271aecd36ea36b`.
 LaunchAgent: `~/Library/LaunchAgents/com.hiraia.provisioner.plist`.
 It is configured to start at login, restart after failure and prevent idle sleep.
 Keep the Mac **powered, logged in, lid open and on the same Wi-Fi as the phones**.
 Operation and stop/start commands: [provisioner runbook](../packages/provisioner/README.md#persistent-mac-service).
+
+Dashboard follow-up verified **7 October 2026, 17:43 GMT+8**: Last seen now displays
+the full calendar date, time and numeric timezone, such as
+`07 Oct 2026, 17:40:00 +0800`. All 98 live rows were checked. This replaces the
+initial `0.4.40-e3950be7c721791d` service snapshot with only the timestamp display
+changed; the APKs, mirror and enrollment identity remain the same. The activation
+and live checks are recorded in `build/provisioning-0.4.40/dashboard-full-time-*`.
 
 Old Setup 0.4.3 phones first follow their existing two-hour check-in schedule,
 subject to Android scheduling. **Check for an update** in Hiraia Setup triggers
