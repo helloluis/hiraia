@@ -1,5 +1,9 @@
 # Hiraia 0.4.41 — local curriculum rollout preparation
 
+Qualification and staging subsequently completed. Measured artifacts, successful
+CI and the preserved database-layout diagnosis are recorded in
+[RELEASE-0.4.41.md](RELEASE-0.4.41.md). The historical preparation plan follows.
+
 Preparation began **9 October 2026, 00:00 GMT+8** for the user-authorized local
 phone rollout at 09:00. The reviewed curriculum source is commit
 `2e1940a7943c807cc832bc2c853836c5cb145be1` on
