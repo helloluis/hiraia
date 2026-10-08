@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "reviewFile": "review-grades5-6-001.jsonl",
+  "reviewSha256": "945b1d9e688030f8c4f8fc8c4f27026203d22426d8ff5e7860d8c78470607586",
+  "correctionsFile": "review-grades5-6-001-corrections.jsonl",
+  "correctionsSha256": "f3538f7c46e7be157678b38241852025279f3af94cad0b00ec618c8a252956d5",
+  "application": "Apply the correction row by id after the immutable 150-row review; no original row was rewritten.",
+  "packetSha256": "6e9c91679df819b9ecd170d9047ff99e5e476993e552e5affcb59575b69901f9",
+  "fullDossiersRead": 150,
+  "rawCounts": {
+    "accept": 87,
+    "hold": 63
+  },
+  "effectiveCounts": {
+    "accept": 86,
+    "hold": 64
+  },
+  "effectiveAcceptedLessonPlacements": 98,
+  "verification": {
+    "uniqueIds": 150,
+    "allCurrentCopyHashesMatch": true,
+    "allThreeLanguagesRecorded": true,
+    "acceptedKeysRestrictedToProposals": true,
+    "missingEmphasisSpans": []
+  },
+  "followupEvidence": [
+    {
+      "ids": [
+        "ffct-31381",
+        "ffct-33302"
+      ],
+      "status": "Original HOLD decisions remain immutable; this later evidence strengthens parts of the claims and should inform any future adjudication.",
+      "basis": "Ambrosio identifies Moroporo/Mapulon with Pleiades and describes agricultural use. His firsthand Sama account makes Balatik a belt-plus-sword trap, while historical Tagalog vocabularies identify it with Orion's Belt. Thus Balatik has community-dependent extents; the earlier broad museum overview did not exhaust the evidence. Community attribution and the combined farmer/fisher claim still need care.",
+      "references": [
+        "https://bangkanixiao.wordpress.com/wp-content/uploads/2012/09/ambrosio-stars-of-philippine-skies-inquirer.pdf",
+        "https://www.nationalmuseum.gov.ph/wp-content/uploads/2021/09/Lumad-Mindanao.pdf"
+      ]
+    },
+    {
+      "ids": [
+        "ffct-02907"
+      ],
+      "status": "Additional support for unchanged HOLD.",
+      "basis": "A root search for gudgur, not just the inflected gudguron, likewise found only this candidate's body. NPS explicitly describes lichens as symbiotic associations rather than plants, strengthening the concern over other plants.",
+      "references": [
+        "https://www.nps.gov/kaww/lichens.htm"
+      ]
+    },
+    {
+      "ids": [
+        "ffct-12233"
+      ],
+      "status": "Acceptance retained after a dictionary control.",
+      "basis": "Zero corpus body occurrences of balhas did not establish an error. Wolff directly records it as Cebuano perspiration, so the title can remain accepted; Hiligaynon-only search hits would have produced a false rejection.",
+      "references": [
+        "https://ecommons.cornell.edu/bitstreams/a37bbab6-d3a5-4312-8241-277c64051153/download"
+      ]
+    }
+  ]
+}

@@ -7,7 +7,7 @@ const C = await loadCards();
 // Exercise the real store action without booting native model, SQLite or React Native.
 // Keep navigation as the observation boundary; all topic resolution and picking is real.
 const source = readFileSync(new URL('../src/store/cardStore.ts', import.meta.url), 'utf8');
-const start = source.indexOf('  enterCurriculum: (key, savedRun, shelfCat) => {');
+const start = source.indexOf('  enterCurriculum: (key, savedRun, shelfCat, continuation) => {');
 const end = source.indexOf('  exitCurriculum:', start);
 assert.ok(start >= 0 && end > start, 'Calendar action is available to the harness');
 const makeAction = new Function(

@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
 import { auditedGrades, lessonsForGrade, planLesson, lessonFactId } from '../src/data/lessonPlan';
+import { readingCollections, planExtraReading } from '../src/data/lessonExploration';
 import { loadCards } from './load-cards-node.mts';
 const C = await loadCards();
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
@@ -27,13 +28,19 @@ for (const card of inventory)
     }
   }
 const allCalendarFacts = new Set<string>();
+const allCalendarCards = new Set<string>();
 const grades = [3, 4, 5, 6, 7, 8, 9, 10].map((grade) => {
   const topics = C.curriculumOutline(grade).map((t: any) => ({
     key: t.key,
     title: t.title.en,
+    reachableCards: C.cardsForTopic(t).size,
     reachableFacts: facts(C.cardsForTopic(t)).size,
   }));
   const reachable = facts(C.curriculumOutline(grade).flatMap((t: any) => [...C.cardsForTopic(t)]));
+  const reachableCards = new Set<string>(
+    C.curriculumOutline(grade).flatMap((t: any) => [...C.cardsForTopic(t)])
+  );
+  for (const id of reachableCards) allCalendarCards.add(id);
   for (const fact of reachable) allCalendarFacts.add(fact);
   const shelves = new Map<string, Set<string>>();
   for (const card of inventory) {
@@ -45,6 +52,7 @@ const grades = [3, 4, 5, 6, 7, 8, 9, 10].map((grade) => {
   }
   return {
     grade,
+    reachableCards: reachableCards.size,
     outsideCalendarShelves: [...shelves]
       .map(([category, ids]) => ({ category, uniqueFacts: ids.size }))
       .sort((a, b) => b.uniqueFacts - a.uniqueFacts || a.category.localeCompare(b.category)),
@@ -65,7 +73,8 @@ function simulate(grade: number) {
   const snapshots: any[] = [];
   for (let visit = 1; visit <= 20; visit++) {
     for (const lesson of lessons) {
-      const run = planLesson(lesson, seen);
+      // The audit is a reproducible projection, not a random student session.
+      const run = planLesson(lesson, seen, undefined, visit);
       for (const id of run.cards) {
         seen.add(id);
         byLesson.get(lesson.key)!.add(lessonFactId(id));
@@ -74,18 +83,25 @@ function simulate(grade: number) {
     if ([1, 3, 5, 10, 20].includes(visit))
       snapshots.push({
         visitsPerLesson: visit,
+        uniqueCards: seen.size,
         uniqueFacts: facts(seen).size,
         lessons: lessons.map((l) => ({
           key: l.key,
+          eligibleCards: l.cardIds.length,
           uniqueFacts: byLesson.get(l.key)!.size,
           eligibleFacts: facts(l.cardIds).size,
         })),
       });
   }
   const core = facts(lessons.flatMap((l) => l.coreCardIds));
+  const coreCards = new Set(lessons.flatMap((l) => l.coreCardIds));
+  const allCards = new Set(lessons.flatMap((l) => l.cardIds));
   const all = facts(lessons.flatMap((l) => l.cardIds));
   const seenFacts = facts(seen);
   return {
+    coreCards: coreCards.size,
+    reachableCards: allCards.size,
+    additionalCards: allCards.size - coreCards.size,
     coreFacts: core.size,
     reachableFacts: all.size,
     newlyReachableFacts: all.size - core.size,
@@ -93,12 +109,59 @@ function simulate(grade: number) {
     outsideAfter20Visits: [...all].filter((id) => !seenFacts.has(id)).length,
   };
 }
+function explore(grade: number) {
+  const seen = new Set<string>();
+  let runs = 0;
+  for (const c of readingCollections(grade)) {
+    for (;;) {
+      const run = planExtraReading(
+        c.lesson,
+        seen,
+        { key: lessonsForGrade(grade)[0]!.key },
+        undefined,
+        runs + 1
+      );
+      if (!run) break;
+      assert.ok(++runs < 1000, 'Nonterminating optional reading');
+      for (const id of run.cards) {
+        assert.ok(!seen.has(id));
+        seen.add(id);
+      }
+    }
+  }
+  return {
+    grade,
+    collectionCount: readingCollections(grade).length,
+    boundedRuns: runs,
+    uniqueCards: seen.size,
+    eligibleCards: new Set(readingCollections(grade).flatMap((c) => c.lesson.cardIds)).size,
+    unreadAfterExploring: readingCollections(grade)
+      .flatMap((c) => c.lesson.cardIds)
+      .filter((id) => !seen.has(id)).length,
+  };
+}
 const projections = Object.fromEntries(
   auditedGrades.map((grade) => [`grade${grade}`, simulate(grade)])
 );
 const report = {
+  schema: 2,
   scope:
-    'Bundled inventory; reachability is not editorial approval or measured student engagement.',
+    'Card IDs are the primary counting unit. Source facts are reported separately. Simulations measure reachability, not actual student engagement or mastery.',
+  cards: (() => {
+    const main = new Set<string>(
+      read('../src/generated/cardsIndex.generated.json').cards.map((c: any) => c.id)
+    );
+    const used = [...main].filter((id) => allCalendarCards.has(id)).length;
+    return {
+      mainBank: main.size,
+      mainBankInCurriculum: used,
+      mainBankOutsideCurriculum: main.size - used,
+      mainBankPercentInCurriculum: (100 * used) / main.size,
+      supplementalInCurriculum: [...allCalendarCards].filter((id) => !main.has(id)).length,
+      allCurriculum: allCalendarCards.size,
+    };
+  })(),
+  optionalReadingSimulations: auditedGrades.map(explore),
   inventoryFacts: new Set(inventory.map((c) => c.factId)).size,
   allCalendarFacts: allCalendarFacts.size,
   outsideAllCalendars: new Set(
@@ -114,18 +177,25 @@ if (process.argv.includes('--check'))
 else writeFileSync(path, text);
 console.log(
   JSON.stringify(
-    Object.fromEntries(
-      Object.entries(projections).map(([grade, values]) => [
-        grade,
-        {
-          ...values,
-          simulations: values.simulations.map(({ visitsPerLesson, uniqueFacts }: any) => ({
-            visitsPerLesson,
-            uniqueFacts,
-          })),
-        },
-      ])
-    ),
+    {
+      cards: report.cards,
+      optionalReadingSimulations: report.optionalReadingSimulations,
+      lessonVisits: Object.fromEntries(
+        Object.entries(projections).map(([grade, values]) => [
+          grade,
+          {
+            ...values,
+            simulations: values.simulations.map(
+              ({ visitsPerLesson, uniqueCards, uniqueFacts }: any) => ({
+                visitsPerLesson,
+                uniqueCards,
+                uniqueFacts,
+              })
+            ),
+          },
+        ])
+      ),
+    },
     null,
     2
   )

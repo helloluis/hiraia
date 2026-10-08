@@ -201,6 +201,19 @@ Persistent fixes cover eight unsafe lightning cards plus a grounding-only varian
 
 The final metadata check also replaced the overbroad “Bond Changes Are Chemical” title, qualified four retrieval topics, and removed three mismatched/overgeneralized illustrations on momentum, collisions and seatbelts. The corrected source overlays run after generation. Lesson compilation accepts explicit reviewed IDs and excludes unapproved reserve matches. Smaller pools are deliberate: most listed lessons now contain 3–11 relevant cards rather than padding toward the old 20/30-card maximum. Optional-pool planner tests use a dedicated larger fixture, while real lessons are checked for complete anchors, distinct facts, saved-run behavior and feed traversal. Narrowing an empty JSON reserve also exposed and fixed a `never[]` TypeScript inference in the lesson type.
 
+### Additional reading across Grades 3–10 — 8 October 2026
+
+The small pools above describe the 5 October coverage baseline. They are no
+longer the full local reading inventory: a separate, exact-copy example catalog
+now exposes 7,854 distinct card/source identities across Grades 3–10. Grade 5
+grows from 139 to 1,116; the other grades have 589–1,566 cards each. Every original
+teaching/quiz assignment and the frozen English review lock are retained.
+Additional examples do not count as new BOW coverage or practical-skill mastery.
+See [Curriculum feed](CURRICULUM-FEED.md#reading-expansion-across-grades-310--8-october-2026)
+and the [per-topic inventory](all-grades-example-expansion-20261008.json) for
+provenance, nonadmissions, remaining thin topics and regeneration instructions.
+The expanded manifests and matching website counts remain local and unreleased.
+
 ## Evidence and limits
 
 - Original PDFs, extracted text, editions, URLs and checksums: `rag/sources/curriculum-guides/three-term-2026/`. The inventory verifies every PDF SHA-256. Grade 9 has mixed printed footer dates; the archived edition evidence is preserved.

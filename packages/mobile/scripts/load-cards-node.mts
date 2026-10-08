@@ -171,6 +171,7 @@ export function loadCards(opts: LoadCardsOpts = {}): Promise<any> {
     }
   }
   const src = base
+    .replace("from './lessonExploration'", `from '${join(MOBILE, 'src/data/lessonExploration.ts')}'`)
     .replace("from './lessonSupplement'", `from '${join(MOBILE, 'src/data/lessonSupplement.ts')}'`)
     .replace("from './lessonPlan'", `from '${join(MOBILE, 'src/data/lessonPlan.ts')}'`)
     .replace(/from '@hiraia\/shared';/, `from '${join(SHARED, 'index.ts')}';`)

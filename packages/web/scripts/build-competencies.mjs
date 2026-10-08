@@ -32,6 +32,9 @@ const schedule = json('packages/shared/src/curriculum/three-term-2026.json');
 // compiled manifests. Counts indicate available material, not demonstrated mastery.
 read('rag/pipeline/term2-pilot-review.json');
 read('rag/pipeline/pilot-content-corrections.json');
+read('rag/pipeline/full-year-review.json');
+read('rag/pipeline/full-year-review-lock.json');
+read('rag/pipeline/lesson-examples-review.json');
 for (const source of schedule.sources) {
   read(source.referenceFile);
   assert.equal(

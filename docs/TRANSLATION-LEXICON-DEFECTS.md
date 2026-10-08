@@ -29,7 +29,6 @@ These are confirmed against the corpus's own Cebuano bodies and, where noted, ag
 | `halas` | snake | lizard | `tiki` | |
 | `bakaw` | mangrove | egret | `tagak` | |
 | `tahong` | mussel | giant clam | `taklobo` | |
-| `hilo` | poison | thread | `tanod` | |
 | `gamot` | root | medicine | `tambal` | |
 | `ungo` | witch | monkey | `unggoy` | |
 | `bala` | bullet | law | `balaod` | |
@@ -47,6 +46,17 @@ is attested; the colour sense takes `bulokon`) · `bukal` (a hot spring really i
 corpus's own word for cricket) · `mopalta` (attested for light bouncing) · `gasolina` (the
 standard rendering of "fuel") · `sanga` (attested for "stem") · `pako` (16 bodies pair it with
 English "nail", beside 314 wing uses).
+
+**8 October correction — `hilo` is not a blanket thread defect.** Wolff distinguishes
+`hilu` (poison) from stressed `hílu` (thread), on printed page 344 of the
+[Dictionary of Cebuano Visayan](https://ecommons.cornell.edu/bitstreams/a37bbab6-d3a5-4312-8241-277c64051153/download).
+[Binisaya's `hilo` entry](https://www.binisaya.com/cebuano/hilo) also records the thread/yarn
+sense. Unaccented spelling alone cannot establish a mistranslation. The earlier table row
+has therefore been withdrawn; do not automatically replace thread-context `hilo`.
+The October 8 review preserves this counterevidence alongside the original decisions in
+`tools/curriculum-bank-audit/reviews/review-grades3-4-evidence.jsonl`.
+Independent title problems on `ffct-00171` and `ffct-00206` remain unresolved; this lexical
+correction does not approve those cards or change any card text.
 
 ## 2. Titles drawn from a different vocabulary than bodies
 

@@ -26,11 +26,13 @@ models, embeddings, the 16 MB card index, and the APK database are not web impor
 Generation requires the tracked repository inputs and the web package's existing
 TypeScript dependency; it requires no API, model, network access or APK database.
 
-The Term 2, weeks 4–9 pilot audit now selects reviewed examples and questions explicitly
-across Grades 3–10. The smaller counts in this window reflect focused lesson pools;
-unselected cards remain in discovery. Provenance includes `term2-pilot-review.json`
-and `pilot-content-corrections.json`. See `docs/TERM2-PILOT-AUDIT.md` for the scope,
-scientific repairs and outstanding language/practical-assessment boundaries.
+The Term 2 pilot and full-year audit select required teaching and questions
+explicitly across Grades 3–10. The 8 October reading expansion adds separately
+reviewed examples; topic counts include those examples, while direct competency
+counts still use only authored objective cards. Provenance includes both core
+reviews, their corrections/English lock and `lesson-examples-review.json`.
+Unselected cards remain in discovery. See `docs/CURRICULUM-FEED.md` and
+`docs/FULL-YEAR-CURRICULUM-AUDIT.md` for evidence and assessment boundaries.
 
 ## Source and counting rules
 

@@ -10,6 +10,7 @@ import hashlib
 import json
 import sqlite3
 from pathlib import Path
+from lesson_examples import load_examples
 
 ROOT = Path(__file__).resolve().parents[2]
 LOCK = 'rag/pipeline/full-year-review-lock.json'
@@ -54,6 +55,7 @@ def inventory():
     for source in schedule['sources']:
         assert hashlib.sha256((ROOT / source['referenceFile']).read_bytes()).hexdigest() == source['sha256']
         sources.append(source)
+    examples = load_examples(ROOT, cards)
     manifests = [read(f'packages/mobile/src/generated/grade{g}Lessons.generated.json') for g in range(3, 11)]
     reviewed_cards, seen_units, rows = set(), set(), []
     for manifest in manifests:
@@ -75,8 +77,12 @@ def inventory():
                 assert all(cards[c]['factId'] in questions for c in unit['quizCardIds']), unit['id']
                 seen_units.add(unit['id'])
                 approved.update(unit['cardIds'])
-            assert set(lesson['cardIds']) <= approved, f"Unreviewed reserve: {lesson['key']}"
-            reviewed_cards.update(lesson['cardIds'])
+            # Additional reading has its own exact-copy evidence. It must not
+            # silently expand or rewrite the frozen October teaching review.
+            extra = set(examples.get(lesson['key'], []))
+            assert set(lesson['cardIds']) <= approved | extra, f"Unreviewed reserve: {lesson['key']}"
+            assert extra <= set(lesson['cardIds']), f"Missing reviewed examples: {lesson['key']}"
+            reviewed_cards.update(set(lesson['cardIds']) & approved)
             for code in lesson['codes']:
                 if code not in listed:
                     continue

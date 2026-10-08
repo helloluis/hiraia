@@ -127,6 +127,7 @@ type ReviewPage = {
   title: string;
   endsTopic: boolean;
   topicCardCount?: number;
+  exploration?: boolean;
   grade: number;
   choice: CardChoice;
 };
@@ -135,6 +136,7 @@ export function reviewPrepared(grade: number, pageKey: number) {
 }
 export function prepareReview(args: ReviewPage) {
   if (
+    args.exploration ||
     preparing ||
     useReviewStore.getState().busy ||
     useReviewStore.getState().open ||
@@ -148,6 +150,8 @@ export function prepareReview(args: ReviewPage) {
 export async function interceptReview(args: ReviewPage, background = false): Promise<boolean> {
   if (!background && preparing) await preparing;
   if (useReviewStore.getState().busy || useReviewStore.getState().open) return true;
+  // Optional reading must not replace the saved lesson's quiz series or grant stars.
+  if (args.exploration) return false;
   if (!background) useReviewStore.setState({ busy: true, pending: args.choice });
   try {
     await initializeReviews(args.grade, false);

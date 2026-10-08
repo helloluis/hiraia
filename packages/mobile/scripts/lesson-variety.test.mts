@@ -9,7 +9,7 @@ import { lessonVariety } from '../src/data/lessonVariety';
 
 const lessons = auditedGrades.flatMap(lessonsForGrade);
 // Exercise optional-pool behavior independently of editorial inventory size.
-// Full-year review deliberately removed the old, unrelated Grade 5 reserves.
+// Editorial example pools can grow without changing the planner contract.
 const optionalIds = Array.from({ length: 60 }, (_, i) => `fixture-optional-${i}`);
 const richFixture = {
   ...lessons[0]!,

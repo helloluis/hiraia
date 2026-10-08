@@ -13,6 +13,7 @@ const units = Object.assign({}, ...reviews.map((r) => r.units)) as Record<
 >;
 const schedule = read('../../shared/src/curriculum/three-term-2026.json').competencies;
 const codes = new Set(reviews.flatMap((r) => r.codes));
+const examples = read('../../../rag/pipeline/lesson-examples-review.json').relatedCardIds;
 
 test('all listed BOW competencies retain reviewed teaching and quiz anchors across all terms', () => {
   const expectedCodes = Object.keys(schedule).filter((code) => schedule[code].status === 'listed');
@@ -26,9 +27,10 @@ test('all listed BOW competencies retain reviewed teaching and quiz anchors acro
       if (!lesson.codes.some((code) => codes.has(code))) continue;
       terms.add(lesson.term);
       lesson.codes.forEach((code) => coveredCodes.add(code));
-      const approved = new Set<string>(
-        reviews.flatMap((r) => r.relatedCardIds[lesson.sourceKey] ?? [])
-      );
+      const approved = new Set<string>([
+        ...reviews.flatMap((r) => r.relatedCardIds[lesson.sourceKey] ?? []),
+        ...(examples[lesson.sourceKey ?? lesson.key] ?? []),
+      ]);
       for (const unit of lesson.units) {
         const decision = units[unit.id];
         assert.ok(decision, unit.id);

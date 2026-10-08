@@ -191,7 +191,11 @@ test('repeat keeps the selected shelf and history but requests a fresh plan', ()
   const lesson = lessonsForGrade(5).find((l) => l.key === 'g5:states-of-matter')!;
   const first = planLesson(lesson, new Set(), undefined, 23);
   const second = planLesson(lesson, new Set(first.cards), undefined, 99);
-  assert.ok(second.cards.filter((id) => !first.cards.includes(id)).length >= 15);
+  // This reviewed lesson now has 32 cards and a 30-card visit. A numeric minimum
+  // inherited from the broader, unreviewed pool would demand nonexistent cards.
+  const unread = lesson.cardIds.filter(id => !first.cards.includes(id));
+  assert.ok(unread.length > 0);
+  assert.ok(unread.every(id => second.cards.includes(id)));
 });
 
 test('core objectives stay in authored order and optional topic groups remain contiguous', () => {

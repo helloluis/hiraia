@@ -30,6 +30,24 @@ test('public browser and app share ordered lessons, codes, and term/week assignm
       topics.map((t: any) => [t.key, t.term, t.weeks, t.competencies.map((c: any) => c.code)]),
       lessonsForGrade(grade.grade).map((l) => [l.key, l.term, l.weeks, l.codes])
     );
+    for (const lesson of lessonsForGrade(grade.grade)) {
+      const topic = topics.find((t: any) => t.key === lesson.key);
+      assert.equal(
+        topic.cardCount,
+        new Set(lesson.cardIds).size,
+        `${lesson.key}: stale reading count`
+      );
+      for (const competency of topic.competencies) {
+        const unitCards = lesson.units
+          .filter((unit) => unit.competency === competency.code)
+          .flatMap((unit) => unit.cardIds);
+        assert.equal(
+          competency.cardCount,
+          new Set(unitCards).size,
+          `${competency.code}: false coverage`
+        );
+      }
+    }
   }
 });
 test('demo seeds and grade packs contain only Term 1 cards in the new sequence', () => {

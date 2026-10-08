@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "date": "2026-10-08",
+  "unit": "unique current main-bank card IDs",
+  "effectiveReviewInputs": [
+    {
+      "path": "tools/curriculum-bank-audit/reviews/20261008-calibration-002.jsonl",
+      "sha256": "58e835c7bcd70a5d2eca87c902f004c335e5e8042520d2756051231eb044570e",
+      "reviewed": 59,
+      "accepted": 16,
+      "held": 43,
+      "acceptedPlacements": 23
+    },
+    {
+      "path": "tools/curriculum-bank-audit/reviews/20261008-grades3-4.jsonl",
+      "sha256": "c643f7b9ae89f541fdfc89cefa7417bf887b2e2c409808e5b7f3e014e0d2fc47",
+      "reviewed": 150,
+      "accepted": 86,
+      "held": 64,
+      "acceptedPlacements": 99,
+      "packetSha256": "8e86367b60c0368f834e4fff4b394e199ca67bdf8936c1532c2b9f556a0c3674"
+    },
+    {
+      "path": "tools/curriculum-bank-audit/reviews/20261008-grades5-6.jsonl",
+      "sha256": "e4401f2d188644ab07fce0037917e4d37b6b398b1331a4e80920b2900d045585",
+      "reviewed": 150,
+      "accepted": 86,
+      "held": 64,
+      "acceptedPlacements": 98,
+      "packetSha256": "6e9c91679df819b9ecd170d9047ff99e5e476993e552e5affcb59575b69901f9"
+    },
+    {
+      "path": "tools/curriculum-bank-audit/reviews/20261008-grades7-10.jsonl",
+      "sha256": "8792cd05d6f70e0ea4128501bb3399a4234bff111dc44f8a9904497f3523f779",
+      "reviewed": 150,
+      "accepted": 85,
+      "held": 65,
+      "acceptedPlacements": 108,
+      "packetSha256": "ea0adc88da4baf9963169e4e980c66c8e324e5d91ebcd793409b0373e3705952"
+    }
+  ],
+  "fullTrilingualReviews": 509,
+  "accepts": 273,
+  "holds": 236,
+  "supportFiles": {
+    "tools/curriculum-bank-audit/reviews/20261008-calibration.jsonl": "df8fda179d6978b02bfd19bd4603c118ce39a7cbbc97650ca74f703807a68cda",
+    "tools/curriculum-bank-audit/reviews/20261008-grades3-4-corrections.jsonl": "be6f423132d46c428457c0724d66c75ebe4ca89be8dadf855698f5cf06a4cfa8",
+    "tools/curriculum-bank-audit/reviews/review-grades3-4-001.jsonl": "db941b6094aef09248b40e39dc27562d9c1ea19bbcfa98751bc5f91472133ea8",
+    "tools/curriculum-bank-audit/reviews/review-grades3-4-evidence.jsonl": "0617c66f69d6c1c20760f6f58d593b84e7a3cef8556d82a7ac3b5f426302ba90",
+    "tools/curriculum-bank-audit/reviews/review-grades5-6-001-corrections.jsonl": "f3538f7c46e7be157678b38241852025279f3af94cad0b00ec618c8a252956d5",
+    "tools/curriculum-bank-audit/reviews/review-grades5-6-001-evidence.json": "0180200f45b318414fe190787576af744c8e82a2d98d846618293d735f803f7f",
+    "tools/curriculum-bank-audit/reviews/review-grades5-6-001.jsonl": "945b1d9e688030f8c4f8fc8c4f27026203d22426d8ff5e7860d8c78470607586"
+  },
+  "corrections": [
+    "ffct-15074 acceptance withdrawn after Wolff identifies baso as a drinking vessel.",
+    "ffct-00171 and ffct-00206 remain held for independent title issues; the unsupported hilo/thread blocker was removed."
+  ],
+  "limitations": [
+    "Holds include unresolved wording, source or placement evidence, not only proven defects.",
+    "No native-language certification. No bulk reuse of old tag-review approvals."
+  ]
+}

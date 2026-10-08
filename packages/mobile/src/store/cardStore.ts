@@ -48,6 +48,8 @@ import {
   choiceLabel,
   competencyKeys,
   curriculumCursor,
+  curriculumOutline,
+  readingCollectionTopics,
   cursorTopic,
   topicTitle,
   topicShelves,
@@ -186,6 +188,8 @@ interface CardState {
   lessonRecap: LessonRecap | null;
   continueAfterLessonRecap: () => void;
   repeatLesson: () => void;
+  readMore: () => void;
+  exploreCollection: (key: string) => void;
   titleCard: TitleCardContent | null;
   introducedTopic: string | null;
   continueAfterTitle: () => void;
@@ -266,7 +270,8 @@ interface CardState {
    * OutlineTopic.key): clears any magnet, holds the topic, and lands on its best next unseen
    * card. A key the outline does not list (no cards at this grade) is ignored.
    */
-  enterCurriculum: (key: string, savedRun?: unknown, shelfCat?: string) => void;
+  enterCurriculum: (key: string, savedRun?: unknown, shelfCat?: string,
+    continuation?: { key: string; run?: import('../data/lessonPlan').LessonRun }) => void;
   /** The curriculum ribbon's [x]: leave calendar mode; the feed continues where it is. */
   exitCurriculum: () => void;
   continueAfterResponse: () => void;
@@ -308,6 +313,12 @@ const seenStore: { cards: Map<string, SeenRecord>; competencies: Map<string, See
   cards: new Map(),
   competencies: new Map(),
 };
+
+/** Persistent card views for this reader. Repeating a lesson only resets the draw's
+ * exclusion set; it must never erase the reader's progress in the curriculum sheet. */
+export function readingHistory(): ReadonlySet<string> {
+  return new Set(seenStore.cards.keys());
+}
 
 /**
  * Fresh weighting context for one draw: grade + clock are re-read every time. The magnet rides
@@ -432,11 +443,26 @@ export const useCardStore = create<CardState>()((set, get) => ({
     // Replan from persistent coverage; do not reuse the completed run or erase history.
     get().enterCurriculum(recap.key, undefined, recap.run.shelfCat);
   },
+  readMore: () => {
+    const recap = get().lessonRecap;
+    if (!recap || recap.grade !== useEngineStore.getState().grade) return;
+    get().enterCurriculum(recap.key, undefined, recap.run.shelfCat,
+      { key: recap.nextKey, run: recap.nextRun });
+  },
+  exploreCollection: (key) => {
+    const s = get();
+    const grade = useEngineStore.getState().grade;
+    if (!key.startsWith(`explore:g${grade}:`)) return;
+    const recap = s.lessonRecap;
+    const continuation = recap && recap.grade === grade ? { key: recap.nextKey, run: recap.nextRun }
+      : s.curriculum?.lessonRun?.returnTo ?? (s.curriculum ? { key: s.curriculum.key, run: s.curriculum.lessonRun } : undefined);
+    get().enterCurriculum(key, undefined, undefined, continuation);
+  },
   titleCard: null,
   introducedTopic: null,
   continueAfterTitle: () => {
     if (!get().titleCard) return;
-    beginTitleSection();
+    if (get().currentTopic?.lessonRun?.mode !== 'exploration') beginTitleSection();
     set({ titleCard: null, pageKey: get().pageKey + 1 });
   },
   choices: [],
@@ -524,8 +550,9 @@ export const useCardStore = create<CardState>()((set, get) => ({
       const restoredRecap = parseLessonRecap(
         await getSetting(`cards.lessonRecap.${grade}`).catch(() => null), grade,
         (key, shelf) => {
-          const c = curriculumCursor(grade, key, seen);
-          const topic = c && cursorTopic(c);
+          // A fully read collection has no NEW run, but its saved recap remains valid.
+          const topic = [...curriculumOutline(grade), ...readingCollectionTopics(grade)]
+            .find(t => t.key === key);
           if (!topic) return null;
           return shelf ? topicShelves(topic, 'english').find(s => s.cat === shelf)?.ids ?? null
             : new Set(cardsForTopic(topic));
@@ -634,6 +661,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
       title: topic ? topicTitle(topic, useEngineStore.getState().language ?? 'english') : '',
       endsTopic: !!s.currentTopic && s.currentTopic.key !== s.curriculum?.key,
       topicCardCount: s.currentTopic?.idSet.size,
+      exploration: s.currentTopic?.lessonRun?.mode === 'exploration',
       grade: useEngineStore.getState().grade,
       choice: s.choices[0],
     });
@@ -665,6 +693,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
       title: topic ? topicTitle(topic, useEngineStore.getState().language ?? 'english') : '',
       endsTopic: !!s.currentTopic && s.currentTopic.key !== s.curriculum?.key,
       topicCardCount: s.currentTopic?.idSet.size,
+      exploration: s.currentTopic?.lessonRun?.mode === 'exploration',
       grade,
       choice,
     }).then((blocked) => {
@@ -981,7 +1010,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
       useEngineStore.getState().language ?? 'english', { ctx: feedContext(null, s.curriculum), recentIds: s.recent }) });
   },
 
-  enterCurriculum: (key, savedRun, shelfCat) => {
+  enterCurriculum: (key, savedRun, shelfCat, continuation) => {
     const s = get();
     const grade = useEngineStore.getState().grade;
     const picked = curriculumCursor(
@@ -989,7 +1018,8 @@ export const useCardStore = create<CardState>()((set, get) => ({
       key,
       new Set([...seenStore.cards.keys(), ...s.seen]),
       savedRun,
-      shelfCat
+      shelfCat,
+      continuation
     );
     if (!picked) return; // not on this grade's outline (no cards) — the sheet never offers it
     if (!savedRun) {

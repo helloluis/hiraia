@@ -1,0 +1,3395 @@
+{
+  "schema": 1,
+  "date": "2026-10-08",
+  "recordedAt": "2026-10-08T14:09:18.440063+08:00",
+  "unit": "unique card IDs",
+  "before": {
+    "schema": 1,
+    "unit": "unique main-bank card IDs",
+    "mainBankCards": 49155,
+    "curriculumCards": 7689,
+    "curriculumPercent": 15.642355813243821,
+    "outsideCurriculumCards": 41466,
+    "supplementalCurriculumCards": 165,
+    "dispositions": {
+      "curriculum-core": 1192,
+      "curriculum-example": 6497,
+      "explicit-hold": 15750,
+      "needs-current-review": 25716
+    },
+    "grades": {
+      "3": {
+        "allCurriculumCards": 1566,
+        "mainBankCards": 1556,
+        "supplementalCards": 10
+      },
+      "4": {
+        "allCurriculumCards": 1063,
+        "mainBankCards": 1047,
+        "supplementalCards": 16
+      },
+      "5": {
+        "allCurriculumCards": 1116,
+        "mainBankCards": 1100,
+        "supplementalCards": 16
+      },
+      "6": {
+        "allCurriculumCards": 1117,
+        "mainBankCards": 1099,
+        "supplementalCards": 18
+      },
+      "7": {
+        "allCurriculumCards": 1011,
+        "mainBankCards": 989,
+        "supplementalCards": 22
+      },
+      "8": {
+        "allCurriculumCards": 729,
+        "mainBankCards": 702,
+        "supplementalCards": 27
+      },
+      "9": {
+        "allCurriculumCards": 767,
+        "mainBankCards": 740,
+        "supplementalCards": 27
+      },
+      "10": {
+        "allCurriculumCards": 589,
+        "mainBankCards": 560,
+        "supplementalCards": 29
+      }
+    },
+    "evidencePins": {
+      "packages/mobile/src/generated/cardsIndex.generated.json": "a1cce073252ee4778c20bc6beaa6b79d06768ac1664a4eca2b70331d7e678f5e",
+      "packages/mobile/src/generated/grade3Lessons.generated.json": "3e6f82c46287a84eacab2cfbfda9d86ca800ceb261886fea5a41c3b995c19da0",
+      "packages/mobile/src/generated/grade4Lessons.generated.json": "fa9c73cd5936cfd3c9181d55809bd12965260ab45bf82762f0eab17f940b6285",
+      "packages/mobile/src/generated/grade5Lessons.generated.json": "cfeefec0a0247bf506e2c449fed42ec8a52977a88b658c6563916b20c9caee09",
+      "packages/mobile/src/generated/grade6Lessons.generated.json": "8c882896e24f24efaa312822a8d5e93e5234e67a131dc24ac867acf294d4ecd1",
+      "packages/mobile/src/generated/grade7Lessons.generated.json": "b39a241be5e950deb8dc61df8918fa34120d525c8a75cc63884fdc430d1e7e90",
+      "packages/mobile/src/generated/grade8Lessons.generated.json": "7a8849a0538174a8396febaf9cd63720ef68cffbbbb9e193baf9fc876da30e01",
+      "packages/mobile/src/generated/grade9Lessons.generated.json": "02e2bfa4277bf873c6c28eaee1c725e4a48a1c6e8c6918c3873e7c6e06e78d69",
+      "packages/mobile/src/generated/grade10Lessons.generated.json": "cc5b93dfc29dfc15a38e9614976b40be3c08735461b5acb4a78991ba02e6d10e",
+      "packages/mobile/src/data/curriculumTagExclusions.json": "8f559f8124fb02b078d7d989aff55f6305530cdc89ad85b576950147bfebd957",
+      "rag/pipeline/term2-pilot-review.json": "6bbdce8dea5cf0b91c6b1c435f9f0522a33c2c4450f57ca4700b4d20e2e7c768",
+      "rag/pipeline/full-year-review.json": "ecb769b4f3a08762d804d7be0bc540a7eeace8c71e64fffc772e8089c32ad3ae",
+      "rag/pipeline/lesson-examples-review.json": "1c99e940c6f99f16ec840c5a023c5bbc3f15b5568814b40284fd3817ce27d746"
+    },
+    "limitations": [
+      "Disposition inventory is not a fresh scientific approval of every card.",
+      "Explicit holds and pending reviews do not enter optional reading.",
+      "Reachability does not measure actual student views or mastery."
+    ],
+    "ledgerSha256": "c5b0776291623d55bee90db48c0d25fb3d4649b6e1cd1fc9ed8343e71b047571"
+  },
+  "after": {
+    "schema": 1,
+    "unit": "unique main-bank card IDs",
+    "mainBankCards": 49155,
+    "curriculumCards": 7962,
+    "curriculumPercent": 16.197741837046078,
+    "outsideCurriculumCards": 41193,
+    "supplementalCurriculumCards": 165,
+    "dispositions": {
+      "curriculum-core": 1192,
+      "curriculum-example": 6770,
+      "explicit-hold": 15986,
+      "needs-current-review": 25207
+    },
+    "grades": {
+      "3": {
+        "allCurriculumCards": 1617,
+        "mainBankCards": 1607,
+        "supplementalCards": 10
+      },
+      "4": {
+        "allCurriculumCards": 1110,
+        "mainBankCards": 1094,
+        "supplementalCards": 16
+      },
+      "5": {
+        "allCurriculumCards": 1151,
+        "mainBankCards": 1135,
+        "supplementalCards": 16
+      },
+      "6": {
+        "allCurriculumCards": 1176,
+        "mainBankCards": 1158,
+        "supplementalCards": 18
+      },
+      "7": {
+        "allCurriculumCards": 1030,
+        "mainBankCards": 1008,
+        "supplementalCards": 22
+      },
+      "8": {
+        "allCurriculumCards": 757,
+        "mainBankCards": 730,
+        "supplementalCards": 27
+      },
+      "9": {
+        "allCurriculumCards": 795,
+        "mainBankCards": 768,
+        "supplementalCards": 27
+      },
+      "10": {
+        "allCurriculumCards": 618,
+        "mainBankCards": 589,
+        "supplementalCards": 29
+      }
+    },
+    "evidencePins": {
+      "packages/mobile/src/generated/cardsIndex.generated.json": "a1cce073252ee4778c20bc6beaa6b79d06768ac1664a4eca2b70331d7e678f5e",
+      "packages/mobile/src/generated/grade3Lessons.generated.json": "1172d6e98479b6566af4b9a432eeb4c4a750a7e2664142e6036f1e0acc2de0e9",
+      "packages/mobile/src/generated/grade4Lessons.generated.json": "075542ce6e2adbe25af9b836c0a96fcddad99c6350823c2655b847458362eb3e",
+      "packages/mobile/src/generated/grade5Lessons.generated.json": "98d718a800422d2fafc73d2a82592639425afdce531afebfb77b0cc11999e850",
+      "packages/mobile/src/generated/grade6Lessons.generated.json": "acbd7d2f7545da517beba6d3e850a42648bb01bd82881f2752602295323f6b31",
+      "packages/mobile/src/generated/grade7Lessons.generated.json": "8c6ef498457b8c35a19e647d841e1e6661c4a460d2625002a5c861c186c815e9",
+      "packages/mobile/src/generated/grade8Lessons.generated.json": "5ab67074112738ff30b2323c5fd589fafacd1057af60d52ae681f7f82f01b07e",
+      "packages/mobile/src/generated/grade9Lessons.generated.json": "96ffd7d91541c19846468bba262b2dd3e195520638cc13a5fb59c543bdcb8a0b",
+      "packages/mobile/src/generated/grade10Lessons.generated.json": "3417fa518e87d9a8426c24644fb03095dc6bcef19a9df6d03f86191fd24307a2",
+      "packages/mobile/src/data/curriculumTagExclusions.json": "8f559f8124fb02b078d7d989aff55f6305530cdc89ad85b576950147bfebd957",
+      "rag/pipeline/term2-pilot-review.json": "6bbdce8dea5cf0b91c6b1c435f9f0522a33c2c4450f57ca4700b4d20e2e7c768",
+      "rag/pipeline/full-year-review.json": "ecb769b4f3a08762d804d7be0bc540a7eeace8c71e64fffc772e8089c32ad3ae",
+      "rag/pipeline/lesson-examples-review.json": "ed6ca51754d6d543e4194989224c11b5181756857483cf3f8260a0099a32cfe5"
+    },
+    "limitations": [
+      "Disposition inventory is not a fresh scientific approval of every card.",
+      "Explicit holds and pending reviews do not enter optional reading.",
+      "Reachability does not measure actual student views or mastery."
+    ],
+    "ledgerSha256": "fe70562cff8eb9f8ebeecae0403a9e7cdcd098aae07d8bd7019591d158de2fec"
+  },
+  "newIndividuallyReviewedCards": 509,
+  "newAdmissions": 273,
+  "newHolds": 236,
+  "reviewProvenance": {
+    "schema": 1,
+    "date": "2026-10-08",
+    "unit": "unique current main-bank card IDs",
+    "effectiveReviewInputs": [
+      {
+        "path": "tools/curriculum-bank-audit/reviews/20261008-calibration-002.jsonl",
+        "sha256": "58e835c7bcd70a5d2eca87c902f004c335e5e8042520d2756051231eb044570e",
+        "reviewed": 59,
+        "accepted": 16,
+        "held": 43,
+        "acceptedPlacements": 23
+      },
+      {
+        "path": "tools/curriculum-bank-audit/reviews/20261008-grades3-4.jsonl",
+        "sha256": "c643f7b9ae89f541fdfc89cefa7417bf887b2e2c409808e5b7f3e014e0d2fc47",
+        "reviewed": 150,
+        "accepted": 86,
+        "held": 64,
+        "acceptedPlacements": 99,
+        "packetSha256": "8e86367b60c0368f834e4fff4b394e199ca67bdf8936c1532c2b9f556a0c3674"
+      },
+      {
+        "path": "tools/curriculum-bank-audit/reviews/20261008-grades5-6.jsonl",
+        "sha256": "e4401f2d188644ab07fce0037917e4d37b6b398b1331a4e80920b2900d045585",
+        "reviewed": 150,
+        "accepted": 86,
+        "held": 64,
+        "acceptedPlacements": 98,
+        "packetSha256": "6e9c91679df819b9ecd170d9047ff99e5e476993e552e5affcb59575b69901f9"
+      },
+      {
+        "path": "tools/curriculum-bank-audit/reviews/20261008-grades7-10.jsonl",
+        "sha256": "8792cd05d6f70e0ea4128501bb3399a4234bff111dc44f8a9904497f3523f779",
+        "reviewed": 150,
+        "accepted": 85,
+        "held": 65,
+        "acceptedPlacements": 108,
+        "packetSha256": "ea0adc88da4baf9963169e4e980c66c8e324e5d91ebcd793409b0373e3705952"
+      }
+    ],
+    "fullTrilingualReviews": 509,
+    "accepts": 273,
+    "holds": 236,
+    "supportFiles": {
+      "tools/curriculum-bank-audit/reviews/20261008-calibration.jsonl": "df8fda179d6978b02bfd19bd4603c118ce39a7cbbc97650ca74f703807a68cda",
+      "tools/curriculum-bank-audit/reviews/20261008-grades3-4-corrections.jsonl": "be6f423132d46c428457c0724d66c75ebe4ca89be8dadf855698f5cf06a4cfa8",
+      "tools/curriculum-bank-audit/reviews/review-grades3-4-001.jsonl": "db941b6094aef09248b40e39dc27562d9c1ea19bbcfa98751bc5f91472133ea8",
+      "tools/curriculum-bank-audit/reviews/review-grades3-4-evidence.jsonl": "0617c66f69d6c1c20760f6f58d593b84e7a3cef8556d82a7ac3b5f426302ba90",
+      "tools/curriculum-bank-audit/reviews/review-grades5-6-001-corrections.jsonl": "f3538f7c46e7be157678b38241852025279f3af94cad0b00ec618c8a252956d5",
+      "tools/curriculum-bank-audit/reviews/review-grades5-6-001-evidence.json": "0180200f45b318414fe190787576af744c8e82a2d98d846618293d735f803f7f",
+      "tools/curriculum-bank-audit/reviews/review-grades5-6-001.jsonl": "945b1d9e688030f8c4f8fc8c4f27026203d22426d8ff5e7860d8c78470607586"
+    },
+    "corrections": [
+      "ffct-15074 acceptance withdrawn after Wolff identifies baso as a drinking vessel.",
+      "ffct-00171 and ffct-00206 remain held for independent title issues; the unsupported hilo/thread blocker was removed."
+    ],
+    "limitations": [
+      "Holds include unresolved wording, source or placement evidence, not only proven defects.",
+      "No native-language certification. No bulk reuse of old tag-review approvals."
+    ]
+  },
+  "grades": [
+    {
+      "grade": 3,
+      "uniqueCardsBefore": 1566,
+      "uniqueCardsAfter": 1617,
+      "optionalReading": {
+        "grade": 3,
+        "collectionCount": 4,
+        "boundedRuns": 82,
+        "uniqueCards": 1617,
+        "eligibleCards": 1617,
+        "unreadAfterExploring": 0
+      },
+      "topics": [
+        {
+          "key": "g3:everyday-science",
+          "title": "Science Around Us",
+          "before": 28,
+          "after": 29,
+          "added": [
+            "ffct-03340"
+          ]
+        },
+        {
+          "key": "g3:exploring",
+          "title": "Ask and Try",
+          "before": 4,
+          "after": 4,
+          "added": []
+        },
+        {
+          "key": "g3:science-tools",
+          "title": "Our Science Tools",
+          "before": 11,
+          "after": 15,
+          "added": [
+            "ffct-00612",
+            "ffct-03152",
+            "ffct-03403",
+            "ffct-25145"
+          ]
+        },
+        {
+          "key": "g3:science-skills",
+          "title": "Observe, Predict, Measure",
+          "before": 59,
+          "after": 61,
+          "added": [
+            "ffct-04850",
+            "ffct-25145"
+          ]
+        },
+        {
+          "key": "g3:solid-properties",
+          "title": "Properties of Solids",
+          "before": 52,
+          "after": 56,
+          "added": [
+            "dcard-06335",
+            "ffct-00049",
+            "ffct-01000",
+            "ffct-15113"
+          ]
+        },
+        {
+          "key": "g3:harmful-changes",
+          "title": "Harmful Material Changes",
+          "before": 21,
+          "after": 24,
+          "added": [
+            "dcard-00183",
+            "dcard-04520",
+            "ffct-03358"
+          ]
+        },
+        {
+          "key": "g3:safe-materials",
+          "title": "Use and Dispose Safely",
+          "before": 43,
+          "after": 44,
+          "added": [
+            "dcard-02535"
+          ]
+        },
+        {
+          "key": "g3:useful-changes",
+          "title": "Making Solids Useful",
+          "before": 43,
+          "after": 45,
+          "added": [
+            "ffct-00349",
+            "ffct-00927"
+          ]
+        },
+        {
+          "key": "g3:community-metals",
+          "title": "Metals We Use",
+          "before": 30,
+          "after": 34,
+          "added": [
+            "ffct-15040",
+            "ffct-15041",
+            "ffct-15105",
+            "ffct-17619"
+          ]
+        },
+        {
+          "key": "g3:living-things-investigation",
+          "title": "Investigate Living Things",
+          "before": 10,
+          "after": 10,
+          "added": []
+        },
+        {
+          "key": "g3:living-or-not",
+          "title": "Living and Non-living",
+          "before": 12,
+          "after": 13,
+          "added": [
+            "ffct-00237"
+          ]
+        },
+        {
+          "key": "g3:signs-of-life",
+          "title": "Signs of Life",
+          "before": 118,
+          "after": 120,
+          "added": [
+            "dcard-02473",
+            "dcard-02518"
+          ]
+        },
+        {
+          "key": "g3:animal-parts",
+          "title": "Animal Parts and Their Jobs",
+          "before": 75,
+          "after": 77,
+          "added": [
+            "ffct-00004",
+            "ffct-00039"
+          ]
+        },
+        {
+          "key": "g3:plant-parts",
+          "title": "Plant Parts and Their Jobs",
+          "before": 27,
+          "after": 29,
+          "added": [
+            "ffct-00053",
+            "ffct-00946"
+          ]
+        },
+        {
+          "key": "g3:basic-needs",
+          "title": "What Living Things Need",
+          "before": 205,
+          "after": 206,
+          "added": [
+            "ffct-00394"
+          ]
+        },
+        {
+          "key": "g3:depending-on-nature",
+          "title": "Living Things Depend on Each Other",
+          "before": 155,
+          "after": 158,
+          "added": [
+            "ffct-00013",
+            "ffct-00026",
+            "ffct-14078"
+          ]
+        },
+        {
+          "key": "g3:protecting-nature",
+          "title": "Protect Our Environment",
+          "before": 52,
+          "after": 55,
+          "added": [
+            "dcard-04269",
+            "dcard-12115",
+            "ffct-03222"
+          ]
+        },
+        {
+          "key": "g3:moving-things",
+          "title": "Ways to Move Things",
+          "before": 60,
+          "after": 63,
+          "added": [
+            "dcard-01865",
+            "ffct-08190",
+            "ffct-22361"
+          ]
+        },
+        {
+          "key": "g3:movement-factors",
+          "title": "What Changes Movement?",
+          "before": 13,
+          "after": 13,
+          "added": []
+        },
+        {
+          "key": "g3:position",
+          "title": "Where Did It Move?",
+          "before": 6,
+          "after": 6,
+          "added": []
+        },
+        {
+          "key": "g3:sound",
+          "title": "Making and Hearing Sound",
+          "before": 69,
+          "after": 71,
+          "added": [
+            "ffct-00640",
+            "ffct-01476"
+          ]
+        },
+        {
+          "key": "g3:light",
+          "title": "Light Around Us",
+          "before": 101,
+          "after": 103,
+          "added": [
+            "dcard-04108",
+            "ffct-02127"
+          ]
+        },
+        {
+          "key": "g3:light-and-sound-safety",
+          "title": "Protect Eyes and Ears",
+          "before": 12,
+          "after": 13,
+          "added": [
+            "ffct-02426"
+          ]
+        },
+        {
+          "key": "g3:sending-messages",
+          "title": "Send a Message",
+          "before": 10,
+          "after": 10,
+          "added": []
+        },
+        {
+          "key": "g3:earth-materials",
+          "title": "Earth Materials Around Us",
+          "before": 85,
+          "after": 86,
+          "added": [
+            "ffct-01000"
+          ]
+        },
+        {
+          "key": "g3:weather",
+          "title": "Watch the Weather",
+          "before": 38,
+          "after": 42,
+          "added": [
+            "ffct-01231",
+            "ffct-01651",
+            "ffct-08101",
+            "ffct-14078"
+          ]
+        },
+        {
+          "key": "g3:watching-the-sky",
+          "title": "Watch the Sky",
+          "before": 214,
+          "after": 216,
+          "added": [
+            "ffct-27525",
+            "ffct-35760"
+          ]
+        },
+        {
+          "key": "g3:sky-and-our-day",
+          "title": "The Sky and Our Activities",
+          "before": 18,
+          "after": 19,
+          "added": [
+            "ffct-22656"
+          ]
+        },
+        {
+          "key": "g3:sun-safety",
+          "title": "Stay Safe in the Sun",
+          "before": 13,
+          "after": 16,
+          "added": [
+            "ffct-01668",
+            "ffct-01865",
+            "ffct-02874"
+          ]
+        }
+      ],
+      "thinTopics": [
+        {
+          "key": "g3:exploring",
+          "title": "Ask and Try",
+          "reachableCards": 4,
+          "reachableFacts": 4
+        },
+        {
+          "key": "g3:position",
+          "title": "Where Did It Move?",
+          "reachableCards": 6,
+          "reachableFacts": 6
+        }
+      ]
+    },
+    {
+      "grade": 4,
+      "uniqueCardsBefore": 1063,
+      "uniqueCardsAfter": 1110,
+      "optionalReading": {
+        "grade": 4,
+        "collectionCount": 4,
+        "boundedRuns": 58,
+        "uniqueCards": 1109,
+        "eligibleCards": 1109,
+        "unreadAfterExploring": 0
+      },
+      "topics": [
+        {
+          "key": "g4:scientists",
+          "title": "Scientists and Inventions",
+          "before": 7,
+          "after": 9,
+          "added": [
+            "ffct-00269",
+            "ffct-00589"
+          ]
+        },
+        {
+          "key": "g4:local-inventions",
+          "title": "Inventions in Daily Life",
+          "before": 93,
+          "after": 95,
+          "added": [
+            "ffct-00077",
+            "ffct-00286"
+          ]
+        },
+        {
+          "key": "g4:chemical-properties",
+          "title": "Chemical Properties",
+          "before": 36,
+          "after": 36,
+          "added": []
+        },
+        {
+          "key": "g4:heating-materials",
+          "title": "Heating Changes Materials",
+          "before": 11,
+          "after": 13,
+          "added": [
+            "ffct-00301",
+            "ffct-01030"
+          ]
+        },
+        {
+          "key": "g4:preventing-harm",
+          "title": "Prevent Harmful Changes",
+          "before": 10,
+          "after": 13,
+          "added": [
+            "dcard-03060",
+            "dcard-05662",
+            "ffct-15166"
+          ]
+        },
+        {
+          "key": "g4:community-problems",
+          "title": "Science Helps Our Community",
+          "before": 49,
+          "after": 51,
+          "added": [
+            "ffct-02255",
+            "ffct-03805"
+          ]
+        },
+        {
+          "key": "g4:environment-survey",
+          "title": "Survey Our Environment",
+          "before": 10,
+          "after": 11,
+          "added": [
+            "dcard-06613"
+          ]
+        },
+        {
+          "key": "g4:body-systems",
+          "title": "Our Body Systems",
+          "before": 63,
+          "after": 66,
+          "added": [
+            "ffct-00002",
+            "ffct-00024",
+            "ffct-13666"
+          ]
+        },
+        {
+          "key": "g4:plant-systems",
+          "title": "Roots and Shoots",
+          "before": 19,
+          "after": 23,
+          "added": [
+            "ffct-00053",
+            "ffct-00624",
+            "ffct-00919",
+            "ffct-00946"
+          ]
+        },
+        {
+          "key": "g4:habitat-groups",
+          "title": "Group Living Things by Habitat",
+          "before": 71,
+          "after": 71,
+          "added": []
+        },
+        {
+          "key": "g4:habitat-examples",
+          "title": "Who Lives Here?",
+          "before": 42,
+          "after": 42,
+          "added": []
+        },
+        {
+          "key": "g4:life-cycles",
+          "title": "Compare Life Cycles",
+          "before": 58,
+          "after": 58,
+          "added": []
+        },
+        {
+          "key": "g4:animal-food",
+          "title": "What Animals Eat",
+          "before": 11,
+          "after": 13,
+          "added": [
+            "ffct-00096",
+            "ffct-00140"
+          ]
+        },
+        {
+          "key": "g4:food-chains",
+          "title": "Draw a Food Chain",
+          "before": 14,
+          "after": 14,
+          "added": []
+        },
+        {
+          "key": "g4:rigid-soft",
+          "title": "Rigid and Soft Objects",
+          "before": 14,
+          "after": 15,
+          "added": [
+            "ffct-23363"
+          ]
+        },
+        {
+          "key": "g4:distance-time",
+          "title": "Measure Distance and Time",
+          "before": 11,
+          "after": 11,
+          "added": []
+        },
+        {
+          "key": "g4:speed",
+          "title": "Understanding Speed",
+          "before": 17,
+          "after": 19,
+          "added": [
+            "ffct-21919",
+            "ffct-24321"
+          ]
+        },
+        {
+          "key": "g4:speed-graphs",
+          "title": "Distance–Time Graphs",
+          "before": 9,
+          "after": 9,
+          "added": []
+        },
+        {
+          "key": "g4:change-motion",
+          "title": "Change How Objects Move",
+          "before": 21,
+          "after": 22,
+          "added": [
+            "ffct-16967"
+          ]
+        },
+        {
+          "key": "g4:change-shape",
+          "title": "Forces Change Shape",
+          "before": 25,
+          "after": 27,
+          "added": [
+            "ffct-15103",
+            "ffct-15113"
+          ]
+        },
+        {
+          "key": "g4:magnets",
+          "title": "Explore Magnets",
+          "before": 27,
+          "after": 30,
+          "added": [
+            "ffct-15039",
+            "ffct-15657",
+            "ffct-17619"
+          ]
+        },
+        {
+          "key": "g4:effects-at-distance",
+          "title": "Effects Without Touching",
+          "before": 32,
+          "after": 32,
+          "added": []
+        },
+        {
+          "key": "g4:energy",
+          "title": "Energy Causes Change",
+          "before": 84,
+          "after": 86,
+          "added": [
+            "ffct-00725",
+            "ffct-02076"
+          ]
+        },
+        {
+          "key": "g4:energy-uses",
+          "title": "Energy in Our Community",
+          "before": 89,
+          "after": 91,
+          "added": [
+            "ffct-00286",
+            "ffct-02127"
+          ]
+        },
+        {
+          "key": "g4:soil",
+          "title": "Compare Soils",
+          "before": 29,
+          "after": 31,
+          "added": [
+            "ffct-29396",
+            "ffct-29397"
+          ]
+        },
+        {
+          "key": "g4:water-for-life",
+          "title": "Water for Living Things",
+          "before": 13,
+          "after": 14,
+          "added": [
+            "ffct-00394"
+          ]
+        },
+        {
+          "key": "g4:soil-and-growth",
+          "title": "Soil and Plant Growth",
+          "before": 10,
+          "after": 10,
+          "added": []
+        },
+        {
+          "key": "g4:weather-elements",
+          "title": "Describe the Weather",
+          "before": 104,
+          "after": 106,
+          "added": [
+            "ffct-18557",
+            "ffct-25530"
+          ]
+        },
+        {
+          "key": "g4:weather-tools",
+          "title": "Measure the Weather",
+          "before": 17,
+          "after": 19,
+          "added": [
+            "ffct-18557",
+            "ffct-25530"
+          ]
+        },
+        {
+          "key": "g4:weather-chart-safety",
+          "title": "Weather Charts and Safety",
+          "before": 24,
+          "after": 26,
+          "added": [
+            "ffct-01651",
+            "ffct-12571"
+          ]
+        },
+        {
+          "key": "g4:sun",
+          "title": "Our Sun",
+          "before": 18,
+          "after": 21,
+          "added": [
+            "ffct-18233",
+            "ffct-19176",
+            "ffct-19177"
+          ]
+        },
+        {
+          "key": "g4:shadows",
+          "title": "Track a Shadow",
+          "before": 12,
+          "after": 15,
+          "added": [
+            "ffct-21866",
+            "ffct-25286",
+            "ffct-25579"
+          ]
+        },
+        {
+          "key": "g4:sun-and-life",
+          "title": "The Sun Supports Life",
+          "before": 29,
+          "after": 30,
+          "added": [
+            "ffct-29469"
+          ]
+        }
+      ],
+      "thinTopics": [
+        {
+          "key": "g4:scientists",
+          "title": "Scientists and Inventions",
+          "reachableCards": 9,
+          "reachableFacts": 9
+        },
+        {
+          "key": "g4:speed-graphs",
+          "title": "Distance–Time Graphs",
+          "reachableCards": 9,
+          "reachableFacts": 9
+        }
+      ]
+    },
+    {
+      "grade": 5,
+      "uniqueCardsBefore": 1116,
+      "uniqueCardsAfter": 1151,
+      "optionalReading": {
+        "grade": 5,
+        "collectionCount": 4,
+        "boundedRuns": 60,
+        "uniqueCards": 1151,
+        "eligibleCards": 1151,
+        "unreadAfterExploring": 0
+      },
+      "topics": [
+        {
+          "key": "g5:matter",
+          "title": "Matter: mass and space",
+          "before": 19,
+          "after": 20,
+          "added": [
+            "ffct-14920"
+          ]
+        },
+        {
+          "key": "g5:states-of-matter",
+          "title": "Solids, liquids and gases",
+          "before": 32,
+          "after": 32,
+          "added": []
+        },
+        {
+          "key": "g5:volume",
+          "title": "Measuring volume",
+          "before": 19,
+          "after": 21,
+          "added": [
+            "ffct-18173",
+            "ffct-18394"
+          ]
+        },
+        {
+          "key": "g5:heat-and-state",
+          "title": "Heat and changes of state",
+          "before": 36,
+          "after": 41,
+          "added": [
+            "ffct-02560",
+            "ffct-14923",
+            "ffct-15555",
+            "ffct-20155",
+            "ffct-20946"
+          ]
+        },
+        {
+          "key": "g5:investigations",
+          "title": "Planning a science investigation",
+          "before": 72,
+          "after": 72,
+          "added": []
+        },
+        {
+          "key": "g5:digestion",
+          "title": "The digestive system",
+          "before": 26,
+          "after": 27,
+          "added": [
+            "ffct-05801"
+          ]
+        },
+        {
+          "key": "g5:breathing",
+          "title": "The respiratory system",
+          "before": 36,
+          "after": 38,
+          "added": [
+            "ffct-00108",
+            "ffct-01277"
+          ]
+        },
+        {
+          "key": "g5:human-reproduction",
+          "title": "Human reproductive organs",
+          "before": 20,
+          "after": 21,
+          "added": [
+            "ffct-37025"
+          ]
+        },
+        {
+          "key": "g5:classification",
+          "title": "Classifying living things",
+          "before": 204,
+          "after": 205,
+          "added": [
+            "ffct-00676"
+          ]
+        },
+        {
+          "key": "g5:animal-reproduction",
+          "title": "Live young and eggs",
+          "before": 49,
+          "after": 51,
+          "added": [
+            "ffct-00054",
+            "ffct-00061"
+          ]
+        },
+        {
+          "key": "g5:life-cycles",
+          "title": "Animal and plant life cycles",
+          "before": 20,
+          "after": 23,
+          "added": [
+            "ffct-04676",
+            "ffct-04717",
+            "ffct-04956"
+          ]
+        },
+        {
+          "key": "g5:plant-structures",
+          "title": "Specialized plant structures",
+          "before": 38,
+          "after": 40,
+          "added": [
+            "dcard-03449",
+            "ffct-00038"
+          ]
+        },
+        {
+          "key": "g5:adaptations",
+          "title": "Plant and animal adaptations",
+          "before": 33,
+          "after": 34,
+          "added": [
+            "ffct-00038"
+          ]
+        },
+        {
+          "key": "g5:contact-forces",
+          "title": "Contact forces and motion",
+          "before": 12,
+          "after": 12,
+          "added": []
+        },
+        {
+          "key": "g5:friction",
+          "title": "Investigating friction",
+          "before": 49,
+          "after": 50,
+          "added": [
+            "ffct-17564"
+          ]
+        },
+        {
+          "key": "g5:gravity",
+          "title": "Gravity and falling objects",
+          "before": 20,
+          "after": 21,
+          "added": [
+            "ffct-01980"
+          ]
+        },
+        {
+          "key": "g5:static-electricity",
+          "title": "Static electricity",
+          "before": 22,
+          "after": 24,
+          "added": [
+            "ffct-17082",
+            "ffct-22127"
+          ]
+        },
+        {
+          "key": "g5:simple-circuits",
+          "title": "Building and drawing circuits",
+          "before": 59,
+          "after": 60,
+          "added": [
+            "ffct-27712"
+          ]
+        },
+        {
+          "key": "g5:conductors",
+          "title": "Testing conductors and insulators",
+          "before": 40,
+          "after": 41,
+          "added": [
+            "ffct-21632"
+          ]
+        },
+        {
+          "key": "g5:electromagnets",
+          "title": "Making an electromagnet",
+          "before": 21,
+          "after": 21,
+          "added": []
+        },
+        {
+          "key": "g5:landforms",
+          "title": "Landforms and bodies of water",
+          "before": 80,
+          "after": 81,
+          "added": [
+            "ffct-05031"
+          ]
+        },
+        {
+          "key": "g5:rock-observation",
+          "title": "Observing rocks",
+          "before": 22,
+          "after": 23,
+          "added": [
+            "ffct-29408"
+          ]
+        },
+        {
+          "key": "g5:rock-classification",
+          "title": "Classifying rocks",
+          "before": 21,
+          "after": 21,
+          "added": []
+        },
+        {
+          "key": "g5:soil-formation",
+          "title": "How soil forms",
+          "before": 24,
+          "after": 25,
+          "added": [
+            "ffct-05770"
+          ]
+        },
+        {
+          "key": "g5:erosion",
+          "title": "Erosion and transported materials",
+          "before": 29,
+          "after": 30,
+          "added": [
+            "ffct-01417"
+          ]
+        },
+        {
+          "key": "g5:water-cycle",
+          "title": "The water cycle and its model",
+          "before": 33,
+          "after": 34,
+          "added": [
+            "ffct-05902"
+          ]
+        },
+        {
+          "key": "g5:weather-disturbances",
+          "title": "Typhoons and weather warnings",
+          "before": 33,
+          "after": 35,
+          "added": [
+            "dcard-06282",
+            "ffct-14983"
+          ]
+        },
+        {
+          "key": "g5:solar-system",
+          "title": "Exploring the solar system",
+          "before": 36,
+          "after": 37,
+          "added": [
+            "dcard-02672"
+          ]
+        },
+        {
+          "key": "g5:moon-phases",
+          "title": "The Moon’s changing appearance",
+          "before": 17,
+          "after": 18,
+          "added": [
+            "ffct-36292"
+          ]
+        }
+      ],
+      "thinTopics": [
+        {
+          "key": "g5:adaptations",
+          "title": "Plant and animal adaptations",
+          "reachableCards": 9,
+          "reachableFacts": 9
+        }
+      ]
+    },
+    {
+      "grade": 6,
+      "uniqueCardsBefore": 1117,
+      "uniqueCardsAfter": 1176,
+      "optionalReading": {
+        "grade": 6,
+        "collectionCount": 4,
+        "boundedRuns": 61,
+        "uniqueCards": 1176,
+        "eligibleCards": 1176,
+        "unreadAfterExploring": 0
+      },
+      "topics": [
+        {
+          "key": "g6:state-changes",
+          "title": "Mapping Changes of State",
+          "before": 95,
+          "after": 97,
+          "added": [
+            "ffct-15290",
+            "ffct-15555"
+          ]
+        },
+        {
+          "key": "g6:heat-and-state",
+          "title": "Heat and Changes of State",
+          "before": 13,
+          "after": 17,
+          "added": [
+            "ffct-08799",
+            "ffct-14065",
+            "ffct-14923",
+            "ffct-20155"
+          ]
+        },
+        {
+          "key": "g6:physical-chemical",
+          "title": "Physical and Chemical Changes",
+          "before": 20,
+          "after": 23,
+          "added": [
+            "ffct-15204",
+            "ffct-20946",
+            "ffct-21486"
+          ]
+        },
+        {
+          "key": "g6:useful-mixtures",
+          "title": "Useful Mixtures",
+          "before": 51,
+          "after": 51,
+          "added": []
+        },
+        {
+          "key": "g6:air-mixture",
+          "title": "What Is in Air?",
+          "before": 56,
+          "after": 57,
+          "added": [
+            "ffct-15350"
+          ]
+        },
+        {
+          "key": "g6:separation-methods",
+          "title": "Separating Mixtures",
+          "before": 26,
+          "after": 31,
+          "added": [
+            "ffct-06052",
+            "ffct-12233",
+            "ffct-13120",
+            "ffct-14955",
+            "ffct-15290"
+          ]
+        },
+        {
+          "key": "g6:separation-products",
+          "title": "Choosing a Separation Method",
+          "before": 30,
+          "after": 33,
+          "added": [
+            "ffct-13120",
+            "ffct-14955",
+            "ffct-15290"
+          ]
+        },
+        {
+          "key": "g6:fair-tests",
+          "title": "Design a Fair Test",
+          "before": 21,
+          "after": 22,
+          "added": [
+            "ffct-32148"
+          ]
+        },
+        {
+          "key": "g6:repeat-record",
+          "title": "Repeat, Measure, Record",
+          "before": 9,
+          "after": 11,
+          "added": [
+            "ffct-36400",
+            "ffct-36404"
+          ]
+        },
+        {
+          "key": "g6:circulation",
+          "title": "Heart, Blood, and Vessels",
+          "before": 39,
+          "after": 41,
+          "added": [
+            "ffct-00037",
+            "ffct-00081"
+          ]
+        },
+        {
+          "key": "g6:plant-reproduction",
+          "title": "How Plants Reproduce",
+          "before": 91,
+          "after": 92,
+          "added": [
+            "dcard-03536"
+          ]
+        },
+        {
+          "key": "g6:propagation-tests",
+          "title": "Compare Plant Propagation",
+          "before": 7,
+          "after": 7,
+          "added": []
+        },
+        {
+          "key": "g6:animal-groups",
+          "title": "Animals With and Without Backbones",
+          "before": 12,
+          "after": 13,
+          "added": [
+            "ffct-00105"
+          ]
+        },
+        {
+          "key": "g6:food-webs",
+          "title": "Roles in a Food Web",
+          "before": 18,
+          "after": 21,
+          "added": [
+            "ffct-00045",
+            "ffct-00125",
+            "ffct-00135"
+          ]
+        },
+        {
+          "key": "g6:competition-predation",
+          "title": "Competition and Predation",
+          "before": 46,
+          "after": 48,
+          "added": [
+            "dcard-04301",
+            "ffct-00009"
+          ]
+        },
+        {
+          "key": "g6:ecosystem-factors",
+          "title": "Living and Nonliving Factors",
+          "before": 47,
+          "after": 49,
+          "added": [
+            "ffct-00357",
+            "ffct-01316"
+          ]
+        },
+        {
+          "key": "g6:ecosystem-effects",
+          "title": "How Interactions Help or Harm",
+          "before": 87,
+          "after": 89,
+          "added": [
+            "dcard-07819",
+            "ffct-03222"
+          ]
+        },
+        {
+          "key": "g6:simple-machines",
+          "title": "Simple Machines Around Us",
+          "before": 47,
+          "after": 50,
+          "added": [
+            "dcard-10963",
+            "ffct-21486",
+            "ffct-24188"
+          ]
+        },
+        {
+          "key": "g6:machine-investigation",
+          "title": "Investigate Simple Machines",
+          "before": 47,
+          "after": 49,
+          "added": [
+            "ffct-24188",
+            "ffct-24301"
+          ]
+        },
+        {
+          "key": "g6:lever-tests",
+          "title": "A Fair Test of Levers",
+          "before": 10,
+          "after": 12,
+          "added": [
+            "ffct-24188",
+            "ffct-24301"
+          ]
+        },
+        {
+          "key": "g6:wave-energy",
+          "title": "Waves Carry Energy",
+          "before": 14,
+          "after": 17,
+          "added": [
+            "ffct-11166",
+            "ffct-21959",
+            "ffct-22005"
+          ]
+        },
+        {
+          "key": "g6:water-waves",
+          "title": "Explore Water Waves",
+          "before": 19,
+          "after": 21,
+          "added": [
+            "ffct-36664",
+            "ffct-36667"
+          ]
+        },
+        {
+          "key": "g6:wave-properties",
+          "title": "Describing a Wave",
+          "before": 35,
+          "after": 38,
+          "added": [
+            "ffct-21959",
+            "ffct-21961",
+            "ffct-24321"
+          ]
+        },
+        {
+          "key": "g6:wave-types",
+          "title": "Longitudinal and Transverse Waves",
+          "before": 35,
+          "after": 35,
+          "added": []
+        },
+        {
+          "key": "g6:wave-models",
+          "title": "Model Moving Energy",
+          "before": 12,
+          "after": 12,
+          "added": []
+        },
+        {
+          "key": "g6:wave-examples",
+          "title": "Waves in Daily Life",
+          "before": 55,
+          "after": 55,
+          "added": []
+        },
+        {
+          "key": "g6:moving-sound",
+          "title": "Sound From a Moving Source",
+          "before": 8,
+          "after": 9,
+          "added": [
+            "ffct-21969"
+          ]
+        },
+        {
+          "key": "g6:volcano-formation",
+          "title": "How Volcanoes Form",
+          "before": 23,
+          "after": 26,
+          "added": [
+            "ffct-29300",
+            "ffct-29945",
+            "ffct-29947"
+          ]
+        },
+        {
+          "key": "g6:local-volcano-risk",
+          "title": "Know Your Local Volcano Risk",
+          "before": 11,
+          "after": 13,
+          "added": [
+            "ffct-31587",
+            "ffct-32798"
+          ]
+        },
+        {
+          "key": "g6:eruption-history",
+          "title": "Reading Eruption History",
+          "before": 19,
+          "after": 21,
+          "added": [
+            "ffct-36384",
+            "ffct-36385"
+          ]
+        },
+        {
+          "key": "g6:volcanic-materials",
+          "title": "What Volcanoes Release",
+          "before": 32,
+          "after": 33,
+          "added": [
+            "ffct-15796"
+          ]
+        },
+        {
+          "key": "g6:volcano-alerts",
+          "title": "Read Alerts and Act Safely",
+          "before": 22,
+          "after": 22,
+          "added": []
+        },
+        {
+          "key": "g6:philippine-seasons",
+          "title": "Seasons Where We Live",
+          "before": 16,
+          "after": 18,
+          "added": [
+            "dcard-09224",
+            "ffct-04133"
+          ]
+        },
+        {
+          "key": "g6:day-night",
+          "title": "A Globe Model of Day and Night",
+          "before": 11,
+          "after": 14,
+          "added": [
+            "ffct-24006",
+            "ffct-28853",
+            "ffct-28967"
+          ]
+        },
+        {
+          "key": "g6:sun-earth-moon",
+          "title": "Model the Sun, Earth, and Moon",
+          "before": 27,
+          "after": 29,
+          "added": [
+            "ffct-25484",
+            "ffct-25485"
+          ]
+        },
+        {
+          "key": "g6:sky-navigation",
+          "title": "Stars, Navigation, and Seasons",
+          "before": 13,
+          "after": 16,
+          "added": [
+            "ffct-29202",
+            "ffct-29217",
+            "ffct-34803"
+          ]
+        },
+        {
+          "key": "g6:community-sky-knowledge",
+          "title": "Learning About Community Sky Knowledge",
+          "before": 11,
+          "after": 11,
+          "added": []
+        }
+      ],
+      "thinTopics": [
+        {
+          "key": "g6:propagation-tests",
+          "title": "Compare Plant Propagation",
+          "reachableCards": 7,
+          "reachableFacts": 7
+        },
+        {
+          "key": "g6:moving-sound",
+          "title": "Sound From a Moving Source",
+          "reachableCards": 9,
+          "reachableFacts": 9
+        }
+      ]
+    },
+    {
+      "grade": 7,
+      "uniqueCardsBefore": 1011,
+      "uniqueCardsAfter": 1030,
+      "optionalReading": {
+        "grade": 7,
+        "collectionCount": 4,
+        "boundedRuns": 53,
+        "uniqueCards": 1030,
+        "eligibleCards": 1030,
+        "unreadAfterExploring": 0
+      },
+      "topics": [
+        {
+          "key": "g7:scientific-models",
+          "title": "Why Scientists Use Models",
+          "before": 12,
+          "after": 12,
+          "added": []
+        },
+        {
+          "key": "g7:particle-model",
+          "title": "Matter Is Made of Particles",
+          "before": 54,
+          "after": 55,
+          "added": [
+            "ffct-14929"
+          ]
+        },
+        {
+          "key": "g7:particle-motion",
+          "title": "How Particles Behave",
+          "before": 25,
+          "after": 27,
+          "added": [
+            "ffct-14929",
+            "ffct-20572"
+          ]
+        },
+        {
+          "key": "g7:particle-diagrams",
+          "title": "Draw Three States of Matter",
+          "before": 11,
+          "after": 12,
+          "added": [
+            "ffct-14929"
+          ]
+        },
+        {
+          "key": "g7:particle-state-changes",
+          "title": "Particles During Changes of State",
+          "before": 10,
+          "after": 10,
+          "added": []
+        },
+        {
+          "key": "g7:investigation-steps",
+          "title": "Plan and Report an Investigation",
+          "before": 31,
+          "after": 32,
+          "added": [
+            "dcard-09571"
+          ]
+        },
+        {
+          "key": "g7:measure-record",
+          "title": "Measure and Organize Data",
+          "before": 66,
+          "after": 66,
+          "added": []
+        },
+        {
+          "key": "g7:solute-solvent",
+          "title": "Solute and Solvent",
+          "before": 17,
+          "after": 18,
+          "added": [
+            "dcard-05486"
+          ]
+        },
+        {
+          "key": "g7:concentration",
+          "title": "How Much Solute?",
+          "before": 10,
+          "after": 10,
+          "added": []
+        },
+        {
+          "key": "g7:solubility",
+          "title": "Investigate Solubility",
+          "before": 12,
+          "after": 12,
+          "added": []
+        },
+        {
+          "key": "g7:litmus",
+          "title": "Acids, Bases, and Litmus",
+          "before": 71,
+          "after": 72,
+          "added": [
+            "ffct-15280"
+          ]
+        },
+        {
+          "key": "g7:equipment-safety",
+          "title": "Handle Science Equipment Safely",
+          "before": 23,
+          "after": 23,
+          "added": []
+        },
+        {
+          "key": "g7:microscope",
+          "title": "Meet the Compound Microscope",
+          "before": 27,
+          "after": 28,
+          "added": [
+            "dcard-01279"
+          ]
+        },
+        {
+          "key": "g7:cell-observation",
+          "title": "Observe Cells",
+          "before": 46,
+          "after": 46,
+          "added": []
+        },
+        {
+          "key": "g7:one-many-cells",
+          "title": "One Cell or Many?",
+          "before": 10,
+          "after": 11,
+          "added": [
+            "ffct-00389"
+          ]
+        },
+        {
+          "key": "g7:plant-animal-cells",
+          "title": "Compare Plant and Animal Cells",
+          "before": 11,
+          "after": 11,
+          "added": []
+        },
+        {
+          "key": "g7:cell-division",
+          "title": "Mitosis and Meiosis",
+          "before": 36,
+          "after": 36,
+          "added": []
+        },
+        {
+          "key": "g7:inherited-information",
+          "title": "Information From Both Parents",
+          "before": 16,
+          "after": 17,
+          "added": [
+            "ffct-00428"
+          ]
+        },
+        {
+          "key": "g7:reproduction-types",
+          "title": "Sexual and Asexual Reproduction",
+          "before": 10,
+          "after": 10,
+          "added": []
+        },
+        {
+          "key": "g7:biological-levels",
+          "title": "From Cells to the Biosphere",
+          "before": 25,
+          "after": 25,
+          "added": []
+        },
+        {
+          "key": "g7:trophic-levels",
+          "title": "Levels in an Energy Pyramid",
+          "before": 10,
+          "after": 10,
+          "added": []
+        },
+        {
+          "key": "g7:energy-transfer",
+          "title": "Energy Between Trophic Levels",
+          "before": 24,
+          "after": 24,
+          "added": []
+        },
+        {
+          "key": "g7:measuring-forces",
+          "title": "Forces Can Be Measured",
+          "before": 67,
+          "after": 67,
+          "added": []
+        },
+        {
+          "key": "g7:balanced-unbalanced",
+          "title": "Balanced or Unbalanced?",
+          "before": 18,
+          "after": 18,
+          "added": []
+        },
+        {
+          "key": "g7:force-diagrams",
+          "title": "Draw Force Arrows",
+          "before": 12,
+          "after": 12,
+          "added": []
+        },
+        {
+          "key": "g7:net-force",
+          "title": "When Motion Changes",
+          "before": 8,
+          "after": 8,
+          "added": []
+        },
+        {
+          "key": "g7:distance-displacement",
+          "title": "Distance and Displacement",
+          "before": 17,
+          "after": 17,
+          "added": []
+        },
+        {
+          "key": "g7:speed-velocity",
+          "title": "Speed and Velocity",
+          "before": 20,
+          "after": 21,
+          "added": [
+            "ffct-21921"
+          ]
+        },
+        {
+          "key": "g7:motion-graphs",
+          "title": "Graph Uniform Motion",
+          "before": 15,
+          "after": 16,
+          "added": [
+            "ffct-24139"
+          ]
+        },
+        {
+          "key": "g7:heat-temperature",
+          "title": "Heat Is Not Temperature",
+          "before": 10,
+          "after": 11,
+          "added": [
+            "ffct-16574"
+          ]
+        },
+        {
+          "key": "g7:heat-transfer-uses",
+          "title": "When Heat Transfer Helps or Hurts",
+          "before": 46,
+          "after": 47,
+          "added": [
+            "ffct-14996"
+          ]
+        },
+        {
+          "key": "g7:heat-particles",
+          "title": "Particles Transfer Heat",
+          "before": 29,
+          "after": 29,
+          "added": []
+        },
+        {
+          "key": "g7:heat-electricity",
+          "title": "Turning Heat Into Electricity",
+          "before": 7,
+          "after": 7,
+          "added": []
+        },
+        {
+          "key": "g7:fault-types",
+          "title": "Classify Faults",
+          "before": 13,
+          "after": 14,
+          "added": [
+            "ffct-31347"
+          ]
+        },
+        {
+          "key": "g7:fault-models",
+          "title": "Model Fault Movement",
+          "before": 20,
+          "after": 22,
+          "added": [
+            "ffct-29262",
+            "ffct-31347"
+          ]
+        },
+        {
+          "key": "g7:earthquake-effects",
+          "title": "What Shapes Earthquake Damage?",
+          "before": 28,
+          "after": 29,
+          "added": [
+            "ffct-29268"
+          ]
+        },
+        {
+          "key": "g7:local-faults",
+          "title": "Find Local Fault Information",
+          "before": 10,
+          "after": 10,
+          "added": []
+        },
+        {
+          "key": "g7:earthquake-models",
+          "title": "Model an Earthquake",
+          "before": 16,
+          "after": 16,
+          "added": []
+        },
+        {
+          "key": "g7:earthquake-plan",
+          "title": "Practice the Local Earthquake Plan",
+          "before": 14,
+          "after": 15,
+          "added": [
+            "ffct-29441"
+          ]
+        },
+        {
+          "key": "g7:tsunami-generation",
+          "title": "How Tsunamis Form",
+          "before": 8,
+          "after": 8,
+          "added": []
+        },
+        {
+          "key": "g7:tsunami-alerts",
+          "title": "Tsunami Alerts and Action",
+          "before": 19,
+          "after": 20,
+          "added": [
+            "ffct-29281"
+          ]
+        },
+        {
+          "key": "g7:sun-atmosphere",
+          "title": "Sunlight Meets the Atmosphere",
+          "before": 16,
+          "after": 17,
+          "added": [
+            "dcard-05937"
+          ]
+        },
+        {
+          "key": "g7:sunlight-angle",
+          "title": "Model Sunlight Through the Year",
+          "before": 38,
+          "after": 38,
+          "added": []
+        },
+        {
+          "key": "g7:day-length",
+          "title": "Why Day Length Changes",
+          "before": 10,
+          "after": 10,
+          "added": []
+        },
+        {
+          "key": "g7:solar-winds",
+          "title": "Sunlight Drives Wind Patterns",
+          "before": 33,
+          "after": 34,
+          "added": [
+            "ffct-14993"
+          ]
+        }
+      ],
+      "thinTopics": [
+        {
+          "key": "g7:net-force",
+          "title": "When Motion Changes",
+          "reachableCards": 8,
+          "reachableFacts": 8
+        },
+        {
+          "key": "g7:heat-electricity",
+          "title": "Turning Heat Into Electricity",
+          "reachableCards": 7,
+          "reachableFacts": 7
+        },
+        {
+          "key": "g7:tsunami-generation",
+          "title": "How Tsunamis Form",
+          "reachableCards": 8,
+          "reachableFacts": 8
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "uniqueCardsBefore": 729,
+      "uniqueCardsAfter": 757,
+      "optionalReading": {
+        "grade": 8,
+        "collectionCount": 4,
+        "boundedRuns": 40,
+        "uniqueCards": 757,
+        "eligibleCards": 757,
+        "unreadAfterExploring": 0
+      },
+      "topics": [
+        {
+          "key": "g8:digestion",
+          "title": "Trace Food’s Journey",
+          "before": 36,
+          "after": 36,
+          "added": []
+        },
+        {
+          "key": "g8:body-systems",
+          "title": "Body Systems Work Together",
+          "before": 5,
+          "after": 6,
+          "added": [
+            "ffct-14884"
+          ]
+        },
+        {
+          "key": "g8:plant-transport",
+          "title": "Roots, Stems, and Leaves",
+          "before": 24,
+          "after": 25,
+          "added": [
+            "ffct-00015"
+          ]
+        },
+        {
+          "key": "g8:inheritance-patterns",
+          "title": "Track an Inherited Trait",
+          "before": 12,
+          "after": 12,
+          "added": []
+        },
+        {
+          "key": "g8:inheritance-ratios",
+          "title": "Predict Inheritance Ratios",
+          "before": 11,
+          "after": 12,
+          "added": [
+            "dcard-04785"
+          ]
+        },
+        {
+          "key": "g8:classification",
+          "title": "Kingdoms and Domains",
+          "before": 14,
+          "after": 14,
+          "added": []
+        },
+        {
+          "key": "g8:humans-primates",
+          "title": "Humans, Mammals, and Primates",
+          "before": 10,
+          "after": 10,
+          "added": []
+        },
+        {
+          "key": "g8:nature-cycles",
+          "title": "Trace Nature’s Cycles",
+          "before": 66,
+          "after": 66,
+          "added": []
+        },
+        {
+          "key": "g8:photosynthesis-respiration",
+          "title": "Photosynthesis and Respiration",
+          "before": 26,
+          "after": 27,
+          "added": [
+            "ffct-18474"
+          ]
+        },
+        {
+          "key": "g8:cell-energy-sites",
+          "title": "Where Cell Processes Happen",
+          "before": 9,
+          "after": 9,
+          "added": []
+        },
+        {
+          "key": "g8:photosynthesis-test",
+          "title": "Plan a Photosynthesis Test",
+          "before": 7,
+          "after": 7,
+          "added": []
+        },
+        {
+          "key": "g8:atomic-timeline",
+          "title": "How Atomic Models Changed",
+          "before": 14,
+          "after": 15,
+          "added": [
+            "ffct-18695"
+          ]
+        },
+        {
+          "key": "g8:draw-atom",
+          "title": "Draw an Atom Model",
+          "before": 10,
+          "after": 10,
+          "added": []
+        },
+        {
+          "key": "g8:subatomic-particles",
+          "title": "Compare Subatomic Particles",
+          "before": 31,
+          "after": 32,
+          "added": [
+            "ffct-15234"
+          ]
+        },
+        {
+          "key": "g8:pure-substances",
+          "title": "What Defines an Element?",
+          "before": 13,
+          "after": 14,
+          "added": [
+            "ffct-18976"
+          ]
+        },
+        {
+          "key": "g8:periodic-history",
+          "title": "Building the Periodic Table",
+          "before": 9,
+          "after": 10,
+          "added": [
+            "ffct-15258"
+          ]
+        },
+        {
+          "key": "g8:element-names",
+          "title": "Element Names and Symbols",
+          "before": 74,
+          "after": 74,
+          "added": []
+        },
+        {
+          "key": "g8:periods-groups",
+          "title": "Read Groups and Periods",
+          "before": 29,
+          "after": 31,
+          "added": [
+            "dcard-10644",
+            "ffct-15263"
+          ]
+        },
+        {
+          "key": "g8:electron-position",
+          "title": "Electrons and Table Position",
+          "before": 12,
+          "after": 12,
+          "added": []
+        },
+        {
+          "key": "g8:count-particles",
+          "title": "Count Protons, Neutrons, Electrons",
+          "before": 17,
+          "after": 18,
+          "added": [
+            "ffct-18976"
+          ]
+        },
+        {
+          "key": "g8:group-valence",
+          "title": "Valence Electrons in a Group",
+          "before": 7,
+          "after": 7,
+          "added": []
+        },
+        {
+          "key": "g8:land-water",
+          "title": "Earth’s Land and Water",
+          "before": 7,
+          "after": 8,
+          "added": [
+            "ffct-30749"
+          ]
+        },
+        {
+          "key": "g8:crust-sources",
+          "title": "Investigate Earth’s Crust",
+          "before": 7,
+          "after": 8,
+          "added": [
+            "ffct-29726"
+          ]
+        },
+        {
+          "key": "g8:volcano-types",
+          "title": "Compare Volcano Types",
+          "before": 9,
+          "after": 11,
+          "added": [
+            "ffct-05647",
+            "ffct-28861"
+          ]
+        },
+        {
+          "key": "g8:volcano-shape",
+          "title": "Why Volcano Shapes Differ",
+          "before": 13,
+          "after": 13,
+          "added": []
+        },
+        {
+          "key": "g8:global-patterns",
+          "title": "Map Earth’s Active Belts",
+          "before": 11,
+          "after": 11,
+          "added": []
+        },
+        {
+          "key": "g8:plates-crust",
+          "title": "Crust and Lithospheric Plates",
+          "before": 9,
+          "after": 9,
+          "added": []
+        },
+        {
+          "key": "g8:typhoon-formation",
+          "title": "Why Typhoons Form",
+          "before": 15,
+          "after": 16,
+          "added": [
+            "ffct-29325"
+          ]
+        },
+        {
+          "key": "g8:typhoon-track",
+          "title": "Plot a Typhoon Track",
+          "before": 14,
+          "after": 14,
+          "added": []
+        },
+        {
+          "key": "g8:land-sea-storms",
+          "title": "Land, Sea, and Typhoon Strength",
+          "before": 6,
+          "after": 7,
+          "added": [
+            "ffct-29332"
+          ]
+        },
+        {
+          "key": "g8:community-support",
+          "title": "How Authorities Help",
+          "before": 16,
+          "after": 17,
+          "added": [
+            "ffct-30400"
+          ]
+        },
+        {
+          "key": "g8:tide-motions",
+          "title": "Sun, Moon, and Tides",
+          "before": 14,
+          "after": 14,
+          "added": []
+        },
+        {
+          "key": "g8:tidal-energy",
+          "title": "Can Tides Generate Electricity?",
+          "before": 7,
+          "after": 8,
+          "added": [
+            "ffct-23245"
+          ]
+        },
+        {
+          "key": "g8:acceleration",
+          "title": "Acceleration Changes Velocity",
+          "before": 12,
+          "after": 13,
+          "added": [
+            "ffct-21900"
+          ]
+        },
+        {
+          "key": "g8:local-motion",
+          "title": "Find Acceleration Around You",
+          "before": 11,
+          "after": 12,
+          "added": [
+            "ffct-21953"
+          ]
+        },
+        {
+          "key": "g8:acceleration-graphs",
+          "title": "Draw Motion Graphs",
+          "before": 5,
+          "after": 5,
+          "added": []
+        },
+        {
+          "key": "g8:kinetic-potential",
+          "title": "Moving and Stored Energy",
+          "before": 40,
+          "after": 45,
+          "added": [
+            "dcard-09722",
+            "ffct-02952",
+            "ffct-21993",
+            "ffct-22361",
+            "ffct-23400"
+          ]
+        },
+        {
+          "key": "g8:energy-exchange",
+          "title": "Energy Changes Form",
+          "before": 6,
+          "after": 9,
+          "added": [
+            "ffct-02952",
+            "ffct-21993",
+            "ffct-22062"
+          ]
+        },
+        {
+          "key": "g8:work",
+          "title": "When Is Work Done?",
+          "before": 8,
+          "after": 8,
+          "added": []
+        },
+        {
+          "key": "g8:power",
+          "title": "How Quickly Work Is Done",
+          "before": 16,
+          "after": 17,
+          "added": [
+            "ffct-21988"
+          ]
+        },
+        {
+          "key": "g8:mechanical-energy",
+          "title": "Add Mechanical Energy",
+          "before": 9,
+          "after": 10,
+          "added": [
+            "ffct-26828"
+          ]
+        },
+        {
+          "key": "g8:falling-energy",
+          "title": "Follow Energy in a Fall",
+          "before": 10,
+          "after": 11,
+          "added": [
+            "ffct-21993"
+          ]
+        },
+        {
+          "key": "g8:hydropower",
+          "title": "Water Power in the Philippines",
+          "before": 16,
+          "after": 17,
+          "added": [
+            "ffct-22062"
+          ]
+        },
+        {
+          "key": "g8:light-investigations",
+          "title": "Investigate Mirrors and Refraction",
+          "before": 40,
+          "after": 40,
+          "added": []
+        }
+      ],
+      "thinTopics": [
+        {
+          "key": "g8:body-systems",
+          "title": "Body Systems Work Together",
+          "reachableCards": 6,
+          "reachableFacts": 6
+        },
+        {
+          "key": "g8:cell-energy-sites",
+          "title": "Where Cell Processes Happen",
+          "reachableCards": 9,
+          "reachableFacts": 9
+        },
+        {
+          "key": "g8:photosynthesis-test",
+          "title": "Plan a Photosynthesis Test",
+          "reachableCards": 7,
+          "reachableFacts": 7
+        },
+        {
+          "key": "g8:group-valence",
+          "title": "Valence Electrons in a Group",
+          "reachableCards": 7,
+          "reachableFacts": 7
+        },
+        {
+          "key": "g8:land-water",
+          "title": "Earth’s Land and Water",
+          "reachableCards": 8,
+          "reachableFacts": 8
+        },
+        {
+          "key": "g8:crust-sources",
+          "title": "Investigate Earth’s Crust",
+          "reachableCards": 8,
+          "reachableFacts": 8
+        },
+        {
+          "key": "g8:plates-crust",
+          "title": "Crust and Lithospheric Plates",
+          "reachableCards": 9,
+          "reachableFacts": 9
+        },
+        {
+          "key": "g8:land-sea-storms",
+          "title": "Land, Sea, and Typhoon Strength",
+          "reachableCards": 7,
+          "reachableFacts": 7
+        },
+        {
+          "key": "g8:tidal-energy",
+          "title": "Can Tides Generate Electricity?",
+          "reachableCards": 8,
+          "reachableFacts": 8
+        },
+        {
+          "key": "g8:acceleration-graphs",
+          "title": "Draw Motion Graphs",
+          "reachableCards": 5,
+          "reachableFacts": 5
+        },
+        {
+          "key": "g8:energy-exchange",
+          "title": "Energy Changes Form",
+          "reachableCards": 9,
+          "reachableFacts": 9
+        },
+        {
+          "key": "g8:work",
+          "title": "When Is Work Done?",
+          "reachableCards": 8,
+          "reachableFacts": 8
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "uniqueCardsBefore": 767,
+      "uniqueCardsAfter": 795,
+      "optionalReading": {
+        "grade": 9,
+        "collectionCount": 4,
+        "boundedRuns": 41,
+        "uniqueCards": 795,
+        "eligibleCards": 795,
+        "unreadAfterExploring": 0
+      },
+      "topics": [
+        {
+          "key": "g9:f-1",
+          "title": "Inertia and Net Force",
+          "before": 14,
+          "after": 16,
+          "added": [
+            "ffct-21873",
+            "ffct-24097"
+          ]
+        },
+        {
+          "key": "g9:f-2",
+          "title": "Changing Speed and Direction",
+          "before": 7,
+          "after": 8,
+          "added": [
+            "ffct-21878"
+          ]
+        },
+        {
+          "key": "g9:f-3",
+          "title": "Investigate Force, Mass, Acceleration",
+          "before": 10,
+          "after": 12,
+          "added": [
+            "ffct-21876",
+            "ffct-21900"
+          ]
+        },
+        {
+          "key": "g9:f-4",
+          "title": "Forces Between Two Objects",
+          "before": 6,
+          "after": 7,
+          "added": [
+            "ffct-21880"
+          ]
+        },
+        {
+          "key": "g9:f-5",
+          "title": "Draw Action–Reaction Pairs",
+          "before": 5,
+          "after": 6,
+          "added": [
+            "ffct-21880"
+          ]
+        },
+        {
+          "key": "g9:f-6",
+          "title": "Electron Flow and Safety",
+          "before": 20,
+          "after": 20,
+          "added": []
+        },
+        {
+          "key": "g9:f-7",
+          "title": "Investigate Circuits",
+          "before": 39,
+          "after": 39,
+          "added": []
+        },
+        {
+          "key": "g9:f-8",
+          "title": "Draw and Assemble Circuits",
+          "before": 11,
+          "after": 12,
+          "added": [
+            "ffct-23925"
+          ]
+        },
+        {
+          "key": "g9:f-9",
+          "title": "Compare Circuit Choices",
+          "before": 9,
+          "after": 10,
+          "added": [
+            "ffct-22213"
+          ]
+        },
+        {
+          "key": "g9:f-10",
+          "title": "How Electromagnetic Waves Travel",
+          "before": 23,
+          "after": 23,
+          "added": []
+        },
+        {
+          "key": "g9:f-11",
+          "title": "Read the Electromagnetic Spectrum",
+          "before": 45,
+          "after": 45,
+          "added": []
+        },
+        {
+          "key": "g9:f-12",
+          "title": "Uses of Electromagnetic Waves",
+          "before": 13,
+          "after": 14,
+          "added": [
+            "ffct-18045"
+          ]
+        },
+        {
+          "key": "g9:f-13",
+          "title": "Research Radiation Effects",
+          "before": 10,
+          "after": 10,
+          "added": []
+        },
+        {
+          "key": "g9:e-1",
+          "title": "Evidence for Continental Drift",
+          "before": 15,
+          "after": 15,
+          "added": []
+        },
+        {
+          "key": "g9:e-2",
+          "title": "Map Philippine Plate Boundaries",
+          "before": 8,
+          "after": 8,
+          "added": []
+        },
+        {
+          "key": "g9:e-3",
+          "title": "Three Plate Boundaries",
+          "before": 13,
+          "after": 15,
+          "added": [
+            "ffct-30234",
+            "ffct-31477"
+          ]
+        },
+        {
+          "key": "g9:e-4",
+          "title": "Fossils Date Rock Layers",
+          "before": 16,
+          "after": 17,
+          "added": [
+            "ffct-00834"
+          ]
+        },
+        {
+          "key": "g9:e-5",
+          "title": "Relative and Absolute Dating",
+          "before": 12,
+          "after": 13,
+          "added": [
+            "ffct-05381"
+          ]
+        },
+        {
+          "key": "g9:e-6",
+          "title": "Read Earth’s Timeline",
+          "before": 27,
+          "after": 28,
+          "added": [
+            "ffct-32856"
+          ]
+        },
+        {
+          "key": "g9:e-7",
+          "title": "Seismic Clues to Earth’s Interior",
+          "before": 11,
+          "after": 12,
+          "added": [
+            "ffct-21979"
+          ]
+        },
+        {
+          "key": "g9:e-8",
+          "title": "Draw Earth’s Layers to Scale",
+          "before": 36,
+          "after": 36,
+          "added": []
+        },
+        {
+          "key": "g9:e-9",
+          "title": "Small Worlds, Early Solar System",
+          "before": 54,
+          "after": 54,
+          "added": []
+        },
+        {
+          "key": "g9:e-10",
+          "title": "Why Meteor Showers Return",
+          "before": 8,
+          "after": 8,
+          "added": []
+        },
+        {
+          "key": "g9:e-11",
+          "title": "Tools for Space Research",
+          "before": 18,
+          "after": 19,
+          "added": [
+            "ffct-24115"
+          ]
+        },
+        {
+          "key": "g9:l-1",
+          "title": "Model the DNA Double Helix",
+          "before": 8,
+          "after": 8,
+          "added": []
+        },
+        {
+          "key": "g9:l-2",
+          "title": "DNA, Genes, and Inheritance",
+          "before": 68,
+          "after": 68,
+          "added": []
+        },
+        {
+          "key": "g9:l-3",
+          "title": "How Mutations Arise",
+          "before": 10,
+          "after": 10,
+          "added": []
+        },
+        {
+          "key": "g9:l-4",
+          "title": "Different Effects of Mutations",
+          "before": 7,
+          "after": 7,
+          "added": []
+        },
+        {
+          "key": "g9:l-5",
+          "title": "Biodiversity and Resilience",
+          "before": 9,
+          "after": 10,
+          "added": [
+            "dcard-04897"
+          ]
+        },
+        {
+          "key": "g9:l-6",
+          "title": "Read Conservation Classifications",
+          "before": 5,
+          "after": 5,
+          "added": []
+        },
+        {
+          "key": "g9:l-7",
+          "title": "Threats and Extinction",
+          "before": 25,
+          "after": 25,
+          "added": []
+        },
+        {
+          "key": "g9:l-8",
+          "title": "Research Local Conservation",
+          "before": 16,
+          "after": 17,
+          "added": [
+            "ffct-00622"
+          ]
+        },
+        {
+          "key": "g9:l-9",
+          "title": "Label Philippine Ecosystems",
+          "before": 58,
+          "after": 58,
+          "added": []
+        },
+        {
+          "key": "g9:l-10",
+          "title": "Human Impacts on Ecosystems",
+          "before": 23,
+          "after": 25,
+          "added": [
+            "ffct-00208",
+            "ffct-03222"
+          ]
+        },
+        {
+          "key": "g9:l-11",
+          "title": "Plan an Environmental Survey",
+          "before": 6,
+          "after": 6,
+          "added": []
+        },
+        {
+          "key": "g9:m-1",
+          "title": "Investigate a New Substance",
+          "before": 9,
+          "after": 10,
+          "added": [
+            "ffct-17167"
+          ]
+        },
+        {
+          "key": "g9:m-2",
+          "title": "Bonds Change in Reactions",
+          "before": 7,
+          "after": 8,
+          "added": [
+            "ffct-00803"
+          ]
+        },
+        {
+          "key": "g9:m-3",
+          "title": "Valence Electrons Make Bonds",
+          "before": 15,
+          "after": 17,
+          "added": [
+            "dcard-10644",
+            "dcard-10646"
+          ]
+        },
+        {
+          "key": "g9:m-4",
+          "title": "Count Oxygen’s Valence Electrons",
+          "before": 5,
+          "after": 5,
+          "added": []
+        },
+        {
+          "key": "g9:m-5",
+          "title": "Form Ions and Ionic Bonds",
+          "before": 13,
+          "after": 14,
+          "added": [
+            "ffct-16033"
+          ]
+        },
+        {
+          "key": "g9:m-6",
+          "title": "Name Ionic Compounds",
+          "before": 10,
+          "after": 11,
+          "added": [
+            "ffct-16050"
+          ]
+        },
+        {
+          "key": "g9:m-7",
+          "title": "Share Electrons in Molecules",
+          "before": 10,
+          "after": 10,
+          "added": []
+        },
+        {
+          "key": "g9:m-8",
+          "title": "Name Molecular Compounds",
+          "before": 10,
+          "after": 11,
+          "added": [
+            "ffct-15018"
+          ]
+        },
+        {
+          "key": "g9:m-9",
+          "title": "Lattices and Molecules",
+          "before": 9,
+          "after": 9,
+          "added": []
+        },
+        {
+          "key": "g9:m-10",
+          "title": "Metallic Bonding",
+          "before": 9,
+          "after": 9,
+          "added": []
+        },
+        {
+          "key": "g9:m-11",
+          "title": "Compare Bonding and Properties",
+          "before": 15,
+          "after": 16,
+          "added": [
+            "ffct-15032"
+          ]
+        }
+      ],
+      "thinTopics": [
+        {
+          "key": "g9:f-2",
+          "title": "Changing Speed and Direction",
+          "reachableCards": 8,
+          "reachableFacts": 8
+        },
+        {
+          "key": "g9:f-4",
+          "title": "Forces Between Two Objects",
+          "reachableCards": 7,
+          "reachableFacts": 7
+        },
+        {
+          "key": "g9:f-5",
+          "title": "Draw Action–Reaction Pairs",
+          "reachableCards": 6,
+          "reachableFacts": 6
+        },
+        {
+          "key": "g9:e-2",
+          "title": "Map Philippine Plate Boundaries",
+          "reachableCards": 8,
+          "reachableFacts": 8
+        },
+        {
+          "key": "g9:e-10",
+          "title": "Why Meteor Showers Return",
+          "reachableCards": 8,
+          "reachableFacts": 8
+        },
+        {
+          "key": "g9:l-6",
+          "title": "Read Conservation Classifications",
+          "reachableCards": 5,
+          "reachableFacts": 5
+        },
+        {
+          "key": "g9:l-11",
+          "title": "Plan an Environmental Survey",
+          "reachableCards": 6,
+          "reachableFacts": 6
+        },
+        {
+          "key": "g9:l-1",
+          "title": "Model the DNA Double Helix",
+          "reachableCards": 8,
+          "reachableFacts": 8
+        },
+        {
+          "key": "g9:l-4",
+          "title": "Different Effects of Mutations",
+          "reachableCards": 7,
+          "reachableFacts": 7
+        },
+        {
+          "key": "g9:m-2",
+          "title": "Bonds Change in Reactions",
+          "reachableCards": 8,
+          "reachableFacts": 8
+        },
+        {
+          "key": "g9:m-4",
+          "title": "Count Oxygen’s Valence Electrons",
+          "reachableCards": 5,
+          "reachableFacts": 5
+        },
+        {
+          "key": "g9:m-9",
+          "title": "Lattices and Molecules",
+          "reachableCards": 9,
+          "reachableFacts": 9
+        },
+        {
+          "key": "g9:m-10",
+          "title": "Metallic Bonding",
+          "reachableCards": 9,
+          "reachableFacts": 9
+        }
+      ]
+    },
+    {
+      "grade": 10,
+      "uniqueCardsBefore": 589,
+      "uniqueCardsAfter": 618,
+      "optionalReading": {
+        "grade": 10,
+        "collectionCount": 4,
+        "boundedRuns": 33,
+        "uniqueCards": 618,
+        "eligibleCards": 618,
+        "unreadAfterExploring": 0
+      },
+      "topics": [
+        {
+          "key": "g10:e-1",
+          "title": "Measure Plate Motion",
+          "before": 7,
+          "after": 8,
+          "added": [
+            "ffct-29760"
+          ]
+        },
+        {
+          "key": "g10:e-2",
+          "title": "Compare Plate Boundaries",
+          "before": 12,
+          "after": 15,
+          "added": [
+            "ffct-29748",
+            "ffct-30234",
+            "ffct-31477"
+          ]
+        },
+        {
+          "key": "g10:e-3",
+          "title": "Read the Philippine Tectonic Map",
+          "before": 22,
+          "after": 23,
+          "added": [
+            "ffct-32112"
+          ]
+        },
+        {
+          "key": "g10:e-4",
+          "title": "Project Future Plate Positions",
+          "before": 6,
+          "after": 6,
+          "added": []
+        },
+        {
+          "key": "g10:e-5",
+          "title": "What Drives Plates?",
+          "before": 6,
+          "after": 7,
+          "added": [
+            "ffct-31462"
+          ]
+        },
+        {
+          "key": "g10:e-6",
+          "title": "Effects of Subduction",
+          "before": 4,
+          "after": 5,
+          "added": [
+            "ffct-29428"
+          ]
+        },
+        {
+          "key": "g10:e-7",
+          "title": "Himalayas and Andes",
+          "before": 7,
+          "after": 7,
+          "added": []
+        },
+        {
+          "key": "g10:e-8",
+          "title": "Evidence of Climate Change",
+          "before": 13,
+          "after": 15,
+          "added": [
+            "ffct-01475",
+            "ffct-02742"
+          ]
+        },
+        {
+          "key": "g10:e-9",
+          "title": "Enhanced Greenhouse Warming",
+          "before": 21,
+          "after": 21,
+          "added": []
+        },
+        {
+          "key": "g10:e-10",
+          "title": "ENSO and Weather",
+          "before": 20,
+          "after": 20,
+          "added": []
+        },
+        {
+          "key": "g10:e-11",
+          "title": "Local Climate Action",
+          "before": 13,
+          "after": 14,
+          "added": [
+            "ffct-02742"
+          ]
+        },
+        {
+          "key": "g10:e-12",
+          "title": "Philippine Renewable Energy",
+          "before": 30,
+          "after": 30,
+          "added": []
+        },
+        {
+          "key": "g10:f-1",
+          "title": "Investigate Projectiles",
+          "before": 12,
+          "after": 12,
+          "added": []
+        },
+        {
+          "key": "g10:f-2",
+          "title": "Elastic and Inelastic Collisions",
+          "before": 5,
+          "after": 5,
+          "added": []
+        },
+        {
+          "key": "g10:f-3",
+          "title": "Model a Collision",
+          "before": 7,
+          "after": 7,
+          "added": []
+        },
+        {
+          "key": "g10:f-4",
+          "title": "Mass, Velocity, and Momentum",
+          "before": 9,
+          "after": 11,
+          "added": [
+            "ffct-21888",
+            "ffct-21918"
+          ]
+        },
+        {
+          "key": "g10:f-5",
+          "title": "Investigate Stopping Motion",
+          "before": 6,
+          "after": 7,
+          "added": [
+            "ffct-21918"
+          ]
+        },
+        {
+          "key": "g10:f-6",
+          "title": "Impulse Changes Momentum",
+          "before": 7,
+          "after": 9,
+          "added": [
+            "ffct-21918",
+            "ffct-24097"
+          ]
+        },
+        {
+          "key": "g10:f-7",
+          "title": "Research Collision Protection",
+          "before": 7,
+          "after": 8,
+          "added": [
+            "ffct-24097"
+          ]
+        },
+        {
+          "key": "g10:f-8",
+          "title": "Conservation of Momentum",
+          "before": 5,
+          "after": 5,
+          "added": []
+        },
+        {
+          "key": "g10:f-9",
+          "title": "From Power Plant to Home",
+          "before": 13,
+          "after": 14,
+          "added": [
+            "ffct-22876"
+          ]
+        },
+        {
+          "key": "g10:f-10",
+          "title": "Household Electrical Safety",
+          "before": 7,
+          "after": 7,
+          "added": []
+        },
+        {
+          "key": "g10:f-11",
+          "title": "Motors and Generators",
+          "before": 27,
+          "after": 28,
+          "added": [
+            "ffct-22903"
+          ]
+        },
+        {
+          "key": "g10:f-12",
+          "title": "Save Electricity Together",
+          "before": 12,
+          "after": 12,
+          "added": []
+        },
+        {
+          "key": "g10:f-13",
+          "title": "Compare Energy Sources",
+          "before": 26,
+          "after": 27,
+          "added": [
+            "ffct-22071"
+          ]
+        },
+        {
+          "key": "g10:m-1",
+          "title": "Evidence of Chemical Reactions",
+          "before": 14,
+          "after": 15,
+          "added": [
+            "ffct-17167"
+          ]
+        },
+        {
+          "key": "g10:m-2",
+          "title": "Test Acids, Bases, and Salts",
+          "before": 33,
+          "after": 34,
+          "added": [
+            "ffct-15280"
+          ]
+        },
+        {
+          "key": "g10:m-3",
+          "title": "Four Reaction Types",
+          "before": 10,
+          "after": 11,
+          "added": [
+            "ffct-00632"
+          ]
+        },
+        {
+          "key": "g10:m-4",
+          "title": "Reactions Around Us",
+          "before": 15,
+          "after": 16,
+          "added": [
+            "ffct-07999"
+          ]
+        },
+        {
+          "key": "g10:m-5",
+          "title": "Write Chemical Equations",
+          "before": 10,
+          "after": 10,
+          "added": []
+        },
+        {
+          "key": "g10:m-6",
+          "title": "Atoms Rearrange, Mass Remains",
+          "before": 10,
+          "after": 12,
+          "added": [
+            "ffct-14930",
+            "ffct-16505"
+          ]
+        },
+        {
+          "key": "g10:m-7",
+          "title": "Balance an Equation",
+          "before": 10,
+          "after": 11,
+          "added": [
+            "ffct-16505"
+          ]
+        },
+        {
+          "key": "g10:m-8",
+          "title": "Control Reaction Rates",
+          "before": 42,
+          "after": 43,
+          "added": [
+            "ffct-19806"
+          ]
+        },
+        {
+          "key": "g10:m-9",
+          "title": "Exothermic and Endothermic",
+          "before": 7,
+          "after": 9,
+          "added": [
+            "ffct-15320",
+            "ffct-20553"
+          ]
+        },
+        {
+          "key": "g10:l-1",
+          "title": "Keep Internal Conditions Balanced",
+          "before": 38,
+          "after": 40,
+          "added": [
+            "ffct-00425",
+            "ffct-00451"
+          ]
+        },
+        {
+          "key": "g10:l-2",
+          "title": "Compare Feedback Loops",
+          "before": 8,
+          "after": 9,
+          "added": [
+            "ffct-00425"
+          ]
+        },
+        {
+          "key": "g10:l-3",
+          "title": "Research Natural Selection",
+          "before": 4,
+          "after": 5,
+          "added": [
+            "ffct-04030"
+          ]
+        },
+        {
+          "key": "g10:l-4",
+          "title": "How Populations Evolve",
+          "before": 10,
+          "after": 10,
+          "added": []
+        },
+        {
+          "key": "g10:l-5",
+          "title": "Evidence for Evolution",
+          "before": 29,
+          "after": 30,
+          "added": [
+            "ffct-00834"
+          ]
+        },
+        {
+          "key": "g10:l-6",
+          "title": "What Is Biotechnology?",
+          "before": 13,
+          "after": 14,
+          "added": [
+            "ffct-02369"
+          ]
+        },
+        {
+          "key": "g10:l-7",
+          "title": "Traditional Fermentation",
+          "before": 14,
+          "after": 14,
+          "added": []
+        },
+        {
+          "key": "g10:l-8",
+          "title": "Modern Biotechnology",
+          "before": 5,
+          "after": 6,
+          "added": [
+            "ffct-02369"
+          ]
+        },
+        {
+          "key": "g10:l-9",
+          "title": "Debate Biotechnology Choices",
+          "before": 8,
+          "after": 8,
+          "added": []
+        },
+        {
+          "key": "g10:l-10",
+          "title": "Limits to Population Size",
+          "before": 8,
+          "after": 8,
+          "added": []
+        },
+        {
+          "key": "g10:l-11",
+          "title": "Growth Near Carrying Capacity",
+          "before": 7,
+          "after": 7,
+          "added": []
+        }
+      ],
+      "thinTopics": [
+        {
+          "key": "g10:m-9",
+          "title": "Exothermic and Endothermic",
+          "reachableCards": 9,
+          "reachableFacts": 9
+        },
+        {
+          "key": "g10:l-2",
+          "title": "Compare Feedback Loops",
+          "reachableCards": 9,
+          "reachableFacts": 9
+        },
+        {
+          "key": "g10:l-3",
+          "title": "Research Natural Selection",
+          "reachableCards": 5,
+          "reachableFacts": 5
+        },
+        {
+          "key": "g10:l-10",
+          "title": "Limits to Population Size",
+          "reachableCards": 8,
+          "reachableFacts": 8
+        },
+        {
+          "key": "g10:l-11",
+          "title": "Growth Near Carrying Capacity",
+          "reachableCards": 7,
+          "reachableFacts": 7
+        },
+        {
+          "key": "g10:l-8",
+          "title": "Modern Biotechnology",
+          "reachableCards": 6,
+          "reachableFacts": 6
+        },
+        {
+          "key": "g10:l-9",
+          "title": "Debate Biotechnology Choices",
+          "reachableCards": 8,
+          "reachableFacts": 8
+        },
+        {
+          "key": "g10:e-1",
+          "title": "Measure Plate Motion",
+          "reachableCards": 8,
+          "reachableFacts": 8
+        },
+        {
+          "key": "g10:e-4",
+          "title": "Project Future Plate Positions",
+          "reachableCards": 6,
+          "reachableFacts": 6
+        },
+        {
+          "key": "g10:e-5",
+          "title": "What Drives Plates?",
+          "reachableCards": 7,
+          "reachableFacts": 7
+        },
+        {
+          "key": "g10:e-6",
+          "title": "Effects of Subduction",
+          "reachableCards": 5,
+          "reachableFacts": 5
+        },
+        {
+          "key": "g10:e-7",
+          "title": "Himalayas and Andes",
+          "reachableCards": 7,
+          "reachableFacts": 7
+        },
+        {
+          "key": "g10:f-2",
+          "title": "Elastic and Inelastic Collisions",
+          "reachableCards": 5,
+          "reachableFacts": 5
+        },
+        {
+          "key": "g10:f-3",
+          "title": "Model a Collision",
+          "reachableCards": 7,
+          "reachableFacts": 7
+        },
+        {
+          "key": "g10:f-5",
+          "title": "Investigate Stopping Motion",
+          "reachableCards": 7,
+          "reachableFacts": 7
+        },
+        {
+          "key": "g10:f-6",
+          "title": "Impulse Changes Momentum",
+          "reachableCards": 9,
+          "reachableFacts": 9
+        },
+        {
+          "key": "g10:f-7",
+          "title": "Research Collision Protection",
+          "reachableCards": 8,
+          "reachableFacts": 8
+        },
+        {
+          "key": "g10:f-8",
+          "title": "Conservation of Momentum",
+          "reachableCards": 5,
+          "reachableFacts": 5
+        },
+        {
+          "key": "g10:f-10",
+          "title": "Household Electrical Safety",
+          "reachableCards": 7,
+          "reachableFacts": 7
+        }
+      ]
+    }
+  ],
+  "allOriginalTeachingUnitsAndQuizzesPreserved": true,
+  "protectedInputs": {
+    "rag/pipeline/cardsPool.app.json": "9e52c84daf466863cdd843f1d17e95ba4b815df669687063163a73ce26b74f1f",
+    "rag/bank/quiz-bank.jsonl": "0c3bf1c0df9d877c7f2db03165d399ecea781b7a348aad5f28d0f761342c1efa",
+    "rag/pipeline/full-year-review.json": "ecb769b4f3a08762d804d7be0bc540a7eeace8c71e64fffc772e8089c32ad3ae",
+    "rag/pipeline/term2-pilot-review.json": "6bbdce8dea5cf0b91c6b1c435f9f0522a33c2c4450f57ca4700b4d20e2e7c768",
+    "rag/pipeline/full-year-review-lock.json": "5a08b693f6a1bffe36aa42d08a18d0c94a0ef8344f8bebabcc57566ca7d7660b",
+    "packages/mobile/src/data/curriculumTagExclusions.json": "8f559f8124fb02b078d7d989aff55f6305530cdc89ad85b576950147bfebd957",
+    "packages/mobile/src/data/curriculumTagOverrides.json": "0e64fa31e16659b9d5021b5eb80f79dd2d22a154d2bfef433961fe15b5cc2afd"
+  },
+  "database": {
+    "exampleCardsChecked": 6777,
+    "totalCardRows": 49155,
+    "allTrilingualBodiesTitlesEmphasisExact": true,
+    "sha256": "844c1a2e124042a80d1c2fc76bf93cf42650d82cd093eee7a3e75c4c2d49966b"
+  },
+  "limitations": [
+    "This is a completed review batch and a reading-flow expansion, not an audit of all 49,155 card texts.",
+    "Unused cards retain explicit holds or a pending current-text review disposition.",
+    "Optional reading uses admitted same-grade cards and does not award competency or quiz progress.",
+    "No card copy, quiz bank, existing exclusions or required teaching units were changed.",
+    "Local source only; no new APK, version, commit, push, deployment or phone rollout."
+  ]
+}

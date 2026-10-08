@@ -152,3 +152,28 @@ test('existing school-year histories gain standalone cadence without losing past
   assert.equal(c.useReviewStore.getState().data.nextSingleTurn,42);
   assert.equal(c.useReviewStore.getState().data.history.old.attempts,2);
 });
+
+test('optional reading preserves the actual saved lesson review and resumes its next turn', async () => {
+  const t = globalThis.reviewTest = { storage: new Map(), profile: 'explorer', events: [], id: 0, fail: false };
+  let c = await launch();
+  const page = { pageKey: 1, cardId: '1', topic: 'plants', title: 'Plants', endsTopic: false,
+    grade: 6, choice: { factId: '2', label: 'Next', kind: 'deep' } };
+  assert.equal(await c.interceptReview(page), false);
+  const before = JSON.stringify(c.useReviewStore.getState().data);
+  const storage = [...t.storage];
+  const events = [...t.events];
+  for (let i = 2; i < 22; i++) {
+    const extra = { ...page, pageKey: i, cardId: String(i), topic: 'explore:g6:M', exploration: true };
+    c.prepareReview(extra);
+    assert.equal(await c.interceptReview(extra), false);
+  }
+  assert.equal(JSON.stringify(c.useReviewStore.getState().data), before);
+  assert.deepEqual([...t.storage], storage);
+  assert.deepEqual(t.events, events);
+  c = await launch();
+  await c.initializeReviews(6);
+  assert.equal(JSON.stringify(c.useReviewStore.getState().data), before);
+  assert.equal(await c.interceptReview({ ...page, pageKey: 22, cardId: '22' }), false);
+  assert.equal(c.useReviewStore.getState().data.turns, 2);
+  assert.equal(c.useReviewStore.getState().data.topic.key, 'plants');
+});

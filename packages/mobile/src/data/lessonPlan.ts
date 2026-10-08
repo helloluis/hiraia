@@ -78,6 +78,9 @@ export interface LessonRun {
   manualSelection?: boolean;
   /** New runs vary; saved runs keep their exact sequence across restarts/language changes. */
   seed?: number;
+  /** Optional reading never substitutes for a required lesson or its quiz anchors. */
+  mode?: 'exploration';
+  returnTo?: { key: string; run?: LessonRun };
 }
 export const lessonByKey = (key: string) => allLessons.find((l) => l.key === key);
 export function lessonObjectives(key: string | null, card: string): string[] {
@@ -97,6 +100,7 @@ export function planLesson(
   const old = saved as LessonRun | undefined;
   if (
     old?.version === 1 &&
+    old.mode !== 'exploration' &&
     old.key === lesson.key &&
     Array.isArray(old.cards) &&
     old.cards.length > 0 &&

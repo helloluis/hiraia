@@ -4,6 +4,7 @@ import type { TitleCardContent } from '../../data/titleCard';
 import { useArtSource } from '../../data/artSource';
 import { card, fonts } from '../../theme';
 import { Arrow, TapTarget, CardPrint } from './CardFrame';
+import { uiStrings } from '../../config/strings';
 
 function Thumbnail({ slug }: { slug: string }) {
   const source = useArtSource(slug);
@@ -29,7 +30,7 @@ export function TitleCardPage({
       <CardPrint />
       <ScrollView nestedScrollEnabled contentContainerStyle={styles.content}>
         <Text style={styles.eyebrow}>
-          TERM {content.term} · {content.category.toUpperCase()}
+          {content.optionalReading ? uiStrings(language).cards.curriculumExplore : `TERM ${content.term} · ${content.category.toUpperCase()}`}
         </Text>
         <Text accessibilityRole="header" style={styles.title}>
           {title}

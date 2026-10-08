@@ -48,6 +48,7 @@ import curriculumOutlineJson from '../generated/curriculumOutline.generated.json
 
 import { supplement } from './lessonSupplement';
 import { hasArt } from './artPresence';
+import { readingCollections, readingCollection, planExtraReading, unreadReadingCards } from './lessonExploration';
 import {
   auditedGrades,
   lessonsForGrade,
@@ -1981,7 +1982,8 @@ const TOPIC_CARDS = new Map<OutlineTopic, ReadonlySet<string>>();
 export function cardsForTopic(topic: OutlineTopic): ReadonlySet<string> {
   let s = TOPIC_CARDS.get(topic);
   if (!s) {
-    const lesson = lessonByKey(topic.key);
+    const grade = /^explore:g(\d+):/.exec(topic.key)?.[1];
+    const lesson = lessonByKey(topic.key) ?? (grade ? readingCollection(Number(grade), topic.key)?.lesson : undefined);
     if (lesson) s = new Set(lesson.cardIds);
     else if (topic.codes.length === 1) s = cardsForCompetency(topic.codes[0]!);
     else {
@@ -2067,6 +2069,7 @@ export interface CurriculumCursor {
 
 /** The outline row a cursor names (its title prints on the ribbon), or undefined if the grade's outline moved under it. */
 export function cursorTopic(c: CurriculumCursor): OutlineTopic | undefined {
+  if (c.key.startsWith('explore:')) return readingCollectionTopics(c.grade).find(t => t.key === c.key);
   const t = curriculumOutline(c.grade)[c.index];
   return t && t.key === c.key ? t : undefined;
 }
@@ -2077,20 +2080,22 @@ export function curriculumCursor(
   key: string,
   seen: ReadonlySet<string> = new Set(),
   saved?: unknown,
-  shelfCat?: string
+  shelfCat?: string,
+  continuation?: NonNullable<LessonRun['returnTo']>,
 ): CurriculumCursor | null {
   const rows = curriculumOutline(grade);
+  const collection = readingCollection(grade, key);
   if (lessonsForGrade(grade).length && !lessonByKey(key)) {
     const old = (LEGACY_OUTLINES.get(grade) ?? []).find((t) => t.key === key);
     key = rows.find((t) => t.codes.some((code) => old?.codes.includes(code)))?.key ?? key;
   }
   const index = rows.findIndex((t) => t.key === key);
-  if (index < 0) return null;
-  const lesson = lessonsForGrade(grade).find((l) => l.key === key);
+  if (index < 0 && !collection) return null;
+  const lesson = collection?.lesson ?? lessonsForGrade(grade).find((l) => l.key === key);
   if (!lesson) return { grade, key, idSet: cardsForTopic(rows[index]!), index };
   const selectedCat = shelfCat ?? (saved as LessonRun | undefined)?.shelfCat;
   const shelf = selectedCat
-    ? topicShelves(rows[index]!, 'english').find((s) => s.cat === selectedCat)
+    ? (!collection ? topicShelves(rows[index]!, 'english').find((s) => s.cat === selectedCat) : undefined)
     : undefined;
   if (selectedCat && !shelf) return null;
   const scoped = shelf
@@ -2112,14 +2117,41 @@ export function curriculumCursor(
       }
     : lesson;
   const manualSelection = (saved as LessonRun | undefined)?.manualSelection === true;
+  const savedExtra = (saved as LessonRun | undefined)?.mode === 'exploration';
+  const returnTo = continuation ?? (savedExtra ? (saved as LessonRun).returnTo : undefined) ??
+    (collection && rows[0] ? { key: rows[0].key } : undefined);
+  if (savedExtra && !returnTo) return null;
+  if (returnTo && (!rows.some(t => t.key === returnTo.key) || returnTo.run?.mode === 'exploration')) return null;
+  const planned = returnTo ? planExtraReading(scoped, seen, returnTo, saved, undefined, id => BY_ID.get(id)?.factId ?? id) : planLesson(scoped, seen, saved);
+  if (!planned) return null;
   const lessonRun = {
-    ...planLesson(scoped, seen, saved),
+    ...planned,
     ...(shelf ? { shelfCat: shelf.cat } : {}),
     manualSelection,
   };
   const idSet = new Set(lessonRun.cards);
   PLANNED_RUNS.set(idSet, lessonRun);
   return { grade, key, index, idSet, lessonRun, manualSelection };
+}
+
+const COLLECTION_TOPICS = new Map<number, OutlineTopic[]>();
+/** Optional reading is separate from the authored curriculum outline and its coverage. */
+export function readingCollectionTopics(grade: GradeLevel): OutlineTopic[] {
+  let topics = COLLECTION_TOPICS.get(grade);
+  if (!topics) {
+    topics = readingCollections(grade).map(c => ({ key: c.key, title: c.lesson.title,
+      quarter: c.lesson.quarter as Quarter, term: c.lesson.term, weeks: c.lesson.weeks,
+      contentIndex: 0, codes: [] }));
+    COLLECTION_TOPICS.set(grade, topics);
+  }
+  return topics;
+}
+
+export function readingAvailability(grade: GradeLevel, key: string, seen: ReadonlySet<string>, shelfCat?: string) {
+  const topic = [...curriculumOutline(grade), ...readingCollectionTopics(grade)].find(t => t.key === key);
+  if (!topic) return { total: 0, unread: 0 };
+  const ids = shelfCat ? topicShelves(topic, 'english').find(s => s.cat === shelfCat)?.ids : cardsForTopic(topic);
+  return { total: ids?.size ?? 0, unread: ids ? unreadReadingCards([...ids], seen, id => BY_ID.get(id)?.factId ?? id).length : 0 };
 }
 
 /** Start at the published term/week. A numeric fraction is retained for old
@@ -2165,6 +2197,8 @@ export function advanceCurriculum(
     const run = { ...c.lessonRun, completed };
     if (run.cards.some((id) => !completed.includes(id)))
       return curriculumCursor(c.grade, c.key, seen, run);
+    if (run.mode === 'exploration' && run.returnTo)
+      return curriculumCursor(c.grade, run.returnTo.key, seen, run.returnTo.run);
     const rows = curriculumOutline(c.grade);
     return curriculumCursor(c.grade, rows[(c.index + 1) % rows.length]!.key, seen);
   }

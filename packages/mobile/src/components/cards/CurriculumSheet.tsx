@@ -20,6 +20,7 @@
  * eyebrow, hint, term headings, domain names, a11y labels — is uiStrings.
  *
  * Subcategory pills use the intersection of taxonomy labels and this topic’s cards.
+ * Every topic is also a bordered Read button; a row without pills still opens its cards.
  */
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
@@ -33,12 +34,14 @@ import {
   TOPIC_MIN_CARDS,
   cardsForTopic,
   curriculumOutline,
+  readingAvailability,
+  readingCollectionTopics,
   topicShelves,
   topicTitle,
   type OutlineTopic,
   type TopicShelf,
 } from '../../data/cards';
-import { useCardStore } from '../../store/cardStore';
+import { readingHistory, useCardStore } from '../../store/cardStore';
 import { awardStars, type TopicAward } from '../../reviews/logic';
 import { useReviewStore } from '../../reviews/store';
 import { card, cardAlpha, fonts } from '../../theme';
@@ -62,7 +65,7 @@ interface TermGroup {
 }
 
 /** The flat, virtualizable form of the outline: headings and rows in one list. */
-type SheetItem = { kind: 'term'; term: Term } | { kind: 'row'; row: RowView };
+type SheetItem = { kind: 'explore' } | { kind: 'term'; term: Term } | { kind: 'row'; row: RowView };
 
 /**
  * The grade's outline, grouped by term, with each row's unseen/total count against the
@@ -146,7 +149,7 @@ export const CurriculumSheet = memo(function CurriculumSheet({
       setGroups(null);
       return;
     }
-    const id = requestAnimationFrame(() => setGroups(groupOutline(grade, language, seen, awards)));
+    const id = requestAnimationFrame(() => setGroups(groupOutline(grade, language, readingHistory(), awards)));
     return () => cancelAnimationFrame(id);
     // `seen` and `awards` stay in here: the chips and the stars must keep tracking the store
     // while the sheet is open, or grading a topic under it leaves stale counts on screen.
@@ -158,23 +161,33 @@ export const CurriculumSheet = memo(function CurriculumSheet({
    * exactly three of them, so any sane window renders all three and mounts every row anyway.
    */
   const items = useMemo<SheetItem[]>(
-    () =>
-      (groups ?? []).flatMap((g) => [
+    () => groups === null ? [] : [
+      { kind: 'explore' },
+      ...readingCollectionTopics(grade).map(topic => {
+        const availability = readingAvailability(grade, topic.key, readingHistory());
+        return { kind: 'row' as const, row: { topic, title: topicTitle(topic, language),
+          unseen: availability.unread, total: availability.total, stars: 0, shelves: [] } };
+      }),
+      ...groups.flatMap((g) => [
         { kind: 'term' as const, term: g.term },
         ...g.rows.map((row) => ({ kind: 'row' as const, row })),
       ]),
-    [groups]
+    ],
+    [groups, grade, language]
   );
 
   const renderItem = useCallback(
     ({ item }: { item: SheetItem }) =>
-      item.kind === 'term' ? (
+      item.kind === 'explore' ? (
+        <TermHeading label={t.cards.curriculumExplore} />
+      ) : item.kind === 'term' ? (
         <TermHeading label={t.cards.terms[item.term - 1]!} />
       ) : (
         <Row
           row={item.row}
           active={item.row.topic.key === activeKey}
           activeCat={activeCat}
+          language={language}
           onPick={onPick}
         />
       ),
@@ -270,7 +283,7 @@ const TermHeading = memo(function TermHeading({ label }: { label: string }) {
 });
 
 /**
- * One topic row: the DepEd title, its star award, an unseen/total chip, and the subcategory
+ * One topic button: the DepEd title, its star award, an explicit unread count, and the subcategory
  * pills beneath. Its own memoized component so the FlatList can recycle rows without
  * re-rendering the ones that did not change.
  */
@@ -278,64 +291,82 @@ const Row = memo(function Row({
   row,
   active,
   activeCat,
+  language,
   onPick,
 }: {
   row: RowView;
   active: boolean;
   activeCat: string | undefined;
+  language: Language;
   onPick: (key: string, shelfCat?: string) => void;
 }) {
+  const t = uiStrings(language).cards;
+  const unread = t.curriculumUnread
+    .replace('{unread}', String(row.unseen))
+    .replace('{total}', String(row.total));
+  const starLabel = row.stars > 0 ? `${row.stars} ${row.stars === 1 ? 'star' : 'stars'}` : '';
+  const exhausted = row.topic.key.startsWith('explore:') && row.unseen === 0;
   return (
     <View style={[styles.row, active && styles.rowActive]}>
       <View style={[styles.marker, active && styles.markerActive]} />
       <View style={styles.rowBody}>
         <Pressable
           onPress={() => onPick(row.topic.key)}
+          disabled={exhausted}
           accessibilityRole="button"
-          accessibilityState={{ selected: active }}
-          style={({ pressed }) => [styles.rowLine, pressed && styles.rowPressed]}
+          accessibilityLabel={[`${t.curriculumRead}: ${row.title}`, unread, starLabel]
+            .filter(Boolean)
+            .join('. ')}
+          accessibilityState={{ selected: active, disabled: exhausted }}
+          style={({ pressed }) => [
+            styles.rowLine,
+            active && styles.rowLineActive,
+            pressed && styles.rowPressed,
+            exhausted && { opacity: 0.55 },
+          ]}
         >
-          <Text style={[styles.rowText, active && styles.rowTextActive]} numberOfLines={2}>
-            {row.title}
-          </Text>
+          <View style={styles.topicCopy}>
+            <Text style={[styles.rowText, active && styles.rowTextActive]} numberOfLines={2}>
+              {row.title}
+            </Text>
+            <Text style={styles.unreadText}>{unread}</Text>
+          </View>
           {row.stars > 0 ? (
-            <Text
-              style={styles.stars}
-              accessibilityLabel={`${row.stars} ${row.stars === 1 ? 'star' : 'stars'}`}
-            >
+            <Text style={styles.stars} accessibilityLabel={starLabel}>
               {'\u2605'.repeat(row.stars)}
             </Text>
           ) : null}
-          <View style={[styles.chip, active && styles.chipActive]}>
-            <Text style={[styles.chipText, active && styles.chipTextActive]} numberOfLines={1}>
-              {row.unseen} / {row.total}
-            </Text>
+          <View style={styles.readAction} accessible={false}>
+            <Text style={styles.readActionText}>{t.curriculumRead}</Text>
+            <View style={styles.readChevron} accessible={false} />
           </View>
         </Pressable>
-        <View style={styles.pills}>
-          {row.shelves.map((shelf) => (
-            <Pressable
-              key={shelf.cat}
-              accessibilityRole="button"
-              accessibilityLabel={`${row.title}: ${shelf.label}`}
-              accessibilityState={{ selected: active && shelf.cat === activeCat }}
-              onPress={() => onPick(row.topic.key, shelf.cat)}
-              style={({ pressed }) => [
-                styles.pill,
-                active && shelf.cat === activeCat && styles.chipActive,
-                pressed && styles.rowPressed,
-              ]}
-            >
-              <Text style={styles.pillText}>{shelf.label}</Text>
-            </Pressable>
-          ))}
-        </View>
+        {row.shelves.length > 0 && (
+          <View style={styles.pills}>
+            {row.shelves.map((shelf) => (
+              <Pressable
+                key={shelf.cat}
+                accessibilityRole="button"
+                accessibilityLabel={`${row.title}: ${shelf.label}`}
+                accessibilityState={{ selected: active && shelf.cat === activeCat }}
+                onPress={() => onPick(row.topic.key, shelf.cat)}
+                style={({ pressed }) => [
+                  styles.pill,
+                  active && shelf.cat === activeCat && styles.chipActive,
+                  pressed && styles.rowPressed,
+                ]}
+              >
+                <Text style={styles.pillText}>{shelf.label}</Text>
+              </Pressable>
+            ))}
+          </View>
+        )}
       </View>
     </View>
   );
 });
 
-const keyOfItem = (it: SheetItem) => (it.kind === 'term' ? `q${it.term}` : it.row.topic.key);
+const keyOfItem = (it: SheetItem) => (it.kind === 'explore' ? 'explore' : it.kind === 'term' ? `q${it.term}` : it.row.topic.key);
 
 const EMPTY_AWARDS: Readonly<Record<string, TopicAward>> = {};
 
@@ -433,7 +464,7 @@ const styles = StyleSheet.create({
   // the gold marker: a 4dp bar in the gutter, transparent until the row is the held topic
   marker: { width: 4, alignSelf: 'stretch', borderRadius: 2, backgroundColor: 'transparent' },
   markerActive: { backgroundColor: card.gold },
-  // title + chip on one line; the pills (when they land) wrap beneath inside rowBody
+  // The full topic button remains visible even when no subcategory passes the display floor.
   rowBody: { flex: 1 },
   pills: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 },
   pill: {
@@ -447,21 +478,35 @@ const styles = StyleSheet.create({
     backgroundColor: cardAlpha(card.sage, 0.18),
   },
   pillText: { fontFamily: fonts.cardBody, fontSize: 12, color: card.ink },
-  rowLine: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  // a DepEd title is a heading, not a sentence: one size up from the old competency text
-  rowText: { flex: 1, fontFamily: fonts.cardBody, fontSize: 15, lineHeight: 19, color: card.ink },
-  rowTextActive: { fontFamily: fonts.cardBodyBold },
-  stars: { fontFamily: fonts.gothic, fontSize: 11, letterSpacing: 1, color: card.gold },
-  chip: {
-    minWidth: 52,
-    paddingHorizontal: 7,
-    paddingVertical: 3,
-    borderRadius: 7,
-    borderWidth: 1,
-    borderColor: cardAlpha(card.olive, 0.5),
+  rowLine: {
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: 10,
+    minHeight: 64,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: cardAlpha(card.olive, 0.6),
+    backgroundColor: cardAlpha(card.sage, 0.12),
   },
+  rowLineActive: { borderColor: card.gold, backgroundColor: cardAlpha(card.gold, 0.12) },
+  topicCopy: { flex: 1, gap: 4 },
+  // a DepEd title is a heading, not a sentence: one size up from the old competency text
+  rowText: { fontFamily: fonts.cardBody, fontSize: 15, lineHeight: 19, color: card.ink },
+  rowTextActive: { fontFamily: fonts.cardBodyBold },
+  unreadText: { fontFamily: fonts.cardBody, fontSize: 12, lineHeight: 16, color: card.olive },
+  readAction: { flexDirection: 'row', alignItems: 'center', gap: 6, minHeight: 44 },
+  readActionText: { fontFamily: fonts.cardBodyBold, fontSize: 14, color: card.ink },
+  readChevron: {
+    width: 8,
+    height: 8,
+    borderTopWidth: 2,
+    borderRightWidth: 2,
+    borderColor: card.ink,
+    transform: [{ rotate: '45deg' }],
+    marginRight: 3,
+  },
+  stars: { fontFamily: fonts.gothic, fontSize: 11, letterSpacing: 1, color: card.gold },
   chipActive: { backgroundColor: card.gold, borderColor: card.gold },
-  chipText: { fontFamily: fonts.gothic, fontSize: 9, letterSpacing: 0.6, color: card.olive },
-  chipTextActive: { color: card.ink },
 });

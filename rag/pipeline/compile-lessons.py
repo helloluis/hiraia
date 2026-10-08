@@ -2,6 +2,7 @@
 Run from repository root. --check validates that generated output is current.
 """
 import json,re,pathlib,hashlib,sys
+from lesson_examples import load_examples
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 GRADE=int(sys.argv[sys.argv.index('--grade')+1]) if '--grade' in sys.argv else 5
 assert GRADE in (3,4,5,6,7,8,9,10),'Only audited grades may be compiled'
@@ -14,6 +15,7 @@ expected=set(code_quarter)
 supp=json.loads((ROOT/f'packages/mobile/src/data/grade{GRADE}LessonSupplement.json').read_text());p['cards']+=supp['cards'];questions.update(supp['questions']);tags.update({id:[codes[0],GRADE,code_quarter[codes[0]],1,[],codes] for id,codes in supp['competencies'].items()})
 available={c['id'] for c in idx['cards']}|{c['id'] for c in supp['cards']}
 cards={c['id']:c for c in p['cards']}
+examples=load_examples(ROOT,cards)
 review=json.loads((ROOT/'rag/pipeline/term2-pilot-review.json').read_text())
 year_review=json.loads((ROOT/'rag/pipeline/full-year-review.json').read_text())
 assert not set(review['units']) & set(year_review['units']), 'Duplicate review decisions'
@@ -71,7 +73,7 @@ for lesson in a['lessons']:
   # Reviewed blocks use explicit examples. Unreviewed cards remain in discovery;
   # a keyword hit alone cannot refill a reviewed lesson.
   matching=set(codes)&set(out['codes'])
-  if matching<=reviewed_codes and c['id'] not in review['relatedCardIds'].get(lesson['key'],[]):continue
+  if matching<=reviewed_codes and c['id'] not in review['relatedCardIds'].get(lesson['key'],[]) and c['id'] not in examples.get(lesson['key'],[]):continue
   if c.get('cats') and all(cat in enrichment for cat in c['cats']):continue
   if c['factId'] in core_facts or c['factId'] in related_facts:continue
   related_facts.add(c['factId']);related.append(c['id'])
@@ -82,6 +84,7 @@ for lesson in a['lessons']:
  out['relatedCardIds']=related
  out['relatedGroups']=[dict(key=key,cardIds=ids) for key,ids in sorted(groups.items())]
  out['cardIds']=out['coreCardIds']+related
+ assert set(examples.get(lesson['key'],[]))<=set(out['cardIds']),f"Reviewed examples lost from {lesson['key']}"
  if len({cards[id]['factId'] for id in out['cardIds']})<3:gaps.append(lesson['key']+' has fewer than 3 distinct facts; Calendar would hide or underfill it')
  out['revision']=hashlib.sha256(json.dumps(out,sort_keys=True).encode()).hexdigest()[:16];result.append(out)
 assert set(c for l in result for c in l['codes'])==expected

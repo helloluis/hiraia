@@ -1,8 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import type { Language } from '@hiraia/shared';
+import type { GradeLevel, Language } from '@hiraia/shared';
 import type { LessonRecap } from '../../data/lessonRecap';
-import { cardText, cardTitle, choiceLabel, getCard, warmPage } from '../../data/cards';
+import {
+  cardText,
+  cardTitle,
+  choiceLabel,
+  getCard,
+  warmPage,
+  readingAvailability,
+} from '../../data/cards';
+import { suggestedCollections } from '../../data/lessonExploration';
 import { card, fonts } from '../../theme';
 import { Arrow, CardPrint, TapTarget } from './CardFrame';
 
@@ -10,12 +18,18 @@ export function LessonRecapPage({
   content,
   language,
   onRepeat,
+  onReadMore,
+  onExplore,
+  seen,
   onContinue,
   readOnly = false,
 }: {
   content: LessonRecap;
   language: Language;
   onRepeat: () => void;
+  onReadMore: () => void;
+  onExplore: (key: string) => void;
+  seen: ReadonlySet<string>;
   onContinue: () => void;
   readOnly?: boolean;
 }) {
@@ -39,6 +53,37 @@ export function LessonRecapPage({
     };
   }, [content]);
   const lang = language === 'tagalog' ? 'tl' : language === 'cebuano' ? 'bis' : 'en';
+  const availability = useMemo(
+    () => readingAvailability(content.grade as GradeLevel, content.key, seen, content.run.shelfCat),
+    [content, seen]
+  );
+  const suggestions = useMemo(
+    () => suggestedCollections(content.grade, content.key, seen, (id) => getCard(id)?.factId ?? id),
+    [content, seen]
+  );
+  const more = {
+    en: [
+      'Read more',
+      '{count} unread cards',
+      'You have read every card here.',
+      'Explore more science',
+      'Return to your lesson',
+    ],
+    tl: [
+      'Magbasa pa',
+      'Hindi pa nababasa: {count} kard',
+      'Nabasa mo na ang lahat ng kard dito.',
+      'Tumuklas pa sa agham',
+      'Bumalik sa aralin',
+    ],
+    bis: [
+      'Magbasa pa',
+      'Wala pa mabasa: {count} ka kard',
+      'Nabasa na nimo ang tanang kard dinhi.',
+      'Susihon pa ang siyensya',
+      'Balik sa leksiyon',
+    ],
+  }[lang];
   const copy = {
     en: [
       'LET’S RECAP',
@@ -100,17 +145,41 @@ export function LessonRecapPage({
             {i + 1}. {point}
           </Text>
         ))}
+        {!readOnly && suggestions.length > 0 && (
+          <View style={styles.exploration}>
+            <Text style={styles.explorationHeading}>{more[3]}</Text>
+            {suggestions.map(({ collection, unread }) => (
+              <TapTarget
+                key={collection.key}
+                onPress={() => onExplore(collection.key)}
+                style={() => styles.collection}
+              >
+                <Text style={styles.button}>{collection.lesson.title[lang]} →</Text>
+                <Text style={styles.hint}>{more[1]!.replace('{count}', String(unread))}</Text>
+              </TapTarget>
+            ))}
+          </View>
+        )}
       </ScrollView>
       {!readOnly && (
         <>
-          <TapTarget onPress={onRepeat} style={() => styles.repeat}>
-            <Text style={styles.button}>{copy[2]} ↻</Text>
-          </TapTarget>
-          <Text style={styles.hint}>{copy[3]}</Text>
+          {(availability.unread > 0 || !content.key.startsWith('explore:')) && (
+            <TapTarget
+              onPress={availability.unread ? onReadMore : onRepeat}
+              style={() => styles.repeat}
+            >
+              <Text style={styles.button}>{availability.unread ? more[0] : copy[2]} →</Text>
+            </TapTarget>
+          )}
+          <Text style={styles.hint}>
+            {availability.unread
+              ? more[1]!.replace('{count}', String(availability.unread))
+              : more[2]}
+          </Text>
         </>
       )}
       <TapTarget onPress={onContinue} style={() => styles.next}>
-        <Text style={styles.button}>{copy[4]}</Text>
+        <Text style={styles.button}>{content.run.mode === 'exploration' ? more[4] : copy[4]}</Text>
         <Arrow color={card.ink} />
       </TapTarget>
     </View>
@@ -129,6 +198,15 @@ const styles = StyleSheet.create({
   intro: { fontFamily: fonts.slab, fontSize: 17, color: card.ink, marginBottom: 8 },
   list: { flex: 1 },
   points: { paddingBottom: 12, gap: 12 },
+  exploration: { gap: 8, marginTop: 12 },
+  explorationHeading: { fontFamily: fonts.slab, fontSize: 17, color: card.ink },
+  collection: {
+    borderWidth: 1,
+    borderColor: card.ink,
+    borderRadius: 10,
+    padding: 12,
+    minHeight: 64,
+  },
   point: { fontFamily: fonts.slab, fontSize: 17, lineHeight: 24, color: card.ink },
   repeat: {
     backgroundColor: card.gold,

@@ -80,7 +80,8 @@ test('real feed completes each bounded run in order, resumes exactly, and keeps 
   assert.equal(cursor.key, grade5Lessons[0]!.key);
 });
 test('small reviewed lessons repeat only their approved cards; invalid saves rebuild; profiles do not share progress', () => {
-  const lesson = grade5Lessons.find((l) => l.key === 'g5:heat-and-state')!;
+  const lesson = grade5Lessons.find((l) => l.key === 'g5:contact-forces')!;
+  assert.ok(lesson.cardIds.length <= lesson.target, 'exercise a genuinely small pool');
   const first = planLesson(lesson, new Set(), undefined, 42);
   const second = planLesson(lesson, new Set(first.cards));
   assert.deepEqual(new Set(first.cards), new Set(lesson.cardIds));
@@ -163,7 +164,13 @@ test('reviewed pools preserve relevance and scoped exclusions', () => {
 
 test('adding related inventory preserves a valid in-progress core-only saved run', () => {
   const lesson = grade5Lessons[0]!;
-  const run = planLesson(lesson, new Set());
+  const oldLesson = {
+    ...lesson,
+    cardIds: lesson.coreCardIds,
+    relatedCardIds: [],
+    relatedGroups: [],
+  };
+  const run = planLesson(oldLesson, new Set(), undefined, 42);
   const saved = {
     ...run,
     revision: 'previous-smaller-inventory',
@@ -173,4 +180,36 @@ test('adding related inventory preserves a valid in-progress core-only saved run
   assert.deepEqual(restored.cards, saved.cards);
   assert.deepEqual(restored.completed, saved.completed);
   assert.equal(restored.revision, lesson.revision);
+});
+
+test('expanded Grade 5 examples are reachable in the actual feed without awarding core objectives', () => {
+  const review = JSON.parse(
+    readFileSync(
+      new URL('../../../rag/pipeline/lesson-examples-review.json', import.meta.url),
+      'utf8'
+    )
+  );
+  const reachable = new Set<string>(
+    C.curriculumOutline(5).flatMap((topic: any) => [...C.cardsForTopic(topic)])
+  );
+  assert.ok(reachable.size >= 1000, 'do not regress Grade 5 to the tiny coverage-only pool');
+  const gradeExamples = new Set<string>(
+    Object.entries(review.relatedCardIds)
+      .filter(([key]) => key.startsWith('g5:'))
+      .flatMap(([, ids]) => ids as string[])
+  );
+  for (const id of gradeExamples) {
+    assert.ok(reachable.has(id), `reviewed example unreachable: ${id}`);
+    const card = C.getCard(id);
+    for (const lang of ['english', 'tagalog', 'cebuano'])
+      assert.ok(C.cardText(card, lang).length > 10, `${id}/${lang}`);
+  }
+  const reproduction = grade5Lessons.find((l) => l.key === 'g5:animal-reproduction')!;
+  assert.ok(reproduction.cardIds.length >= 40);
+  assert.equal(reproduction.coreCardIds.length, 4);
+  assert.ok(reproduction.relatedCardIds.includes('ffct-07984'), 'shark reproduction comparison');
+  assert.ok(reproduction.relatedCardIds.includes('ffct-04948'), 'egg-laying mammals');
+  assert.ok(!reproduction.units.some((u) => u.cardIds.includes('ffct-07984')));
+  for (const id of ['ffct-09172', 'ffct-10799', 'ffct-11790'])
+    assert.ok(!reproduction.cardIds.includes(id), `unreviewed/overbroad example: ${id}`);
 });

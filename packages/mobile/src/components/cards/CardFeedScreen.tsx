@@ -50,7 +50,7 @@ import {
   type CardQuestion,
 } from '../../data/cards';
 import type { RewardContent } from '../../data/reward';
-import { useCardStore, type FeedResponse } from '../../store/cardStore';
+import { readingHistory, useCardStore, type FeedResponse } from '../../store/cardStore';
 import { useEngineStore } from '../../store/engineStore';
 import { card, cardAlpha, fonts } from '../../theme';
 import { useReduceMotion } from './useReduceMotion';
@@ -470,6 +470,10 @@ function CardFeed() {
   const choices = useCardStore((s) => s.choices);
   const lessonRecap = useCardStore((s) => s.lessonRecap);
   const repeatLesson = useCardStore((s) => s.repeatLesson);
+  const readMore = useCardStore((s) => s.readMore);
+  const exploreCollection = useCardStore((s) => s.exploreCollection);
+  const sessionSeen = useCardStore((s) => s.seen);
+  const readingSeen = useMemo(() => readingHistory(), [sessionSeen]);
   const titleCard = useCardStore((s) => s.titleCard);
   const question = useCardStore((s) => s.question);
   const reward = useCardStore((s) => s.reward);
@@ -649,9 +653,10 @@ function CardFeed() {
   const pickTopic = useCallback(
     (key: string, shelfCat?: string) => {
       setSheetOpen(false);
-      enterCurriculum(key, undefined, shelfCat);
+      if (key.startsWith('explore:')) exploreCollection(key);
+      else enterCurriculum(key, undefined, shelfCat);
     },
-    [enterCurriculum]
+    [enterCurriculum, exploreCollection]
   );
   // Counter, not boolean: every die tap must re-pop the toast even mid-fade (see RerollToast).
   const [rerollTick, setRerollTick] = useState(0);
@@ -852,6 +857,9 @@ function CardFeed() {
                 content={page.lessonRecap}
                 language={language}
                 onRepeat={repeatLesson}
+                onReadMore={readMore}
+                onExplore={exploreCollection}
+                seen={readingSeen}
                 readOnly={!live}
                 onContinue={forward}
               />

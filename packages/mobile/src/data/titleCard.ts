@@ -8,6 +8,7 @@ export interface TitleCardContent {
   category: string;
   title: { en: string; tl: string; bis: string };
   slugs: string[];
+  optionalReading?: boolean;
 }
 
 /** Preview only illustrations belonging to the lesson the student is entering. */
@@ -16,9 +17,9 @@ export function titleForCard(
   grade: number,
   cursor: CurriculumCursor | null
 ): TitleCardContent | null {
-  const lesson =
-    (cursor?.idSet.has(fact.id) ? lessonByKey(cursor.key) : null) ??
-    lessonsForGrade(grade).find((l) => l.cardIds.includes(fact.id));
+  const lesson = cursor?.idSet.has(fact.id)
+    ? lessonByKey(cursor.key)
+    : lessonsForGrade(grade).find((l) => l.cardIds.includes(fact.id));
   const topic = cursor && cursorTopic(cursor);
   if (!lesson && !topic) return null;
   const ids = cursor?.idSet.has(fact.id) ? [...cursor.idSet] : (lesson?.cardIds ?? [fact.id]);
@@ -42,5 +43,6 @@ export function titleForCard(
             : category,
     title: lesson?.title ?? topic!.title,
     slugs,
+    ...(cursor?.lessonRun?.mode === 'exploration' ? { optionalReading: true } : {}),
   };
 }

@@ -108,6 +108,11 @@ interface UIStrings {
     curriculum: string;
     /** One line under the sheet's title saying what a topic-row tap does. */
     curriculumHint: string;
+    /** Visible action on every tappable topic row, including rows without subcategory shortcuts. */
+    curriculumRead: string;
+    /** Reading availability, not a quiz score or mastery count; {unread}/{total} are interpolated. */
+    curriculumUnread: string;
+    curriculumExplore: string;
     /** Three-term curriculum headings. */
     terms: [string, string, string];
     /** a11y label of the outline sheet's close affordance. */
@@ -251,7 +256,10 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       rerollToast: 'Bagong random na paksa!',
       rerollToastTopic: 'Random na card sa paksang ito!',
       curriculum: 'Kurikulum',
-      curriculumHint: 'Pumili ng paksa — tatapusin natin ang lahat ng kard nito.',
+      curriculumHint: 'Pumili ng aralin o magbasa pa tungkol sa agham.',
+      curriculumRead: 'Basahin',
+      curriculumUnread: 'Hindi pa nababasa: {unread} sa {total} kard',
+      curriculumExplore: 'Tumuklas pa sa agham',
       terms: ['Term 1', 'Term 2', 'Term 3'],
       closeCurriculum: 'Isara ang kurikulum',
       exitCurriculum: 'Lumabas sa kurikulum',
@@ -363,7 +371,10 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       rerollToast: 'New Random Topic!',
       rerollToastTopic: 'Random card from this topic!',
       curriculum: 'Curriculum',
-      curriculumHint: "Pick a topic — we'll go through all of its cards.",
+      curriculumHint: 'Choose a lesson or explore more science.',
+      curriculumRead: 'Read',
+      curriculumUnread: '{unread} of {total} cards unread',
+      curriculumExplore: 'Explore more science',
       terms: ['Term 1', 'Term 2', 'Term 3'],
       closeCurriculum: 'Close the curriculum',
       exitCurriculum: 'Leave the curriculum',
@@ -476,7 +487,10 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       rerollToast: 'Bag-ong random nga hilisgutan!',
       rerollToastTopic: 'Random nga card gikan niini nga hilisgutan!',
       curriculum: 'Kurikulum',
-      curriculumHint: 'Pilia ang hilisgutan — humanon nato ang tanan niyang kard.',
+      curriculumHint: 'Pagpili og leksiyon o magbasa pa bahin sa siyensya.',
+      curriculumRead: 'Basaha',
+      curriculumUnread: 'Wala pa mabasa: {unread} sa {total} ka kard',
+      curriculumExplore: 'Susihon pa ang siyensya',
       terms: ['Term 1', 'Term 2', 'Term 3'],
       closeCurriculum: 'Isira ang kurikulum',
       exitCurriculum: 'Gawas sa kurikulum',
