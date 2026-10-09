@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "version": "0.4.41",
+  "release_source_commit": "1a8f3ebcc1f36f362101bef15d8e33b904ed731e",
+  "curriculum_commit": "2e1940a7943c807cc832bc2c853836c5cb145be1",
+  "ci": {
+    "run_id": 37806236278,
+    "url": "https://github.com/helloluis/hiraia/actions/runs/37806236278",
+    "conclusion": "success",
+    "head_sha": "1a8f3ebcc1f36f362101bef15d8e33b904ed731e",
+    "jobs": [
+      {
+        "databaseId": 113411141671,
+        "name": "Build and verify both signed APKs",
+        "startedAt": "2026-10-08T16:06:59Z",
+        "completedAt": "2026-10-08T16:24:09Z",
+        "conclusion": "success"
+      },
+      {
+        "databaseId": 113418921783,
+        "name": "Build and verify Windows; complete all three editions / windows",
+        "startedAt": "2026-10-08T16:24:13Z",
+        "completedAt": "2026-10-08T16:32:49Z",
+        "conclusion": "success"
+      }
+    ],
+    "model_gate_cases": 45,
+    "model_gate_before_apk_builds": true,
+    "temporary_signing_approval_removed": true
+  },
+  "readiness_sha256": "1d38b352e69cdb9abdfd654ce0d78c6e9e55568234b05be3b188ab804ae3b45f",
+  "artifacts_manifest": "all-platforms.json",
+  "publication": {
+    "android_chromeos": {
+      "schema": 1,
+      "platforms": {
+        "android": {
+          "platform": "android",
+          "versionCode": 41,
+          "versionName": "0.4.41",
+          "bytes": 284685326,
+          "md5": "b48792f68147b2d0ec120b030ce0d212",
+          "sha256": "b1f5d53465b1245f2b5d8c5a2dd74de6e2f39b676135ec5d3a59d991d780f6d7",
+          "runtime": "92ab44c88e3cdca918d73865597a801ddec36003",
+          "signingCertSha256": "40d750d5576cb59c311c7ba713403e065b934967d7a7d1bc80652e1167a20c35",
+          "abis": [
+            "arm64-v8a"
+          ],
+          "url": "https://assets.hiraia.org/models/hiraia-v0p4p41.apk",
+          "minSupportedVersionCode": 1,
+          "publishedAt": "2026-10-09"
+        },
+        "chromeos": {
+          "platform": "chromeos",
+          "versionCode": 41,
+          "versionName": "0.4.41",
+          "bytes": 369488585,
+          "md5": "0b35b10df30742e2be45070cbb586414",
+          "sha256": "5d2b44a7d150ad9978728707076064265f743f838f76af3e64b8c09e2f8b8328",
+          "runtime": "21853b3ce6697e66ee284e16e890b5d869cb5779",
+          "signingCertSha256": "40d750d5576cb59c311c7ba713403e065b934967d7a7d1bc80652e1167a20c35",
+          "abis": [
+            "arm64-v8a",
+            "x86_64"
+          ],
+          "url": "https://assets.hiraia.org/models/hiraia-v0p4p41-chromeos.apk",
+          "minSupportedVersionCode": 1,
+          "publishedAt": "2026-10-09"
+        }
+      }
+    },
+    "windows": {
+      "platform": "windows",
+      "versionCode": 41,
+      "bytes": 571656589,
+      "sha256": "2a0775d8b1c0df7f858baf227b96ec0cfb2b6fea1ef93d5abbdde978d38b1a28",
+      "arch": "x64",
+      "signed": false,
+      "versionName": "0.4.41-preview.1",
+      "format": "zip",
+      "url": "https://assets.hiraia.org/models/hiraia-windows-v0.4.41-preview.1-x64.zip",
+      "publishedAt": "2026-10-09"
+    },
+    "r2_readback_sha256_passed": true,
+    "public_head_sizes_and_range_support_passed": true,
+    "apks_measured_and_signature_verified": true,
+    "legacy_aliases_verified": true,
+    "legacy_alias_cache_purges_passed": true,
+    "vector": {
+      "bytes": 122162688,
+      "sha256": "67912d4fd3270876ab2922316b20f8dad4109ac26eac2234cdb1728a6d59405b",
+      "filename": "vectors-labse-3a36094d18d2.i8.bin"
+    },
+    "existing_public_dependencies_verified": 64,
+    "total_dependencies": 65
+  },
+  "telemetry": {
+    "at": "2026-10-09T12:49:13.276395+08:00",
+    "local_sha256": "9117733d3d91e7a183df606a65b88603aaa620f101857da901f6274e670c2303",
+    "deployed_sha256": "9117733d3d91e7a183df606a65b88603aaa620f101857da901f6274e670c2303",
+    "health": {
+      "ok": true
+    },
+    "remote_actual_exit_code": 0,
+    "remote_chunk_id": "022725",
+    "identical": true,
+    "collector_restart_required": false
+  },
+  "local_validation": {
+    "platform_tests": 3,
+    "platform_test_exit_code": 0,
+    "artifact_catalog_production_parsers_exit_code": 0,
+    "website_build_actual_exit_code": 0,
+    "type_check_passed": true,
+    "lint_clean": false,
+    "lint_diagnostic": "Pre-existing typed ESLint configuration lacks parserOptions type information for @typescript-eslint/await-thenable. Next production compilation, TypeScript checking and static generation succeeded; build exit 0.",
+    "built_homepage_contains_all_three_exact_downloads_and_checksums": true
+  },
+  "asset_catalog": {
+    "revision": 10,
+    "minAppVersionCode": 41,
+    "maxAppVersionCode": 41,
+    "imageBaseline": "ca57f3d76e889f08",
+    "imagePacks": 61
+  }
+}
