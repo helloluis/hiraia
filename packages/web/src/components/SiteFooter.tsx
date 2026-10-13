@@ -26,6 +26,9 @@ export function SiteFooter() {
             <a href="/competencies" className="mc-label text-[10px] text-[var(--sage)] hover:text-[var(--gold)]">
               Competencies
             </a>
+            <a href="/pilot" className="mc-label text-[10px] text-[var(--sage)] hover:text-[var(--gold)]">
+              Pilot program
+            </a>
             <span className="mc-label text-[10px] text-[var(--sage)]">hiraia.org</span>
           </nav>
         </div>

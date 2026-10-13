@@ -24,6 +24,8 @@ import fs from 'node:fs';
  * landing page's feedback form. Unlike demo transcripts, `name`/`contact` here are
  * contact details the visitor volunteered on purpose so we can reply — treat them
  * as personal data (don't export, don't join against anything).
+ * `pilot_applications` likewise holds volunteered school/contact information for
+ * pilot coordination only. It is never exposed by a public read endpoint or analytics.
  *
  * `apk_download_hits` counts homepage APK-button clicks (one row per IP-hash per UTC
  * day). No raw IP. Country/city come from nginx GeoIP headers when present. Pears
@@ -89,6 +91,19 @@ CREATE TABLE IF NOT EXISTS feedback (
   body       TEXT NOT NULL,                      -- raw text as typed (markup kept as-is, rendered nowhere)
   user_agent TEXT,                               -- coarse bot/browser triage only
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS pilot_applications (
+  id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+  request_id          TEXT NOT NULL UNIQUE,
+  payload_sha256      TEXT NOT NULL,
+  contact_name        TEXT NOT NULL,
+  email               TEXT NOT NULL,
+  school_name         TEXT NOT NULL,
+  payload_json        TEXT NOT NULL,
+  notification_status TEXT NOT NULL DEFAULT 'pending'
+    CHECK (notification_status IN ('pending', 'sent', 'failed', 'unconfigured')),
+  created_at          TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
 CREATE TABLE IF NOT EXISTS apk_download_hits (

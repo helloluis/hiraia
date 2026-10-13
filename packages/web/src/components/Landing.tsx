@@ -4,6 +4,7 @@ import { Wordmark } from '@/components/brand/Wordmark';
 
 import { type ReactNode } from 'react';
 import { AppDownload } from '@/components/AppDownload';
+import { PilotInvitation } from '@/components/PilotInvitation';
 import { DevDiary } from '@/components/DevDiary';
 import { FeedbackBreaker } from '@/components/FeedbackBreaker';
 import { SiteFooter } from '@/components/SiteFooter';
@@ -210,17 +211,19 @@ export function Landing({ afterDownload }: { afterDownload?: ReactNode }) {
       >
         <div className="mx-auto max-w-5xl">
           <h2 className="text-3xl leading-none text-[var(--ink)] sm:text-4xl md:text-[2.75rem]">
-            A little curiosity. On every screen.
+            Download Hiraia
           </h2>
           <p className="mt-3 max-w-2xl font-zilla text-lg font-medium leading-relaxed text-[var(--ink)] opacity-80">
             Choose Hiraia for your device. The same science cards, quizzes, and
-            on-device tutor, with room to learn your way. Free to download, with no account needed.
+            on-device tutor. Free to download, with no account needed.
           </p>
           <div className="mt-8">
             <AppDownload />
           </div>
         </div>
       </section>
+
+      <PilotInvitation />
 
       {afterDownload}
 
