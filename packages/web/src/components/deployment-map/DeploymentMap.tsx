@@ -44,6 +44,7 @@ export function DeploymentMap({snapshot=downloadSnapshot}:{snapshot?:typeof down
   const current=useRef(view), svg=useRef<SVGSVGElement>(null);
   const pointers=useRef(new Map<number,Point>());
   const moved=useRef(false);
+  const gestureStart=useRef<Point>({x:0,y:0});
   const [dragging,setDragging]=useState(false);
   const [selection,setSelection]=useState<Selection>(null);
   const [mode,setMode]=useState<MapMode>('country');
@@ -94,16 +95,26 @@ export function DeploymentMap({snapshot=downloadSnapshot}:{snapshot?:typeof down
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
   const down=(e:ReactPointerEvent<SVGSVGElement>)=>{
-    if(e.pointerType==='mouse'&&e.button!==0)return;
-    pointers.current.set(e.pointerId,local(e.clientX,e.clientY));moved.current=false;
-    e.currentTarget.setPointerCapture(e.pointerId);setDragging(true);
+    if((e.pointerType==='mouse'&&e.button!==0)||pointers.current.size>=2)return;
+    if(pointers.current.size===0){moved.current=false;gestureStart.current={x:e.clientX,y:e.clientY};}
+    pointers.current.set(e.pointerId,local(e.clientX,e.clientY));
+    // Observe touches on pins and banners too. Preserve native single taps by
+    // waiting to capture a marker's pointer until it becomes a drag or pinch.
+    if(pointers.current.size===2){
+      moved.current=true;
+      for(const pointerId of pointers.current.keys())e.currentTarget.setPointerCapture(pointerId);
+    }else if(!(e.target as Element).closest('[role="button"]')){
+      e.currentTarget.setPointerCapture(e.pointerId);
+    }
+    setDragging(true);
   };
   const move=(e:ReactPointerEvent<SVGSVGElement>)=>{
     const old=pointers.current.get(e.pointerId);if(!old)return;
+    if(!moved.current&&Math.hypot(e.clientX-gestureStart.current.x,e.clientY-gestureStart.current.y)<4)return;
     const next=local(e.clientX,e.clientY), before=[...pointers.current.values()];
     pointers.current.set(e.pointerId,next);
-    if(Math.hypot(next.x-old.x,next.y-old.y)<1)return;
     moved.current=true;
+    if(!e.currentTarget.hasPointerCapture(e.pointerId))e.currentTarget.setPointerCapture(e.pointerId);
     if(pointers.current.size===2){
       const after=[...pointers.current.values()];
       const mid=(p:Point[])=>({x:(p[0]!.x+p[1]!.x)/2,y:(p[0]!.y+p[1]!.y)/2});
@@ -129,13 +140,13 @@ export function DeploymentMap({snapshot=downloadSnapshot}:{snapshot?:typeof down
     const showFlag=(!compact||chosen)&&p.y>120&&p.y<height-80;
     return <g key={pilot.id} className={`${styles.pilot} ${pilot.status==='planned'?styles.planned:''} ${chosen?styles.selected:''}`}>
       {showFlag&&<path className={styles.leader} d={`M${head.x} ${head.y}L${end.x+(left?22:-22)} ${end.y}H${end.x}`} />}
-      <circle cx={head.x} cy={head.y} r="16" fill="transparent" role="button" tabIndex={0} aria-label={`Open ${pilot.name} details`} onPointerDown={e=>e.stopPropagation()} onClick={()=>setSelection({kind:'pilot',id:pilot.id})} onKeyDown={e=>keySelect(e,{kind:'pilot',id:pilot.id})}/>
+      <circle cx={head.x} cy={head.y} r="16" fill="transparent" role="button" tabIndex={0} aria-label={`Open ${pilot.name} details`} onClick={()=>select({kind:'pilot',id:pilot.id})} onKeyDown={e=>keySelect(e,{kind:'pilot',id:pilot.id})}/>
       <ellipse cx={p.x} cy={p.y+3} rx="10" ry="4" className={styles.pinFoot}/>
       <path d={`M${p.x} ${p.y}L${head.x} ${head.y}`} className={styles.pinStem}/>
       <circle cx={head.x} cy={head.y} r="5" className={styles.pinHead}/>
       {showFlag&&<g transform={`translate(${x} ${y})`} role="button" tabIndex={showPilots?0:-1}
         aria-label={`${pilot.name}, ${pilotStatus(pilot)}, ${pilot.phones} ${donationStatus(pilot)}`}
-        onPointerDown={e=>e.stopPropagation()} onClick={()=>{moved.current=false;setSelection({kind:'pilot',id:pilot.id});}}
+        onClick={()=>select({kind:'pilot',id:pilot.id})}
         onKeyDown={e=>keySelect(e,{kind:'pilot',id:pilot.id})}>
         <path d="M4 5H271L261 51l10 49H4Z" className={styles.flagShadow}/>
         <path d="M0 0H268L258 46l10 49H0Z" className={styles.flag}/>
@@ -159,8 +170,9 @@ export function DeploymentMap({snapshot=downloadSnapshot}:{snapshot?:typeof down
       </div>
       <div className={styles.viewport}>
         <svg ref={svg} viewBox={`0 0 ${width} ${height}`} className={`${styles.map} ${dragging?styles.dragging:''}`}
-          role="group" aria-label="Interactive deployment map of the Philippines. Drag to pan, use plus and minus to zoom, or select an area."
-          tabIndex={0} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up} onLostPointerCapture={up}
+          role="group" aria-label="Interactive deployment map of the Philippines. Drag to pan, pinch or use plus and minus to zoom, or select an area."
+          tabIndex={0} onPointerDownCapture={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up}
+          onLostPointerCapture={e=>{if(e.target===e.currentTarget)up(e);}}
           onKeyDown={e=>{if(e.target!==e.currentTarget)return;const v=current.current;const delta:Record<string,Point>={ArrowLeft:{x:40,y:0},ArrowRight:{x:-40,y:0},ArrowUp:{x:0,y:40},ArrowDown:{x:0,y:-40}};if(delta[e.key]){e.preventDefault();update({...v,x:v.x+delta[e.key]!.x,y:v.y+delta[e.key]!.y});}else if(e.key==='+'||e.key==='='){e.preventDefault();zoom(1.25);}else if(e.key==='-'){e.preventDefault();zoom(.8);}else if(e.key==='Home'){e.preventDefault();go('country');}}}>
           <defs>
             <pattern id={`${id}-dots`} width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".45" fill="#4D4740" opacity=".16"/></pattern>
@@ -206,7 +218,7 @@ export function DeploymentMap({snapshot=downloadSnapshot}:{snapshot?:typeof down
                 {downloads.map(d=>{const p=screen(project(d.coordinates),view),chosen=selectedDownload?.id===d.id,label=labels.get(d.id);if(p.x<12||p.x>width-12||p.y<12||p.y>height-12)return null;return <g key={d.id} transform={`translate(${p.x} ${p.y})`} role="button" tabIndex={0}
                   aria-label={`${d.province}: direct download location`}
                   className={chosen?styles.selectedDownload:undefined}
-                  onPointerDown={e=>{e.stopPropagation();moved.current=false;}} onClick={()=>select({kind:'download',id:d.id})} onKeyDown={e=>keySelect(e,{kind:'download',id:d.id})}>
+                  onClick={()=>select({kind:'download',id:d.id})} onKeyDown={e=>keySelect(e,{kind:'download',id:d.id})}>
                   <title>{`${d.province} · Direct downloads`}</title>
                   <circle r="12" fill="transparent" stroke="none"/>
                   {mode==='downloads'&&<circle r="13" className={styles.downloadHalo}/>}

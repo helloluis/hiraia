@@ -156,3 +156,35 @@ fading, source attribution and absence of browser errors. Both preview routes
 return HTTP 404. The 0.4.41 platform download configuration is retained unchanged.
 Evidence: `production-browser-checks.json`, `production-interaction-checks.json`
 and `hiraia-production-*` screenshots in the local review directory.
+
+## Mobile pinch correction (13 October 2026)
+
+Touches beginning on a download pin, pilot pin or banner previously stopped at
+the marker's `pointerdown` handler. One finger could therefore pan while the
+second was never registered, leaving the zoom unchanged. The earlier browser
+check only asserted that the transform changed, which could pass on a pan.
+
+The SVG now observes pointer starts during event capture, including its markers.
+Single taps retain their native click target; a drag or second finger captures
+the pointers on the map. Transferring a marker's implicit capture does not remove
+the finger from the active gesture. Pinches and drags suppress marker activation,
+and cancellation clears the gesture. `touch-action: none` also applies to the HTML
+map viewport so the browser does not handle the map gesture as page zoom.
+
+`scripts/check-deployment-map-touch.cjs` uses Chromium's touch input protocol,
+asserting **scale** changes in both directions, stable page zoom/scroll, taps after
+a pinch, gestures over one/two download pins, pilot pins and banners, and recovery
+after cancellation. It requires a local Playwright installation and Chromium:
+
+```sh
+MAP_REVIEW_URL=http://127.0.0.1:3105 node packages/web/scripts/check-deployment-map-touch.cjs
+```
+
+Set `PLAYWRIGHT_CHROMIUM_EXECUTABLE` when using a non-default browser executable.
+These are emulated mobile browser checks, not a physical-device certification.
+The regression reproduced the failure on `33254e041` (scale stayed at 0.68 when
+a finger started on Cebu's pin). The correction passes against the production
+build, including 0.68 → 1.09 → 0.68 spread/pinch cycles. TypeScript, the production
+build and the existing desktop interaction checks passed; the previously noted
+ESLint configuration error remains. Local evidence: `touch-before.log`,
+`touch-production-checks.log`, and `touch-desktop-checks.log` in the review directory.

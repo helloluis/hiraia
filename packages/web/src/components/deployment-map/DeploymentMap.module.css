@@ -8,7 +8,7 @@
 .tabs button { font-size:13px; padding:8px 15px; border-radius:2px; transition:background .15s; }
 .tabs button:hover { background:#e9dfcb; }
 .tabs button[aria-pressed=true] { background:var(--map-ink); color:var(--paper); }
-.viewport { position:relative; overflow:hidden; }
+.viewport { position:relative; overflow:hidden; touch-action:none; }
 .map { display:block; width:100%; height:auto; aspect-ratio:1200/760; user-select:none; touch-action:none; cursor:grab; }
 .dragging { cursor:grabbing; }
 .graticule { fill:none; stroke:#4D4740; stroke-width:.6; opacity:.14; stroke-dasharray:2 5; }
