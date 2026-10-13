@@ -16,7 +16,7 @@ const events: DiaryEvent[] = [
     }],
   },
   {
-    date: '2026-09-25', day: '25',
+    date: '2026-09-23', day: '23',
     caption: 'First pilot class launched in Calapacuan Elementary School, Zambales',
     images: [
       {

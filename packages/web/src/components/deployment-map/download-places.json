@@ -1,0 +1,969 @@
+{
+  "method": "Reviewed province-area assignments from matching GeoNames populated-place names and aliases. Repeated names in different areas are held; cities are grouped geographically, not by legal jurisdiction. Markers represent areas, not devices.",
+  "source": {
+    "url": "https://download.geonames.org/export/dump/PH.zip",
+    "license": "CC BY 4.0",
+    "retrievedAt": "2026-10-12",
+    "sha256": "bddbd4a4d929896e9ef98766ba357b0cfcb3fa044439b4c210b3ef23f391ac63",
+    "admin2Sha256": "0dbb9988fa9388021efe026ed16de0b89f56314f2dfd0abb4a51e17b8c55f29f"
+  },
+  "holds": {
+    "Talisay City": "Cities named Talisay exist in Cebu and Negros Occidental; the source has no region."
+  },
+  "areas": {
+    "Aklan": {
+      "coordinates": [
+        122.2488,
+        11.6075
+      ],
+      "boundaries": [
+        "Aklan"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Aurora": {
+      "coordinates": [
+        121.6441,
+        15.9797
+      ],
+      "boundaries": [
+        "Aurora"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Batangas": {
+      "coordinates": [
+        121.0312,
+        13.9038
+      ],
+      "boundaries": [
+        "Batangas"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Benguet": {
+      "coordinates": [
+        120.699,
+        16.5427
+      ],
+      "boundaries": [
+        "Benguet"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Bohol": {
+      "coordinates": [
+        124.2044,
+        9.8539
+      ],
+      "boundaries": [
+        "Bohol"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Bukidnon": {
+      "coordinates": [
+        125.0069,
+        8.0187
+      ],
+      "boundaries": [
+        "Bukidnon"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Bulacan": {
+      "coordinates": [
+        121.0587,
+        14.9787
+      ],
+      "boundaries": [
+        "Bulacan"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Camarines Norte": {
+      "coordinates": [
+        122.7235,
+        14.1397
+      ],
+      "boundaries": [
+        "Camarines Norte"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Camarines Sur": {
+      "coordinates": [
+        123.2572,
+        13.7006
+      ],
+      "boundaries": [
+        "Camarines Sur"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Capiz": {
+      "coordinates": [
+        122.6329,
+        11.3698
+      ],
+      "boundaries": [
+        "Capiz"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Catanduanes": {
+      "coordinates": [
+        124.236,
+        13.7813
+      ],
+      "boundaries": [
+        "Catanduanes"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Cavite": {
+      "coordinates": [
+        120.8698,
+        14.2546
+      ],
+      "boundaries": [
+        "Cavite"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Cebu": {
+      "coordinates": [
+        123.7173,
+        10.3127
+      ],
+      "boundaries": [
+        "Cebu"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Cotabato": {
+      "coordinates": [
+        124.8505,
+        7.2026
+      ],
+      "boundaries": [
+        "Cotabato"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Davao Oriental": {
+      "coordinates": [
+        126.2982,
+        7.2515
+      ],
+      "boundaries": [
+        "Davao Oriental"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Davao del Sur": {
+      "coordinates": [
+        125.3454,
+        7.0162
+      ],
+      "boundaries": [
+        "Davao del Sur"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Iloilo": {
+      "coordinates": [
+        122.5925,
+        10.9996
+      ],
+      "boundaries": [
+        "Iloilo"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Isabela": {
+      "coordinates": [
+        121.9612,
+        16.9873
+      ],
+      "boundaries": [
+        "Isabela"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Laguna": {
+      "coordinates": [
+        121.3666,
+        14.2414
+      ],
+      "boundaries": [
+        "Laguna"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Marinduque": {
+      "coordinates": [
+        121.9691,
+        13.3895
+      ],
+      "boundaries": [
+        "Marinduque"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Masbate": {
+      "coordinates": [
+        123.5979,
+        12.1803
+      ],
+      "boundaries": [
+        "Masbate"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Metro Manila": {
+      "coordinates": [
+        121.03,
+        14.61
+      ],
+      "boundaries": [
+        "NCR, City of Manila, First District",
+        "NCR, Fourth District",
+        "NCR, Second District",
+        "NCR, Third District"
+      ]
+    },
+    "Misamis Occidental": {
+      "coordinates": [
+        123.6903,
+        8.3239
+      ],
+      "boundaries": [
+        "Misamis Occidental"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Misamis Oriental": {
+      "coordinates": [
+        124.7915,
+        8.6325
+      ],
+      "boundaries": [
+        "Misamis Oriental"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Negros Occidental": {
+      "coordinates": [
+        122.9865,
+        10.3105
+      ],
+      "boundaries": [
+        "Negros Occidental"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Nueva Ecija": {
+      "coordinates": [
+        121.0217,
+        15.6198
+      ],
+      "boundaries": [
+        "Nueva Ecija"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Occidental Mindoro": {
+      "coordinates": [
+        120.921,
+        12.9465
+      ],
+      "boundaries": [
+        "Occidental Mindoro"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Palawan": {
+      "coordinates": [
+        118.5586,
+        9.7308
+      ],
+      "boundaries": [
+        "Palawan"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Pampanga": {
+      "coordinates": [
+        120.6472,
+        15.0586
+      ],
+      "boundaries": [
+        "Pampanga"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Pangasinan": {
+      "coordinates": [
+        120.3196,
+        15.9931
+      ],
+      "boundaries": [
+        "Pangasinan"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Quezon": {
+      "coordinates": [
+        121.9371,
+        13.9839
+      ],
+      "boundaries": [
+        "Quezon"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Rizal": {
+      "coordinates": [
+        121.2632,
+        14.6235
+      ],
+      "boundaries": [
+        "Rizal"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Sarangani": {
+      "coordinates": [
+        125.345,
+        6.0826
+      ],
+      "boundaries": [
+        "Sarangani"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Sorsogon": {
+      "coordinates": [
+        123.9298,
+        12.8424
+      ],
+      "boundaries": [
+        "Sorsogon"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "South Cotabato": {
+      "coordinates": [
+        124.8531,
+        6.2847
+      ],
+      "boundaries": [
+        "South Cotabato"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Southern Leyte": {
+      "coordinates": [
+        125.049,
+        10.3326
+      ],
+      "boundaries": [
+        "Southern Leyte"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Surigao del Norte": {
+      "coordinates": [
+        125.6013,
+        9.5756
+      ],
+      "boundaries": [
+        "Surigao del Norte"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Zambales": {
+      "coordinates": [
+        120.1446,
+        15.2855
+      ],
+      "boundaries": [
+        "Zambales"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    },
+    "Zamboanga del Sur": {
+      "coordinates": [
+        123.3221,
+        7.8815
+      ],
+      "boundaries": [
+        "Zamboanga del Sur"
+      ],
+      "anchor": "Representative interior of largest province polygon; not a device or city coordinate."
+    }
+  },
+  "places": {
+    "Abilay": {
+      "area": "Iloilo",
+      "geonameIds": [
+        1732425,
+        1732426
+      ]
+    },
+    "Agsungot": {
+      "area": "Cebu",
+      "geonameIds": [
+        1731918
+      ]
+    },
+    "Angeles City": {
+      "area": "Pampanga",
+      "geonameIds": [
+        1730737
+      ]
+    },
+    "Antipolo City": {
+      "area": "Rizal",
+      "geonameIds": [
+        1730501
+      ]
+    },
+    "Apalit": {
+      "area": "Pampanga",
+      "geonameIds": [
+        1730413
+      ]
+    },
+    "Baguio City": {
+      "area": "Benguet",
+      "geonameIds": [
+        1728930
+      ]
+    },
+    "Baler": {
+      "area": "Aurora",
+      "geonameIds": [
+        1728264
+      ]
+    },
+    "Balilihan": {
+      "area": "Bohol",
+      "geonameIds": [
+        1728134
+      ]
+    },
+    "Balingasay": {
+      "area": "Pangasinan",
+      "geonameIds": [
+        1728091
+      ]
+    },
+    "Bau": {
+      "area": "Cotabato",
+      "geonameIds": [
+        1725998
+      ]
+    },
+    "Bel Air": {
+      "area": "Metro Manila",
+      "geonameIds": [
+        1725627
+      ]
+    },
+    "Binonga": {
+      "area": "Negros Occidental",
+      "geonameIds": [
+        1724933,
+        1724934
+      ]
+    },
+    "Brookes Point": {
+      "area": "Palawan",
+      "geonameIds": [
+        1723763
+      ]
+    },
+    "Bukal Sur": {
+      "area": "Quezon",
+      "geonameIds": [
+        1723128
+      ]
+    },
+    "Cagayan de Oro": {
+      "area": "Misamis Oriental",
+      "geonameIds": [
+        1721080
+      ]
+    },
+    "Cainta": {
+      "area": "Rizal",
+      "geonameIds": [
+        1720840
+      ]
+    },
+    "Calibutbut": {
+      "area": "Pampanga",
+      "geonameIds": [
+        1720344
+      ]
+    },
+    "Calolbon": {
+      "area": "Catanduanes",
+      "geonameIds": [
+        1720171
+      ]
+    },
+    "Capucnasan": {
+      "area": "Camarines Sur",
+      "geonameIds": [
+        1718600
+      ]
+    },
+    "Capuluan": {
+      "area": "Quezon",
+      "geonameIds": [
+        1718584,
+        1718585
+      ]
+    },
+    "Carcar": {
+      "area": "Cebu",
+      "geonameIds": [
+        1718436
+      ]
+    },
+    "Casisang": {
+      "area": "Bukidnon",
+      "geonameIds": [
+        1718103
+      ]
+    },
+    "Castillejos": {
+      "area": "Zambales",
+      "geonameIds": [
+        1718078
+      ]
+    },
+    "Cebu City": {
+      "area": "Cebu",
+      "geonameIds": [
+        1717512
+      ]
+    },
+    "Daet": {
+      "area": "Camarines Norte",
+      "geonameIds": [
+        1716287
+      ]
+    },
+    "Davao City": {
+      "area": "Davao del Sur",
+      "geonameIds": [
+        1715348
+      ]
+    },
+    "Dicamay": {
+      "area": "Isabela",
+      "geonameIds": [
+        1715010
+      ]
+    },
+    "Digos": {
+      "area": "Davao del Sur",
+      "geonameIds": [
+        1714956
+      ]
+    },
+    "Dimiao": {
+      "area": "Bohol",
+      "geonameIds": [
+        1714813
+      ]
+    },
+    "Dinalongan": {
+      "area": "Aurora",
+      "geonameIds": [
+        1714769
+      ]
+    },
+    "General Santos": {
+      "area": "South Cotabato",
+      "geonameIds": [
+        1713022
+      ]
+    },
+    "General Tinio": {
+      "area": "Nueva Ecija",
+      "geonameIds": [
+        1694826,
+        1713016,
+        1713017,
+        1713018
+      ]
+    },
+    "General Trias": {
+      "area": "Cavite",
+      "geonameIds": [
+        1713014
+      ]
+    },
+    "Guagua": {
+      "area": "Pampanga",
+      "geonameIds": [
+        1712627
+      ]
+    },
+    "Guyong": {
+      "area": "Bulacan",
+      "geonameIds": [
+        1712051
+      ]
+    },
+    "Hipona": {
+      "area": "Capiz",
+      "geonameIds": [
+        1711580
+      ]
+    },
+    "Irosin": {
+      "area": "Sorsogon",
+      "geonameIds": [
+        1710531
+      ]
+    },
+    "Juban": {
+      "area": "Sorsogon",
+      "geonameIds": [
+        1710078
+      ]
+    },
+    "Kapatalan": {
+      "area": "Laguna",
+      "geonameIds": [
+        1709245
+      ]
+    },
+    "Labayug": {
+      "area": "Pangasinan",
+      "geonameIds": [
+        1708326
+      ]
+    },
+    "Lapu-Lapu City": {
+      "area": "Cebu",
+      "geonameIds": [
+        1707267
+      ]
+    },
+    "Libagon": {
+      "area": "Southern Leyte",
+      "geonameIds": [
+        1706750
+      ]
+    },
+    "Linabuan Sur": {
+      "area": "Aklan",
+      "geonameIds": [
+        1706298
+      ]
+    },
+    "Loma de Gato": {
+      "area": "Bulacan",
+      "geonameIds": [
+        1705771,
+        7428598
+      ]
+    },
+    "Lupon": {
+      "area": "Davao Oriental",
+      "geonameIds": [
+        1704968
+      ]
+    },
+    "Mabalacat": {
+      "area": "Pampanga",
+      "geonameIds": [
+        1704703
+      ]
+    },
+    "Makati City": {
+      "area": "Metro Manila",
+      "geonameIds": [
+        1703417
+      ]
+    },
+    "Malandag": {
+      "area": "Sarangani",
+      "geonameIds": [
+        1703117,
+        1978565
+      ]
+    },
+    "Mamburao": {
+      "area": "Occidental Mindoro",
+      "geonameIds": [
+        1702263
+      ]
+    },
+    "Mandaue City": {
+      "area": "Cebu",
+      "geonameIds": [
+        1701947
+      ]
+    },
+    "Mansilingan": {
+      "area": "Negros Occidental",
+      "geonameIds": [
+        1701500,
+        7428186
+      ]
+    },
+    "Maria Aurora": {
+      "area": "Aurora",
+      "geonameIds": [
+        1700994
+      ]
+    },
+    "Mariana": {
+      "area": "Metro Manila",
+      "geonameIds": [
+        7091134
+      ],
+      "note": "Coordinates are within Metro Manila; gazetteer administrative codes are stale or missing."
+    },
+    "Marikina City": {
+      "area": "Metro Manila",
+      "geonameIds": [
+        1700925
+      ]
+    },
+    "Matala": {
+      "area": "Batangas",
+      "geonameIds": [
+        1700496
+      ]
+    },
+    "Mayngaran": {
+      "area": "Masbate",
+      "geonameIds": [
+        1699981
+      ]
+    },
+    "Mogpog": {
+      "area": "Marinduque",
+      "geonameIds": [
+        1699428
+      ]
+    },
+    "Muntinlupa": {
+      "area": "Metro Manila",
+      "geonameIds": [
+        1699076
+      ],
+      "note": "Coordinates are within Metro Manila; gazetteer administrative codes are stale or missing."
+    },
+    "NIA Valencia": {
+      "area": "Bukidnon",
+      "geonameIds": [
+        1680116
+      ]
+    },
+    "Nabulao": {
+      "area": "Negros Occidental",
+      "geonameIds": [
+        1698904,
+        1698905
+      ]
+    },
+    "Novaliches Proper": {
+      "area": "Metro Manila",
+      "geonameIds": [
+        1697491
+      ]
+    },
+    "Obando": {
+      "area": "Bulacan",
+      "geonameIds": [
+        1697376
+      ]
+    },
+    "Olongapo City": {
+      "area": "Zambales",
+      "geonameIds": [
+        1697175
+      ]
+    },
+    "Oroquieta": {
+      "area": "Misamis Occidental",
+      "geonameIds": [
+        1697006
+      ]
+    },
+    "Pakiad": {
+      "area": "Iloilo",
+      "geonameIds": [
+        1696398,
+        1696399
+      ]
+    },
+    "Paranaque City": {
+      "area": "Metro Manila",
+      "geonameIds": [
+        1694781
+      ]
+    },
+    "Parista": {
+      "area": "Nueva Ecija",
+      "geonameIds": [
+        1694660
+      ]
+    },
+    "Pasong Kawayan Primero": {
+      "area": "Cavite",
+      "geonameIds": [
+        1694514
+      ]
+    },
+    "Pateros": {
+      "area": "Metro Manila",
+      "geonameIds": [
+        1694403
+      ]
+    },
+    "Pinugay": {
+      "area": "Rizal",
+      "geonameIds": [
+        1693409,
+        7091235,
+        13409003,
+        13409006
+      ]
+    },
+    "Quezon City": {
+      "area": "Metro Manila",
+      "geonameIds": [
+        1692192
+      ]
+    },
+    "San Francisco del Monte": {
+      "area": "Metro Manila",
+      "geonameIds": [
+        1689954
+      ],
+      "note": "Coordinates are within Metro Manila; gazetteer administrative codes are stale or missing."
+    },
+    "San Jose del Monte": {
+      "area": "Bulacan",
+      "geonameIds": [
+        1689395,
+        1689462
+      ]
+    },
+    "San Juan City": {
+      "area": "Metro Manila",
+      "geonameIds": [
+        1689221,
+        1689286
+      ],
+      "note": "Coordinates are within Metro Manila; gazetteer administrative codes are stale or missing."
+    },
+    "San Pedro One": {
+      "area": "Batangas",
+      "geonameIds": [
+        1688754
+      ]
+    },
+    "Santander Poblacion": {
+      "area": "Cebu",
+      "geonameIds": [
+        1687965
+      ]
+    },
+    "Sindon": {
+      "area": "Isabela",
+      "geonameIds": [
+        1686228
+      ]
+    },
+    "Siruma": {
+      "area": "Camarines Sur",
+      "geonameIds": [
+        1686039
+      ]
+    },
+    "Surigao City": {
+      "area": "Surigao del Norte",
+      "geonameIds": [
+        1685218
+      ]
+    },
+    "Tabuating": {
+      "area": "Nueva Ecija",
+      "geonameIds": [
+        1684842
+      ]
+    },
+    "Tagbilaran": {
+      "area": "Bohol",
+      "geonameIds": [
+        1684497
+      ]
+    },
+    "Taguig": {
+      "area": "Metro Manila",
+      "geonameIds": [
+        1684308
+      ]
+    },
+    "Talubatib": {
+      "area": "Camarines Norte",
+      "geonameIds": [
+        1683801
+      ]
+    },
+    "Tangke": {
+      "area": "Cebu",
+      "geonameIds": [
+        1683057
+      ]
+    },
+    "Telabastagan": {
+      "area": "Pampanga",
+      "geonameIds": [
+        1682537
+      ]
+    },
+    "Tiblawan": {
+      "area": "Davao Oriental",
+      "geonameIds": [
+        1682393
+      ]
+    },
+    "Ungca": {
+      "area": "Iloilo",
+      "geonameIds": [
+        1680285
+      ]
+    },
+    "Upper Bicutan": {
+      "area": "Metro Manila",
+      "geonameIds": [
+        1725426
+      ]
+    },
+    "Villasis": {
+      "area": "Pangasinan",
+      "geonameIds": [
+        1679845
+      ]
+    },
+    "Zamboanga City": {
+      "area": "Zamboanga del Sur",
+      "geonameIds": [
+        1679432
+      ]
+    }
+  }
+}

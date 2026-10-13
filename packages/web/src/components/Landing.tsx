@@ -30,7 +30,7 @@ function Ticket({
   );
 }
 
-export function Landing() {
+export function Landing({ afterDownload }: { afterDownload?: ReactNode }) {
   const openDemo = useDemoStore((s) => s.openDemo);
 
   const scrollToDownload = () => {
@@ -221,6 +221,8 @@ export function Landing() {
           </div>
         </div>
       </section>
+
+      {afterDownload}
 
       <DevDiary />
 
