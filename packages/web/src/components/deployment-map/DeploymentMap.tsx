@@ -24,7 +24,7 @@ const flagOffsets: Record<string,Point> = {
 };
 const pilotDate=(pilot:Pilot)=>new Date(`${pilot.date}T00:00:00Z`).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'});
 const pilotStatus=(pilot:Pilot)=>`Pilot Site (${pilot.status==='active'?'launched':'planned'} ${pilotDate(pilot)})`;
-const donationStatus=(pilot:Pilot)=>`mobile phones ${pilot.status==='active'?'donated':'to be donated'}`;
+const donationStatus=(pilot:Pilot)=>`mobile phones ${pilot.donation==='donated'?'donated':'to be donated'}`;
 function Icon({name}:{name:'plus'|'minus'|'reset'|'arrow'|'close'}) {
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true">
     {name==='plus'?<path d="M12 5v14M5 12h14"/>:name==='minus'?<path d="M5 12h14"/>:name==='reset'?<><path d="M5 9a8 8 0 1 1 0 7M5 3v6h6"/></>:name==='close'?<path d="m6 6 12 12M18 6 6 18"/>:<path d="m6 18 12-12M6 6h12v12"/>}
@@ -255,7 +255,7 @@ export function DeploymentMap({snapshot=downloadSnapshot}:{snapshot?:typeof down
       </div>
       <footer className={styles.mapFooter}>
         <div className={styles.legend} aria-label="Map legend">
-          {showPilots&&<><span><i className={styles.legendPin}/>Pilot sites</span><span className={styles.plannedKey}><i/>Planned</span></>}
+          {showPilots&&<><span><i className={styles.legendPin}/>Pilot sites</span>{pilots.some(p=>p.status==='planned')&&<span className={styles.plannedKey}><i/>Planned</span>}</>}
           {showDownloads&&<span><i className={styles.legendDot}/>Direct downloads</span>}
         </div>
         <span className={styles.hint}>Drag to move · Scroll or pinch to zoom</span>

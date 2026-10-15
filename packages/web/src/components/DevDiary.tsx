@@ -40,6 +40,15 @@ const events: DiaryEvent[] = [
       caption: 'Trying Hiraia together at Better World Smokey Mountain, Manila.',
     }],
   },
+  {
+    date: '2026-10-14', day: '14',
+    caption: 'Third school pilot launched at DaangHari Elementary School, Navotas',
+    images: [{
+      src: '/dev-diary/daanghari-launch.jpg',
+      alt: 'School staff and Hiraia collaborators gathered at DaangHari Elementary School in Navotas',
+      caption: 'The DaangHari Elementary School team at the Hiraia pilot launch in Navotas.',
+    }],
+  },
 ];
 
 type Point = { x: number; y: number };
@@ -246,7 +255,8 @@ export function DevDiary() {
           {events.map((event) => (
             <li key={event.date} className={styles.event}>
               <time dateTime={event.date} className={styles.date}>
-                <span>September</span><span className={styles.day}>{event.day}</span>
+                <span>{new Date(`${event.date}T00:00:00Z`).toLocaleDateString('en-US', { month: 'long', timeZone: 'UTC' })}</span>
+                <span className={styles.day}>{event.day}</span>
               </time>
               <div className={styles.eventBody}>
                 <h3>{event.caption}</h3>

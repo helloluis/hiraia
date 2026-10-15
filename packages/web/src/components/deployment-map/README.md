@@ -38,15 +38,20 @@ instance-specific IDs and adapt to the mobile viewport without external assets.
 ## Evidence and unresolved data
 
 - Owner-supplied on 12 October 2026: Calapacuan **36** phones, Better World **40**,
-  Daanghari **50 planned** for Wednesday (14 October). Counts remain on individual
-  pilot banners. Status is explicit; crossing a date never automatically activates
-  a pilot.
-- Banners and details identify the phones as **donated**, with launch dates next
-  to “Pilot Site.” Calapacuan uses **23 September 2026**, as subsequently supplied
-  by the owner, with the Dev Diary entry corrected to match (previously 25
-  September). Better World uses the diary's **29 September 2026** date.
-  Daanghari says **planned 14 October 2026** and **50 mobile phones to be donated**;
-  the scheduled donation is not represented as completed.
+  DaangHari **50 planned** for Wednesday (14 October). On 14 October, the owner
+  supplied a photo and confirmed the DaangHari Elementary School pilot launched
+  and **50 mobile phones were donated**.
+  The original 2048 × 1152 JPEG is retained byte-for-byte as
+  `public/dev-diary/daanghari-launch.jpg` (SHA-256
+  `908813ff20992ca180cfc02a889a9941bac5faa21c97ca19c5f3540e4fb3997c`).
+  Launch and phone-donation status are tracked separately; crossing a scheduled
+  date never activates either one automatically.
+- Banners and details show launch dates next to “Pilot Site.” Calapacuan uses
+  **23 September 2026**, as supplied by the owner, with the Dev Diary entry
+  corrected to match (previously 25 September). Better World uses the diary's
+  **29 September 2026** date. DaangHari now reads **launched 14 October 2026**.
+  Its banner also reads **50 mobile phones donated**, following the owner's
+  confirmation of the handover.
 - The existing `DevDiary.tsx` establishes Calapacuan Elementary School, Subic,
   Zambales, and **Better World Smokey Mountain**, Manila. This is not the separate
   Better World Tondo center. Better World's pin is an approximate area marker,
