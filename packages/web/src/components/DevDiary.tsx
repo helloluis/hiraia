@@ -49,6 +49,24 @@ const events: DiaryEvent[] = [
       caption: 'The DaangHari Elementary School team at the Hiraia pilot launch in Navotas.',
     }],
   },
+  {
+    date: '2026-10-19', day: '19',
+    caption: 'Zambales pilot ongoing',
+    images: [{
+      src: '/dev-diary/calapacuan-science-classes.png',
+      alt: 'Students using Hiraia on mobile phones during a science class at Calapacuan Elementary School in Subic, Zambales',
+      caption: 'Calapacuan Elementary School incorporates Hiraia app directly into its science classes',
+    }],
+  },
+  {
+    date: '2026-10-26', day: '26',
+    caption: 'Fourth school pilot launched at Cornelio Lintawagin Memorial Elementary School, Naujan, Oriental Mindoro',
+    images: [{
+      src: '/dev-diary/cornelio-lintawagin-launch.jpg',
+      alt: 'Students and teachers of Cornelio Lintawagin Memorial Elementary School holding up their Hiraia phones in front of the school buildings, with the Philippine flag and forested mountains behind them',
+      caption: 'Students and staff with their Hiraia phones at the pilot launch, Cornelio Lintawagin Memorial Elementary School, Naujan, Oriental Mindoro.',
+    }],
+  },
 ];
 
 type Point = { x: number; y: number };

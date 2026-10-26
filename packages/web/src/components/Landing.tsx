@@ -107,6 +107,13 @@ export function Landing({ afterDownload }: { afterDownload?: ReactNode }) {
                 >
                   pitch deck
                 </a>
+                , or see{' '}
+                <a
+                  href="/support"
+                  className="underline decoration-[var(--gold)] decoration-2 underline-offset-4 transition-opacity hover:opacity-75"
+                >
+                  how to support the work
+                </a>
               </p>
               <Ticket onClick={openDemo}>Try the demo</Ticket>
               <Ticket onClick={scrollToDownload} ghost>

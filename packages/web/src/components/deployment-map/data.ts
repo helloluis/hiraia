@@ -1,8 +1,12 @@
 import collected from './downloads.generated.json';
 
 export type Pilot = {
-  id: string; name: string; place: string; phones: number;
-  status: 'active' | 'planned'; donation: 'donated' | 'planned';
+  id: string; name: string; place: string;
+  /** Shorter place line for the 268 px banner; the detail panel shows `place` in full. */
+  bannerPlace?: string;
+  /** Owner-supplied handset count; null until the owner confirms a number. */
+  phones: number | null;
+  status: 'active' | 'planned'; donation: 'donated' | 'planned' | 'unconfirmed';
   date: string; coordinates: readonly [number, number];
   locationPrecision: 'school' | 'area';
 };
@@ -17,6 +21,13 @@ export const pilots: Pilot[] = [
     status: 'active', donation: 'donated', date: '2026-09-29', coordinates: [120.96, 14.637], locationPrecision: 'area'},
   {id: 'daanghari', name: 'DaangHari', place: 'Elementary School · Navotas', phones: 50,
     status: 'active', donation: 'donated', date: '2026-10-14', coordinates: [120.94069, 14.66582], locationPrecision: 'school'},
+  // Launch date from the owner's photo (EXIF DateTimeOriginal 2026-10-26 13:27, camera clock);
+  // the owner announced it the same day. Handset count and donation remain unconfirmed, so
+  // the banner shows no number. Coordinates: OpenStreetMap way 784367611 (Barangay Paitan,
+  // Naujan, Oriental Mindoro), ODbL.
+  {id: 'cornelio-lintawagin', name: 'Cornelio Lintawagin', place: 'Memorial Elementary School · Naujan, Oriental Mindoro',
+    bannerPlace: 'Memorial ES · Naujan, Oriental Mindoro', phones: null,
+    status: 'active', donation: 'unconfirmed', date: '2026-10-26', coordinates: [121.0848435, 13.2675032], locationPrecision: 'school'},
 ];
 
 export type DownloadLocation = {

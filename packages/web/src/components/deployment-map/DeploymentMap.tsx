@@ -21,10 +21,14 @@ const viewFor=(mode:MapMode,compact:boolean):View=>{
 };
 const flagOffsets: Record<string,Point> = {
   calapacuan:{x:-363,y:-113}, 'better-world':{x:-350,y:38}, daanghari:{x:124,y:-130},
+  // Mindoro sits below the Manila cluster: hang its banner over the Sibuyan Sea, clear of DaangHari's.
+  'cornelio-lintawagin':{x:36,y:150},
 };
 const pilotDate=(pilot:Pilot)=>new Date(`${pilot.date}T00:00:00Z`).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'});
 const pilotStatus=(pilot:Pilot)=>`Pilot Site (${pilot.status==='active'?'launched':'planned'} ${pilotDate(pilot)})`;
-const donationStatus=(pilot:Pilot)=>`mobile phones ${pilot.donation==='donated'?'donated':'to be donated'}`;
+const donationStatus=(pilot:Pilot)=>pilot.donation==='unconfirmed'?'mobile phones: count to be confirmed':`mobile phones ${pilot.donation==='donated'?'donated':'to be donated'}`;
+// Banner, detail and directory lines: "36 mobile phones donated", or just the status when no count is confirmed.
+const phoneLine=(pilot:Pilot)=>pilot.phones===null?donationStatus(pilot):`${pilot.phones} ${donationStatus(pilot)}`;
 function Icon({name}:{name:'plus'|'minus'|'reset'|'arrow'|'close'}) {
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true">
     {name==='plus'?<path d="M12 5v14M5 12h14"/>:name==='minus'?<path d="M5 12h14"/>:name==='reset'?<><path d="M5 9a8 8 0 1 1 0 7M5 3v6h6"/></>:name==='close'?<path d="m6 6 12 12M18 6 6 18"/>:<path d="m6 18 12-12M6 6h12v12"/>}
@@ -145,15 +149,15 @@ export function DeploymentMap({snapshot=downloadSnapshot}:{snapshot?:typeof down
       <path d={`M${p.x} ${p.y}L${head.x} ${head.y}`} className={styles.pinStem}/>
       <circle cx={head.x} cy={head.y} r="5" className={styles.pinHead}/>
       {showFlag&&<g transform={`translate(${x} ${y})`} role="button" tabIndex={showPilots?0:-1}
-        aria-label={`${pilot.name}, ${pilotStatus(pilot)}, ${pilot.phones} ${donationStatus(pilot)}`}
+        aria-label={`${pilot.name}, ${pilotStatus(pilot)}, ${phoneLine(pilot)}`}
         onClick={()=>select({kind:'pilot',id:pilot.id})}
         onKeyDown={e=>keySelect(e,{kind:'pilot',id:pilot.id})}>
         <path d="M4 5H271L261 51l10 49H4Z" className={styles.flagShadow}/>
         <path d="M0 0H268L258 46l10 49H0Z" className={styles.flag}/>
         <text x="17" y="20" className={styles.flagEyebrow}>{`${pilot.status==='active'?'●':'○'}  ${pilotStatus(pilot)}`}</text>
         <text x="17" y="47" className={styles.flagName}>{pilot.name}</text>
-        <text x="17" y="65" className={styles.flagPlace}>{pilot.place}</text>
-        <text x="17" y="84" className={styles.flagCount}>{pilot.phones} {donationStatus(pilot)}</text>
+        <text x="17" y="65" className={styles.flagPlace}>{pilot.bannerPlace ?? pilot.place}</text>
+        <text x="17" y="84" className={styles.flagCount}>{phoneLine(pilot)}</text>
         <text x="236" y="84" className={styles.flagArrow}>↗</text>
       </g>}
     </g>;
@@ -247,7 +251,8 @@ export function DeploymentMap({snapshot=downloadSnapshot}:{snapshot?:typeof down
           <h3>{selectedPilot?.name??selectedDownload?.province}</h3>
           {selectedPilot?<>
             <p>{selectedPilot.place}</p>
-            <strong className={styles.detailNumber}>{selectedPilot.phones}<span> {donationStatus(selectedPilot)}</span></strong>
+            {selectedPilot.phones===null?<p className={styles.detailNote}>{donationStatus(selectedPilot)}.</p>
+              :<strong className={styles.detailNumber}>{selectedPilot.phones}<span> {donationStatus(selectedPilot)}</span></strong>}
             {selectedPilot.locationPrecision==='area'&&<p className={styles.detailNote}>Approximate venue location.</p>}
           </>:<p className={styles.downloadPlaces}>{selectedDownload?.cities.map(c=>c.city).join(' · ')}</p>}
 
@@ -269,7 +274,7 @@ export function DeploymentMap({snapshot=downloadSnapshot}:{snapshot?:typeof down
       </details>
     </div>
     {showPilots&&<div className={styles.accessibleList} aria-label="Pilot directory">
-      {pilots.map(p=><button type="button" key={p.id} onClick={()=>{go('pilots');setSelection({kind:'pilot',id:p.id});}}>{p.name} · {p.phones} {donationStatus(p)}</button>)}
+      {pilots.map(p=><button type="button" key={p.id} onClick={()=>{go('pilots');setSelection({kind:'pilot',id:p.id});}}>{p.name} · {phoneLine(p)}</button>)}
     </div>}
   </section>;
 }

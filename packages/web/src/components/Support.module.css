@@ -1,0 +1,151 @@
+/* /support — the pitch deck's closing page as a standalone site page. Shares the page,
+   header, skip link and eyebrow styles with the pilot application page. */
+.main {
+  max-width: 1152px;
+  margin: auto;
+  padding: 24px 32px 88px;
+}
+.hero h1 {
+  margin: 18px 0 20px;
+  max-width: 14ch;
+  font-size: clamp(2.6rem, 5vw, 4rem);
+  line-height: 1.05;
+  text-wrap: balance;
+}
+.lead {
+  max-width: 36rem;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: rgba(244, 234, 213, 0.9);
+}
+.asks {
+  list-style: none;
+  margin: 40px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.asks li {
+  min-width: 0;
+  padding: 26px 28px;
+  background: var(--stock);
+  color: var(--ink);
+  border-radius: 12px;
+  box-shadow: 0 7px 0 rgba(0, 0, 0, 0.17);
+}
+.step {
+  display: block;
+  margin-bottom: 12px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: #987027;
+}
+.asks h2 {
+  margin-bottom: 8px;
+  font-size: 1.6rem;
+  line-height: 1.15;
+}
+.asks p {
+  font-size: 1.1rem;
+  line-height: 1.45;
+}
+.apply {
+  margin-top: 28px;
+  padding: 16px 22px;
+  background: var(--gold);
+  color: var(--ink);
+  border-radius: 8px;
+  font-size: 1.3rem;
+  line-height: 1.35;
+  font-weight: 500;
+}
+.apply a {
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.photos {
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.photos figure {
+  min-width: 0;
+  margin: 0;
+}
+.frame {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #daceb5;
+}
+.frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.25) sepia(0.65) brightness(0.92);
+}
+.photos figcaption {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: var(--sage);
+}
+.contact {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(140, 158, 110, 0.5);
+}
+.email {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  line-height: 1.2;
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 6px;
+  overflow-wrap: anywhere;
+}
+.contact p {
+  margin-top: 10px;
+  font-size: 1.15rem;
+  line-height: 1.5;
+}
+.contact p a {
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 4px;
+}
+.links {
+  margin-top: 18px !important;
+}
+.note {
+  max-width: 56rem;
+  margin-top: 28px !important;
+  font-size: 0.95rem !important;
+  color: var(--sage);
+}
+@media (max-width: 900px) {
+  .asks,
+  .photos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .main {
+    padding: 8px 20px 56px;
+  }
+  .hero h1 {
+    font-size: 2.6rem;
+  }
+  .asks li {
+    padding: 22px 20px;
+  }
+  .apply {
+    padding: 14px 18px;
+    font-size: 1.15rem;
+  }
+}

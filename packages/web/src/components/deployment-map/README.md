@@ -46,6 +46,17 @@ instance-specific IDs and adapt to the mobile viewport without external assets.
   `908813ff20992ca180cfc02a889a9941bac5faa21c97ca19c5f3540e4fb3997c`).
   Launch and phone-donation status are tracked separately; crossing a scheduled
   date never activates either one automatically.
+- Owner-announced on 26 October 2026 (via the Beaniebot bridge): a fourth pilot at
+  **Cornelio Lintawagin Memorial Elementary School, Barangay Paitan, Naujan, Oriental
+  Mindoro**. Coordinates: [OpenStreetMap way 784367611](https://www.openstreetmap.org/way/784367611)
+  (13.2675032, 121.0848435), OSM contributors / ODbL; precision `school`. The owner
+  supplied the launch photo later the same day; its EXIF DateTimeOriginal is
+  **2026-10-26 13:27** (camera clock), so the launch date is **26 October 2026**. The
+  original 3520 × 2644 JPEG (SHA-256 `12a870b9…81e139`) is retained untouched on the devbox
+  under the gitignored `build/web-support/originals/` with a provenance file;
+  the site serves a 1600 px derivative as `public/dev-diary/cornelio-lintawagin-launch.jpg`.
+  The handset count and donation are **unconfirmed**; the banner shows no number until the
+  owner confirms one.
 - Banners and details show launch dates next to “Pilot Site.” Calapacuan uses
   **23 September 2026**, as supplied by the owner, with the Dev Diary entry
   corrected to match (previously 25 September). Better World uses the diary's
