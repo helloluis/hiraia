@@ -51,20 +51,23 @@
   font-size: 1.1rem;
   line-height: 1.45;
 }
-.apply {
-  margin-top: 28px;
-  padding: 16px 22px;
-  background: var(--gold);
-  color: var(--ink);
-  border-radius: 8px;
-  font-size: 1.3rem;
-  line-height: 1.35;
-  font-weight: 500;
+.pitch {
+  margin-top: 36px;
+  padding: 4px 0 4px 22px;
+  border-left: 4px solid var(--gold);
+  max-width: 46rem;
 }
-.apply a {
+.pitch p {
+  font-size: 1.3rem;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+.pitch a {
   font-weight: 700;
   text-decoration: underline;
+  text-decoration-color: var(--gold);
   text-underline-offset: 5px;
+  white-space: nowrap;
 }
 .photos {
   margin-top: 48px;
@@ -144,8 +147,11 @@
   .asks li {
     padding: 22px 20px;
   }
-  .apply {
-    padding: 14px 18px;
+  .pitch {
+    margin-top: 28px;
+    padding-left: 16px;
+  }
+  .pitch p {
     font-size: 1.15rem;
   }
 }

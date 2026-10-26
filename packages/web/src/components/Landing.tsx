@@ -40,9 +40,9 @@ export function Landing({ afterDownload }: { afterDownload?: ReactNode }) {
 
   return (
     <div className="mc min-h-screen w-full overflow-x-hidden">
-      <div className="mc-alpha" role="status">
-        <span>Early Alpha</span>
-      </div>
+      <a href="/support" className="mc-support" aria-label="Support Hiraia">
+        <span>Support Hiraia!</span>
+      </a>
       {/* HERO — photograph stays; overlay is a laminated classroom card. */}
       <section
         className="mc-hero relative flex min-h-[100svh] w-full items-start justify-start"

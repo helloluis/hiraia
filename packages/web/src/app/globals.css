@@ -238,6 +238,60 @@ strong, b, h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Homepage corner ribbon — gold, a link to /support. Same geometry as .mc-alpha; the
+   container ignores pointer events so the clipped corner never blocks the page, while
+   the strip itself is the clickable anchor. */
+.mc-support {
+  --alpha-s: 10rem;
+  --alpha-i: 8.6rem;
+  position: fixed;
+  top: -20px;
+  right: -20px;
+  z-index: 40;
+  width: var(--alpha-s);
+  height: var(--alpha-s);
+  overflow: hidden;
+  pointer-events: none;
+  text-decoration: none;
+}
+.mc-support span {
+  position: absolute;
+  top: calc(var(--alpha-i) / 2);
+  left: calc(var(--alpha-s) - var(--alpha-i) / 2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--alpha-i) * 1.4142);
+  height: 1.7rem;
+  padding-left: 0.12em;
+  background: var(--gold);
+  color: var(--ink);
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translate(-50%, -50%) rotate(45deg);
+  box-shadow: 0 2px 0 rgba(28, 59, 46, 0.28);
+  pointer-events: auto;
+  transition: background-color 150ms ease;
+}
+.mc-support:hover span { background: #e7b451; }
+.mc-support:focus-visible { outline: none; }
+.mc-support:focus-visible span { outline: 3px solid var(--stock); outline-offset: 2px; }
+@media (min-width: 640px) {
+  .mc-support {
+    --alpha-s: 12rem;
+    --alpha-i: 10.3rem;
+  }
+  .mc-support span {
+    height: 1.85rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+  }
+}
+
 /* Hero: pixelated dissolve from the photo into the board (~96px, 8px cells). */
 .mc-hero {
   --hero-fade: 96px;

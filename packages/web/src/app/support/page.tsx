@@ -10,9 +10,9 @@ export const metadata: Metadata = {
     'Equip a classroom, work with a pilot or fund the work: how to support Hiraia, the free offline AI science tutor for Filipino students.',
 };
 
-// The three asks, the application line, the contact block and the footnote are the closing
-// page of the published pitch deck (docs/pitch-deck/HIRAIA-PITCH-DECK.html, "Join the next
-// stage"), kept word for word so the website and the deck make the same ask.
+// Based on the closing page of the published pitch deck (docs/pitch-deck/HIRAIA-PITCH-DECK.html,
+// "Join the next stage"). Asks 01 and 03, the contact block and the footnote are the deck's
+// wording; ask 02 and the message under the cards were revised for the site on 26 October 2026.
 const ASKS = [
   {
     step: '01',
@@ -21,8 +21,8 @@ const ASKS = [
   },
   {
     step: '02',
-    title: 'Work with a pilot',
-    text: 'Partner on teaching, native-language review and practical assessment.',
+    title: 'Contribute learning resources',
+    text: 'Provide vetted materials such as voice recordings, practical assessments, or other work not available online.',
   },
   {
     step: '03',
@@ -85,9 +85,14 @@ export default function SupportPage() {
           ))}
         </ol>
 
-        <p className={styles.apply}>
-          Interested to run a Hiraia pilot in your school? <a href="/pilot">Click here to apply.</a>
-        </p>
+        <section className={styles.pitch} aria-label="How to get in touch">
+          <p>
+            Your help and support is how we can take the Hiraia concept from a simple passion
+            project to a science tutor within reach of every Filipino student. Please message
+            Luis directly at <a href="mailto:lb@hiraia.org">lb@hiraia.org</a> if you have ideas,
+            resources, or questions.
+          </p>
+        </section>
 
         <section className={styles.photos} aria-label="From the pilot launches">
           {PHOTOS.map((photo) => (
