@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily Hiraia CRM backup at 03:00 Asia/Manila (19:00 UTC)
+
+[Timer]
+OnCalendar=*-*-* 19:00:00 UTC
+RandomizedDelaySec=600
+Persistent=true
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target

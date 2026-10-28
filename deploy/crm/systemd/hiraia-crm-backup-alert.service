@@ -1,0 +1,6 @@
+[Unit]
+Description=Alert (log + mission-control log + Resend e-mail) when the Hiraia CRM backup fails
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/hiraia-crm/alert.py backup-failed
