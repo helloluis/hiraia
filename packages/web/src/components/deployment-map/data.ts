@@ -22,12 +22,12 @@ export const pilots: Pilot[] = [
   {id: 'daanghari', name: 'DaangHari', place: 'Elementary School · Navotas', phones: 50,
     status: 'active', donation: 'donated', date: '2026-10-14', coordinates: [120.94069, 14.66582], locationPrecision: 'school'},
   // Launch date from the owner's photo (EXIF DateTimeOriginal 2026-10-26 13:27, camera clock);
-  // the owner announced it the same day. Handset count and donation remain unconfirmed, so
-  // the banner shows no number. Coordinates: OpenStreetMap way 784367611 (Barangay Paitan,
-  // Naujan, Oriental Mindoro), ODbL.
+  // the owner announced it the same day. Handset count 36 from the owner's correction of
+  // 28 October 2026. Coordinates: OpenStreetMap way 784367611 (Barangay Paitan, Naujan,
+  // Oriental Mindoro), ODbL.
   {id: 'cornelio-lintawagin', name: 'Cornelio Lintawagin', place: 'Memorial Elementary School · Naujan, Oriental Mindoro',
-    bannerPlace: 'Memorial ES · Naujan, Oriental Mindoro', phones: null,
-    status: 'active', donation: 'unconfirmed', date: '2026-10-26', coordinates: [121.0848435, 13.2675032], locationPrecision: 'school'},
+    bannerPlace: 'Memorial ES · Naujan, Oriental Mindoro', phones: 36,
+    status: 'active', donation: 'donated', date: '2026-10-26', coordinates: [121.0848435, 13.2675032], locationPrecision: 'school'},
 ];
 
 export type DownloadLocation = {

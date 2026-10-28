@@ -55,8 +55,10 @@ instance-specific IDs and adapt to the mobile viewport without external assets.
   original 3520 × 2644 JPEG (SHA-256 `12a870b9…81e139`) is retained untouched on the devbox
   under the gitignored `build/web-support/originals/` with a provenance file;
   the site serves a 1600 px derivative as `public/dev-diary/cornelio-lintawagin-launch.jpg`.
-  The handset count and donation are **unconfirmed**; the banner shows no number until the
-  owner confirms one.
+  On 28 October 2026 the owner supplied the handset count: **36 mobile phones**. The banner
+  reads "36 mobile phones donated", like the other launched pilots; "donated" rests on the
+  launch photo showing the phones in the students' hands and should be corrected if they
+  are on loan.
 - Banners and details show launch dates next to “Pilot Site.” Calapacuan uses
   **23 September 2026**, as supplied by the owner, with the Dev Diary entry
   corrected to match (previously 25 September). Better World uses the diary's

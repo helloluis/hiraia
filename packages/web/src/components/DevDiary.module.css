@@ -20,6 +20,13 @@
 .thumbnail:hover img { transform: scale(1.025); }
 .expand { position: absolute; bottom: .75rem; right: .75rem; display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; background: var(--stock); color: var(--ink); font-size: 1.25rem; }
 .thumbnailCaption { font-size: .875rem; line-height: 1.4; color: #d3cbb9; margin-top: .75rem; }
+/* An entry with several photographs packs them into ONE row: equal columns, each cropped to
+   16:9 around its centre (or `focus`), so no entry stacks photos and stretches the timeline.
+   Single-photo entries keep the 4:3 thumbnail above. */
+.photoRow { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: .75rem; }
+.photoRow .thumbnail { aspect-ratio: 16 / 9; }
+.photoRow .expand { bottom: .4rem; right: .4rem; width: 1.6rem; height: 1.6rem; font-size: 1rem; }
+.photoRow .thumbnailCaption { font-size: .8125rem; margin-top: .5rem; }
 .diary button:focus-visible, .timeline:focus-visible, .imageViewport:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
 .lightbox { position: fixed; inset: 0; margin: auto; padding: 0; width: 100%; height: 100dvh; max-width: none; max-height: none; background: transparent; color: var(--stock); font-family: 'Zilla Slab', Georgia, serif; }
 .lightbox[open] { display: grid; place-items: center; }

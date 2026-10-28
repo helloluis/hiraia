@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { DOWNLOAD } from '@/config/download';
 import { DOWNLOAD_PLATFORMS, platformRelease, type DownloadPlatform, type PlatformRelease } from '@/config/platforms';
 import talaManifest from '@/config/tala-download.json';
@@ -82,6 +82,110 @@ function PlatformDownload({platform, onCount}: {platform: DownloadPlatform; onCo
   </article>;
 }
 
+/**
+ * The three editions as one carousel: native CSS scroll-snap does the swiping (no carousel
+ * library), the tabs above it scroll to an edition, and a scroll listener keeps the selected
+ * tab in step with swipes. Android shows first; /#download-<id> deep links open that edition.
+ * Inactive editions are inert so keyboard and screen-reader users meet only the visible one.
+ */
+function EditionCarousel({onCount}: {onCount: (n: number) => void}) {
+  const track = useRef<HTMLDivElement>(null);
+  const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [active, setActive] = useState(0);
+  const current = useRef(0);
+  // Edition a tab click is travelling to; scroll positions on the way do not change the tab.
+  const travelling = useRef<number | null>(null);
+
+  const offsetOf = (index: number) => {
+    const slides = track.current!.children;
+    return (slides[index] as HTMLElement).offsetLeft - (slides[0] as HTMLElement).offsetLeft;
+  };
+  const select = (index: number) => { current.current = index; setActive(index); };
+  const show = (index: number, animate = true) => {
+    const element = track.current;
+    if (!element) return;
+    select(index);
+    // Already there: no scroll event will follow, so do not wait for one.
+    if (Math.abs(element.scrollLeft - offsetOf(index)) <= 2) { travelling.current = null; return; }
+    travelling.current = index;
+    const smooth = animate && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    element.scrollTo({ left: offsetOf(index), behavior: smooth ? 'smooth' : 'instant' });
+  };
+
+  useEffect(() => {
+    const element = track.current!;
+    let frame = 0;
+    const sync = () => {
+      frame = 0;
+      const positions = Array.from(element.children, (_, index) => offsetOf(index));
+      const nearest = positions.reduce((best, left, index) =>
+        Math.abs(left - element.scrollLeft) < Math.abs(positions[best]! - element.scrollLeft) ? index : best, 0);
+      if (travelling.current !== null) {
+        if (Math.abs(positions[travelling.current]! - element.scrollLeft) > 2) return;
+        travelling.current = null;
+      }
+      if (nearest !== current.current) select(nearest);
+    };
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(sync); };
+    // Where supported, scrollend settles the tab after any smooth scroll or snap, whatever stopped it.
+    const onScrollEnd = () => { travelling.current = null; sync(); };
+    // A swipe, drag or wheel takes over from a tab click still in flight.
+    const takeOver = () => { travelling.current = null; };
+    const fromHash = () => {
+      if (!location.hash.startsWith('#download-')) return;
+      const index = DOWNLOAD_PLATFORMS.findIndex(platform => `#download-${platform.id}` === location.hash);
+      if (index >= 0) show(index, false);
+    };
+    // Keep the chosen edition aligned when the width changes (rotation, window resize).
+    const resize = new ResizeObserver(() => element.scrollTo({ left: offsetOf(current.current), behavior: 'instant' }));
+    element.addEventListener('scroll', onScroll, { passive: true });
+    element.addEventListener('scrollend', onScrollEnd);
+    for (const type of ['pointerdown', 'touchstart', 'wheel'] as const) element.addEventListener(type, takeOver, { passive: true });
+    window.addEventListener('hashchange', fromHash);
+    resize.observe(element);
+    fromHash();
+    return () => {
+      cancelAnimationFrame(frame);
+      element.removeEventListener('scroll', onScroll);
+      element.removeEventListener('scrollend', onScrollEnd);
+      for (const type of ['pointerdown', 'touchstart', 'wheel'] as const) element.removeEventListener(type, takeOver);
+      window.removeEventListener('hashchange', fromHash);
+      resize.disconnect();
+    };
+    // Mount-only: the handlers read refs, so they stay valid for the component's life.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onTabKey = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
+    const last = DOWNLOAD_PLATFORMS.length - 1;
+    const next = event.key === 'ArrowRight' ? (index === last ? 0 : index + 1)
+      : event.key === 'ArrowLeft' ? (index === 0 ? last : index - 1)
+      : event.key === 'Home' ? 0 : event.key === 'End' ? last : null;
+    if (next === null) return;
+    event.preventDefault();
+    show(next);
+    tabs.current[next]?.focus();
+  };
+
+  return <div className={styles.carousel}>
+    <div role="tablist" aria-label="Choose your device" className={styles.tabs}>
+      {DOWNLOAD_PLATFORMS.map((platform, index) => <button key={platform.id} type="button" role="tab"
+        ref={element => { tabs.current[index] = element; }} id={`edition-tab-${platform.id}`}
+        aria-selected={active === index} aria-controls={`edition-${platform.id}`} tabIndex={active === index ? 0 : -1}
+        className={styles.tab} onClick={() => show(index)} onKeyDown={event => onTabKey(event, index)}>
+        <DeviceIcon device={platform.device}/><span>{platform.name}</span>
+        {platform.status !== 'available' && <small>{platform.status === 'preview' ? 'Preview' : 'Planned'}</small>}
+      </button>)}
+    </div>
+    <div ref={track} className={styles.track}>
+      {DOWNLOAD_PLATFORMS.map((platform, index) => <div key={platform.id} id={`edition-${platform.id}`} role="tabpanel"
+        aria-labelledby={`edition-tab-${platform.id}`} className={styles.slide} inert={index !== active}>
+        <PlatformDownload platform={platform} onCount={onCount}/>
+      </div>)}
+    </div>
+  </div>;
+}
+
 export function AppDownload() {
   const [downloads, setDownloads] = useState<number | null>(null);
   useEffect(() => {
@@ -93,15 +197,7 @@ export function AppDownload() {
   }, []);
 
   return <div className={styles.downloads}>
-    <nav aria-label="Choose a download platform" className={styles.platformNav}>
-      {DOWNLOAD_PLATFORMS.map(platform => <a key={platform.id} href={`#download-${platform.id}`}>
-        <DeviceIcon device={platform.device}/><span>{platform.name}</span>
-        {platform.status !== 'available' && <small>{platform.status === 'preview' ? 'Preview' : 'Planned'}</small>}
-      </a>)}
-    </nav>
-    <div className={styles.platformList}>
-      {DOWNLOAD_PLATFORMS.map(platform => <PlatformDownload key={platform.id} platform={platform} onCount={setDownloads}/>)}
-    </div>
+    <EditionCarousel onCount={setDownloads}/>
     <div className={styles.offlineNote}>
       <div><p className={styles.eyebrow}>Same Hiraia. Your choice of screen.</p>
         <h3>Download once. Keep learning offline.</h3></div>
@@ -112,7 +208,13 @@ export function AppDownload() {
       <a href="/hiraia-whitepaper.pdf">Read how the on-device tutor works ↗</a>
       {downloads != null && downloads > 0 && <p>{downloads.toLocaleString()} downloads from hiraia.org</p>}
     </div>
-    <div className={styles.teacherHeading}><span className={styles.eyebrow}>For the classroom</span><h3>Teaching with Hiraia?</h3></div>
+  </div>;
+}
+
+/** Tala has its own homepage section beneath the editions carousel. */
+export function TalaSection() {
+  return <div className={styles.tala}>
+    <div className={styles.talaHeading}><span className={styles.eyebrow}>For the classroom</span><h2 id="tala-title">Teaching with Hiraia?</h2></div>
     <TalaDownload/>
   </div>;
 }

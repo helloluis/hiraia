@@ -3,7 +3,7 @@
 import { Wordmark } from '@/components/brand/Wordmark';
 
 import { type ReactNode } from 'react';
-import { AppDownload } from '@/components/AppDownload';
+import { AppDownload, TalaSection } from '@/components/AppDownload';
 import { PilotInvitation } from '@/components/PilotInvitation';
 import { DevDiary } from '@/components/DevDiary';
 import { FeedbackBreaker } from '@/components/FeedbackBreaker';
@@ -227,6 +227,17 @@ export function Landing({ afterDownload }: { afterDownload?: ReactNode }) {
           <div className="mt-8">
             <AppDownload />
           </div>
+        </div>
+      </section>
+
+      {/* TALA — the teacher app, separate from the student editions */}
+      <section
+        id="tala"
+        aria-labelledby="tala-title"
+        className="scroll-mt-4 bg-[var(--teal)] px-5 py-16 sm:px-12 sm:py-20 md:px-16 lg:px-24"
+      >
+        <div className="mx-auto max-w-5xl">
+          <TalaSection />
         </div>
       </section>
 

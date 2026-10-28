@@ -3,7 +3,9 @@
 import { useEffect, useRef, useState, type PointerEvent } from 'react';
 import styles from './DevDiary.module.css';
 
-type DiaryImage = { src: string; alt: string; caption: string };
+// `focus` is the CSS object-position for the row crop of a multi-photo entry (default: centre).
+// Use it to keep the people in frame; the lightbox always shows the whole photograph.
+type DiaryImage = { src: string; alt: string; caption: string; focus?: string };
 type DiaryEvent = { date: string; day: string; caption: string; images: DiaryImage[] };
 
 const events: DiaryEvent[] = [
@@ -278,13 +280,14 @@ export function DevDiary() {
               </time>
               <div className={styles.eventBody}>
                 <h3>{event.caption}</h3>
-                <div className={styles.photos}>
+                <div className={`${styles.photos} ${event.images.length > 1 ? styles.photoRow : ''}`}>
                   {event.images.map((item) => (
                     <figure key={item.src}>
                       <button type="button" className={styles.thumbnail} onClick={() => setPhoto(item)}
                         aria-label={`View full-color image: ${item.caption}`} aria-haspopup="dialog">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={item.src} alt={item.alt} loading="lazy" decoding="async" width={800} height={600} />
+                        <img src={item.src} alt={item.alt} loading="lazy" decoding="async" width={800} height={600}
+                        style={item.focus ? { objectPosition: item.focus } : undefined} />
                         <span className={styles.expand} aria-hidden="true">↗</span>
                       </button>
                       <figcaption className={styles.thumbnailCaption}>{item.caption}</figcaption>

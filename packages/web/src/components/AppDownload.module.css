@@ -1,10 +1,15 @@
 .downloads { color: var(--ink); font-family: 'Zilla Slab', Georgia, serif; }
-.platformNav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
-.platformNav a { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 8px 16px; border: 1.5px solid var(--ink); border-radius: 999px; font-weight: 700; background: var(--stock); }
-.platformNav svg { width: 23px; height: 23px; }
-.platformNav small { font-size: 11px; font-weight: 500; }
-.platformNav a:hover { background: var(--plate); }
-.platformList { display: grid; gap: 24px; }
+/* Editions carousel: a segmented tab control over a native scroll-snap track. */
+.tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; max-width: 600px; margin-bottom: 20px; padding: 4px; border: 2px solid var(--ink); border-radius: 999px; background: var(--stock); box-shadow: 0 3px 0 #1c3b2e3b; }
+.tab { display: flex; align-items: center; justify-content: center; gap: 8px; min-width: 0; min-height: 48px; padding: 6px 12px; border-radius: 999px; color: var(--ink); font-size: 16px; font-weight: 700; line-height: 1.15; transition: background-color 200ms ease, color 200ms ease; }
+.tab svg { width: 22px; height: 22px; flex-shrink: 0; }
+.tab small { font-size: 11px; font-weight: 500; }
+.tab:hover:not([aria-selected='true']) { background: var(--plate); }
+.tab[aria-selected='true'] { background: var(--ink); color: var(--stock); box-shadow: inset 0 -3px 0 var(--gold); }
+.track { display: flex; gap: 20px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 10px; margin-bottom: -10px; }
+.track::-webkit-scrollbar { display: none; }
+.slide { display: flex; flex: 0 0 100%; min-width: 0; scroll-snap-align: start; scroll-snap-stop: always; }
+.slide > .platform { flex: 1; }
 .platform { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.15fr); overflow: hidden; border: 2px solid var(--ink); border-radius: 20px; background: var(--stock); box-shadow: 0 6px 0 #1c3b2e3b; scroll-margin-top: 24px; }
 .information { padding: 30px; min-width: 0; }
 .identity { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
@@ -43,12 +48,22 @@
 .planned h3 { font-size: 26px; }
 .planned .badge { border: 1px solid var(--olive); color: var(--ink); background: transparent; }
 .offlineNote { display: grid; grid-template-columns: 1fr 1.2fr; gap: 30px; padding: 32px 0 24px; }
-.offlineNote h3, .teacherHeading h3 { font-family: 'Fraunces', Georgia, serif; font-size: 23px; line-height: 1.25; margin-top: 8px; }
+.offlineNote h3 { font-family: 'Fraunces', Georgia, serif; font-size: 23px; line-height: 1.25; margin-top: 8px; }
 .offlineNote > p { font-size: 15px; line-height: 1.6; }
-.sectionFoot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 15px; font-size: 13px; padding-bottom: 30px; border-bottom: 1px solid #1c3b2e55; }
+.sectionFoot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 15px; font-size: 13px; }
 .sectionFoot a { text-decoration: underline; text-underline-offset: 4px; }
-.teacherHeading { margin-top: 28px; }
 .downloads :is(a, button, summary):focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+/* Tala: its own section, on the teal band, beneath the editions. */
+.tala { color: var(--stock); font-family: 'Zilla Slab', Georgia, serif; }
+.talaHeading .eyebrow { color: var(--gold); }
+.talaHeading h2 { font-family: 'Fraunces', Georgia, serif; font-size: clamp(1.9rem, 4vw, 2.75rem); line-height: 1.05; margin-top: 8px; }
+.tala :is(a, button):focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+@media (max-width: 640px) {
+  .tabs { border-radius: 16px; }
+  .tab { flex-direction: column; gap: 2px; min-height: 64px; padding: 6px 4px; border-radius: 12px; font-size: 14px; }
+  .tab svg { width: 20px; height: 20px; }
+  .tab small { font-size: 10px; }
+}
 @media (max-width: 900px) {
   .platform { grid-template-columns: minmax(0, 1fr); }
   .information { padding: 23px; }
@@ -61,4 +76,5 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .downloads * { scroll-behavior: auto; }
+  .tab { transition: none; }
 }
