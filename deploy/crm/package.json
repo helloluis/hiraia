@@ -1,0 +1,18 @@
+{
+  "name": "hiraia-crm-runtime",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Hiraia CRM ingestion/read API runtime (installed to /opt/hiraia-crm on the hiraia.org origin)",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "node server.cjs",
+    "migrate": "node migrate.cjs",
+    "test": "node --test server.test.cjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "better-sqlite3": "12.10.0"
+  }
+}
