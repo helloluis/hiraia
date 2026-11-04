@@ -67,13 +67,15 @@ instance-specific IDs and adapt to the mobile viewport without external assets.
   grade/sex column in the school's row: Calapacuan **107006** → 1,603; Daanghari ES Navotas
   **136865** → 1,387 (not Daanghari ES Taguig, 136884, 2,035); Cornelio Lintawagin MES
   **110522** → 421; Siay NHS **303864** → 1,818 (Grades 7–12). The SY 2025-26 file exists
-  too (1,566 / 1,292 / 414 / 1,696); switch only with every figure at once. Better World
+  too (1,566 / 1,292 / 414 / 1,696); switch only with every figure at once. The owner's
+  estimate for Daanghari (~1,200) was superseded by the DepEd figure. Better World
   Smokey Mountain is an NGO centre outside DepEd's data and publishes no enrolment count
   (SMC cites 2,500 target families; a press article's “about 500 children a day” and one
-  partner's live programme dashboard are not centre-wide counts), so it shows none.
+  partner's live programme dashboard are not centre-wide counts). It shows the owner's
+  figure, **~2,000 learners** (4 November 2026), with no school year or source link.
 - Owner-announced fifth pilot: **Siay National High School, Siay, Zamboanga Sibugay**,
-  starting **November 2026**. It is **planned** with month-only precision (“planned Nov
-  2026”); no launch date or handset count yet. Coordinates: [OpenStreetMap way 907084881](https://www.openstreetmap.org/way/907084881)
+  starting **12 November 2026** with **15 mobile phones donated** (both owner-supplied,
+  4 November 2026). It stays **planned** until the owner confirms the launch. Coordinates: [OpenStreetMap way 907084881](https://www.openstreetmap.org/way/907084881)
   (7.7049179, 122.8653351), ODbL; precision `school`. Cornelio Lintawagin's overview banner
   now hangs east over the Philippine Sea, leaving Mindanao to Siay's; the zoomed pilot view
   keeps its earlier placement below Mindoro.

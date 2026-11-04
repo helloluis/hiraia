@@ -29,13 +29,13 @@ const flagOffsets: Record<string,Point> = {
 };
 // The zoomed pilot view has room below Mindoro, where the east-hung banner would meet the compass.
 const pilotViewOffsets: Record<string,Point> = {'cornelio-lintawagin':{x:36,y:150}};
-const pilotDate=(pilot:Pilot)=>new Date(`${pilot.date}T00:00:00Z`).toLocaleDateString('en-GB',{...(pilot.datePrecision==='month'?{}:{day:'numeric'}),month:'short',year:'numeric',timeZone:'UTC'});
+const pilotDate=(pilot:Pilot)=>new Date(`${pilot.date}T00:00:00Z`).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'});
 const pilotStatus=(pilot:Pilot)=>`Pilot Site (${pilot.status==='active'?'launched':'planned'} ${pilotDate(pilot)})`;
 const donationStatus=(pilot:Pilot)=>pilot.donation==='unconfirmed'?'mobile phones: count to be confirmed':`mobile phones ${pilot.donation==='donated'?'donated':'to be donated'}`;
 // Banner, detail and directory lines: "36 mobile phones donated", or just the status when no count is confirmed.
 const phoneLine=(pilot:Pilot)=>pilot.phones===null?donationStatus(pilot):`${pilot.phones} ${donationStatus(pilot)}`;
-// "1,603 learners · SY 2024–25" (kept on one line), or nothing when no credible figure is published.
-const learnerLine=(pilot:Pilot)=>pilot.learners&&`${pilot.learners.label}\u00a0learners\u00a0·\u00a0${pilot.learners.schoolYear.replace(' ','\u00a0')}`;
+// "1,603 learners · SY 2024–25" or "~2,000 learners" (kept on one line), or nothing without a figure.
+const learnerLine=(pilot:Pilot)=>pilot.learners&&[`${pilot.learners.label}\u00a0learners`,pilot.learners.schoolYear?.replace(' ','\u00a0')].filter(Boolean).join('\u00a0·\u00a0');
 function Icon({name}:{name:'plus'|'minus'|'reset'|'arrow'|'close'}) {
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true">
     {name==='plus'?<path d="M12 5v14M5 12h14"/>:name==='minus'?<path d="M5 12h14"/>:name==='reset'?<><path d="M5 9a8 8 0 1 1 0 7M5 3v6h6"/></>:name==='close'?<path d="m6 6 12 12M18 6 6 18"/>:<path d="m6 18 12-12M6 6h12v12"/>}
@@ -263,7 +263,7 @@ export function DeploymentMap({snapshot=downloadSnapshot}:{snapshot?:typeof down
             <p>{selectedPilot.place}</p>
             {selectedPilot.phones===null?<p className={styles.detailNote}>{donationStatus(selectedPilot)}.</p>
               :<strong className={styles.detailNumber}>{selectedPilot.phones}<span> {donationStatus(selectedPilot)}</span></strong>}
-            {selectedPilot.learners&&<p className={styles.detailNote}>{learnerLine(selectedPilot)} · <a href={selectedPilot.learners.source} target="_blank" rel="noreferrer">source ↗</a></p>}
+            {selectedPilot.learners&&<p className={styles.detailNote}>{learnerLine(selectedPilot)}{selectedPilot.learners.source&&<> · <a href={selectedPilot.learners.source} target="_blank" rel="noreferrer">source ↗</a></>}</p>}
             {selectedPilot.locationPrecision==='area'&&<p className={styles.detailNote}>Approximate venue location.</p>}
           </>:<p className={styles.downloadPlaces}>{selectedDownload?.cities.map(c=>c.city).join(' · ')}</p>}
 
