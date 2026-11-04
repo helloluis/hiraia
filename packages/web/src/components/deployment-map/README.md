@@ -59,6 +59,24 @@ instance-specific IDs and adapt to the mobile viewport without external assets.
   reads "36 mobile phones donated", like the other launched pilots; "donated" rests on the
   launch photo showing the phones in the students' hands and should be corrected if they
   are on loan.
+- Learner populations (added 4 November 2026, owner request): banners, details and the
+  directory add a line such as **1,603 learners · SY 2024–25** beneath the phone count.
+  Source: DepEd's Project Bukas [machine-ready files](https://www.deped.gov.ph/machine-ready-files/),
+  “Enrollment in SY 2024-2025” (`Enrollment-in-SY-2024-2025.zip`, SHA-256 `fd5dd74a…5b1a92`,
+  Learner Information System). The CSV has no total column; each figure is the sum of every
+  grade/sex column in the school's row: Calapacuan **107006** → 1,603; Daanghari ES Navotas
+  **136865** → 1,387 (not Daanghari ES Taguig, 136884, 2,035); Cornelio Lintawagin MES
+  **110522** → 421; Siay NHS **303864** → 1,818 (Grades 7–12). The SY 2025-26 file exists
+  too (1,566 / 1,292 / 414 / 1,696); switch only with every figure at once. Better World
+  Smokey Mountain is an NGO centre outside DepEd's data and publishes no enrolment count
+  (SMC cites 2,500 target families; a press article's “about 500 children a day” and one
+  partner's live programme dashboard are not centre-wide counts), so it shows none.
+- Owner-announced fifth pilot: **Siay National High School, Siay, Zamboanga Sibugay**,
+  starting **November 2026**. It is **planned** with month-only precision (“planned Nov
+  2026”); no launch date or handset count yet. Coordinates: [OpenStreetMap way 907084881](https://www.openstreetmap.org/way/907084881)
+  (7.7049179, 122.8653351), ODbL; precision `school`. Cornelio Lintawagin's overview banner
+  now hangs east over the Philippine Sea, leaving Mindanao to Siay's; the zoomed pilot view
+  keeps its earlier placement below Mindoro.
 - Banners and details show launch dates next to “Pilot Site.” Calapacuan uses
   **23 September 2026**, as supplied by the owner, with the Dev Diary entry
   corrected to match (previously 25 September). Better World uses the diary's

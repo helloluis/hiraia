@@ -6,20 +6,35 @@ export type Pilot = {
   bannerPlace?: string;
   /** Owner-supplied handset count; null until the owner confirms a number. */
   phones: number | null;
+  /** Learner population from the school's own or DepEd's published figures; null when no
+   *  credible figure exists. `label` is the honest display form ("1,600+"), never more precise
+   *  than the source. */
+  learners: {label: string; schoolYear: string; source: string} | null;
   status: 'active' | 'planned'; donation: 'donated' | 'planned' | 'unconfirmed';
-  date: string; coordinates: readonly [number, number];
+  /** ISO date; `datePrecision: 'month'` when only the month is known (shown as "Nov 2026"). */
+  date: string; datePrecision?: 'day' | 'month'; coordinates: readonly [number, number];
   locationPrecision: 'school' | 'area';
 };
+
+// Learner counts: DepEd "Enrollment in SY 2024-2025" machine-ready file (Learner Information
+// System), the sum of every grade/sex column in each school's row — Calapacuan 107006, Daanghari
+// (Navotas) 136865, Cornelio Lintawagin MES 110522, Siay NHS 303864. Not Daanghari ES Taguig
+// (136884). Better World Smokey Mountain is an NGO centre outside DepEd's data and publishes no
+// enrolment count of its own, so it shows none. Checked 4 November 2026.
+const DEPED_ENROLLMENT = 'https://www.deped.gov.ph/machine-ready-files/';
 
 // Phone counts were supplied by the project owner on 12 October 2026.
 // Calapacuan and DaangHari launch dates follow the owner's updates and Dev Diary.
 // Never promote a planned pilot solely because its scheduled date has elapsed.
 export const pilots: Pilot[] = [
   {id: 'calapacuan', name: 'Calapacuan', place: 'Elementary School · Subic, Zambales', phones: 36,
+    learners: {label: '1,603', schoolYear: 'SY 2024–25', source: DEPED_ENROLLMENT},
     status: 'active', donation: 'donated', date: '2026-09-23', coordinates: [120.241415, 14.862449], locationPrecision: 'school'},
   {id: 'better-world', name: 'Better World', place: 'Smokey Mountain · Manila', phones: 40,
+    learners: null,
     status: 'active', donation: 'donated', date: '2026-09-29', coordinates: [120.96, 14.637], locationPrecision: 'area'},
   {id: 'daanghari', name: 'DaangHari', place: 'Elementary School · Navotas', phones: 50,
+    learners: {label: '1,387', schoolYear: 'SY 2024–25', source: DEPED_ENROLLMENT},
     status: 'active', donation: 'donated', date: '2026-10-14', coordinates: [120.94069, 14.66582], locationPrecision: 'school'},
   // Launch date from the owner's photo (EXIF DateTimeOriginal 2026-10-26 13:27, camera clock);
   // the owner announced it the same day. Handset count 36 from the owner's correction of
@@ -27,7 +42,16 @@ export const pilots: Pilot[] = [
   // Oriental Mindoro), ODbL.
   {id: 'cornelio-lintawagin', name: 'Cornelio Lintawagin', place: 'Memorial Elementary School · Naujan, Oriental Mindoro',
     bannerPlace: 'Memorial ES · Naujan, Oriental Mindoro', phones: 36,
+    learners: {label: '421', schoolYear: 'SY 2024–25', source: DEPED_ENROLLMENT},
     status: 'active', donation: 'donated', date: '2026-10-26', coordinates: [121.0848435, 13.2675032], locationPrecision: 'school'},
+  // Fifth pilot, announced by the owner for November 2026; no launch date or handset count yet,
+  // so it stays planned with the month only. Coordinates: OpenStreetMap way 907084881
+  // (Barangay Bataan, Siay, Zamboanga Sibugay), ODbL.
+  {id: 'siay', name: 'Siay', place: 'National High School · Siay, Zamboanga Sibugay',
+    bannerPlace: 'National HS · Siay, Zamboanga Sibugay', phones: null,
+    learners: {label: '1,818', schoolYear: 'SY 2024–25', source: DEPED_ENROLLMENT},
+    status: 'planned', donation: 'unconfirmed', date: '2026-11-01', datePrecision: 'month',
+    coordinates: [122.8653351, 7.7049179], locationPrecision: 'school'},
 ];
 
 export type DownloadLocation = {

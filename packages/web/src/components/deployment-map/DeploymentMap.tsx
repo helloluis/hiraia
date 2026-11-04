@@ -21,14 +21,21 @@ const viewFor=(mode:MapMode,compact:boolean):View=>{
 };
 const flagOffsets: Record<string,Point> = {
   calapacuan:{x:-363,y:-113}, 'better-world':{x:-350,y:38}, daanghari:{x:124,y:-130},
-  // Mindoro sits below the Manila cluster: hang its banner over the Sibuyan Sea, clear of DaangHari's.
-  'cornelio-lintawagin':{x:36,y:150},
+  // Mindoro sits below the Manila cluster: hang its banner east over the Philippine Sea, clear of
+  // DaangHari's above and of Mindanao, where Siay's pin stands.
+  'cornelio-lintawagin':{x:280,y:0},
+  // Hang Siay's banner below-left of its pin, over the Sulu Sea and clear of the compass.
+  siay:{x:-300,y:60},
 };
-const pilotDate=(pilot:Pilot)=>new Date(`${pilot.date}T00:00:00Z`).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'});
+// The zoomed pilot view has room below Mindoro, where the east-hung banner would meet the compass.
+const pilotViewOffsets: Record<string,Point> = {'cornelio-lintawagin':{x:36,y:150}};
+const pilotDate=(pilot:Pilot)=>new Date(`${pilot.date}T00:00:00Z`).toLocaleDateString('en-GB',{...(pilot.datePrecision==='month'?{}:{day:'numeric'}),month:'short',year:'numeric',timeZone:'UTC'});
 const pilotStatus=(pilot:Pilot)=>`Pilot Site (${pilot.status==='active'?'launched':'planned'} ${pilotDate(pilot)})`;
 const donationStatus=(pilot:Pilot)=>pilot.donation==='unconfirmed'?'mobile phones: count to be confirmed':`mobile phones ${pilot.donation==='donated'?'donated':'to be donated'}`;
 // Banner, detail and directory lines: "36 mobile phones donated", or just the status when no count is confirmed.
 const phoneLine=(pilot:Pilot)=>pilot.phones===null?donationStatus(pilot):`${pilot.phones} ${donationStatus(pilot)}`;
+// "1,603 learners · SY 2024–25" (kept on one line), or nothing when no credible figure is published.
+const learnerLine=(pilot:Pilot)=>pilot.learners&&`${pilot.learners.label}\u00a0learners\u00a0·\u00a0${pilot.learners.schoolYear.replace(' ','\u00a0')}`;
 function Icon({name}:{name:'plus'|'minus'|'reset'|'arrow'|'close'}) {
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true">
     {name==='plus'?<path d="M12 5v14M5 12h14"/>:name==='minus'?<path d="M5 12h14"/>:name==='reset'?<><path d="M5 9a8 8 0 1 1 0 7M5 3v6h6"/></>:name==='close'?<path d="m6 6 12 12M18 6 6 18"/>:<path d="m6 18 12-12M6 6h12v12"/>}
@@ -134,9 +141,11 @@ export function DeploymentMap({snapshot=downloadSnapshot}:{snapshot?:typeof down
   const select=(s:Selection)=>{if(!moved.current)setSelection(s);};
   const keySelect=(event:React.KeyboardEvent, value:Selection)=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();setSelection(value);}};
   const pin=(pilot:Pilot)=>{
-    const p=screen(project(pilot.coordinates),view), offset=compact?{x:16,y:-125}:(flagOffsets[pilot.id] ?? {x:24,y:-100});
-    const x=clamp(p.x+offset.x,18,width-290),y=clamp(p.y+offset.y,76,height-120);
-    const left=offset.x<0, end={x:left?x+268:x,y:y+50};
+    const p=screen(project(pilot.coordinates),view), offset=compact?{x:16,y:-125}:((mode==='pilots'?pilotViewOffsets[pilot.id]:undefined) ?? flagOffsets[pilot.id] ?? {x:24,y:-100});
+    // A learners line adds 16 px to the ribbon; the swallowtail notch stays at mid-height.
+    const learners=learnerLine(pilot), h=learners?111:95, notch=learners?54:46;
+    const x=clamp(p.x+offset.x,18,width-290),y=clamp(p.y+offset.y,76,height-h-25);
+    const left=offset.x<0, end={x:left?x+268:x,y:y+notch+4};
     const chosen=selectedPilot?.id===pilot.id;
     // Separate the two Manila-area pin heads without moving their geographic feet.
     const head={x:p.x+(pilot.id==='better-world'?-7:pilot.id==='daanghari'?7:0),y:p.y-(pilot.id==='daanghari'?41:25)};
@@ -149,16 +158,17 @@ export function DeploymentMap({snapshot=downloadSnapshot}:{snapshot?:typeof down
       <path d={`M${p.x} ${p.y}L${head.x} ${head.y}`} className={styles.pinStem}/>
       <circle cx={head.x} cy={head.y} r="5" className={styles.pinHead}/>
       {showFlag&&<g transform={`translate(${x} ${y})`} role="button" tabIndex={showPilots?0:-1}
-        aria-label={`${pilot.name}, ${pilotStatus(pilot)}, ${phoneLine(pilot)}`}
+        aria-label={`${pilot.name}, ${pilotStatus(pilot)}, ${phoneLine(pilot)}${learners?`, ${learners}`:''}`}
         onClick={()=>select({kind:'pilot',id:pilot.id})}
         onKeyDown={e=>keySelect(e,{kind:'pilot',id:pilot.id})}>
-        <path d="M4 5H271L261 51l10 49H4Z" className={styles.flagShadow}/>
-        <path d="M0 0H268L258 46l10 49H0Z" className={styles.flag}/>
+        <path d={`M4 5H271L261 ${notch+5}l10 ${h-notch}H4Z`} className={styles.flagShadow}/>
+        <path d={`M0 0H268L258 ${notch}l10 ${h-notch}H0Z`} className={styles.flag}/>
         <text x="17" y="20" className={styles.flagEyebrow}>{`${pilot.status==='active'?'●':'○'}  ${pilotStatus(pilot)}`}</text>
         <text x="17" y="47" className={styles.flagName}>{pilot.name}</text>
         <text x="17" y="65" className={styles.flagPlace}>{pilot.bannerPlace ?? pilot.place}</text>
         <text x="17" y="84" className={styles.flagCount}>{phoneLine(pilot)}</text>
-        <text x="236" y="84" className={styles.flagArrow}>↗</text>
+        {learners&&<text x="17" y="100" className={styles.flagPlace}>{learners}</text>}
+        <text x="236" y={h-11} className={styles.flagArrow}>↗</text>
       </g>}
     </g>;
   };
@@ -253,6 +263,7 @@ export function DeploymentMap({snapshot=downloadSnapshot}:{snapshot?:typeof down
             <p>{selectedPilot.place}</p>
             {selectedPilot.phones===null?<p className={styles.detailNote}>{donationStatus(selectedPilot)}.</p>
               :<strong className={styles.detailNumber}>{selectedPilot.phones}<span> {donationStatus(selectedPilot)}</span></strong>}
+            {selectedPilot.learners&&<p className={styles.detailNote}>{learnerLine(selectedPilot)} · <a href={selectedPilot.learners.source} target="_blank" rel="noreferrer">source ↗</a></p>}
             {selectedPilot.locationPrecision==='area'&&<p className={styles.detailNote}>Approximate venue location.</p>}
           </>:<p className={styles.downloadPlaces}>{selectedDownload?.cities.map(c=>c.city).join(' · ')}</p>}
 
@@ -274,7 +285,7 @@ export function DeploymentMap({snapshot=downloadSnapshot}:{snapshot?:typeof down
       </details>
     </div>
     {showPilots&&<div className={styles.accessibleList} aria-label="Pilot directory">
-      {pilots.map(p=><button type="button" key={p.id} onClick={()=>{go('pilots');setSelection({kind:'pilot',id:p.id});}}>{p.name} · {phoneLine(p)}</button>)}
+      {pilots.map(p=><button type="button" key={p.id} onClick={()=>{go('pilots');setSelection({kind:'pilot',id:p.id});}}>{[p.name,phoneLine(p),learnerLine(p)].filter(Boolean).join(' · ')}</button>)}
     </div>}
   </section>;
 }
