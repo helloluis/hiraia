@@ -196,6 +196,50 @@ test('list filters: stage, platform, quiet_for_days, search, include_test', asyn
   assert.equal(typeof all.json.contacts[0].thread_count, 'number');
 });
 
+test('list include embeds every thread (all apps) and the latest extract in one read', async () => {
+  const multi = (await call('POST', '/api/crm/contacts', { body: { name: 'Embed Multi Channel', platform: 'messenger', last_contact: '2026-10-30T02:00:00Z' } })).json.id;
+  const bare = (await call('POST', '/api/crm/contacts', { body: { name: 'Embed Bare Member', platform: 'telegram' } })).json.id;
+  const direct = (await call('POST', '/api/crm/threads', { body: { contact_id: multi, app: 'messenger', thread_name: 'Embed Multi Channel', last_seen: '2026-10-30T02:00:00Z' } })).json.id;
+  const group = (await call('POST', '/api/crm/threads', { body: { contact_id: multi, app: 'viber', thread_name: 'Group 9f2c41d07a', last_seen: '2026-11-02T05:00:00Z' } })).json.id;
+  const undated = (await call('POST', '/api/crm/threads', { body: { contact_id: multi, app: 'telegram', thread_name: 'Embed Multi Channel' } })).json.id;
+  await call('POST', '/api/crm/extracts', { body: { contact_id: multi, thread_id: direct, extracted_json: { summary: 'older', next_action: null } } });
+  const newest = (await call('POST', '/api/crm/extracts', { body: { contact_id: multi, thread_id: group, extracted_json: { summary: 'newer', next_action: 'send the consent form', last_contact_approximate: true } } })).json.id;
+
+  // Without include the list shape is unchanged.
+  const plain = await call('GET', '/api/crm/contacts?search=embed', { key: READ_KEY });
+  assert.equal(plain.json.total, 2);
+  assert.ok(plain.json.contacts.every((c) => !('threads' in c) && !('latest_extract' in c)));
+
+  for (const query of ['include=threads,latest_extract', 'include=threads&include=LATEST_EXTRACT', 'include=latest_extract,%20threads']) {
+    const r = await call('GET', `/api/crm/contacts?search=embed&${query}`, { key: READ_KEY });
+    assert.equal(r.status, 200, query);
+    const byId = new Map(r.json.contacts.map((c) => [c.id, c]));
+    const m = byId.get(multi);
+    // Same order as GET /contacts/:id: last_seen DESC NULLS LAST, then id.
+    assert.deepEqual(m.threads.map((t) => [t.id, t.app]), [[group, 'viber'], [direct, 'messenger'], [undated, 'telegram']]);
+    assert.equal(m.thread_count, 3);
+    assert.equal(m.latest_extract.id, newest);
+    assert.deepEqual(m.latest_extract.extracted_json, { summary: 'newer', next_action: 'send the consent form', last_contact_approximate: true });
+    const detail = await call('GET', `/api/crm/contacts/${multi}?extracts_limit=1`, { key: READ_KEY });
+    assert.deepEqual(m.threads, detail.json.threads);
+    assert.deepEqual(m.latest_extract, detail.json.extracts[0]);
+    assert.deepEqual(byId.get(bare).threads, []);
+    assert.equal(byId.get(bare).latest_extract, null);
+  }
+
+  // Only one embed was asked for: only that key appears.
+  const threadsOnly = await call('GET', '/api/crm/contacts?search=embed&include=threads', { key: READ_KEY });
+  assert.ok(threadsOnly.json.contacts.every((c) => Array.isArray(c.threads) && !('latest_extract' in c)));
+  // Embeds follow the filtered page, not the whole table.
+  const page = await call('GET', '/api/crm/contacts?search=embed&platform=telegram&include=threads,latest_extract&limit=1', { key: READ_KEY });
+  assert.deepEqual(page.json.contacts.map((c) => [c.id, c.threads.length, c.latest_extract]), [[bare, 0, null]]);
+  const empty = await call('GET', '/api/crm/contacts?search=no-such-contact-xyz&include=threads,latest_extract', { key: READ_KEY });
+  assert.deepEqual([empty.status, empty.json.contacts, empty.json.total], [200, [], 0]);
+  const unknown = await call('GET', '/api/crm/contacts?include=threads,raw_messages', { key: READ_KEY });
+  assert.equal(unknown.status, 400);
+  assert.deepEqual([unknown.json.error, unknown.json.details], ['invalid_query', { param: 'include' }]);
+});
+
 test('status reports counts and an unconfigured backup as stale', async () => {
   const s = await call('GET', '/api/crm/status', { key: READ_KEY });
   assert.equal(s.status, 200);

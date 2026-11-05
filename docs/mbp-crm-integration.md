@@ -159,10 +159,11 @@ curl -sS -X POST "$HIRAIA_CRM_BASE_URL/extracts" \
 | Query | Meaning |
 | --- | --- |
 | `stage=pilot` | One of the five stages. |
-| `platform=messenger` | Exact platform. |
+| `platform=messenger` | Exact platform of the contact record (threads on other apps do not count). |
 | `quiet_for_days=14` | `last_contact` older than N days **or never contacted**. |
 | `search=santos` | Case-insensitive substring over name, aliases, school, role, notes. |
 | `include_test=1` | Include `is_test` records (excluded by default). |
+| `include=threads,latest_extract` | Since 1.1.0. Embed each row's `threads` (every app, same shape and order as `GET /contacts/:id`) and `latest_extract` (newest by `created_at`, or `null`); either name alone works. Count, page and embeds come from one consistent read. Unknown names are `400 invalid_query`; servers older than 1.1.0 ignore the parameter, so check that the keys are present. |
 | `limit` (1–200, default 50), `offset` | Paging. |
 
 Sorted by `last_contact` descending, never-contacted last. Each row adds `thread_count`,

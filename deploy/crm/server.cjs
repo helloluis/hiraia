@@ -29,9 +29,12 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const { openDatabase, migrate, migrationStatus } = require('./db.cjs');
 
-const VERSION = '1.0.0';
+const VERSION = '1.1.0';
 const PREFIX = '/api/crm';
 const STAGES = ['intro', 'pilot', 'active', 'dormant', 'unknown'];
+// Optional embeds for GET /contacts (`include=threads,latest_extract`): one consistent read instead
+// of a GET /contacts/:id round trip per contact.
+const LIST_INCLUDES = ['threads', 'latest_extract'];
 const IDEMPOTENCY_TTL_MS = 30 * 24 * 3600 * 1000;
 const LIMITS = {
   name: 200, platform: 32, alias: 200, aliases: 50, role: 200, school: 200, notes: 8000,
@@ -205,6 +208,14 @@ class CrmStore {
       threadByIdentity: p('SELECT * FROM threads WHERE contact_id = ? AND app = ? AND thread_name = ? COLLATE NOCASE'),
       threadById: p('SELECT * FROM threads WHERE id = ?'),
       threadsByContact: p('SELECT * FROM threads WHERE contact_id = ? ORDER BY last_seen DESC NULLS LAST, id'),
+      // Same per-contact order as threadsByContact, for a page of contact ids (a JSON array).
+      threadsForContacts: p(`SELECT * FROM threads WHERE contact_id IN (SELECT value FROM json_each(?))
+                             ORDER BY contact_id, last_seen DESC NULLS LAST, id`),
+      // The newest extract per contact, with getContact()'s ordering (created_at DESC, id DESC).
+      latestExtractsForContacts: p(`SELECT * FROM (
+                                      SELECT e.*, ROW_NUMBER() OVER (PARTITION BY e.contact_id ORDER BY e.created_at DESC, e.id DESC) AS rn
+                                      FROM extracts e WHERE e.contact_id IN (SELECT value FROM json_each(?))
+                                    ) WHERE rn = 1`),
       threadInsert: p(`INSERT INTO threads (contact_id, app, thread_name, last_seen, created_at, updated_at)
                        VALUES (@contact_id, @app, @thread_name, @last_seen, @now, @now)`),
       threadUpdate: p('UPDATE threads SET thread_name=@thread_name, last_seen=@last_seen, updated_at=@now WHERE id=@id'),
@@ -311,19 +322,32 @@ class CrmStore {
     }
     if (!f.includeTest) where.push('c.is_test = 0');
     const sqlWhere = where.length ? `WHERE ${where.join(' AND ')}` : '';
-    const total = this.db.prepare(`SELECT COUNT(*) AS n FROM contacts c ${sqlWhere}`).get(...params).n;
-    const rows = this.db.prepare(`
-      SELECT c.*,
-        (SELECT COUNT(*) FROM threads t WHERE t.contact_id = c.id) AS thread_count,
-        (SELECT COUNT(*) FROM extracts e WHERE e.contact_id = c.id) AS extract_count,
-        (SELECT MAX(e.created_at) FROM extracts e WHERE e.contact_id = c.id) AS last_extract_at
-      FROM contacts c ${sqlWhere}
-      ORDER BY c.last_contact DESC NULLS LAST, c.name COLLATE NOCASE ASC
-      LIMIT ? OFFSET ?`).all(...params, f.limit, f.offset);
-    return {
-      contacts: rows.map((r) => CrmStore.contact(r, { thread_count: r.thread_count, extract_count: r.extract_count, last_extract_at: r.last_extract_at })),
-      total, limit: f.limit, offset: f.offset,
-    };
+    // One read transaction: the total, the page and any embeds come from the same WAL snapshot.
+    return this.db.transaction(() => {
+      const total = this.db.prepare(`SELECT COUNT(*) AS n FROM contacts c ${sqlWhere}`).get(...params).n;
+      const rows = this.db.prepare(`
+        SELECT c.*,
+          (SELECT COUNT(*) FROM threads t WHERE t.contact_id = c.id) AS thread_count,
+          (SELECT COUNT(*) FROM extracts e WHERE e.contact_id = c.id) AS extract_count,
+          (SELECT MAX(e.created_at) FROM extracts e WHERE e.contact_id = c.id) AS last_extract_at
+        FROM contacts c ${sqlWhere}
+        ORDER BY c.last_contact DESC NULLS LAST, c.name COLLATE NOCASE ASC
+        LIMIT ? OFFSET ?`).all(...params, f.limit, f.offset);
+      const contacts = rows.map((r) => CrmStore.contact(r, { thread_count: r.thread_count, extract_count: r.extract_count, last_extract_at: r.last_extract_at }));
+      if (f.include.size) {
+        const ids = JSON.stringify(contacts.map((c) => c.id));
+        if (f.include.has('threads')) {
+          const byContact = new Map(contacts.map((c) => [c.id, []]));
+          for (const t of this.q.threadsForContacts.all(ids)) byContact.get(t.contact_id).push(CrmStore.thread(t));
+          for (const c of contacts) c.threads = byContact.get(c.id);
+        }
+        if (f.include.has('latest_extract')) {
+          const latest = new Map(this.q.latestExtractsForContacts.all(ids).map((e) => [e.contact_id, CrmStore.extract(e)]));
+          for (const c of contacts) c.latest_extract = latest.get(c.id) || null;
+        }
+      }
+      return { contacts, total, limit: f.limit, offset: f.offset };
+    })();
   }
 
   getContact(id, extractsLimit) {
@@ -440,7 +464,15 @@ function parseListQuery(params, now) {
     limit: intParam(params, 'limit', { min: 1, max: LIMITS.listMax, dflt: 50 }),
     offset: intParam(params, 'offset', { min: 0, max: 1_000_000, dflt: 0 }),
     includeTest: params.get('include_test') === '1' || params.get('include_test') === 'true',
+    include: new Set(),
   };
+  // `include=threads,latest_extract` and `include=threads&include=latest_extract` are equivalent.
+  for (const part of params.getAll('include').join(',').split(',')) {
+    const name = part.trim().toLowerCase();
+    if (!name) continue;
+    if (!LIST_INCLUDES.includes(name)) throw bad('invalid_query', `include must list only ${LIST_INCLUDES.join(', ')}`, { param: 'include' });
+    f.include.add(name);
+  }
   const stage = params.get('stage');
   if (stage) {
     if (!STAGES.includes(stage.toLowerCase())) throw bad('invalid_query', `stage must be one of ${STAGES.join(', ')}`, { param: 'stage' });
