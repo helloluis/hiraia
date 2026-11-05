@@ -5,7 +5,7 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { createCrmServer, canonical } = require('./server.cjs');
+const { createCrmServer, canonical, CrmStore } = require('./server.cjs');
 const { openDatabase, migrate, migrationStatus } = require('./db.cjs');
 
 const WRITE_KEY = `hcrm_test_${crypto.randomBytes(32).toString('base64url')}`;
@@ -19,6 +19,8 @@ function env(extra = {}) {
     HIRAIA_CRM_BACKUP_STATUS: path.join(tmp, 'nope.json'),
     HIRAIA_CRM_CLIENT_MBP_HARVESTD: `write:sha256:${sha(WRITE_KEY)}`,
     HIRAIA_CRM_CLIENT_BEANIEBOT: `read:sha256:${sha(READ_KEY)}`,
+    // The whole suite shares one client key; the rate-limit test sets its own tight limits.
+    HIRAIA_CRM_RATE_BURST: '5000', HIRAIA_CRM_RATE_PER_MINUTE: '60000',
     ...extra,
   };
 }
@@ -245,7 +247,8 @@ test('status reports counts and an unconfigured backup as stale', async () => {
   assert.equal(s.status, 200);
   assert.ok(s.json.counts.contacts >= 4);
   assert.equal(s.json.backup.stale, true);
-  assert.equal(s.json.migrations, 1);
+  assert.equal(s.json.migrations, 2);
+  for (const t of ['contact_profiles', 'contact_points', 'first_message_evidence']) assert.equal(typeof s.json.counts[t], 'number', t);
   assert.equal(logs.at(-1).client, 'beaniebot');
   assert.ok(!JSON.stringify(logs).includes(READ_KEY) && !JSON.stringify(logs).includes(WRITE_KEY));
 });
@@ -257,11 +260,11 @@ test('events table is append-only at the SQL level', () => {
 
 test('migrations are idempotent and survive lost bookkeeping', () => {
   const db = openDatabase(path.join(tmp, 'migrate.db'));
-  assert.deepEqual(migrate(db), ['001-init.sql']);
+  assert.deepEqual(migrate(db), ['001-init.sql', '002-contact-profile.sql']);
   assert.deepEqual(migrate(db), []);
   assert.ok(migrationStatus(db).every((m) => m.applied_at));
   db.exec('DROP TABLE schema_migrations');
-  assert.deepEqual(migrate(db), ['001-init.sql']);   // IF NOT EXISTS everywhere
+  assert.deepEqual(migrate(db), ['001-init.sql', '002-contact-profile.sql']);   // IF NOT EXISTS everywhere
   db.close();
 });
 
@@ -279,4 +282,162 @@ test('payload cap and per-client rate limit', async (t) => {
   const limited = await fetch(`${b}/api/crm/contacts`, { headers: h });
   assert.equal(limited.status, 429);
   assert.ok(Number(limited.headers.get('retry-after')) > 0);
+});
+
+// ---------------------------------------------------------------------------------------------
+// 1.2.0: contact profile, phones/e-mails and first-message evidence
+
+test('a populated 1.1.0 database upgrades in place: rows kept, new fields empty, old shapes intact', () => {
+  const dir = fs.mkdtempSync(path.join(tmp, 'v1-migrations-'));
+  fs.copyFileSync(path.join(__dirname, 'migrations', '001-init.sql'), path.join(dir, '001-init.sql'));
+  const file = path.join(tmp, 'upgrade.db');
+  const db = openDatabase(file);
+  assert.deepEqual(migrate(db, dir), ['001-init.sql']);
+  db.prepare(`INSERT INTO contacts (name, platform, aliases_json, role, school, stage, notes, last_contact, first_seen, created_at, updated_at)
+              VALUES ('Old Row', 'viber', '[]', 'Principal', 'Old School', 'pilot', 'note', '2026-10-01T00:00:00.000Z', '2026-09-01T00:00:00.000Z', 'x', 'x')`).run();
+  assert.deepEqual(migrate(db), ['002-contact-profile.sql']);
+  const store = new CrmStore(db);
+  const view = store.contactView(1);
+  assert.deepEqual([view.name, view.role, view.school, view.stage, view.last_contact], ['Old Row', 'Principal', 'Old School', 'pilot', '2026-10-01T00:00:00.000Z']);
+  // Nothing is derived from first_seen, last_contact or created_at: no message evidence, no first contact.
+  assert.deepEqual([view.organization, view.job_title, view.first_contact, view.first_contact_quality], [null, null, null, null]);
+  assert.ok(!('phones' in view) && !('emails' in view));
+  db.close();
+});
+
+test('old payloads still work; new fields are additive and phones/e-mails are opt-in', async () => {
+  const created = await call('POST', '/api/crm/contacts', { body: { name: 'Compat Person', platform: 'messenger', role: 'teacher', notes: 'n' } });
+  assert.equal(created.status, 201);
+  const c = created.json.contact;
+  for (const k of ['organization', 'organization_source', 'department', 'job_title', 'location', 'first_contact', 'first_contact_quality', 'first_contact_basis', 'first_contact_platform']) {
+    assert.equal(c[k], null, k);
+  }
+  assert.ok(!('phones' in c));
+  const list = await call('GET', '/api/crm/contacts?search=compat%20person', { key: READ_KEY });
+  assert.ok(list.json.contacts.every((x) => !('phones' in x) && !('emails' in x) && x.organization === null));
+  const withPoints = await call('GET', '/api/crm/contacts?search=compat%20person&include=contact_points', { key: READ_KEY });
+  assert.deepEqual([withPoints.json.contacts[0].phones, withPoints.json.contacts[0].emails], [[], []]);
+  const detail = await call('GET', `/api/crm/contacts/${created.json.id}`, { key: READ_KEY });
+  assert.ok(!('phones' in detail.json.contact));
+  const detailPoints = await call('GET', `/api/crm/contacts/${created.json.id}?include=contact_points`, { key: READ_KEY });
+  assert.deepEqual(detailPoints.json.contact.phones, []);
+  assert.equal((await call('GET', `/api/crm/contacts/${created.json.id}?include=threads`, { key: READ_KEY })).status, 400);
+});
+
+test('profile fields round-trip with provenance; absent leaves, empty clears, school and role stay separate', async () => {
+  const body = { name: 'Profile Person', platform: 'viber', role: 'teacher', school: 'Some ES' };
+  const a = await call('POST', '/api/crm/contacts', { body: { ...body, organization: 'Department of Education (DepEd)', organization_source: 'manual_note', job_title: 'Master Teacher II', location: 'Siay, Zamboanga Sibugay' } });
+  const c = a.json.contact;
+  assert.deepEqual([c.organization, c.organization_source, c.job_title, c.job_title_source, c.location_source, c.school, c.role],
+    ['Department of Education (DepEd)', 'manual_note', 'Master Teacher II', 'mbp-harvestd', 'mbp-harvestd', 'Some ES', 'teacher']);
+  const same = await call('POST', '/api/crm/contacts', { body: { ...body, organization: 'Department of Education (DepEd)' } });
+  assert.equal(same.json.changed, false);                                   // same value, no source: keeps manual_note
+  assert.equal(same.json.contact.organization_source, 'manual_note');
+  const untouched = await call('POST', '/api/crm/contacts', { body });
+  assert.equal(untouched.json.contact.job_title, 'Master Teacher II');      // absent fields are left alone
+  const cleared = await call('POST', '/api/crm/contacts', { body: { ...body, location: '', department: 'Curriculum Implementation Division', department_source: 'google_contacts' } });
+  assert.deepEqual([cleared.json.contact.location, cleared.json.contact.location_source, cleared.json.contact.department_source], [null, null, 'google_contacts']);
+  for (const [extra, code] of [[{ organization_source: 'manual_note' }, 'invalid_field'], [{ organization: 'x', organization_source: 'Not A Source!' }, 'invalid_field'], [{ job_title: 'x'.repeat(201) }, 'field_too_long']]) {
+    const r = await call('POST', '/api/crm/contacts', { body: { ...body, ...extra } });
+    assert.deepEqual([r.status, r.json.error], [400, code], JSON.stringify(extra));
+  }
+  const byOrg = await call('GET', '/api/crm/contacts?search=deped', { key: READ_KEY });
+  assert.ok(byOrg.json.contacts.some((x) => x.name === 'Profile Person'));
+  assert.equal((await call('GET', '/api/crm/contacts?search=curriculum%20implementation', { key: READ_KEY })).json.total, 1);
+});
+
+test('phones and e-mails: several per contact, normalized, deduplicated, labelled, primary, removable', async () => {
+  const base = { name: 'Points Person', platform: 'messenger' };
+  const a = await call('POST', '/api/crm/contacts', { body: { ...base,
+    phones: [{ value: '+63 900 000 0001', label: 'mobile', primary: true, source: 'google_contacts', source_ref: 'people/c1' }, '0063-900-000-0002', '(0900) 000.0003'],
+    emails: [{ value: ' Teacher@Example.ORG ', label: 'work' }] } });
+  assert.equal(a.status, 201);
+  assert.deepEqual(a.json.contact.phones.map((p) => [p.value, p.label, p.primary, p.source]),
+    [['+639000000001', 'mobile', true, 'google_contacts'], ['+639000000002', null, false, 'mbp-harvestd'], ['09000000003', null, false, 'mbp-harvestd']]);
+  assert.deepEqual(a.json.contact.emails.map((e) => e.value), ['teacher@example.org']);
+  const again = await call('POST', '/api/crm/contacts', { body: { ...base, phones: ['+639000000001'], emails: ['teacher@example.org'] } });
+  assert.equal(again.json.changed, false);                                  // dedupe by normalized value
+  const promote = await call('POST', '/api/crm/contacts', { body: { ...base, phones: [{ value: '09000000003', primary: true }] } });
+  assert.deepEqual(promote.json.contact.phones.filter((p) => p.primary).map((p) => p.value), ['09000000003']);
+  const removed = await call('POST', '/api/crm/contacts', { body: { ...base, phones: [{ value: '+639000000002', remove: true }] } });
+  assert.deepEqual(removed.json.contact.phones.map((p) => p.value).sort(), ['+639000000001', '09000000003']);
+  for (const bad of [{ phones: ['12'] }, { phones: ['call me'] }, { emails: ['not-an-email'] }, { phones: 'x' }, { phones: Array.from({ length: 21 }, (_, i) => `+6390000000${10 + i}`) }]) {
+    assert.equal((await call('POST', '/api/crm/contacts', { body: { ...base, ...bad } })).status, 400, JSON.stringify(bad).slice(0, 60));
+  }
+  const listed = await call('GET', '/api/crm/contacts?search=points%20person&include=contact_points', { key: READ_KEY });
+  assert.equal(listed.json.contacts[0].phones.length, 2);
+});
+
+test('first-message evidence: earliest across threads and platforms, monotonic, exact vs approximate', async () => {
+  const cid = (await call('POST', '/api/crm/contacts', { body: { name: 'Evidence Person', platform: 'messenger', last_contact: '2026-11-01T00:00:00Z' } })).json.id;
+  const otherCid = (await call('POST', '/api/crm/contacts', { body: { name: 'Evidence Other', platform: 'messenger' } })).json.id;
+  const tM = (await call('POST', '/api/crm/threads', { body: { contact_id: cid, app: 'messenger', thread_name: 'Evidence Person' } })).json.id;
+  const tT = (await call('POST', '/api/crm/threads', { body: { contact_id: cid, app: 'telegram', thread_name: 'Evidence Person' } })).json.id;
+  const tOther = (await call('POST', '/api/crm/threads', { body: { contact_id: otherCid, app: 'messenger', thread_name: 'Evidence Other' } })).json.id;
+  const ev = (over) => ({ contact_id: cid, evidence_key: 'conv-m', platform: 'messenger', conversation_kind: 'direct', first_message_at: '2026-10-12T07:45:00Z', quality: 'exact', basis: 'message_timestamp', direction: 'incoming', ...over });
+  const post = (over, headers) => call('POST', '/api/crm/first-message-evidence', { body: ev(over), headers });
+
+  // No evidence yet: first_contact stays empty although last_contact and created_at exist.
+  assert.equal((await call('GET', `/api/crm/contacts/${cid}`, { key: READ_KEY })).json.contact.first_contact, null);
+
+  const first = await post({ thread_id: tM });
+  assert.deepEqual([first.status, first.json.action, first.json.first_contact.at, first.json.first_contact.quality], [201, 'created', '2026-10-12T07:45:00.000Z', 'exact']);
+  const later = await post({ first_message_at: '2026-10-20T00:00:00Z' });
+  assert.deepEqual([later.status, later.json.changed, later.json.evidence.first_message_at], [200, false, '2026-10-12T07:45:00.000Z']);
+  const weakerSame = await post({ quality: 'approximate', basis: 'first_observed' });
+  assert.equal(weakerSame.json.changed, false);                             // never weakened at the same instant
+
+  // A second platform: Telegram OCR with only an observation time, earlier than the Messenger exact time.
+  const tg = await post({ evidence_key: 'conv-t', platform: 'telegram', thread_id: tT, first_message_at: '2026-10-05T03:00:00Z', quality: 'approximate', basis: 'first_observed', direction: 'unknown' });
+  assert.deepEqual([tg.json.first_contact.at, tg.json.first_contact.quality, tg.json.first_contact.basis, tg.json.first_contact.platform, tg.json.first_contact.thread_id],
+    ['2026-10-05T03:00:00.000Z', 'approximate', 'first_observed', 'telegram', tT]);
+  // An exact timestamp at the same instant outranks the approximate one.
+  const exactSame = await post({ evidence_key: 'conv-t', platform: 'telegram', thread_id: tT, first_message_at: '2026-10-05T03:00:00Z' });
+  assert.deepEqual([exactSame.json.action, exactSame.json.first_contact.quality, exactSame.json.first_contact.basis], ['updated', 'exact', 'message_timestamp']);
+  // An earlier report on the Messenger conversation moves the contact earlier, even if approximate.
+  const earlier = await post({ first_message_at: '2026-09-30T23:00:00Z', quality: 'approximate', basis: 'relative_label' });
+  assert.deepEqual([earlier.json.action, earlier.json.first_contact.at, earlier.json.first_contact.basis, earlier.json.first_contact.thread_id],
+    ['updated', '2026-09-30T23:00:00.000Z', 'relative_label', tM]);
+
+  // Evidence without a CRM thread (a linked conversation that was never exported) still counts.
+  const unthreaded = await post({ evidence_key: 'conv-local', platform: 'viber', first_message_at: '2026-09-29T00:00:00Z' });
+  assert.deepEqual([unthreaded.json.first_contact.platform, unthreaded.json.first_contact.thread_id], ['viber', null]);
+
+  // Thread views carry their own earliest message; the contact view carries the minimum across all.
+  const detail = await call('GET', `/api/crm/contacts/${cid}`, { key: READ_KEY });
+  const byThread = Object.fromEntries(detail.json.threads.map((t) => [t.app, [t.first_message_at, t.first_message_quality, t.first_message_basis]]));
+  assert.deepEqual(byThread, { messenger: ['2026-09-30T23:00:00.000Z', 'approximate', 'relative_label'], telegram: ['2026-10-05T03:00:00.000Z', 'exact', 'message_timestamp'] });
+  assert.equal(detail.json.contact.first_contact, '2026-09-29T00:00:00.000Z');
+  const listed = await call('GET', '/api/crm/contacts?search=evidence%20person&include=threads', { key: READ_KEY });
+  assert.equal(listed.json.contacts[0].first_contact_platform, 'viber');
+
+  // Relinking evidence to a thread that was exported later does not touch its time.
+  const relink = await post({ evidence_key: 'conv-local', platform: 'viber', thread_id: tM, first_message_at: '2026-10-25T00:00:00Z' });
+  assert.deepEqual([relink.json.action, relink.json.evidence.first_message_at, relink.json.evidence.thread_id], ['relinked', '2026-09-29T00:00:00.000Z', tM]);
+
+  // Idempotent replays and every validation edge.
+  const k = { 'idempotency-key': 'fme-replay-1' };
+  const r1 = await post({ evidence_key: 'conv-replay', first_message_at: '2026-10-01T00:00:00Z' }, k);
+  const r2 = await post({ evidence_key: 'conv-replay', first_message_at: '2026-10-01T00:00:00Z' }, k);
+  assert.deepEqual([r2.headers.get('idempotent-replayed'), r2.json.id], ['true', r1.json.id]);
+  const cases = [
+    [{ quality: 'exact', basis: 'relative_label' }, 400, 'invalid_field'],
+    [{ first_message_at: '2003-12-31T00:00:00Z' }, 400, 'invalid_timestamp'],
+    [{ first_message_at: new Date(Date.now() + 3 * 86400_000).toISOString() }, 400, 'invalid_timestamp'],
+    [{ first_message_at: 'Wednesday 9:41am' }, 400, 'invalid_timestamp'],
+    [{ first_message_at: undefined }, 400, 'missing_field'],
+    [{ quality: 'certain' }, 400, 'invalid_field'],
+    [{ conversation_kind: 'channel' }, 400, 'invalid_field'],
+    [{ evidence_key: 'has space' }, 400, 'invalid_field'],
+    [{ thread_id: tOther }, 422, 'unknown_thread'],
+    [{ contact_id: 999999 }, 422, 'unknown_contact'],
+    [{ platform: 'viber' }, 422, 'evidence_conflict'],
+  ];
+  for (const [over, status, code] of cases) {
+    const r = await post(over);
+    assert.deepEqual([r.status, r.json.error], [status, code], JSON.stringify(over));
+  }
+  assert.equal((await call('POST', '/api/crm/first-message-evidence', { key: READ_KEY, body: ev({}) })).status, 403);
+  const audit = app.db.prepare("SELECT action FROM events WHERE entity = 'first_message_evidence' ORDER BY id").all().map((e) => e.action);
+  assert.ok(audit.includes('created') && audit.includes('updated') && audit.includes('relinked') && audit.includes('unchanged'));
 });

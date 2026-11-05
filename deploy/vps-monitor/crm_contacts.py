@@ -37,13 +37,20 @@ MAX_PAGE_BYTES = 48 * 1024 * 1024
 TIMEOUT_S = 15
 UA = "hiraia-admin/1.0 (crm-cards)"
 STAGES = ("intro", "pilot", "active", "dormant", "unknown")
-INCLUDE = "threads,latest_extract"   # CRM API >= 1.1.0
+INCLUDE = "threads,latest_extract,contact_points"   # CRM API >= 1.2.0 (contact_points is new in 1.2)
+PROFILE_FIELDS = ("organization", "department", "job_title", "location")
+QUALITIES = ("exact", "approximate")
+BASES = ("message_timestamp", "relative_label", "first_observed")
+POINTS_MAX = 20
 HERE = Path(__file__).resolve().parent
 
 # Text limits mirror the CRM/harvestd contracts; longer values are cut, never rejected.
-LIMITS = {"name": 200, "alias": 200, "aliases": 50, "role": 200, "school": 200, "notes": 8000,
+LIMITS = {"name": 200, "alias": 200, "aliases": 50, "role": 200, "school": 200, "notes": 8000, "profile": 200,
           "summary": 8000, "next_action": 1000, "date": 100, "dates": 32}
 _PLATFORM = re.compile(r"[a-z0-9][a-z0-9._-]{0,31}")
+_SOURCE = re.compile(r"[a-z0-9][a-z0-9._:-]{0,63}")
+_PHONE = re.compile(r"\+?\d{7,15}")
+_EMAIL = re.compile(r"[^\s@<>()\[\],;:\"]{1,64}@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}")
 # harvestd names every group link `Group <opaque conversation ID>` (self-snooper
 # docs/group-participants.md) and a direct thread after the reviewed contact name.
 _GROUP_THREAD = re.compile(r"Group [A-Za-z0-9_-]{1,128}")
@@ -130,6 +137,8 @@ def _get(base, key, path, params):
     except urllib.error.HTTPError as error:
         status, retry = error.code, _retry_after(error.headers)
         error.close()                       # the body is never read or forwarded
+        if status == 400:
+            raise CrmError("crm_outdated", 502) from None   # 1.1.0 rejects include=contact_points
         if status in (401, 403):
             raise CrmError("crm_auth_failed", 502) from None
         if status == 429:
@@ -163,8 +172,8 @@ def fetch_contacts(base, key):
         for row in page:
             if not isinstance(row, dict) or _count(row.get("id")) is None:
                 raise CrmError("crm_bad_response", 502)
-            if "threads" not in row or "latest_extract" not in row:
-                raise CrmError("crm_outdated", 502)    # an API older than 1.1.0 ignores `include`
+            if any(k not in row for k in ("threads", "latest_extract", "phones", "emails", "organization", "first_contact")):
+                raise CrmError("crm_outdated", 502)    # an API older than 1.2.0 lacks these
             if row["id"] not in seen:                  # offset paging can repeat a row that moved
                 seen.add(row["id"])
                 rows.append(row)
@@ -219,8 +228,10 @@ def _channels(row, threads, names):
         if not isinstance(app, str) or not _PLATFORM.fullmatch(app):
             continue
         channel = channels.setdefault(app, {"platform": app, "record": False, "threads": []})
+        first = _time(thread.get("first_message_at"))
         channel["threads"].append({"kind": _thread_kind(thread.get("thread_name"), names),
-                                   "last_seen": _iso(_time(thread.get("last_seen")))})
+                                   "last_seen": _iso(_time(thread.get("last_seen"))),
+                                   "first_message": _evidence(first, thread.get("first_message_quality"), thread.get("first_message_basis"))})
     platform = row.get("platform")
     if isinstance(platform, str) and _PLATFORM.fullmatch(platform):
         channels.setdefault(platform, {"platform": platform, "record": False, "threads": []})["record"] = True
@@ -231,6 +242,42 @@ def _channels(row, threads, names):
     ordered = sorted(channels.values(), key=lambda c: (not c["record"], c["platform"]))
     ordered.sort(key=lambda c: max((t["last_seen"] for t in c["threads"] if t["last_seen"]), default=""), reverse=True)
     return ordered
+
+
+def _evidence(moment, quality, basis):
+    """{at, quality, basis} for a first-message time, or None. Unknown labels are dropped, not guessed."""
+    if not moment or quality not in QUALITIES or basis not in BASES or (quality == "exact" and basis != "message_timestamp"):
+        return None
+    return {"at": _iso(moment), "quality": quality, "basis": basis}
+
+
+def _first_contact(row):
+    found = _evidence(_time(row.get("first_contact")), row.get("first_contact_quality"), row.get("first_contact_basis"))
+    if not found:
+        return None
+    platform = row.get("first_contact_platform")
+    kind = row.get("first_contact_conversation_kind")
+    found["platform"] = platform if isinstance(platform, str) and _PLATFORM.fullmatch(platform) else None
+    found["conversation_kind"] = kind if kind in ("direct", "group") else None
+    return found
+
+
+def _source(value):
+    return value if isinstance(value, str) and _SOURCE.fullmatch(value) else None
+
+
+def _points(row, kind):
+    """Phones or e-mails, with label and provenance. The opaque source_ref never leaves the server."""
+    out, seen = [], set()
+    items = row.get("phones" if kind == "phone" else "emails")
+    for item in items if isinstance(items, list) else []:
+        value = item.get("value") if isinstance(item, dict) else None
+        if not isinstance(value, str) or value in seen or not (_PHONE if kind == "phone" else _EMAIL).fullmatch(value):
+            continue
+        seen.add(value)
+        out.append({"value": value, "label": _text(item.get("label"), 40), "primary": item.get("primary") is True,
+                    "source": _source(item.get("source"))})
+    return sorted(out, key=lambda p: not p["primary"])[:POINTS_MAX]
 
 
 def _activity(row, threads, latest, extracted):
@@ -298,6 +345,11 @@ def project(row):
         "updated_at": _iso(_time(row.get("updated_at"))),
         "activity": _activity(row, threads, latest, extracted),
         "channels": _channels(row, threads, names),
+        **{f: _text(row.get(f), LIMITS["profile"]) for f in PROFILE_FIELDS},
+        **{f"{f}_source": _source(row.get(f"{f}_source")) if _text(row.get(f), LIMITS["profile"]) else None for f in PROFILE_FIELDS},
+        "phones": _points(row, "phone"),
+        "emails": _points(row, "email"),
+        "first_contact": _first_contact(row),
     }
 
 

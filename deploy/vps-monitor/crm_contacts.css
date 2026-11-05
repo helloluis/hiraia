@@ -76,6 +76,13 @@ input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .crm-aka{font-size:12.5px;font-style:italic}
 .crm-org{color:#40584b}
 .crm-missing{color:#98a090!important;font-style:italic}
+.crm-first{margin:-4px 0 0;font-size:12.5px;color:var(--muted);display:flex;flex-wrap:wrap;align-items:baseline;gap:6px}
+.crm-first-label{font-size:10px;font-weight:750;letter-spacing:1.2px;text-transform:uppercase;color:#7b8574}
+.crm-first-value{font-weight:650;color:var(--ink)}
+.crm-first-approx .crm-first-value{color:#6b4a07;text-decoration:underline dotted #c9a45a;text-underline-offset:3px}
+.crm-point{color:var(--teal);font-weight:650;text-decoration:none;overflow-wrap:anywhere}
+.crm-point:hover{text-decoration:underline}
+.crm-point-meta{color:var(--muted)}
 
 /* Where you talk — the most important line on the card. */
 .crm-channels{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 0;padding:0;list-style:none}

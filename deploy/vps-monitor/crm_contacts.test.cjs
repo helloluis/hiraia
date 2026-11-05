@@ -154,7 +154,7 @@ test('empty, no-match, error and stale states', () => {
   assert.equal(crm.noMatchText(state({ q: 'santos', platforms: new Set(['viber', 'messenger']), stages: new Set(['pilot']) })),
     'No contacts matching “santos” on Messenger or Viber in Pilot.');
   assert.equal(crm.errorMessage({ code: 'crm_rate_limited', retryAfter: 7 }), 'The CRM is limiting requests right now. Try again in 7 s.');
-  assert.match(crm.errorMessage({ code: 'crm_outdated' }), /older than 1\.1/);
+  assert.match(crm.errorMessage({ code: 'crm_outdated' }), /older than 1\.2/);
   assert.equal(crm.errorMessage({ code: 'constructor' }), 'The admin server could not load contacts.');
 });
 
@@ -196,4 +196,82 @@ test('filter state round-trips through the URL and ignores invalid values', () =
   assert.equal(crm.serializeState(crm.parseState('')), '');
   assert.equal(crm.parseState('?sort=constructor').sort, 'recent');
   assert.equal(crm.parseState(`?q=${'x'.repeat(500)}`).q.length, 200);
+});
+
+// ---------------------------------------------------------------------------------------------
+// Contact fields, organization and first contact
+
+const fc = (at, quality = 'exact', basis = 'message_timestamp', platform = 'messenger', kind = 'direct') => ({ at, quality, basis, platform, conversation_kind: kind });
+
+test('search covers organization, job title, location, contact details and first-contact dates, and composes with filters', () => {
+  const rosario = card('Rosario Villaflor', { role: 'teacher', organization: 'Department of Education (DepEd)', channels: [channel('viber', [], true)],
+    phones: [{ value: '+639000000001', label: 'mobile', primary: true, source: 'google_contacts' }], first_contact: null });
+  const danilo = card('Danilo Ocampo', { role: 'teacher', job_title: 'Instructional Leader', school: 'Mabini Heights ES',
+    channels: [channel('messenger', ['direct'], true)], emails: [{ value: 'teacher@example.org', label: 'work', primary: false, source: 'manual_note' }],
+    first_contact: fc('2026-09-05T11:25:00.000Z') });
+  const liezel = card('Liezel Joy Panganiban', { location: 'Bayugan, Agusan del Sur', department: 'Science Department', channels: [channel('messenger', [], true)],
+    first_contact: fc('2026-10-27T05:24:00.000Z', 'approximate', 'relative_label') });
+  const list = [rosario, danilo, liezel];
+  const find = (q, extra = {}) => names(crm.filterContacts(list, state({ q, ...extra })));
+  assert.deepEqual(find('deped'), ['Rosario Villaflor']);
+  assert.deepEqual(find('department of education'), ['Rosario Villaflor']);
+  assert.deepEqual(find('instructional leader'), ['Danilo Ocampo']);
+  assert.deepEqual(find('agusan'), ['Liezel Joy Panganiban']);
+  assert.deepEqual(find('science department'), ['Liezel Joy Panganiban']);
+  assert.deepEqual(find('9000000001'), ['Rosario Villaflor']);                  // phone digits, with or without "+63"
+  assert.deepEqual(find('+639000000001'), ['Rosario Villaflor']);
+  assert.deepEqual(find('09000000001'), ['Rosario Villaflor']);                 // national form of a +63 number
+  assert.deepEqual(find('example.org'), ['Danilo Ocampo']);
+  assert.deepEqual(find('sep 5, 2026'), ['Danilo Ocampo']);                 // first contact date
+  assert.deepEqual(find('september 2026'), ['Danilo Ocampo']);
+  assert.deepEqual(find('october 2026'), ['Liezel Joy Panganiban']);
+  assert.deepEqual(find('deped', { platforms: new Set(['messenger']) }), []);   // search AND channel filter
+  assert.deepEqual(find('2026', { platforms: new Set(['messenger']), stages: new Set(['unknown']) }), ['Danilo Ocampo', 'Liezel Joy Panganiban']);
+});
+
+test('first-contact sort: earliest first, exact wins a tie, unknown last by name', () => {
+  const list = [
+    card('No Evidence B'), card('Later Exact', { first_contact: fc('2026-10-20T08:07:00.000Z') }),
+    card('No Evidence A'), card('Tie Approx', { first_contact: fc('2026-09-05T11:25:00.000Z', 'approximate', 'relative_label') }),
+    card('Tie Exact', { first_contact: fc('2026-09-05T11:25:00.000Z') }), card('Broken', { first_contact: fc('not a time') }),
+  ];
+  assert.deepEqual(names(crm.sortContacts(list, 'first')), ['Tie Exact', 'Tie Approx', 'Later Exact', 'Broken', 'No Evidence A', 'No Evidence B']);
+  assert.equal(crm.parseState('?sort=first').sort, 'first');
+  assert.equal(crm.serializeState(crm.parseState('?sort=first')), 'sort=first');
+});
+
+test('first-contact wording: exact date, "≈" for a resolved label, "by" for an observation upper bound, nothing without evidence', () => {
+  const exact = plain(crm.firstContactView(card('a', { first_contact: fc('2026-09-05T11:25:00.000Z') })));
+  assert.deepEqual([exact.value, exact.approximate, exact.where], ['Sep 5, 2026', false, 'Messenger']);
+  assert.match(tidy(exact.title), /Sep 5, 2026, 7:25 PM \(Manila time\) on Messenger/);
+  const label = plain(crm.firstContactView(card('b', { first_contact: fc('2026-10-27T05:24:00.000Z', 'approximate', 'relative_label') })));
+  assert.deepEqual([label.value, label.approximate], ['≈ Oct 27, 2026', true]);
+  assert.doesNotMatch(label.value + label.detail, /\d:\d\d/);                     // never a clock time when approximate
+  const observed = plain(crm.firstContactView(card('c', { first_contact: fc('2026-10-28T23:20:37.756Z', 'approximate', 'first_observed', 'telegram') })));
+  assert.deepEqual([observed.value, observed.where], ['by Oct 29, 2026', 'Telegram']);   // Manila date of an UTC evening
+  assert.match(observed.detail, /upper bound/);
+  const group = plain(crm.firstContactView(card('d', { first_contact: fc('2026-10-05T02:00:00.000Z', 'exact', 'message_timestamp', 'messenger', 'group') })));
+  assert.equal(group.where, 'Messenger group');
+  assert.equal(crm.firstContactView(card('e')), null);
+  assert.equal(crm.firstContactView(card('f', { first_contact: fc('garbage') })), null);
+  assert.match(observed.title, /^Approximate first contact on Telegram: .*upper bound\)\. Earlier messages may predate the capture\.$/);
+  for (const v of [exact, label, observed]) assert.match(v.detail, /earliest message on record$/);   // never claimed as the true first contact
+  // per-thread lines use the same marks; nothing is shown for a thread without evidence
+  const fm = (at, quality = 'exact', basis = 'message_timestamp') => ({ at, quality, basis });
+  assert.equal(crm.firstMessageText(fm('2026-09-21T01:35:00.000Z'), NOW), 'first message Sep 21');
+  assert.equal(crm.firstMessageText(fm('2026-08-27T01:35:00.000Z', 'approximate', 'first_observed'), NOW), 'first message by Aug 27');
+  assert.equal(crm.firstMessageText(fm('2026-10-12T01:35:00.000Z', 'approximate', 'relative_label'), NOW), 'first message ≈ Oct 12');
+  assert.equal(crm.firstMessageText(fm('2025-12-30T20:00:00.000Z'), NOW), 'first message Dec 31, 2025');   // Manila date, other year
+  for (const none of [null, undefined, fm('garbage'), fm('')]) assert.equal(crm.firstMessageText(none, NOW), '');
+});
+
+test('affiliation line prefers the job title, keeps organization apart from school, and never repeats a value', () => {
+  assert.equal(crm.affiliationLine(card('a', { role: 'teacher', job_title: 'Instructional Leader', school: 'MHES' })), 'Instructional Leader · MHES');
+  assert.equal(crm.affiliationLine(card('b', { role: 'teacher', organization: 'Department of Education (DepEd)' })), 'teacher · Department of Education (DepEd)');
+  assert.equal(crm.affiliationLine(card('c', { organization: 'Bituin Foundation', school: 'bituin foundation' })), 'Bituin Foundation');
+  assert.equal(crm.affiliationLine(card('d')), '');
+  assert.equal(crm.sourceLabel('google_contacts'), 'Google Contacts');
+  assert.equal(crm.sourceLabel('constructor'), 'constructor');
+  assert.equal(crm.countsText(card('e', { thread_count: 1, extract_count: 2, phones: [{ value: '+639000000001' }], emails: [{ value: 'a@b.org' }, { value: 'c@d.org' }] })),
+    '1 thread · 2 extracts · 1 phone · 2 e-mails');
 });

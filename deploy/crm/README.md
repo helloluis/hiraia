@@ -14,11 +14,11 @@ control): a loopback Node service with SQLite in WAL mode, a hardened systemd un
 
 | Path | What |
 | --- | --- |
-| `/opt/hiraia-crm/` | `server.cjs`, `db.cjs`, `migrate.cjs`, `migrations/`, `backup.sh`, `restore.sh`, `offsite.py`, `alert.py`, `keygen.sh`, `node_modules/` (better-sqlite3 12.10.0), `venv/` (boto3) |
+| `/opt/hiraia-crm/` | `server.cjs`, `db.cjs`, `migrate.cjs`, `maintenance.cjs`, `migrations/`, `backup.sh`, `restore.sh`, `offsite.py`, `alert.py`, `keygen.sh`, `node_modules/` (better-sqlite3 12.10.0), `venv/` (boto3) |
 | `/etc/hiraia-crm/crm.env` | port, DB path, **client key hashes** (`HIRAIA_CRM_CLIENT_<NAME>=<scope>:sha256:<hex>`) |
 | `/etc/hiraia-crm/backup.passphrase` | AES-256 passphrase for backup artifacts (root, 0600). **Keep a copy in the password manager — without it offsite backups are unreadable.** |
 | `/etc/hiraia-crm/offsite.env` | optional R2 credentials for the offsite push (root, 0600; see Backups) |
-| `/var/lib/hiraia-crm/crm.db` | the database (service user `hiraia`, WAL) + `backup-status.json` |
+| `/var/lib/hiraia-crm/crm.db` | the database (service user `hiraia`, WAL) + `backup-status.json`; `maintenance/` holds the private (0600) pre-change backups written by `maintenance.cjs` |
 | `/var/backups/hiraia-crm/{daily,weekly,monthly}/` | encrypted artifacts `hiraia-crm-<UTC>.tar.gpg` + `.sha256` sidecars |
 | `/root/hiraia-crm-secrets/<client>.key` | one-time plaintext pickup files written by `keygen.sh` — shred after pickup |
 | `/var/log/hiraia-crm-backup.log` | backup/alert log; request log is `journalctl -u hiraia-crm` |
@@ -62,6 +62,17 @@ SQLite (`better-sqlite3`), WAL, `foreign_keys=ON`. Tables: `contacts` (unique on
 `extracts` (append-only by design), `events` (append-only audit log; UPDATE/DELETE are refused by
 triggers), `idempotency_keys` (30-day replay cache), `schema_migrations`.
 
+`002-contact-profile.sql` (API 1.2.0) adds, without touching the 1.1 tables:
+
+| Table | Holds |
+| --- | --- |
+| `contact_profiles` | One row per contact: `organization`, `department`, `job_title`, `location`, each with a `*_source` (provenance). Kept apart from `contacts.school` and `contacts.role`. |
+| `contact_points` | Phones and e-mails: `kind`, normalized `value` (unique per contact + kind), `label`, `is_primary`, `source`, `source_ref`. Returned only with `include=contact_points`. |
+| `first_message_evidence` | Earliest actual message per source conversation (`contact_id + evidence_key`): `first_message_at`, `quality` (`exact` only with `basis = message_timestamp`, enforced by a CHECK), `basis`, `platform`, `conversation_kind`, `direction`, optional `thread_id`. A contact's `first_contact` and a thread's `first_message_at` are derived minima, never stored copies. |
+
+All three cascade with their contact. Backups and the restore verifier enumerate tables from
+`sqlite_master`, so they cover the new tables without changes.
+
 Migrations are numbered SQL files in `migrations/`, applied in order and recorded; every statement
 is `IF NOT EXISTS`, so re-running is a no-op and a database that lost its bookkeeping re-migrates
 cleanly. The service migrates at start-up; by hand:
@@ -70,6 +81,57 @@ cleanly. The service migrates at start-up; by hand:
 node /opt/hiraia-crm/migrate.cjs --status          # applied / pending
 node /opt/hiraia-crm/migrate.cjs                   # apply pending (idempotent)
 ```
+
+## Maintenance tasks (`maintenance.cjs`)
+
+One-off data work on the live database, run on the origin as the service user. Each task is a
+**dry run unless `--apply`**, uses the API's own parsing and store code, writes in one transaction,
+records every change in `events` (client `maintenance`), and prints masked output only (never a
+phone number, an e-mail address or a message). It refuses to run while migrations are pending.
+
+```bash
+# Move what Luis's manual notes state explicitly into structured fields (phones/e-mails from
+# Google Contacts clauses, "listed as <title> at …" → job_title, "Affiliation: X." /
+# "X is her organization" → organization, "Location: X." → location). Existing different values
+# are kept and reported, never overwritten. --apply first writes the touched rows' previous notes
+# and fields to /var/lib/hiraia-crm/maintenance/reconcile-notes-<UTC>.json (0600).
+runuser -u hiraia -- node /opt/hiraia-crm/maintenance.cjs reconcile-notes
+runuser -u hiraia -- node /opt/hiraia-crm/maintenance.cjs reconcile-notes --apply
+
+# Apply a first-contact evidence bundle built on the MBP (see below). Validates every item like
+# POST /first-message-evidence, plus: the bundle's contact name must still match the CRM contact
+# (name or alias) and each thread must belong to it. Monotonic, so re-running changes nothing.
+runuser -u hiraia -- node /opt/hiraia-crm/maintenance.cjs apply-first-contact /var/lib/hiraia-crm/maintenance/first-contact.json
+runuser -u hiraia -- node /opt/hiraia-crm/maintenance.cjs apply-first-contact /var/lib/hiraia-crm/maintenance/first-contact.json --apply
+
+# Undo either run without a database restore (dry run unless --apply). revert-reconcile puts back
+# exactly what that run changed, only where nothing changed since (newer harvestd notes and hand
+# edits stay); revert-first-contact deletes the bundle's evidence rows that maintenance wrote.
+runuser -u hiraia -- node /opt/hiraia-crm/maintenance.cjs revert-reconcile /var/lib/hiraia-crm/maintenance/reconcile-notes-<UTC>.json
+runuser -u hiraia -- node /opt/hiraia-crm/maintenance.cjs revert-first-contact /var/lib/hiraia-crm/maintenance/first-contact.json
+```
+
+The bundle must be readable by `hiraia`: stage it with
+`install -o hiraia -g hiraia -m 600 BUNDLE /var/lib/hiraia-crm/maintenance/first-contact.json`
+(the full sequence is in `docs/RELEASE-CRM-CONTACT-FIELDS.md`).
+
+The bundle comes from `tools/first_contact_evidence.py`, run **on the MBP** (it reads the
+self-snooper capture databases read-only and never sends anything):
+
+```bash
+python3 deploy/crm/tools/first_contact_evidence.py --out ~/first-contact-bundle.json   # 0600; prints the coverage report
+```
+
+It takes the earliest **validated** message per linked conversation (incoming or outgoing; groups
+only via the person's own participant key), resolves Messenger/Viber/Telegram time labels against
+the capture time in Asia/Manila (`exact` only for absolute timestamps; resolved labels are
+`relative_label`; no usable label falls back to `first_observed`, an upper bound), skips
+implausible dates, and reports contacts it cannot substantiate as unavailable instead of guessing.
+The bundle (format `hiraia-first-contact-evidence/1`) holds the CRM contact id and name (for the
+cross-check), the CRM thread id when linked, opaque evidence keys, times and provenance — no thread
+titles and no message text.
+`--data-dir`, `--manual-crm-dir` and `--label-timezone` override the defaults; tests:
+`python3 -m unittest discover -s deploy/crm/tools -p 'test_first_contact_evidence.py'`.
 
 ## Backups
 

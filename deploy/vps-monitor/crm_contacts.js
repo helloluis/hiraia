@@ -8,13 +8,19 @@
   'use strict';
 
   /**
-   * @typedef {{kind: string, last_seen: string|null}} Thread
+   * @typedef {{at: string, quality: string, basis: string, platform?: string|null, conversation_kind?: string|null}} FirstMessage
+   * @typedef {{kind: string, last_seen: string|null, first_message?: FirstMessage|null}} Thread
    * @typedef {{platform: string, record: boolean, threads: Thread[]}} Channel
    * @typedef {{state: string, at: string|null, basis: string|null, source_approximate: boolean}} Activity
+   * @typedef {{value: string, label: string|null, primary: boolean, source: string|null}} Point
    * @typedef {{id: number, name: string, aliases: string[], role: string|null, school: string|null,
    *   stage: string, notes: string|null, summary: string|null, next_action: string|null, dates: string[],
    *   summary_at: string|null, thread_count: number, extract_count: number, last_contact: string|null,
-   *   first_seen: string|null, updated_at: string|null, activity: Activity, channels: Channel[]}} Contact
+   *   first_seen: string|null, updated_at: string|null, activity: Activity, channels: Channel[],
+   *   organization?: string|null, organization_source?: string|null, department?: string|null,
+   *   department_source?: string|null, job_title?: string|null, job_title_source?: string|null,
+   *   location?: string|null, location_source?: string|null, phones?: Point[], emails?: Point[],
+   *   first_contact?: FirstMessage|null}} Contact
    * @typedef {{q: string, platforms: Set<string>, stages: Set<string>, sort: string}} FilterState
    */
 
@@ -23,7 +29,9 @@
   /** @type {Record<string, string>} */
   const STAGE_LABELS = { intro: 'Intro', pilot: 'Pilot', active: 'Active', dormant: 'Dormant', unknown: 'Unknown' };
   /** @type {Record<string, string>} */
-  const SORTS = { recent: 'Recent activity', quiet: 'Longest since contact', name: 'Name (A–Z)' };
+  const SORTS = { recent: 'Recent activity', quiet: 'Longest since contact', first: 'First contact (earliest)', name: 'Name (A–Z)' };
+  /** @type {Record<string, string>} */
+  const SOURCE_LABELS = { manual_note: 'manual note', google_contacts: 'Google Contacts', maintenance: 'CRM maintenance', 'mbp-harvestd': 'harvestd' };
   const KNOWN_PLATFORMS = ['messenger', 'viber', 'telegram'];
   /** @type {Record<string, string>} */
   const PLATFORM_LABELS = {
@@ -72,13 +80,31 @@
 
   /** @param {Contact} contact */
   function countsText(contact) {
-    return `${plural(contact.thread_count || 0, '1 thread', 'threads')} · ${plural(contact.extract_count || 0, '1 extract', 'extracts')}`;
+    const parts = [plural(contact.thread_count || 0, '1 thread', 'threads'), plural(contact.extract_count || 0, '1 extract', 'extracts')];
+    const phones = (contact.phones || []).length;
+    const emails = (contact.emails || []).length;
+    if (phones) parts.push(plural(phones, '1 phone', 'phones'));
+    if (emails) parts.push(plural(emails, '1 e-mail', 'e-mails'));
+    return parts.join(' · ');
+  }
+
+  /** @param {string|null|undefined} source */
+  function sourceLabel(source) { return source ? (own(SOURCE_LABELS, source) ? SOURCE_LABELS[source] : source) : ''; }
+
+  /** "Instructional Leader · Department of Education (DepEd) · Some School", without repeats. @param {Contact} c */
+  function affiliationLine(c) {
+    /** @type {string[]} */
+    const parts = [];
+    for (const v of [c.job_title || c.role, c.organization, c.school]) {
+      if (typeof v === 'string' && v.trim() && !parts.some((p) => p.toLowerCase() === v.trim().toLowerCase())) parts.push(v.trim());
+    }
+    return parts.join(' · ');
   }
 
   // ---------------------------------------------------------------------------------- search
   /** Case-, accent- and spacing-insensitive form: "Peñaflor" → "penaflor". @param {unknown} value */
   function fold(value) {
-    return String(value).normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+    return String(value).normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
   }
 
   /** @type {WeakMap<object, string>} */
@@ -87,7 +113,12 @@
   function haystack(c) {
     let text = haystacks.get(c);
     if (text === undefined) {
-      text = [c.name, ...(c.aliases || []), c.role, c.school, c.notes, c.summary, c.next_action, ...(c.dates || [])]
+      const first = c.first_contact && c.first_contact.at ? [formatDate(c.first_contact.at), MONTH_YEAR.format(Date.parse(c.first_contact.at))] : [];
+      // E.164 digits, plus the national form of a Philippine number (+63 917… is also typed 0917…).
+      const phones = (c.phones || []).flatMap((p) => [p.value, p.value.replace(/\D/g, ''), p.value.startsWith('+63') ? `0${p.value.slice(3)}` : '', p.label || '']);
+      const emails = (c.emails || []).flatMap((e) => [e.value, e.label || '']);
+      text = [c.name, ...(c.aliases || []), c.role, c.job_title, c.organization, c.department, c.school, c.location,
+        c.notes, c.summary, c.next_action, ...(c.dates || []), ...phones, ...emails, ...first]
         .filter((v) => typeof v === 'string' && v).map(fold).join('\u0001');
       haystacks.set(c, text);
     }
@@ -176,10 +207,27 @@
   function exactFirst(a, b) {
     return (a.activity && a.activity.state === 'exact' ? 0 : 1) - (b.activity && b.activity.state === 'exact' ? 0 : 1);
   }
+  /** @param {Contact} c */
+  function firstTime(c) {
+    const at = c.first_contact && c.first_contact.at ? Date.parse(c.first_contact.at) : NaN;
+    return Number.isFinite(at) ? at : null;
+  }
+  /** Earliest first contact first; contacts without one (no message evidence) last, by name. @param {Contact} a @param {Contact} b */
+  function byFirstContact(a, b) {
+    const ta = firstTime(a); const tb = firstTime(b);
+    if (ta !== tb) {
+      if (ta === null) return 1;
+      if (tb === null) return -1;
+      return ta - tb;
+    }
+    const q = (/** @type {Contact} */ c) => (c.first_contact && c.first_contact.quality === 'exact' ? 0 : 1);
+    return q(a) - q(b) || byName(a, b);
+  }
   /** @type {Record<string, (a: Contact, b: Contact) => number>} */
   const COMPARATORS = {
     recent: (a, b) => tier(a) - tier(b) || byTime(a, b, -1) || exactFirst(a, b) || byName(a, b),
     quiet: (a, b) => tier(a) - tier(b) || byTime(a, b, 1) || exactFirst(a, b) || byName(a, b),
+    first: byFirstContact,
     name: byName,
   };
   /** @param {Contact[]} contacts @param {string} sort */
@@ -192,6 +240,7 @@
   const DATE = new Intl.DateTimeFormat('en-US', { timeZone: TZ, month: 'short', day: 'numeric', year: 'numeric' });
   const SHORT_DATE = new Intl.DateTimeFormat('en-US', { timeZone: TZ, month: 'short', day: 'numeric' });
   const CLOCK = new Intl.DateTimeFormat('en-US', { timeZone: TZ, hour: 'numeric', minute: '2-digit' });
+  const MONTH_YEAR = new Intl.DateTimeFormat('en-US', { timeZone: TZ, month: 'long', year: 'numeric' });
 
   /** @param {number} ms */
   function manilaDay(ms) {
@@ -251,6 +300,37 @@
     return { tone: 'none', approximate: false, primary: 'No contact recorded', secondary: '', title: 'No conversation with this person has been synced to the CRM.' };
   }
 
+  /** @type {Record<string, string>} */
+  const BASIS_NOTES = {
+    message_timestamp: 'the message’s own timestamp',
+    relative_label: 'a weekday or time label, read against when it was captured',
+    first_observed: 'no timestamp in the source, so when the message was first observed (an upper bound)',
+  };
+  // Captures only see what was on screen, so the earliest recorded message can postdate the real first contact.
+  const ON_RECORD = 'earliest message on record';
+  const EARLIER = 'Earlier messages may predate the capture.';
+  /** "by" for an observation-time upper bound, "≈" for any other approximate time. @param {string|null|undefined} basis */
+  function approxMark(basis) { return basis === 'first_observed' ? 'by' : '≈'; }
+  /**
+   * "First contact": the earliest recorded message. Exact shows the date; approximate shows "≈", or "by"
+   * for an observation-time upper bound, and never a clock time. No message evidence returns null.
+   * @param {Contact} c
+   */
+  function firstContactView(c) {
+    const f = c.first_contact;
+    if (!f || !f.at || !Number.isFinite(Date.parse(f.at))) return null;
+    const date = formatDate(f.at);
+    const where = f.platform ? `${platformLabel(f.platform)}${f.conversation_kind === 'group' ? ' group' : ''}` : '';
+    const basis = own(BASIS_NOTES, f.basis) ? BASIS_NOTES[f.basis] : 'an approximate time';
+    if (f.quality === 'exact') {
+      return { value: date, approximate: false, where, detail: `${formatDateTime(f.at)} · ${basis} · ${ON_RECORD}`,
+        title: `Earliest recorded message: ${formatDateTime(f.at)} (Manila time)${where ? ` on ${where}` : ''}. ${EARLIER}` };
+    }
+    const value = `${approxMark(f.basis)} ${date}`;
+    return { value, approximate: true, where, detail: `${value} · approximate: ${basis} · ${ON_RECORD}`,
+      title: `Approximate first contact${where ? ` on ${where}` : ''}: ${basis}. ${EARLIER}` };
+  }
+
   // ---------------------------------------------------------------------------- view states
   /** @type {Record<string, string>} */
   const ERRORS = {
@@ -260,7 +340,7 @@
     crm_rate_limited: 'The CRM is limiting requests right now.',
     crm_unavailable: 'The CRM API did not respond.',
     crm_bad_response: 'The CRM returned a response this page does not understand.',
-    crm_outdated: 'The CRM API is older than 1.1 and cannot list conversation channels. Deploy the CRM update first.',
+    crm_outdated: 'The CRM API is older than 1.2 and cannot list contact details, first contact or conversation channels. Deploy the CRM update first.',
     network: 'Could not reach the admin server. Check your connection.',
   };
   /** @param {{code: string, retryAfter?: number|null}} error */
@@ -354,6 +434,15 @@
     };
   }
 
+  /**
+   * "first message Sep 21", "first message ≈ Sep 21" or "first message by Sep 21" for one thread; '' without evidence.
+   * @param {FirstMessage|null|undefined} fm @param {number} nowMs
+   */
+  function firstMessageText(fm, nowMs) {
+    if (!fm || !fm.at || !Number.isFinite(Date.parse(fm.at))) return '';
+    return `first message ${fm.quality === 'exact' ? '' : `${approxMark(fm.basis)} `}${formatShort(fm.at, nowMs, false)}`;
+  }
+
   /** @param {Thread} t @param {number} nowMs */
   function threadWhen(t, nowMs) { return t.last_seen ? `last message ${formatShort(t.last_seen, nowMs, true)}` : 'no exact message time'; }
 
@@ -379,7 +468,29 @@
     } else {
       row('Last contact', 'No conversation synced.');
     }
+    const first = firstContactView(c);
+    row('First contact', first ? `${first.detail}${first.where ? ` · ${first.where}` : ''}` : 'Not available: no message evidence is linked to this contact.');
     if (c.summary_at) row('Latest summary', `Synced ${formatDateTime(c.summary_at)}`);
+    /** @param {string|null|undefined} value @param {string|null|undefined} source */
+    const sourced = (value, source) => `${value}${source ? ` · from ${sourceLabel(source)}` : ''}`;
+    if (c.job_title) row('Job title', sourced(c.job_title, c.job_title_source));
+    if (c.role && c.job_title && fold(c.role) !== fold(c.job_title)) row('Pipeline role', c.role);
+    if (c.organization) row('Organization', sourced(c.organization, c.organization_source));
+    if (c.department) row('Department', sourced(c.department, c.department_source));
+    if (c.location) row('Location', sourced(c.location, c.location_source));
+    for (const [term, items, scheme] of /** @type {[string, Point[], string][]} */ ([['Phone', c.phones || [], 'tel:'], ['E-mail', c.emails || [], 'mailto:']])) {
+      if (!items.length) continue;
+      const points = el('ul', 'crm-thread-list');
+      for (const p of items) {
+        const li = el('li');
+        const link = el('a', 'crm-point', p.value);
+        link.setAttribute('href', `${scheme}${p.value}`);
+        const extra = [p.label, p.primary ? 'primary' : '', p.source ? `from ${sourceLabel(p.source)}` : ''].filter(Boolean).join(' · ');
+        li.append(link, el('span', 'crm-point-meta', extra ? ` · ${extra}` : ''));
+        points.append(li);
+      }
+      row(items.length === 1 ? term : `${term}s`, points);
+    }
     const threads = el('ul', 'crm-thread-list');
     for (const ch of c.channels) {
       if (!ch.threads.length) {
@@ -388,7 +499,8 @@
       }
       for (const t of ch.threads) {
         const kind = t.kind === 'direct' ? 'direct chat' : t.kind === 'group' ? 'group chat' : 'conversation';
-        threads.append(el('li', null, `${platformTitle(ch.platform)} · ${kind} · ${threadWhen(t, nowMs)}`));
+        const firstText = firstMessageText(t.first_message, nowMs);
+        threads.append(el('li', null, `${platformTitle(ch.platform)} · ${kind}${firstText ? ` · ${firstText}` : ''} · ${threadWhen(t, nowMs)}`));
       }
     }
     row('Channels', c.channels.length ? threads : 'None recorded');
@@ -420,8 +532,16 @@
     name.id = `crm-name-${c.id}`;
     card.append(head, name);
     if (c.aliases.length) card.append(el('p', 'crm-aka', `Also ${c.aliases.join(' · ')}`));
-    const org = [c.role, c.school].filter(Boolean).join(' · ');
-    card.append(el('p', org ? 'crm-org' : 'crm-org crm-missing', org || 'No role or school recorded'));
+    const org = affiliationLine(c);
+    card.append(el('p', org ? 'crm-org' : 'crm-org crm-missing', org || 'No role, organization or school recorded'));
+    const first = firstContactView(c);
+    if (first) {
+      const line = el('p', `crm-first${first.approximate ? ' crm-first-approx' : ''}`);
+      line.title = first.title;
+      line.append(el('span', 'crm-first-label', 'First contact'), el('span', 'crm-first-value', first.value));
+      if (first.where) line.append(el('span', 'crm-first-where', ` · ${first.where}`));
+      card.append(line);
+    }
 
     const channels = el('ul', 'crm-channels');
     channels.setAttribute('aria-label', 'Where you talk');
@@ -513,7 +633,7 @@
     sortSel.value = state.sort;
     q.value = state.q;
     const narrow = win.matchMedia('(max-width: 560px)');
-    const placeholder = () => { q.placeholder = narrow.matches ? 'Search contacts…' : 'Search name, alias, school, role, notes…'; };
+    const placeholder = () => { q.placeholder = narrow.matches ? 'Search contacts…' : 'Search name, school, organization, role, contact details…'; };
     placeholder();
     narrow.addEventListener('change', placeholder);
 
@@ -696,7 +816,8 @@
   root.HiraiaCrm = {
     STAGES, SORTS, platformLabel, platformTitle, channelSummary, channelLabels, countsText, fold, matchesSearch,
     platformsOf, filterContacts, facetCounts, platformOptions, isFiltered, activeFilters, sortContacts,
-    formatDateTime, formatDate, formatShort, relativeDay, activityView, errorMessage, viewState, resultSummary,
+    formatDateTime, formatDate, formatShort, relativeDay, activityView, firstContactView, firstMessageText, affiliationLine, sourceLabel,
+    errorMessage, viewState, resultSummary,
     noMatchText, parseState, serializeState, mount,
   };
 }(globalThis));

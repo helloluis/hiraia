@@ -18,6 +18,7 @@ import json
 import os
 import secrets
 import signal
+import socket
 import sqlite3
 import subprocess
 import sys
@@ -34,6 +35,8 @@ MONITOR = HERE.parent
 CRM_DIR = MONITOR.parent / "crm"
 MODEL = "qwen2.5:14b-instruct-q4_K_M"
 UNITS = {"m": "minutes", "h": "hours", "d": "days"}
+PROFILE = ("organization", "department", "job_title", "location")
+RANK = {"exact": 0, "approximate": 1, "message_timestamp": 0, "relative_label": 1, "first_observed": 2}
 
 
 def at(offset, now):
@@ -44,6 +47,17 @@ def at(offset, now):
 
 def sha(value):
     return hashlib.sha256(value.encode()).hexdigest()
+
+
+def instant(value):
+    return datetime.fromisoformat(value.replace("Z", "+00:00")) if value else None
+
+
+def evidence_of(item):
+    """The fixture's first-message evidence for one contact: per thread, plus linked conversations without a thread."""
+    return [dict(t["first_message"], key=t["key"], platform=t["app"], thread_key=t["key"],
+                 kind="group" if t["thread_name"].startswith("Group ") else "direct")
+            for t in item.get("threads", []) if "first_message" in t] + item.get("local_evidence", [])
 
 
 def wait_for(url, process, timeout=20):
@@ -101,6 +115,14 @@ def seed(base, key, db_path, fixture, now):
             threads[t["key"]] = post(base, key, "/threads", body, f"preview:thread:{n}:{t['key']}")["id"]
             backdate.append(("UPDATE threads SET created_at=?, updated_at=? WHERE id=?",
                              (at(t["synced"], now), at(t["synced"], now), threads[t["key"]])))
+        # First-message evidence (CRM 1.2), per thread and for linked conversations without a CRM thread.
+        for ev in evidence_of(item):
+            body = {"contact_id": cid, "evidence_key": f"preview:{n}:{ev['key']}", "platform": ev["platform"],
+                    "conversation_kind": ev["kind"], "first_message_at": at(ev["at"], now), "quality": ev["quality"],
+                    "basis": ev["basis"], "direction": ev.get("direction", "unknown")}
+            if ev.get("thread_key"):
+                body["thread_id"] = threads[ev["thread_key"]]
+            post(base, key, "/first-message-evidence", body, f"preview:evidence:{n}:{ev['key']}")
         for e_n, e in enumerate(extracts, 1):
             extracted = {"summary": summary(e), "next_action": e["next_action"], "dates": e["dates"],
                          "classified_stage": e["stage"], "export_id": sha(f"export:{n}:{e_n}"),
@@ -140,7 +162,60 @@ def check(origin, email, password):
         states[card["activity"]["state"]] = states.get(card["activity"]["state"], 0) + 1
         for channel in card["channels"]:
             platforms[channel["platform"]] = platforms.get(channel["platform"], 0) + 1
-    return data["total"], states, platforms
+    return data, states, platforms
+
+
+def verify(cards, fixture, now):
+    """Compare the 1.2 card fields with what the fixture seeded. Returns (problems, coverage counts)."""
+    problems, counts = [], {"first contact exact": 0, "first contact approximate": 0, "first contact unavailable": 0,
+                            "phones": 0, "e-mails": 0, **{field: 0 for field in PROFILE}}
+    by_name = {card["name"]: card for card in cards}
+    for item in fixture["contacts"]:
+        spec = item["contact"]
+        card = by_name.get(spec["name"])
+        if spec.get("is_test"):
+            if card:
+                problems.append(f"{spec['name']}: test record listed")
+            continue
+        if not card:
+            problems.append(f"{spec['name']}: missing from the cards")
+            continue
+        for field in PROFILE:
+            if card.get(field) != spec.get(field) or card.get(f"{field}_source") != spec.get(f"{field}_source"):
+                problems.append(f"{spec['name']}: {field} round-trip differs")
+            counts[field] += bool(card.get(field))
+        for kind, plural in (("phones", "phones"), ("emails", "e-mails")):
+            seeded = sorted(point["value"] for point in spec.get(kind, []))
+            shown = card.get(kind) or []
+            if sorted(point["value"] for point in shown) != seeded:
+                problems.append(f"{spec['name']}: {kind} differ")
+            if any("source_ref" in point for point in shown):
+                problems.append(f"{spec['name']}: {kind} leak source_ref to the browser")
+            if shown and shown[0].get("primary") is False and any(point.get("primary") for point in shown):
+                problems.append(f"{spec['name']}: primary {kind} not listed first")
+            counts[plural] += len(shown)
+        evidence = evidence_of(item)
+        got = card.get("first_contact")
+        if not evidence:
+            counts["first contact unavailable"] += 1
+            if got:
+                problems.append(f"{spec['name']}: first contact without any message evidence")
+            continue
+        best = min(evidence, key=lambda e: (instant(at(e["at"], now)), RANK[e["quality"]], RANK[e["basis"]]))
+        want = (instant(at(best["at"], now)), best["quality"], best["basis"], best["platform"], best["kind"])
+        if not got or (instant(got["at"]), got["quality"], got["basis"], got["platform"], got["conversation_kind"]) != want:
+            problems.append(f"{spec['name']}: first contact is not the earliest, best-substantiated evidence")
+        counts[f"first contact {best['quality']}"] += 1
+        # Thread names never reach the browser, so match per-thread first messages by platform and evidence.
+        shown = sorted((ch["platform"], str(instant((t["first_message"] or {}).get("at"))),
+                        (t["first_message"] or {}).get("quality"), (t["first_message"] or {}).get("basis"))
+                       for ch in card["channels"] for t in ch["threads"])
+        seeded = sorted((t["app"], str(instant(at(t["first_message"]["at"], now)) if "first_message" in t else None),
+                         t.get("first_message", {}).get("quality"), t.get("first_message", {}).get("basis"))
+                        for t in item.get("threads", []))
+        if shown != seeded:
+            problems.append(f"{spec['name']}: thread first messages differ")
+    return problems, counts
 
 
 def main():
@@ -153,6 +228,12 @@ def main():
     args = parser.parse_args()
     if not (CRM_DIR / "node_modules" / "better-sqlite3").is_dir():
         raise SystemExit(f"run `npm ci` in {CRM_DIR} first")
+    # A busy port would let the health probe reach whatever already listens there (say, a preview still
+    # running), and the seed would then write to the wrong server. Refuse instead.
+    for port in (args.crm_port, args.admin_port):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as probe:
+            if probe.connect_ex(("127.0.0.1", port)) == 0:
+                raise SystemExit(f"port {port} is already in use (another preview?); stop it or pass --crm-port/--admin-port")
 
     sys.path.insert(0, str(MONITOR))
     from admin_app import hash_password
@@ -202,17 +283,22 @@ def main():
         with open(work / "crm.log", "w") as crm_log, open(work / "admin.log", "w") as admin_log:
             processes.append(subprocess.Popen(["node", str(CRM_DIR / "server.cjs")], env=crm_env, stdout=crm_log, stderr=subprocess.STDOUT))
             wait_for(f"http://127.0.0.1:{args.crm_port}/api/crm/health", processes[0])
-            count = seed(f"http://127.0.0.1:{args.crm_port}/api/crm", write_key, work / "crm.db",
-                         json.loads((HERE / "crm_fixture.json").read_text(encoding="utf-8")), datetime.now(timezone.utc))
+            fixture = json.loads((HERE / "crm_fixture.json").read_text(encoding="utf-8"))
+            now = datetime.now(timezone.utc)
+            count = seed(f"http://127.0.0.1:{args.crm_port}/api/crm", write_key, work / "crm.db", fixture, now)
             processes.append(subprocess.Popen([sys.executable, str(MONITOR / "admin_app.py")], env=admin_env,
                                               stdout=admin_log, stderr=subprocess.STDOUT))
             origin = f"http://127.0.0.1:{args.admin_port}"
             wait_for(f"{origin}/admin/health", processes[1])
-            total, states, platforms = check(origin, email, password)
-            print(f"seeded {count} synthetic contacts; the cards endpoint lists {total} (test records excluded)")
+            data, states, platforms = check(origin, email, password)
+            problems, coverage = verify(data["contacts"], fixture, now)
+            print(f"seeded {count} synthetic contacts; the cards endpoint lists {data['total']} (test records excluded)")
             print(f"  activity: {json.dumps(states, sort_keys=True)}  channels: {json.dumps(platforms, sort_keys=True)}")
+            print(f"  1.2 fields: {json.dumps(coverage)}")
+            for problem in problems:
+                print(f"  PROBLEM {problem}")
             if args.check:
-                return 0
+                return 1 if problems else 0
             print(f"\n  open   http://localhost:{args.admin_port}/admin/crm\n  email  {email}\n  pass   {password}\n\nCtrl-C to stop.", flush=True)
             while all(p.poll() is None for p in processes):
                 time.sleep(1)
