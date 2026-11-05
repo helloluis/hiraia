@@ -1,9 +1,29 @@
 # CRM contact fields and first contact: release, backfill and rollback runbook
 
-**Not released.** Prepared 2026-11-05 on branch `feat/crm-contact-fields` (from `264508134`); it needs
-Luis's approval. Production runs CRM API 1.1.0 and the `/admin/crm` cards from `6f30ce6c0` (see
-[`RELEASE-CRM-CONTACT-CARDS.md`](RELEASE-CRM-CONTACT-CARDS.md)); `deploy/crm` and the four
-`crm_contacts.*` admin files are identical in `6f30ce6c0` and `264508134`.
+**Released 2026-11-05, 02:21–02:24 UTC**, from `1548e45b9` (the merge of `7a508f5ec` onto
+`264508134`), run from the devbox `b11-dev`. It replaced CRM API 1.1.0 and the `/admin/crm` cards
+from `6f30ce6c0` (see [`RELEASE-CRM-CONTACT-CARDS.md`](RELEASE-CRM-CONTACT-CARDS.md)).
+
+Release record:
+- **Backup:** `/root/release-crm-fields-20261105T022101Z`, so `STAMP=20261105T022101Z` for the
+  rollback below.
+- **CRM backup artifacts:**
+  - `hiraia-crm-20261105T022134Z`, taken before the release; a verified copy is on the devbox in
+    `~/release-crm-fields-20261105/offhost/`;
+  - `hiraia-crm-20261105T022157Z`, taken by the installer after migration 002.
+- **Data steps:**
+  - The reconcile changed exactly the 5 contacts listed in step 3. Its backup, for R2, is
+    `/var/lib/hiraia-crm/maintenance/reconcile-notes-2026-11-05T022223634Z.json`.
+  - The backfill wrote 12 evidence rows from `/var/lib/hiraia-crm/maintenance/first-contact-20261105T022101Z.json`.
+    Result: 3 exact, 9 approximate and 7 unavailable first contacts across 19 contacts, plus 7
+    threads with a first message.
+  - Both files belong to `hiraia` (0600). A re-run of either step changes nothing.
+- **Checks:**
+  - no drift in the live admin files;
+  - keys unchanged (`hiraia-admin` fingerprint `c7c399f2f4e1`);
+  - no admin errors and no CRM 5xx after the release.
+- **Devbox:** it had no checkout, so the run used a checksummed `git archive` of the release commit,
+  plus the `6f30ce6c0` copies of `crm_contacts.*` as the step 5 drift baseline.
 
 This runbook ships three things in order. Stop at the first unexpected output.
 
@@ -56,7 +76,8 @@ Expect:
 - three `active` lines and both paths;
 - `1.1.0 migrations 1 contacts <N> backup stale False`.
 
-Note N. Every command reads the admin's key on the origin, and no key is ever printed or put on a
+Note N. It counts test records, which the lists and cards leave out: at release time 21 records,
+of which 2 are test records, so 19 cards. Every command reads the admin's key on the origin, and no key is ever printed or put on a
 command line.
 
 ## 1. Back up (origin)
@@ -103,7 +124,7 @@ EOF
 
 Expect:
 - `1.2.0 migrations 2 contacts <N> profiles 0 points 0 evidence 0`;
-- `1.2 fields ok <N>`.
+- `1.2 fields ok <N minus test records>`.
 
 The live `/admin/crm` (still 1.1) keeps working. On any other output, run R3 and stop.
 
@@ -211,7 +232,7 @@ r 'bash -s' <<'EOF'
 set -e; S=/root/crm-admin-stage
 PY=/opt/hiraia-analytics-venv/bin/python; [ -x "$PY" ] || PY=python3   # the interpreter in hiraia-admin's ExecStart
 cd "$S"
-PYTHONPATH=/opt/hiraia-monitor $PY -c "import crm_contacts; crm_contacts.page('/admin', 'x'); print('staged page render ok')"
+PYTHONPATH=/opt/hiraia-monitor $PY -c "import crm_contacts, os; assert os.path.dirname(os.path.abspath(crm_contacts.__file__)) == '$S'; crm_contacts.page('/admin', 'x'); print('staged page render ok')"
 HIRAIA_CRM_BASE_URL=https://hiraia.org/api/crm HIRAIA_CRM_API_KEY_FILE=/etc/hiraia-monitor/crm-admin.key PYTHONPATH=/opt/hiraia-monitor $PY -c "
 import collections, crm_contacts
 d = crm_contacts.directory(); cs = d['contacts']
