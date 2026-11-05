@@ -1,5 +1,12 @@
 # CRM contact cards: release and rollback runbook
 
+**Released 2026-11-05, 00:27–00:29 UTC**, from `6f30ce6c0` (on `main`), run from the devbox `b11-dev`
+(it holds the prod key; the origin is not reachable from the Mac). Backup:
+`/root/release-crm-cards-20261105T002458Z` (so `STAMP=20261105T002458Z` for the rollback below). The
+`hiraia-admin` key fingerprint is `c7c399f2f4e1`. Production was running the Sept 28 assessment-report
+edits (byte-identical to the main checkout's uncommitted copies); step 3 merged around them cleanly
+and the assessments section still works. Corrections found during that run are folded in below.
+
 Ships CRM API 1.1.0 (`deploy/crm`), then `/admin/crm` (`deploy/vps-monitor`), to the hiraia.org
 origin `root@10.77.0.20`. Order matters: the cards fail closed against API 1.0.0. Run it from a
 checkout of the release commit, in one shell (`STAMP` names the backup). Stop at the first
@@ -16,20 +23,24 @@ cd ~/Code/hiraia/build/crm-contact-cards-20261104        # any clean checkout of
 git status --short; git log -1 --format='%h %s'
 REPO=$PWD V=root@10.77.0.20 STAMP=$(date -u +%Y%m%dT%H%M%SZ); echo "$STAMP"
 SSH_OPTS=(-o ConnectTimeout=15 -i "$HOME/.ssh/prod_ed25519" -o UserKnownHostsFile="$HOME/.ssh/known_hosts_ovh_guests")
-r() { ssh "${SSH_OPTS[@]}" "$V" "$@"; }
-r 'systemctl is-active hiraia-crm hiraia-admin nginx; ls /opt/hiraia-crm/server.cjs /opt/hiraia-monitor/admin_app.py'
+r() { ssh "${SSH_OPTS[@]}" "$V" "$@"; }       # feeds a heredoc script to the origin
+rc() { ssh -n "${SSH_OPTS[@]}" "$V" "$@"; }   # one command; never reads stdin
+rc 'systemctl is-active hiraia-crm hiraia-admin nginx; ls /opt/hiraia-crm/server.cjs /opt/hiraia-monitor/admin_app.py'
 curl -sS https://hiraia.org/api/crm/health; echo
 ```
 
 Expect three `active`, both paths, and `{"ok":true}`. If not, stop: the admin does not run on this host.
+Use `rc`, not `r`, for one-off commands: a plain `ssh` reads stdin, so in a pasted block or a script it
+swallows the lines that follow it.
 
 ## 1. Back up (origin)
 
 ```bash
 r "STAMP=$STAMP bash -s" <<'EOF'
 set -e; B=/root/release-crm-cards-$STAMP; install -d -m 700 "$B"
+U=$(systemctl show -p FragmentPath --value hiraia-admin); U=${U#/}   # /usr/local/lib/systemd/system/… on b11-apps
 D=; [ -d /etc/systemd/system/hiraia-admin.service.d ] && D=etc/systemd/system/hiraia-admin.service.d
-tar -C / -czf "$B/hiraia-monitor.tgz" opt/hiraia-monitor etc/systemd/system/hiraia-admin.service $D
+tar -C / -czf "$B/hiraia-monitor.tgz" opt/hiraia-monitor "$U" $D
 tar -C / -czf "$B/hiraia-crm.tgz" opt/hiraia-crm
 cp -p /etc/hiraia-crm/crm.env "$B/crm.env"
 systemctl start hiraia-crm-backup.service && tail -n 2 /var/log/hiraia-crm-backup.log
@@ -61,8 +72,8 @@ Check the version and the new embed with the admin's key. The key is read on the
 never printed or put on a command line:
 
 ```bash
-r 'printf "Authorization: Bearer %s\n" "$(cat /etc/hiraia-monitor/crm-admin.key)" | curl -sS -H @- https://hiraia.org/api/crm/status | python3 -c "import json,sys; d=json.load(sys.stdin); print(d[\"version\"], d[\"counts\"][\"contacts\"])"'
-r 'printf "Authorization: Bearer %s\n" "$(cat /etc/hiraia-monitor/crm-admin.key)" | curl -sS -H @- "https://hiraia.org/api/crm/contacts?include=threads,latest_extract&limit=1" | python3 -c "import json,sys; c=json.load(sys.stdin)[\"contacts\"]; print(\"embeds ok\" if not c or (\"threads\" in c[0] and \"latest_extract\" in c[0]) else \"MISSING EMBEDS\")"'
+rc 'printf "Authorization: Bearer %s\n" "$(cat /etc/hiraia-monitor/crm-admin.key)" | curl -sS -H @- https://hiraia.org/api/crm/status | python3 -c "import json,sys; d=json.load(sys.stdin); print(d[\"version\"], d[\"counts\"][\"contacts\"])"'
+rc 'printf "Authorization: Bearer %s\n" "$(cat /etc/hiraia-monitor/crm-admin.key)" | curl -sS -H @- "https://hiraia.org/api/crm/contacts?include=threads,latest_extract&limit=1" | python3 -c "import json,sys; c=json.load(sys.stdin)[\"contacts\"]; print(\"embeds ok\" if not c or (\"threads\" in c[0] and \"latest_extract\" in c[0]) else \"MISSING EMBEDS\")"'
 ```
 
 Expect `1.1.0 <contact count>` and `embeds ok`. Otherwise run R2 and stop.
@@ -98,13 +109,20 @@ set -e
 chmod 755 /opt/hiraia-monitor/*.py
 stat -c 'key: %a %U' /etc/hiraia-monitor/crm-admin.key
 install -D -m 644 /tmp/crm-cards.conf /etc/systemd/system/hiraia-admin.service.d/crm-cards.conf; rm -f /tmp/crm-cards.conf
-cd /opt/hiraia-monitor && python3 -c "import admin_app, crm_contacts; crm_contacts.page('/admin', 'x'); print('imports + page render ok')"
+PY=/opt/hiraia-analytics-venv/bin/python; [ -x "$PY" ] || PY=python3   # the interpreter in hiraia-admin's ExecStart
+cd /opt/hiraia-monitor && $PY -c "import admin_app, crm_contacts; crm_contacts.page('/admin', 'x'); print('imports + page render ok')"
+HIRAIA_CRM_BASE_URL=https://hiraia.org/api/crm HIRAIA_CRM_API_KEY_FILE=/etc/hiraia-monitor/crm-admin.key $PY -c "
+import collections, crm_contacts
+d = crm_contacts.directory(); s = collections.Counter(c['activity']['state'] for c in d['contacts'])
+print('live data path ok:', d['total'], 'contacts, truncated', d['truncated'], dict(s))"
 systemctl daemon-reload; systemctl restart hiraia-admin; sleep 2
 systemctl is-active hiraia-admin; curl -s -m 5 http://127.0.0.1:8135/admin/health; echo
 EOF
 ```
 
-Expect `key: 600 root`, `imports + page render ok`, `active` and `ok`.
+Expect `key: 600 root`, `imports + page render ok`, `live data path ok: …` (aggregate counts only),
+`active` and `ok`. If a check fails, `set -e` stops before the restart and the old process keeps
+serving; restore the three files with R1.
 
 Do not use `deploy/vps-monitor/install.sh` here. It rebuilds `config.json` (new session secret,
 RunPod/Resend keys taken from your shell) and defaults to the old Vultr host.
@@ -114,7 +132,7 @@ RunPod/Resend keys taken from your shell) and defaults to the old Vultr host.
 ```bash
 curl -s -o /dev/null -w '%{http_code}\n' https://hiraia.org/admin/api/crm/contacts                 # 401
 curl -s -o /dev/null -w '%{http_code} %{redirect_url}\n' https://hiraia.org/admin/crm               # 302 …/admin/login
-r 'journalctl -u hiraia-admin --since "-10 min" --no-pager | grep -iE "traceback|error" | tail -n 5; journalctl -u hiraia-crm --since "-30 min" --no-pager | grep -c "\"status\":5" | xargs echo "crm 5xx since deploy:"'
+rc 'journalctl -u hiraia-admin --since "-10 min" --no-pager | grep -iE "traceback|error" | tail -n 5; journalctl -u hiraia-crm --since "-30 min" --no-pager | grep -c "\"status\":5" | xargs echo "crm 5xx since deploy:"'
 ```
 
 Expect `401`, `302 https://hiraia.org/admin/login`, no traceback lines and `crm 5xx since deploy: 0`.
@@ -127,7 +145,7 @@ Then sign in at https://hiraia.org/admin and open CRM, on both phone and desktop
 - Observatory, Tala reports, Detailed reports and Training still load, including the assessments
   section if it was live before.
 - After the next harvestd run (at most 15 min), this shows 2xx:
-  `r 'journalctl -u hiraia-crm --since "-20 min" --no-pager | grep mbp-harvestd | tail -n 3'`
+  `rc 'journalctl -u hiraia-crm --since "-20 min" --no-pager | grep mbp-harvestd | tail -n 3'`
 
 Finally, push and merge the release commit so that `main` matches production.
 
@@ -159,4 +177,4 @@ EOF
 ```
 
 Expect `active` (R1) and `{"ok":true}` (R2). After a clean week, delete the backup with
-`r "rm -rf /root/release-crm-cards-$STAMP"`.
+`rc "rm -rf /root/release-crm-cards-$STAMP"`.
