@@ -1,0 +1,26 @@
+# Hiraia CRM ingestion/read API — same hardening profile as hiraia-telemetry.service.
+[Unit]
+Description=Hiraia CRM ingestion/read API (loopback :8137)
+After=network.target
+
+[Service]
+Type=simple
+User=hiraia
+Group=hiraia
+WorkingDirectory=/opt/hiraia-crm
+EnvironmentFile=/etc/hiraia-crm/crm.env
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node /opt/hiraia-crm/server.cjs
+Restart=on-failure
+RestartSec=5
+UMask=0027
+StateDirectory=hiraia-crm
+StateDirectoryMode=0750
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/hiraia-crm
+
+[Install]
+WantedBy=multi-user.target

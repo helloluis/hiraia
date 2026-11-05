@@ -177,3 +177,14 @@ nothing.** Cloudflare is part of every release:
   QVAC-converted adapters, and per-request adapter switching returns correct,
   language-correct, Socratic answers in both Tagalog and Bisaya on the Q4 quant.
 ```
+
+## CRM API (private surface) — `deploy/crm/`
+
+`https://hiraia.org/api/crm/` is a bearer-key-protected ingestion/read API (contacts, threads,
+extracted summaries for the school pipeline; written by the MBP `harvestd` service, read by
+Beaniebot). It runs on the origin as `hiraia-crm.service` on `127.0.0.1:8137` (Node + SQLite WAL,
+same hardening as the telemetry collector) behind `location /api/crm/` in the hiraia.org site
+file, with a daily encrypted backup (`hiraia-crm-backup.timer`, 7 daily / 4 weekly / 6 monthly,
+offsite to the private R2 bucket `b11-ovh-backups` under `hiraia-crm/`). Install/update with
+`deploy/crm/install.sh`; operations in `deploy/crm/README.md`; client contract in
+`docs/mbp-crm-integration.md`. Not part of `update.sh` — it is deployed independently of the web.

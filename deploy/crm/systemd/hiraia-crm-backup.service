@@ -1,0 +1,12 @@
+[Unit]
+Description=Hiraia CRM encrypted backup (daily; 7 daily / 4 weekly / 6 monthly; offsite to R2)
+After=network-online.target hiraia-crm.service
+Wants=network-online.target
+OnFailure=hiraia-crm-backup-alert.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/hiraia-crm/backup.sh
+Nice=10
+IOSchedulingClass=idle
+TimeoutStartSec=1800
