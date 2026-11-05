@@ -60,6 +60,55 @@ media reports fail closed and remain queued on the phone. The VPS must have
 `python3-pil`, `ffmpeg`, `util-linux` and the `hiraia-media` system user installed.
 Accepted reports live under `/var/lib/hiraia-monitor/tala-media` with private permissions.
 
+## CRM contact cards
+
+`https://hiraia.org/admin/crm` (after sign-in) shows the school-pipeline CRM
+(`deploy/crm`, contract in `docs/mbp-crm-integration.md`) as cards, most recent
+activity first. Search (name, aliases, school/organization, role, notes, latest
+summary, next action, dates mentioned) and the channel and stage filters compose
+instantly, with counts per option; the view lives in the URL, so it survives a
+reload or a bookmark. Each card lists every platform you talk to the person on — one
+chip per platform across all of the contact's synced threads (direct or group) plus
+the CRM record's own platform — with stage, last contact in Manila time, the latest
+classified summary and next action, and thread/extract counts.
+
+**Data path.** Browser → `GET /admin/api/crm/contacts` (admin session) →
+`crm_contacts.py` → `GET https://hiraia.org/api/crm/contacts?include=threads,latest_extract`
+with the admin's own read-scoped key (client `hiraia-admin`). The key stays in this
+process: it is read from a root-only file (re-read when the file changes), never
+rendered, logged, put in a URL or echoed in an error, and redirects are refused so it
+is never re-sent elsewhere. The browser gets an allowlisted projection — no thread
+labels, opaque source/export/checkpoint IDs, model versions or raw extract JSON. The
+CRM itself never holds raw messages.
+
+**Times.** Exact times are harvestd's absolute message timestamps
+(`last_contact`, thread `last_seen`). When the source had none, harvestd omits the
+time and flags the summary (`last_contact_approximate`); the card then shows `≈` with
+when the CRM last received a summary — a date, never a clock time — and that sync time
+sets its place in the order. Records with nothing synced beyond a name (group-roster
+members) sort last as "No contact recorded".
+
+**Requires CRM API 1.1.0** (the `include` embed). Against 1.0.0 the page fails closed
+with "The CRM API is older than 1.1" rather than showing cards without their channels.
+
+**Deploying** needs Luis's explicit approval. Follow
+[`docs/RELEASE-CRM-CONTACT-CARDS.md`](../../docs/RELEASE-CRM-CONTACT-CARDS.md): back up the live
+`/opt/hiraia-monitor` and CRM, then ship CRM API 1.1.0 plus the `hiraia-admin` read key with
+`deploy/crm/install.sh` (restarts `hiraia-crm`). Next, 3-way-merge the admin files into whatever
+production runs (it may carry the uncommitted Sept 28 assessment-report edits), install the
+drop-in, restart `hiraia-admin`, and verify. The runbook also holds the rollback steps.
+
+**Preview locally** with invented contacts shaped like harvestd's exports, the real CRM
+server on loopback and throwaway keys (no production access):
+
+```bash
+(cd deploy/crm && npm ci)                                   # once
+python3 deploy/vps-monitor/preview/crm_cards_preview.py     # prints the URL and a sign-in
+```
+
+**Tests:** `python3 -m unittest discover -s deploy/vps-monitor -p 'test_crm_contacts.py'`,
+`node --test deploy/vps-monitor/crm_contacts.test.cjs`, and `cd deploy/crm && npm test`.
+
 The monitor and admin app use stdlib Python; issue media decoding uses system Pillow
 and ffmpeg. They read one config at
 `/opt/hiraia-monitor/config.json` (mode 600; holds the RunPod key and the password hash).

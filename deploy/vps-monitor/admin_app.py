@@ -20,6 +20,7 @@ rate limiting, CSRF token on every state-changing POST.
 import hashlib, hmac, html, json, os, re, secrets, subprocess, threading, time, urllib.parse, urllib.request
 from datetime import datetime, timezone
 import admin_chrome
+import crm_contacts
 import pilot_analytics
 import tala_reports
 try:
@@ -1303,6 +1304,12 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, admin_chrome.wrap(
                 "Tala reports", "Classroom reports", "tala-reports",
                 MOUNT, self._csrf(), tala_reports.page_body(MOUNT, self._csrf())))
+        if path == "/crm":
+            return self._send(200, crm_contacts.page(MOUNT, self._csrf()))
+        if path == "/api/crm/contacts":
+            # Server-side read with the admin's own CRM key; the browser only gets the projection.
+            code, body, headers = crm_contacts.api_response()
+            return self._json(code, body, headers)
         media_match = re.fullmatch(r"/tala-reports/media/([a-f0-9-]{36})/([a-f0-9-]{36})", path)
         if media_match:
             attachment = tala_reports.attachment(*media_match.groups())

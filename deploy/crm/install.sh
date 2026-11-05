@@ -10,7 +10,8 @@
 #                        R2_SECRET_ACCESS_KEY, optional HIRAIA_CRM_BACKUP_BUCKET/PREFIX) to
 #                        /etc/hiraia-crm/offsite.env (mode 600). Without it backups stay local
 #                        and GET /api/crm/status reports offsite "unconfigured".
-#   --rotate-keys        regenerate both client keys (mbp-harvestd write, beaniebot read)
+#   --rotate-keys        regenerate the client keys (mbp-harvestd write, beaniebot read,
+#                        hiraia-admin read; the admin re-reads its key file, no restart needed)
 #   --skip-backup        do not run the first backup at the end
 #
 # Installs:  /opt/hiraia-crm/{server.cjs,db.cjs,migrate.cjs,migrations/,backup.sh,restore.sh,
@@ -72,7 +73,16 @@ if [ -n "$OFFSITE_ENV" ]; then
   rssh 'chmod 600 /etc/hiraia-crm/offsite.env; chown root:root /etc/hiraia-crm/offsite.env; echo "  offsite.env installed"'
 fi
 ROT=""; [ "$ROTATE" = 1 ] && ROT="--rotate"
-rssh "/opt/hiraia-crm/keygen.sh mbp-harvestd write $ROT; /opt/hiraia-crm/keygen.sh beaniebot read $ROT" | sed 's/^/  /'
+rssh "/opt/hiraia-crm/keygen.sh mbp-harvestd write $ROT; /opt/hiraia-crm/keygen.sh beaniebot read $ROT; /opt/hiraia-crm/keygen.sh hiraia-admin read $ROT" | sed 's/^/  /'
+# hiraia-admin (/admin/crm contact cards) runs on this same host: move its read key straight from the
+# pickup file into a root-only file the admin re-reads on change, so the plaintext never leaves the
+# origin. Atomic rename, then shred the pickup. A no-op when the key already exists and was not rotated.
+rssh 'set -e; if [ -f /root/hiraia-crm-secrets/hiraia-admin.key ]; then
+  install -d -m 700 -o root -g root /etc/hiraia-monitor
+  install -m 600 -o root -g root /root/hiraia-crm-secrets/hiraia-admin.key /etc/hiraia-monitor/.crm-admin.key.new
+  mv -f /etc/hiraia-monitor/.crm-admin.key.new /etc/hiraia-monitor/crm-admin.key
+  shred -u /root/hiraia-crm-secrets/hiraia-admin.key
+  echo "  hiraia-admin read key -> /etc/hiraia-monitor/crm-admin.key (pickup shredded)"; fi'
 
 echo ">> [3/6] systemd"
 tar -C "$HERE/systemd" -cf - . | rssh 'set -e; mkdir -p /tmp/hiraia-crm-units && tar -C /tmp/hiraia-crm-units -xf -
@@ -130,6 +140,7 @@ cat <<EOT
    client keys:  ssh $V cat /root/hiraia-crm-secrets/mbp-harvestd.key   (MBP: HIRAIA_CRM_API_KEY)
                  ssh $V cat /root/hiraia-crm-secrets/beaniebot.key      (bot: HIRAIA_CRM_API_KEY)
                  shred -u them after pickup; rotate with /opt/hiraia-crm/keygen.sh <client> <scope> --rotate
+                 hiraia-admin: already in /etc/hiraia-monitor/crm-admin.key (on this host, root-only)
    passphrase:   /etc/hiraia-crm/backup.passphrase — store a copy in the password manager
    logs:         journalctl -u hiraia-crm -f      /var/log/hiraia-crm-backup.log
    docs:         deploy/crm/README.md   docs/mbp-crm-integration.md

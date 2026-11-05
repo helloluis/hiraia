@@ -3,7 +3,9 @@
 # install.sh — deploy hiraia-monitor + mission control to the Vultr VPS.
 #
 # Installs, on hiraia.b11.dev:
-#   * /opt/hiraia-monitor/{monitor.py,admin_app.py,pilot_analytics.py,config.json}
+#   * /opt/hiraia-monitor/{monitor.py,admin_app.py,pilot_analytics.py,crm_contacts.*,config.json}
+#   * systemd drop-in hiraia-admin.service.d/crm-cards.conf (CRM cards; the key itself comes from
+#     deploy/crm/install.sh on the origin and never passes through this script)
 #   * systemd: hiraia-monitor.timer (guard, every 5 min) + hiraia-admin.service
 #   * nginx: `location /admin` -> 127.0.0.1:8135 in the existing 443 block
 #
@@ -58,7 +60,8 @@ echo ">> [1/4] files ..."
 ssh $SSH "$V" 'mkdir -p /opt/hiraia-monitor /var/lib/hiraia-monitor
   id -u hiraia-media >/dev/null 2>&1 || useradd --system --no-create-home --shell /usr/sbin/nologin hiraia-media
   DEBIAN_FRONTEND=noninteractive apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -y -qq python3-pil ffmpeg util-linux >/dev/null'
-scp $SSH "$HERE/monitor.py" "$HERE/admin_app.py" "$HERE/admin_chrome.py" "$HERE/pilot_analytics.py" "$HERE/tala_reports.py" "$HERE/tala_media.py" "$HERE/pilot_dashboard.py" "$HERE/pilot_dashboard.html" "$HERE/ga_reporting.py" "$HERE/neon_mirror.py" "$V:/opt/hiraia-monitor/"
+scp $SSH "$HERE/monitor.py" "$HERE/admin_app.py" "$HERE/admin_chrome.py" "$HERE/pilot_analytics.py" "$HERE/tala_reports.py" "$HERE/tala_media.py" "$HERE/pilot_dashboard.py" "$HERE/pilot_dashboard.html" "$HERE/ga_reporting.py" "$HERE/neon_mirror.py" \
+  "$HERE/crm_contacts.py" "$HERE/crm_contacts.html" "$HERE/crm_contacts.css" "$HERE/crm_contacts.js" "$HERE/systemd/crm-cards.conf" "$V:/opt/hiraia-monitor/"
 scp $SSH "$TMP/config.json" "$V:/opt/hiraia-monitor/config.json"
 ssh $SSH "$V" 'chmod 600 /opt/hiraia-monitor/config.json; chmod 755 /opt/hiraia-monitor/*.py
   touch /var/log/hiraia-monitor.log; chmod 640 /var/log/hiraia-monitor.log'
@@ -82,6 +85,8 @@ printf '%s\n' '[Unit]' 'Description=hiraia mission control (admin panel)' \
   'ExecStart=/usr/bin/python3 /opt/hiraia-monitor/admin_app.py' 'Restart=always' \
   'RestartSec=5' '[Install]' 'WantedBy=multi-user.target' \
   > /etc/systemd/system/hiraia-admin.service
+mkdir -p /etc/systemd/system/hiraia-admin.service.d
+install -m 644 /opt/hiraia-monitor/crm-cards.conf /etc/systemd/system/hiraia-admin.service.d/crm-cards.conf
 systemctl daemon-reload
 systemctl enable --now hiraia-admin.service >/dev/null 2>&1
 systemctl enable --now hiraia-monitor.timer >/dev/null 2>&1

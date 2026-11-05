@@ -4,6 +4,7 @@ import html
 NAV = (
     ("/", "Observatory", "home"),
     ("/tala-reports", "Tala reports", "tala-reports"),
+    ("/crm", "CRM", "crm"),
     ("/archive/telemetry", "Detailed reports", "telemetry"),
     ("/archive/training", "Training", "training"),
 )
@@ -66,11 +67,11 @@ def nav(mount, csrf, active):
     return f'<nav class="admin-nav">{"".join(links)}{logout}</nav>'
 
 
-def wrap(title, eyebrow, active, mount, csrf, body):
+def wrap(title, eyebrow, active, mount, csrf, body, extra_css=""):
     return (
         '<!doctype html><html lang="en"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1">'
-        f'<title>{html.escape(title)} · Hiraia</title><style>{CSS}</style></head><body>'
+        f'<title>{html.escape(title)} · Hiraia</title><style>{CSS}{extra_css}</style></head><body>'
         f'<main class="wrap"><header class="top"><div class="brand">hiraia<i>.</i></div>'
         f'<div class="eyebrow">{html.escape(eyebrow)}</div>{nav(mount, csrf, active)}</header>'
         f'{body}</main></body></html>'
