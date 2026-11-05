@@ -57,8 +57,9 @@ Authorization: Bearer <value of HIRAIA_CRM_API_KEY>
 curl -sS "$HIRAIA_CRM_BASE_URL/health"
 # {"ok":true}
 curl -sS -H "Authorization: Bearer $HIRAIA_CRM_API_KEY" "$HIRAIA_CRM_BASE_URL/status"
-# {"ok":true,"version":"1.0.0","uptime_s":1234,"counts":{"contacts":12,"threads":14,"extracts":57,"events":90,"idempotency_keys":57},
-#  "migrations":1,"backup":{"last_ok_at":"2026-10-28T19:03:11Z","artifact":"…","offsite":{"state":"ok",…},"stale":false,…}}
+# {"ok":true,"version":"1.2.0","uptime_s":1234,"counts":{"contacts":12,"threads":14,"extracts":57,"events":90,"idempotency_keys":57,
+#  "contact_profiles":9,"contact_points":6,"first_message_evidence":11},
+#  "migrations":2,"backup":{"last_ok_at":"2026-10-28T19:03:11Z","artifact":"…","offsite":{"state":"ok",…},"stale":false,…}}
 ```
 
 ## Endpoint reference
@@ -82,6 +83,19 @@ latest `name` casing wins.
 | `notes` | string ≤ 8000 | The extracted summary. Never raw messages. |
 | `first_seen`, `last_contact` | ISO 8601 | Any offset is accepted; stored as UTC. |
 | `is_test` | boolean | Marks synthetic records; excluded from listings unless `include_test=1`. |
+| `organization` | string ≤ 200 | Since 1.2.0. The employer or affiliation (e.g. `Department of Education (DepEd)`). Kept apart from `school`: a DepEd teacher's organization is DepEd, not her school. |
+| `department` | string ≤ 200 | Since 1.2.0. Unit within the organization (e.g. `Curriculum Implementation Division`). |
+| `job_title` | string ≤ 200 | Since 1.2.0. The person's own title (e.g. `Instructional Leader`). `role` stays the pipeline role. |
+| `location` | string ≤ 200 | Since 1.2.0. Town/province as stated by a source. |
+| `<field>_source` | identifier ≤ 64 | Since 1.2.0. Provenance for each of the four fields above (`manual_note`, `google_contacts`, …; `[a-z0-9][a-z0-9._:-]*`). Only valid together with its field (`400 invalid_field` otherwise). Omitted: the calling client's name when the value changes. |
+| `phones`, `emails` | array ≤ 20 | Since 1.2.0. Entries `{value, label?, primary?, source?, source_ref?, remove?}` or bare strings. Phones are stored without formatting (`+63 900-000 0001` → `+639000000001`, a leading `00` becomes `+`; 7–15 digits, no region is assumed); e-mails lower-cased. `label` ≤ 40, `source_ref` ≤ 300 (an opaque pointer such as `google-contacts:people/c…`). |
+
+**Affiliation fields** follow the contact rules: absent or `null` leaves the stored value, `""`
+clears it together with its source. **Phones and e-mails merge by value**: an entry adds the value
+or updates its label/primary/source (a new value's `source` defaults to the calling client), `primary: true`
+clears the other primaries of that kind, `remove: true` deletes that value, and values not
+mentioned are kept. The response's `contact` carries `phones`/`emails` only when the request sent
+either list — they never leak into responses that did not ask for them.
 
 ```bash
 curl -sS -X POST "$HIRAIA_CRM_BASE_URL/contacts" \
@@ -107,6 +121,14 @@ Response `201 Created` (new) or `200 OK` (existing):
 ```
 
 Store the returned `id` locally — threads and extracts reference it.
+
+Every contact response (and every list or detail row) also carries the 1.2.0 fields:
+`organization`, `department`, `job_title`, `location` and their `*_source`, plus the derived
+**first contact** — `first_contact` (ISO UTC or `null`), `first_contact_quality`
+(`exact`/`approximate`), `first_contact_basis`, `first_contact_platform`,
+`first_contact_thread_id` and `first_contact_conversation_kind` (`direct`/`group`). See
+`POST /first-message-evidence` for how it is derived. It is `null` until message evidence exists —
+never a record, import, extract or address-book time.
 
 ### `POST /api/crm/threads` — upsert a conversation thread (write)
 
@@ -154,6 +176,49 @@ curl -sS -X POST "$HIRAIA_CRM_BASE_URL/extracts" \
 #      "extracted_json": {…}, "model_version": "harvestd-2026-10", "created_at": "2026-10-28T01:00:02.000Z"}}
 ```
 
+### `POST /api/crm/first-message-evidence` — record the earliest message of a conversation (write)
+
+Since 1.2.0. One row per (`contact_id`, `evidence_key`): the earliest **actual** message, incoming
+or outgoing, that the source holds for one conversation with that person. The contact's
+`first_contact` is the minimum over its rows; each thread's `first_message_at` is the minimum
+over the rows linked to it.
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `contact_id` | integer, required | `422 unknown_contact` otherwise. |
+| `thread_id` | integer | Must belong to `contact_id` (`422 unknown_thread`). Omit for a conversation that has no CRM thread; a later call may link it. |
+| `evidence_key` | string, required, ≤ 128 | Opaque, stable per source conversation (`[A-Za-z0-9._:-]`), e.g. `fm1:<sha256 prefix of the local conversation id>`. Never a name or a message. |
+| `platform` | string, required | Platform of that conversation. |
+| `conversation_kind` | `direct` \| `group`, required | Group evidence must come from a message the person sent themselves. |
+| `first_message_at` | ISO 8601, required | Not before 2004-02-04 and not more than a day ahead (`400 invalid_timestamp`). |
+| `quality` | `exact` \| `approximate`, required | `exact` only with `basis: message_timestamp`. |
+| `basis` | required | `message_timestamp` (the message's own absolute time), `relative_label` (a time/weekday/date label resolved against the capture time), `first_observed` (no usable label: when the message was first observed — an upper bound). |
+| `direction` | `incoming` \| `outgoing` \| `unknown` | Default `unknown`. |
+
+**Monotonic.** An existing row changes only when the new time is earlier, or the same instant
+with stronger evidence (`exact` before `approximate`; then `message_timestamp` < `relative_label`
+< `first_observed`). A later or weaker value leaves it untouched (`action: "unchanged"`), so
+re-running a backfill can only confirm or improve. Sending a `thread_id` for an unlinked row links
+it (`action: "relinked"`). Reusing an `evidence_key` for a different platform or kind is
+`422 evidence_conflict`.
+
+```bash
+curl -sS -X POST "$HIRAIA_CRM_BASE_URL/first-message-evidence" \
+  -H "Authorization: Bearer $HIRAIA_CRM_API_KEY" -H "Content-Type: application/json" \
+  -H "Idempotency-Key: first-message:fm1:3f9c…:2026-09-05T03:25:00Z" \
+  -d '{"contact_id": 12, "thread_id": 3, "evidence_key": "fm1:3f9c…", "platform": "messenger",
+       "conversation_kind": "direct", "first_message_at": "2026-09-05T11:25:00+08:00",
+       "quality": "exact", "basis": "message_timestamp", "direction": "outgoing"}'
+# 201 {"id": 7, "created": true, "changed": true, "action": "created", "evidence": {…},
+#      "first_contact": {"at": "2026-09-05T03:25:00.000Z", "quality": "exact", "basis": "message_timestamp",
+#                        "platform": "messenger", "thread_id": 3, "conversation_kind": "direct"}}
+```
+
+`action` is `created`, `updated` (improved), `relinked` or `unchanged`. A one-off backfill from
+the MBP's local capture store exists already (`deploy/crm/tools/first_contact_evidence.py` →
+`deploy/crm/maintenance.cjs apply-first-contact`); `harvestd` can post the same records as part of
+its sync once it adopts this endpoint.
+
 ### `GET /api/crm/contacts` — list with filters (read)
 
 | Query | Meaning |
@@ -161,13 +226,15 @@ curl -sS -X POST "$HIRAIA_CRM_BASE_URL/extracts" \
 | `stage=pilot` | One of the five stages. |
 | `platform=messenger` | Exact platform of the contact record (threads on other apps do not count). |
 | `quiet_for_days=14` | `last_contact` older than N days **or never contacted**. |
-| `search=santos` | Case-insensitive substring over name, aliases, school, role, notes. |
+| `search=santos` | Case-insensitive substring over name, aliases, school, role, notes and (1.2.0) organization, department, job title, location. Phones and e-mails are not searchable server-side. |
 | `include_test=1` | Include `is_test` records (excluded by default). |
 | `include=threads,latest_extract` | Since 1.1.0. Embed each row's `threads` (every app, same shape and order as `GET /contacts/:id`) and `latest_extract` (newest by `created_at`, or `null`); either name alone works. Count, page and embeds come from one consistent read. Unknown names are `400 invalid_query`; servers older than 1.1.0 ignore the parameter, so check that the keys are present. |
+| `include=contact_points` | Since 1.2.0. Adds `phones` and `emails` (primary first) to each row. Without it they are never returned. A 1.1.0 server answers `400 invalid_query`. |
 | `limit` (1–200, default 50), `offset` | Paging. |
 
 Sorted by `last_contact` descending, never-contacted last. Each row adds `thread_count`,
-`extract_count`, `last_extract_at`.
+`extract_count`, `last_extract_at`. Since 1.2.0 embedded threads also carry `first_message_at`,
+`first_message_quality` and `first_message_basis` (each `null` without evidence).
 
 ```bash
 curl -sS -H "Authorization: Bearer $HIRAIA_CRM_API_KEY" "$HIRAIA_CRM_BASE_URL/contacts?stage=pilot&quiet_for_days=14&limit=20"
@@ -176,7 +243,8 @@ curl -sS -H "Authorization: Bearer $HIRAIA_CRM_API_KEY" "$HIRAIA_CRM_BASE_URL/co
 
 ### `GET /api/crm/contacts/:id` — one contact with threads and latest extracts (read)
 
-`?extracts_limit=20` (0–100). `404 not_found` for an unknown id.
+`?extracts_limit=20` (0–100), `?include=contact_points` (1.2.0: adds `phones`/`emails` to
+`contact`). `404 not_found` for an unknown id.
 
 ```json
 {"contact": {…}, "threads": [{…}], "extracts": [{"id": 57, "extracted_json": {…}, "created_at": "…"}, …]}
@@ -240,13 +308,14 @@ Codes: `unauthorized`, `forbidden`, `https_required`, `not_found`, `method_not_a
 `json_required`, `invalid_json`, `empty_body`, `payload_too_large`, `missing_field`,
 `invalid_field`, `field_too_long`, `invalid_timestamp`, `invalid_query`,
 `invalid_idempotency_key`, `idempotency_key_reused`, `unknown_contact`, `unknown_thread`,
-`rate_limited`, `internal_error`.
+`evidence_conflict`, `rate_limited`, `internal_error`.
 
 ## Suggested sync loop
 
 1. `GET /health`; if not `200 {"ok":true}`, stop and retry on the next tick.
 2. For each extracted conversation: upsert the contact → upsert the thread (with the returned
-   `contact_id`) → append the extract (with both ids). Persist the ids and the idempotency keys
+   `contact_id`) → append the extract (with both ids) → post the conversation's first-message
+   evidence when the earliest captured message is known. Persist the ids and the idempotency keys
    locally before each request.
 3. Mark test runs with `is_test: true` on the contact so they never appear in Beaniebot answers.
 4. Log only request ids, status codes and your own record ids — never payloads or the key.
@@ -255,4 +324,6 @@ Codes: `unauthorized`, `forbidden`, `https_required`, `not_found`, `method_not_a
 
 Raw message bodies, attachments, phone numbers or e-mail addresses that were not deliberately
 extracted as contact details, other people's conversations, and anything about students.
-`notes` and `extracted_json` are summaries about the school-pipeline relationship only.
+`notes` and `extracted_json` are summaries about the school-pipeline relationship only. Phones
+and e-mails go in `phones`/`emails` (never in `notes`), and first-message evidence carries a time
+and its provenance — never the message itself.

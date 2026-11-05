@@ -27,7 +27,13 @@ def contact(cid, name, platform="messenger", threads=(), latest=None, **fields):
            "stage": "unknown", "notes": None, "first_seen": None, "last_contact": None, "is_test": False,
            "created_at": SYNC, "updated_at": SYNC, "thread_count": len(threads),
            "extract_count": 1 if latest else 0, "last_extract_at": latest["created_at"] if latest else None,
-           "threads": list(threads), "latest_extract": latest}
+           "threads": list(threads), "latest_extract": latest,
+           # CRM API 1.2.0 fields (contact_points included on request)
+           "organization": None, "organization_source": None, "department": None, "department_source": None,
+           "job_title": None, "job_title_source": None, "location": None, "location_source": None,
+           "first_contact": None, "first_contact_quality": None, "first_contact_basis": None,
+           "first_contact_platform": None, "first_contact_thread_id": None, "first_contact_conversation_kind": None,
+           "phones": [], "emails": []}
     row.update(fields)
     return row
 
@@ -150,7 +156,7 @@ class FetchTests(CrmTestCase):
         payload = crm_contacts.directory()
         self.assertEqual((payload["total"], len(payload["contacts"]), payload["truncated"]), (450, 450, False))
         self.assertEqual([r["path"] for r in fake.requests], [
-            f"/api/crm/contacts?include=threads%2Clatest_extract&limit=200&offset={o}" for o in (0, 200, 400)])
+            f"/api/crm/contacts?include=threads%2Clatest_extract%2Ccontact_points&limit=200&offset={o}" for o in (0, 200, 400)])
         self.assertTrue(all(r["authorization"] == f"Bearer {KEY}" for r in fake.requests))
         self.assertTrue(all(r["user_agent"].startswith("hiraia-admin/") for r in fake.requests))
         self.assertNotIn(KEY, json.dumps(payload))
@@ -172,6 +178,7 @@ class FetchTests(CrmTestCase):
             ((200, [1, 2], {}), "crm_bad_response", 502, None),
             ((200, {"contacts": "x", "total": 1}, {}), "crm_bad_response", 502, None),
             ((200, {"contacts": [{"id": 1, "name": "No embeds"}], "total": 1}, {}), "crm_outdated", 502, None),
+            ((400, {"error": "invalid_query", "details": {"param": "include"}}, {}), "crm_outdated", 502, None),
         ]
         for reply, code, status, retry in cases:
             fake = FakeCrm(lambda request, reply=reply: reply)
@@ -214,7 +221,10 @@ class ProjectionTests(unittest.TestCase):
             self.assertNotIn(secret, text)
         self.assertEqual(set(card), {"id", "name", "aliases", "role", "school", "stage", "notes", "summary",
                                      "next_action", "dates", "summary_at", "thread_count", "extract_count",
-                                     "last_contact", "first_seen", "updated_at", "activity", "channels"})
+                                     "last_contact", "first_seen", "updated_at", "activity", "channels",
+                                     "organization", "organization_source", "department", "department_source",
+                                     "job_title", "job_title_source", "location", "location_source",
+                                     "phones", "emails", "first_contact"})
         self.assertEqual((card["summary"], card["next_action"], card["dates"]), ("Agreed to a pilot.", "Send the guides", ["Nov 9"]))
 
     def test_channels_cover_every_thread_platform_plus_the_record_platform(self):
@@ -267,6 +277,56 @@ class ProjectionTests(unittest.TestCase):
         self.assertEqual(card["aliases"], ["Ma'am Liezl"])
         self.assertEqual((card["last_contact"], card["first_seen"], card["summary"], card["next_action"]), (None, None, None, None))
         self.assertEqual((card["dates"], card["thread_count"], card["extract_count"]), ([], 0, 0))
+
+
+class ContactFieldTests(unittest.TestCase):
+    def test_a_1_1_shaped_row_reads_as_an_outdated_api(self):
+        old_row = contact(1, "Old")
+        for key in ("phones", "emails", "organization", "first_contact"):
+            row = dict(old_row)
+            row.pop(key)
+            fake = FakeCrm(lambda request, row=row: (200, {"contacts": [row], "total": 1}, {}))
+            try:
+                with patch.dict(os.environ, {"HIRAIA_CRM_API_KEY": KEY, "HIRAIA_CRM_BASE_URL": fake.base}):
+                    os.environ.pop("HIRAIA_CRM_API_KEY_FILE", None)
+                    self.assertEqual(crm_contacts.api_response()[1]["error"], "crm_outdated", key)
+            finally:
+                fake.close()
+
+    def test_affiliation_and_contact_details_project_with_provenance_but_never_source_refs(self):
+        row = contact(21, "Rosario Villaflor", platform="viber", role="teacher", school=None,
+                      organization="Department of Education (DepEd)", organization_source="manual_note",
+                      job_title="Master Teacher II", job_title_source="google_contacts", location="  ", location_source="manual_note",
+                      phones=[{"value": "+639000000001", "label": "mobile", "primary": False, "source": "google_contacts", "source_ref": "google-contacts:people/c1"},
+                              {"value": "+639000000002", "label": None, "primary": True, "source": "manual_note", "source_ref": None},
+                              {"value": "call me", "source": "x"}, {"value": "+639000000001"}, "junk"],
+                      emails=[{"value": "teacher@example.org", "label": "work", "source": "Not A Source!"}, {"value": "no-at-sign"}])
+        card = crm_contacts.project(row)
+        self.assertEqual((card["organization"], card["organization_source"], card["school"], card["role"]),
+                         ("Department of Education (DepEd)", "manual_note", None, "teacher"))
+        self.assertEqual((card["job_title"], card["job_title_source"]), ("Master Teacher II", "google_contacts"))
+        self.assertEqual((card["location"], card["location_source"]), (None, None))       # blank value: no source either
+        self.assertEqual([(p["value"], p["primary"], p["source"]) for p in card["phones"]],
+                         [("+639000000002", True, "manual_note"), ("+639000000001", False, "google_contacts")])
+        self.assertEqual([(e["value"], e["label"], e["source"]) for e in card["emails"]], [("teacher@example.org", "work", None)])
+        self.assertNotIn("source_ref", json.dumps(card))
+        self.assertNotIn("people/c1", json.dumps(card))
+
+    def test_first_contact_and_thread_first_messages_project_and_inconsistent_labels_are_dropped(self):
+        row = contact(3, "Noel Abarca", threads=[dict(thread(7, 3, "messenger", "Noel Abarca", "2026-11-01T00:00:00Z"),
+                                                     first_message_at="2026-09-05T11:25:00.000Z", first_message_quality="exact", first_message_basis="message_timestamp")],
+                      first_contact="2026-09-05T11:25:00.000Z", first_contact_quality="exact", first_contact_basis="message_timestamp",
+                      first_contact_platform="messenger", first_contact_thread_id=7, first_contact_conversation_kind="direct")
+        card = crm_contacts.project(row)
+        self.assertEqual(card["first_contact"], {"at": "2026-09-05T11:25:00.000Z", "quality": "exact", "basis": "message_timestamp",
+                                                 "platform": "messenger", "conversation_kind": "direct"})
+        self.assertEqual(card["channels"][0]["threads"][0]["first_message"], {"at": "2026-09-05T11:25:00.000Z", "quality": "exact", "basis": "message_timestamp"})
+        for bad in ({"first_contact_quality": "exact", "first_contact_basis": "first_observed"},
+                    {"first_contact_quality": "certain"}, {"first_contact": "yesterday"}, {"first_contact": None}):
+            self.assertIsNone(crm_contacts.project(dict(row, **bad))["first_contact"], bad)
+        # No evidence: first_contact stays empty; nothing is derived from created_at, first_seen or last_contact.
+        bare = crm_contacts.project(contact(20, "Teresita Lumbad", last_contact="2026-11-01T00:00:00Z", first_seen="2026-10-01T00:00:00Z"))
+        self.assertIsNone(bare["first_contact"])
 
 
 class RouteTests(CrmTestCase):
@@ -323,7 +383,7 @@ class RouteTests(CrmTestCase):
         data = json.loads(body)
         self.assertEqual((status, headers["Cache-Control"], data["ok"], data["total"]), (200, "no-store", True, 1))
         self.assertEqual(data["contacts"][0]["channels"], [{"platform": "telegram", "record": True, "threads": [
-            {"kind": "direct", "last_seen": "2026-10-29T03:00:00.000Z"}]}])
+            {"kind": "direct", "last_seen": "2026-10-29T03:00:00.000Z", "first_message": None}]}])
         self.assertNotIn(KEY, body)
         self.assertEqual(fake.requests[0]["authorization"], f"Bearer {KEY}")
 

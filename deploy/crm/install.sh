@@ -14,8 +14,8 @@
 #                        hiraia-admin read; the admin re-reads its key file, no restart needed)
 #   --skip-backup        do not run the first backup at the end
 #
-# Installs:  /opt/hiraia-crm/{server.cjs,db.cjs,migrate.cjs,migrations/,backup.sh,restore.sh,
-#            offsite.py,alert.py,keygen.sh,node_modules/,venv/}   /etc/hiraia-crm/{crm.env,
+# Installs:  /opt/hiraia-crm/{server.cjs,db.cjs,migrate.cjs,maintenance.cjs,migrations/,backup.sh,
+#            restore.sh,offsite.py,alert.py,keygen.sh,node_modules/,venv/}   /etc/hiraia-crm/{crm.env,
 #            backup.passphrase[,offsite.env]}   /var/lib/hiraia-crm/crm.db (service user hiraia)
 #            systemd: hiraia-crm.service, hiraia-crm-backup.{service,timer}, hiraia-crm-backup-alert.service
 #            nginx: conf.d/hiraia-crm-rate.conf + `location /api/crm/` in sites-available/hiraia.org
@@ -50,8 +50,8 @@ PUBLIC="${HIRAIA_CRM_PUBLIC:-https://hiraia.org}"
 echo ">> [1/6] files -> /opt/hiraia-crm"
 rssh 'mkdir -p /opt/hiraia-crm/migrations /etc/hiraia-crm; id -u hiraia >/dev/null 2>&1 || useradd --system --no-create-home --shell /usr/sbin/nologin hiraia
   for b in node npm sqlite3 gpg python3; do command -v $b >/dev/null || { echo "missing $b on target" >&2; exit 1; }; done'
-tar -C "$HERE" -cf - server.cjs db.cjs migrate.cjs migrations backup.sh restore.sh offsite.py alert.py keygen.sh package.json package-lock.json \
-  | rssh 'tar -C /opt/hiraia-crm -xf - && chmod 755 /opt/hiraia-crm/*.sh /opt/hiraia-crm/*.py /opt/hiraia-crm/migrate.cjs && chmod 644 /opt/hiraia-crm/server.cjs /opt/hiraia-crm/db.cjs /opt/hiraia-crm/migrations/*.sql'
+tar -C "$HERE" -cf - server.cjs db.cjs migrate.cjs maintenance.cjs migrations backup.sh restore.sh offsite.py alert.py keygen.sh package.json package-lock.json \
+  | rssh 'tar -C /opt/hiraia-crm -xf - && chmod 755 /opt/hiraia-crm/*.sh /opt/hiraia-crm/*.py /opt/hiraia-crm/migrate.cjs && chmod 644 /opt/hiraia-crm/server.cjs /opt/hiraia-crm/db.cjs /opt/hiraia-crm/maintenance.cjs /opt/hiraia-crm/migrations/*.sql'
 rssh 'set -e; cd /opt/hiraia-crm && npm ci --omit=dev --no-audit --no-fund --loglevel=error >/dev/null && node -e "require(\"better-sqlite3\")" && echo "  node runtime ok ($(node --version))"'
 # boto3 is only needed for the offsite push; a venv failure is reported, not fatal.
 rssh 'if [ ! -x /opt/hiraia-crm/venv/bin/python ]; then python3 -m venv /opt/hiraia-crm/venv >/dev/null 2>&1 || true; fi

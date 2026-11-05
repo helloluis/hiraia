@@ -64,22 +64,37 @@ Accepted reports live under `/var/lib/hiraia-monitor/tala-media` with private pe
 
 `https://hiraia.org/admin/crm` (after sign-in) shows the school-pipeline CRM
 (`deploy/crm`, contract in `docs/mbp-crm-integration.md`) as cards, most recent
-activity first. Search (name, aliases, school/organization, role, notes, latest
-summary, next action, dates mentioned) and the channel and stage filters compose
-instantly, with counts per option; the view lives in the URL, so it survives a
-reload or a bookmark. Each card lists every platform you talk to the person on — one
-chip per platform across all of the contact's synced threads (direct or group) plus
-the CRM record's own platform — with stage, last contact in Manila time, the latest
-classified summary and next action, and thread/extract counts.
+activity first (or quietest, name, or first contact). Search (name, aliases, school,
+organization, department, job title, role, location, phone digits, e-mail, first-contact
+date, notes, latest summary, next action, dates mentioned) and the channel and stage
+filters compose instantly, with counts per option; the view lives in the URL, so it
+survives a reload or a bookmark. Each card lists every platform you talk to the person
+on — one chip per platform across all of the contact's synced threads (direct or group)
+plus the CRM record's own platform — with stage, last contact in Manila time, job title
+or role · organization · school, **first contact**, the latest classified summary and
+next action, and thread/extract/phone/e-mail counts. "Details" adds department,
+location, phones and e-mails (tap to call or write) with their provenance, and each
+thread's first message.
+
+**First contact** is the earliest recorded message with the person on any linked
+conversation (CRM 1.2 `first_contact`): an exact date when the source carried the
+message's own timestamp, `≈ date` when it came from a weekday/time label resolved
+against the capture time, `by date` when only the first observation time was known
+(an upper bound). Contacts without message evidence show none — the page never
+substitutes a record, import or address-book time. Captures only see what was on
+screen, so the earliest message on record can postdate the real first contact; the
+tooltip and Details say so.
 
 **Data path.** Browser → `GET /admin/api/crm/contacts` (admin session) →
-`crm_contacts.py` → `GET https://hiraia.org/api/crm/contacts?include=threads,latest_extract`
+`crm_contacts.py` → `GET https://hiraia.org/api/crm/contacts?include=threads,latest_extract,contact_points`
 with the admin's own read-scoped key (client `hiraia-admin`). The key stays in this
 process: it is read from a root-only file (re-read when the file changes), never
 rendered, logged, put in a URL or echoed in an error, and redirects are refused so it
 is never re-sent elsewhere. The browser gets an allowlisted projection — no thread
-labels, opaque source/export/checkpoint IDs, model versions or raw extract JSON. The
-CRM itself never holds raw messages.
+labels, opaque source/export/checkpoint IDs, model versions, Google Contacts
+references (`source_ref`) or raw extract JSON. Phones and e-mails reach only the
+signed-in admin page (the API returns them only on request). The CRM itself never
+holds raw messages.
 
 **Times.** Exact times are harvestd's absolute message timestamps
 (`last_contact`, thread `last_seen`). When the source had none, harvestd omits the
@@ -88,10 +103,14 @@ when the CRM last received a summary — a date, never a clock time — and that
 sets its place in the order. Records with nothing synced beyond a name (group-roster
 members) sort last as "No contact recorded".
 
-**Requires CRM API 1.1.0** (the `include` embed). Against 1.0.0 the page fails closed
-with "The CRM API is older than 1.1" rather than showing cards without their channels.
+**Requires CRM API 1.2.0** (`include=contact_points`, profile fields, first contact).
+Against an older API the page fails closed with "The CRM API is older than 1.2" rather
+than showing cards without them — so deploy the CRM before the admin.
 
-**Deploying** needs Luis's explicit approval. Follow
+**Deploying** needs Luis's explicit approval. The 1.2 contact fields and first contact
+ship with [`docs/RELEASE-CRM-CONTACT-FIELDS.md`](../../docs/RELEASE-CRM-CONTACT-FIELDS.md)
+(CRM first, then the notes reconcile and first-contact backfill, then the admin). The
+original 1.1 rollout was
 [`docs/RELEASE-CRM-CONTACT-CARDS.md`](../../docs/RELEASE-CRM-CONTACT-CARDS.md): back up the live
 `/opt/hiraia-monitor` and CRM, then ship CRM API 1.1.0 plus the `hiraia-admin` read key with
 `deploy/crm/install.sh` (restarts `hiraia-crm`). Next, 3-way-merge the admin files into whatever

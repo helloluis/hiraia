@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server.cjs",
     "migrate": "node migrate.cjs",
-    "test": "node --test server.test.cjs"
+    "test": "node --test server.test.cjs maintenance.test.cjs"
   },
   "engines": {
     "node": ">=22"
