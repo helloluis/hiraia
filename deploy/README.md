@@ -188,3 +188,5 @@ file, with a daily encrypted backup (`hiraia-crm-backup.timer`, 7 daily / 4 week
 offsite to the private R2 bucket `b11-ovh-backups` under `hiraia-crm/`). Install/update with
 `deploy/crm/install.sh`; operations in `deploy/crm/README.md`; client contract in
 `docs/mbp-crm-integration.md`. Not part of `update.sh` — it is deployed independently of the web.
+Signed-in admins browse it as contact cards at `/admin/crm` (`deploy/vps-monitor/crm_contacts.py`,
+read-only `hiraia-admin` key; needs CRM API 1.1.0 — see `deploy/vps-monitor/README.md`).

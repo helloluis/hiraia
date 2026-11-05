@@ -1,0 +1,112 @@
+{
+  "about": "Synthetic contacts for the local /admin/crm preview. People and schools are invented. Shapes follow harvestd's exports (self-snooper sync.py): contact {name, platform, role, school, notes, last_contact only when exact, aliases}; thread {app, thread_name = contact name or 'Group <opaque id>', last_seen only when exact}; extract {source_thread = opaque id, model_version, extracted_json with exactly harvestd's keys}. Times are offsets from now; 'synced' backdates the CRM's own write time.",
+  "provenance": {
+    "ocr": "Source: Viber screen text via OCR; speakers come only from the verified chat layout, and recognition errors are possible.",
+    "approximate": "Last-contact time is approximate: first local observation; no absolute message timestamp was available."
+  },
+  "contacts": [
+    {
+      "contact": {"name": "Rowena Dimaculangan", "platform": "messenger", "role": "Principal", "school": "Sampaguita Hills Elementary School", "stage": "pilot", "last_contact": "-2h"},
+      "synced": "-30d",
+      "threads": [{"key": "dm", "app": "messenger", "thread_name": "Rowena Dimaculangan", "last_seen": "-2h", "synced": "-30d"}],
+      "extracts": [
+        {"thread": "dm", "synced": "-6d", "summary": "Interested in a pilot; asked how many tablets the school would need.", "next_action": "Send the device checklist", "dates": [], "stage": "intro", "approximate": false},
+        {"thread": "dm", "synced": "-90m", "summary": "Confirmed two classrooms will pilot Hiraia after the quarterly assessment week; asked for printed teacher guides.", "next_action": "Send the printed teacher guides before Monday", "dates": ["Monday", "quarterly assessment week"], "stage": "pilot", "approximate": false}
+      ]
+    },
+    {
+      "contact": {"name": "Jonathan Pacquing", "platform": "viber", "role": "Division ICT coordinator", "school": "SDO Bagong Lungsod", "stage": "active"},
+      "synced": "-21d",
+      "threads": [{"key": "dm", "app": "viber", "thread_name": "Jonathan Pacquing", "synced": "-21d"}],
+      "extracts": [
+        {"thread": "dm", "synced": "-9d", "summary": "Asked whether Hiraia runs without internet on the division's shared tablets.", "next_action": null, "dates": [], "stage": "intro", "approximate": true, "ocr": true},
+        {"thread": "dm", "synced": "-26h", "summary": "Approved installing Hiraia on the division's shared tablets; wants the offline install guide in Tagalog.", "next_action": "Share the Tagalog offline install guide", "dates": [], "stage": "active", "approximate": true, "ocr": true}
+      ]
+    },
+    {
+      "contact": {"name": "Ma. Lourdes Peñaflor", "platform": "messenger", "role": "Science teacher", "school": "Bagong Pag-asa Integrated School", "stage": "pilot", "aliases": ["Ma'am Lou"], "last_contact": "-3d"},
+      "synced": "-40d",
+      "threads": [
+        {"key": "dm", "app": "messenger", "thread_name": "Ma. Lourdes Peñaflor", "last_seen": "-3d", "synced": "-40d"},
+        {"key": "group", "app": "viber", "thread_name": "Group 4c1f9a2e7b61", "synced": "-12d"},
+        {"key": "tg", "app": "telegram", "thread_name": "Ma. Lourdes Peñaflor", "last_seen": "-10d", "synced": "-10d"}
+      ],
+      "extracts": [
+        {"thread": "tg", "synced": "-10d", "summary": "Shared the science department's schedule for demo lessons.", "next_action": null, "dates": [], "stage": "intro", "approximate": false},
+        {"thread": "group", "synced": "-5d", "summary": "Told the faculty group that the pilot demo is being planned.", "next_action": null, "dates": [], "stage": "pilot", "approximate": true, "policy": "school-business-v2-groups-v1"},
+        {"thread": "dm", "synced": "-3d", "summary": "Coordinating a demo lesson for the science department; prefers Thursday afternoons.", "next_action": "Confirm Thursday's demo time", "dates": ["Thursday afternoon"], "stage": "pilot", "approximate": false}
+      ]
+    },
+    {
+      "contact": {"name": "Ramon Dela Cruz", "platform": "telegram", "role": "School head", "school": "Lakandula Integrated School", "stage": "intro", "aliases": ["Sir Ramon"], "last_contact": "-6d"},
+      "synced": "-6d",
+      "threads": [{"key": "dm", "app": "telegram", "thread_name": "Ramon Dela Cruz", "last_seen": "-6d", "synced": "-6d"}],
+      "extracts": [
+        {"thread": "dm", "synced": "-6d", "summary": "Asked for a short overview to present at the next faculty meeting.", "next_action": "Send the one-page overview", "dates": ["next faculty meeting"], "stage": "intro", "approximate": false}
+      ]
+    },
+    {
+      "contact": {"name": "Cristina Uy", "platform": "messenger", "role": "PTA president", "school": "Sampaguita Hills Elementary School", "stage": "intro", "last_contact": "-27h"},
+      "synced": "-27h",
+      "threads": [{"key": "dm", "app": "messenger", "thread_name": "Cristina Uy", "last_seen": "-27h", "synced": "-27h"}],
+      "extracts": [
+        {"thread": "dm", "synced": "-26h", "summary": "Offered to help organize a parents' orientation about the offline tablets.", "next_action": null, "dates": [], "stage": "intro", "approximate": false}
+      ]
+    },
+    {
+      "contact": {"name": "Teodoro Agbayani", "platform": "messenger", "role": "Principal", "school": "Malinis na Ilog Elementary School", "stage": "active", "last_contact": "-45d"},
+      "synced": "-70d",
+      "threads": [{"key": "dm", "app": "messenger", "thread_name": "Teodoro Agbayani", "last_seen": "-45d", "synced": "-70d"}],
+      "extracts": [
+        {"thread": "dm", "synced": "-60d", "summary": "Agreed to keep the pilot running through the second term.", "next_action": null, "dates": [], "stage": "active", "approximate": false},
+        {"thread": "dm", "synced": "-45d", "summary": "Reported that the teachers use Hiraia during science periods three times a week and want more Bisaya narration. Asked whether the content packs can be copied between tablets without internet, because the school's connection is unreliable during the rainy season. Suggested a short refresher for new faculty members at the start of the next term, and offered the multipurpose hall for it. Mentioned that the division may ask for a brief written report on how the pilot went.", "next_action": "Check in about renewing the pilot", "dates": ["start of the next term"], "stage": "active", "approximate": false}
+      ]
+    },
+    {
+      "contact": {"name": "Ana Liza Macaraeg", "platform": "viber", "role": "Master teacher", "school": "Lakandula Integrated School", "stage": "dormant"},
+      "synced": "-80d",
+      "threads": [{"key": "dm", "app": "viber", "thread_name": "Ana Liza Macaraeg", "synced": "-80d"}],
+      "extracts": [
+        {"thread": "dm", "synced": "-40d", "summary": "Paused the pilot until the new school year; open to a call in January.", "next_action": "Call in January", "dates": ["January"], "stage": "dormant", "approximate": true, "ocr": true}
+      ]
+    },
+    {
+      "contact": {"name": "Edgardo Villanueva", "platform": "messenger", "role": "District supervisor", "stage": "unknown", "last_contact": "-21d"},
+      "synced": "-21d",
+      "threads": [{"key": "dm", "app": "messenger", "thread_name": "Edgardo Villanueva", "last_seen": "-21d", "synced": "-21d"}],
+      "extracts": [
+        {"thread": "dm", "synced": "-21d", "summary": "Asked what devices the app needs and whether it works without internet.", "next_action": null, "dates": [], "stage": "unknown", "approximate": false}
+      ]
+    },
+    {
+      "contact": {"name": "Gerald Samonte", "platform": "telegram", "role": "Teacher", "school": "Lakandula Integrated School", "stage": "unknown"},
+      "synced": "-2d",
+      "threads": [{"key": "group", "app": "telegram", "thread_name": "Group 7d2e19aa03c4", "synced": "-2d"}],
+      "extracts": [
+        {"thread": "group", "synced": "-2d", "summary": "Said the faculty group chat will relay the pilot announcements.", "next_action": null, "dates": [], "stage": "unknown", "approximate": true, "policy": "school-business-v2-groups-v1"}
+      ]
+    },
+    {
+      "contact": {"name": "Liza Fernandez", "platform": "messenger", "role": "Science coordinator", "school": "Bagong Pag-asa Integrated School", "stage": "active", "aliases": ["Ma'am Liza F."], "last_contact": "-12d"},
+      "synced": "-50d",
+      "threads": [{"key": "dm", "app": "messenger", "thread_name": "Liza Fernandez", "last_seen": "-12d", "synced": "-50d"}],
+      "extracts": [
+        {"thread": "dm", "synced": "-12d", "summary": "Requested a copy of the pilot results summary for the division report.", "next_action": "Email the pilot results summary", "dates": [], "stage": "active", "approximate": false}
+      ]
+    },
+    {
+      "contact": {"name": "Analyn Sison", "platform": "whatsapp", "role": "Teacher", "school": "Malinis na Ilog Elementary School", "stage": "intro", "last_contact": "-15d"},
+      "synced": "-15d",
+      "note": "harvestd does not capture WhatsApp; this exercises the generic path for any platform the CRM may hold.",
+      "threads": [{"key": "dm", "app": "whatsapp", "thread_name": "Analyn Sison", "last_seen": "-15d", "synced": "-15d"}],
+      "extracts": [
+        {"thread": "dm", "synced": "-15d", "summary": "Heard about Hiraia from a colleague; wants to see it before suggesting it to her principal.", "next_action": "Offer a short video call", "dates": [], "stage": "intro", "approximate": false}
+      ]
+    },
+    {"contact": {"name": "Josefina Bautista", "platform": "viber"}, "synced": "-8d", "threads": [], "extracts": []},
+    {"contact": {"name": "Mark Anthony Reyes", "platform": "telegram"}, "synced": "-8d", "threads": [], "extracts": []},
+    {"contact": {"name": "Liezl Domingo", "platform": "messenger"}, "synced": "-8d", "threads": [], "extracts": []},
+    {"contact": {"name": "Rhea Mae Catacutan", "platform": "viber"}, "synced": "-8d", "threads": [], "extracts": []},
+    {"contact": {"name": "ZZ Smoke Contact", "platform": "messenger", "is_test": true, "notes": "synthetic smoke record; must never be listed"}, "synced": "-6d", "threads": [], "extracts": []}
+  ]
+}

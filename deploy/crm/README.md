@@ -47,6 +47,7 @@ copy stays verbatim (the convention in `deploy/README.md`).
 | --- | --- | --- | --- |
 | `mbp-harvestd` | `write` (includes read) | harvestd on the MBP | `HIRAIA_CRM_API_KEY` |
 | `beaniebot` | `read` | Beaniebot chat queries | `HIRAIA_CRM_API_KEY` |
+| `hiraia-admin` | `read` | `/admin/crm` contact cards (`deploy/vps-monitor/crm_contacts.py`, same host) | `HIRAIA_CRM_API_KEY_FILE` → `/etc/hiraia-monitor/crm-admin.key`, placed on the origin by `install.sh` (the pickup file is shredded; the admin re-reads the file after a rotation) |
 
 `keygen.sh <client> <read|write> [--rotate]` (on the origin, as root) generates a 256-bit key,
 stores only its SHA-256 in `crm.env` under `HIRAIA_CRM_CLIENT_<CLIENT>`, writes the plaintext once

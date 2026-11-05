@@ -1,0 +1,38 @@
+<div class="crm" id="crm" data-config="__CRM_CONFIG__">
+  <div class="crm-intro">
+    <h1>CRM contacts</h1>
+    <p class="lede">School-pipeline relationships from your Messenger, Viber and Telegram conversations. Cards show the CRM’s classified summaries — never raw messages. Times are Manila time (GMT+8).</p>
+  </div>
+  <div class="crm-bar" role="search">
+    <div class="crm-search">
+      <svg class="crm-search-icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.6"></circle><path d="m10.4 10.4 3.6 3.6"></path></svg>
+      <label class="crm-sr" for="crm-q">Search contacts</label>
+      <input id="crm-q" type="search" maxlength="200" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" placeholder="Search name, alias, school, role, notes…">
+      <button type="button" class="crm-clear-q" id="crm-clear-q" aria-label="Clear search" hidden>×</button>
+      <kbd class="crm-kbd" aria-hidden="true">/</kbd>
+    </div>
+    <button type="button" class="refresh crm-refresh" id="crm-refresh" aria-label="Refresh contacts"><span aria-hidden="true">↻</span><span class="crm-refresh-text"> Refresh</span></button>
+  </div>
+  <div class="crm-filters">
+    <div class="crm-facet" role="group" aria-labelledby="crm-platform-label">
+      <span class="crm-facet-label" id="crm-platform-label">Channel</span>
+      <div class="crm-chips" id="crm-platforms"></div>
+    </div>
+    <div class="crm-facet" role="group" aria-labelledby="crm-stage-label">
+      <span class="crm-facet-label" id="crm-stage-label">Stage</span>
+      <div class="crm-chips" id="crm-stages"></div>
+    </div>
+  </div>
+  <div class="crm-results-bar">
+    <p class="crm-count" id="crm-count" role="status" aria-live="polite">Loading contacts…</p>
+    <div class="crm-active" id="crm-active"></div>
+    <button type="button" class="plain crm-reset" id="crm-reset" hidden>Clear all</button>
+    <label class="crm-sort"><span aria-hidden="true">Sort</span><select id="crm-sort" aria-label="Sort contacts"></select></label>
+  </div>
+  <p class="crm-banner" id="crm-banner" role="alert" hidden></p>
+  <div class="crm-grid" id="crm-grid" aria-busy="true"></div>
+  <div class="crm-empty" id="crm-empty" hidden></div>
+  <p class="foot crm-foot">“Recent activity” orders contacts by their latest exact contact time; never-contacted records come last. <b>≈</b> marks a contact whose message time the CRM does not have: its position uses when the CRM last received a summary, which is never shown as a message time. Channels list every synced thread plus the contact record’s own platform. <span id="crm-updated"></span></p>
+</div>
+<script>__CRM_JS__</script>
+<script>HiraiaCrm.mount(document.getElementById('crm'));</script>
