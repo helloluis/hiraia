@@ -77,3 +77,11 @@ applicability and calendar verification are tracked in the server data README.
 Teacher-level defaults are synced as profile.pacingParams. Pass
 `{ ...publishedDefaults, ...profile.pacingParams }` as defaults; track.params then
 overrides those values.
+
+
+Sessions before a track's startPosition.date are emitted as `before_tala` in
+kind/mark and per-group kind/mark, with empty competency IDs and no plan link.
+They fill the onboarding week without inventing historical competency mappings.
+Do not offer create-plan or missed-session actions for those groups. In a mixed
+entry, active groups determine the entry summary and still need their normal plans.
+Covered history never contributes to sessionsBehind, even with assumeTaught off.

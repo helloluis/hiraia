@@ -202,3 +202,37 @@ test('cancelled accepted timeline period is not falsely labelled assumed taught'
   const timeline = engine.buildTimeline({ ...input, from: input.term.startDate, to: input.term.endDate, classes: [cls], assignments: [input.assignment], tracks: [input.track], plans: [], pairingOverrides: [] });
   assert.equal(timeline[0]!.mark, 'not_taught');
 });
+
+test('mid-week onboarding emits covered-before-Tala sessions without plans or deficits', () => {
+  const input = fixture(); input.today = '2026-11-04';
+  input.track.startPosition = { competencyId: input.competencies[1]!.id, date: input.today, estimated: false };
+  input.track.params.assumeTaught = false;
+  input.marks = [SessionMark.parse({ id: 'past-mark', classId: input.track.classId, assignmentId: input.assignment.id, gradeGroupId: input.track.gradeGroupId, date: '2026-11-02', competencyIds: [input.competencies[0]!.id], status: 'not_taught' })];
+  const cls = ClassRecord.parse({ id: input.track.classId, schoolYearId: input.schoolYear.id, name: 'Class', gradeGroups: [{ id: input.track.gradeGroupId, grade: '4' }] });
+  const oldPlan = Plan.parse({ id: 'old-plan', templateId: 'tpl.dlp.v1', language: 'en', grades: ['4'], durationMinutes: 50, placements: [{ classId: cls.id, assignmentId: input.assignment.id, dates: ['2026-11-02'] }] });
+  const timeline = engine.buildTimeline({ ...input, from: '2026-11-02', to: '2026-11-06', classes: [cls], assignments: [input.assignment], tracks: [input.track], plans: [oldPlan], pairingOverrides: [] });
+  assert.equal(timeline.length, 5);
+  for (const entry of timeline.slice(0, 2)) {
+    assert.equal(entry.kind, 'before_tala'); assert.equal(entry.mark, 'before_tala');
+    assert.equal(entry.byGroupKind![input.track.gradeGroupId], 'before_tala');
+    assert.equal(entry.byGroupMark![input.track.gradeGroupId], 'before_tala');
+    assert.deepEqual(entry.byGroup[input.track.gradeGroupId], []);
+    assert.equal(entry.planId, null); assert.equal(entry.planState, 'none');
+  }
+  assert.equal(timeline[2]!.kind, 'lesson'); assert.equal(timeline[2]!.mark, null);
+  assert.equal(engine.computePacing(input).sessionsBehind, 0);
+});
+test('covered history remains group-specific when a second grade starts later', () => {
+  const input = fixture(); input.today = '2026-11-04';
+  input.track.startPosition = { competencyId: input.competencies[1]!.id, date: '2026-11-03', estimated: false };
+  const second = { ...input.track, id: 'track002', gradeGroupId: 'group002', startPosition: { competencyId: input.competencies[1]!.id.replace('.g4.', '.g2.'), date: '2026-11-04', estimated: false } };
+  const cls = ClassRecord.parse({ id: input.track.classId, schoolYearId: input.schoolYear.id, name: 'Mixed', gradeGroups: [{ id: input.track.gradeGroupId, grade: '4' }, { id: 'group002', grade: '2' }] });
+  const assignment = { ...input.assignment, gradeGroupIds: [input.track.gradeGroupId, second.gradeGroupId] };
+  const competencies = [...input.competencies, ...input.competencies.map(c => ({ ...c, grade: '2' as const, id: c.id.replace('.g4.', '.g2.') }))];
+  const timeline = engine.buildTimeline({ ...input, competencies, from: '2026-11-02', to: '2026-11-06', classes: [cls], assignments: [assignment], tracks: [input.track, second], plans: [], pairingOverrides: [] });
+  assert.equal(timeline[0]!.kind, 'before_tala');
+  assert.equal(timeline[1]!.kind, 'lesson'); assert.equal(timeline[1]!.mark, 'assumed_taught');
+  assert.equal(timeline[1]!.byGroupMark!.group002, 'before_tala');
+  assert.equal(timeline[1]!.pairing, null);
+  assert.equal(timeline[2]!.kind, 'lesson'); assert.ok(timeline[2]!.pairing);
+});

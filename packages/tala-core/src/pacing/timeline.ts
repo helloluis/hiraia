@@ -48,6 +48,13 @@ export function buildTimeline(input: TimelineInput): TimelineEntry[] {
         if (!anchorDomains) anchorDomains = ordered.map(c => domainKey(c.domain));
         if (!pacing.competencies.length) for (const session of sessions) { const e = ensure(session); e.byGroup[groupId] = []; e.byGroupKind![groupId] = 'lesson'; }
         const plan = computePacing(pacing);
+        // Onboarding history fills the week without inventing past competency/date mappings.
+        // This is display-only history, outside the remaining-session pacing calculation.
+        if (track.startPosition) for (const session of sessions.filter(s => s.date < track.startPosition!.date)) {
+          const e = ensure(session);
+          e.byGroup[groupId] = [];
+          e.byGroupKind![groupId] = 'before_tala';
+        }
         for (const item of plan.items) for (const s of item.sessions) { const e = ensure(s); e.byGroup[groupId] = [...item.competencyIds]; e.byGroupKind![groupId] = 'lesson'; }
         for (const s of plan.bufferSessions) { const e = ensure(s); e.byGroupKind![groupId] = 'buffer'; if (!Object.keys(e.byGroup).length) e.kind = 'buffer'; }
         for (const s of plan.assessmentSessions) { const e = ensure(s); e.byGroupKind![groupId] = 'assessment'; if (!Object.keys(e.byGroup).length) e.kind = 'assessment'; }
@@ -60,9 +67,11 @@ export function buildTimeline(input: TimelineInput): TimelineEntry[] {
     const override = [...input.pairingOverrides].sort((a, b) => Number(a.slotId === null) - Number(b.slotId === null) || compareText(a.id, b.id)).find(o => o.classId === e.classId && o.assignmentId === e.assignmentId && o.date === e.date && (o.slotId === null || o.slotId === e.slotId));
     const assignment = input.assignments.find(a => a.id === e.assignmentId)!;
     if (override) {
-      for (const [group, ids] of Object.entries(override.byGroup)) if (assignment.gradeGroupIds.includes(group)) { e.byGroup[group] = [...ids]; e.byGroupKind![group] = 'lesson'; }
+      for (const [group, ids] of Object.entries(override.byGroup)) if (assignment.gradeGroupIds.includes(group) && e.byGroupKind?.[group] !== 'before_tala') { e.byGroup[group] = [...ids]; e.byGroupKind![group] = 'lesson'; }
     }
-    const groups = Object.keys(e.byGroup);
+    const groups = Object.keys(e.byGroup).filter(g => e.byGroupKind?.[g] !== 'before_tala');
+    const kinds = Object.values(e.byGroupKind ?? {}).filter(k => k !== 'other_subject');
+    e.kind = kinds.every(k => k === 'before_tala') && kinds.length ? 'before_tala' : kinds.includes('lesson') ? 'lesson' : kinds.includes('assessment') ? 'assessment' : kinds.includes('buffer') ? 'buffer' : 'lesson';
     if (groups.length > 1) {
       const domains = new Map<string, string[]>();
       for (const group of groups) {
@@ -73,11 +82,12 @@ export function buildTimeline(input: TimelineInput): TimelineEntry[] {
       e.pairing = { shared: shared.length > 1, groupIds: shared.length > 1 ? shared : [], overridden: !!override };
     }
     if (groups.length) e.kind = 'lesson';
-    const plan = input.plans.filter(p => p.state !== 'archived').find(p => p.placements.some(x => x.classId === e.classId && (x.assignmentId === null || x.assignmentId === e.assignmentId) && x.dates.includes(e.date)));
+    const plan = e.kind === 'before_tala' ? undefined : input.plans.filter(p => p.state !== 'archived').find(p => p.placements.some(x => x.classId === e.classId && (x.assignmentId === null || x.assignmentId === e.assignmentId) && x.dates.includes(e.date)));
     if (plan) { e.planId = plan.id; e.planState = plan.state === 'locked' ? 'locked' : 'draft'; }
     const marks = input.marks.filter(m => m.classId === e.classId && m.assignmentId === e.assignmentId && m.date === e.date && (m.slotId === e.slotId || m.slotId === null && e.slotId === firstSlots.get(`${e.date}|${e.assignmentId}`)) && e.byGroupKind?.[m.gradeGroupId] !== undefined && e.byGroupKind[m.gradeGroupId] !== 'other_subject');
     const markGroups = Object.keys(e.byGroupKind ?? {}).filter(g => e.byGroupKind![g] !== 'other_subject');
     const states = markGroups.map(group => {
+      if (e.byGroupKind?.[group] === 'before_tala') return 'before_tala';
       const mark = marks.find(m => m.gradeGroupId === group && (!m.competencyIds.length || m.competencyIds.some(id => e.byGroup[group]?.includes(id))));
       if (mark) return mark.status;
       if (!validSlots.has(`${e.date}|${e.assignmentId}|${e.slotId}`)) return 'not_taught';
@@ -85,7 +95,8 @@ export function buildTimeline(input: TimelineInput): TimelineEntry[] {
       return e.date < input.today && (track?.params.assumeTaught ?? input.defaults.assumeTaught) ? 'assumed_taught' : null;
     });
     e.byGroupMark = Object.fromEntries(markGroups.map((group, i) => [group, states[i] ?? null]));
-    e.mark = states.includes('not_taught') ? 'not_taught' : states.includes('partial') ? 'partial' : states.length && states.every(s => s === 'taught') ? 'taught' : states.length && states.every(s => s === 'taught' || s === 'assumed_taught') ? 'assumed_taught' : null;
+    const activeStates = states.filter(s => s !== 'before_tala');
+    e.mark = !activeStates.length && states.length ? 'before_tala' : activeStates.includes('not_taught') ? 'not_taught' : activeStates.includes('partial') ? 'partial' : activeStates.length && activeStates.every(s => s === 'taught') ? 'taught' : activeStates.length && activeStates.every(s => s === 'taught' || s === 'assumed_taught') ? 'assumed_taught' : null;
   }
   return [...entries.values()].filter(e => e.date >= input.from && e.date <= input.to).sort((a, b) => compareText(a.date, b.date) || compareText(a.classId, b.classId) || compareText(a.assignmentId, b.assignmentId) || compareText(a.slotId, b.slotId));
 }
