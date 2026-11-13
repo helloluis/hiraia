@@ -6,3 +6,7 @@
 4. The installed RN 0.81.5 source declares `minSdk = 24` in `react-native/gradle/libs.versions.toml`, below Android 8/API 26. Actual Expo/SQLCipher/background-task compatibility and performance on Android 8 still require the native reference-device spike; a JS export does not verify them. No native builds were run, per instructions.
 
 No contracts were edited by Worker E. Sync and pacing use the real shared implementations, not fakes. The sample curriculum pack/calendar are explicitly fictional demonstration fixtures only.
+
+5. Older-plan hydration: PullQuery now supports planIds, but SyncTransport.pull and SyncEngine.sync options still expose only cursor/limit/window bounds. Please add a shared `fetchPlans(planIds)` (or equivalent) operation that uses typed sync.pull, hydrates records through the normal engine compatibility/conflict rules, paginates if necessary, and leaves sync.cursor unchanged. Mobile should not put remote snapshots through engine.put (which queues them as local changes) or bypass the engine with raw SQLite writes. Server implementation of the filter is also required as announced by A. No single-plan REST fetch route is assumed.
+
+Server-sync compatibility table (§4 of A's notes) was read. Physical LocalStore.remove already works atomically. Applied-null deletes, stale-delete restoration and blanked tombstone handling belong to the shared engine/H; mobile does not fork those policies. Lock/unlock and localised error handling have been updated in the app.

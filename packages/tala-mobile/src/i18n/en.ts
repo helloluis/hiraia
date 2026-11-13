@@ -1,4 +1,11 @@
 export const en = {
+  emailTaken: 'This email already has an account. Sign in instead.',
+  invalidCredentials: 'Check your email and password, then try again.',
+  passwordUnsafe:
+    'Choose a longer password that is hard to guess and different from your name or email.',
+  authLinkExpired: 'This link has expired. Request a new one.',
+  tryLater: 'Please wait a little, then try again. Your saved work is safe.',
+  requestTooLarge: 'This file or change is too large. Try a smaller one. Your saved work is safe.',
   lockedCopy: 'The other phone locked this lesson. Your edits are safe in a new draft in Lessons.',
   sendRejected:
     'Some changes could not be sent. Your text is kept on this phone. Review the lesson.',

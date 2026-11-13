@@ -1,5 +1,13 @@
 import type { StringKey } from './en';
 export const fil: Record<StringKey, string> = {
+  emailTaken: 'May account na ang email na ito. Mag-sign in na lang.',
+  invalidCredentials: 'Tingnan ang email at password, saka subukan muli.',
+  passwordUnsafe:
+    'Pumili ng mas mahabang password na mahirap hulaan at iba sa pangalan o email mo.',
+  authLinkExpired: 'Paso na ang link na ito. Humingi ng bago.',
+  tryLater: 'Maghintay sandali, saka subukan muli. Ligtas ang naka-save mong gawa.',
+  requestTooLarge:
+    'Masyadong malaki ang file o pagbabago. Subukan ang mas maliit. Ligtas ang naka-save mong gawa.',
   lockedCopy:
     'Na-lock ang aralin sa isa pang telepono. Ligtas ang mga pagbabago sa bagong burador sa Mga Aralin.',
   sendRejected: 'May hindi naipadalang pagbabago. Nasa telepono pa ang teksto. Suriin ang aralin.',

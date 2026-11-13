@@ -48,6 +48,7 @@ import { initialConditions, transition, type Conditions } from './runtime/ladder
 import { createScheduler } from './runtime/scheduler';
 import { registerBackground } from './runtime/background';
 import { lockPlan, validatePlanForLock } from '@hiraia/tala-core/plan';
+import { messageForError } from './runtime/errors';
 import { markSession } from './runtime/session';
 import { previewNoClass, hasIncompatibleMoves } from './runtime/realignment';
 import { samplePack } from './runtime/sample';
@@ -147,8 +148,8 @@ export default function App() {
     }
     setBytes(Number((await runtime.store.getMeta('network.bytes')) ?? 0));
   }
-  function error() {
-    setMessage('failed');
+  function error(cause?: unknown) {
+    setMessage(messageForError(cause));
     setConditions((old) => ({ ...old, storageFull: Paths.availableDiskSpace < 1024 * 1024 }));
   }
   // Saves are serialised, including rapid keystrokes; no out-of-order write can replace a newer edit.
@@ -167,8 +168,8 @@ export default function App() {
   async function act(action: () => Promise<unknown>) {
     try {
       await action();
-    } catch {
-      error();
+    } catch (cause) {
+      error(cause);
     }
   }
   useEffect(() => {
@@ -372,8 +373,8 @@ export default function App() {
       setConditions((c) => ({ ...c, sessionExpired: false }));
       setPage(classes.length ? 'main' : 'setup');
       setTimeout(() => scheduler.current?.start(), 0);
-    } catch {
-      setMessage('failed');
+    } catch (cause) {
+      setMessage(messageForError(cause));
     } finally {
       setBusy(false);
     }
@@ -495,7 +496,7 @@ export default function App() {
     }
     const next =
       selected.state === 'locked'
-        ? Plan.parse({ ...selected, state: 'draft', lock: null })
+        ? Plan.parse({ ...selected, state: 'draft', lock: null, submitted: null })
         : lockPlan({
             plan: selected,
             sections: allSections,
@@ -506,6 +507,12 @@ export default function App() {
             revision: null,
           });
     await queue.current;
+    if (next.lock)
+      next.lock.sectionRevs = Object.fromEntries(
+        (await rt!.engine.list('plan_section'))
+          .filter((s) => s.data.planId === selected.id)
+          .map((s) => [s.id, s.rev])
+      );
     await rt!.engine.put('plan', next);
     setSelected(next);
     setEditing(false);
