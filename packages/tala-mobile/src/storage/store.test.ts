@@ -79,6 +79,7 @@ test('records, outbox, cursor survive reopen; failed batch rolls back all writes
   await assert.rejects(
     store.commit({
       put: [{ ...record, data: { ...record.data, text: 'must rollback' } }],
+      remove: [{ entity: 'day_note', id: record.id }],
       outboxAdd: [{ mutationId: null } as never],
       meta: { cursor: 'page-2' },
     })
@@ -147,5 +148,19 @@ test('shared sync wiring resumes durable outbox with same mutation identifier af
   assert.equal(ids[0], ids[1]);
   assert.equal((await store.outbox()).length, 0);
   assert.equal((await engine.get('day_note', record.id))?.dirty, false);
+  sql.close();
+});
+
+test('physical purges remove private rows atomically with cursor metadata', async () => {
+  const sql = database(':memory:');
+  const store = await createSqliteStore(sql.db);
+  await store.commit({ put: [record] });
+  await store.commit({
+    remove: [{ entity: record.entity, id: record.id }],
+    meta: { cursor: 'after-purge' },
+  });
+  assert.equal(await store.get('day_note', record.id), null);
+  assert.equal((await store.list('day_note', { includeDeleted: true })).length, 0);
+  assert.equal(await store.getMeta('cursor'), 'after-purge');
   sql.close();
 });

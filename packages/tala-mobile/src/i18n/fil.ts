@@ -1,5 +1,16 @@
 import type { StringKey } from './en';
 export const fil: Record<StringKey, string> = {
+  lockedCopy:
+    'Na-lock ang aralin sa isa pang telepono. Ligtas ang mga pagbabago sa bagong burador sa Mga Aralin.',
+  sendRejected: 'May hindi naipadalang pagbabago. Nasa telepono pa ang teksto. Suriin ang aralin.',
+  signInAgain:
+    'Ligtas ang naka-save mong gawa. Mag-sign in muli kapag may koneksiyon para maipadala.',
+  sampleLesson: 'Halimbawang aralin',
+  sampleObjective: 'Ilarawan ang isang napansin sa silid-aralan.',
+  samplePrompt:
+    'Itanong sa mga mag-aaral kung ano ang napansin nila. Hayaang magbigay ng halimbawa ang bawat pangkat. Ipapaliwanag ang kanilang sagot.',
+  templateDefault: 'Banghay: gamitin ang para sa klase',
+  completeRequired: 'Kumpletuhin ang mahahalagang bahagi at magdagdag ng competency bago i-lock.',
   group: 'Pangkat',
   direct: 'Kasama ang guro',
   independent: 'Sariling gawain',

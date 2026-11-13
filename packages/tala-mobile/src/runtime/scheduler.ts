@@ -1,4 +1,4 @@
-import type { SyncEngine } from '@hiraia/tala-core/contracts';
+import type { SyncEngine, SyncReport } from '@hiraia/tala-core/contracts';
 import { retryDelay } from './ladder';
 export function syncWindow(now: Date, light: boolean) {
   const date = (offset: number) => {
@@ -17,7 +17,7 @@ export function createScheduler(
   options: {
     online(): boolean;
     light(): boolean;
-    changed(ok: boolean, elapsedMs: number): void;
+    changed(ok: boolean, elapsedMs: number, report: SyncReport): void;
     delay?: typeof retryDelay;
   }
 ) {
@@ -26,12 +26,13 @@ export function createScheduler(
     stopped = false,
     attempts = 0;
   async function run() {
+    timer = undefined;
     if (running || stopped || !options.online()) return;
     running = true;
     const start = Date.now();
     try {
       const report = await engine.sync(syncWindow(new Date(), options.light()));
-      options.changed(report.ok, Date.now() - start);
+      options.changed(report.ok, Date.now() - start, report);
       attempts = report.ok ? 0 : attempts + 1;
       if (!report.ok && report.error !== 'unauthenticated' && !stopped)
         timer = setTimeout(
@@ -45,11 +46,11 @@ export function createScheduler(
   return {
     start() {
       stopped = false;
+      if (timer) clearTimeout(timer);
       void run();
     },
     kick() {
-      if (timer) clearTimeout(timer);
-      void run();
+      if (!timer && !running && !stopped) timer = setTimeout(run, 1000);
     },
     stop() {
       stopped = true;

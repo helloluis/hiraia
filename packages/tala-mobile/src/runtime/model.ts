@@ -1,5 +1,6 @@
 import {
   ClassRecord,
+  TeacherProfile,
   SchoolYear,
   TeachingAssignment,
   PacingTrack,
@@ -14,6 +15,9 @@ import type {
   TimelineInput,
   CurriculumPack,
 } from '@hiraia/tala-core/contracts';
+import { blankSections } from '@hiraia/tala-core/plan';
+import { allocationFromPlan } from '@hiraia/tala-core/pacing';
+import { BUILTIN_TEMPLATES } from '@hiraia/tala-core/contracts';
 import { engine as pacing } from '@hiraia/tala-core/pacing';
 import * as Crypto from 'expo-crypto';
 export const today = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Manila' });
@@ -25,7 +29,9 @@ export async function timelineInput(
   to: string
 ): Promise<TimelineInput | null> {
   const years = await engine.list('school_year');
+  const profile = await engine.get('profile', 'profile');
   const year =
+    years.find((y) => y.id === profile?.data.activeSchoolYearId)?.data ??
     years.find((y) => y.data.startDate <= today() && y.data.endDate >= today())?.data ??
     years[0]?.data;
   if (!year) return null;
@@ -45,13 +51,14 @@ export async function timelineInput(
     marks: (await engine.list('session_mark')).map((r) => r.data),
     plans: (await engine.list('plan')).map((r) => r.data),
     pairingOverrides: (await engine.list('pairing_override')).map((r) => r.data),
-    defaults: DEFAULT_PACING_PARAMS,
+    defaults: { ...DEFAULT_PACING_PARAMS, ...profile?.data.pacingParams },
   };
 }
 export async function setupClass(
   engine: SyncEngine,
   input: {
     name: string;
+    teacherName?: string;
     school: string;
     subject: string;
     grades: GradeLevel[];
@@ -70,6 +77,17 @@ export async function setupClass(
     terms: input.preset.terms.map((t) => ({ ...t, id: newId() })),
   });
   await engine.put('school_year', year);
+  const profile = await engine.get('profile', 'profile');
+  await engine.put(
+    'profile',
+    TeacherProfile.parse({
+      ...profile?.data,
+      id: 'profile',
+      displayName: profile?.data.displayName ?? input.teacherName ?? 'Tala',
+      schoolName: input.school,
+      activeSchoolYearId: year.id,
+    })
+  );
   const cls = ClassRecord.parse({
     id: newId(),
     schoolYearId: year.id,
@@ -133,9 +151,31 @@ export async function setupClass(
           ...track,
           startPosition: input.starts[group.grade]
             ? { competencyId: input.starts[group.grade]!, date: today(), estimated: false }
-            : proposal,
+            : proposal
+              ? { ...proposal, estimated: false }
+              : null,
         };
       }
+      const calendarDays = (await engine.list('calendar_day'))
+        .map((r) => r.data)
+        .filter((d) => d.schoolYearId === year.id);
+      track = {
+        ...track,
+        allocation: allocationFromPlan(
+          pacing.computePacing({
+            track,
+            schoolYear: year,
+            term,
+            assignment,
+            calendarDays,
+            competencies,
+            checks: [],
+            marks: [],
+            today: today(),
+            defaults: DEFAULT_PACING_PARAMS,
+          })
+        ),
+      };
       await engine.put('pacing_track', track);
     }
   return cls;
@@ -144,12 +184,13 @@ export async function createPlan(
   engine: SyncEngine,
   cls: Awaited<ReturnType<typeof setupClass>>,
   date = today(),
-  assignmentId: string | null = null
+  assignmentId: string | null = null,
+  templateId?: string
 ) {
   const plan = Plan.parse({
     id: newId(),
     title: cls.name,
-    templateId: cls.gradeGroups.length > 1 ? 'tpl.multigrade.v1' : 'tpl.dlp.v1',
+    templateId: templateId || (cls.gradeGroups.length > 1 ? 'tpl.multigrade.v1' : 'tpl.dlp.v1'),
     language: 'fil',
     grades: cls.gradeGroups.map((g) => g.grade),
     gradeGroupIds: cls.gradeGroups.map((g) => g.id),
@@ -157,40 +198,32 @@ export async function createPlan(
     placements: [{ classId: cls.id, assignmentId, dates: [date] }],
   });
   await engine.put('plan', plan);
-  for (const key of [
-    'objectives',
-    'materials',
-    cls.gradeGroups.length > 1 ? 'multigrade' : 'procedure',
-    'assessment',
-    'reflection',
-  ])
-    await engine.put(
-      'plan_section',
-      PlanSection.parse({
-        id: newId(),
-        planId: plan.id,
-        key,
-        content:
-          key === 'multigrade'
-            ? {
-                type: 'multigrade',
-                blocks: [
-                  {
-                    id: newId(),
-                    label: '',
-                    minutes: 50,
-                    teacherWith: 'all',
-                    groups: Object.fromEntries(
-                      cls.gradeGroups.map((g) => [g.id, { mode: 'shared', activity: [] }])
-                    ),
-                  },
-                ],
-              }
-            : key === 'procedure'
-              ? { type: 'procedure', steps: [{ id: newId(), title: '', minutes: 50, body: [] }] }
-              : { type: 'text', blocks: [] },
-      })
-    );
+  const template = BUILTIN_TEMPLATES.find((t) => t.id === plan.templateId)!;
+  for (const section of blankSections(template, plan.id, cls.gradeGroups, newId)) {
+    if (section.content.type === 'procedure')
+      section.content = {
+        type: 'procedure',
+        steps: [{ id: newId(), title: '', minutes: 50, body: [] }],
+      };
+    if (section.content.type === 'multigrade')
+      section.content = {
+        type: 'multigrade',
+        blocks: [
+          {
+            id: newId(),
+            label: '',
+            minutes: 50,
+            transitionMinutes: 0,
+            teacherWith: 'all',
+            pairedGroupIds: [],
+            groups: Object.fromEntries(
+              cls.gradeGroups.map((g) => [g.id, { mode: 'shared', activity: [] }])
+            ),
+          },
+        ],
+      };
+    await engine.put('plan_section', section);
+  }
   return plan;
 }
 export function samplePreset(): CalendarPreset {

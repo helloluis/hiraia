@@ -36,6 +36,8 @@ export async function createSqliteStore(db: Database): Promise<LocalStore> {
             r.id,
             JSON.stringify(r)
           );
+        for (const row of batch.remove ?? [])
+          await tx.runAsync('DELETE FROM records WHERE entity=? AND id=?', row.entity, row.id);
         for (const o of batch.outboxAdd ?? [])
           await tx.runAsync(
             'INSERT OR REPLACE INTO outbox VALUES(?,?)',

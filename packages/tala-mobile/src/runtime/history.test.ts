@@ -27,7 +27,7 @@ function fixture() {
     }),
   };
 }
-test('history preserves original formatting once per edit session and caps old versions', async () => {
+test('history preserves original formatting once per edit session and retains unsent versions', async () => {
   const { engine, newId } = fixture();
   const section = PlanSection.parse({
     id: 'section-001',
@@ -44,7 +44,7 @@ test('history preserves original formatting once per edit session and caps old v
     await history.beforeEdit(section);
   }
   const revisions = await engine.list('section_revision');
-  assert.equal(revisions.length, 10);
+  assert.equal(revisions.length, 13);
   assert.deepEqual(revisions[0]!.data.content, section.content);
 });
 test('marking a multi-grade session covers every group and Undo removes new marks', async () => {

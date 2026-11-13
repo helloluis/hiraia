@@ -28,6 +28,7 @@ import {
   SessionMark,
   CalendarDay,
   DEFAULT_PACING_PARAMS,
+  BUILTIN_TEMPLATES,
 } from '@hiraia/tala-core/contracts';
 import type {
   LocalRecord,
@@ -46,13 +47,14 @@ import { createRuntime, type Runtime } from './runtime/runtime';
 import { initialConditions, transition, type Conditions } from './runtime/ladder';
 import { createScheduler } from './runtime/scheduler';
 import { registerBackground } from './runtime/background';
+import { lockPlan, validatePlanForLock } from '@hiraia/tala-core/plan';
 import { markSession } from './runtime/session';
-import { previewNoClass } from './runtime/realignment';
+import { previewNoClass, hasIncompatibleMoves } from './runtime/realignment';
 import { samplePack } from './runtime/sample';
 import { sectionHistory } from './runtime/history';
 import { referenceCache } from './runtime/reference';
 import { today, newId, timelineInput, setupClass, createPlan, samplePreset } from './runtime/model';
-import { exportWithFallback, sectionText } from './runtime/print';
+import { exportWithFallback, printPageSize, type PrintInput } from './runtime/print';
 import { Body, Title, Button, Field, styles } from './ui/components';
 import { ContentEditor } from './ui/ContentEditor';
 import { en, type StringKey } from './i18n/en';
@@ -95,11 +97,14 @@ export default function App() {
     [name, setName] = useState(''),
     [register, setRegister] = useState(false),
     [authenticated, setAuthenticated] = useState(false);
+  const [templateChoice, setTemplateChoice] = useState('');
   const [paper, setPaper] = useState<'a4' | 'long'>('a4'),
     [previews, setPreviews] = useState<RealignmentPreview[]>([]),
     [pendingDay, setPendingDay] = useState<ReturnType<typeof CalendarDay.parse> | null>(null),
     [undo, setUndo] = useState<(() => Promise<void>) | null>(null),
     [bytes, setBytes] = useState(0);
+  const editingRef = useRef(editing);
+  editingRef.current = editing;
   const drafts = useRef<Record<string, SectionData>>({});
   const history = useRef<ReturnType<typeof sectionHistory> | null>(null);
   const queue = useRef(Promise.resolve()),
@@ -115,7 +120,7 @@ export default function App() {
       runtime.engine.list('plan_section'),
       runtime.engine.status(),
     ]);
-    setPlans(p);
+    setPlans(p.filter((p) => p.data.state !== 'archived'));
     setClasses(c.filter((c) => !c.data.archived));
     setSections(
       s.map((row) => (drafts.current[row.id] ? { ...row, data: drafts.current[row.id]! } : row))
@@ -175,7 +180,8 @@ export default function App() {
         setRt(runtime);
         history.current = sectionHistory(runtime.engine, newId, () => new Date());
         await refresh(runtime);
-        setLanguage((await runtime.store.getMeta('language')) === 'en' ? 'en' : 'fil');
+        const preference = await runtime.store.getMeta('language');
+        if (preference) setLanguage(preference === 'en' ? 'en' : 'fil');
         setConditions((c) => ({
           ...c,
           dataSaver: c.dataSaver,
@@ -184,25 +190,37 @@ export default function App() {
         }));
         const saver = await runtime.store.getMeta('dataSaver');
         if (saver === 'true') setConditions((c) => ({ ...c, dataSaver: true }));
+        setName((await runtime.store.getMeta('teacherName')) ?? '');
         const token = await SecureStore.getItemAsync('tala.session');
         setAuthenticated(!!token);
         if (!token && (await runtime.engine.list('class')).length === 0) setPage('auth');
         const expires = await SecureStore.getItemAsync('tala.offline-until');
         if (expires && new Date(expires).getTime() < Date.now())
           setConditions((c) => ({ ...c, sessionExpired: true }));
-        unsubscribe = runtime.engine.subscribe(() => {
+        unsubscribe = runtime.engine.subscribe((changed) => {
+          if (
+            editingRef.current &&
+            changed.every((c) => c.entity === 'plan_section' || c.entity === 'section_revision')
+          ) {
+            void runtime.engine.status().then(setStatus);
+            return;
+          }
           void refresh(runtime).catch(error);
         });
         scheduler.current = createScheduler(runtime.engine, {
           online: () => conditionRef.current.connected && !conditionRef.current.sessionExpired,
           light: () => transition(conditionRef.current, {}).rung !== 'full',
-          changed: (ok, ms) => {
+          changed: (ok, ms, report) => {
+            if (report.lockCopies.length) setMessage('lockedCopy');
+            else if (report.rejected) setMessage('sendRejected');
+            else if (report.error === 'unauthenticated') setMessage('signInAgain');
             setConditions((c) => ({ ...c, serverDown: !ok, slow: ok ? ms > 4000 : c.slow }));
             void refresh(runtime);
           },
         });
         scheduler.current.kick();
         await registerBackground(async () => {
+          if (!(await SecureStore.getItemAsync('tala.session'))) return true;
           const result = await runtime.engine.sync();
           return result.ok;
         });
@@ -307,7 +325,7 @@ export default function App() {
       setPage('setup');
       return;
     }
-    const created = await createPlan(rt!.engine, cls, date, assignmentId);
+    const created = await createPlan(rt!.engine, cls, date, assignmentId, templateChoice);
     const entry = entries.find(
       (e) => e.date === date && e.assignmentId === assignmentId && e.classId === cls.id
     );
@@ -348,10 +366,12 @@ export default function App() {
       ).toISOString();
       await SecureStore.setItemAsync('tala.offline-until', until);
       setAuthenticated(true);
+      setName(result.user.displayName);
+      await rt!.store.commit({ meta: { teacherName: result.user.displayName } });
       setPassword('');
       setConditions((c) => ({ ...c, sessionExpired: false }));
       setPage(classes.length ? 'main' : 'setup');
-      scheduler.current?.start();
+      setTimeout(() => scheduler.current?.start(), 0);
     } catch {
       setMessage('failed');
     } finally {
@@ -366,7 +386,7 @@ export default function App() {
       setMessage('noPreset');
       return;
     }
-    let setupPacks = packs;
+    let setupPacks = packs.filter((p) => p.curriculumVersion !== 'sample');
     if (sample) {
       const added = parsed.map((g) => samplePack(g, language));
       const ids = new Set<string>(JSON.parse((await rt.store.getMeta('packs')) ?? '[]'));
@@ -381,6 +401,7 @@ export default function App() {
     }
     const cls = await setupClass(rt.engine, {
       name: sample ? t('sampleLabel') : className || t('class'),
+      teacherName: name || t('sampleLabel'),
       school,
       subject,
       grades: parsed,
@@ -393,7 +414,51 @@ export default function App() {
       for (let offset = 0; offset < 3; offset++) {
         const d = new Date();
         d.setDate(d.getDate() + offset);
-        await createPlan(rt.engine, cls, d.toISOString().slice(0, 10));
+        const plan = await createPlan(rt.engine, cls, d.toISOString().slice(0, 10));
+        await rt.engine.put('plan', {
+          ...plan,
+          title: `${t('sampleLesson')} ${offset + 1}`,
+          subjectName: subject,
+          competencies: Object.fromEntries(
+            cls.gradeGroups.map((g) => [
+              g.id,
+              [setupPacks.find((p) => p.grade === g.grade)!.competencies[offset]!.id],
+            ])
+          ),
+        });
+        for (const row of (await rt.engine.list('plan_section')).filter(
+          (s) => s.data.planId === plan.id
+        )) {
+          const rich = [{ t: 'p' as const, spans: [{ text: t('samplePrompt') }] }];
+          const old = row.data.content;
+          const content =
+            old.type === 'list'
+              ? { ...old, items: [t('sampleObjective')] }
+              : old.type === 'text'
+                ? { ...old, blocks: rich }
+                : old.type === 'pergroup'
+                  ? {
+                      ...old,
+                      groups: Object.fromEntries(Object.keys(old.groups).map((id) => [id, rich])),
+                    }
+                  : old.type === 'procedure'
+                    ? { ...old, steps: old.steps.map((step) => ({ ...step, body: rich })) }
+                    : old.type === 'multigrade'
+                      ? {
+                          ...old,
+                          blocks: old.blocks.map((block) => ({
+                            ...block,
+                            groups: Object.fromEntries(
+                              Object.entries(block.groups).map(([id, g]) => [
+                                id,
+                                { ...g, activity: rich },
+                              ])
+                            ),
+                          })),
+                        }
+                      : old;
+          await rt.engine.put('plan_section', { ...row.data, content });
+        }
       }
       await rt.engine.put('student', {
         id: newId(),
@@ -415,19 +480,31 @@ export default function App() {
   }
   async function lock() {
     if (!selected || !transition(conditionRef.current, {}).canWrite) return;
-    const next = Plan.parse({
-      ...selected,
-      state: selected.state === 'locked' ? 'draft' : 'locked',
-      lock:
-        selected.state === 'locked'
-          ? null
-          : {
-              lockedAt: new Date().toISOString(),
-              revisionCode: newId().slice(0, 8),
-              revision: null,
-              lockedBy: name,
-            },
-    });
+    await queue.current;
+    const template = BUILTIN_TEMPLATES.find((t) => t.id === selected.templateId)!;
+    const cls = classes.find((c) => selected.placements.some((p) => p.classId === c.id))?.data;
+    const allSections = (await rt!.engine.list('plan_section'))
+      .filter((s) => s.data.planId === selected.id)
+      .map((s) => s.data);
+    if (
+      selected.state !== 'locked' &&
+      !validatePlanForLock(selected, allSections, template, cls).ok
+    ) {
+      setMessage('completeRequired');
+      return;
+    }
+    const next =
+      selected.state === 'locked'
+        ? Plan.parse({ ...selected, state: 'draft', lock: null })
+        : lockPlan({
+            plan: selected,
+            sections: allSections,
+            template,
+            class: cls,
+            teacherName: name,
+            at: new Date().toISOString(),
+            revision: null,
+          });
     await queue.current;
     await rt!.engine.put('plan', next);
     setSelected(next);
@@ -438,6 +515,27 @@ export default function App() {
     setBusy(true);
     setMessage('pdfWait');
     cancel.current = false;
+    await queue.current;
+    const printPlan = (await rt!.engine.get('plan', selected.id))?.data ?? selected;
+    const customTemplate = await rt!.engine.get('template', printPlan.templateId);
+    const printOptions: PrintInput = {
+      plan: printPlan,
+      sections: (await rt!.engine.list('plan_section'))
+        .filter((s) => s.data.planId === printPlan.id)
+        .map((s) => s.data),
+      template:
+        BUILTIN_TEMPLATES.find((t) => t.id === printPlan.templateId) ??
+        customTemplate?.data ??
+        BUILTIN_TEMPLATES[0]!,
+      class: classes.find((c) => printPlan.placements.some((p) => p.classId === c.id))?.data,
+      schoolYear: input?.schoolYear,
+      teacherName: name,
+      lang: language,
+      paper,
+      includeImages: ladder.downloadAttachments,
+      competencyLookup: (id) => input?.competencies.find((c) => c.id === id),
+    };
+    const [width, height] = printPageSize(printOptions);
     const shareFile = async (uri: string) => {
       if (cancel.current) return;
       if (await Sharing.isAvailableAsync())
@@ -457,18 +555,13 @@ export default function App() {
       if (server) await serverCopy();
       else {
         const result = await exportWithFallback(
-          {
-            plan: selected,
-            sections: currentSections.map((s) => s.data),
-            paper,
-            images: ladder.downloadAttachments,
-          },
+          printOptions,
           {
             print: async (html) => {
               const result = await Print.printToFileAsync({
                 html,
-                width: paper === 'a4' ? 595 : 612,
-                height: paper === 'a4' ? 842 : 936,
+                width,
+                height,
               });
               await shareFile(result.uri);
             },
@@ -502,6 +595,7 @@ export default function App() {
   }
   const renderEntry = ({ item: e }: { item: TimelineEntry }) => (
     <View style={styles.card}>
+      {classes.find((c) => c.id === e.classId)?.data.isSample && <Body>{t('sampleLabel')}</Body>}
       <Body>
         {e.date} · {e.subjectName}
       </Body>
@@ -650,6 +744,16 @@ export default function App() {
               <>
                 <Title>{t('lessons')}</Title>
                 <Button
+                  label={
+                    BUILTIN_TEMPLATES.find((t) => t.id === templateChoice)?.name[language] ??
+                    t('templateDefault')
+                  }
+                  onPress={() => {
+                    const ids = ['', 'tpl.dlp.v1', 'tpl.dll.v1', 'tpl.multigrade.v1'];
+                    setTemplateChoice(ids[(ids.indexOf(templateChoice) + 1) % ids.length]!);
+                  }}
+                />
+                <Button
                   primary
                   disabled={!ladder.canWrite}
                   label={t('write')}
@@ -705,9 +809,17 @@ export default function App() {
                     label={t('removeSample')}
                     onPress={() =>
                       save(async () => {
+                        const samplePlans = (await rt.engine.list('plan')).filter(
+                          (p) =>
+                            p.data.placements.length &&
+                            p.data.placements.every((pl) => pl.classId === c.id)
+                        );
                         await rt.engine.put('class', { ...c.data, archived: true });
+                        for (const p of samplePlans)
+                          await rt.engine.put('plan', { ...p.data, state: 'archived' });
                         setUndo(() => async () => {
                           await rt.engine.put('class', c.data);
+                          for (const p of samplePlans) await rt.engine.put('plan', p.data);
                         });
                       })
                     }
@@ -850,7 +962,11 @@ export default function App() {
                   await SecureStore.deleteItemAsync('tala.session');
                   await SecureStore.deleteItemAsync('tala.offline-until');
                   scheduler.current?.stop();
+                  await rt.engine.sync();
                   await rt.store.clear();
+                  drafts.current = {};
+                  setSelected(null);
+                  setBootAttempt((n) => n + 1);
                   setAuthenticated(false);
                   await refresh();
                   setPage('auth');
@@ -862,6 +978,9 @@ export default function App() {
         {page === 'lesson' && selected && (
           <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.pad}>
             <Title>{selected.title}</Title>
+            {selected.placements.some(
+              (p) => classes.find((c) => c.id === p.classId)?.data.isSample
+            ) && <Body>{t('sampleLabel')}</Body>}
             <Body>{t(selected.state === 'locked' ? 'locked' : 'draft')}</Body>
             <Button
               primary
@@ -869,7 +988,10 @@ export default function App() {
               label={t(editing ? 'save' : 'edit')}
               onPress={() => {
                 if (editing) {
-                  void queue.current.then(() => setEditing(false));
+                  void queue.current.then(async () => {
+                    setEditing(false);
+                    await refresh();
+                  });
                 } else setEditing(true);
               }}
             />
@@ -996,6 +1118,7 @@ export default function App() {
                 label={t(choice)}
                 onPress={() =>
                   save(async () => {
+                    await history.current?.beforeEdit(conflict.data, 'conflict');
                     await rt.engine.resolveConflict('plan_section', conflict.id, choice);
                     setPage('lesson');
                   })
@@ -1031,9 +1154,13 @@ export default function App() {
             <Button
               label={t('apply')}
               primary
-              disabled={!ladder.canWrite}
+              disabled={!ladder.canWrite || hasIncompatibleMoves(previews)}
               onPress={() =>
                 save(async () => {
+                  if (hasIncompatibleMoves(previews)) {
+                    setMessage('conflict');
+                    return;
+                  }
                   const oldTracks = input?.tracks ?? [],
                     oldPlans = input?.plans ?? [];
                   if (pendingDay) await rt.engine.put('calendar_day', pendingDay);

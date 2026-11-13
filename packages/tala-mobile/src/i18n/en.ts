@@ -1,4 +1,14 @@
 export const en = {
+  lockedCopy: 'The other phone locked this lesson. Your edits are safe in a new draft in Lessons.',
+  sendRejected:
+    'Some changes could not be sent. Your text is kept on this phone. Review the lesson.',
+  signInAgain: 'Your saved work is safe. Sign in again when connected to send it.',
+  sampleLesson: 'Sample lesson',
+  sampleObjective: 'Describe something you noticed in the classroom.',
+  samplePrompt:
+    'Ask pupils what they notice. Let each group share an example. Ask them to explain their answer.',
+  templateDefault: 'Template: use the class default',
+  completeRequired: 'Complete the required sections and add a competency before locking.',
   group: 'Grade group',
   direct: 'With the teacher',
   independent: 'Independent work',

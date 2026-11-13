@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { Plan, PlanSection } from '@hiraia/tala-core/contracts';
+import { Plan, PlanSection, BUILTIN_TEMPLATES } from '@hiraia/tala-core/contracts';
 import { exportWithFallback, renderHtml } from './print';
 const input = {
   plan: Plan.parse({
@@ -20,7 +20,10 @@ const input = {
     }),
   ],
   paper: 'a4' as const,
-  images: true,
+  includeImages: true,
+  template: BUILTIN_TEMPLATES[0]!,
+  teacherName: 'Teacher',
+  lang: 'fil' as const,
 };
 test('print fallback retries without images then shares text; server is final fallback', async () => {
   const calls: string[] = [];

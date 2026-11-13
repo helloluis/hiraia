@@ -67,8 +67,8 @@ test('opportunistic scheduler is single-flight and cancels pending retries', asy
     changed: () => {},
     delay: () => 10000,
   });
-  scheduler.kick();
-  scheduler.kick();
+  scheduler.start();
+  scheduler.start();
   assert.equal(calls, 1);
   scheduler.stop();
   release();

@@ -12,12 +12,14 @@ export async function markSession(
       (m) =>
         m.data.assignmentId === entry.assignmentId &&
         m.data.date === entry.date &&
-        m.data.gradeGroupId === group
+        m.data.gradeGroupId === group &&
+        m.data.slotId === entry.slotId
     );
     const id = old?.id ?? newId();
     previous.push({ id, data: old?.data ?? null });
     await engine.put('session_mark', {
       id,
+      slotId: entry.slotId,
       classId: entry.classId,
       assignmentId: entry.assignmentId,
       gradeGroupId: group,

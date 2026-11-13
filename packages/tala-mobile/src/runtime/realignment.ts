@@ -55,3 +55,15 @@ export function previewNoClass(
     ];
   });
 }
+
+export function hasIncompatibleMoves(previews: RealignmentPreview[]) {
+  const dates = new Map<string, string>();
+  for (const p of previews)
+    for (const m of p.planMoves) {
+      const key = `${m.planId}.${m.classId}.${m.from.join(',')}`,
+        next = m.to.join(',');
+      if (dates.has(key) && dates.get(key) !== next) return true;
+      dates.set(key, next);
+    }
+  return false;
+}
