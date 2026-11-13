@@ -15,7 +15,7 @@ export interface ProviderReply { content: string; inputTokens: number; outputTok
 export type ProviderCall = (provider: 'deepseek'|'qwen'|'local', config: ProviderConfig, prompt: string, signal: AbortSignal, maxTokens: number) => Promise<ProviderReply>;
 export class ProviderHttpError extends Error { constructor(public readonly status:number,public readonly errorClass='http',public readonly providerCode:string|null=null) {super('Provider request failed.');} }
 export const directProvider: ProviderCall = async (provider, config, prompt, signal, maxTokens) => {
-  const key = process.env[config.apiKeyEnv] || (provider === 'qwen' ? process.env.ALIBABACLOUD_API_KEY : undefined);
+  const key = process.env[config.apiKeyEnv] || (provider === 'qwen' && config.apiKeyEnv==='DASHSCOPE_API_KEY' ? process.env.ALIBABACLOUD_API_KEY : undefined);
   if (provider !== 'local' && !key) throw new Error('Provider unavailable.');
   const url = new URL(config.baseUrl);
   if (provider === 'deepseek' && url.hostname !== 'api.deepseek.com') throw new Error('Direct provider required.');
@@ -23,10 +23,10 @@ export const directProvider: ProviderCall = async (provider, config, prompt, sig
   if (provider !== 'local' && url.protocol !== 'https:') throw new Error('Secure provider required.');
   const model = process.env[provider === 'deepseek' ? 'TALA_LLM_PRIMARY_MODEL' : provider === 'qwen' ? 'TALA_LLM_FALLBACK_MODEL' : 'TALA_LLM_LOCAL_MODEL'] || config.model;
   const started=Date.now();
-  const response = await fetch(config.baseUrl.replace(/\/$/,'') + '/chat/completions', { method: 'POST', signal, headers: { 'Content-Type': 'application/json', ...(key ? { Authorization: `Bearer ${key}` } : {}) }, body: JSON.stringify({ model, messages: [{role:'system',content:prompt}], response_format:{type:'json_object'}, max_tokens:maxTokens, ...(provider === 'qwen' ? {enable_thinking:false} : {}) }) });
+  const response = await fetch(config.baseUrl.replace(/\/$/,'') + '/chat/completions', { method: 'POST', signal, headers: { 'Content-Type': 'application/json', ...(key ? { Authorization: `Bearer ${key}` } : {}) }, body: JSON.stringify({ model, messages: [{role:'system',content:prompt}], response_format:{type:'json_object'}, max_tokens:maxTokens, ...(provider === 'qwen' ? {enable_thinking:false} : provider === 'deepseek' ? {thinking:{type:'disabled'}} : {}) }) });
   let envelope:unknown;
   try {envelope=await response.json();}catch{throw new ProviderHttpError(response.status,'envelope_json');}
-  if (!response.ok) {const code=(envelope as {error?:{code?:unknown}})?.error?.code;const known=['InvalidApiKey','InvalidParameter','InvalidParameterValue','Throttling','Throttling.RateQuota','QuotaExhausted','AccessDenied','ModelNotFound','InvalidModel','DataInspectionFailed','insufficient_quota'];throw new ProviderHttpError(response.status,'http',typeof code==='string'&&known.includes(code)?code:'other');}
+  if (!response.ok) {const code=(envelope as {error?:{code?:unknown}})?.error?.code;const known=['InvalidApiKey','InvalidParameter','InvalidParameterValue','Throttling','Throttling.RateQuota','QuotaExhausted','AccessDenied','ModelNotFound','InvalidModel','DataInspectionFailed','insufficient_quota','model_not_found','invalid_request_error','model_not_exist'];throw new ProviderHttpError(response.status,'http',typeof code==='string'&&known.includes(code)?code:'other');}
   const body = envelope as { choices?: {message?:{content?:string};finish_reason?:string}[]; usage?:{prompt_tokens?:number;completion_tokens?:number} };
   // Rates are explicitly configured; unknown pricing fails closed before a paid call in the gateway.
   const inputTokens = body.usage?.prompt_tokens ?? Math.ceil(prompt.length/3);
@@ -46,7 +46,7 @@ export function loadPrompt(promptId: string, version?: number, root = resolve(di
 const failure = (reason: Extract<LlmResult<never>,{ok:false}>['reason']): Extract<LlmResult<never>,{ok:false}> => ({ok:false,reason,message: reason === 'cancelled' ? 'Cancelled.' : 'Generation is unavailable. Your inputs are preserved; use the pre-filled draft.'});
 const userMergers=new WeakMap<object,Set<(from:string,to:string)=>void>>();
 const userCleanups=new WeakMap<object,Set<(userId:string)=>void>>();
-export function createLlmGateway(deps: BaseDeps, options: {call?:ProviderCall; promptRoot?:string; onAttempt?:(event:AttemptDiagnostic)=>void} = {}): LlmGateway {
+export function createLlmGateway(deps: BaseDeps, options: {call?:ProviderCall; promptRoot?:string; beforeCall?:(provider:'deepseek'|'qwen'|'local')=>void; onAttempt?:(event:AttemptDiagnostic)=>void} = {}): LlmGateway {
   let pending: Promise<void> = Promise.resolve();
   const cache = new Map<string,{expires:number;value:unknown;raw:unknown;userId:string|null;identity:string}>();
   const activeUsers=new Map<string,Set<AbortController>>();
@@ -93,7 +93,7 @@ export function createLlmGateway(deps: BaseDeps, options: {call?:ProviderCall; p
     const providers = route === 'local' ? [['local',deps.config.llm.local] as const] : [['deepseek',deps.config.llm.primary] as const,['qwen',deps.config.llm.fallback] as const];
     for (const [provider,config] of providers) {
       if (!config) continue;
-      if(!options.call&&provider!=='local'&&!process.env[config.apiKeyEnv]&&!(provider==='qwen'&&process.env.ALIBABACLOUD_API_KEY)){options.onAttempt?.({provider,attempt:0,stage:'provider',httpStatus:null,finishReason:null,inputTokens:0,outputTokens:0,latencyMs:0,issues:[],errorClass:'missing_key'});continue;}
+      if(!options.call&&provider!=='local'&&!process.env[config.apiKeyEnv]&&!(provider==='qwen'&&config.apiKeyEnv==='DASHSCOPE_API_KEY'&&process.env.ALIBABACLOUD_API_KEY)){options.onAttempt?.({provider,attempt:0,stage:'provider',httpStatus:null,finishReason:null,inputTokens:0,outputTokens:0,latencyMs:0,issues:[],errorClass:'missing_key'});continue;}
       let correction = '';
       for(let attempt=0;attempt<2;attempt++) {
         if(req.signal?.aborted)return failure('cancelled');
@@ -115,6 +115,7 @@ export function createLlmGateway(deps: BaseDeps, options: {call?:ProviderCall; p
         const started=Date.now();
         const diagnostic=(stage:AttemptDiagnostic['stage'],reply?:ProviderReply,issues:string[]=[])=>{const event:AttemptDiagnostic={provider,attempt:attempt+1,stage,httpStatus:reply?.httpStatus??null,finishReason:reply?.finishReason??null,inputTokens:reply?.inputTokens??0,outputTokens:reply?.outputTokens??0,latencyMs:reply?.latencyMs??Date.now()-started,issues};options.onAttempt?.(event);deps.log.info('llm.attempt',{provider,attempt:attempt+1,stage,httpStatus:event.httpStatus,finishReason:event.finishReason,latencyMs:event.latencyMs});};
         try {
+          options.beforeCall?.(provider);
           const reply = await Promise.race([call(provider,config,assembled+correction,controller.signal,maxTokens),new Promise<never>((_,reject)=>controller.signal.addEventListener('abort',()=>reject(new Error('Cancelled.')),{once:true}))]);
           deps.db.prepare('UPDATE llm_usage SET input_tokens=?,output_tokens=?,cost=? WHERE id=?').run(reply.inputTokens,reply.outputTokens,reply.costUsd,reservation);
           if(req.signal?.aborted)return failure('cancelled');

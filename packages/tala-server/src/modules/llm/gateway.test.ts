@@ -51,3 +51,16 @@ test('account merge rekeys cached responses and aborts old-account in-flight wor
     const work=f.gateway.complete({...request(),userId:'from',vars:{input:'different',schema:''}});await new Promise(r=>setTimeout(r,2));llmModule.onAccountMerged!(f.deps,'from','to');const result=await work;assert.equal(result.ok,false);if(!result.ok)assert.equal(result.reason,'cancelled');assert.equal((f.db.prepare('SELECT count(*) AS n FROM llm_usage WHERE user_id=?').get('from') as {n:number}).n,0);
   }finally{f.db.close();}
 });
+test('provider request parameters use DeepSeek non-thinking JSON mode without changing Qwen',async()=>{
+  const {directProvider}=await import('./index');const original=globalThis.fetch;const bodies:Record<string,unknown>[]=[];
+  globalThis.fetch=async(_url,init)=>{bodies.push(JSON.parse(String(init?.body)));return Response.json({choices:[{finish_reason:'stop',message:{content:'{"ok":true}'}}],usage:{prompt_tokens:2,completion_tokens:3}});};
+  process.env.TALA_EVAL_TEST_PROVIDER_KEY='fixture-only';
+  try{for(const provider of ['deepseek','qwen']as const){const result=await directProvider(provider,{apiKeyEnv:'TALA_EVAL_TEST_PROVIDER_KEY',baseUrl:provider==='deepseek'?'https://api.deepseek.com':'https://dashscope-intl.aliyuncs.com/compatible-mode/v1',model:'fixture-model',timeoutMs:10,pricing:{inputUsdPerMillion:.3,outputUsdPerMillion:1.2}},'Return JSON',new AbortController().signal,100);assert.equal(result.finishReason,'stop');}
+    assert.deepEqual(bodies[0]?.thinking,{type:'disabled'});assert.deepEqual(bodies[0]?.response_format,{type:'json_object'});assert.equal(bodies[0]?.enable_thinking,undefined);assert.equal(bodies[1]?.enable_thinking,false);assert.equal(bodies[1]?.thinking,undefined);
+  }finally{globalThis.fetch=original;delete process.env.TALA_EVAL_TEST_PROVIDER_KEY;}
+});
+test('alternate Alibaba credential does not bypass a deliberately disabled configured provider',async()=>{const {directProvider}=await import('./index');const previous=process.env.ALIBABACLOUD_API_KEY;process.env.ALIBABACLOUD_API_KEY='fixture-only';try{await assert.rejects(directProvider('qwen',{apiKeyEnv:'TALA_EVAL_DISABLED_FALLBACK',baseUrl:'https://dashscope-intl.aliyuncs.com/compatible-mode/v1',model:'fake',timeoutMs:10},'JSON',new AbortController().signal,10),/Provider unavailable/);}finally{if(previous===undefined)delete process.env.ALIBABACLOUD_API_KEY;else process.env.ALIBABACLOUD_API_KEY=previous;}});
+test('evaluation dispatch guard prevents outbound calls before the provider is invoked',async()=>{
+  let calls=0;const f=fixture();const gateway=createLlmGateway(f.deps,{beforeCall:()=>{throw Error('Evaluation limit reached.');},call:async()=>{calls++;throw Error('Must not dispatch.');}});
+  try{const result=await gateway.complete(request());assert.equal(result.ok,false);assert.equal(calls,0);}finally{f.db.close();}
+});

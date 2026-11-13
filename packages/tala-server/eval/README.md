@@ -9,3 +9,13 @@ Live runs use direct Singapore DashScope Chat Completions, JSON-object mode and 
 Diagnostics log only fixture ID, HTTP status/error class/allowlisted provider code, finish_reason, token counts, latency, schema paths and rule names. No request, prompt, plan or response text is logged. The three plans under samples/ are explicitly authorized fictional fixtures for later teacher review, not logs. live-attempts.jsonl includes unsuccessful development probes; live-results.json is the latest valid result per case, with source-run provenance.
 
 Scores cover storage schema, one teacher focus, every grade active in every block, exact resolved competency presence in objectives and assessment, transition bounds, exact total session minutes, weekly day count/minutes and listed-material adherence. Timing and teacher focus are planned deterministically by the server; the model fills activity text. No silent schedule repair is used. Materials scoring checks declared resources; suitability of activity prose, scientific accuracy, language quality, optional peer support and genuine independence need teacher review. A structural pass is not a content-alignment claim.
+
+DeepSeek / provider selection update (supersedes earlier Qwen-only instructions)
+
+- `--live --provider deepseek`: all selected fixtures must be served by the primary DeepSeek provider; fallback is disabled.
+- `--live --provider qwen`: primary disabled; selected fixtures must be served by Qwen.
+- `--live --provider chain`: both direct providers enabled.
+- `tsx eval/chain.ts`: one live primary proof, one real bad-model primary failure followed by a live Qwen proof, plus a controlled dual-unavailability/manual-draft check.
+- Supply credentials by sourcing the orchestrator-designated ignored .env in the parent shell. The runner reads ONLY runtime environment variables, never credential files. Supply both PRIMARY and FALLBACK input/output price variables for chain mode; standalone mode needs only that provider's prices. Model IDs are read from the existing model environment variables.
+- Per-process dispatch limits: 40 DeepSeek, 5 Qwen; use TALA_EVAL_CASE to choose a small Qwen subset. Artifacts are separated by provider (deepseek-results.json / deepseek-attempts.jsonl, qwen equivalents); old Qwen live-results.json remains historical evidence. DeepSeek samples use -deepseek suffixes. Existing v2 prompt files are unchanged.
+- `costUsd` is a metered-response-token estimate; `budgetLedgerUsd` also includes conservative reservations for failed/uncertain calls. Do not equate a retained reservation with an actual invoice charge.
