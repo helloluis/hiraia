@@ -41,11 +41,18 @@ export function loadCurriculumData(directory = defaultDataDirectory, includeFixt
   const areaGroups = new Map<string, CurriculumIndex['learningAreas'][number]>();
   for (const p of packs.values()) {
     const stage = p.grade === 'K' ? 'kinder' : Number(p.grade) <= 6 ? 'elementary' : Number(p.grade) <= 10 ? 'jhs' : 'shs_core';
-    const key = `${p.learningAreaId}:${stage}`;
+    const key = p.learningAreaId;
     const name = p.learningAreaId === 'science' ? { en: 'Science', fil: 'Agham' } : { en: 'Mathematics (sample data)', fil: 'Matematika (halimbawang datos)' };
-    const area = areaGroups.get(key) ?? { id: p.learningAreaId, name, grades: [], stage };
+    const area = areaGroups.get(key) ?? { id: p.learningAreaId, name, grades: [], stage, stages: [] };
+    if (!area.stages!.includes(stage)) area.stages!.push(stage);
     if (!area.grades.includes(p.grade)) area.grades.push(p.grade);
     areaGroups.set(key, area);
+  }
+  const stageOrder = ['kinder', 'elementary', 'jhs', 'shs_core'];
+  for (const area of areaGroups.values()) {
+    area.grades.sort((a, b) => (a === 'K' ? 0 : Number(a)) - (b === 'K' ? 0 : Number(b)));
+    area.stages!.sort((a, b) => stageOrder.indexOf(a) - stageOrder.indexOf(b));
+    area.stage = area.stages![0]!;
   }
   const index = { learningAreas: [...areaGroups.values()], packs: [...packs.values()].map(({ competencies: _competencies, ...meta }) => meta) };
   const service: CurriculumService = {
