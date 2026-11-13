@@ -2,13 +2,12 @@
  * Module: core — auth, account, config, sync, plan revisions; provides services.records, mailer, rateLimit.
  * OWNER: workstream A.
  */
-import { API } from '@hiraia/tala-core';
 import type { ClientConfig } from '@hiraia/tala-core';
 import type { ExtendedModule } from '../../kernel/auth';
 import type { Handler } from '../../kernel/types';
 import * as auth from './auth-handlers';
 import * as data from './data-handlers';
-import { googleSignIn, pendingHandlers } from './google-handlers';
+import * as google from './google-handlers';
 import { coreMigrations } from './migrations';
 import { coreState, initCoreState } from './state';
 import type { CoreOptions } from './state';
@@ -35,14 +34,10 @@ const configGet: Handler<'config.get'> = (ctx): ClientConfig => {
 
 /** Build a core module. Tests pass options (cheap password hashing, a mail transport); the registry uses the defaults. */
 export function createCoreModule(options: CoreOptions = {}): ExtendedModule {
-  // Handlers written ahead of the contract (pending-routes.ts) switch themselves on when a route with the
-  // same name appears in the API table. Tests switch them on with `pendingRoutes`.
-  const pending = Object.fromEntries(Object.entries(pendingHandlers()).filter(([name]) => options.pendingRoutes || name in API));
   return {
     name: 'core',
     migrations: coreMigrations,
     handlers: {
-      ...(pending as ExtendedModule['handlers']),
       'config.get': configGet,
       'auth.register': auth.register,
       'auth.login': auth.login,
@@ -56,7 +51,14 @@ export function createCoreModule(options: CoreOptions = {}): ExtendedModule {
       'auth.requestReset': auth.requestReset,
       'auth.reset': auth.reset,
       'auth.changePassword': auth.changePassword,
-      'auth.google': googleSignIn,
+      'auth.google': google.googleSignIn,
+      'auth.googleLink': google.googleLink,
+      'auth.googleLinkRequest': google.googleLinkRequest,
+      'auth.googleLinkConfirm': google.googleLinkConfirm,
+      'auth.googleConnect': google.googleConnect,
+      'auth.googleDisconnect': google.googleDisconnect,
+      'auth.removePassword': google.removePassword,
+      'account.merge': google.accountMerge,
       'account.export': data.accountExport,
       'account.delete': data.accountDelete,
       'sync.push': data.push,

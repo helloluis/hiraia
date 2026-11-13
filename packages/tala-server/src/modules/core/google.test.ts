@@ -7,12 +7,12 @@ import { createHmac, generateKeyPairSync, sign } from 'node:crypto';
 import type { KeyObject } from 'node:crypto';
 import { test } from 'node:test';
 import { parseRecordData } from '@hiraia/tala-core';
+import type { RouteName } from '@hiraia/tala-core';
 import type { ExtendedModule } from '../../kernel/auth';
 import { createTestServer } from '../../testing';
 import type { TestServer, TestServerOptions } from '../../testing';
 import { createGoogleVerifier } from './google';
 import type { GoogleKeySet } from './google';
-import { PENDING_ROUTES } from './pending-routes';
 
 const CLIENT_ID = 'tala-test-client.apps.googleusercontent.example';
 const GOOD_PASSWORD = 'kalabaw-bituin-ilog-27';
@@ -73,18 +73,22 @@ function server(options: TestServerOptions = {}) {
   const t = createTestServer({
     ...options,
     config: { ...options.config, features: { googleSignIn: true, ...options.config?.features } },
-    core: { google: { clientIds: [CLIENT_ID], fetchKeys: google.fetchKeys }, pendingRoutes: true, ...options.core },
-    extraRoutes: PENDING_ROUTES,
+    core: { google: { clientIds: [CLIENT_ID], fetchKeys: google.fetchKeys }, ...options.core },
   });
   holder.now = () => t.clock.now();
   return { t, google };
 }
 
-/** Call a route that is not in the contract table yet. */
-async function post(t: TestServer, path: string, body: unknown, extras: { token?: string; ip?: string } = {}) {
-  const response = await t.request('POST', path, { body, ...extras });
-  const json = (await response.json()) as Record<string, unknown> & { error?: { code: string; message: string; details?: Record<string, unknown> } };
-  return { status: response.status, json, reason: json.error?.details?.reason, cookie: response.headers.get('set-cookie') };
+type LinkRoute = Extract<RouteName, 'auth.googleLink' | 'auth.googleLinkRequest' | 'auth.googleLinkConfirm' | 'auth.googleConnect' | 'auth.googleDisconnect' | 'auth.removePassword' | 'account.merge'>;
+
+/**
+ * Call a linking route by its contract name. The body is loosely typed on purpose: several tests send
+ * bodies the contract refuses, to see them refused.
+ */
+async function post(t: TestServer, route: LinkRoute, body: unknown, extras: { token?: string; ip?: string } = {}) {
+  const res = await t.call(route, { body: body as never, ...extras });
+  const json = (res.ok ? res.data : { error: res.error }) as Record<string, unknown> & { error?: { code: string; message: string; details?: Record<string, unknown> } };
+  return { status: res.status, json, reason: json.error?.details?.reason, cookie: res.headers.get('set-cookie') };
 }
 
 const identityRows = (t: TestServer) => t.db.prepare('SELECT provider, subject, user_id, email FROM core_identities ORDER BY subject').all() as Array<{ provider: string; subject: string; user_id: string; email: string }>;
@@ -193,7 +197,7 @@ test('switched off by default; switched on without a client id it says so; neith
   assert.equal(res.status, 501);
   off.close();
 
-  const { t, google } = server({ core: { google: { clientIds: [], fetchKeys: async () => ({ keys: [], maxAgeSeconds: 60 }) }, pendingRoutes: true } });
+  const { t, google } = server({ core: { google: { clientIds: [], fetchKeys: async () => ({ keys: [], maxAgeSeconds: 60 }) } } });
   const unconfigured = await t.call('auth.google', { body: { idToken: google.token(MARIA) } });
   assert.equal(unconfigured.status, 503);
   assert.deepEqual(unconfigured.error?.details, { reason: 'google_not_configured' });
@@ -276,12 +280,12 @@ test('case 1: same confirmed email → never linked on Google’s word alone; th
   assert.equal(refused.headers.get('set-cookie'), null);
   assert.deepEqual(identityRows(t), []);
 
-  const wrong = await post(t, '/auth/google/link', { idToken: google.token(MARIA), password: 'not-the-password-1' });
+  const wrong = await post(t, 'auth.googleLink', { idToken: google.token(MARIA), password: 'not-the-password-1' });
   assert.equal(wrong.status, 401);
   assert.equal(wrong.reason, 'invalid_credentials');
   assert.deepEqual(identityRows(t), []);
 
-  const linked = await post(t, '/auth/google/link', { idToken: google.token(MARIA), password: GOOD_PASSWORD, deviceLabel: 'Tablet' });
+  const linked = await post(t, 'auth.googleLink', { idToken: google.token(MARIA), password: GOOD_PASSWORD, deviceLabel: 'Tablet' });
   assert.equal(linked.status, 200);
   assert.match(linked.cookie!, /^tala_session=/);
   const user = linked.json.user as { id: string; hasGoogle: boolean; hasPassword: boolean };
@@ -292,7 +296,7 @@ test('case 1: same confirmed email → never linked on Google’s word alone; th
   assert.equal((await t.ok('auth.login', { body: { email: MARIA.email, password: GOOD_PASSWORD } })).user.id, maria.id);
   assert.equal((await t.ok('auth.me', { token: maria.token })).user.hasGoogle, true);
   // A repeated tap on "connect" is harmless.
-  assert.equal((await post(t, '/auth/google/link', { idToken: google.token(MARIA), password: 'anything-at-all-1' })).status, 200);
+  assert.equal((await post(t, 'auth.googleLink', { idToken: google.token(MARIA), password: 'anything-at-all-1' })).status, 200);
   assert.equal(identityRows(t).length, 1);
   t.close();
 });
@@ -302,9 +306,9 @@ test('case 1 without the password: an emailed link connects the Google account t
   const maria = await t.registerUser({ email: MARIA.email, password: GOOD_PASSWORD, uiLanguage: 'en' });
 
   // Asking always answers ok; only a confirmed Tala account with that address gets mail.
-  assert.deepEqual((await post(t, '/auth/google/link/request', { idToken: google.token(JOSE) })).json, { ok: true });
+  assert.deepEqual((await post(t, 'auth.googleLinkRequest', { idToken: google.token(JOSE) })).json, { ok: true });
   assert.equal(t.outbox().filter((m) => m.template === 'link_google').length, 0);
-  assert.deepEqual((await post(t, '/auth/google/link/request', { idToken: google.token(MARIA) })).json, { ok: true });
+  assert.deepEqual((await post(t, 'auth.googleLinkRequest', { idToken: google.token(MARIA) })).json, { ok: true });
   const mail = t.outbox().find((m) => m.template === 'link_google')!;
   assert.equal(mail.to, MARIA.email);
   assert.equal(mail.lang, 'en');
@@ -312,21 +316,21 @@ test('case 1 without the password: an emailed link connects the Google account t
   assert.match(mail.body, new RegExp(MARIA.email.replace('.', '\\.')));
   const token = t.mailToken(MARIA.email, 'link_google')!;
 
-  assert.equal((await post(t, '/auth/google/link/confirm', { token: 'C'.repeat(43) })).status, 400);
-  const confirmed = await post(t, '/auth/google/link/confirm', { token });
+  assert.equal((await post(t, 'auth.googleLinkConfirm', { token: 'C'.repeat(43) })).status, 400);
+  const confirmed = await post(t, 'auth.googleLinkConfirm', { token });
   assert.deepEqual(confirmed.json, { ok: true });
   assert.deepEqual(identityRows(t), [{ provider: 'google', subject: MARIA.sub, user_id: maria.id, email: MARIA.email }]);
-  assert.equal((await post(t, '/auth/google/link/confirm', { token })).reason, 'link_invalid_or_expired', 'single use');
+  assert.equal((await post(t, 'auth.googleLinkConfirm', { token })).reason, 'link_invalid_or_expired', 'single use');
   assert.equal((await t.ok('auth.google', { body: { idToken: google.token(MARIA) } })).user.id, maria.id);
 
   // Expiry, and a cap on how many of these mails an account can be sent.
   const jose = await t.registerUser({ email: JOSE.email, password: GOOD_PASSWORD });
-  await post(t, '/auth/google/link/request', { idToken: google.token(JOSE) });
+  await post(t, 'auth.googleLinkRequest', { idToken: google.token(JOSE) });
   const late = t.mailToken(JOSE.email, 'link_google')!;
   t.clock.advance({ minutes: 31 });
-  assert.equal((await post(t, '/auth/google/link/confirm', { token: late })).status, 400);
+  assert.equal((await post(t, 'auth.googleLinkConfirm', { token: late })).status, 400);
   t.clock.advance({ hours: 2 });
-  for (let i = 0; i < 5; i++) await post(t, '/auth/google/link/request', { idToken: google.token(JOSE) });
+  for (let i = 0; i < 5; i++) await post(t, 'auth.googleLinkRequest', { idToken: google.token(JOSE) });
   assert.equal(t.outbox().filter((m) => m.template === 'link_google' && m.to === JOSE.email).length, 1 + 3);
   assert.equal((await t.ok('auth.me', { token: jose.token })).user.hasGoogle, false);
   t.close();
@@ -341,11 +345,11 @@ test('case 2: an unconfirmed Tala account is never linked, so a squatter cannot 
   const refused = await t.call('auth.google', { body: { idToken: google.token(MARIA) } });
   assert.equal(refused.status, 409);
   assert.deepEqual(refused.error?.details, { reason: 'verify_email_first' });
-  assert.equal((await post(t, '/auth/google/link', { idToken: google.token(MARIA), password: 'attackers-own-password-9' })).reason, 'verify_email_first', 'not even with the right password');
-  await post(t, '/auth/google/link/request', { idToken: google.token(MARIA) });
+  assert.equal((await post(t, 'auth.googleLink', { idToken: google.token(MARIA), password: 'attackers-own-password-9' })).reason, 'verify_email_first', 'not even with the right password');
+  await post(t, 'auth.googleLinkRequest', { idToken: google.token(MARIA) });
   assert.equal(t.outbox().filter((m) => m.template === 'link_google').length, 0);
   // The squatter, signed in, cannot attach a Google account of their own either.
-  assert.equal((await post(t, '/auth/google/connect', { idToken: google.token(JOSE), password: 'attackers-own-password-9' }, { token: squatter.token })).reason, 'verify_email_first');
+  assert.equal((await post(t, 'auth.googleConnect', { idToken: google.token(JOSE), password: 'attackers-own-password-9' }, { token: squatter.token })).reason, 'verify_email_first');
   assert.deepEqual(identityRows(t), []);
 
   // The owner proves the mailbox with "Forgot password": the squatter is signed out and the email is confirmed.
@@ -353,7 +357,7 @@ test('case 2: an unconfirmed Tala account is never linked, so a squatter cannot 
   await t.ok('auth.reset', { body: { token: t.mailToken(MARIA.email, 'password_reset')!, password: GOOD_PASSWORD } });
   assert.equal((await t.call('auth.me', { token: squatter.token })).status, 401);
   assert.deepEqual((await t.call('auth.google', { body: { idToken: google.token(MARIA) } })).error?.details, { reason: 'link_required', methods: ['password', 'email_link'] });
-  assert.equal((await post(t, '/auth/google/link', { idToken: google.token(MARIA), password: GOOD_PASSWORD })).status, 200);
+  assert.equal((await post(t, 'auth.googleLink', { idToken: google.token(MARIA), password: GOOD_PASSWORD })).status, 200);
   t.close();
 });
 
@@ -362,25 +366,25 @@ test('case 3: from Settings, a Google account with a different email is connecte
   const teacher = await t.registerUser({ email: 'teacher@deped.example', password: GOOD_PASSWORD });
   const other = await t.registerUser({ email: 'other@deped.example', password: GOOD_PASSWORD });
 
-  assert.equal((await post(t, '/auth/google/connect', { idToken: google.token(MARIA), password: GOOD_PASSWORD })).status, 401, 'needs a signed-in teacher');
-  const wrong = await post(t, '/auth/google/connect', { idToken: google.token(MARIA), password: 'not-the-password-1' }, { token: teacher.token });
+  assert.equal((await post(t, 'auth.googleConnect', { idToken: google.token(MARIA), password: GOOD_PASSWORD })).status, 401, 'needs a signed-in teacher');
+  const wrong = await post(t, 'auth.googleConnect', { idToken: google.token(MARIA), password: 'not-the-password-1' }, { token: teacher.token });
   assert.equal(wrong.status, 403);
   assert.equal(wrong.reason, 'wrong_password');
 
-  const connected = await post(t, '/auth/google/connect', { idToken: google.token(MARIA), password: GOOD_PASSWORD }, { token: teacher.token });
+  const connected = await post(t, 'auth.googleConnect', { idToken: google.token(MARIA), password: GOOD_PASSWORD }, { token: teacher.token });
   assert.equal(connected.status, 200);
   assert.equal((connected.json.user as { hasGoogle: boolean }).hasGoogle, true);
   // The Google account's own address plays no part: it signs in to the account it was connected to.
   const viaGoogle = await t.ok('auth.google', { body: { idToken: google.token(MARIA) } });
   assert.deepEqual([viaGoogle.user.id, viaGoogle.user.email], [teacher.id, 'teacher@deped.example']);
-  assert.equal((await post(t, '/auth/google/connect', { idToken: google.token(MARIA), password: GOOD_PASSWORD }, { token: teacher.token })).status, 200, 'connecting the same one again changes nothing');
+  assert.equal((await post(t, 'auth.googleConnect', { idToken: google.token(MARIA), password: GOOD_PASSWORD }, { token: teacher.token })).status, 200, 'connecting the same one again changes nothing');
 
   // That Google identity cannot also belong to another Tala account…
-  const taken = await post(t, '/auth/google/connect', { idToken: google.token(MARIA), password: GOOD_PASSWORD }, { token: other.token });
+  const taken = await post(t, 'auth.googleConnect', { idToken: google.token(MARIA), password: GOOD_PASSWORD }, { token: other.token });
   assert.equal(taken.status, 409);
   assert.equal(taken.reason, 'google_in_use');
   // …and an account holds one Google identity.
-  assert.equal((await post(t, '/auth/google/connect', { idToken: google.token(JOSE), password: GOOD_PASSWORD }, { token: teacher.token })).reason, 'google_already_linked');
+  assert.equal((await post(t, 'auth.googleConnect', { idToken: google.token(JOSE), password: GOOD_PASSWORD }, { token: teacher.token })).reason, 'google_already_linked');
   assert.equal(identityRows(t).length, 1);
   t.close();
 });
@@ -390,29 +394,29 @@ test('case 5: either method can be removed, never the last one', async () => {
   const teacher = await t.registerUser({ email: MARIA.email, password: GOOD_PASSWORD });
 
   // Password only: it cannot be removed, and there is no Google link to remove.
-  assert.equal((await post(t, '/auth/password/remove', { currentPassword: GOOD_PASSWORD }, { token: teacher.token })).reason, 'last_sign_in_method');
-  assert.equal((await post(t, '/auth/google/disconnect', { password: GOOD_PASSWORD }, { token: teacher.token })).status, 200);
+  assert.equal((await post(t, 'auth.removePassword', { currentPassword: GOOD_PASSWORD }, { token: teacher.token })).reason, 'last_sign_in_method');
+  assert.equal((await post(t, 'auth.googleDisconnect', { password: GOOD_PASSWORD }, { token: teacher.token })).status, 200);
 
-  await post(t, '/auth/google/link', { idToken: google.token(MARIA), password: GOOD_PASSWORD });
+  await post(t, 'auth.googleLink', { idToken: google.token(MARIA), password: GOOD_PASSWORD });
 
   // Both: Google can be disconnected (with the password)…
-  assert.equal((await post(t, '/auth/google/disconnect', { password: 'not-the-password-1' }, { token: teacher.token })).reason, 'wrong_password');
-  const disconnected = await post(t, '/auth/google/disconnect', { password: GOOD_PASSWORD }, { token: teacher.token });
+  assert.equal((await post(t, 'auth.googleDisconnect', { password: 'not-the-password-1' }, { token: teacher.token })).reason, 'wrong_password');
+  const disconnected = await post(t, 'auth.googleDisconnect', { password: GOOD_PASSWORD }, { token: teacher.token });
   assert.deepEqual([(disconnected.json.user as { hasGoogle: boolean }).hasGoogle, (disconnected.json.user as { hasPassword: boolean }).hasPassword], [false, true]);
   // …after which Google no longer opens the account by itself.
   assert.deepEqual((await t.call('auth.google', { body: { idToken: google.token(MARIA) } })).error?.details, { reason: 'link_required', methods: ['password', 'email_link'] });
 
   // …or the password can be removed (with the password), leaving Google.
-  await post(t, '/auth/google/link', { idToken: google.token(MARIA), password: GOOD_PASSWORD });
-  assert.equal((await post(t, '/auth/password/remove', { currentPassword: 'not-the-password-1' }, { token: teacher.token })).reason, 'wrong_password');
-  const removed = await post(t, '/auth/password/remove', { currentPassword: GOOD_PASSWORD }, { token: teacher.token });
+  await post(t, 'auth.googleLink', { idToken: google.token(MARIA), password: GOOD_PASSWORD });
+  assert.equal((await post(t, 'auth.removePassword', { currentPassword: 'not-the-password-1' }, { token: teacher.token })).reason, 'wrong_password');
+  const removed = await post(t, 'auth.removePassword', { currentPassword: GOOD_PASSWORD }, { token: teacher.token });
   assert.deepEqual([(removed.json.user as { hasGoogle: boolean }).hasGoogle, (removed.json.user as { hasPassword: boolean }).hasPassword], [true, false]);
   assert.equal((await t.call('auth.me', { token: teacher.token })).ok, true, 'still signed in');
   assert.equal((await t.call('auth.login', { body: { email: MARIA.email, password: GOOD_PASSWORD } })).status, 401);
   assert.equal((await t.ok('auth.google', { body: { idToken: google.token(MARIA) } })).user.id, teacher.id);
 
   // Google is now the last method: it stays.
-  const last = await post(t, '/auth/google/disconnect', { password: '' }, { token: teacher.token });
+  const last = await post(t, 'auth.googleDisconnect', { password: '' }, { token: teacher.token });
   assert.equal(last.status, 403);
   assert.equal(last.reason, 'last_sign_in_method');
   assert.equal(identityRows(t).length, 1);
@@ -437,22 +441,22 @@ test('case 4: two accounts of one teacher are joined; records move, the other ac
   const cursor = (await t.ok('sync.pull', { token: main.token })).cursor;
 
   // Control of the other account has to be shown.
-  assert.equal((await post(t, '/account/merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD }, { token: main.token })).status, 400);
-  assert.equal((await post(t, '/account/merge', { confirm: 'YES', email: 'old@example.test', password: 'lumang-password-na-ito-3' }, { token: main.token })).status, 400);
-  const unproven = await post(t, '/account/merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD, email: 'old@example.test', password: 'not-the-password-1' }, { token: main.token });
+  assert.equal((await post(t, 'account.merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD }, { token: main.token })).status, 400);
+  assert.equal((await post(t, 'account.merge', { confirm: 'YES', email: 'old@example.test', password: 'lumang-password-na-ito-3' }, { token: main.token })).status, 400);
+  const unproven = await post(t, 'account.merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD, email: 'old@example.test', password: 'not-the-password-1' }, { token: main.token });
   assert.equal(unproven.status, 403);
   assert.equal(unproven.reason, 'other_account_not_proven');
-  assert.equal((await post(t, '/account/merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD, email: 'nobody@example.test', password: 'whatever-it-is-12' }, { token: main.token })).reason, 'other_account_not_proven');
-  assert.equal((await post(t, '/account/merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD, email: 'main@example.test', password: GOOD_PASSWORD }, { token: main.token })).reason, 'same_account');
+  assert.equal((await post(t, 'account.merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD, email: 'nobody@example.test', password: 'whatever-it-is-12' }, { token: main.token })).reason, 'other_account_not_proven');
+  assert.equal((await post(t, 'account.merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD, email: 'main@example.test', password: GOOD_PASSWORD }, { token: main.token })).reason, 'same_account');
   assert.equal((await t.call('auth.me', { token: old.token })).ok, true);
 
   // …and so does control of the signed-in account: a borrowed, signed-in phone is not enough.
-  const borrowed = await post(t, '/account/merge', { confirm: 'MERGE', email: 'old@example.test', password: 'lumang-password-na-ito-3' }, { token: main.token });
+  const borrowed = await post(t, 'account.merge', { confirm: 'MERGE', email: 'old@example.test', password: 'lumang-password-na-ito-3' }, { token: main.token });
   assert.equal(borrowed.status, 403);
   assert.equal(borrowed.reason, 'wrong_password');
   assert.equal((await t.call('auth.me', { token: old.token })).ok, true);
 
-  const merged = await post(t, '/account/merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD, email: 'old@example.test', password: 'lumang-password-na-ito-3' }, { token: main.token });
+  const merged = await post(t, 'account.merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD, email: 'old@example.test', password: 'lumang-password-na-ito-3' }, { token: main.token });
   assert.equal(merged.status, 200, JSON.stringify(merged.json));
   assert.equal(merged.json.movedRecords, 3, 'the plan, its part and the live note; not the deleted note, not the second profile');
   assert.equal((merged.json.user as { id: string }).id, main.id);
@@ -473,7 +477,7 @@ test('case 4: two accounts of one teacher are joined; records move, the other ac
   // A Google-only account is proven with Google, and its Google link moves to the account that has none.
   const googleOnly = await t.ok('auth.google', { body: { idToken: google.token(JOSE) } });
   await push(googleOnly.token, [upsert('day_note', parseRecordData('day_note', { id: 'note-g-0001', classId: 'class-0001', date: '2026-11-16', text: 'mula sa Google account' }), 7)]);
-  const second = await post(t, '/account/merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD, idToken: google.token(JOSE) }, { token: main.token });
+  const second = await post(t, 'account.merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD, idToken: google.token(JOSE) }, { token: main.token });
   assert.equal(second.status, 200, JSON.stringify(second.json));
   assert.equal((second.json.user as { hasGoogle: boolean }).hasGoogle, true);
   assert.equal((await t.ok('auth.google', { body: { idToken: google.token(JOSE) } })).user.id, main.id);
@@ -501,7 +505,7 @@ test('a merge waits for every module that keeps per-teacher rows, and is all-or-
   const blocked = server({ modules: [mover, keeper] });
   const a = await blocked.t.registerUser({ email: 'a@example.test', password: GOOD_PASSWORD });
   await blocked.t.registerUser({ email: 'b@example.test', password: GOOD_PASSWORD });
-  const refused = await post(blocked.t, '/account/merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD, email: 'b@example.test', password: GOOD_PASSWORD }, { token: a.token });
+  const refused = await post(blocked.t, 'account.merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD, email: 'b@example.test', password: GOOD_PASSWORD }, { token: a.token });
   assert.equal(refused.status, 503);
   assert.deepEqual(refused.json.error?.details, { reason: 'merge_not_available', modules: ['keeper'] });
   assert.equal((blocked.t.db.prepare('SELECT count(*) AS n FROM core_users').get() as { n: number }).n, 2);
@@ -514,13 +518,13 @@ test('a merge waits for every module that keeps per-teacher rows, and is all-or-
   t.services.records.put(other.id, 'day_note', parseRecordData('day_note', { id: 'note-b-0001', classId: 'class-0001', date: '2026-11-16', text: 'x' }));
 
   fail = true;
-  assert.equal((await post(t, '/account/merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD, email: 'b@example.test', password: GOOD_PASSWORD }, { token: main.token })).status, 500);
+  assert.equal((await post(t, 'account.merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD, email: 'b@example.test', password: GOOD_PASSWORD }, { token: main.token })).status, 500);
   assert.equal((await t.call('auth.me', { token: other.token })).ok, true, 'nothing was merged');
   assert.equal((t.db.prepare('SELECT author_id FROM mover_posts').get() as { author_id: string }).author_id, other.id);
   assert.ok(t.services.records.get(other.id, 'day_note', 'note-b-0001'));
 
   fail = false;
-  assert.equal((await post(t, '/account/merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD, email: 'b@example.test', password: GOOD_PASSWORD }, { token: main.token })).status, 200);
+  assert.equal((await post(t, 'account.merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD, email: 'b@example.test', password: GOOD_PASSWORD }, { token: main.token })).status, 200);
   assert.equal((t.db.prepare('SELECT author_id FROM mover_posts').get() as { author_id: string }).author_id, main.id);
   assert.deepEqual(calls, [`${other.id}->${main.id}`, `${other.id}->${main.id}`]);
   t.close();
@@ -536,11 +540,53 @@ test('a Google-only account can still be deleted, and its Google identity is the
   t.close();
 });
 
-test('the pending routes do not exist on a server that was not given them', async () => {
-  const t = createTestServer({ config: { features: { googleSignIn: true } } });
-  for (const path of ['/auth/google/link', '/auth/google/link/request', '/auth/google/link/confirm', '/auth/google/connect', '/auth/google/disconnect', '/auth/password/remove', '/account/merge']) {
-    assert.equal((await t.request('POST', path, { body: {} })).status, 404, path);
+test('with Google sign-in switched off, every route that needs Google says so plainly and Google is never contacted', async () => {
+  const { t, google } = server({ config: { features: { googleSignIn: false } } });
+  const teacher = await t.registerUser({ email: MARIA.email, password: GOOD_PASSWORD });
+  const other = await t.registerUser({ email: JOSE.email, password: GOOD_PASSWORD });
+  const idToken = google.token(MARIA);
+  const usersBefore = (t.db.prepare('SELECT count(*) AS n FROM core_users').get() as { n: number }).n;
+
+  const notAvailable = async (res: { status: number; json: { error?: { code: string; message: string; details?: Record<string, unknown> } }; cookie: string | null }, what: string) => {
+    assert.equal(res.status, 501, what);
+    assert.equal(res.json.error?.code, 'not_implemented', what);
+    assert.deepEqual(res.json.error?.details, { reason: 'google_sign_in_not_available' }, what);
+    assert.match(res.json.error!.message, /email and password/, `${what}: the message points to what still works`);
+    assert.equal(res.cookie, null, what);
+  };
+
+  const signIn = await t.call('auth.google', { body: { idToken } });
+  await notAvailable({ status: signIn.status, json: { error: (signIn.error ?? undefined) as never }, cookie: signIn.headers.get('set-cookie') }, 'auth.google');
+  await notAvailable(await post(t, 'auth.googleLink', { idToken, password: GOOD_PASSWORD }), 'auth.googleLink');
+  await notAvailable(await post(t, 'auth.googleLinkRequest', { idToken }), 'auth.googleLinkRequest');
+  await notAvailable(await post(t, 'auth.googleLinkConfirm', { token: 'C'.repeat(43) }), 'auth.googleLinkConfirm');
+  await notAvailable(await post(t, 'auth.googleConnect', { idToken, password: GOOD_PASSWORD }, { token: teacher.token }), 'auth.googleConnect');
+  // Joining accounts by a Google proof needs Google too.
+  await notAvailable(await post(t, 'account.merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD, idToken: google.token(JOSE) }, { token: teacher.token }), 'account.merge by Google');
+
+  // Removing the password must not be possible while Google is off: an account left with only its Google
+  // link could not be opened at all. (Here a link exists from a time when Google sign-in was on.)
+  t.db.prepare('INSERT INTO core_identities (provider, subject, user_id, email, created_at) VALUES (?, ?, ?, ?, ?)').run('google', MARIA.sub, teacher.id, MARIA.email, t.clock.now().toISOString());
+  await notAvailable(await post(t, 'auth.removePassword', { currentPassword: GOOD_PASSWORD }, { token: teacher.token }), 'auth.removePassword');
+  assert.equal((await t.ok('auth.login', { body: { email: MARIA.email, password: GOOD_PASSWORD } })).user.hasPassword, true);
+
+  // Disconnecting only ever takes a way in away from an account that keeps its password, so it stays possible.
+  const disconnected = await post(t, 'auth.googleDisconnect', { password: GOOD_PASSWORD }, { token: teacher.token });
+  assert.equal(disconnected.status, 200);
+  assert.equal((disconnected.json.user as { hasGoogle: boolean }).hasGoogle, false);
+
+  // Routes that need a signed-in teacher still ask for one first.
+  for (const route of ['auth.googleConnect', 'auth.googleDisconnect', 'auth.removePassword', 'account.merge'] as const) {
+    assert.equal((await post(t, route, { idToken, password: GOOD_PASSWORD, currentPassword: GOOD_PASSWORD, confirm: 'MERGE' })).status, 401, route);
   }
+
+  // Nothing was created, linked or signed in, and nothing was sent to Google or by mail.
+  assert.equal((t.db.prepare('SELECT count(*) AS n FROM core_users').get() as { n: number }).n, usersBefore);
+  assert.deepEqual(identityRows(t), []);
+  assert.equal(google.fetches, 0, 'Google’s key endpoint was never called');
+  assert.equal(t.outbox().filter((m) => m.template === 'link_google').length, 0);
+  assert.equal((await t.call('auth.me', { token: other.token })).ok, true);
+  assert.deepEqual(t.errors, []);
   t.close();
 });
 
@@ -553,7 +599,7 @@ test('on the real module registry, merging waits for exactly the modules that ca
   const { t } = server({ modules: registry.filter((m) => m.name !== 'core') });
   const main = await t.registerUser({ email: 'a@example.test', password: GOOD_PASSWORD });
   await t.registerUser({ email: 'b@example.test', password: GOOD_PASSWORD });
-  const res = await post(t, '/account/merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD, email: 'b@example.test', password: GOOD_PASSWORD }, { token: main.token });
+  const res = await post(t, 'account.merge', { confirm: 'MERGE', currentPassword: GOOD_PASSWORD, email: 'b@example.test', password: GOOD_PASSWORD }, { token: main.token });
   if (expected.length === 0) {
     assert.equal(res.status, 200, 'every module can hand its rows over, so the merge goes through');
   } else {

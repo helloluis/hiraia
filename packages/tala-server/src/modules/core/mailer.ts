@@ -20,11 +20,6 @@ import type { Logger, Mailer, TalaServerConfig } from '../../kernel/types';
 
 export type MailTemplate = 'verify_email' | 'password_reset' | 'link_google';
 
-/** Core's own mailer: the contract's `Mailer`, plus templates only core sends. */
-export interface CoreMailer extends Mailer {
-  sendAny(msg: { to: string; template: MailTemplate; lang: Lang; vars: Record<string, string> }): Promise<void>;
-}
-
 export interface RenderedMail {
   to: string;
   template: MailTemplate;
@@ -40,8 +35,7 @@ export type MailTransport = (mail: RenderedMail) => Promise<void>;
 const LINK_PATH: Record<MailTemplate, string> = {
   verify_email: MAIL_LINK_PATHS.verifyEmail,
   password_reset: MAIL_LINK_PATHS.resetPassword,
-  // Not in the contract yet (requested): the page posts the token to `auth.googleLinkConfirm`.
-  link_google: (MAIL_LINK_PATHS as Record<string, string>).linkGoogle ?? '/link-google',
+  link_google: MAIL_LINK_PATHS.linkGoogle,
 };
 
 export function mailLink(config: TalaServerConfig, template: MailTemplate, token: string): string {
@@ -124,12 +118,13 @@ export interface OutboxMail extends RenderedMail {
   createdAt: string;
 }
 
-export function createMailer(deps: { db: Db; config: TalaServerConfig; now: () => Date; newId: () => Id; log: Logger; transport?: MailTransport }): CoreMailer {
+export function createMailer(deps: { db: Db; config: TalaServerConfig; now: () => Date; newId: () => Id; log: Logger; transport?: MailTransport }): Mailer {
   const { db, config, now, newId, log, transport } = deps;
   const insert = db.prepare(
     'INSERT INTO core_mail_outbox (id, to_email, template, lang, subject, body, vars, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
   );
-  const sendAny: CoreMailer['sendAny'] = async (msg) => {
+  return {
+    async send(msg) {
       const mail = renderMail(msg);
       if (transport) {
         await transport(mail);
@@ -143,8 +138,8 @@ export function createMailer(deps: { db: Db; config: TalaServerConfig; now: () =
       const id = newId();
       insert.run(id, mail.to, mail.template, mail.lang, mail.subject, mail.body, JSON.stringify(msg.vars), now().toISOString());
       log.info('mail_queued_in_outbox', { template: mail.template, lang: mail.lang, outboxId: id });
+    },
   };
-  return { send: sendAny, sendAny };
 }
 
 /** Read the dev outbox, newest first. For tests and the local outbox tool only. */

@@ -12,7 +12,7 @@ import type { Accounts } from './accounts';
 import { createGoogleKeyFetcher, createGoogleVerifier, googleClientIdsFromEnv } from './google';
 import type { GoogleKeyFetcher, GoogleVerifier } from './google';
 import { createMailer } from './mailer';
-import type { CoreMailer, MailTransport } from './mailer';
+import type { MailTransport } from './mailer';
 import { DEFAULT_ARGON2_COST, createPasswordHasher } from './passwords';
 import type { Argon2Cost, PasswordHasher } from './passwords';
 import { createLoginThrottle, createSqliteRateLimiter } from './rate-limit';
@@ -21,7 +21,7 @@ import { createRecordEngine } from './records';
 import type { RecordEngine } from './records';
 import { createRevisions } from './revisions';
 import type { Revisions } from './revisions';
-import type { RateLimiter } from '../../kernel/types';
+import type { Mailer, RateLimiter } from '../../kernel/types';
 
 export interface CoreOptions {
   /** Argon2id cost. Leave unset outside tests. */
@@ -33,8 +33,6 @@ export interface CoreOptions {
    * `fetchKeys` defaults to Google's published keys. Tests pass their own of both.
    */
   google?: { clientIds?: string[]; fetchKeys?: GoogleKeyFetcher };
-  /** Register handlers for routes core has asked for but the contract does not list yet. Tests only. */
-  pendingRoutes?: boolean;
 }
 
 export interface CoreState {
@@ -42,7 +40,7 @@ export interface CoreState {
   hasher: PasswordHasher;
   throttle: LoginThrottle;
   limiter: RateLimiter & { prune(): void };
-  mailer: CoreMailer;
+  mailer: Mailer;
   /** Client ids a Google ID token may be issued for. Empty = Google sign-in is not configured. */
   googleClientIds: string[];
   google: GoogleVerifier;

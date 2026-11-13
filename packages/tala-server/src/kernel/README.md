@@ -65,7 +65,7 @@ export const myModule: ServerModule = {
   services: (base) => ({ … }),             // optional: what this module offers through ctx.services
   start: (deps) => () => {},               // optional: timers and job runners; return a stop function
   onAccountDeleted: (deps, userId) => {},  // delete this module's rows for a deleted account (PRIV-6)
-  onAccountMerged: (deps, from, to) => {}, // requested, not in the contract yet: hand this module's rows to another account
+  onAccountMerged: (deps, from, to) => {}, // hand this module's rows to another account of the same teacher (§13.3 case 4)
 };
 ```
 
@@ -132,8 +132,11 @@ its RS256 signature against Google's published keys (fetched from Google and cac
 that it was issued by Google for one of our client ids, that it has not expired, and that Google has confirmed
 the email. A new Google sign-in creates an account with a confirmed email. An existing Tala account is never
 linked on Google's word alone; the linking rules (PRD §13.3) are at the top of
-`src/modules/core/google-handlers.ts`, and the routes they need that are not in the contract yet are in
-`src/modules/core/pending-routes.ts`. The only outside call is to Google's key endpoint; tests replace it.
+`src/modules/core/google-handlers.ts`. The only outside call is to Google's key endpoint; tests replace it.
+
+With the switch off, `auth.google`, the three link routes, `auth.googleConnect`, `auth.removePassword` and a
+merge proven by Google all answer `501 not_implemented` (`google_sign_in_not_available`) without contacting
+Google. `auth.googleDisconnect` and a merge proven by email and password do not depend on the switch.
 
 ## Mail
 
