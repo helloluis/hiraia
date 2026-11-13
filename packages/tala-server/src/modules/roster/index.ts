@@ -1,4 +1,5 @@
-import type { RosterImportDraft, RosterProposed as Proposed, RosterRow } from '@hiraia/tala-core';
+import { createCipheriv, createDecipheriv, createHash, randomBytes } from 'node:crypto';
+import type { RosterImportDraft, RosterProposed as Proposed, RosterRow, RosterConfirmResponse } from '@hiraia/tala-core';
 import { RosterProposed } from '@hiraia/tala-core';
 import { emptyName, normalizeSource, rosterCounts, safeNameCell, structureRows, type SafeSource } from '@hiraia/tala-core/roster';
 import { HttpError, requireUser, type Ctx, type ServerModule } from '../../kernel/types';
@@ -17,7 +18,15 @@ function clone<T>(value: T): T { return structuredClone(value); }
 /** A fresh module instance isolates drafts between servers and tests. No roster content goes to SQLite. */
 export function createRosterModule(): ServerModule & { kernel: { onAccountDeleted: NonNullable<ServerModule['onAccountDeleted']> } } {
   const drafts = new Map<string, StoredDraft>();
-  function purge(now: number) { for (const [id, stored] of drafts) if (Date.parse(stored.draft.expiresAt) <= now) drafts.delete(id); }
+  // Lost HTTP responses can be replayed without retaining the source draft. Receipts are
+  // encrypted in memory, scoped to owner/import/key, and share the original 24h deadline.
+  const receiptKey = randomBytes(32);
+  const receipts = new Map<string, { owner: string; importId: string; classId: string; expires: number; fingerprint: string; iv: Buffer; tag: Buffer; bytes: Buffer }>();
+  const forgetReceipt = (key: string) => { receipts.get(key)?.bytes.fill(0); receipts.delete(key); };
+  function purge(now: number) {
+    for (const [id, stored] of drafts) if (Date.parse(stored.draft.expiresAt) <= now) drafts.delete(id);
+    for (const [key, receipt] of receipts) if (receipt.expires <= now) forgetReceipt(key);
+  }
   function lookup(ctx: Ctx, id: string): StoredDraft {
     purge(ctx.now().getTime());
     const user = requireUser(ctx), stored = drafts.get(id);
@@ -27,6 +36,7 @@ export function createRosterModule(): ServerModule & { kernel: { onAccountDelete
   }
   const onAccountDeleted: NonNullable<ServerModule['onAccountDeleted']> = (_deps, userId) => {
     for (const [id, stored] of drafts) if (stored.owner === userId) drafts.delete(id);
+    for (const [key, receipt] of receipts) if (receipt.owner === userId) forgetReceipt(key);
   };
   return {
     name: 'roster', migrations: [],
@@ -36,13 +46,14 @@ export function createRosterModule(): ServerModule & { kernel: { onAccountDelete
     start(deps) {
       const timer = setInterval(() => {
         purge(deps.now().getTime());
+        for (const [key, receipt] of receipts) if (!deps.services.records.get(receipt.owner, 'class', receipt.classId)) forgetReceipt(key);
         for (const [id, stored] of drafts) {
           const cls = deps.services.records.get(stored.owner, 'class', stored.draft.classId);
           if (!cls || cls.deletedAt) drafts.delete(id);
         }
       }, 60_000);
       timer.unref();
-      return () => { clearInterval(timer); drafts.clear(); };
+      return () => { clearInterval(timer); drafts.clear(); for (const key of receipts.keys()) forgetReceipt(key); receiptKey.fill(0); };
     },
     handlers: {
       'roster.import': async (ctx, { body }) => {
@@ -56,7 +67,7 @@ export function createRosterModule(): ServerModule & { kernel: { onAccountDelete
         if (drafts.size >= 100 || [...drafts.values()].filter(s => s.owner === user.id).length >= 10) throw new HttpError('rate_limited', 'Finish or abandon an earlier import before starting another.');
         const bytes = body.text !== undefined ? new TextEncoder().encode(body.text) : Buffer.from(body.contentBase64!, 'base64');
         let extracted;
-        try { extracted = await readRoster({ bytes, extension: body.text !== undefined ? 'txt' : body.filename.split('.').pop()!.toLowerCase(), maxRows: Math.min(500, ctx.config.limits.rosterRows), sheet: body.sheet, exactlyAsWritten: body.exactlyAsWritten }, Math.min(5 * 1024 * 1024, ctx.config.limits.rosterFileBytes)); }
+        try { extracted = await readRoster({ bytes, extension: body.text !== undefined ? 'txt' : body.filename.split('.').pop()!.toLowerCase(), maxRows: Math.min(500, ctx.config.limits.rosterRows) + 100, sheet: body.sheet, exactlyAsWritten: body.exactlyAsWritten }, Math.min(5 * 1024 * 1024, ctx.config.limits.rosterFileBytes)); }
         finally { bytes.fill(0); }
         let parsed;
         try { parsed = structureRows(extracted.rows, { maxRows: ctx.config.limits.rosterRows, exactlyAsWritten: body.exactlyAsWritten, encodingReview: extracted.encodingReview }); }
@@ -94,6 +105,18 @@ export function createRosterModule(): ServerModule & { kernel: { onAccountDelete
         return clone(stored.draft);
       },
       'roster.confirm': (ctx, { params, body }) => {
+        const owner = requireUser(ctx).id;
+        purge(ctx.now().getTime());
+        const key = body.idempotencyKey ? JSON.stringify([owner, params.importId, body.idempotencyKey]) : null;
+        const fingerprint = createHash('sha256').update(JSON.stringify(body)).digest('hex');
+        const prior = key ? receipts.get(key) : undefined;
+        if (prior) {
+          try { classFor(ctx, prior.classId); } catch (error) { forgetReceipt(key!); throw error; }
+          if (prior.fingerprint !== fingerprint) throw new HttpError('conflict', 'Use a new confirmation key when changing the reviewed rows.');
+          const decipher = createDecipheriv('aes-256-gcm', receiptKey, prior.iv); decipher.setAuthTag(prior.tag);
+          return JSON.parse(Buffer.concat([decipher.update(prior.bytes), decipher.final()]).toString('utf8')) as import('zod').z.infer<typeof RosterConfirmResponse>;
+        }
+        if (key && receipts.size >= 1000) throw new HttpError('rate_limited', 'Please try saving again later.');
         const stored = lookup(ctx, params.importId), cls = classFor(ctx, stored.draft.classId);
         if (body.defaultGradeGroupId && !cls.gradeGroups.some(g => g.id === body.defaultGradeGroupId)) throw new HttpError('invalid_input', 'Choose a grade group in this class.');
         const resolutions = new Map(body.resolutions.map(r => [r.rowIndex, r]));
@@ -133,9 +156,15 @@ export function createRosterModule(): ServerModule & { kernel: { onAccountDelete
           stored.source = stored.source.filter(r => pending.includes(r.rowIndex));
           stored.draft.counts = rosterCounts(stored.draft.rows);
         } else drafts.delete(params.importId);
-        return { students: clone(ready), pendingRows: pending };
+        const response = { students: clone(ready), pendingRows: pending };
+        if (key) {
+          const iv = randomBytes(12), cipher = createCipheriv('aes-256-gcm', receiptKey, iv);
+          const bytes = Buffer.concat([cipher.update(JSON.stringify(response), 'utf8'), cipher.final()]);
+          receipts.set(key, { owner, importId: params.importId, classId: stored.draft.classId, expires: Date.parse(stored.draft.expiresAt), fingerprint, iv, tag: cipher.getAuthTag(), bytes });
+        }
+        return response;
       },
-      'roster.abandon': (ctx, { params }) => { lookup(ctx, params.importId); drafts.delete(params.importId); return { ok: true }; },
+      'roster.abandon': (ctx, { params }) => { lookup(ctx, params.importId); drafts.delete(params.importId); for (const [key, receipt] of receipts) if (receipt.owner === requireUser(ctx).id && receipt.importId === params.importId) forgetReceipt(key); return { ok: true }; },
     },
   };
 }

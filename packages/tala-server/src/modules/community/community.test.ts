@@ -6,7 +6,7 @@ import { createTestServer } from '../../testing';
 import type { TestServer } from '../../testing';
 import { createCommunityModule, recheckPending, staffRestore, staffTakedown } from './index';
 import type { CommunityDeps } from './service';
-import { allowAll, createFakeLlm, fid, okVerdict, postBody, seedPlan, seedTeacher, unavailable } from './testing';
+import { allowAll, createFakeLlm, fid, okVerdict, postBody, put, seedPlan, seedTeacher, unavailable } from './testing';
 import type { FakeLlm } from './testing';
 import type { RecordStore } from '../../kernel/types';
 
@@ -558,5 +558,167 @@ test('the display name is checked too', async () => {
   const res = await w.t.ok('community.post', { body: postBody(planId, { displayName: 'Text me 09171234567' }), token: user.token });
   assert.equal(res.moderation.decision, 'return');
   assert.equal(res.moderation.reasons[0]!.sectionKey, 'displayName');
+  w.t.close();
+});
+
+/* ---------------- wave 2: moderation on own summaries, versionId, custom templates, kind, size cap ---------------- */
+
+test('the latest moderation decision is shown to the author only', async () => {
+  const w = world();
+  const a = await teacherWithPlan(w);
+  const src = await w.t.ok('community.post', { body: postBody(a.planId), token: a.user.token });
+  const other = await w.t.registerUser();
+  assert.equal(src.artifact.moderation?.decision, 'allow');
+  assert.equal((await w.t.ok('community.get', { params: { artifactId: src.artifact.id }, token: a.user.token })).moderation?.decision, 'allow');
+  assert.equal((await w.t.ok('community.search', { query: { mine: true }, token: a.user.token })).items[0]!.moderation?.decision, 'allow');
+  assert.equal((await w.t.ok('community.get', { params: { artifactId: src.artifact.id }, token: other.token })).moderation, undefined);
+  assert.equal((await w.t.ok('community.search', { query: {}, token: other.token })).items[0]!.moderation, undefined);
+
+  // After a report check returns it, the author sees why.
+  w.llm.script = () => okVerdict({ decision: 'return', reasons: [{ category: 'unsuitable', clear: true, message: 'Please change the joke in the motivation.', sectionKey: 'procedure', excerpt: null }] });
+  await w.t.ok('community.report', { params: { artifactId: src.artifact.id }, body: { reason: 'unsuitable' }, token: other.token });
+  const mine = await w.t.ok('community.get', { params: { artifactId: src.artifact.id }, token: a.user.token });
+  assert.equal(mine.status, 'returned');
+  assert.equal(mine.moderation?.decision, 'return');
+  assert.equal(mine.moderation?.reasons[0]!.message, 'Please change the joke in the motivation.');
+  w.t.close();
+});
+
+test('a returned post\'s preview carries the decision; rule reasons carry a kind', async () => {
+  const w = world();
+  const { user, planId } = await teacherWithPlan(w, ['4'], { contentText: ['Call me at 0917 123 4567', '1. Dela Cruz, Juan P.', '2. Santos, Maria L.', '3. Reyes, Ana', '4. Bautista, Mark', '5. Garcia, Kristine Joy'] });
+  const res = await w.t.ok('community.post', { body: postBody(planId), token: user.token });
+  assert.equal(res.artifact.moderation?.decision, 'return');
+  assert.deepEqual(res.moderation.reasons.map((r) => r.kind).sort(), ['class_list', 'phone']);
+  w.t.close();
+});
+
+test('older versions can be viewed with versionId; unreachable versions are not found', async () => {
+  const w = world();
+  const { user, setup, planId } = await teacherWithPlan(w);
+  const v1 = await w.t.ok('community.post', { body: postBody(planId), token: user.token });
+  seedPlan(w.store, user.id, setup, ['4'], { planId, revisionCode: 'V2', contentText: ['Second version text.'] });
+  const v2 = await w.t.ok('community.post', { body: postBody(planId, { artifactId: v1.artifact.id }), token: user.token });
+  const reader = await w.t.registerUser();
+  const old = await w.t.ok('community.get', { params: { artifactId: v1.artifact.id }, query: { versionId: v1.artifact.currentVersionId }, token: reader.token });
+  assert.equal(old.version.number, 1);
+  assert.ok(!allText(old.version).includes('Second version text.'));
+  const cur = await w.t.ok('community.get', { params: { artifactId: v1.artifact.id }, token: reader.token });
+  assert.equal(cur.version.id, v2.artifact.currentVersionId);
+
+  // A version of another artifact, or a pending one, is not reachable through this artifact.
+  const b = await teacherWithPlan(w);
+  const otherArt = await w.t.ok('community.post', { body: postBody(b.planId), token: b.user.token });
+  const foreign = await w.t.call('community.get', { params: { artifactId: v1.artifact.id }, query: { versionId: otherArt.artifact.currentVersionId }, token: reader.token });
+  assert.deepEqual(foreign.error?.details, { reason: 'version_unavailable' });
+  w.llm.script = unavailable;
+  seedPlan(w.store, user.id, setup, ['4'], { planId, revisionCode: 'V3' });
+  const v3 = await w.t.ok('community.post', { body: postBody(planId, { artifactId: v1.artifact.id }), token: user.token });
+  assert.equal(v3.moderation.decision, 'pending');
+  const pendingId = (w.t.db.prepare("SELECT id FROM community_versions WHERE artifact_id = ? AND status = 'pending'").get(v1.artifact.id) as { id: string }).id;
+  assert.equal((await w.t.call('community.get', { params: { artifactId: v1.artifact.id }, query: { versionId: pendingId }, token: reader.token })).error?.code, 'not_found');
+  assert.equal((await w.t.ok('community.get', { params: { artifactId: v1.artifact.id }, query: { versionId: pendingId }, token: user.token })).version.number, 3, 'the author sees it');
+  w.t.close();
+});
+
+test('a custom template travels with the version, stripped and moderated; built-ins do not', async () => {
+  const w = world();
+  const user = await w.t.registerUser();
+  const setup = seedTeacher(w.store, user.id);
+  const custom = {
+    id: 'tpl-custom-0001',
+    kind: 'custom',
+    name: { fil: 'Banghay ng Malinao Elementary School', en: 'Malinao Elementary School plan' },
+    builtIn: false,
+    span: 'session',
+    orientation: 'portrait',
+    sections: [
+      { key: 'objectives', label: { fil: 'Layunin', en: 'Objectives' }, contentType: 'list', required: true },
+      { key: 'content', label: { fil: 'Nilalaman', en: 'Content' }, contentType: 'text', required: false },
+      { key: 'materials', label: { fil: 'Kagamitan', en: 'Materials' }, contentType: 'list', required: false },
+      { key: 'procedure', label: { fil: 'Pamamaraan', en: 'Procedure' }, contentType: 'procedure', required: false },
+      { key: 'assessment', label: { fil: 'Pagtataya', en: 'Assessment' }, contentType: 'text', required: false },
+      { key: 'reflection', label: { fil: 'Pagninilay', en: 'Reflection' }, contentType: 'text', required: false, outsideLock: true },
+    ],
+  };
+  put(w.store, user.id, 'template', custom);
+  const planId = seedPlan(w.store, user.id, setup, ['4'], { templateId: custom.id });
+  const res = await w.t.ok('community.post', { body: postBody(planId), token: user.token });
+  assert.equal(res.artifact.tags.templateKind, 'custom');
+  const reader = await w.t.registerUser();
+  const detail = await w.t.ok('community.get', { params: { artifactId: res.artifact.id }, token: reader.token });
+  assert.equal(detail.version.template?.id, custom.id);
+  assert.equal(detail.version.template?.sections.length, 6);
+  assert.ok(!allText(detail.version.template).includes('Malinao'), 'school name stripped from template labels too');
+  const copy = await w.t.ok('community.copy', { params: { artifactId: res.artifact.id }, body: {}, token: reader.token });
+  assert.equal(copy.plan.templateId, custom.id, 'the copier saves version.template under the same id');
+
+  // Template labels are public text and are checked like the lesson.
+  put(w.store, user.id, 'template', { ...custom, id: 'tpl-custom-0002', name: { fil: 'Text 09171234567', en: 'Plan' } });
+  const p2 = seedPlan(w.store, user.id, setup, ['4'], { templateId: 'tpl-custom-0002' });
+  const r2 = await w.t.ok('community.post', { body: postBody(p2), token: user.token });
+  assert.equal(r2.moderation.decision, 'return');
+  assert.equal(r2.moderation.reasons[0]!.sectionKey, 'template');
+
+  const builtIn = await teacherWithPlan(w);
+  const r3 = await w.t.ok('community.post', { body: postBody(builtIn.planId), token: builtIn.user.token });
+  assert.equal((await w.t.ok('community.get', { params: { artifactId: r3.artifact.id }, token: reader.token })).version.template, undefined);
+  w.t.close();
+});
+
+test('a post too big for the 100 KB response budget is refused clearly before any model call', async () => {
+  const w = world();
+  const paragraph = 'Plants make food from sunlight, water and air in their leaves. '.repeat(60); // ~3.8 KB
+  const { user, planId } = await teacherWithPlan(w, ['4'], { contentText: Array.from({ length: 30 }, () => paragraph) });
+  const res = await w.t.call('community.post', { body: postBody(planId), token: user.token });
+  assert.equal(res.error?.code, 'invalid_input');
+  const details = res.error?.details as { reason: string; bytes: number; limit: number };
+  assert.equal(details.reason, 'too_large');
+  assert.ok(details.bytes > details.limit && details.limit <= 100 * 1024);
+  assert.match(res.error!.message, /too long to share/);
+  assert.equal(w.llm.calls.length, 0);
+  assert.equal((w.t.db.prepare('SELECT COUNT(*) n FROM community_artifacts').get() as { n: number }).n, 0);
+
+  // A long-but-normal lesson (~40 KB) posts, and its detail stays inside the budget.
+  const ok = await teacherWithPlan(w, ['4'], { contentText: Array.from({ length: 10 }, () => paragraph) });
+  const posted = await w.t.ok('community.post', { body: postBody(ok.planId), token: ok.user.token });
+  const detail = await w.t.call('community.get', { params: { artifactId: posted.artifact.id }, token: ok.user.token });
+  assert.ok(Buffer.byteLength(JSON.stringify(detail.data)) < 100 * 1024);
+  w.t.close();
+});
+
+test('a deleted author: artifacts leave search; copies others made keep the credit; derived posts show the source unavailable', async () => {
+  const w = world();
+  const a = await teacherWithPlan(w);
+  const src = await w.t.ok('community.post', { body: postBody(a.planId, { displayName: 'Teacher A' }), token: a.user.token });
+  const b = await w.t.registerUser();
+  const bSetup = seedTeacher(w.store, b.id);
+  const copy = await w.t.ok('community.copy', { params: { artifactId: src.artifact.id }, body: { gradeGroupIds: bSetup.groupIds }, token: b.token });
+  // B's device stores the copy as its own records (here written through the real store).
+  put(w.store, b.id, 'plan', copy.plan);
+  for (const s of copy.sections) put(w.store, b.id, 'plan_section', s);
+  const bPlan = seedPlan(w.store, b.id, bSetup, ['4'], { lineage: copy.plan.lineage });
+  const derived = await w.t.ok('community.post', { body: postBody(bPlan), token: b.token });
+
+  await w.t.ok('account.delete', { body: { confirm: 'DELETE', password: a.user.password }, token: a.user.token });
+  const ids = (await w.t.ok('community.search', { query: {}, token: b.token })).items.map((i) => i.id);
+  assert.deepEqual(ids, [derived.artifact.id], "the deleted author's artifact is gone from search");
+  assert.equal((await w.t.call('community.get', { params: { artifactId: src.artifact.id }, token: b.token })).error?.code, 'not_found');
+  const kept = w.store.get(b.id, 'plan', copy.plan.id);
+  assert.deepEqual(kept?.data.lineage, { artifactId: src.artifact.id, versionId: src.artifact.currentVersionId, title: 'Parts of a Plant', authorDisplayName: 'Teacher A' }, "B's copy keeps the credit line");
+  const d = await w.t.ok('community.get', { params: { artifactId: derived.artifact.id }, token: b.token });
+  assert.deepEqual(d.lineage, { artifactId: src.artifact.id, versionId: src.artifact.currentVersionId, title: 'Parts of a Plant', authorDisplayName: 'Teacher A', available: false });
+  w.t.close();
+});
+
+test('title and summary go through the shared publish cleaner', async () => {
+  const w = world();
+  const { user, planId } = await teacherWithPlan(w);
+  const res = await w.t.ok('community.post', {
+    body: postBody(planId, { title: 'Malinao Elementary School: plants', summary: 'Taught in Grade 4 - Sampaguita on 2026-11-16.' }),
+    token: user.token,
+  });
+  assert.equal(res.artifact.title, '[school]: plants');
+  assert.equal(res.artifact.summary, 'Taught in [section] on [date].');
   w.t.close();
 });

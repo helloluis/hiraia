@@ -61,7 +61,7 @@ export function normalizeSource(source: SafeSource[], columns: Column[], exact =
 /** Structure and immediately discard all unapproved cells, even from the temporary source. */
 export function structureRows(input: string[][], options: { exactlyAsWritten?: boolean; maxRows?: number; encodingReview?: boolean; columns?: Column[]; headerRowIndex?: number | null } = {}): StructuredRoster {
   const nonempty = input.map((cells, rowIndex) => ({ cells, rowIndex })).filter(r => r.cells.some(c => c.trim()));
-  if (nonempty.length > (options.maxRows ?? 500)) throw new Error('This list is too long. Import at most 500 non-empty rows at a time.');
+  if (nonempty.length > (options.maxRows ?? 500) + 100) throw new Error('This list is too long. Import at most 500 students and 100 non-student lines at a time.');
   if (input.some(r => r.length > 100 || r.some(c => c.length > 10000))) throw new Error('This file has oversized cells. Paste the names instead.');
   const nameHeader = (cells: string[]) => cells.some(c => nameFields.has(fieldForHeader(c)));
   let header = options.headerRowIndex === null ? -1 : options.headerRowIndex !== undefined ? nonempty.findIndex(r => r.rowIndex === options.headerRowIndex) : nonempty.findIndex(r => nameHeader(r.cells));
@@ -106,6 +106,8 @@ export function structureRows(input: string[][], options: { exactlyAsWritten?: b
     });
     return { rowIndex, cells: sanitized, kind: excluded ? 'excluded' : 'data', grade, sex };
   });
+  const studentCount = source.filter(r => r.kind === 'data' || options.exactlyAsWritten).length;
+  if (studentCount > (options.maxRows ?? 500) || source.length - studentCount > 100) throw new Error('Import at most 500 students and 100 non-student lines at a time.');
   const rows = normalizeSource(source, columns, options.exactlyAsWritten);
   if (options.encodingReview) for (const row of rows) if (row.status !== 'not_student') { row.flags.push('corrupted_characters'); row.status = 'needs_review'; }
   return { source, columns, droppedColumns, rows, counts: rosterCounts(rows) };

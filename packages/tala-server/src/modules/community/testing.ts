@@ -125,6 +125,8 @@ export interface PlanOptions {
   competencies?: string[];
   durationMinutes?: number;
   date?: string;
+  /** Use this template id (e.g. a custom template already written for the owner). */
+  templateId?: string;
 }
 
 /** A locked plan. One grade group → DLP template; several → multi-grade template with pergroup + multigrade sections. */
@@ -136,7 +138,7 @@ export function seedPlan(store: RecordStore, ownerId: string, setup: TeacherSetu
   const planData = {
     id: planId,
     title: opts.title ?? 'Parts of a Plant',
-    templateId: template.id,
+    templateId: opts.templateId ?? template.id,
     language: 'en',
     subjectName: 'Science',
     learningAreaId: 'science',

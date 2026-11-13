@@ -11,7 +11,9 @@ export async function readRoster(input: ReaderInput, maxBytes = 5 * 1024 * 1024)
   active++;
   try {
     return await new Promise<ReaderOutput>((resolve, reject) => {
-      const worker = new Worker(new URL('./reader-worker.cjs', import.meta.url), { workerData: input, resourceLimits: { maxOldGenerationSizeMb: 96, maxYoungGenerationSizeMb: 16, stackSizeMb: 4 }, stdout: true, stderr: true });
+      // Keep the Node worker as a file, rather than a webpack worker entry chunk.
+      const workerUrl = new URL('./reader-worker.cjs', import.meta.url);
+      const worker = new Worker(workerUrl, { workerData: input, execArgv: [], resourceLimits: { maxOldGenerationSizeMb: 96, maxYoungGenerationSizeMb: 16, stackSizeMb: 4 }, stdout: true, stderr: true });
       worker.stdout?.resume(); worker.stderr?.resume(); // Never forward parser diagnostics containing cells.
       let done = false;
       const finish = (output?: ReaderOutput) => {

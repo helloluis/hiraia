@@ -101,3 +101,9 @@ test('oversized display names remain pending for editing without invalid respons
 test('pasted CSV header distinguishes a table from surname-first plain lines', () => {
   assert.deepEqual(extractText('Name,Grade\n"Peña, Miro A.",3'), [['Name','Grade'],['Peña, Miro A.','3']]);
 });
+test('500 students plus headers are accepted without permitting 501 students or 101 metadata lines', () => {
+  const students = Array.from({ length: 500 }, (_, i) => [`Peña, Miro ${String.fromCharCode(65 + i % 26)}.`, '3']);
+  assert.equal(structureRows([['Name', 'Grade'], ...students]).rows.length, 501);
+  assert.throws(() => structureRows([['Name', 'Grade'], ...students, ['Reyes, Neri A.', '3']]));
+  assert.throws(() => structureRows([...Array.from({ length: 101 }, () => ['Boys']), ['Peña, Miro A.']]));
+});

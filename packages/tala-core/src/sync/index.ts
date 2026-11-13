@@ -1,3 +1,4 @@
+import { Id } from '../contracts/common';
 import { ENTITY_NAMES, RecordEnvelopeSchema, parseRecordData } from '../contracts/records';
 import type { EntityName, RecordData, RecordEnvelope, PlanSection, Plan } from '../contracts/records';
 import { CONFLICT_POLICY, PullResponse, PushResponse } from '../contracts/sync';
@@ -53,6 +54,12 @@ export const createSyncEngine: CreateSyncEngine = ({ store, transport, deviceId,
     });
     let state: SyncStatus['state'] = 'idle';
     let running: Promise<SyncReport> | null = null;
+    let networkTail: Promise<unknown> = Promise.resolve();
+    const network = <T>(fn: () => Promise<T>): Promise<T> => {
+        const result = networkTail.then(fn);
+        networkTail = result.catch(() => undefined);
+        return result;
+    };
     let tail: Promise<unknown> = Promise.resolve();
     const exclusive = <T>(fn: () => Promise<T>): Promise<T> => {
         const result = tail.then(() => hydrated).then(fn);
@@ -197,6 +204,167 @@ export const createSyncEngine: CreateSyncEngine = ({ store, transport, deviceId,
         report.lockCopies.push(id);
         notify([...copies, ...restored]);
     }
+    async function hydratePage(page: ReturnType<typeof PullResponse.parse>, report: SyncReport, advanceCursor: boolean) {
+        await exclusive(async () => {
+            const updates: LocalRecord[] = [];
+            const removes: Array<{
+                entity: EntityName;
+                id: string;
+            }> = [];
+            const meta: Record<string, string | null> = advanceCursor ? { 'sync.cursor': page.cursor } : {};
+            const outboxRemove: string[] = [];
+            for (const wire of page.records) {
+                let envelope: ReturnType<typeof RecordEnvelopeSchema.parse>;
+                try {
+                    envelope = RecordEnvelopeSchema.parse(wire);
+                }
+                catch {
+                    report.skipped++;
+                    continue;
+                }
+                const matches = (r: {
+                    entity: EntityName;
+                    id: string;
+                }) => r.entity === envelope.entity && r.id === envelope.id;
+                const existing = removes.some(matches) ? null : [...updates].reverse().find(matches) ?? await store.get(envelope.entity, envelope.id);
+                const deletionRev = meta[tombstoneKey(envelope.entity, envelope.id)] ?? await store.getMeta(tombstoneKey(envelope.entity, envelope.id));
+                const knownRev = Math.max(existing?.rev ?? 0, Number(deletionRev ?? 0));
+                if (knownRev >= envelope.rev)
+                    continue;
+                if (envelope.deletedAt) {
+                    if (existing?.dirty && !existing.deletedAt) {
+                        // Preserve an actual local edit, never resurrect the scrubbed placeholder.
+                        if (existing.conflict)
+                            await save({ ...existing, rev: envelope.rev, base: null, conflict: null }, await queued(envelope.entity, envelope.id));
+                        continue;
+                    }
+                    for (let i = updates.length - 1; i >= 0; i--)
+                        if (matches(updates[i]!))
+                            updates.splice(i, 1);
+                    removes.push({ entity: envelope.entity, id: envelope.id });
+                    meta[tombstoneKey(envelope.entity, envelope.id)] = String(envelope.rev);
+                    for (const item of await queued(envelope.entity, envelope.id)) {
+                        outboxRemove.push(item.mutationId);
+                        meta[payloadKey(item.mutationId)] = null;
+                    }
+                    continue;
+                }
+                let server: LocalRecord;
+                try {
+                    server = local(envelope);
+                }
+                catch {
+                    report.skipped++;
+                    continue;
+                }
+                const r = existing;
+                if (r && r.rev >= server.rev)
+                    continue;
+                if (r?.dirty) {
+                    if (r.conflict)
+                        updates.push({ ...r, conflict: { server } });
+                    // Pending edits are reconciled through push, never overwritten by pull.
+                    continue;
+                }
+                for (let i = removes.length - 1; i >= 0; i--)
+                    if (matches(removes[i]!))
+                        removes.splice(i, 1);
+                updates.push(server);
+            }
+            await commit({ put: updates, remove: removes, outboxRemove, meta });
+            notify(updates);
+            for (const removed of removes) {
+                conflictKeys.delete(recordKey(removed));
+                for (const listener of listeners) {
+                    try {
+                        listener([removed]);
+                    }
+                    catch { }
+                }
+            }
+        });
+    }
+    async function fetchPlans(planIds: string[]): Promise<SyncReport> {
+        const ids = [...new Set(planIds.map(id => Id.parse(id)))];
+        return network(async () => {
+            const report: SyncReport = { ok: true, pushed: 0, pulled: 0, conflicts: 0, rejected: 0, skipped: 0, lockCopies: [], error: null, at: now().toISOString() };
+            state = 'syncing';
+            try {
+                // 30 maximum-length IDs fit the contract's 2,000-character query limit.
+                for (let offset = 0; offset < ids.length; offset += 30) {
+                    const selected = ids.slice(offset, offset + 30).join(',');
+                    let cursor: string | undefined;
+                    const seen = new Set<string>();
+                    for (;;) {
+                        const page = PullResponse.parse(await transport.pull({ planIds: selected, cursor, limit: 100 }));
+                        if (page.hasMore && (page.cursor === cursor || seen.has(page.cursor)))
+                            throw new Error('Pull cursor did not advance');
+                        await hydratePage(page, report, false);
+                        report.pulled += page.records.length;
+                        if (!page.hasMore)
+                            break;
+                        cursor = page.cursor;
+                        seen.add(cursor);
+                    }
+                }
+                state = 'idle';
+            }
+            catch (error) {
+                const e = error as {
+                    code?: string;
+                    status?: number;
+                    name?: string;
+                };
+                report.ok = false;
+                report.error = e.code === 'unauthenticated' || e.status === 401 ? 'unauthenticated' : e instanceof TypeError || ['offline', 'network', 'timeout'].includes(e.code ?? '') || e.name === 'AbortError' ? 'offline' : 'server';
+                state = report.error === 'offline' ? 'offline' : 'error';
+            }
+            return report;
+        });
+    }
+    async function batch(ops: Array<{
+        op: 'put';
+        entity: EntityName;
+        data: unknown;
+    } | {
+        op: 'remove';
+        entity: EntityName;
+        id: string;
+    }>): Promise<void> {
+        // Validate the entire operation before even staging a write.
+        const validated = ops.map(op => op.op === 'put' ? { ...op, data: parseRecordData(op.entity, op.data) } : { ...op, id: Id.parse(op.id) });
+        await exclusive(async () => {
+            const staged = new Map<string, LocalRecord>();
+            for (const op of validated) {
+                const id = op.op === 'put' ? op.data.id : op.id;
+                const key = recordKey({ entity: op.entity, id });
+                const old = staged.get(key) ?? await store.get(op.entity, id);
+                if (op.op === 'remove' && !old)
+                    continue;
+                const data = op.op === 'put' ? op.data : parseRecordData(op.entity, old!.data);
+                staged.set(key, { entity: op.entity, id, data, rev: old?.rev ?? Number(await store.getMeta(tombstoneKey(op.entity, id)) ?? 0),
+                    updatedAt: old?.updatedAt ?? now().toISOString(), deletedAt: op.op === 'remove' ? now().toISOString() : null,
+                    dirty: true, base: old?.dirty ? old.base : old?.data ?? null, conflict: old?.conflict ?? null });
+            }
+            if (!staged.size)
+                return;
+            const records = [...staged.values()];
+            const remove = (await store.outbox()).filter(item => staged.has(recordKey(item)) && item.attempts === 0 && !staged.get(recordKey(item))!.conflict);
+            const meta: Record<string, string | null> = Object.fromEntries(remove.map(item => [payloadKey(item.mutationId), null]));
+            const additions: OutboxItem[] = [];
+            for (const record of records) {
+                if (record.conflict)
+                    continue;
+                const next = addition(record);
+                additions.push(next.item);
+                meta[payloadKey(next.item.mutationId)] = JSON.stringify(next.saved);
+                meta[`sync.rejected.${record.id}`] = null;
+            }
+            // Adapter transaction is the durability boundary: publish no notification until it commits.
+            await store.commit({ put: records, outboxAdd: additions, outboxRemove: remove.map(item => item.mutationId), meta });
+            notify(records);
+        });
+    }
     async function cycle(opts?: {
         windowFrom?: string;
         windowTo?: string;
@@ -317,84 +485,7 @@ export const createSyncEngine: CreateSyncEngine = ({ store, transport, deviceId,
                 const page = PullResponse.parse(await transport.pull({ ...opts, ...(cursor ? { cursor } : {}), limit: 100 }));
                 if (page.hasMore && page.cursor === cursor)
                     throw new Error('Pull cursor did not advance');
-                await exclusive(async () => {
-                    const updates: LocalRecord[] = [];
-                    const removes: Array<{
-                        entity: EntityName;
-                        id: string;
-                    }> = [];
-                    const meta: Record<string, string | null> = { 'sync.cursor': page.cursor };
-                    const outboxRemove: string[] = [];
-                    for (const wire of page.records) {
-                        let envelope: ReturnType<typeof RecordEnvelopeSchema.parse>;
-                        try {
-                            envelope = RecordEnvelopeSchema.parse(wire);
-                        }
-                        catch {
-                            report.skipped++;
-                            continue;
-                        }
-                        const matches = (r: {
-                            entity: EntityName;
-                            id: string;
-                        }) => r.entity === envelope.entity && r.id === envelope.id;
-                        const existing = removes.some(matches) ? null : [...updates].reverse().find(matches) ?? await store.get(envelope.entity, envelope.id);
-                        const deletionRev = meta[tombstoneKey(envelope.entity, envelope.id)] ?? await store.getMeta(tombstoneKey(envelope.entity, envelope.id));
-                        const knownRev = Math.max(existing?.rev ?? 0, Number(deletionRev ?? 0));
-                        if (knownRev >= envelope.rev)
-                            continue;
-                        if (envelope.deletedAt) {
-                            if (existing?.dirty && !existing.deletedAt) {
-                                // Preserve an actual local edit, never resurrect the scrubbed placeholder.
-                                if (existing.conflict)
-                                    await save({ ...existing, rev: envelope.rev, base: null, conflict: null }, await queued(envelope.entity, envelope.id));
-                                continue;
-                            }
-                            for (let i = updates.length - 1; i >= 0; i--)
-                                if (matches(updates[i]!))
-                                    updates.splice(i, 1);
-                            removes.push({ entity: envelope.entity, id: envelope.id });
-                            meta[tombstoneKey(envelope.entity, envelope.id)] = String(envelope.rev);
-                            for (const item of await queued(envelope.entity, envelope.id)) {
-                                outboxRemove.push(item.mutationId);
-                                meta[payloadKey(item.mutationId)] = null;
-                            }
-                            continue;
-                        }
-                        let server: LocalRecord;
-                        try {
-                            server = local(envelope);
-                        }
-                        catch {
-                            report.skipped++;
-                            continue;
-                        }
-                        const r = existing;
-                        if (r && r.rev >= server.rev)
-                            continue;
-                        if (r?.dirty) {
-                            if (r.conflict)
-                                updates.push({ ...r, conflict: { server } });
-                            // Pending edits are reconciled through push, never overwritten by pull.
-                            continue;
-                        }
-                        for (let i = removes.length - 1; i >= 0; i--)
-                            if (matches(removes[i]!))
-                                removes.splice(i, 1);
-                        updates.push(server);
-                    }
-                    await commit({ put: updates, remove: removes, outboxRemove, meta });
-                    notify(updates);
-                    for (const removed of removes) {
-                        conflictKeys.delete(recordKey(removed));
-                        for (const listener of listeners) {
-                            try {
-                                listener([removed]);
-                            }
-                            catch { }
-                        }
-                    }
-                });
+                await hydratePage(page, report, true);
                 report.pulled += page.records.length;
                 cursor = page.cursor;
                 if (!page.hasMore)
@@ -418,10 +509,10 @@ export const createSyncEngine: CreateSyncEngine = ({ store, transport, deviceId,
     return {
         get: async <E extends EntityName>(entity: E, id: string) => { const r = await store.get(entity, id); return r?.deletedAt ? null : r as LocalRecord<E> | null; },
         list: async <E extends EntityName>(entity: E) => store.list(entity) as Promise<LocalRecord<E>[]>,
-        put, remove, resolveConflict,
+        put, remove, resolveConflict, batch, fetchPlans,
         sync(opts) {
             if (!running)
-                running = cycle(opts).finally(() => { running = null; });
+                running = network(() => cycle(opts)).finally(() => { running = null; });
             return running;
         },
         async status() {

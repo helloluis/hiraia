@@ -71,6 +71,7 @@ export const en = {
   partial: 'Partly taught',
   not_taught: 'Not taught',
   assumed_taught: 'Assumed taught',
+  before_tala: 'Covered before Tala',
   scheduled: 'Scheduled',
   pdf: 'Share or print',
   paper: 'Paper',

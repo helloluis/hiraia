@@ -6,7 +6,8 @@ Resolved by orchestrator and adopted, with tests:
 - `CalendarDay.followsWeekday` and `assignmentIds`.
 - `PairingOverride.slotId` and `SessionMark.slotId`.
 - `PacingTrack.allocation`: persisted exact competency/date/slot placements.
-- `TimelineEntry.byGroupKind` / `byGroupMark`.
+- `TimelineEntry.byGroupKind` / `byGroupMark`, including `before_tala` in all four timeline kind/mark fields.
+- Shared `./sample` package export and root `sample` namespace (wave 2).
 - `LearningArea.stages`: one index entry per learning area, primary stage retained.
 - API route path literals: temporary route-param casts have been removed.
 

@@ -16,7 +16,9 @@ Pure/offline functions are exported at `@hiraia/tala-core/roster` (`decodeText`,
 5. Independently validate output shape, row cardinality/indices, source character runs with multiplicity,
    no inferred metadata and no lost name runs. Reject invalid proposals and leave explicit review flags.
 6. Confirmation returns only allowlisted student fields for the client sync engine. Pending rows remain;
-   successfully returned rows cannot be returned a second time. Full confirmation/abandon deletes the draft.
+   successful confirmations with an `idempotencyKey` replay the same result. Reusing a key with a changed
+   body returns conflict. Full confirmation/abandon deletes the draft. Replay receipts are encrypted with
+   a per-process AES-GCM key and expire at the original draft deadline; account deletion purges them too.
 
 Drafts live only in a per-module memory map, with no SQLite tables/migrations and no logs. They expire at
 23 h 59 min; a one-minute cleanup timer guarantees removal by 24 h during normal operation. Access also
@@ -27,7 +29,7 @@ explicit encrypted shared ephemeral store. Do not persist this map as plaintext.
 
 ## Limits and library choices
 
-- Maximum 5 MiB input; maximum 500 nonempty source rows (including headers; contract request pending),
+- Maximum 5 MiB input; maximum 500 student rows plus 100 non-student structure rows,
   100 columns, 10,000 characters/cell at extraction, 500 characters/original name, 200 display-name chars.
 - Maximum two concurrent reader workers, eight seconds per reader, V8 old/young heap limits 96/16 MiB,
   4 MiB stack. ZIP metadata is checked against 20 MiB total expanded content and 1,000 entries before
@@ -40,15 +42,20 @@ explicit encrypted shared ephemeral store. Do not persist this map as plaintext.
   and ODS, avoiding three format implementations. Formula evaluation is not installed or performed.
 - [fflate](https://github.com/101arrowz/fflate) is the small ZIP reader; entry filtering bounds expansion
   before extraction. [saxes](https://github.com/lddubeau/saxes) is a strict streaming XML parser, avoiding
-  a document object tree and HTML conversion. `tsx` is a runtime dependency because these packages ship
-  TypeScript source and the worker loads it through the supported `tsx/cjs/api` registration API.
+  a document object tree and HTML conversion. The worker is plain CommonJS requiring only reader libraries
+  and the shared pure-JavaScript decoder. `tsx` is development-only. `execArgv: []` prevents inheriting a
+  parent test/dev loader. `text-runtime.cjs` is the canonical decoder; `text.ts` provides its typed facade.
+  The worker URL is assigned before constructing the Node Worker so webpack does not turn it into a
+  bundled worker entry. Next’s existing server URL parser rule preserves the source-file URL.
 - UTF-8 and BOM UTF-16 decoding is pure TS; Windows-1252 fallback is always marked uncertain. Unsupported
   encodings and damaged files offer paste/UTF-8 conversion instead of replacement characters.
 
 ## Integration and remaining gates
 
-Read `CONTRACT-REQUESTS.md` for manual first-pass mapping, 500-student row accounting, durable cloud
-history, encoding selection and confirmation idempotency. Column-model results are advisory and cannot
+Read `CONTRACT-REQUESTS.md` for manual first-pass mapping, durable cloud history and encoding selection.
+The 500-student row accounting and confirmation idempotency requests are implemented. Replay lasts only
+until the original deadline and does not survive a process restart; clients must deduplicate applying a
+replayed result to their own local student records. Column-model results are advisory and cannot
 resurrect discarded columns; retained names can be remapped. Unrecognised tables currently need pasted
 name columns. Exactly-as-written works on physical text lines or approved name cells in binary tables;
 it never resurrects discarded sensitive columns. Unsupported/oversized names remain pending for editing.
@@ -66,3 +73,29 @@ ROS-3 photo/scan and ROS-8 re-upload diffs are P1/P2 and are not implemented her
 Tests use invented names and fake LLM gateways. Class fixtures use the real RecordStore. Account deletion
 invokes the synchronous `onAccountDeleted` hook to purge all of that teacher’s drafts immediately. Authentication,
 route schema validation, response validation, expiry clock and logs use the real `createTestServer` kernel.
+
+## Bundled-build verification (2026-11-13)
+
+Merged `tala-v1` through `7e93851bc`, which pins the matching React/ReactDOM versions.
+`pnpm --filter @hiraia/tala-web build` completed successfully.
+
+Run the repeatable smoke check after building:
+
+```sh
+node packages/tala-server/src/modules/roster/http-smoke.cjs
+```
+
+The script starts the actual built Next app on an ephemeral loopback port with `TALA_ENV=local`
+and a new temporary `TALA_DB_PATH`. It registers a throwaway account, creates its class through
+HTTP sync, checks that roster upload returns 403 before email verification, reads the verification
+token from that temporary database's development outbox without printing it, and verifies over HTTP.
+It posts invented pasted-text and XLSX rosters to `/api/v1/roster/imports` with no Origin header.
+Both returned HTTP 200 with `linesRead: 3`, `students: 2`, `needsReview: 0`, `notStudents: 1`.
+The returned names were `Peña, Miro A.` and `De los Santos, Lira B.`; the XLSX sheet was `Invented names`.
+This exercises the plain-JavaScript worker from the bundled API route, including library/file resolution.
+No AI service is called. The script deletes the account, stops the child server, and removes the temporary
+SQLite database (including sidecars) in its cleanup path. It never prints credentials or email tokens.
+
+Observed acceptance run: port 41767; server shutdown and temporary-directory removal both confirmed.
+No web config changes were needed. This validates `next start` with the workspace packages present;
+it does not claim a separately packaged Next standalone artifact has been assembled or tested.

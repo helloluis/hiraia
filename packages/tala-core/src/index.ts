@@ -11,6 +11,7 @@ export * as pacing from './pacing';
 export * as curriculum from './curriculum';
 export * as generation from './generation';
 export * as roster from './roster';
+export * as sample from './sample';
 export * as moderation from './moderation';
 export * as plan from './plan';
 export * as print from './print';
