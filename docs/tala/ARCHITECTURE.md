@@ -21,9 +21,12 @@ merges into it. Each worker has its own worktree and branch `tala-v1-<letter>` c
 The 0.4.x release line keeps shipping fixes while V1.0 is demonstrated and improved. V1.0 work must never
 block or entangle it.
 
-- **0.4.x lives on `main`**: the Kotlin teacher app in `packages/tala/` (currently 0.4.4, version code 19,
-  `com.hiraia.tala`, pilot signing key) and its student-side counterpart `packages/mobile/modules/hiraia-tala`.
-  It is released from `main` with its existing process (`docs/RELEASE-*-TALA-*.md`, `packages/mobile/BUILD.md`).
+- **0.4.x lives on the maintenance branch `tala-0.4.x`** (created 13 Nov 2026 at `main` commit `7d85aa521`,
+  approved by Luis): the Kotlin teacher app in `packages/tala/` (0.4.4, version code 19, `com.hiraia.tala`,
+  pilot signing key) and its student-side counterpart `packages/mobile/modules/hiraia-tala`. It is released
+  with its existing process (`docs/RELEASE-*-TALA-*.md`, `packages/mobile/BUILD.md`).
+- **`main` stays untouched by V1.0 work until merge day.** Nothing from `tala-v1` reaches `main` before Luis
+  says so.
 - **V1.0 lives only on `tala-v1`** (and worker branches `tala-v1-*`), only in new paths:
   `packages/tala-core`, `packages/tala-server`, `packages/tala-web`, `packages/tala-mobile`, `docs/tala`.
   Nothing else in the repository is edited. `tala-v1` is not merged to `main` until Luis says so.
@@ -37,9 +40,13 @@ block or entangle it.
   0.4.x and can never replace or collide with it. The 0.4.x pilot signing key, version-code sequence and
   update manifest are not used by V1.0 builds. Switching to `com.hiraia.tala` with the pilot key and a higher
   version code (PRD ACT-2, in-place upgrade) is a single deliberate cutover step at V1.0 release, decided by Luis.
-- **Hotfix path for 0.4.x while V1.0 is in flight:** branch from `main`, fix under `packages/tala/` (and the
-  student module if needed), release as today, merge to `main`. No coordination with `tala-v1` is needed.
-  The orchestrator periodically merges `main` into `tala-v1`; because the paths are disjoint this cannot conflict.
+- **Hotfix path for 0.4.x while V1.0 is in flight:** branch from `tala-0.4.x`, fix under `packages/tala/`
+  (and the student module if needed), merge back to `tala-0.4.x`, release from `tala-0.4.x` as today. No
+  coordination with `tala-v1` is needed. Carry each hotfix forward to `main` by merging `tala-0.4.x` into `main`
+  whenever convenient, so `main` never loses a fix.
+- The orchestrator periodically merges `main` into `tala-v1`; because the V1.0 paths are disjoint this cannot
+  conflict. The one shared file V1.0 changes on its own branch is the root `pnpm-lock.yaml` (new importers added
+  for the four `tala-*` packages; see "Lockfile" below).
 
 ## Contracts come first
 

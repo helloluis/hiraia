@@ -40,7 +40,7 @@ The repository already ships **Hiraia Tala 0.4.x** (`packages/tala`, package `co
 Consequences:
 
 - One Android package (`com.hiraia.tala`), upgraded in place over 0.4.x, signed with the established pilot key.
-- The Kotlin app is retired once the new app reaches feature parity. Until then **0.4.x remains an independent, shippable release line** on `main`: fixes to it are never blocked by, or entangled with, V1.0 work, which lives only on the `tala-v1` branch in new packages.
+- The Kotlin app is retired once the new app reaches feature parity. Until then **0.4.x remains an independent, shippable release line** on its own maintenance branch `tala-0.4.x` (hotfixes branch from and merge to it; `main` is untouched by V1.0 work until merge day): fixes to it are never blocked by, or entangled with, V1.0 work, which lives only on the `tala-v1` branch in new packages.
 - Until the cutover, V1.0 demo builds use a separate application id (`com.hiraia.tala.next`), signing key and no update channel, so they install beside 0.4.x. Taking over `com.hiraia.tala` with the pilot key (ACT-2) is one deliberate step at V1.0 release.
 - Activity collection becomes a native module inside the Expo/React Native app (§13.5).
 - A class is one thing: the class a teacher plans for is the class whose students join by QR.
