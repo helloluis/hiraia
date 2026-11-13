@@ -12,6 +12,7 @@
  * One thing the contract does not allow hiding: `auth.register` returns a session, so signing up with an
  * address that already has an account has to fail visibly. It is rate limited; see CONTRACT-REQUESTS.md.
  */
+import { Id, RECORD_SCHEMAS, parseRecordData } from '@hiraia/tala-core';
 import type { User } from '@hiraia/tala-core';
 import { clearedSessionCookie, effectsOf, sessionCookie } from '../../kernel/auth';
 import { HttpError, requireUser } from '../../kernel/types';
@@ -24,6 +25,11 @@ import { tooMany } from './rate-limit';
 import { coreState } from './state';
 
 const HOUR = 3600;
+
+/** The one id a profile record may have, read from the contract so a change there needs no change here. */
+const PROFILE_ID = RECORD_SCHEMAS.profile.shape.id.value;
+/** Whether that id passes the contract's own `Id` rule, without which the record cannot travel in a sync envelope. */
+const PROFILE_ID_SYNCS = Id.safeParse(PROFILE_ID).success;
 
 const BAD_CREDENTIALS = 'That email or password is not right. Please check and try again.';
 const BAD_LINK = 'This link does not work any more. Please ask for a new one.';
@@ -75,6 +81,12 @@ export const register: Handler<'auth.register'> = async (ctx, { body }) => {
     throw new HttpError('conflict', 'There is already an account with this email. Sign in instead, or reset your password if you forgot it.', {
       reason: 'email_taken',
     });
+  }
+  // Every account starts with its profile record, so two devices signing in fresh agree on it from the first sync.
+  // Schema defaults fill in the rest. (Core's own store, not ctx.services.records: a test may have swapped that
+  // service for a fake.) Skipped while the profile's fixed id is not a valid record id: see CONTRACT-REQUESTS.md.
+  if (PROFILE_ID_SYNCS) {
+    coreState(ctx).records.service.put(row.id, 'profile', parseRecordData('profile', { id: PROFILE_ID, displayName, uiLanguage: body.uiLanguage }));
   }
   const session = accounts.issueSession(row.id, deviceLabelFrom(body.deviceLabel, effectsOf(ctx).userAgent));
   ctx.log.info('account_created', { userId: row.id });

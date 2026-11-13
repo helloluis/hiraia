@@ -92,4 +92,64 @@ export const coreMigrations: Migration[] = [
       ) STRICT;
     `,
   },
+  {
+    id: 'core:002_records',
+    sql: `
+      -- Every synced record of every teacher. The owner is part of the key: ids are made on devices,
+      -- so each teacher has a separate id space and can never touch another teacher's row.
+      CREATE TABLE core_records (
+        owner_id TEXT NOT NULL REFERENCES core_users(id) ON DELETE CASCADE,
+        entity TEXT NOT NULL,
+        id TEXT NOT NULL,
+        rev INTEGER NOT NULL,
+        seq INTEGER NOT NULL,
+        updated_at TEXT NOT NULL,
+        deleted_at TEXT,
+        data TEXT NOT NULL,
+        PRIMARY KEY (owner_id, entity, id)
+      ) STRICT;
+      CREATE UNIQUE INDEX core_records_by_seq ON core_records (owner_id, seq);
+      CREATE INDEX core_records_sections_by_plan ON core_records (owner_id, json_extract(data, '$.planId')) WHERE entity = 'plan_section';
+      CREATE INDEX core_records_checks ON core_records (json_extract(data, '$.curriculumVersion'), json_extract(data, '$.competencyId'))
+        WHERE entity = 'competency_check' AND deleted_at IS NULL;
+
+      -- One counter for the whole database; the pull cursor is a position in it.
+      CREATE TABLE core_seq (
+        id INTEGER PRIMARY KEY CHECK (id = 1),
+        value INTEGER NOT NULL
+      ) STRICT;
+      INSERT INTO core_seq (id, value) VALUES (1, 0);
+
+      -- Answers already given to applied mutations, so a replay changes nothing (RES-5).
+      CREATE TABLE core_sync_mutations (
+        owner_id TEXT NOT NULL REFERENCES core_users(id) ON DELETE CASCADE,
+        mutation_id TEXT NOT NULL,
+        entity TEXT NOT NULL,
+        record_id TEXT NOT NULL,
+        op TEXT NOT NULL,
+        payload_hash TEXT NOT NULL,
+        result TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        PRIMARY KEY (owner_id, mutation_id)
+      ) STRICT;
+      CREATE INDEX core_sync_mutations_by_record ON core_sync_mutations (owner_id, entity, record_id);
+      CREATE INDEX core_sync_mutations_by_age ON core_sync_mutations (created_at);
+
+      -- Whole-plan snapshots: plan record plus its sections at one moment.
+      CREATE TABLE core_plan_revisions (
+        owner_id TEXT NOT NULL REFERENCES core_users(id) ON DELETE CASCADE,
+        plan_id TEXT NOT NULL,
+        revision INTEGER NOT NULL,
+        reason TEXT NOT NULL,
+        locked INTEGER NOT NULL,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        session_id TEXT,
+        device_id TEXT,
+        plan TEXT NOT NULL,
+        sections TEXT NOT NULL,
+        PRIMARY KEY (owner_id, plan_id, revision)
+      ) STRICT;
+    `,
+  },
 ];

@@ -6,6 +6,7 @@ import type { ClientConfig } from '@hiraia/tala-core';
 import type { ExtendedModule } from '../../kernel/auth';
 import type { Handler } from '../../kernel/types';
 import * as auth from './auth-handlers';
+import * as data from './data-handlers';
 import { coreMigrations } from './migrations';
 import { coreState, initCoreState } from './state';
 import type { CoreOptions } from './state';
@@ -50,10 +51,16 @@ export function createCoreModule(options: CoreOptions = {}): ExtendedModule {
       'auth.reset': auth.reset,
       'auth.changePassword': auth.changePassword,
       'auth.google': auth.google,
+      'account.export': data.accountExport,
+      'account.delete': data.accountDelete,
+      'sync.push': data.push,
+      'sync.pull': data.pull,
+      'plans.revisions': data.planRevisions,
+      'plans.revision': data.planRevision,
     },
     services(base) {
       const state = initCoreState(base, options);
-      return { mailer: state.mailer, rateLimit: state.limiter };
+      return { records: state.records.service, mailer: state.mailer, rateLimit: state.limiter };
     },
     start(deps) {
       const state = coreState(deps.db);
@@ -62,6 +69,7 @@ export function createCoreModule(options: CoreOptions = {}): ExtendedModule {
           state.accounts.prune();
           state.limiter.prune();
           state.throttle.prune();
+          state.records.prune();
         } catch {
           deps.log.error('core_prune_failed');
         }
