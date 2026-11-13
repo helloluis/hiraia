@@ -2,7 +2,7 @@ import type { RosterProposed, RosterRow } from '../contracts/features';
 
 export const emptyName = (displayName = ''): RosterProposed => ({ displayName, familyName: '', givenName: '', middleName: '', suffix: '', sex: null, grade: null, localId: null });
 const fold = (s: string) => s.normalize('NFC').toLocaleLowerCase('en');
-const runs = (s: string) => fold(s).match(/[\p{L}\p{M}]+|\d+/gu) ?? [];
+const runs = (s: string): string[] => fold(s).match(/[\p{L}\p{M}]+|\d+/gu) ?? [];
 /** Compare complete source runs (with multiplicity), never substring letters: J cannot become Juan. */
 export function traceable(source: string, proposal: RosterProposed): boolean {
   const check = (value: string) => {

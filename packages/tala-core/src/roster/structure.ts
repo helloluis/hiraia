@@ -34,7 +34,7 @@ export function normalizeSource(source: SafeSource[], columns: Column[], exact =
   const rows = source.map(s => {
     if (s.kind === 'excluded' && !exact) return { ...normalizeName('', s.rowIndex, true), status: 'not_student' as const, removed: ['Non-student structure row (header, section, total or signature).'] };
     const get = (f: RosterField) => columns.filter(c => c.field === f).map(c => s.cells[c.index] ?? '').filter(Boolean).join(' ');
-    const original = get('fullName') || ['givenName', 'middleName', 'familyName', 'suffix'].map(get).filter(Boolean).join(' ');
+    const original = get('fullName') || (['givenName', 'middleName', 'familyName', 'suffix'] as const).map(get).filter(Boolean).join(' ');
     const row = normalizeName(original, s.rowIndex, exact);
     if (!exact && !get('fullName') && (get('givenName') || get('familyName'))) {
       row.proposed = { ...emptyName(displayCase(original.trim().replace(/\s+/g, ' '))), givenName: displayCase(get('givenName')), familyName: displayCase(get('familyName')), middleName: displayCase(get('middleName')), suffix: displayCase(get('suffix')) };
@@ -64,7 +64,8 @@ export function structureRows(input: string[][], options: { exactlyAsWritten?: b
   let header = nonempty.findIndex(r => nameHeader(r.cells));
   const width = Math.max(1, ...nonempty.map(r => r.cells.length));
   let columns: Column[];
-  if (options.columns) columns = options.columns;
+  if (options.exactlyAsWritten && width === 1) { header = -1; columns = [{ index: 0, header: 'Name as written', field: 'fullName' }]; }
+  else if (options.columns) columns = options.columns;
   else if (header >= 0) columns = Array.from({ length: width }, (_, index) => {
     const value = nonempty[header]!.cells[index] ?? '', field = fieldForHeader(value);
     return { index, header: field === 'ignore' ? `Unmapped column ${index + 1}` : value.slice(0, 200), field };
@@ -83,7 +84,7 @@ export function structureRows(input: string[][], options: { exactlyAsWritten?: b
     const sexHeading = /^(boys|girls|male|female|lalaki|babae)\s*:?(?:\s*\(\d+\))?$/i.test(joined);
     if (gradeHeading) grade = gradeOf(joined);
     if (sexHeading) sex = /^(boys|male|lalaki)/i.test(joined) ? 'M' : 'F';
-    const excluded = i === header || (header >= 0 && i < header) || nameHeader(cells) || gradeHeading || sexHeading || /^(?:grand total|total|kabuuan)\s*[:=\d ]*$|^(?:prepared by|checked by|approved by|signature)\s*:/i.test(joined);
+    const excluded = !(options.exactlyAsWritten && width === 1) && (i === header || (header >= 0 && i < header) || nameHeader(cells) || gradeHeading || sexHeading || /^(?:grand total|total|kabuuan)\s*[:=\d ]*$|^(?:prepared by|checked by|approved by|signature)\s*:/i.test(joined));
     const sanitized = columns.map(c => {
       const value = cells[c.index] ?? '';
       if (excluded || c.field === 'drop' || c.field === 'ignore') return '';
