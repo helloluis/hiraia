@@ -53,7 +53,7 @@ export function buildTimeline(input: TimelineInput): TimelineEntry[] {
     }
   }
   for (const e of entries.values()) {
-    const override = input.pairingOverrides.find(o => o.classId === e.classId && o.assignmentId === e.assignmentId && o.date === e.date);
+    const override = input.pairingOverrides.find(o => o.classId === e.classId && o.assignmentId === e.assignmentId && o.date === e.date && (o.slotId === null || o.slotId === e.slotId));
     const assignment = input.assignments.find(a => a.id === e.assignmentId)!;
     if (override) {
       for (const [group, ids] of Object.entries(override.byGroup)) if (assignment.gradeGroupIds.includes(group)) e.byGroup[group] = [...ids];

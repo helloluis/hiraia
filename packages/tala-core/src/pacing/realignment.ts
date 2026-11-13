@@ -4,7 +4,7 @@ import { computePacing } from './compute';
 import { enumerateSessions } from './sessions';
 
 /** Provide the last accepted plan for exact pre-disruption allocation and date preservation. */
-export type RealignmentInput = PacingInput & { plans: Plan[]; previousPlan?: PacingPlan };
+export type RealignmentInput = PacingInput & { plans: Plan[]; baseline?: PacingPlan };
 const copy = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
 export function availableRealignments(input: PacingInput): RealignmentOption[] {
   const plan = computePacing(input);
@@ -16,7 +16,7 @@ export function availableRealignments(input: PacingInput): RealignmentOption[] {
   return options;
 }
 export function previewRealignment(input: RealignmentInput, request: RealignmentRequest): RealignmentPreview {
-  const before = copy(input.previousPlan ?? computePacing(input));
+  const before = copy(input.baseline ?? computePacing(input));
   const nextTrack = copy(input.track);
   const newCalendarDays: CalendarDay[] = [];
   const sessions: Record<string, number> = { ...nextTrack.overrides.sessions };
@@ -58,7 +58,7 @@ export function previewRealignment(input: RealignmentInput, request: Realignment
     for (const date of [...new Set(request.makeupDates)].sort()) {
       if (date < input.term.startDate || date > input.term.endDate) throw new Error('Make-up dates must be within this term.');
       if (input.calendarDays.some(d => d.date === date && d.kind === 'makeup' && d.schoolYearId === input.schoolYear.id && (d.classId === null || d.classId === nextTrack.classId))) continue;
-      newCalendarDays.push({ id: `makeup:${nextTrack.classId}:${date}`, schoolYearId: input.schoolYear.id, classId: nextTrack.classId, date, kind: 'makeup', label: 'Make-up class', source: 'teacher', minutesOverride: null });
+      newCalendarDays.push({ id: `makeup:${nextTrack.classId}:${date}`, schoolYearId: input.schoolYear.id, classId: nextTrack.classId, date, kind: 'makeup', label: 'Make-up class', source: 'teacher', minutesOverride: null, followsWeekday: [...input.assignment.slots].sort((a, b) => a.weekday - b.weekday)[0]?.weekday ?? null, assignmentIds: [input.assignment.id] });
     }
   }
   const after = computePacing({ ...input, track: nextTrack, calendarDays: [...input.calendarDays, ...newCalendarDays] });

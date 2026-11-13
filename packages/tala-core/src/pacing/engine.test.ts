@@ -49,7 +49,7 @@ test('mid-year proposal and covered-before-Tala never create a deficit', () => {
 });
 test('rotation, shortened days, class scope and Saturday make-up', () => {
   const input = fixture(); input.assignment.slots = [input.assignment.slots[0]!]; input.assignment.slots[0]!.rotation = { everyWeeks: 2, week: 1 };
-  input.calendarDays = [CalendarDay.parse({ id: 'short001', schoolYearId: 'year0001', date: '2026-11-02', kind: 'shortened', minutesOverride: 25 }), CalendarDay.parse({ id: 'other001', schoolYearId: 'year0001', classId: 'other001', date: '2026-11-16', kind: 'suspension' }), CalendarDay.parse({ id: 'makeup01', schoolYearId: 'year0001', date: '2026-11-07', kind: 'makeup' })];
+  input.calendarDays = [CalendarDay.parse({ id: 'short001', schoolYearId: 'year0001', date: '2026-11-02', kind: 'shortened', minutesOverride: 25 }), CalendarDay.parse({ id: 'other001', schoolYearId: 'year0001', classId: 'other001', date: '2026-11-16', kind: 'suspension' }), CalendarDay.parse({ id: 'makeup01', schoolYearId: 'year0001', date: '2026-11-07', kind: 'makeup', followsWeekday: 1 })];
   const sessions = engine.enumerateSessions(input.schoolYear, input.term, input.assignment, input.calendarDays);
   assert.deepEqual(sessions.map(s => s.date), ['2026-11-02', '2026-11-07', '2026-11-16']); assert.equal(sessions[0]!.minutes, 25);
 });
@@ -76,7 +76,7 @@ test('typhoon-week shift retains allocation and moves locked plan dates without 
   input.calendarDays = ['02', '03', '04', '05', '06'].map(d => CalendarDay.parse({ id: `event0${d}`, schoolYearId: 'year0001', date: `2026-11-${d}`, kind: 'suspension' }));
   const plan = Plan.parse({ id: 'locked01', templateId: 'template', language: 'en', grades: ['4'], durationMinutes: 50, state: 'locked', lock: { lockedAt: '2026-11-01T00:00:00Z', revisionCode: 'R1', revision: 1 }, competencies: { group001: [input.competencies[0]!.id] }, placements: [{ classId: 'class001', assignmentId: 'assignment', dates: ['2026-11-02'] }] });
   const saved = JSON.stringify(plan);
-  const preview = previewRealignment({ ...input, plans: [plan], previousPlan: baseline }, { option: 'shift' });
+  const preview = previewRealignment({ ...input, plans: [plan], baseline: baseline }, { option: 'shift' });
   assert.ok(preview.dropped.length); assert.equal(preview.planMoves[0]!.to[0], '2026-11-09'); assert.equal(JSON.stringify(plan), saved);
 });
 test('all six realignment options are pure and their full snapshot restores the original state', () => {

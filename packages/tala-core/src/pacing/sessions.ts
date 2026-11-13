@@ -10,14 +10,12 @@ export const enumerateSessions: PacingEngine['enumerateSessions'] = (year, term,
   // Weeks are anchored to Monday of the school year's first week, not device locale.
   const anchor = ordinal(year.startDate) - (weekday(year.startDate) + 6) % 7;
   for (const date of datesBetween(from, to)) {
-    const events = relevant.filter(d => d.date === date);
+    const events = relevant.filter(d => d.date === date && (!['makeup', 'shortened'].includes(d.kind) || !d.assignmentIds || d.assignmentIds.includes(assignment.id)));
     const makeup = events.some(d => d.kind === 'makeup');
     if (!makeup && (events.some(d => NON_TEACHING_KINDS.includes(d.kind)) || !year.teachingWeekdays.includes(weekday(date)))) continue;
     const week = Math.floor((ordinal(date) - anchor) / 7);
-    let slots = assignment.slots.filter(s => s.weekday === weekday(date) && (!s.rotation || week % s.rotation.everyWeeks === s.rotation.week - 1));
-    // A make-up date without a matching slot repeats one representative subject period.
-    // CalendarDay has no slot/assignment field; this convention is documented in CONTRACT-REQUESTS.
-    if (makeup && !slots.length) slots = [...assignment.slots].sort((a, b) => a.weekday - b.weekday || a.id.localeCompare(b.id)).slice(0, 1);
+    const follows = events.filter(d => d.kind === 'makeup').sort((a, b) => a.id.localeCompare(b.id))[0]?.followsWeekday ?? weekday(date);
+    const slots = assignment.slots.filter(s => s.weekday === follows && (makeup || !s.rotation || week % s.rotation.everyWeeks === s.rotation.week - 1));
     for (const slot of slots.sort((a, b) => (a.startTime ?? '').localeCompare(b.startTime ?? '') || a.id.localeCompare(b.id))) {
       const caps = events.filter(d => d.kind === 'shortened' && d.minutesOverride !== null).map(d => d.minutesOverride!);
       const minutes = Math.min(slot.minutes, ...caps);
