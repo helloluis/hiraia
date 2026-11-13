@@ -28,3 +28,21 @@ so old pull replays cannot resurrect the record. `get` and `list` never expose
 deleted records. A live local edit survives a remote tombstone; a stale local
 delete yields to a live server edit. An applied/null delete acknowledges a record
 the server never saw and purges its local tombstone.
+
+
+## Atomic editing and older lessons
+
+- `await engine.batch(ops)` accepts the contract's put/remove operations. All
+  inputs validate first, repeated operations on a record apply in order, and the
+  final records, outbox entries and immutable payload metadata commit once. One
+  notification follows success; a failed transaction emits none. Already-sent
+  mutations stay immutable. Existing teacher-choice conflicts remain pending
+  resolution, exactly as with individual puts/removes. Atomicity requires the
+  adapter to honor `LocalStore.commit`'s transactional contract.
+- `await engine.fetchPlans(planIds)` pulls named plans, sections and revisions
+  through the usual hydration rules, including schema compatibility, local edit
+  protection and tombstone handling. It paginates with a separate in-memory
+  cursor, deduplicates IDs and splits large requests into groups of 30. It neither
+  pushes the outbox nor changes `sync.cursor` or `sync.lastSyncedAt`. Retry after a
+  network failure safely re-fetches already committed pages. Sync and targeted
+  fetch network cycles serialize; local editing remains available during waits.

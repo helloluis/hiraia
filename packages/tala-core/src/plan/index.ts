@@ -1,3 +1,5 @@
+import { createPublishCleaner, type PublishPrivacyOptions } from './publish';
+export { createPublishCleaner, cleanContent, type PublishPrivacyOptions } from './publish';
 import { Plan, PlanSection, SectionRevision } from '../contracts/records';
 import type { GradeGroup, ClassRecord, SectionGenMeta } from '../contracts/records';
 import type { SectionContent, Template } from '../contracts/content';
@@ -55,7 +57,8 @@ export function revisionCode(value: unknown): string {
 }
 export type PublishSnapshot = Pick<ArtifactVersion, 'templateId' | 'gradeGroups' | 'competencies' | 'customObjectives' | 'sections'> & { schoolName?: string };
 /** Allow-list only. Arbitrary personal information typed into lesson prose still needs pre-post review. */
-export function stripForPublish(plan: Plan, sections: PlanSection[], options: { template?: Template; schoolName?: string; includeSchoolName?: boolean } = {}): PublishSnapshot {
+export function stripForPublish(plan: Plan, sections: PlanSection[], options: PublishPrivacyOptions & { template?: Template } = {}): PublishSnapshot {
+  const privacy = createPublishCleaner(plan.language, { ...options, dates: [...plan.placements.flatMap(p => p.dates), ...(options.dates ?? [])] });
   const ids = plan.gradeGroupIds.length ? plan.gradeGroupIds : Object.keys(plan.competencies);
   const groups = ids.map((id, index) => ({ source: id, id: `public.g${index + 1}`, grade: plan.grades[index] ?? plan.grades[0]! }));
   const remap = (id: string): string => groups.find(g => g.source === id)?.id ?? 'public.unknown';
@@ -69,8 +72,8 @@ export function stripForPublish(plan: Plan, sections: PlanSection[], options: { 
       default: return c;
     }
   };
-  return clone({ templateId: plan.templateId, gradeGroups: groups.map(({ id, grade }) => ({ id, grade })), competencies: Object.fromEntries(groups.map(g => [g.id, plan.competencies[g.source] ?? []])), customObjectives: plan.customObjectives,
-    sections: sections.filter(s => s.planId === plan.id && !outside.has(s.key)).map(s => ({ key: s.key, content: clean(s.content) })),
+  return clone({ templateId: plan.templateId, gradeGroups: groups.map(({ id, grade }) => ({ id, grade })), competencies: Object.fromEntries(groups.map(g => [g.id, plan.competencies[g.source] ?? []])), customObjectives: privacy.items(plan.customObjectives),
+    sections: sections.filter(s => s.planId === plan.id && !outside.has(s.key)).map(s => ({ key: s.key, content: privacy.content(clean(s.content)) })),
     ...(options.includeSchoolName && options.schoolName ? { schoolName: options.schoolName } : {}),
   });
 }
