@@ -238,3 +238,64 @@ test('a deletion followed by a real restoration within one pull page keeps the n
   ], cursor: '3', hasMore: false, serverTime: at }) }).engine;
   assert.equal((await e.sync()).ok, true); assert.equal((await e.get('day_note', 'note0001'))!.data.text, 'Restored');
 });
+
+test('batch commits dependent records and outbox together with one notification', async () => {
+  const memory = createMemoryStore(); let commits = 0;
+  const { engine: e } = client(new Server(), { ...memory, commit: async b => { commits++; await memory.commit(b); } });
+  const changes: unknown[] = []; e.subscribe(value => changes.push(value));
+  await e.batch!([{ op: 'put', entity: 'plan', data: plan() }, { op: 'put', entity: 'plan_section', data: section() }, { op: 'put', entity: 'day_note', data: note() }, { op: 'remove', entity: 'day_note', id: 'note0001' }]);
+  assert.equal(commits, 1); assert.equal(changes.length, 1); assert.equal((changes[0] as unknown[]).length, 3);
+  assert.equal((await memory.outbox()).length, 3); assert.equal(await e.get('day_note', 'note0001'), null);
+  assert.ok(await e.get('plan_section', 'section1'));
+});
+test('batch rejects invalid later input before any write; failed mid-transaction stages publish nothing', async () => {
+  const memory = createMemoryStore(); let attempts = 0, notifications = 0, fail = true;
+  const adapter: LocalStore = { ...memory, commit: async b => {
+    attempts++;
+    // A transactional adapter works on private staged state until COMMIT.
+    const transaction = new Map();
+    for (const record of b.put ?? []) { transaction.set(record.id, record); if (fail && transaction.size === 2) throw new Error('simulated crash before COMMIT'); }
+    await memory.commit(b);
+  } };
+  const e = client(new Server(), adapter).engine; e.subscribe(() => notifications++);
+  await assert.rejects(e.batch!([{ op: 'put', entity: 'plan', data: plan() }, { op: 'put', entity: 'plan_section', data: {} }]));
+  assert.equal(attempts, 0);
+  const ops = [{ op: 'put' as const, entity: 'plan' as const, data: plan() }, { op: 'put' as const, entity: 'plan_section' as const, data: section() }];
+  await assert.rejects(e.batch!(ops), /simulated crash/);
+  const restarted = client(new Server(), memory).engine;
+  assert.equal(await restarted.get('plan', 'plan0001'), null); assert.equal(await restarted.get('plan_section', 'section1'), null);
+  assert.equal((await memory.outbox()).length, 0); assert.equal(notifications, 0);
+  fail = false; await e.batch!(ops); assert.equal(notifications, 1); assert.equal((await memory.outbox()).length, 2);
+});
+test('batch during an uncertain push retains immutable replay and queues latest change', async () => {
+  const s = new Server(), { engine: e, store } = client(s);
+  await e.put('day_note', note()); s.loseResponse = true; await e.sync();
+  await e.batch!([{ op: 'put', entity: 'day_note', data: note('note0001', 'batched edit') }]);
+  assert.equal((await store.outbox()).length, 2); await e.sync();
+  assert.deepEqual(s.requests[0], s.requests[1]); assert.equal((await e.get('day_note', 'note0001'))!.data.text, 'batched edit');
+});
+test('fetchPlans paginates compatibility hydration without touching the main cursor or unsent edits', async () => {
+  const requests: Array<{ cursor?: string; planIds?: string }> = [];
+  const records = [{ entity: 'plan' as const, id: 'plan0001', rev: 1, updatedAt: at, deletedAt: null, data: plan() }, { entity: 'plan_section' as const, id: 'section1', rev: 2, updatedAt: at, deletedAt: null, data: section('section1', 'remote') }];
+  const { engine: e, store } = client({ push: async () => { throw new Error('Fetch must not push'); }, pull: async q => {
+    requests.push(q);
+    return q.cursor ? { records: [records[1]!], cursor: '', hasMore: false, serverTime: at } : { records: [records[0]!, { entity: 'future', id: 'future1', rev: 1, updatedAt: at, deletedAt: null, data: {} }], cursor: 'target-page2', hasMore: true, serverTime: at };
+  } });
+  await store.commit({ meta: { 'sync.cursor': 'main-cursor', 'sync.lastSyncedAt': at } });
+  await e.put('plan_section', section('section1', 'local edit'));
+  const report = await e.fetchPlans!(['plan0001', 'plan0001']);
+  assert.equal(report.ok, true); assert.equal(report.skipped, 1); assert.equal(report.pulled, 3);
+  assert.equal(requests.length, 2); assert.equal(requests[0]!.cursor, undefined); assert.equal(requests[1]!.cursor, 'target-page2');
+  assert.ok(requests.every(q => q.planIds === 'plan0001'));
+  assert.equal(await store.getMeta('sync.cursor'), 'main-cursor'); assert.equal(await store.getMeta('sync.lastSyncedAt'), at);
+  assert.deepEqual((await e.get('plan_section', 'section1'))!.data, section('section1', 'local edit'));
+  assert.equal((await e.status()).pending, 1);
+});
+test('fetchPlans reports interrupted pages, can retry, and does not advance normal progress', async () => {
+  let offline = true;
+  const { engine: e, store } = client({ push: async () => ({ results: [] }), pull: async () => { if (offline) throw new TypeError('offline'); return { records: [], cursor: '', hasMore: false, serverTime: at }; } });
+  await store.commit({ meta: { 'sync.cursor': 'main' } });
+  assert.equal((await e.fetchPlans!(['plan0001'])).error, 'offline'); assert.equal(await store.getMeta('sync.cursor'), 'main');
+  offline = false; assert.equal((await e.fetchPlans!(['plan0001'])).ok, true);
+  assert.equal((await e.fetchPlans!([])).pulled, 0); await assert.rejects(e.fetchPlans!(['bad,id']));
+});
