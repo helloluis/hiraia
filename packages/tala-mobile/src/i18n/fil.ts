@@ -1,5 +1,7 @@
+import { wave2fil } from './wave2.fil';
 import type { StringKey } from './en';
 export const fil: Record<StringKey, string> = {
+  ...wave2fil,
   emailTaken: 'May account na ang email na ito. Mag-sign in na lang.',
   invalidCredentials: 'Tingnan ang email at password, saka subukan muli.',
   passwordUnsafe:

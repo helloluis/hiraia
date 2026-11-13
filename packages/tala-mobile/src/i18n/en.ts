@@ -1,4 +1,6 @@
+import { wave2en } from './wave2.en';
 export const en = {
+  ...wave2en,
   emailTaken: 'This email already has an account. Sign in instead.',
   invalidCredentials: 'Check your email and password, then try again.',
   passwordUnsafe:

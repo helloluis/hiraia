@@ -60,8 +60,23 @@ import { Body, Title, Button, Field, styles } from './ui/components';
 import { ContentEditor } from './ui/ContentEditor';
 import { en, type StringKey } from './i18n/en';
 import { fil } from './i18n/fil';
+import { GenerationScreen } from './features/GenerationScreen';
+import { RosterScreen } from './features/RosterScreen';
+import { CommunityScreen, PostScreen } from './features/CommunityScreen';
+import { applyPreviews } from './features/realignment';
 type Tab = 'week' | 'lessons' | 'community' | 'class';
-type Page = 'main' | 'setup' | 'settings' | 'lesson' | 'conflict' | 'preview' | 'auth';
+type Page =
+  | 'main'
+  | 'setup'
+  | 'settings'
+  | 'lesson'
+  | 'conflict'
+  | 'preview'
+  | 'auth'
+  | 'generation'
+  | 'roster'
+  | 'post'
+  | 'create-choice';
 export default function App() {
   const [fontLoaded] = useFonts({ FrauncesSemiBold: require('../assets/Fraunces-SemiBold.ttf') });
   const [bootAttempt, setBootAttempt] = useState(0);
@@ -98,6 +113,13 @@ export default function App() {
     [name, setName] = useState(''),
     [register, setRegister] = useState(false),
     [authenticated, setAuthenticated] = useState(false);
+  const [pendingSlot, setPendingSlot] = useState<TimelineEntry | null>(null);
+  const [featureClass, setFeatureClass] = useState<string | null>(null);
+  const [communityQuery, setCommunityQuery] = useState<
+    React.ComponentProps<typeof CommunityScreen>['initialQuery']
+  >({});
+  const [olderId, setOlderId] = useState('');
+  const featureRuntime = useRef<Runtime | null>(null);
   const [templateChoice, setTemplateChoice] = useState('');
   const [paper, setPaper] = useState<'a4' | 'long'>('a4'),
     [previews, setPreviews] = useState<RealignmentPreview[]>([]),
@@ -179,6 +201,8 @@ export default function App() {
       .then(async (runtime) => {
         if (!alive) return;
         setRt(runtime);
+        featureRuntime.current = runtime;
+        await runtime.features.start();
         history.current = sectionHistory(runtime.engine, newId, () => new Date());
         await refresh(runtime);
         const preference = await runtime.store.getMeta('language');
@@ -216,12 +240,18 @@ export default function App() {
             else if (report.rejected) setMessage('sendRejected');
             else if (report.error === 'unauthenticated') setMessage('signInAgain');
             setConditions((c) => ({ ...c, serverDown: !ok, slow: ok ? ms > 4000 : c.slow }));
+            void runtime.features.tick(
+              conditionRef.current.connected &&
+                !conditionRef.current.sessionExpired &&
+                transition(conditionRef.current, {}).canWrite
+            );
             void refresh(runtime);
           },
         });
         scheduler.current.kick();
         await registerBackground(async () => {
           if (!(await SecureStore.getItemAsync('tala.session'))) return true;
+          await runtime.features.tick(true);
           const result = await runtime.engine.sync();
           return result.ok;
         });
@@ -231,6 +261,7 @@ export default function App() {
       alive = false;
       unsubscribe();
       scheduler.current?.stop();
+      featureRuntime.current?.features.stop();
     };
   }, [bootAttempt]);
   useEffect(() => {
@@ -282,6 +313,12 @@ export default function App() {
       .then(() => refresh(rt))
       .catch(() => {});
   }, [rt, authenticated, classes.length, conditions.connected, grades]);
+  useEffect(() => {
+    if (rt)
+      void rt.features
+        .tick(conditions.connected && !conditions.sessionExpired && ladder.canWrite)
+        .catch(error);
+  }, [rt, conditions.connected, conditions.sessionExpired, ladder.canWrite]);
   if (!rt)
     return (
       <SafeAreaView style={styles.screen}>
@@ -326,16 +363,30 @@ export default function App() {
       setPage('setup');
       return;
     }
-    const created = await createPlan(rt!.engine, cls, date, assignmentId, templateChoice);
     const entry = entries.find(
       (e) => e.date === date && e.assignmentId === assignmentId && e.classId === cls.id
     );
-    const plan = entry
-      ? { ...created, competencies: entry.byGroup, subjectName: entry.subjectName }
-      : created;
-    if (entry) await rt!.engine.put('plan', plan);
+    const assignment = input?.assignments.find((a) => a.id === assignmentId);
+    const curriculumVersion =
+      input?.tracks.find((track) => track.assignmentId === assignmentId)?.curriculumVersion ?? null;
+    const plan = await createPlan(
+      rt!.engine,
+      cls,
+      date,
+      assignmentId,
+      templateChoice,
+      entry
+        ? {
+            competencies: entry.byGroup,
+            subjectName: entry.subjectName,
+            learningAreaId: assignment?.learningAreaId ?? null,
+            curriculumVersion,
+          }
+        : {}
+    );
     goLesson(plan);
     setEditing(true);
+    return plan;
   }
   async function login() {
     setBusy(true);
@@ -600,42 +651,53 @@ export default function App() {
     setPreviews(previewNoClass(input, day));
     setPage('preview');
   }
-  const renderEntry = ({ item: e }: { item: TimelineEntry }) => (
-    <View style={styles.card}>
-      {classes.find((c) => c.id === e.classId)?.data.isSample && <Body>{t('sampleLabel')}</Body>}
-      <Body>
-        {e.date} · {e.subjectName}
-      </Body>
-      <Body>
-        {Object.values(e.byGroup)
-          .flat()
-          .map((id) => input?.competencies.find((c) => c.id === id)?.text ?? id)
-          .join('\n')}
-      </Body>
-      <Body>{e.mark ? t(e.mark) : t(e.planState === 'none' ? 'noPlan' : e.planState)}</Body>
-      <Button
-        label={t(e.planId ? 'view' : 'write')}
-        onPress={() => {
-          const p = plans.find((p) => p.id === e.planId);
-          if (p) goLesson(p.data);
-          else void act(() => write(e.date, e.assignmentId, e.classId));
-        }}
-      />
-      {(['taught', 'partial', 'not_taught'] as const).map((mark) => (
+  const renderEntry = ({ item: e }: { item: TimelineEntry }) =>
+    e.kind === 'before_tala' ? (
+      <View style={styles.card}>
+        <Body>
+          {e.date} · {e.subjectName}
+        </Body>
+        <Body>{t('before_tala')}</Body>
+      </View>
+    ) : (
+      <View style={styles.card}>
+        {classes.find((c) => c.id === e.classId)?.data.isSample && <Body>{t('sampleLabel')}</Body>}
+        <Body>
+          {e.date} · {e.subjectName}
+        </Body>
+        <Body>
+          {Object.values(e.byGroup)
+            .flat()
+            .map((id) => input?.competencies.find((c) => c.id === id)?.text ?? id)
+            .join('\n')}
+        </Body>
+        <Body>{e.mark ? t(e.mark) : t(e.planState === 'none' ? 'noPlan' : e.planState)}</Body>
         <Button
-          key={mark}
-          disabled={!ladder.canWrite}
-          label={t(mark)}
-          onPress={() =>
-            save(async () => {
-              const undoMark = await markSession(rt!.engine, e, mark, newId);
-              setUndo(() => undoMark);
-            })
-          }
+          label={t(e.planId ? 'view' : 'write')}
+          onPress={() => {
+            const p = plans.find((p) => p.id === e.planId);
+            if (p) goLesson(p.data);
+            else {
+              setPendingSlot(e);
+              setPage('create-choice');
+            }
+          }}
         />
-      ))}
-    </View>
-  );
+        {(['taught', 'partial', 'not_taught'] as const).map((mark) => (
+          <Button
+            key={mark}
+            disabled={!ladder.canWrite}
+            label={t(mark)}
+            onPress={() =>
+              save(async () => {
+                const undoMark = await markSession(rt!.engine, e, mark, newId);
+                setUndo(() => undoMark);
+              })
+            }
+          />
+        ))}
+      </View>
+    );
   return (
     <SafeAreaView style={styles.screen}>
       <KeyboardAvoidingView
@@ -766,7 +828,19 @@ export default function App() {
                   label={t('write')}
                   onPress={() => void act(() => write())}
                 />
-                <Body>{t('generation')}</Body>
+                <Field label={t('olderPlanId')} value={olderId} onChange={setOlderId} />
+                <Button
+                  label={t('openOlderLesson')}
+                  disabled={!conditions.connected || !olderId.trim()}
+                  onPress={() =>
+                    void act(async () => {
+                      const result = await rt.engine.fetchPlans([olderId.trim()]);
+                      if (!result.ok) throw Error('Fetch failed');
+                      const row = await rt.engine.get('plan', olderId.trim());
+                      if (row) goLesson(row.data);
+                    })
+                  }
+                />
               </>
             }
             ListEmptyComponent={<Body>{t('empty')}</Body>}
@@ -780,11 +854,16 @@ export default function App() {
           />
         )}
         {page === 'main' && tab === 'community' && (
-          <ScrollView contentContainerStyle={styles.pad}>
-            <Title>{t('community')}</Title>
-            <Body>{t('communityNote')}</Body>
-            <Button label={t('lessons')} primary onPress={() => setTab('lessons')} />
-          </ScrollView>
+          <CommunityScreen
+            rt={rt}
+            t={t}
+            online={conditions.connected && !conditions.serverDown}
+            canWrite={ladder.canWrite}
+            language={language}
+            onOpen={goLesson}
+            onBack={() => setTab('week')}
+            initialQuery={communityQuery}
+          />
         )}
         {page === 'main' && tab === 'class' && (
           <FlatList
@@ -808,7 +887,13 @@ export default function App() {
                 <Title>{c.data.name}</Title>
                 {c.data.isSample && <Body>{t('sampleLabel')}</Body>}
                 <Body>{c.data.gradeGroups.map((g) => g.grade).join(', ')}</Body>
-                <Body>{t('roster')}</Body>
+                <Button
+                  label={t('importRoster')}
+                  onPress={() => {
+                    setFeatureClass(c.id);
+                    setPage('roster');
+                  }}
+                />
                 <Body>{t('activity')}</Body>
                 {c.data.isSample && (
                   <Button
@@ -835,6 +920,101 @@ export default function App() {
               </View>
             )}
           />
+        )}
+        {page === 'generation' && selected && (
+          <GenerationScreen
+            rt={rt}
+            t={t}
+            online={conditions.connected && !conditions.serverDown}
+            canWrite={ladder.canWrite}
+            language={language}
+            onOpen={goLesson}
+            onBack={() => setPage('main')}
+            plan={selected}
+          />
+        )}
+        {page === 'roster' && featureClass && (
+          <RosterScreen
+            rt={rt}
+            t={t}
+            online={conditions.connected && !conditions.serverDown}
+            canWrite={ladder.canWrite}
+            language={language}
+            onOpen={goLesson}
+            onBack={() => setPage('main')}
+            classId={featureClass}
+          />
+        )}
+        {page === 'post' && selected && (
+          <PostScreen
+            rt={rt}
+            t={t}
+            online={conditions.connected && !conditions.serverDown}
+            canWrite={ladder.canWrite}
+            language={language}
+            onOpen={goLesson}
+            onBack={() => setPage('lesson')}
+            plan={selected}
+          />
+        )}
+        {page === 'create-choice' && pendingSlot && (
+          <ScrollView contentContainerStyle={styles.pad}>
+            <Title>{t('chooseLessonAction')}</Title>
+            <Body>
+              {pendingSlot.date} · {pendingSlot.subjectName}
+            </Body>
+            <Button
+              primary
+              label={t('write')}
+              disabled={!ladder.canWrite}
+              onPress={() =>
+                void act(() =>
+                  write(pendingSlot.date, pendingSlot.assignmentId, pendingSlot.classId)
+                )
+              }
+            />
+            <Button
+              label={t('generateLesson')}
+              disabled={!ladder.canWrite}
+              onPress={() =>
+                void act(async () => {
+                  const plan = await write(
+                    pendingSlot.date,
+                    pendingSlot.assignmentId,
+                    pendingSlot.classId
+                  );
+                  if (plan) {
+                    setSelected(plan);
+                    setEditing(false);
+                    setPage('generation');
+                  }
+                })
+              }
+            />
+            <Button
+              label={t('findCommunity')}
+              onPress={() => {
+                const cls = classes.find((c) => c.id === pendingSlot.classId)?.data;
+                const assignment = input?.assignments.find(
+                  (a) => a.id === pendingSlot.assignmentId
+                );
+                setCommunityQuery({
+                  competencyId: Object.values(pendingSlot.byGroup).flat()[0],
+                  grade: cls?.gradeGroups[0]?.grade,
+                  language: assignment?.language ?? language,
+                  multigrade:
+                    cls && cls.gradeGroups.length > 1
+                      ? cls.gradeGroups
+                          .map((g) => g.grade)
+                          .sort((a, b) => Number(a) - Number(b))
+                          .join(',')
+                      : undefined,
+                });
+                setTab('community');
+                setPage('main');
+              }}
+            />
+          </ScrollView>
         )}
         {page === 'auth' && (
           <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.pad}>
@@ -985,6 +1165,27 @@ export default function App() {
         {page === 'lesson' && selected && (
           <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.pad}>
             <Title>{selected.title}</Title>
+            {selected.aiDraft && (
+              <>
+                <Body>{t('aiDraft')}</Body>
+                <Body>{t('checkBeforeUse')}</Body>
+              </>
+            )}
+            <Button
+              label={t('generateLesson')}
+              disabled={!ladder.canWrite || selected.state !== 'draft'}
+              onPress={() => {
+                void queue.current.then(() => {
+                  setEditing(false);
+                  setPage('generation');
+                });
+              }}
+            />
+            <Button
+              label={t('postLesson')}
+              disabled={!ladder.canWrite || selected.state !== 'locked'}
+              onPress={() => setPage('post')}
+            />
             {selected.placements.some(
               (p) => classes.find((c) => c.id === p.classId)?.data.isSample
             ) && <Body>{t('sampleLabel')}</Body>}
@@ -1168,40 +1369,14 @@ export default function App() {
                     setMessage('conflict');
                     return;
                   }
-                  const oldTracks = input?.tracks ?? [],
-                    oldPlans = input?.plans ?? [];
-                  if (pendingDay) await rt.engine.put('calendar_day', pendingDay);
-                  for (const preview of previews) {
-                    await rt.engine.put('pacing_track', preview.nextTrack);
-                    for (const d of preview.newCalendarDays) await rt.engine.put('calendar_day', d);
-                    for (const move of preview.planMoves) {
-                      const p = await rt.engine.get('plan', move.planId);
-                      if (p)
-                        await rt.engine.put('plan', {
-                          ...p.data,
-                          placements: p.data.placements.map((pl) =>
-                            pl.classId === move.classId ? { ...pl, dates: move.to } : pl
-                          ),
-                        });
-                    }
-                  }
-                  setUndo(() => async () => {
-                    for (const track of oldTracks) await rt.engine.put('pacing_track', track);
-                    for (const oldPlan of oldPlans.filter((p) =>
-                      previews.some((preview) => preview.planMoves.some((m) => m.planId === p.id))
-                    )) {
-                      const current = await rt.engine.get('plan', oldPlan.id);
-                      if (current)
-                        await rt.engine.put('plan', {
-                          ...current.data,
-                          placements: oldPlan.placements,
-                        });
-                    }
-                    if (pendingDay) await rt.engine.remove('calendar_day', pendingDay.id);
-                    for (const preview of previews)
-                      for (const day of preview.newCalendarDays)
-                        await rt.engine.remove('calendar_day', day.id);
-                  });
+                  if (!input || !pendingDay) return;
+                  const undoRealignment = await applyPreviews(
+                    rt.engine,
+                    input,
+                    pendingDay,
+                    previews
+                  );
+                  setUndo(() => undoRealignment);
                   setPage('main');
                 })
               }
