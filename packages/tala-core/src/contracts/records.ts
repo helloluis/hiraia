@@ -408,6 +408,8 @@ export const TeacherProfile = z.object({
   region: z.string().max(120).default(''),
   dataSaver: z.boolean().default(false),
   activeSchoolYearId: Id.nullable().default(null),
+  /** Teacher-level pacing defaults (PRD §7.3): Hiraia defaults < these < per-track params. Edited under "Advanced" only. */
+  pacingParams: PacingParams.partial().default({}),
 });
 export type TeacherProfile = z.infer<typeof TeacherProfile>;
 
