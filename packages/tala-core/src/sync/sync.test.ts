@@ -94,7 +94,7 @@ test('pull page cursor and records survive interruption atomically', async () =>
 test('lock creates a single full draft preserving all rejected section edits', async () => {
   const s = new Server(), a = client(s).engine, b = client(s).engine;
   await a.put('plan', plan()); await a.put('plan_section', section()); await a.put('plan_section', section('section2')); await a.sync(); await b.sync();
-  await a.put('plan', { ...plan(), state: 'locked', lock: { lockedAt: at, revisionCode: 'ABC', revision: 1 } }); await a.sync();
+  await a.put('plan', { ...plan(), state: 'locked', lock: { lockedBy: "", lockedAt: at, revisionCode: 'ABC', revision: 1 } }); await a.sync();
   await b.put('plan_section', section('section1', 'B')); await b.put('plan_section', section('section2', 'C'));
   const report = await b.sync(); assert.equal(report.ok, true); assert.equal(report.lockCopies.length, 1);
   const draft = (await b.get('plan', report.lockCopies[0]!))!; assert.equal(draft.data.conflictCopyOf, 'plan0001'); assert.equal(draft.data.state, 'draft');

@@ -25,6 +25,8 @@ export const colors = {
   brick: '#7A2E22',
   /** "Taught" / success fills. Not for text on cream. Always with an icon or word. */
   sage: '#8C9E6E',
+  /** Print ink: PDFs are black on white for monochrome printers (BRAND-6). Print templates only. */
+  printInk: '#000000',
   /** Derived neutrals (forest at reduced opacity over cream/white) for borders, placeholders, muted text. */
   hairline: 'rgba(28, 59, 46, 0.14)',
   placeholder: 'rgba(28, 59, 46, 0.08)',
