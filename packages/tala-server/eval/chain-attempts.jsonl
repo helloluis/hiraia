@@ -1,0 +1,3 @@
+{"run":"2026-11-13T13:55:24.511Z:primary","case":"single-dlp-en","provider":"deepseek","attempt":1,"stage":"valid","httpStatus":200,"finishReason":"stop","inputTokens":1817,"outputTokens":456,"latencyMs":2916,"issues":[]}
+{"run":"2026-11-13T13:55:24.511Z:fallback","case":"single-dlp-en","provider":"deepseek","attempt":1,"stage":"provider","httpStatus":400,"finishReason":null,"inputTokens":0,"outputTokens":0,"latencyMs":128,"issues":[],"errorClass":"http","providerCode":"invalid_request_error"}
+{"run":"2026-11-13T13:55:24.511Z:fallback","case":"single-dlp-en","provider":"qwen","attempt":1,"stage":"valid","httpStatus":200,"finishReason":"stop","inputTokens":1668,"outputTokens":625,"latencyMs":3943,"issues":[]}

@@ -1,0 +1,395 @@
+{
+  "input": {
+    "kind": "full",
+    "templateId": "tpl.multigrade.v1",
+    "language": "en",
+    "subjectName": "Science",
+    "learningAreaId": "science",
+    "timeBudgetMinutes": 50,
+    "sessions": 1,
+    "gradeGroups": [
+      {
+        "id": "group-002",
+        "grade": "2",
+        "learnerCount": 10
+      },
+      {
+        "id": "group-004",
+        "grade": "4",
+        "learnerCount": 10
+      }
+    ],
+    "competencies": {
+      "group-002": [
+        "C2"
+      ],
+      "group-004": [
+        "C4"
+      ]
+    },
+    "curriculumVersion": "eval.v1",
+    "customObjectives": [],
+    "classProfile": {
+      "materials": [
+        "paper",
+        "pencils"
+      ],
+      "textbooks": [],
+      "electricity": true,
+      "projector": null,
+      "printing": false,
+      "outdoorSpace": null,
+      "notes": ""
+    },
+    "guidance": ""
+  },
+  "plan": {
+    "title": "Observing and Describing Plants in a Combined Grade 2 and Grade 4 Class",
+    "sections": [
+      {
+        "key": "objectives",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants by naming and pointing to their visible parts using simple words."
+                  }
+                ]
+              }
+            ],
+            "group-004": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants in fuller detail, including the parts, their arrangement, and how the parts appear."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "materials",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ],
+            "group-004": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "multigrade",
+        "content": {
+          "type": "multigrade",
+          "blocks": [
+            {
+              "id": "f50dc2d9-55e0-4295-b88a-df5639f73445",
+              "label": "Opening",
+              "minutes": 5,
+              "transitionMinutes": 0,
+              "teacherWith": "all",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-002": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Say one plant you know and one part you can see on it."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-004": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Say one plant you know and describe one part of it in a full sentence."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "325ad2f3-0a66-499a-ab48-1a40ab2c2445",
+              "label": "Teach grade 2",
+              "minutes": 20,
+              "transitionMinutes": 1,
+              "teacherWith": "group-002",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-002": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Teacher shows and names plant parts one by one; learners point and repeat, then draw one labeled plant on paper."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-004": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Unaided: draw a plant from memory and write two sentences describing its parts; then list three describing words you used."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "f9cd65e3-11e8-4e99-992e-0aa3e05731f6",
+              "label": "Teach grade 4",
+              "minutes": 20,
+              "transitionMinutes": 1,
+              "teacherWith": "group-004",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-002": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Unaided: finish coloring and labeling your plant drawing, then write one word for each part you drew."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-004": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Teacher models describing a plant in detail; learners add two more sentences comparing two plant parts and share one with the teacher."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "6251d43f-e9d2-4b4e-9848-140c0e2a2005",
+              "label": "Closing",
+              "minutes": 5,
+              "transitionMinutes": 0,
+              "teacherWith": "all",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-002": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Show your drawing and name two plant parts you drew."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-004": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Read one of your sentences and tell whether it describes a part clearly."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "assessment",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ask the learner to point to and name plant parts on their own drawing during the closing; note which parts they describe correctly."
+                  }
+                ]
+              }
+            ],
+            "group-004": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Read the learner's two to four description sentences and ask one follow-up question about a plant part to check detail."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "reflection",
+        "content": {
+          "type": "text",
+          "blocks": [
+            {
+              "t": "p",
+              "spans": [
+                {
+                  "text": "Check plant facts and fit of the objectives to each grade before teaching; after the lesson, note whether the independent work in slots 2 and 3 kept learners on task and adjust for next time."
+                }
+              ]
+            }
+          ]
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      }
+    ],
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "warnings": []
+  },
+  "review": "Teacher quality review pending; structural checks do not establish scientific or pedagogical quality."
+}

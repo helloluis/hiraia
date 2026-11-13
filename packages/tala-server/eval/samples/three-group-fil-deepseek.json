@@ -1,0 +1,558 @@
+{
+  "input": {
+    "kind": "full",
+    "templateId": "tpl.multigrade.v1",
+    "language": "fil",
+    "subjectName": "Science",
+    "learningAreaId": "science",
+    "timeBudgetMinutes": 50,
+    "sessions": 1,
+    "gradeGroups": [
+      {
+        "id": "group-001",
+        "grade": "1",
+        "learnerCount": 10
+      },
+      {
+        "id": "group-002",
+        "grade": "2",
+        "learnerCount": 10
+      },
+      {
+        "id": "group-003",
+        "grade": "3",
+        "learnerCount": 10
+      }
+    ],
+    "competencies": {
+      "group-001": [
+        "C1"
+      ],
+      "group-002": [
+        "C2"
+      ],
+      "group-003": [
+        "C3"
+      ]
+    },
+    "curriculumVersion": "eval.v1",
+    "customObjectives": [],
+    "classProfile": {
+      "materials": [
+        "paper",
+        "pencils"
+      ],
+      "textbooks": [],
+      "electricity": true,
+      "projector": null,
+      "printing": false,
+      "outdoorSpace": null,
+      "notes": ""
+    },
+    "guidance": ""
+  },
+  "plan": {
+    "title": "Paglalarawan sa mga Halaman: Isang Multigrade na Aralin",
+    "sections": [
+      {
+        "key": "objectives",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-001": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              }
+            ],
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              }
+            ],
+            "group-003": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "materials",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-001": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ],
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ],
+            "group-003": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "multigrade",
+        "content": {
+          "type": "multigrade",
+          "blocks": [
+            {
+              "id": "a04f3100-c2c8-4d8d-8d26-9029b3bc833a",
+              "label": "Panimula",
+              "minutes": 5,
+              "transitionMinutes": 0,
+              "teacherWith": "all",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Sabihin ang pangalan ng isang halaman na nakita mo sa labas."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Sabihin ang pangalan ng isang halaman at isang bahagi nito."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Sabihin ang pangalan ng isang halaman at ilarawan ito sa isang pangungusap."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "d72f07d5-f709-4c29-83f5-69a1290b2daa",
+              "label": "Tuwirang pagtuturo sa Baitang 1",
+              "minutes": 14,
+              "transitionMinutes": 1,
+              "teacherWith": "group-001",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Makinig sa guro at maglarawan ng halaman gamit ang mga salitang kulay at hugis; gumuhit pagkatapos."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Mag-isa: gumuhit ng isang halaman at isulat ang pangalan nito sa papel."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Mag-isa: gumuhit ng isang halaman at magsulat ng dalawang pangungusap na paglalarawan dito."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "e0a3917c-91b2-4411-9a8e-7a85b2d764a6",
+              "label": "Tuwirang pagtuturo sa Baitang 2",
+              "minutes": 13,
+              "transitionMinutes": 1,
+              "teacherWith": "group-002",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Mag-isa: kulayan ang iginuhit na halaman at bilugan ang mga dahon nito."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Makinig sa guro at maglarawan ng halaman gamit ang mga bahagi nito; ituro ang mga bahagi sa iginuhit."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Mag-isa: magsulat ng tatlong pangungusap na paglalarawan sa halaman at salungguhitan ang mga bahagi nito."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "f3861ff0-37f2-41e2-98ea-f90d689d0d8b",
+              "label": "Tuwirang pagtuturo sa Baitang 3",
+              "minutes": 13,
+              "transitionMinutes": 1,
+              "teacherWith": "group-003",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Mag-isa: ipakita sa papel ang iginuhit na halaman at sabihin sa sarili ang kulay nito."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Mag-isa: isulat ang isang pangungusap na naglalarawan sa iginuhit na halaman."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Makinig sa guro at maglarawan ng halaman nang detalyado; ibahagi ang isinulat na paglalarawan."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "70bd7b89-5772-49dc-b776-e873947c4595",
+              "label": "Pangwakas",
+              "minutes": 5,
+              "transitionMinutes": 0,
+              "teacherWith": "all",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Ipakita ang iginuhit na halaman at sabihin ang isang kulay o hugis nito."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Ipakita ang iginuhit na halaman at banggitin ang isang bahagi nito."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Basahin ang isang pangungusap na paglalarawan sa halaman."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "assessment",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-001": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Tumingin sa iginuhit na halaman at tanungin ang mag-aaral kung anong kulay o hugis ang nakikita niya at ipaturo ito sa guhit."
+                  }
+                ]
+              }
+            ],
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Tumingin sa iginuhit na halaman at tanungin ang mag-aaral kung anong kulay o hugis ang nakikita niya at ipaturo ito sa guhit."
+                  }
+                ]
+              }
+            ],
+            "group-003": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Tumingin sa iginuhit na halaman at tanungin ang mag-aaral kung anong kulay o hugis ang nakikita niya at ipaturo ito sa guhit."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "reflection",
+        "content": {
+          "type": "text",
+          "blocks": [
+            {
+              "t": "p",
+              "spans": [
+                {
+                  "text": "Suriin kung tugma ang mga gawain at pagtataya sa layunin ng bawat baitang bago gamitin; magmuni-muni pagkatapos ng pagtuturo. Limitado ang oras ng guro kaya ang Baitang 1, 2, at 3 ay may tig-isang tuwirang bloke; ipagpatuloy sa susunod na sesyon ang pagsasanay sa paglalarawan."
+                }
+              ]
+            }
+          ]
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      }
+    ],
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "warnings": []
+  },
+  "review": "Teacher quality review pending; structural checks do not establish scientific or pedagogical quality."
+}

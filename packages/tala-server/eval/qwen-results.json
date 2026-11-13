@@ -1,0 +1,35 @@
+{
+  "runId": "2026-11-13T13:55:32.408Z",
+  "provider": "qwen",
+  "calls": {
+    "deepseek": 0,
+    "qwen": 1
+  },
+  "results": [
+    {
+      "provider": "qwen",
+      "servedBy": "qwen",
+      "model": "qwen-flash",
+      "fellBack": true,
+      "case": "g2-g4-fil",
+      "mode": "live",
+      "status": "done",
+      "schema": true,
+      "teacherFocus": true,
+      "everyGroupActive": true,
+      "competencyPresence": true,
+      "timeBudget": true,
+      "materials": true,
+      "issues": [],
+      "inputTokens": 2076,
+      "outputTokens": 856,
+      "latencyMs": 5288,
+      "retried": false,
+      "repair": false,
+      "deterministicConversion": true,
+      "costUsd": 0.00044620000000000006,
+      "passed": true,
+      "budgetLedgerUsd": 0.00044620000000000006
+    }
+  ]
+}
