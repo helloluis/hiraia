@@ -7,10 +7,10 @@ import type { VersionMeta } from './publish';
 import { encodeCursor, parseQuery } from './search';
 import { insertArtifact, insertVersion } from './store';
 import type { ArtifactStatus } from './store';
-import { createFakeLlm, createFakeRecordStore, fid } from './testing';
+import { createFakeLlm, fid } from './testing';
 
 function server() {
-  return createTestServer({ modules: [createCommunityModule({ recheckIntervalMs: 0 })], services: { records: createFakeRecordStore(), llm: createFakeLlm() }, quiet: true });
+  return createTestServer({ modules: [createCommunityModule({ recheckIntervalMs: 0 })], services: { llm: createFakeLlm() }, quiet: true });
 }
 
 type Seed = Partial<ArtifactTags> & { title?: string; summary?: string; status?: ArtifactStatus; author?: string; copies?: number; updatedAt?: string };
@@ -82,7 +82,7 @@ test('20 per page, at most 200 per query, then no cursor', async () => {
 });
 
 test('the configured page size is honoured but never exceeds the contract', async () => {
-  const t = createTestServer({ modules: [createCommunityModule({ recheckIntervalMs: 0 })], services: { records: createFakeRecordStore(), llm: createFakeLlm() }, config: { limits: { pageSize: 5 } }, quiet: true });
+  const t = createTestServer({ modules: [createCommunityModule({ recheckIntervalMs: 0 })], services: { llm: createFakeLlm() }, config: { limits: { pageSize: 5 } }, quiet: true });
   const u = await t.registerUser();
   for (let i = 0; i < 7; i++) seed(t.db);
   const first = await t.ok('community.search', { query: {}, token: u.token });

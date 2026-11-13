@@ -46,18 +46,18 @@ const PLACEHOLDER = {
 
 export function preparePost(records: RecordStore, userId: string, body: PostBody): PreparedPost {
   const snap = records.planSnapshot(userId, body.planId);
-  if (!snap) throw new HttpError('not_found', 'We could not find this lesson on Tala yet. Connect to the internet so it is saved, then try again.');
+  if (!snap) throw new HttpError('not_found', 'We could not find this lesson on Tala yet. Connect to the internet so it is saved, then try again.', { reason: 'plan_not_synced' });
   const plan = snap.plan.data;
   const sections = snap.sections.filter((s) => !s.deletedAt).map((s) => s.data);
   if (plan.state !== 'locked' || !plan.lock) {
-    throw new HttpError('conflict', 'Only locked lessons can be posted. Lock this lesson first, then post it.');
+    throw new HttpError('conflict', 'Only locked lessons can be posted. Lock this lesson first, then post it.', { reason: 'plan_not_locked' });
   }
 
   const classes = [...new Set(plan.placements.map((p) => p.classId))]
     .map((id) => records.get(userId, 'class', id))
     .filter((c): c is NonNullable<typeof c> => !!c && !c.deletedAt)
     .map((c) => c.data);
-  if (classes.some((c) => c.isSample)) throw new HttpError('forbidden', 'Lessons from the sample class cannot be posted to the community.');
+  if (classes.some((c) => c.isSample)) throw new HttpError('forbidden', 'Lessons from the sample class cannot be posted to the community.', { reason: 'sample_class' });
 
   const profile = records.get(userId, 'profile', 'profile')?.data ?? null;
   const schoolYears = [...new Set(classes.map((c) => c.schoolYearId))]

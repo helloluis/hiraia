@@ -90,7 +90,7 @@ export function decodeCursor(cursor: string | undefined): number {
   } catch {
     /* fall through */
   }
-  throw new HttpError('invalid_input', 'This list is out of date. Please search again.');
+  throw new HttpError('invalid_input', 'This list is out of date. Please search again.', { reason: 'cursor_invalid' });
 }
 
 /* ---------------- search ---------------- */

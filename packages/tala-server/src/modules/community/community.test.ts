@@ -6,23 +6,23 @@ import { createTestServer } from '../../testing';
 import type { TestServer } from '../../testing';
 import { createCommunityModule, recheckPending, staffRestore, staffTakedown } from './index';
 import type { CommunityDeps } from './service';
-import { allowAll, createFakeLlm, createFakeRecordStore, fid, okVerdict, postBody, seedPlan, seedTeacher, unavailable } from './testing';
-import type { FakeLlm, FakeRecordStore } from './testing';
+import { allowAll, createFakeLlm, fid, okVerdict, postBody, seedPlan, seedTeacher, unavailable } from './testing';
+import type { FakeLlm } from './testing';
+import type { RecordStore } from '../../kernel/types';
 
 interface World {
   t: TestServer;
-  store: FakeRecordStore;
+  store: RecordStore;
   llm: FakeLlm;
   deps(): CommunityDeps;
 }
 
 function world(opts: { llm?: FakeLlm; config?: Parameters<typeof createTestServer>[0] extends infer O ? O extends { config?: infer C } ? C : never : never } = {}): World {
-  const store = createFakeRecordStore();
   const llm = opts.llm ?? createFakeLlm();
-  const t = createTestServer({ modules: [createCommunityModule({ recheckIntervalMs: 0 })], services: { records: store, llm }, config: opts.config, quiet: !process.env.DEBUG_G });
+  const t = createTestServer({ modules: [createCommunityModule({ recheckIntervalMs: 0 })], services: { llm }, config: opts.config, quiet: !process.env.DEBUG_G });
   return {
     t,
-    store,
+    store: t.services.records,
     llm,
     deps: () => ({ db: t.db, services: t.services, config: t.config, now: t.clock.now, newId: () => fid('id'), log: { info() {}, warn() {}, error() {} } }),
   };
@@ -117,7 +117,7 @@ test('posting again from a newer locked revision adds a version; the same revisi
   assert.equal(again.artifact.currentVersionId, first.artifact.currentVersionId, 'offline retry does not duplicate');
   assert.equal(w.llm.calls.length, 1, 'no second model call for a retry');
 
-  seedPlan(w.store, user.id, setup, ['4'], { planId, revision: 2, revisionCode: 'DEF456', title: 'Parts of a Plant v2' });
+  seedPlan(w.store, user.id, setup, ['4'], { planId, revisionCode: 'DEF456', title: 'Parts of a Plant v2' });
   const second = await w.t.ok('community.post', { body: postBody(planId, { title: 'Parts of a Plant (revised)', artifactId: first.artifact.id }), token: user.token });
   assert.equal(second.artifact.id, first.artifact.id);
   assert.equal(second.artifact.versionNumber, 2);
@@ -175,7 +175,7 @@ test('strict: a lesson with a class list is returned with section and excerpt, w
   assert.ok(!allText(w.t.logs).includes('Juan'), 'no content in server logs');
 
   // Unlimited re-posting, no penalty: fix the plan and post again.
-  seedPlan(w.store, user.id, setup, ['4'], { planId, revision: 2, revisionCode: 'FIXED1' });
+  seedPlan(w.store, user.id, setup, ['4'], { planId, revisionCode: 'FIXED1' });
   const again = await w.t.ok('community.post', { body: postBody(planId), token: user.token });
   assert.equal(again.moderation.decision, 'allow');
   assert.equal(again.artifact.status, 'visible');
@@ -492,4 +492,62 @@ test('moderate.v1 embeds guidelines.v1 verbatim and has its placeholders', () =>
   const embedded = prompt.split('<!-- guidelines:begin -->')[1]!.split('<!-- guidelines:end -->')[0]!.trim();
   assert.equal(embedded, guidelines);
   for (const v of ['{{lesson}}', '{{hints}}', '{{report}}']) assert.ok(prompt.includes(v), v);
+});
+
+/* ---------------- account deletion (PRIV-6) ---------------- */
+
+test('deleting an account removes its artifacts, reports and copy records; derived lessons keep the credit', async () => {
+  const w = world();
+  const a = await teacherWithPlan(w);
+  const src = await w.t.ok('community.post', { body: postBody(a.planId, { displayName: 'Teacher A' }), token: a.user.token });
+  const b = await w.t.registerUser();
+  const bSetup = seedTeacher(w.store, b.id);
+  const copy = await w.t.ok('community.copy', { params: { artifactId: src.artifact.id }, body: {}, token: b.token });
+  const bPlan = seedPlan(w.store, b.id, bSetup, ['4'], { lineage: copy.plan.lineage });
+  const derived = await w.t.ok('community.post', { body: postBody(bPlan), token: b.token });
+  await w.t.ok('community.report', { params: { artifactId: derived.artifact.id }, body: { reason: 'spam' }, token: a.user.token });
+
+  await w.t.ok('account.delete', { body: { confirm: 'DELETE', password: a.user.password }, token: a.user.token });
+  const count = (sql: string, ...p: unknown[]) => (w.t.db.prepare(sql).get(...p) as { n: number }).n;
+  assert.equal(count('SELECT COUNT(*) n FROM community_artifacts WHERE author_id = ?', a.user.id), 0);
+  assert.equal(count('SELECT COUNT(*) n FROM community_versions WHERE artifact_id = ?', src.artifact.id), 0);
+  assert.equal(count('SELECT COUNT(*) n FROM community_reports WHERE reporter_id = ?', a.user.id), 0);
+  assert.equal(count('SELECT COUNT(*) n FROM community_moderation_log WHERE author_id = ?', a.user.id), 0);
+  const still = await w.t.ok('community.get', { params: { artifactId: derived.artifact.id }, token: b.token });
+  assert.equal(still.lineage?.authorDisplayName, 'Teacher A');
+  assert.equal(still.lineage?.available, false);
+  w.t.close();
+});
+
+/* ---------------- stable error reasons for client localisation ---------------- */
+
+test('errors carry a stable details.reason', async () => {
+  const w = world();
+  const { user, setup } = await teacherWithPlan(w);
+  const draft = seedPlan(w.store, user.id, setup, ['4'], { state: 'draft' });
+  assert.deepEqual((await w.t.call('community.post', { body: postBody(draft), token: user.token })).error?.details, { reason: 'plan_not_locked' });
+  assert.deepEqual((await w.t.call('community.get', { params: { artifactId: 'missing-artifact' }, token: user.token })).error?.details, { reason: 'artifact_unavailable' });
+  w.t.close();
+});
+
+/* ---------------- staff CLI ---------------- */
+
+test('staff CLI shows, takes down and restores without printing lesson content', async () => {
+  const { runStaffCommand } = await import('./staff-cli');
+  const w = world();
+  const a = await teacherWithPlan(w);
+  const src = await w.t.ok('community.post', { body: postBody(a.planId), token: a.user.token });
+  const lines: string[] = [];
+  assert.equal(runStaffCommand(w.t.db, ['takedown', src.artifact.id], (l) => lines.push(l)), 0);
+  assert.equal((w.t.db.prepare('SELECT status FROM community_artifacts WHERE id = ?').get(src.artifact.id) as { status: string }).status, 'hidden');
+  assert.equal(runStaffCommand(w.t.db, ['restore', src.artifact.id], (l) => lines.push(l)), 0);
+  assert.equal(runStaffCommand(w.t.db, ['show', src.artifact.id], (l) => lines.push(l)), 0);
+  assert.equal(runStaffCommand(w.t.db, ['pending'], (l) => lines.push(l)), 0);
+  assert.equal(runStaffCommand(w.t.db, ['show', 'nope-0000'], (l) => lines.push(l)), 1);
+  assert.equal(runStaffCommand(w.t.db, ['bogus'], (l) => lines.push(l)), 1);
+  const out = lines.join('\n');
+  assert.match(out, /status {6}visible/);
+  assert.match(out, /staff {2}takedown/);
+  assert.ok(!out.includes('Plants have roots'), 'no lesson body');
+  w.t.close();
 });

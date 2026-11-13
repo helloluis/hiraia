@@ -43,7 +43,7 @@ const DAY_SECONDS = 86_400;
 export const RECHECK_BATCH = 20;
 
 export function requireCommunity(config: TalaServerConfig) {
-  if (!config.features.community) throw new HttpError('unavailable', 'The community is turned off right now. Your own lessons are not affected.');
+  if (!config.features.community) throw new HttpError('unavailable', 'The community is turned off right now. Your own lessons are not affected.', { reason: 'community_off' });
 }
 
 function log(deps: CommunityDeps, entry: Omit<LogEntry, 'id' | 'at' | 'guidelineVersion'> & { guidelineVersion?: number }) {
@@ -90,15 +90,15 @@ function knownNamesOf(records: RecordStore, userId: string): string[] {
 type PostBody = z.output<typeof PostArtifactRequest>;
 
 export async function postArtifact(deps: CommunityDeps, user: SessionUser, body: PostBody): Promise<{ artifact: ArtifactSummary; moderation: ModerationDecision }> {
-  if (!user.emailVerified) throw new HttpError('forbidden', 'Please confirm your email address before posting to the community.');
+  if (!user.emailVerified) throw new HttpError('forbidden', 'Please confirm your email address before posting to the community.', { reason: 'email_unverified' });
   const { db } = deps;
 
   let existing: ArtifactRow | undefined;
   if (body.artifactId) {
     existing = getArtifact(db, body.artifactId);
-    if (!existing || existing.author_id !== user.id || existing.status === 'removed') throw new HttpError('not_found', 'We could not find that community post.');
+    if (!existing || existing.author_id !== user.id || existing.status === 'removed') throw new HttpError('not_found', 'We could not find that community post.', { reason: 'artifact_not_found' });
     if (existing.source_plan_id !== body.planId) {
-      throw new HttpError('conflict', 'That community post was made from a different lesson. Post this lesson as a new one instead.');
+      throw new HttpError('conflict', 'That community post was made from a different lesson. Post this lesson as a new one instead.', { reason: 'different_plan' });
     }
   } else {
     existing = artifactForPlan(db, user.id, body.planId);
@@ -117,7 +117,7 @@ export async function postArtifact(deps: CommunityDeps, user: SessionUser, body:
   }
 
   if (!deps.services.rateLimit.take(`community.post:${user.id}`, deps.config.abuse.postPerUserPerDay, DAY_SECONDS)) {
-    throw new HttpError('rate_limited', 'You have posted many lessons today. Please try again tomorrow.');
+    throw new HttpError('rate_limited', 'You have posted many lessons today. Please try again tomorrow.', { reason: 'rate_limited' });
   }
 
   const outcome = await runModeration(
@@ -249,7 +249,7 @@ export async function reportArtifact(deps: CommunityDeps, user: SessionUser, art
   const { db } = deps;
   const a = getArtifact(db, artifactId);
   const reportable = a && (a.status === 'visible' || (a.status === 'hidden' && a.hidden_by === 'report') || (a.author_id === user.id && a.status !== 'removed'));
-  if (!a || !reportable) throw new HttpError('not_found', 'We could not find that community lesson.');
+  if (!a || !reportable) throw new HttpError('not_found', 'We could not find that community lesson.', { reason: 'artifact_not_found' });
 
   const open = db
     .prepare("SELECT id FROM community_reports WHERE reporter_id = ? AND artifact_id = ? AND version_id = ? AND reason = ? AND check_status = 'pending'")
@@ -257,7 +257,7 @@ export async function reportArtifact(deps: CommunityDeps, user: SessionUser, art
   if (open) return { ok: true as const };
 
   if (!deps.services.rateLimit.take(`community.report:${user.id}`, deps.config.abuse.reportPerUserPerDay, DAY_SECONDS)) {
-    throw new HttpError('rate_limited', 'You have sent many reports today. Please try again tomorrow.');
+    throw new HttpError('rate_limited', 'You have sent many reports today. Please try again tomorrow.', { reason: 'rate_limited' });
   }
 
   const now = deps.now().toISOString();
@@ -323,8 +323,8 @@ export async function runReportCheck(deps: CommunityDeps, reportId: string): Pro
 
 export function removeArtifact(deps: CommunityDeps, user: SessionUser, artifactId: string) {
   const a = getArtifact(deps.db, artifactId);
-  if (!a || a.status === 'removed') throw new HttpError('not_found', 'We could not find that community post.');
-  if (a.author_id !== user.id) throw new HttpError('forbidden', 'Only the teacher who posted a lesson can remove it.');
+  if (!a || a.status === 'removed') throw new HttpError('not_found', 'We could not find that community post.', { reason: 'artifact_not_found' });
+  if (a.author_id !== user.id) throw new HttpError('forbidden', 'Only the teacher who posted a lesson can remove it.', { reason: 'not_author' });
   const now = deps.now().toISOString();
   deps.db.prepare("UPDATE community_artifacts SET status = 'removed', hidden_by = NULL, removed_at = ?, updated_at = ? WHERE id = ?").run(now, now, a.id);
   deps.log.info('community.remove', { artifactId: a.id });
@@ -385,4 +385,23 @@ export function staffRestore(deps: StaffDeps, artifactId: string): ArtifactRow {
   })();
   staffLog(deps, a, 'restore');
   return getArtifact(deps.db, a.id)!;
+}
+
+/* ---------------- account deletion (PRIV-6) ---------------- */
+
+/**
+ * Remove everything the community stores for a deleted account: their artifacts with every version, tag and
+ * lineage row, their reports, their copy records. Derived artifacts by other teachers keep their credit line
+ * (it lives in their own version metadata) and show the source as unavailable. Decision-log rows lose the
+ * author id and keep only the decision. Synchronous, idempotent, never throws for an unknown user.
+ */
+export function deleteAccountData(db: Database, userId: string): void {
+  const own = `SELECT id FROM community_artifacts WHERE author_id = @u`;
+  db.prepare(`DELETE FROM community_artifact_terms WHERE artifact_id IN (${own})`).run({ u: userId });
+  db.prepare(`DELETE FROM community_lineage WHERE artifact_id IN (${own})`).run({ u: userId });
+  db.prepare(`DELETE FROM community_copies WHERE artifact_id IN (${own}) OR user_id = @u`).run({ u: userId });
+  db.prepare(`DELETE FROM community_reports WHERE artifact_id IN (${own}) OR reporter_id = @u`).run({ u: userId });
+  db.prepare(`UPDATE community_moderation_log SET author_id = NULL WHERE author_id = @u`).run({ u: userId });
+  db.prepare(`DELETE FROM community_versions WHERE artifact_id IN (${own})`).run({ u: userId });
+  db.prepare(`DELETE FROM community_artifacts WHERE author_id = @u`).run({ u: userId });
 }

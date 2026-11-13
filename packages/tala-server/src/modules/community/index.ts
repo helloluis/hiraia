@@ -2,12 +2,12 @@
  * Module: community — artifacts, versions, lineage, search, copy, report, LLM moderation (PRD §11).
  * OWNER: workstream G. See README.md in this folder.
  */
-import type { Ctx, ServerModule } from '../../kernel/types';
+import type { BaseDeps, Ctx, ServerModule } from '../../kernel/types';
 import { HttpError, requireUser } from '../../kernel/types';
 import { copyArtifact } from './copy';
 import { communityMigrations } from './migrations';
 import { searchArtifacts } from './search';
-import { postArtifact, recheckPending, removeArtifact, reportArtifact, requireCommunity } from './service';
+import { deleteAccountData, postArtifact, recheckPending, removeArtifact, reportArtifact, requireCommunity } from './service';
 import type { CommunityDeps } from './service';
 import { getArtifact, getVersion, toDetail } from './store';
 
@@ -25,9 +25,14 @@ function deps(ctx: Ctx): CommunityDeps {
 
 export function createCommunityModule(options: CommunityModuleOptions = {}): ServerModule {
   const interval = options.recheckIntervalMs ?? DEFAULT_RECHECK_INTERVAL_MS;
-  return {
+  const onAccountDeleted = (base: BaseDeps, userId: string) => deleteAccountData(base.db, userId);
+  const module: ServerModule & { kernel: { onAccountDeleted: typeof onAccountDeleted } } = {
     name: 'community',
     migrations: communityMigrations,
+    onAccountDeleted,
+    // The kernel currently reads the hook from `kernel` (worker A); the contract puts it on the module.
+    // Both are set; the clean-up is idempotent, so running it twice is harmless.
+    kernel: { onAccountDeleted },
     handlers: {
       'community.search': (ctx, { query }) => searchArtifacts(deps(ctx), requireUser(ctx).id, query),
 
@@ -36,9 +41,9 @@ export function createCommunityModule(options: CommunityModuleOptions = {}): Ser
         const user = requireUser(ctx);
         const a = getArtifact(d.db, params.artifactId);
         const mine = a?.author_id === user.id;
-        if (!a || a.status === 'removed' || (a.status !== 'visible' && !mine)) throw new HttpError('not_found', 'This community lesson is no longer available.');
+        if (!a || a.status === 'removed' || (a.status !== 'visible' && !mine)) throw new HttpError('not_found', 'This community lesson is no longer available.', { reason: 'artifact_unavailable' });
         const v = getVersion(d.db, a.current_version_id);
-        if (!v) throw new HttpError('not_found', 'This community lesson is no longer available.');
+        if (!v) throw new HttpError('not_found', 'This community lesson is no longer available.', { reason: 'artifact_unavailable' });
         return toDetail(d.db, a, v, user.id);
       },
 
@@ -70,9 +75,10 @@ export function createCommunityModule(options: CommunityModuleOptions = {}): Ser
       return () => clearInterval(timer);
     },
   };
+  return module;
 }
 
 export const communityModule: ServerModule = createCommunityModule();
 
-export { recheckPending, staffRestore, staffTakedown } from './service';
+export { deleteAccountData, recheckPending, staffRestore, staffTakedown } from './service';
 export { runModeration } from './moderate';

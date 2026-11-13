@@ -46,9 +46,9 @@ export function copyArtifact(
   const { db } = deps;
   const a = getArtifact(db, artifactId);
   const mine = a?.author_id === user.id;
-  if (!a || a.status === 'removed' || (a.status !== 'visible' && !mine)) throw new HttpError('not_found', 'This community lesson is no longer available.');
+  if (!a || a.status === 'removed' || (a.status !== 'visible' && !mine)) throw new HttpError('not_found', 'This community lesson is no longer available.', { reason: 'artifact_unavailable' });
   const v = getVersion(db, body.versionId ?? a.current_version_id);
-  if (!v || v.artifact_id !== a.id || (v.status !== 'allowed' && !mine)) throw new HttpError('not_found', 'That version of the lesson is not available.');
+  if (!v || v.artifact_id !== a.id || (v.status !== 'allowed' && !mine)) throw new HttpError('not_found', 'That version of the lesson is not available.', { reason: 'version_unavailable' });
 
   const content = JSON.parse(v.content_json) as VersionContent;
   const meta = JSON.parse(v.meta_json) as VersionMeta;
@@ -60,10 +60,11 @@ export function copyArtifact(
       source.length === 1
         ? 'This lesson is for one grade. Choose one grade group of your class.'
         : `This lesson is for ${source.length} grade groups. Choose ${source.length} grade groups of your class, in the same order.`,
+      { reason: 'grade_groups_mismatch', expected: source.length },
     );
   }
   if (body.gradeGroupIds && new Set(body.gradeGroupIds).size !== body.gradeGroupIds.length) {
-    throw new HttpError('invalid_input', 'Choose a different grade group for each grade.');
+    throw new HttpError('invalid_input', 'Choose a different grade group for each grade.', { reason: 'grade_groups_duplicate' });
   }
   const map = new Map(source.map((g, i) => [g.id, body.gradeGroupIds?.[i] ?? deps.newId()]));
 

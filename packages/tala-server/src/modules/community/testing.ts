@@ -1,53 +1,19 @@
 /**
- * Test fakes for the community module: an in-memory RecordStore, a scriptable LlmGateway, and builders for
- * a teacher's locked plan. Used by this folder's tests only.
+ * Test helpers for the community module: a scriptable LlmGateway, and builders that write a teacher's
+ * classes and locked plans through the REAL record store (worker A's), the way a device would.
  *
- * FAKED: `services.records` (worker A's record store is not on the integration branch yet) and
- * `services.llm` (tests never call a real provider).
+ * FAKED: `services.llm` only (tests never call a real provider).
  */
 import { BUILTIN_TEMPLATES, parseRecordData } from '@hiraia/tala-core';
-import type { EntityName, LlmRoute, RecordData, RecordEnvelope, SectionContent } from '@hiraia/tala-core';
+import type { EntityName, LlmRoute, RecordEnvelope, SectionContent } from '@hiraia/tala-core';
 import type { LlmGateway, LlmRequest, LlmResult, RecordStore } from '../../kernel/types';
 import type { ModelVerdict } from './moderate';
 
 export const T0 = '2026-11-16T00:00:00.000Z';
 
-export interface FakeRecordStore extends RecordStore {
-  seed<E extends EntityName>(ownerId: string, entity: E, data: unknown): RecordEnvelope<E>;
-}
-
-export function createFakeRecordStore(): FakeRecordStore {
-  const rows = new Map<string, RecordEnvelope>();
-  let rev = 0;
-  const key = (owner: string, entity: string, id: string) => `${owner}\u0000${entity}\u0000${id}`;
-  const put = <E extends EntityName>(ownerId: string, entity: E, data: unknown): RecordEnvelope<E> => {
-    const parsed = parseRecordData(entity, data) as RecordData<E> & { id: string };
-    const env: RecordEnvelope<E> = { entity, id: parsed.id, rev: ++rev, updatedAt: T0, deletedAt: null, data: parsed };
-    rows.set(key(ownerId, entity, parsed.id), env as RecordEnvelope);
-    return env;
-  };
-  return {
-    get: (ownerId, entity, id) => (rows.get(key(ownerId, entity, id)) as RecordEnvelope<typeof entity> | undefined) ?? null,
-    list: (ownerId, entity, opts) =>
-      [...rows.entries()]
-        .filter(([k, v]) => k.startsWith(`${ownerId}\u0000${entity}\u0000`) && (opts?.includeDeleted || !v.deletedAt))
-        .map(([, v]) => v) as Array<RecordEnvelope<typeof entity>>,
-    put: (ownerId, entity, data) => put(ownerId, entity, data),
-    seed: put,
-    remove(ownerId, entity, id) {
-      const r = rows.get(key(ownerId, entity, id));
-      if (r) r.deletedAt = T0;
-    },
-    planSnapshot(ownerId, planId) {
-      const plan = rows.get(key(ownerId, 'plan', planId)) as RecordEnvelope<'plan'> | undefined;
-      if (!plan || plan.deletedAt) return null;
-      const sections = [...rows.entries()]
-        .filter(([k, v]) => k.startsWith(`${ownerId}\u0000plan_section\u0000`) && !v.deletedAt && (v.data as { planId: string }).planId === planId)
-        .map(([, v]) => v as RecordEnvelope<'plan_section'>);
-      return { plan, sections };
-    },
-    checkTallies: () => ({ confirmed: {}, corrected: {} }),
-  };
+/** Write a record through the real store, validating loose test data first. */
+export function put<E extends EntityName>(store: RecordStore, ownerId: string, entity: E, data: unknown): RecordEnvelope<E> {
+  return store.put(ownerId, entity, parseRecordData(entity, data));
 }
 
 /* ---------------- LLM ---------------- */
@@ -111,14 +77,14 @@ export const fid = (prefix: string) => `${prefix}-${String(++seq).padStart(6, '0
 
 /** Profile, a school year with four quarters, and a class with `grades.length` grade groups. */
 export function seedTeacher(
-  store: FakeRecordStore,
+  store: RecordStore,
   ownerId: string,
   opts: { grades?: string[]; schoolName?: string; className?: string; isSample?: boolean; students?: Array<{ givenName: string; familyName: string }> } = {},
 ): TeacherSetup {
   const grades = opts.grades ?? ['4'];
-  store.seed(ownerId, 'profile', { id: 'profile', displayName: 'Gng. Teacher', schoolName: opts.schoolName ?? 'Malinao Elementary School', region: 'Region V' });
+  put(store, ownerId, 'profile', { id: 'profile', displayName: 'Gng. Teacher', schoolName: opts.schoolName ?? 'Malinao Elementary School', region: 'Region V' });
   const schoolYearId = fid('sy');
-  store.seed(ownerId, 'school_year', {
+  put(store, ownerId, 'school_year', {
     id: schoolYearId,
     label: '2026-2027',
     schoolName: opts.schoolName ?? 'Malinao Elementary School',
@@ -133,7 +99,7 @@ export function seedTeacher(
   });
   const groupIds = grades.map(() => fid('gg'));
   const classId = fid('class');
-  store.seed(ownerId, 'class', {
+  put(store, ownerId, 'class', {
     id: classId,
     schoolYearId,
     name: opts.className ?? 'Grade 4 - Sampaguita',
@@ -141,7 +107,7 @@ export function seedTeacher(
     isSample: opts.isSample ?? false,
   });
   for (const s of opts.students ?? []) {
-    store.seed(ownerId, 'student', { id: fid('st'), classId, displayName: `${s.givenName} ${s.familyName}`, givenName: s.givenName, familyName: s.familyName });
+    put(store, ownerId, 'student', { id: fid('st'), classId, displayName: `${s.givenName} ${s.familyName}`, givenName: s.givenName, familyName: s.familyName });
   }
   return { classId, groupIds, schoolYearId };
 }
@@ -151,7 +117,6 @@ export interface PlanOptions {
   /** Extra text appended to the content section. */
   contentText?: string[];
   state?: 'draft' | 'locked';
-  revision?: number;
   revisionCode?: string;
   aiAssisted?: boolean;
   sectionOrigin?: 'manual' | 'ai' | 'copied';
@@ -163,14 +128,12 @@ export interface PlanOptions {
 }
 
 /** A locked plan. One grade group → DLP template; several → multi-grade template with pergroup + multigrade sections. */
-export function seedPlan(store: FakeRecordStore, ownerId: string, setup: TeacherSetup, grades: string[], opts: PlanOptions = {}) {
+export function seedPlan(store: RecordStore, ownerId: string, setup: TeacherSetup, grades: string[], opts: PlanOptions = {}) {
   const planId = opts.planId ?? fid('plan');
-  // Re-seeding a plan (a newer locked revision) replaces its sections.
-  for (const s of store.list(ownerId, 'plan_section')) if (s.data.planId === planId) store.remove(ownerId, 'plan_section', s.id);
   const multi = setup.groupIds.length > 1;
   const template = BUILTIN_TEMPLATES.find((t) => t.id === (multi ? 'tpl.multigrade.v1' : 'tpl.dlp.v1'))!;
   const competencies = Object.fromEntries(setup.groupIds.map((g, i) => [g, opts.competencies ?? [`S${grades[i]}-COMP-${i + 1}`]]));
-  store.seed(ownerId, 'plan', {
+  const planData = {
     id: planId,
     title: opts.title ?? 'Parts of a Plant',
     templateId: template.id,
@@ -183,14 +146,15 @@ export function seedPlan(store: FakeRecordStore, ownerId: string, setup: Teacher
     curriculumVersion: 'science-bow-2026',
     durationMinutes: opts.durationMinutes ?? 50,
     placements: [{ classId: setup.classId, assignmentId: null, dates: [opts.date ?? '2026-11-16'] }],
-    state: opts.state ?? 'locked',
-    lock: (opts.state ?? 'locked') === 'locked' ? { lockedAt: T0, lockedBy: 'Gng. Teacher', revisionCode: opts.revisionCode ?? 'ABC123', revision: opts.revision ?? 1 } : null,
     aiAssisted: opts.aiAssisted ?? false,
     lineage: opts.lineage ?? null,
-  });
+  };
+  // Like a device: write the plan as a draft (unlocking it if it was locked), replace its sections, then lock.
+  put(store, ownerId, 'plan', { ...planData, state: 'draft', lock: null });
+  for (const s of store.list(ownerId, 'plan_section')) if (s.data.planId === planId) store.remove(ownerId, 'plan_section', s.id);
   const origin = opts.sectionOrigin ?? 'manual';
   const section = (key: string, content: SectionContent) =>
-    store.seed(ownerId, 'plan_section', { id: fid('sec'), planId, key, content, origin, editedByTeacher: false });
+    put(store, ownerId, 'plan_section', { id: fid('sec'), planId, key, content, origin, editedByTeacher: false });
   const contentLines = [
     'Plants have roots, stems and leaves. This lesson was used at Malinao Elementary School in Grade 4 - Sampaguita on November 16, 2026.',
     ...(opts.contentText ?? []),
@@ -222,6 +186,9 @@ export function seedPlan(store: FakeRecordStore, ownerId: string, setup: Teacher
     });
     section('assessment', { type: 'pergroup', groups: Object.fromEntries(setup.groupIds.map((g) => [g, p('Quiz')])) });
     section('reflection', { type: 'text', blocks: p('Private notes.') });
+  }
+  if ((opts.state ?? 'locked') === 'locked') {
+    put(store, ownerId, 'plan', { ...planData, state: 'locked', lock: { lockedAt: T0, lockedBy: 'Gng. Teacher', revisionCode: opts.revisionCode ?? 'ABC123', revision: null } });
   }
   return planId;
 }
