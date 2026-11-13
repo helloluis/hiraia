@@ -38,7 +38,12 @@ export const API_BASE = '/api/v1';
  * (`<origin>/verify-email#token=…`) so it never reaches an access log; the page reads `location.hash`
  * and posts it to `auth.verifyEmail` / `auth.reset`.
  */
-export const MAIL_LINK_PATHS = { verifyEmail: '/verify-email', resetPassword: '/reset-password' } as const;
+export const MAIL_LINK_PATHS = {
+  verifyEmail: '/verify-email',
+  resetPassword: '/reset-password',
+  /** Posts its fragment token to `auth.googleLinkConfirm`. */
+  linkGoogle: '/link-google',
+} as const;
 
 export type Owner = 'core' | 'curriculum' | 'generation' | 'roster' | 'community' | 'print';
 
@@ -140,6 +145,53 @@ export const API = {
     method: 'POST', path: '/auth/google', auth: 'none', owner: 'core',
     body: z.object({ idToken: z.string().max(4000), deviceLabel: z.string().max(80).default('') }),
     response: AuthResult,
+  }),
+  /* Google account linking and account merging (PRD §13.3 cases 1–5). All behind features.googleSignIn. */
+  /** Case 1, password path: `auth.google` answered 409 `link_required`; the teacher proves the Tala account once. */
+  'auth.googleLink': route({
+    method: 'POST', path: '/auth/google/link', auth: 'none', owner: 'core',
+    body: z.object({ idToken: z.string().max(4000), password: z.string().max(200), deviceLabel: z.string().max(80).default('') }),
+    response: AuthResult,
+  }),
+  /** Case 1, emailed-link path. Always answers ok; a single-use 30-minute link is mailed if the address has a confirmed account. */
+  'auth.googleLinkRequest': route({
+    method: 'POST', path: '/auth/google/link/request', auth: 'none', owner: 'core',
+    body: z.object({ idToken: z.string().max(4000) }), response: Ok,
+  }),
+  'auth.googleLinkConfirm': route({
+    method: 'POST', path: '/auth/google/link/confirm', auth: 'none', owner: 'core',
+    body: z.object({ token: z.string().min(6).max(200) }), response: Ok,
+  }),
+  /** Case 3. Settings: connect a Google account (its email may differ) after re-entering the Tala password. */
+  'auth.googleConnect': route({
+    method: 'POST', path: '/auth/google/connect', auth: 'user', owner: 'core',
+    body: z.object({ idToken: z.string().max(4000), password: z.string().max(200) }), response: z.object({ user: User }),
+  }),
+  /** Case 5. Refused when Google is the only way into the account. */
+  'auth.googleDisconnect': route({
+    method: 'POST', path: '/auth/google/disconnect', auth: 'user', owner: 'core',
+    body: z.object({ password: z.string().max(200) }), response: z.object({ user: User }),
+  }),
+  /** Case 5. Refused when the password is the only way into the account. */
+  'auth.removePassword': route({
+    method: 'POST', path: '/auth/password/remove', auth: 'user', owner: 'core',
+    body: z.object({ currentPassword: z.string().max(200) }), response: z.object({ user: User }),
+  }),
+  /**
+   * Case 4. Join another account of the same teacher into the signed-in one. Control of BOTH is proven:
+   * the signed-in account by `currentPassword` (required when it has one), the other by `email` + `password`
+   * or by a Google `idToken` for the identity linked to it. Records move; the other account is removed.
+   */
+  'account.merge': route({
+    method: 'POST', path: '/account/merge', auth: 'user', owner: 'core',
+    body: z.object({
+      confirm: z.literal('MERGE'),
+      currentPassword: z.string().max(200).optional(),
+      email: Email.optional(),
+      password: z.string().max(200).optional(),
+      idToken: z.string().max(4000).optional(),
+    }),
+    response: z.object({ user: User, movedRecords: z.number().int() }),
   }),
   'account.delete': route({
     method: 'POST', path: '/account/delete', auth: 'user', owner: 'core',

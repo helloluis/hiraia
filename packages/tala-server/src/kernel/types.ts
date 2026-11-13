@@ -126,6 +126,12 @@ export interface ServerModule {
    * transaction; synchronous; must not throw for a user it has no rows for.
    */
   onAccountDeleted?: (deps: BaseDeps, userId: Id) => void;
+  /**
+   * Move everything this module stores for `fromUserId` to `toUserId` when two accounts of the same teacher
+   * are merged (PRD §13.3 case 4). Runs inside the merge transaction; synchronous. Until every module that
+   * stores per-teacher rows implements it, `account.merge` refuses with `merge_not_available`.
+   */
+  onAccountMerged?: (deps: BaseDeps, fromUserId: Id, toUserId: Id) => void;
   /** Optional background work (job runners, cleanup timers). Must return a stop function. */
   start?: (deps: BaseDeps & { services: Services }) => () => void;
 }
@@ -172,7 +178,7 @@ export type PlanSnapshot = { plan: Plan; sections: PlanSection[] };
 
 export interface Mailer {
   /** In local/staging this writes to the log and a dev outbox table instead of sending. */
-  send(msg: { to: string; template: 'verify_email' | 'password_reset'; lang: 'fil' | 'en'; vars: Record<string, string> }): Promise<void>;
+  send(msg: { to: string; template: 'verify_email' | 'password_reset' | 'link_google'; lang: 'fil' | 'en'; vars: Record<string, string> }): Promise<void>;
 }
 
 export interface RateLimiter {
