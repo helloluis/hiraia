@@ -74,6 +74,7 @@ export const fil: Record<StringKey, string> = {
   partial: 'Bahagyang naituro',
   not_taught: 'Hindi naituro',
   assumed_taught: 'Ipinapalagay na naituro',
+  before_tala: 'Naituro na bago gumamit ng Tala',
   scheduled: 'Nakatakda',
   pdf: 'Ibahagi o ilimbag',
   paper: 'Papel',

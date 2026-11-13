@@ -184,14 +184,15 @@ export interface TimelineEntry {
   subjectName: string;
   /** gradeGroupId → competencies due in this session. More than one key = multi-grade session. */
   byGroup: Record<Id, string[]>;
-  kind: 'lesson' | 'buffer' | 'assessment';
+  /** 'before_tala' = a session before the track's start position: covered before the teacher started using Tala; needs no plan and never counts as behind. Its `byGroup` competency lists are empty. */
+  kind: 'lesson' | 'buffer' | 'assessment' | 'before_tala';
   planId: Id | null;
   planState: 'none' | 'draft' | 'locked';
   /** Summary across groups: the least-complete status of any group in the session. */
-  mark: 'taught' | 'assumed_taught' | 'partial' | 'not_taught' | null;
+  mark: 'taught' | 'assumed_taught' | 'partial' | 'not_taught' | 'before_tala' | null;
   /** Per grade group, for multi-grade sessions where groups differ. Absent = same as `kind` / `mark` for all groups. */
-  byGroupKind?: Record<Id, 'lesson' | 'buffer' | 'assessment' | 'other_subject'>;
-  byGroupMark?: Record<Id, 'taught' | 'assumed_taught' | 'partial' | 'not_taught' | null>;
+  byGroupKind?: Record<Id, 'lesson' | 'buffer' | 'assessment' | 'other_subject' | 'before_tala'>;
+  byGroupMark?: Record<Id, 'taught' | 'assumed_taught' | 'partial' | 'not_taught' | 'before_tala' | null>;
   /** Whether the multi-grade pairing shares a theme, and across which groups (§7.4). */
   pairing: { shared: boolean; groupIds: Id[]; overridden: boolean } | null;
 }
