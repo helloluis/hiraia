@@ -169,6 +169,20 @@ export const PacingTrack = z.object({
     .object({ competencyId: z.string(), date: IsoDate, estimated: z.boolean() })
     .nullable()
     .default(null),
+  /**
+   * The allocation the teacher last accepted (after setup or a confirmed realignment): exact session dates and
+   * slots per item. When present the engine keeps these placements for past and pinned items instead of
+   * re-deriving them, so a recomputation never silently moves what the teacher already saw. null = derive.
+   */
+  allocation: z
+    .array(
+      z.object({
+        competencyIds: z.array(z.string()).min(1),
+        sessions: z.array(z.object({ date: IsoDate, slotId: Id })),
+      }),
+    )
+    .nullable()
+    .default(null),
   /** Teacher overrides of Hiraia defaults; absent keys fall back to defaults. */
   params: PacingParams.partial().default({}),
   overrides: z
@@ -326,6 +340,8 @@ export const SessionMark = z.object({
   assignmentId: Id,
   gradeGroupId: Id,
   date: IsoDate,
+  /** Timetable slot, when the assignment meets more than once that day. null = the day's only/first session. */
+  slotId: Id.nullable().default(null),
   planId: Id.nullable().default(null),
   competencyIds: z.array(z.string()).default([]),
   status: z.enum(['taught', 'partial', 'not_taught']),
