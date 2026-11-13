@@ -39,6 +39,11 @@ export function validateGeneratedSections(input: DraftInput, sections: DraftSect
   for (const section of sections) {
     if (!template?.sections.some(s => s.key === section.key)) errors.push(`Unknown section ${section.key}.`);
     if (section.content.type === 'procedure' && section.content.steps.reduce((n,b) => n+b.minutes,0) !== input.timeBudgetMinutes) errors.push('Procedure minutes must equal time budget.');
+    if (section.content.type === 'weekgrid') {
+      if(section.content.days.length!==input.sessions) errors.push('Weekly session count must match.');
+      if(new Set(section.content.days.map(d=>d.weekday)).size!==section.content.days.length) errors.push('Duplicate weekday.');
+      for(const day of section.content.days) if(day.minutes!==input.timeBudgetMinutes) errors.push('Weekly minutes must equal time budget.');
+    }
     if (section.content.type !== 'multigrade') continue;
     if (section.content.blocks.reduce((n,b) => n+b.minutes,0) !== input.timeBudgetMinutes) errors.push('Block minutes must equal time budget.');
     for (const b of section.content.blocks) {

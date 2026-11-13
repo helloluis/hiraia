@@ -1,9 +1,8 @@
-import { z } from 'zod';
-import { BUILTIN_TEMPLATES, SectionContent, type GenerationInput, type GenerationJob, type Template } from '@hiraia/tala-core';
+import { lessonRequest } from './compact';
+import { BUILTIN_TEMPLATES, type GenerationInput, type GenerationJob, type Template } from '@hiraia/tala-core';
 import { validateGeneratedSections } from '@hiraia/tala-core/generation';
-import { HttpError, requireUser, type BaseDeps, type Ctx, type ServerModule, type Services } from '../../kernel/types';
+import { HttpError, requireUser, type BaseDeps, type Ctx, type ServerModule } from '../../kernel/types';
 export const migrations = [{ id:'generation:001_jobs',sql:`CREATE TABLE generation_jobs (id TEXT PRIMARY KEY, owner_id TEXT NOT NULL, input TEXT NOT NULL, job TEXT NOT NULL, status TEXT NOT NULL); CREATE INDEX generation_pending ON generation_jobs(status);` }];
-const outputSchema = z.object({title:z.string().max(200),sections:z.array(z.object({key:z.string(),content:SectionContent})).max(20)});
 const controllers = new WeakMap<object,Map<string,AbortController>>();
 function controls(db:object) {let value=controllers.get(db);if(!value){value=new Map();controllers.set(db,value);}return value;}
 function read(ctx:Ctx,id:string) { const row=ctx.db.prepare('SELECT * FROM generation_jobs WHERE id=? AND owner_id=?').get(id,requireUser(ctx).id) as {job:string;input:string}|undefined;if(!row)throw new HttpError('not_found','Generation request not found.');return {job:JSON.parse(row.job) as GenerationJob,input:JSON.parse(row.input) as GenerationInput}; }
@@ -33,19 +32,9 @@ export async function runJob(ctx:Ctx,id:string):Promise<void> {
     if(!ctx.config.features.generation){job.status='failed';job.failure={reason:'disabled',message:'Generation is disabled. Use the pre-filled draft.'};return;}
     const resolved=resolveInput(ctx,input);
     const promptId=`lesson/${input.kind==='full'?(input.gradeGroups.length>1?'multigrade':resolved.template.span==='week'?'week':'single'):input.kind}`;
-    const requestedTemplate=input.kind==='section'?{...resolved.template,sections:resolved.template.sections.filter(s=>s.key===input.sectionKey)}:resolved.template;
-    const result=await ctx.services.llm.complete({feature:input.kind==='section'?'lesson.regenerate':input.kind==='adapt'?'lesson.adapt':input.kind==='translate'?'lesson.translate':'lesson.generate',promptId,userId:requireUser(ctx).id,vars:{input:JSON.stringify({...input,...resolved,template:requestedTemplate}),schema:JSON.stringify({title:'string',sections:requestedTemplate.sections.map(s=>({key:s.key,contentType:s.contentType}))})},schema:outputSchema,signal:controller.signal,check:value=>{
-      const errors=validateGeneratedSections({...input,template:requestedTemplate,resolvedObjectives:resolved.resolvedObjectives},value.sections);
-      if(input.kind==='translate') {
-        const source=resolved.source;
-        const skeleton=(value:unknown,key=''):unknown=> {if(Array.isArray(value))return value.map(v=>skeleton(v));if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).filter(([k])=>!['text','title','label'].includes(k)).map(([k,v])=>[k,skeleton(v,k)]));return typeof value==='string'&&!['id','type','t','mode','teacherWith'].includes(key)?'':value;};
-        if(JSON.stringify(skeleton(source))!==JSON.stringify(skeleton(value.sections)))errors.push('Translation must preserve source structure.');
-      }
-      if(input.kind==='section')return errors.filter(e=>!e.startsWith('objectives must')&&!e.startsWith('assessment must'));
-      return errors;
-    }});
+    const result=await ctx.services.llm.complete(lessonRequest({...input,template:resolved.template,resolvedObjectives:resolved.resolvedObjectives},{userId:requireUser(ctx).id,newId:ctx.newId,source:resolved.source,prior:resolved.prior,signal:controller.signal,version:ctx.config.llm.promptVersions[promptId]??2}));
     if(read(ctx,id).job.status==='cancelled')return;
-    if(result.ok) {job.status='done';job.result={title:result.data.title,sections:result.data.sections.map(s=>({...s,gen:{provider:result.provider,model:result.model,promptId:result.promptId,promptVersion:result.promptVersion,curriculumVersion:input.curriculumVersion,at:ctx.now().toISOString()}})),provider:result.provider,model:result.model,warnings:[]};}
+    if(result.ok) {job.status='done';job.result={title:result.data.title,sections:result.data.sections.map(s=>({...s,gen:{provider:result.provider,model:result.model,promptId:result.promptId,promptVersion:result.promptVersion,curriculumVersion:input.curriculumVersion,at:ctx.now().toISOString()}})),provider:result.provider,model:result.model,warnings:result.data.warnings??[]};}
     else if(result.reason==='cancelled')job.status='cancelled';
     else {job.status='failed';job.failure={reason:result.reason==='rules_only'?'disabled':result.reason,message:result.message};}
   } catch {job.status='failed';job.failure={reason:'invalid_input',message:'Check your inputs. You can continue with the pre-filled draft.'};}

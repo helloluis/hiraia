@@ -1,6 +1,7 @@
 import { GenerationInput } from '@hiraia/tala-core';
 export const evaluationCases = [
   {id:'g2-g4-en',grades:['2','4'],language:'en',minutes:50},
+  {id:'g2-g4-fil',grades:['2','4'],language:'fil',minutes:50},
   {id:'three-group-fil',grades:['1','2','3'],language:'fil',minutes:50},
   {id:'four-group-en',grades:['1','2','3','4'],language:'en',minutes:50},
   {id:'no-electricity-fil',grades:['2','4'],language:'fil',minutes:50,electricity:false},
