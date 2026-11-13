@@ -139,6 +139,11 @@ export interface LocalStore {
   /** Atomically write records and outbox changes. */
   commit(batch: {
     put?: LocalRecord[];
+    /**
+     * Physically delete these rows in the same transaction (purging tombstones the server has acknowledged,
+     * so a deleted learner's name does not stay on the device — PRIV-6). Every adapter must implement it.
+     */
+    remove?: Array<{ entity: EntityName; id: Id }>;
     outboxAdd?: OutboxItem[];
     outboxRemove?: Id[];
     meta?: Record<string, string | null>;
