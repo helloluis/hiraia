@@ -34,6 +34,11 @@ export const GenerationKind = z.enum(['full', 'section', 'adapt', 'translate']);
 
 export const GenerationInput = z.object({
   kind: GenerationKind,
+  /**
+   * Client-generated. Re-sending the same key (lost reply, app restart) returns the SAME job instead of
+   * creating — and paying for — another one (RES-5). Scoped to the account.
+   */
+  idempotencyKey: Id.optional(),
   /** Existing plan to fill, regenerate a section of, adapt or translate. Omit to create a new plan. */
   planId: Id.optional(),
   templateId: Id,
