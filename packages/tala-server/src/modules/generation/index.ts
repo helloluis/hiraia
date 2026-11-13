@@ -2,7 +2,7 @@ import { lessonRequest } from './compact';
 import { BUILTIN_TEMPLATES, type GenerationInput, type GenerationJob, type Template } from '@hiraia/tala-core';
 import { validateGeneratedSections } from '@hiraia/tala-core/generation';
 import { HttpError, requireUser, type BaseDeps, type Ctx, type ServerModule } from '../../kernel/types';
-export const migrations = [{ id:'generation:001_jobs',sql:`CREATE TABLE generation_jobs (id TEXT PRIMARY KEY, owner_id TEXT NOT NULL, input TEXT NOT NULL, job TEXT NOT NULL, status TEXT NOT NULL); CREATE INDEX generation_pending ON generation_jobs(status);` }];
+export const migrations = [{ id:'generation:001_jobs',sql:`CREATE TABLE generation_jobs (id TEXT PRIMARY KEY, owner_id TEXT NOT NULL, input TEXT NOT NULL, job TEXT NOT NULL, status TEXT NOT NULL); CREATE INDEX generation_pending ON generation_jobs(status);` },{id:'generation:002_idempotency',sql:'ALTER TABLE generation_jobs ADD COLUMN idempotency_key TEXT; CREATE UNIQUE INDEX generation_idempotency ON generation_jobs(owner_id,idempotency_key) WHERE idempotency_key IS NOT NULL;'}];
 const controllers = new WeakMap<object,Map<string,AbortController>>();
 function controls(db:object) {let value=controllers.get(db);if(!value){value=new Map();controllers.set(db,value);}return value;}
 function read(ctx:Ctx,id:string) { const row=ctx.db.prepare('SELECT * FROM generation_jobs WHERE id=? AND owner_id=?').get(id,requireUser(ctx).id) as {job:string;input:string}|undefined;if(!row)throw new HttpError('not_found','Generation request not found.');return {job:JSON.parse(row.job) as GenerationJob,input:JSON.parse(row.input) as GenerationInput}; }
@@ -25,6 +25,7 @@ function resolveInput(ctx:Ctx,input:GenerationInput) {
   return {template,resolvedObjectives,source,prior:prior?.sections.map(s=>({key:s.data.key,content:s.data.content}))??[]};
 }
 export async function runJob(ctx:Ctx,id:string):Promise<void> {
+  const ownerId=requireUser(ctx).id;
   const {job,input}=read(ctx,id); if(job.status!=='queued')return;
   const controller=new AbortController();controls(ctx.db).set(id,controller);
   job.status='running';save(ctx,job);
@@ -33,15 +34,29 @@ export async function runJob(ctx:Ctx,id:string):Promise<void> {
     const resolved=resolveInput(ctx,input);
     const promptId=`lesson/${input.kind==='full'?(input.gradeGroups.length>1?'multigrade':resolved.template.span==='week'?'week':'single'):input.kind}`;
     const result=await ctx.services.llm.complete(lessonRequest({...input,template:resolved.template,resolvedObjectives:resolved.resolvedObjectives},{userId:requireUser(ctx).id,newId:ctx.newId,source:resolved.source,prior:resolved.prior,signal:controller.signal,version:ctx.config.llm.promptVersions[promptId]??2}));
-    const live=ctx.db.prepare('SELECT status FROM generation_jobs WHERE id=?').get(id) as {status:string}|undefined;if(!live||live.status==='cancelled')return;
+    const live=ctx.db.prepare('SELECT status,owner_id FROM generation_jobs WHERE id=?').get(id) as {status:string;owner_id:string}|undefined;if(!live||live.owner_id!==ownerId||live.status==='cancelled')return;
     if(result.ok) {job.status='done';job.result={title:result.data.title,sections:result.data.sections.map(s=>({...s,gen:{provider:result.provider,model:result.model,promptId:result.promptId,promptVersion:result.promptVersion,curriculumVersion:input.curriculumVersion,at:ctx.now().toISOString()}})),provider:result.provider,model:result.model,warnings:result.data.warnings??[]};}
     else if(result.reason==='cancelled')job.status='cancelled';
     else {job.status='failed';job.failure={reason:result.reason==='rules_only'?'disabled':result.reason,message:result.message};}
   } catch {job.status='failed';job.failure={reason:'invalid_input',message:'Check your inputs. You can continue with the pre-filled draft.'};}
-  finally {controls(ctx.db).delete(id);const live=ctx.db.prepare('SELECT status FROM generation_jobs WHERE id=?').get(id) as {status:string}|undefined;if(live&&live.status!=='cancelled'){job.finishedAt=ctx.now().toISOString();save(ctx,job);}}
+  finally {controls(ctx.db).delete(id);const live=ctx.db.prepare('SELECT status,owner_id FROM generation_jobs WHERE id=?').get(id) as {status:string;owner_id:string}|undefined;if(live&&live.owner_id===ownerId&&live.status!=='cancelled'){job.finishedAt=ctx.now().toISOString();save(ctx,job);}}
 }
-export const generationModule:ServerModule={name:'generation',migrations,onAccountDeleted:(deps,userId)=>{const jobs=deps.db.prepare('SELECT id FROM generation_jobs WHERE owner_id=?').all(userId) as {id:string}[];for(const job of jobs)controls(deps.db).get(job.id)?.abort();deps.db.prepare('DELETE FROM generation_jobs WHERE owner_id=?').run(userId);},handlers:{
-  'generation.create':(ctx,{body})=> {const user=requireUser(ctx);resolveInput(ctx,body);const job:GenerationJob={id:ctx.newId(),status:'queued',kind:body.kind,planId:body.planId??null,createdAt:ctx.now().toISOString(),finishedAt:null,result:null,failure:null};ctx.db.prepare('INSERT INTO generation_jobs VALUES(?,?,?,?,?)').run(job.id,user.id,JSON.stringify(body),JSON.stringify(job),job.status);return job;},
+export const generationModule:ServerModule={name:'generation',migrations,onAccountMerged:(deps,from,to)=>{
+  if(from===to)return;
+  // Preserve every job; a colliding destination key retains its original replay anchor.
+  deps.db.prepare('UPDATE generation_jobs SET idempotency_key=NULL WHERE owner_id=? AND idempotency_key IN (SELECT idempotency_key FROM generation_jobs WHERE owner_id=?)').run(from,to);
+  const running=deps.db.prepare("SELECT id FROM generation_jobs WHERE owner_id=? AND status='running'").all(from) as {id:string}[];
+  for(const job of running)controls(deps.db).get(job.id)?.abort();
+  deps.db.prepare("UPDATE generation_jobs SET owner_id=?,status=CASE WHEN status='running' THEN 'queued' ELSE status END,job=CASE WHEN status='running' THEN json_set(job,'$.status','queued') ELSE job END WHERE owner_id=?").run(to,from);
+},onAccountDeleted:(deps,userId)=>{const jobs=deps.db.prepare('SELECT id FROM generation_jobs WHERE owner_id=?').all(userId) as {id:string}[];for(const job of jobs)controls(deps.db).get(job.id)?.abort();deps.db.prepare('DELETE FROM generation_jobs WHERE owner_id=?').run(userId);},handlers:{
+  'generation.create':(ctx,{body})=>ctx.db.transaction(()=>{
+    const user=requireUser(ctx);
+    if(body.idempotencyKey){const existing=ctx.db.prepare('SELECT job FROM generation_jobs WHERE owner_id=? AND idempotency_key=?').get(user.id,body.idempotencyKey) as {job:string}|undefined;if(existing)return JSON.parse(existing.job) as GenerationJob;}
+    resolveInput(ctx,body);
+    const job:GenerationJob={id:ctx.newId(),status:'queued',kind:body.kind,planId:body.planId??null,createdAt:ctx.now().toISOString(),finishedAt:null,result:null,failure:null};
+    ctx.db.prepare('INSERT INTO generation_jobs(id,owner_id,input,job,status,idempotency_key) VALUES(?,?,?,?,?,?)').run(job.id,user.id,JSON.stringify(body),JSON.stringify(job),job.status,body.idempotencyKey??null);
+    return job;
+  }).immediate(),
   'generation.get':(ctx,{params})=>read(ctx,params.jobId).job,
   'generation.cancel':(ctx,{params})=>{const {job}=read(ctx,params.jobId);if(job.status==='queued'||job.status==='running'){job.status='cancelled';job.finishedAt=ctx.now().toISOString();save(ctx,job);controls(ctx.db).get(job.id)?.abort();}return job;},
   'generation.allowance':ctx=>{const user=requireUser(ctx),day=ctx.now().toISOString().slice(0,10);const used=(bucket:string)=>(ctx.db.prepare('SELECT used FROM llm_quota WHERE day=? AND user_id=? AND bucket=?').get(day,user.id,bucket) as {used:number}|undefined)?.used??0;const spent=(ctx.db.prepare('SELECT COALESCE((SELECT SUM(cost) FROM llm_usage WHERE month=?),0)+COALESCE((SELECT cost FROM llm_deleted_spend WHERE month=?),0) AS cost').get(day.slice(0,7),day.slice(0,7)) as {cost:number}).cost;return {fullRemainingToday:Math.max(0,ctx.config.llm.quotas.fullPerDay-used('full')),sectionRemainingToday:Math.max(0,ctx.config.llm.quotas.sectionPerDay-used('section')),degraded:spent>=ctx.config.llm.budget.monthlyUsd};}

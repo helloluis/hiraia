@@ -35,3 +35,19 @@ test('account deletion aborts in-flight and queued requests without reintroducin
   const {llmModule,monthlySpend}=await import('./index');let calls=0;const f=fixture(async(_p,_c,_text,signal)=>{calls++;await new Promise<void>((_resolve,reject)=>signal.addEventListener('abort',()=>reject(Error('Cancelled.')),{once:true}));throw Error('unreachable');});
   try{const one=f.gateway.complete(request());await new Promise(r=>setTimeout(r,2));const two=f.gateway.complete(request());llmModule.onAccountDeleted!(f.deps,'teacher');const results=await Promise.all([one,two]);assert.ok(results.every(r=>!r.ok&&r.reason==='cancelled'));assert.equal(calls,1);assert.equal((f.db.prepare('SELECT count(*) AS n FROM llm_usage WHERE user_id=?').get('teacher') as {n:number}).n,0);assert.equal((f.db.prepare('SELECT count(*) AS n FROM llm_quota WHERE user_id=?').get('teacher') as {n:number}).n,0);assert.equal(monthlySpend(f.db,'2026-11'),0);}finally{f.db.close();}
 });
+test('account merge moves usage, sums quota collisions, isolates others, and is idempotent',async()=>{
+  const {llmModule,monthlySpend}=await import('./index');const f=fixture();try{
+    for(const [owner,bucket,used]of [['from','full',3],['to','full',4],['from','section',2],['other','full',8]] as const)f.db.prepare('INSERT INTO llm_quota VALUES(?,?,?,?)').run('2026-11-13',owner,bucket,used);
+    for(const owner of ['from','to','other'])f.db.prepare('INSERT INTO llm_usage(day,month,user_id,feature,provider,input_tokens,output_tokens,cost) VALUES(?,?,?,?,?,?,?,?)').run('2026-11-13','2026-11',owner,'lesson.generate','qwen',1,2,.01);
+    const before=monthlySpend(f.db,'2026-11'),other=f.db.prepare('SELECT * FROM llm_usage WHERE user_id=?').all('other');
+    const merge=()=>f.db.transaction(()=>llmModule.onAccountMerged!(f.deps,'from','to'))();merge();const snapshot=f.db.prepare('SELECT * FROM llm_quota ORDER BY user_id,bucket').all();merge();
+    assert.deepEqual(f.db.prepare('SELECT * FROM llm_quota ORDER BY user_id,bucket').all(),snapshot);assert.equal((f.db.prepare('SELECT used FROM llm_quota WHERE user_id=? AND bucket=?').get('to','full') as {used:number}).used,7);assert.equal((f.db.prepare('SELECT used FROM llm_quota WHERE user_id=? AND bucket=?').get('to','section') as {used:number}).used,2);assert.equal((f.db.prepare('SELECT count(*) AS n FROM llm_usage WHERE user_id=?').get('to') as {n:number}).n,2);assert.deepEqual(f.db.prepare('SELECT * FROM llm_usage WHERE user_id=?').all('other'),other);assert.equal(monthlySpend(f.db,'2026-11'),before);
+    llmModule.onAccountMerged!(f.deps,'to','to');assert.deepEqual(f.db.prepare('SELECT * FROM llm_quota ORDER BY user_id,bucket').all(),snapshot);
+  }finally{f.db.close();}
+});
+test('account merge rekeys cached responses and aborts old-account in-flight work',async()=>{
+  const {llmModule}=await import('./index');let calls=0;const f=fixture(async(_p,_c,_t,signal)=>{calls++;if(calls>1)await new Promise<void>((_resolve,reject)=>signal.addEventListener('abort',()=>reject(Error('Cancelled.')),{once:true}));return {content:'{"value":"ok"}',inputTokens:1,outputTokens:1,costUsd:.01};});try{
+    await f.gateway.complete({...request(),userId:'from'});llmModule.onAccountMerged!(f.deps,'from','to');assert.equal((await f.gateway.complete({...request(),userId:'to'})).ok,true);assert.equal(calls,1);
+    const work=f.gateway.complete({...request(),userId:'from',vars:{input:'different',schema:''}});await new Promise(r=>setTimeout(r,2));llmModule.onAccountMerged!(f.deps,'from','to');const result=await work;assert.equal(result.ok,false);if(!result.ok)assert.equal(result.reason,'cancelled');assert.equal((f.db.prepare('SELECT count(*) AS n FROM llm_usage WHERE user_id=?').get('from') as {n:number}).n,0);
+  }finally{f.db.close();}
+});
