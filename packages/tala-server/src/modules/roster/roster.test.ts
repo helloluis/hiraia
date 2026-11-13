@@ -194,3 +194,23 @@ test('account deletion invokes roster cleanup and preserves another teacher’s 
     assert.equal((await t.ok('roster.get', { token: other.token, params: { importId: otherDraft.importId } })).rows[0]!.original, 'Miro Peña');
   } finally { t.close(); }
 });
+test('confirmation keys replay partial and final responses, reject changed bodies, expire and remain owner-scoped', async () => {
+  const { t } = harness();
+  try {
+    const user = await t.registerUser(), other = await t.registerUser(); seedClass(t, user.id); seedClass(t, other.id);
+    const draft = await t.ok('roster.import', { token: user.token, body: { classId, filename: 'names.txt', text: 'Name\tGrade\nPeña, Miro A.\t3\nJona Lira\t3', useAi: false } });
+    const params = { importId: draft.importId };
+    const firstBody = { idempotencyKey: 'partial-key', resolutions: [] };
+    const first = await t.ok('roster.confirm', { token: user.token, params, body: firstBody });
+    assert.equal(first.students.length, 1);
+    assert.deepEqual(await t.ok('roster.confirm', { token: user.token, params, body: firstBody }), first);
+    assert.equal((await t.call('roster.confirm', { token: user.token, params, body: { ...firstBody, acceptAllChanged: true } })).status, 409);
+    const finalBody = { idempotencyKey: 'final-key', resolutions: [{ rowIndex: 2, action: 'keep_original' as const }] };
+    const final = await t.ok('roster.confirm', { token: user.token, params, body: finalBody });
+    assert.equal((await t.call('roster.get', { token: user.token, params })).status, 404);
+    assert.deepEqual(await t.ok('roster.confirm', { token: user.token, params, body: finalBody }), final);
+    assert.equal((await t.call('roster.confirm', { token: other.token, params, body: finalBody })).status, 404);
+    t.clock.advance({ hours: 24 });
+    assert.equal((await t.call('roster.confirm', { token: user.token, params, body: finalBody })).status, 404);
+  } finally { t.close(); }
+});
