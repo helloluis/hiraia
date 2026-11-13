@@ -20,3 +20,11 @@ The memory adapter is intentionally ephemeral. Use IndexedDB/SQLite for acknowle
 saves that must survive page reload or process death. Test fakes implement server
 revision checks, idempotency, edit-vs-delete and locked-section rules; production
 server integration remains a separate gate.
+
+Deletion semantics: `commit.remove` must physically delete rows in the same
+transaction as queue/cursor updates. Acknowledged deletions and pulled tombstones
+purge record data; `sync.deleted.<entity>.<id>` retains only the server revision
+so old pull replays cannot resurrect the record. `get` and `list` never expose
+deleted records. A live local edit survives a remote tombstone; a stale local
+delete yields to a live server edit. An applied/null delete acknowledges a record
+the server never saw and purges its local tombstone.

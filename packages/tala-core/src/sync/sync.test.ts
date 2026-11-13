@@ -189,3 +189,52 @@ for (const status of ['forbidden', 'locked'] as const) test(`terminal ${status} 
   await e.put('day_note', note()); const report = await e.sync(); assert.equal(report.rejected, 1); await e.sync(); assert.equal(calls, 1);
   assert.equal((await e.get('day_note', 'note0001'))!.data.text, 'first'); assert.ok(await store.getMeta('sync.rejected.note0001'));
 });
+
+test('created then deleted offline accepts applied/null and physically purges its tombstone', async () => {
+  const s = new Server();
+  const { engine: e, store } = client({ pull: q => s.pull(q), push: async q => ({ results: q.mutations.map(m => ({ mutationId: m.mutationId, status: 'applied' as const, record: null })) }) });
+  await e.put('day_note', note()); await e.remove('day_note', 'note0001');
+  const report = await e.sync(); assert.equal(report.pushed, 1); assert.equal(report.rejected, 0);
+  assert.equal(await store.get('day_note', 'note0001'), null); assert.equal((await store.outbox()).length, 0);
+});
+for (const entity of ['day_note', 'student'] as const) test(`live edit wins against stale ${entity} deletion`, async () => {
+  const s = new Server(), a = client(s).engine, b = client(s).engine;
+  const data = entity === 'day_note' ? note() : parseRecordData('student', { id: 'student1', classId: 'class001', displayName: 'Original' });
+  await a.put(entity, data); await a.sync(); await b.sync();
+  await b.remove(entity, data.id);
+  const edit = entity === 'day_note' ? { ...data, text: 'Edited' } : { ...data, displayName: 'Edited' };
+  await a.put(entity, parseRecordData(entity, edit)); await a.sync();
+  const report = await b.sync(); assert.equal(report.conflicts, 0);
+  assert.deepEqual((await b.get(entity, data.id))!.data, parseRecordData(entity, edit));
+  assert.equal(s.records.get(`${entity}:${data.id}`)!.deletedAt, null); assert.equal((await b.status()).pending, 0);
+});
+test('minimal scrubbed learner tombstone purges private data and cannot be displayed or replay-resurrected', async () => {
+  const s = new Server(), { engine: e, store } = client(s);
+  await e.put('student', parseRecordData('student', { id: 'student1', classId: 'class001', displayName: 'Private learner' })); await e.sync();
+  // Even an older client's schema may not understand the scrubbed placeholder; envelope still carries deletion.
+  s.log.push({ entity: 'student', id: 'student1', rev: 2, updatedAt: at, deletedAt: at, data: {} } as RecordEnvelope);
+  const report = await e.sync(); assert.equal(report.skipped, 0);
+  assert.equal(await e.get('student', 'student1'), null); assert.equal(await store.get('student', 'student1'), null);
+  assert.deepEqual(await e.list('student'), []);
+  // A replayed pre-deletion live revision must not revive the removed row.
+  s.log.push(s.log[0]!); await e.sync(); assert.equal(await e.get('student', 'student1'), null);
+});
+test('acknowledged scrubbed learner deletion physically removes local data', async () => {
+  const s = new Server(), { engine: e, store } = client({ pull: q => s.pull(q), push: async q => {
+    const response = await s.push(q);
+    return { results: response.results.map(r => r.record?.deletedAt ? { ...r, record: { ...r.record, data: {} } } : r) };
+  } });
+  await e.put('student', parseRecordData('student', { id: 'student1', classId: 'class001', displayName: 'Private learner' })); await e.sync();
+  await e.remove('student', 'student1'); assert.equal(await e.get('student', 'student1'), null);
+  await e.sync(); assert.equal(await store.get('student', 'student1'), null);
+});
+
+test('a deletion followed by a real restoration within one pull page keeps the newest live revision', async () => {
+  const base = { entity: 'day_note' as const, id: 'note0001', updatedAt: at, data: note() };
+  const e = client({ push: async () => ({ results: [] }), pull: async () => ({ records: [
+    { ...base, rev: 1, deletedAt: null },
+    { ...base, rev: 2, deletedAt: at, data: {} },
+    { ...base, rev: 3, deletedAt: null, data: note('note0001', 'Restored') },
+  ], cursor: '3', hasMore: false, serverTime: at }) }).engine;
+  assert.equal((await e.sync()).ok, true); assert.equal((await e.get('day_note', 'note0001'))!.data.text, 'Restored');
+});

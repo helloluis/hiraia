@@ -8,8 +8,7 @@ all its records are durable. `sectionRevision` snapshots manual edits/restores t
 `boundSectionHistory` consumes newest-first server-ordered history; keep unsent
 revisions outside pruning. The default bound is 20 per section.
 
-One policy decision remains: the PRD does not define a numeric threshold for
-“substantially rewritten.” The helper uses configurable 50% lexical-newness and
+Accepted orchestrator policy: the helper uses configurable 50% lexical-newness and
 requires at least half the original length, rejecting deletion, case-only changes,
 and reordering as rewrite evidence. This is conservative evidence, not semantic
 judgment. Preserve the earliest AI baseline separately if bounded history would
