@@ -38,7 +38,7 @@ export class HttpError extends Error {
   constructor(
     public readonly code: ApiErrorCode,
     message: string,
-    public readonly details?: unknown,
+    public readonly details?: unknown
   ) {
     super(message);
     this.name = 'HttpError';
@@ -98,7 +98,7 @@ export interface Logger {
 
 export type Handler<K extends RouteName> = (
   ctx: Ctx,
-  input: { params: ParamsOf<K>; query: QueryOut<K>; body: BodyOut<K> },
+  input: { params: ParamsOf<K>; query: QueryOut<K>; body: BodyOut<K> }
 ) => Promise<ResponseOf<K> | BinaryResponse> | ResponseOf<K> | BinaryResponse;
 
 /** For routes marked `binary` in the API table. */
@@ -161,7 +161,11 @@ export interface Services {
 
 export interface RecordStore {
   get<E extends EntityName>(ownerId: Id, entity: E, id: Id): RecordEnvelope<E> | null;
-  list<E extends EntityName>(ownerId: Id, entity: E, opts?: { includeDeleted?: boolean }): Array<RecordEnvelope<E>>;
+  list<E extends EntityName>(
+    ownerId: Id,
+    entity: E,
+    opts?: { includeDeleted?: boolean }
+  ): Array<RecordEnvelope<E>>;
   /**
    * Server-side write on behalf of the owner. Validates, bumps rev, and the change reaches the owner's
    * devices on their next pull. Use sparingly: the normal path is the client writing through sync.
@@ -169,16 +173,27 @@ export interface RecordStore {
   put<E extends EntityName>(ownerId: Id, entity: E, data: RecordData<E>): RecordEnvelope<E>;
   remove(ownerId: Id, entity: EntityName, id: Id): void;
   /** A plan with its sections, or null if missing/deleted/not the owner's. */
-  planSnapshot(ownerId: Id, planId: Id): { plan: RecordEnvelope<'plan'>; sections: Array<RecordEnvelope<'plan_section'>> } | null;
+  planSnapshot(
+    ownerId: Id,
+    planId: Id
+  ): { plan: RecordEnvelope<'plan'>; sections: Array<RecordEnvelope<'plan_section'>> } | null;
   /** Count of distinct owners per competency for a pack's checks (CUR-7), without exposing who. */
-  checkTallies(curriculumVersion: string, competencyIds: string[]): { confirmed: Record<string, number>; corrected: Record<string, number> };
+  checkTallies(
+    curriculumVersion: string,
+    competencyIds: string[]
+  ): { confirmed: Record<string, number>; corrected: Record<string, number> };
 }
 
 export type PlanSnapshot = { plan: Plan; sections: PlanSection[] };
 
 export interface Mailer {
   /** In local/staging this writes to the log and a dev outbox table instead of sending. */
-  send(msg: { to: string; template: 'verify_email' | 'password_reset' | 'link_google'; lang: 'fil' | 'en'; vars: Record<string, string> }): Promise<void>;
+  send(msg: {
+    to: string;
+    template: 'verify_email' | 'password_reset' | 'link_google';
+    lang: 'fil' | 'en';
+    vars: Record<string, string>;
+  }): Promise<void>;
 }
 
 export interface RateLimiter {
@@ -234,7 +249,14 @@ export type LlmResult<T> =
     }
   | {
       ok: false;
-      reason: 'disabled' | 'rules_only' | 'providers_unavailable' | 'invalid_output' | 'quota_exceeded' | 'budget_exceeded' | 'cancelled';
+      reason:
+        | 'disabled'
+        | 'rules_only'
+        | 'providers_unavailable'
+        | 'invalid_output'
+        | 'quota_exceeded'
+        | 'budget_exceeded'
+        | 'cancelled';
       message: string;
     };
 
@@ -284,10 +306,20 @@ export interface TalaServerConfig {
     cacheSeconds: number;
   };
   moderation: { enabled: boolean; guidelineVersion: number; autoHideOnPersonalDataReport: boolean };
-  limits: { rosterRows: number; rosterFileBytes: number; attachmentBytes: number; pageSize: number };
+  limits: {
+    rosterRows: number;
+    rosterFileBytes: number;
+    attachmentBytes: number;
+    pageSize: number;
+  };
   offline: { windowWeeksBack: number; windowWeeksAhead: number };
   resilience: { slowResponseMs: number; retryMax: number; retryBaseMs: number; retryCapMs: number };
-  abuse: { registerPerIpPerHour: number; loginPerIpPerMinute: number; postPerUserPerDay: number; reportPerUserPerDay: number };
+  abuse: {
+    registerPerIpPerHour: number;
+    loginPerIpPerMinute: number;
+    postPerUserPerDay: number;
+    reportPerUserPerDay: number;
+  };
   curriculum: { confirmationsToMarkChecked: number; correctionsToReview: number };
   pacingDefaults: PacingParams;
   features: { generation: boolean; community: boolean; rosterAi: boolean; googleSignIn: boolean };

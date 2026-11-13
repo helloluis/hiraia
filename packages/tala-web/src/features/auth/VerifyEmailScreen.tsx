@@ -18,9 +18,12 @@ export function VerifyEmailScreen() {
   const form = useAuthForm();
 
   const verify = async (token: string) => {
-    const ok = await form.run(async signal => {
-      await getClient().call('auth.verifyEmail', { body: { token }, signal });
-    }, { invalid_input: 'auth.verifyFailed', not_found: 'auth.verifyFailed' } as never);
+    const ok = await form.run(
+      async (signal) => {
+        await getClient().call('auth.verifyEmail', { body: { token }, signal });
+      },
+      { invalid_input: 'auth.verifyFailed', not_found: 'auth.verifyFailed' } as never
+    );
     if (ok) {
       setDone(true);
       await refreshUser();
@@ -44,7 +47,7 @@ export function VerifyEmailScreen() {
   }, []);
 
   const resend = async () => {
-    const ok = await form.run(async signal => {
+    const ok = await form.run(async (signal) => {
       await getClient().call('auth.sendVerification', { signal });
     });
     if (ok) setResent(true);
@@ -64,7 +67,7 @@ export function VerifyEmailScreen() {
 
   return (
     <form
-      onSubmit={e => {
+      onSubmit={(e) => {
         e.preventDefault();
         if (code.trim()) void verify(code.trim());
       }}
@@ -72,7 +75,13 @@ export function VerifyEmailScreen() {
     >
       <h1 className="text-display">{t('auth.verifyTitle')}</h1>
       <p>{t('auth.verifyBody', { email: user?.email ?? '' })}</p>
-      <TextInput label={t('auth.verifyCode')} value={code} onChange={e => setCode(e.target.value)} autoComplete="one-time-code" inputMode="text" />
+      <TextInput
+        label={t('auth.verifyCode')}
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
+        autoComplete="one-time-code"
+        inputMode="text"
+      />
       {form.error && <Banner kind="error">{form.error}</Banner>}
       {resent && <Banner kind="success">{t('auth.resent')}</Banner>}
       {form.busy ? <Waiting label={t('common.waiting')} onCancel={form.cancel} /> : null}
@@ -84,7 +93,11 @@ export function VerifyEmailScreen() {
           {t('auth.resend')}
         </Button>
       )}
-      <Button variant="quiet" full onClick={() => router.replace(status === 'signedIn' ? '/week' : '/sign-in')}>
+      <Button
+        variant="quiet"
+        full
+        onClick={() => router.replace(status === 'signedIn' ? '/week' : '/sign-in')}
+      >
         {t('auth.skipForNow')}
       </Button>
     </form>

@@ -477,7 +477,10 @@ export function PostScreen(props: FeatureProps & { plan: Plan }) {
                     text: t('confirm'),
                     onPress: () =>
                       void action.run(async () => {
-                        await rt.features.community.post(body(), rt.features.community.snapshot(preview));
+                        await rt.features.community.post(
+                          body(),
+                          rt.features.community.snapshot(preview)
+                        );
                         setQueued(true);
                         void rt.features.tick(online);
                       }),

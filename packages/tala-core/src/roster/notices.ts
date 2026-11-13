@@ -12,5 +12,8 @@ export const rosterNotices = {
     en: 'Tala keeps names, grade groups, optional sex and a teacher-assigned local ID. LRN, birthdates, addresses, guardian and contact details are discarded. No names are sent to an AI service. Review the list before saving.',
     fil: 'Itinatago ng Tala ang mga pangalan, baitang, opsyonal na kasarian at lokal na ID na itinalaga ng guro. Inaalis ang LRN, petsa ng kapanganakan, tirahan, at detalye ng tagapag-alaga at pakikipag-ugnayan. Walang pangalang ipapadala sa AI service. Suriin ang listahan bago i-save.',
   },
-  cloudHistory: { en: 'Cleaned with cloud AI (early access)', fil: 'Nilinis gamit ang cloud AI (maagang pagsubok)' },
+  cloudHistory: {
+    en: 'Cleaned with cloud AI (early access)',
+    fil: 'Nilinis gamit ang cloud AI (maagang pagsubok)',
+  },
 } as const;

@@ -35,7 +35,8 @@ export const en = {
   'common.notSure': 'Not sure',
   'common.comingSoon': 'Coming soon',
   'common.comingSoonBody': 'This part of Tala is not ready yet. Everything else works.',
-  'common.easierOnBigScreen': 'This is easier to edit on a bigger screen. You can still read it here.',
+  'common.easierOnBigScreen':
+    'This is easier to edit on a bigger screen. You can still read it here.',
   'common.waiting': 'One moment…',
   'common.search': 'Search',
   'common.none': 'None',
@@ -47,7 +48,8 @@ export const en = {
   'network.slow': 'Slow connection. Pictures are off to save data.',
   'network.readOnlyTitle': 'Editing is paused',
   'network.readOnly': 'Connect to the internet once to sign in again.',
-  'network.storageFull': 'This device is almost out of space. Tala keeps this week and unsent work; nothing is lost.',
+  'network.storageFull':
+    'This device is almost out of space. Tala keeps this week and unsent work; nothing is lost.',
 
   'sync.waiting': '{n} waiting to send',
   'sync.lastSynced': 'Last sent {time}',
@@ -68,15 +70,18 @@ export const en = {
   'auth.noAccount': 'New to Tala?',
   'auth.haveAccount': 'Already have an account?',
   'auth.resetTitle': 'Reset password',
-  'auth.resetBody': 'Enter your email. If it has an account, we will send a link to set a new password.',
-  'auth.resetSent': 'If that email has an account, a link is on its way. Check your inbox and spam folder.',
+  'auth.resetBody':
+    'Enter your email. If it has an account, we will send a link to set a new password.',
+  'auth.resetSent':
+    'If that email has an account, a link is on its way. Check your inbox and spam folder.',
   'auth.sendLink': 'Send link',
   'auth.newPassword': 'New password',
   'auth.setPassword': 'Set new password',
   'auth.resetDone': 'Your password is changed. You can sign in now.',
   'auth.resetBadLink': 'This link has expired or was already used. Ask for a new one.',
   'auth.verifyTitle': 'Verify your email',
-  'auth.verifyBody': 'We sent a link to {email}. Open it to verify. You can keep using Tala meanwhile; verification is only needed before posting to the community or uploading a list of learners.',
+  'auth.verifyBody':
+    'We sent a link to {email}. Open it to verify. You can keep using Tala meanwhile; verification is only needed before posting to the community or uploading a list of learners.',
   'auth.verifyCode': 'Or paste the code from the email',
   'auth.verify': 'Verify',
   'auth.verified': 'Your email is verified.',
@@ -85,7 +90,8 @@ export const en = {
   'auth.resent': 'Sent. Check your inbox.',
   'auth.skipForNow': 'Later',
   'auth.signOut': 'Sign out',
-  'auth.signOutConfirm': 'Sign out on this device? If you are online, anything waiting to send goes first.',
+  'auth.signOutConfirm':
+    'Sign out on this device? If you are online, anything waiting to send goes first.',
   'auth.invalid': 'That email and password do not match.',
   'auth.emailTaken': 'That email already has an account. Sign in instead.',
   'auth.failed': 'Could not sign in right now. Your connection may be weak. Try again.',
@@ -93,7 +99,8 @@ export const en = {
   'auth.required': 'Please fill this in.',
   'auth.passwordShort': 'Use at least 10 characters.',
   'auth.emailInvalid': 'That does not look like an email address.',
-  'auth.passwordCommon': 'That password is too easy to guess. Try a longer one made of a few words.',
+  'auth.passwordCommon':
+    'That password is too easy to guess. Try a longer one made of a few words.',
   'auth.wrongPassword': 'The current password is not right.',
 
   'lang.fil': 'Filipino',
@@ -102,7 +109,8 @@ export const en = {
   'setup.title': 'Set up your class',
   'setup.intro': 'Four short steps. You can accept every suggestion and change things later.',
   'setup.sample': 'Try a sample class',
-  'setup.sampleBody': 'Adds a class with made-up learners and a few example lessons. Remove it any time.',
+  'setup.sampleBody':
+    'Adds a class with made-up learners and a few example lessons. Remove it any time.',
   'setup.sampleAdding': 'Adding the sample class…',
   'setup.step': 'Step {n} of {total}',
   'setup.step1': 'School year',
@@ -118,7 +126,8 @@ export const en = {
   'setup.endDate': 'Last day of classes',
   'setup.terms': 'Quarters',
   'setup.provisional': 'Provisional. Tala will correct this when DepEd publishes the calendar.',
-  'setup.presetsUnavailable': 'DepEd calendars could not be loaded right now. You can start from a blank year.',
+  'setup.presetsUnavailable':
+    'DepEd calendars could not be loaded right now. You can start from a blank year.',
   'setup.className': 'Class name',
   'setup.classNameHint': 'e.g. Grade 3 Sampaguita',
   'setup.gradeGroups': 'Grade levels in this class',
@@ -134,11 +143,13 @@ export const en = {
   'setup.minutesPerSession': 'Minutes per session',
   'setup.startTime': 'Start time',
   'setup.forGrades': 'For grade levels',
-  'setup.startingPositions': 'Tala guessed where you are in each subject from the calendar. Change any that are wrong.',
+  'setup.startingPositions':
+    'Tala guessed where you are in each subject from the calendar. Change any that are wrong.',
   'setup.estimated': 'Estimate',
   'setup.coveredBefore': 'Earlier competencies are marked as covered before Tala.',
   'setup.finish': 'Show my week',
-  'setup.noPack': 'No curriculum data for this grade and subject yet. You can type your own objectives in each lesson.',
+  'setup.noPack':
+    'No curriculum data for this grade and subject yet. You can type your own objectives in each lesson.',
   'setup.needSubject': 'Add at least one subject.',
   'setup.needName': 'Give the class a name.',
   'setup.needDays': 'Choose at least one day for {subject}.',
@@ -288,12 +299,14 @@ export const en = {
   'editor.lock': 'Lock',
   'editor.unlock': 'Unlock',
   'editor.lockTitle': 'Lock this lesson?',
-  'editor.lockBody': 'Locking says you have checked the content and its match with the curriculum yourself. A locked lesson cannot be edited until you unlock it.',
+  'editor.lockBody':
+    'Locking says you have checked the content and its match with the curriculum yourself. A locked lesson cannot be edited until you unlock it.',
   'editor.lockBlocked': 'Fill these in before locking:',
   'editor.lockNeedsCompetency': 'At least one competency',
   'editor.unlockTitle': 'Unlock this lesson?',
   'editor.unlockBody': 'It becomes a draft again. The locked version stays in history.',
-  'editor.unlockSubmitted': 'This lesson is marked as submitted. Unlocking clears that mark on the new version.',
+  'editor.unlockSubmitted':
+    'This lesson is marked as submitted. Unlocking clears that mark on the new version.',
   'editor.lockedBanner': 'Locked on {date}. Code {code}.',
   'editor.lockedReadOnly': 'This lesson is locked. Unlock it to edit.',
   'editor.reflectionEditable': 'You can still write here after locking.',
@@ -311,7 +324,8 @@ export const en = {
   'editor.conflictBoth': 'Keep both',
   'editor.conflictThisDevice': 'This device',
   'editor.conflictOtherDevice': 'Other device',
-  'editor.conflictCopy': 'This is a copy. The original was locked on another device while you were editing it.',
+  'editor.conflictCopy':
+    'This is a copy. The original was locked on another device while you were editing it.',
   'editor.required': 'Required',
   'editor.sectionEmpty': 'Empty',
   'editor.history': 'History',
@@ -338,7 +352,8 @@ export const en = {
   'pdf.copied': 'Copied. Paste it anywhere.',
   'pdf.server': 'Get a PDF from Tala’s server',
   'pdf.serverOffline': 'Needs a connection.',
-  'pdf.failed': 'That did not work here. Try one of the other ways; you always get something you can print.',
+  'pdf.failed':
+    'That did not work here. Try one of the other ways; you always get something you can print.',
   'pdf.draftWatermark': 'DRAFT',
   'pdf.preparedBy': 'Prepared by',
   'pdf.checkedBy': 'Checked by',
@@ -355,7 +370,8 @@ export const en = {
   'class.gradeGroups': 'Grade levels',
   'class.timetable': 'Schedule',
   'class.profile': 'About this class',
-  'class.profileHint': 'Helps Tala suggest lessons that fit your room. Nothing here is about one learner.',
+  'class.profileHint':
+    'Helps Tala suggest lessons that fit your room. Nothing here is about one learner.',
   'class.materials': 'Materials you have',
   'class.materialsHint': 'Separate with commas.',
   'class.electricity': 'Electricity',
@@ -364,7 +380,8 @@ export const en = {
   'class.outdoor': 'Outdoor space',
   'class.notes': 'Notes about the class',
   'class.advanced': 'Advanced',
-  'class.advancedHint': 'Pacing settings. Tala’s defaults already give a correct timeline; you never need to change these.',
+  'class.advancedHint':
+    'Pacing settings. Tala’s defaults already give a correct timeline; you never need to change these.',
   'class.bufferRatio': 'Buffer sessions per ten teaching sessions',
   'class.assessmentSessions': 'Assessment sessions per quarter',
   'class.minSessions': 'Minimum sessions per competency',
@@ -374,7 +391,8 @@ export const en = {
   'class.pairing.sequence': 'In order only',
   'class.resetDefaults': 'Reset to defaults',
   'class.removeSample': 'Remove sample class',
-  'class.sampleBanner': 'This is a sample class with made-up learners. It cannot be posted to the community.',
+  'class.sampleBanner':
+    'This is a sample class with made-up learners. It cannot be posted to the community.',
   'class.roster': 'Learners',
   'class.rosterImport': 'Import a list of learners',
   'class.none': 'No class yet.',
@@ -407,7 +425,8 @@ export const en = {
   'settings.signOutEverywhere': 'Sign out everywhere',
   'settings.export': 'Download my data',
   'settings.deleteAccount': 'Delete account',
-  'settings.deleteBody': 'This removes your account and every lesson in it. Type DELETE to confirm.',
+  'settings.deleteBody':
+    'This removes your account and every lesson in it. Type DELETE to confirm.',
   'settings.emailUnverified': 'Email not yet verified.',
   'settings.verifyNow': 'Verify now',
   'settings.thisDevice': 'This device',
@@ -416,16 +435,21 @@ export const en = {
   'settings.region': 'Region or division',
 
   'wave2.generate': 'Draft with AI',
-  'wave2.generateBody': 'Tala will draft a lesson from the scheduled competencies. Until then, the blank template is ready to fill in.',
+  'wave2.generateBody':
+    'Tala will draft a lesson from the scheduled competencies. Until then, the blank template is ready to fill in.',
   'wave2.roster': 'Import learners',
-  'wave2.rosterBody': 'You will be able to paste or upload a list of learners here. For now, the class works without one.',
+  'wave2.rosterBody':
+    'You will be able to paste or upload a list of learners here. For now, the class works without one.',
   'wave2.community': 'Community',
-  'wave2.communityBody': 'Lessons shared by other teachers will appear here. Your own lessons work without it.',
+  'wave2.communityBody':
+    'Lessons shared by other teachers will appear here. Your own lessons work without it.',
   'wave2.openTemplate': 'Open the blank template',
 
   'gen.title': 'Draft with AI',
-  'gen.intro': 'Tala will draft this lesson from the scheduled competencies and your class details. You will read and edit it before it counts.',
-  'gen.notice': 'Check facts, examples, answers and fit to the competency before use. Tala checks the shape of the draft, not its content.',
+  'gen.intro':
+    'Tala will draft this lesson from the scheduled competencies and your class details. You will read and edit it before it counts.',
+  'gen.notice':
+    'Check facts, examples, answers and fit to the competency before use. Tala checks the shape of the draft, not its content.',
   'gen.forClass': 'Class',
   'gen.groups': 'Grade groups',
   'gen.learnersN': '{n} learners',
@@ -442,19 +466,24 @@ export const en = {
   'gen.degraded': 'Tala is busy this month; drafts may wait in a queue.',
   'gen.working': 'Writing the draft… this usually takes under a minute.',
   'gen.background': 'Continue in background',
-  'gen.backgroundNote': 'The draft will appear in the lesson when it is ready; you can keep working.',
+  'gen.backgroundNote':
+    'The draft will appear in the lesson when it is ready; you can keep working.',
   'gen.done': 'Draft ready. Read it through before locking.',
   'gen.failed': 'The draft could not be made right now. Your inputs are kept.',
   'gen.failed.providers_unavailable': 'The writing service is not answering. Your inputs are kept.',
-  'gen.failed.invalid_output': 'The draft came back in the wrong shape and was not saved. Your inputs are kept.',
+  'gen.failed.invalid_output':
+    'The draft came back in the wrong shape and was not saved. Your inputs are kept.',
   'gen.failed.quota_exceeded': 'You have used today’s drafts.',
   'gen.failed.budget_exceeded': 'Tala has reached its monthly limit for drafts.',
   'gen.failed.disabled': 'Drafting is switched off at the moment.',
-  'gen.failed.invalid_input': 'Something in the request was not accepted. You can still write it by hand.',
+  'gen.failed.invalid_input':
+    'Something in the request was not accepted. You can still write it by hand.',
   'gen.usePrefilled': 'Open the pre-filled template',
-  'gen.prefilledNote': 'The lesson is set up with the competencies, class details and time blocks. Write the rest by hand.',
+  'gen.prefilledNote':
+    'The lesson is set up with the competencies, class details and time blocks. Write the rest by hand.',
   'gen.keepWaiting': 'Keep the request waiting',
-  'gen.queued': 'No connection. The request is waiting and will run when you are back online. The pre-filled template is open meanwhile.',
+  'gen.queued':
+    'No connection. The request is waiting and will run when you are back online. The pre-filled template is open meanwhile.',
   'gen.queuedBadge': 'Draft request waiting',
   'gen.queuedCount': '{n} draft requests waiting to send',
   'gen.cancelled': 'Draft cancelled. Nothing was changed.',
@@ -464,13 +493,15 @@ export const en = {
   'gen.regenTitle': 'Rewrite this part',
   'gen.regenInstruction': 'How should it change?',
   'gen.regenInstructionHint': 'e.g. shorter, use a game, no worksheet',
-  'gen.regenEdited': 'You edited this part yourself. The rewrite replaces your text; the current version is kept in History and can be restored in one step.',
+  'gen.regenEdited':
+    'You edited this part yourself. The rewrite replaces your text; the current version is kept in History and can be restored in one step.',
   'gen.regenConfirm': 'Yes, rewrite it',
   'gen.regenDone': 'Part rewritten. The previous version is in History.',
   'gen.aiMark': 'AI draft',
 
   'roster.title': 'Import learners',
-  'roster.intro': 'Hand Tala the list you already have. You will check every uncertain row before anything is saved.',
+  'roster.intro':
+    'Hand Tala the list you already have. You will check every uncertain row before anything is saved.',
   'roster.pasteLabel': 'Paste the names here',
   'roster.pasteHint': 'One learner per line, or copied from a sheet.',
   'roster.file': 'Or choose a file',
@@ -496,7 +527,8 @@ export const en = {
   'roster.col.ignore': 'Ignore',
   'roster.col.drop': 'Not kept (sensitive)',
   'roster.dropped': 'Not kept and already discarded: {cols}',
-  'roster.counts': '{lines} lines read: {students} learners, {review} need review, {notStudents} not learners',
+  'roster.counts':
+    '{lines} lines read: {students} learners, {review} need review, {notStudents} not learners',
   'roster.needsReview': 'Needs your decision',
   'roster.changed': 'Changed by cleaning',
   'roster.clean': 'Ready',
@@ -525,7 +557,8 @@ export const en = {
   'roster.defaultGroup': 'Group for rows without a grade',
   'roster.save': 'Save {n} learners',
   'roster.savePartial': 'Save resolved rows, keep {n} pending',
-  'roster.pendingLeft': '{n} rows are still pending. You can come back to them from the class screen.',
+  'roster.pendingLeft':
+    '{n} rows are still pending. You can come back to them from the class screen.',
   'roster.saved': '{n} learners saved.',
   'roster.unresolved': 'Decide on every row that needs review, or save only the resolved ones.',
   'roster.aiMark': 'Cleaned with cloud AI (early access)',
@@ -581,7 +614,8 @@ export const en = {
   'com.adaptedFrom': 'Adapted from “{title}” by {author}',
   'com.sourceUnavailable': 'Source no longer available',
   'com.license': 'Licence: CC BY-NC 4.0 — free to copy and adapt with credit, not for sale.',
-  'com.checkNotice': 'Shared by a teacher as-is. Check facts, answers and fit to your class before use.',
+  'com.checkNotice':
+    'Shared by a teacher as-is. Check facts, answers and fit to your class before use.',
   'com.copy': 'Copy to my lessons',
   'com.copyInto': 'Copy into which class?',
   'com.mapGroups': 'Which of your grade groups takes each part?',
@@ -604,11 +638,13 @@ export const en = {
   'com.status.hidden': 'Hidden while checked',
   'com.status.removed': 'Removed',
   'com.remove': 'Remove my post',
-  'com.removeBody': 'It leaves the community. Copies other teachers already made stay with them, with your credit, because the licence cannot be taken back.',
+  'com.removeBody':
+    'It leaves the community. Copies other teachers already made stay with them, with your credit, because the licence cannot be taken back.',
   'com.removed': 'Post removed.',
   'com.post': 'Post to the community',
   'com.postTitle': 'What will be public',
-  'com.postIntro': 'Only this content is shared. Your school, class name, dates, remarks and signatures are left out.',
+  'com.postIntro':
+    'Only this content is shared. Your school, class name, dates, remarks and signatures are left out.',
   'com.postNeedsLock': 'Lock the lesson first. Only locked lessons can be posted.',
   'com.postSample': 'Sample lessons cannot be posted.',
   'com.postNeedsVerified': 'Verify your email before posting.',
@@ -639,39 +675,52 @@ export const en = {
   'google.or': 'or',
   'google.loading': 'Getting Google ready…',
   'google.unavailable': 'Google sign-in is not available right now. Use your email and password.',
-  'google.notConfigured': 'Google sign-in is not set up on this server yet. Use your email and password.',
-  'google.unreachable': 'Google could not be reached. Use your email and password, or try again later.',
+  'google.notConfigured':
+    'Google sign-in is not set up on this server yet. Use your email and password.',
+  'google.unreachable':
+    'Google could not be reached. Use your email and password, or try again later.',
   'google.tokenInvalid': 'Google did not confirm that sign-in. Try again.',
-  'google.emailNotVerified': 'Google has not confirmed the email of that Google account. Confirm it with Google first, or use your email and password.',
+  'google.emailNotVerified':
+    'Google has not confirmed the email of that Google account. Confirm it with Google first, or use your email and password.',
   'google.linkTitle': 'Connect your Google account',
-  'google.linkBody': 'A Tala account already uses {email}. To connect Google to it, enter your Tala password once, or ask for a link by email.',
+  'google.linkBody':
+    'A Tala account already uses {email}. To connect Google to it, enter your Tala password once, or ask for a link by email.',
   'google.linkWithPassword': 'Connect with my password',
   'google.emailMeLink': 'Email me a link instead',
-  'google.linkMailSent': 'If that email has a Tala account, a link is on its way. Open it, then sign in with Google.',
-  'google.verifyFirst': 'This email has a Tala account whose email was never confirmed. Sign in with your password and confirm your email first; then Google can be connected.',
+  'google.linkMailSent':
+    'If that email has a Tala account, a link is on its way. Open it, then sign in with Google.',
+  'google.verifyFirst':
+    'This email has a Tala account whose email was never confirmed. Sign in with your password and confirm your email first; then Google can be connected.',
   'google.alreadyLinked': 'This Tala account is already connected to a different Google account.',
-  'google.inUse': 'That Google account is already connected to another Tala account. Sign in to that account, or join the two accounts from Settings.',
-  'google.noAccount': 'There is no Tala account with that email to connect. Continue with Google to create one.',
+  'google.inUse':
+    'That Google account is already connected to another Tala account. Sign in to that account, or join the two accounts from Settings.',
+  'google.noAccount':
+    'There is no Tala account with that email to connect. Continue with Google to create one.',
   'google.lastMethod': 'This is the only way into your account. Add the other method first.',
   'google.confirmTitle': 'Google account connected',
   'google.confirmBody': 'You can now sign in with Google or with your password.',
-  'google.confirmBad': 'This link has expired or was already used. Ask for a new one from the sign-in screen.',
+  'google.confirmBad':
+    'This link has expired or was already used. Ask for a new one from the sign-in screen.',
   'google.connected': 'Google: connected',
   'google.notConnected': 'Google: not connected',
   'google.connect': 'Connect Google',
-  'google.connectBody': 'Enter your Tala password, then choose the Google account. Its email may be different from this account’s.',
+  'google.connectBody':
+    'Enter your Tala password, then choose the Google account. Its email may be different from this account’s.',
   'google.connectDone': 'Google connected. Both sign-in methods now work.',
   'google.disconnect': 'Disconnect Google',
   'google.disconnectBody': 'You will sign in with your password only. Enter it to confirm.',
   'google.disconnectDone': 'Google disconnected.',
   'google.removePassword': 'Remove my password',
-  'google.removePasswordBody': 'You will sign in with Google only. Enter your current password to confirm.',
+  'google.removePasswordBody':
+    'You will sign in with Google only. Enter your current password to confirm.',
   'google.removePasswordDone': 'Password removed. Sign in with Google from now on.',
   'google.passwordRequired': 'Set a password before disconnecting Google.',
-  'google.accountMerged': 'This account was joined into another one. Sign in to that account; your unsent work stays on this device until then.',
+  'google.accountMerged':
+    'This account was joined into another one. Sign in to that account; your unsent work stays on this device until then.',
 
   'merge.title': 'Join another account',
-  'merge.body': 'If you made two Tala accounts, join the other one into this one. Its classes, lessons and posts move here with your name kept. The other account is then removed. Prove you control both.',
+  'merge.body':
+    'If you made two Tala accounts, join the other one into this one. Its classes, lessons and posts move here with your name kept. The other account is then removed. Prove you control both.',
   'merge.current': 'Your password for this account',
   'merge.otherBy': 'The other account',
   'merge.byPassword': 'Its email and password',
@@ -683,7 +732,8 @@ export const en = {
   'merge.done': 'Done. {n} records moved into this account.',
   'merge.notProven': 'The other account could not be confirmed. Check its email and password.',
   'merge.same': 'That is this same account.',
-  'merge.proofMissing': 'Give the other account’s email and password, or sign in to it with Google.',
+  'merge.proofMissing':
+    'Give the other account’s email and password, or sign in to it with Google.',
 
   'error.generic': 'Something went wrong. Your work is safe on this device. Try again in a moment.',
   'error.rateLimited': 'Too many tries. Wait a minute and try again.',

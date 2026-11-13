@@ -15,7 +15,24 @@ export interface MiniNode {
 
 const TEXT = 3;
 const ELEMENT = 1;
-const BLOCK_TAGS = new Set(['P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BLOCKQUOTE', 'PRE', 'SECTION', 'ARTICLE', 'TABLE', 'TR', 'TD', 'TH']);
+const BLOCK_TAGS = new Set([
+  'P',
+  'DIV',
+  'H1',
+  'H2',
+  'H3',
+  'H4',
+  'H5',
+  'H6',
+  'BLOCKQUOTE',
+  'PRE',
+  'SECTION',
+  'ARTICLE',
+  'TABLE',
+  'TR',
+  'TD',
+  'TH',
+]);
 
 interface Fmt {
   b: boolean;
@@ -36,11 +53,13 @@ function pushSpan(target: Span[], text: string, fmt: Fmt) {
 }
 
 function spansEmpty(spans: Span[]): boolean {
-  return spans.every(s => !s.text.replace(/ /g, ' ').trim());
+  return spans.every((s) => !s.text.replace(/ /g, ' ').trim());
 }
 
 function normalise(spans: Span[]): Span[] {
-  return spans.map(s => ({ ...s, text: s.text.replace(/ /g, ' ').replace(/[ \t]+/g, ' ') })).filter(s => s.text.length);
+  return spans
+    .map((s) => ({ ...s, text: s.text.replace(/ /g, ' ').replace(/[ \t]+/g, ' ') }))
+    .filter((s) => s.text.length);
 }
 
 export function domToRichText(root: MiniNode): RichText {
@@ -53,11 +72,15 @@ export function domToRichText(root: MiniNode): RichText {
   };
 
   const walkInline = (node: MiniNode, fmt: Fmt, target: Span[]) => {
-    if (node.nodeType === TEXT) return pushSpan(target, (node.nodeValue ?? '').replace(/\n/g, ' '), fmt);
+    if (node.nodeType === TEXT)
+      return pushSpan(target, (node.nodeValue ?? '').replace(/\n/g, ' '), fmt);
     if (node.nodeType !== ELEMENT) return;
     const tag = node.nodeName.toUpperCase();
     if (tag === 'BR') return pushSpan(target, '\n', fmt);
-    const next: Fmt = { b: fmt.b || tag === 'B' || tag === 'STRONG', i: fmt.i || tag === 'I' || tag === 'EM' };
+    const next: Fmt = {
+      b: fmt.b || tag === 'B' || tag === 'STRONG',
+      i: fmt.i || tag === 'I' || tag === 'EM',
+    };
     for (let k = 0; k < node.childNodes.length; k++) walkInline(node.childNodes[k]!, next, target);
   };
 
@@ -88,11 +111,12 @@ export function domToRichText(root: MiniNode): RichText {
     const before = blocks.length;
     walkList(node, 'ul');
     const made = blocks.splice(before);
-    return made.flatMap(b => (b.t === 'p' ? [b.spans] : b.items));
+    return made.flatMap((b) => (b.t === 'p' ? [b.spans] : b.items));
   };
 
   const walkBlock = (node: MiniNode, fmt: Fmt) => {
-    if (node.nodeType === TEXT) return pushSpan(current, (node.nodeValue ?? '').replace(/\n/g, ' '), fmt);
+    if (node.nodeType === TEXT)
+      return pushSpan(current, (node.nodeValue ?? '').replace(/\n/g, ' '), fmt);
     if (node.nodeType !== ELEMENT) return;
     const tag = node.nodeName.toUpperCase();
     if (tag === 'SCRIPT' || tag === 'STYLE') return;
@@ -112,11 +136,15 @@ export function domToRichText(root: MiniNode): RichText {
       flush();
       return;
     }
-    const next: Fmt = { b: fmt.b || tag === 'B' || tag === 'STRONG', i: fmt.i || tag === 'I' || tag === 'EM' };
+    const next: Fmt = {
+      b: fmt.b || tag === 'B' || tag === 'STRONG',
+      i: fmt.i || tag === 'I' || tag === 'EM',
+    };
     for (let k = 0; k < node.childNodes.length; k++) walkBlock(node.childNodes[k]!, next);
   };
 
-  for (let k = 0; k < root.childNodes.length; k++) walkBlock(root.childNodes[k]!, { b: false, i: false });
+  for (let k = 0; k < root.childNodes.length; k++)
+    walkBlock(root.childNodes[k]!, { b: false, i: false });
   flush();
   // Paragraphs may contain soft line breaks ("\n" spans) from <br>; split them into separate paragraphs.
   const out: Block[] = [];
@@ -142,19 +170,20 @@ export function domToRichText(root: MiniNode): RichText {
 }
 
 function trimEdges(spans: Span[]): Span[] {
-  const copy = spans.map(s => ({ ...s }));
+  const copy = spans.map((s) => ({ ...s }));
   if (copy.length) {
     copy[0]!.text = copy[0]!.text.replace(/^\s+/, '');
     copy[copy.length - 1]!.text = copy[copy.length - 1]!.text.replace(/\s+$/, '');
   }
-  return copy.filter(s => s.text.length);
+  return copy.filter((s) => s.text.length);
 }
 
-const esc = (s: string) => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+const esc = (s: string) =>
+  s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
 
 function spansHtml(spans: Span[]): string {
   return spans
-    .map(s => {
+    .map((s) => {
       let t = esc(s.text);
       if (s.b) t = `<strong>${t}</strong>`;
       if (s.i) t = `<em>${t}</em>`;
@@ -166,9 +195,9 @@ function spansHtml(spans: Span[]): string {
 /** Render blocks for the contenteditable (and for read-only display). */
 export function richTextToHtml(blocks: RichText): string {
   return blocks
-    .map(b => {
+    .map((b) => {
       if (b.t === 'p') return `<p>${spansHtml(b.spans) || '<br>'}</p>`;
-      return `<${b.t}>${b.items.map(i => `<li>${spansHtml(i) || '<br>'}</li>`).join('')}</${b.t}>`;
+      return `<${b.t}>${b.items.map((i) => `<li>${spansHtml(i) || '<br>'}</li>`).join('')}</${b.t}>`;
     })
     .join('');
 }
@@ -181,7 +210,7 @@ export function richTextEquals(a: RichText, b: RichText): boolean {
 export function textToRichText(text: string): RichText {
   return text
     .split(/\n{2,}|\r\n\r\n/)
-    .map(p => p.replace(/\s+/g, ' ').trim())
+    .map((p) => p.replace(/\s+/g, ' ').trim())
     .filter(Boolean)
-    .map(p => ({ t: 'p' as const, spans: [{ text: p }] }));
+    .map((p) => ({ t: 'p' as const, spans: [{ text: p }] }));
 }

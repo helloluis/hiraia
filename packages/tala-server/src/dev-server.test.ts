@@ -23,18 +23,29 @@ test('dev server: real HTTP in front of the kernel, cookies and streamed bodies 
     const signUp = await fetch(`${base}/auth/register`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ email: 'dev@example.test', password: 'kalabaw-bituin-ilog-27', displayName: 'Dev Teacher' }),
+      body: JSON.stringify({
+        email: 'dev@example.test',
+        password: 'kalabaw-bituin-ilog-27',
+        displayName: 'Dev Teacher',
+      }),
     });
     assert.equal(signUp.status, 200);
     const cookie = signUp.headers.getSetCookie()[0]!;
-    assert.match(cookie, /^tala_session=[A-Za-z0-9_-]{43}; Max-Age=\d+; Path=\/; HttpOnly; SameSite=Lax$/);
+    assert.match(
+      cookie,
+      /^tala_session=[A-Za-z0-9_-]{43}; Max-Age=\d+; Path=\/; HttpOnly; SameSite=Lax$/
+    );
     const { token } = (await signUp.json()) as { token: string };
 
     const me = await fetch(`${base}/auth/me`, { headers: { cookie: cookie.split(';')[0]! } });
     assert.equal(me.status, 200);
 
     // The typed client works against it unchanged, which is what the mobile app will do.
-    const client = createTalaClient({ baseUrl: dev.url, getToken: () => token, validateResponses: true });
+    const client = createTalaClient({
+      baseUrl: dev.url,
+      getToken: () => token,
+      validateResponses: true,
+    });
     assert.equal((await client.call('auth.me')).user.email, 'dev@example.test');
     const pulled = await client.syncTransport.pull({});
     assert.equal(pulled.hasMore, false);
@@ -46,7 +57,9 @@ test('dev server: real HTTP in front of the kernel, cookies and streamed bodies 
       body: JSON.stringify({ email: 'dev@example.test', password: 'x'.repeat(200_000) }),
     });
     assert.equal(tooBig.status, 400);
-    assert.deepEqual(ApiError.parse(await tooBig.json()).error.details, { reason: 'body_too_large' });
+    assert.deepEqual(ApiError.parse(await tooBig.json()).error.details, {
+      reason: 'body_too_large',
+    });
 
     const missing = await fetch(`${dev.url}/not/the/api`);
     assert.equal(missing.status, 404);
@@ -69,16 +82,33 @@ test('createTalaServer: environment in, working server out, data kept across res
     let server = createTalaServer({ limits: { pageSize: 7 } });
     assert.equal(server.config.dbPath, dbPath);
     assert.equal(server.config.limits.pageSize, 7);
-    assert.equal(statSync(dbPath).mode & 0o777, 0o600, 'the database file is readable by its owner only');
+    assert.equal(
+      statSync(dbPath).mode & 0o777,
+      0o600,
+      'the database file is readable by its owner only'
+    );
 
     const post = (path: string, body: unknown) =>
-      server.handle(new Request(`http://localhost:3000${API_BASE}${path}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }));
-    const registered = await post('/auth/register', { email: 'keep@example.test', password: 'kalabaw-bituin-ilog-27', displayName: 'Keep Me' });
+      server.handle(
+        new Request(`http://localhost:3000${API_BASE}${path}`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(body),
+        })
+      );
+    const registered = await post('/auth/register', {
+      email: 'keep@example.test',
+      password: 'kalabaw-bituin-ilog-27',
+      displayName: 'Keep Me',
+    });
     assert.equal(registered.status, 200);
     server.close();
 
     server = createTalaServer();
-    const login = await post('/auth/login', { email: 'keep@example.test', password: 'kalabaw-bituin-ilog-27' });
+    const login = await post('/auth/login', {
+      email: 'keep@example.test',
+      password: 'kalabaw-bituin-ilog-27',
+    });
     assert.equal(login.status, 200);
     server.close();
 
@@ -93,14 +123,25 @@ test('createTalaServer: environment in, working server out, data kept across res
 });
 
 test('the full module registry starts together and every core route has a handler', () => {
-  const server = createServer({ config: loadConfig({}, { dbPath: ':memory:' }), modules, logSink: () => {} });
+  const server = createServer({
+    config: loadConfig({}, { dbPath: ':memory:' }),
+    modules,
+    logSink: () => {},
+  });
   try {
     const implemented = new Set(server.implemented());
-    const coreRoutes = ROUTE_NAMES.filter((name) => /^(config|auth|account|sync)\./.test(name) || name === 'plans.revisions' || name === 'plans.revision');
+    const coreRoutes = ROUTE_NAMES.filter(
+      (name) =>
+        /^(config|auth|account|sync)\./.test(name) ||
+        name === 'plans.revisions' ||
+        name === 'plans.revision'
+    );
     assert.ok(coreRoutes.length >= 20);
     for (const name of coreRoutes) assert.ok(implemented.has(name), `${name} has no handler`);
     // Migrations of every module ran against one database without clashing.
-    const applied = server.db.prepare('SELECT count(*) AS n FROM kernel_migrations').get() as { n: number };
+    const applied = server.db.prepare('SELECT count(*) AS n FROM kernel_migrations').get() as {
+      n: number;
+    };
     assert.ok(applied.n >= 2);
   } finally {
     server.close();

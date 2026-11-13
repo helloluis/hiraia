@@ -1,6 +1,11 @@
 /** Community tables: row types, reads, writes and DTO mapping. No HTTP here. */
 import { ArtifactTags, LICENSE } from '@hiraia/tala-core';
-import type { ArtifactDetail, ArtifactSummary, ArtifactVersion, ModerationDecision } from '@hiraia/tala-core';
+import type {
+  ArtifactDetail,
+  ArtifactSummary,
+  ArtifactVersion,
+  ModerationDecision,
+} from '@hiraia/tala-core';
 import type { Database } from 'better-sqlite3';
 import type { VersionContent, VersionMeta } from './publish';
 
@@ -56,32 +61,54 @@ export interface VersionRow {
 export const getArtifact = (db: Database, id: string) =>
   db.prepare('SELECT * FROM community_artifacts WHERE id = ?').get(id) as ArtifactRow | undefined;
 
-export const getVersion = (db: Database, id: string) => db.prepare('SELECT * FROM community_versions WHERE id = ?').get(id) as VersionRow | undefined;
+export const getVersion = (db: Database, id: string) =>
+  db.prepare('SELECT * FROM community_versions WHERE id = ?').get(id) as VersionRow | undefined;
 
 export const latestVersion = (db: Database, artifactId: string) =>
-  db.prepare('SELECT * FROM community_versions WHERE artifact_id = ? ORDER BY number DESC LIMIT 1').get(artifactId) as VersionRow | undefined;
+  db
+    .prepare('SELECT * FROM community_versions WHERE artifact_id = ? ORDER BY number DESC LIMIT 1')
+    .get(artifactId) as VersionRow | undefined;
 
 /** The author's live (not removed) artifact for a plan, if any: posting again adds a version to it. */
 export const artifactForPlan = (db: Database, authorId: string, planId: string) =>
   db
-    .prepare("SELECT * FROM community_artifacts WHERE author_id = ? AND source_plan_id = ? AND status != 'removed' ORDER BY created_at DESC LIMIT 1")
+    .prepare(
+      "SELECT * FROM community_artifacts WHERE author_id = ? AND source_plan_id = ? AND status != 'removed' ORDER BY created_at DESC LIMIT 1"
+    )
     .get(authorId, planId) as ArtifactRow | undefined;
 
 export function insertVersion(
   db: Database,
-  v: { id: string; artifactId: string; number: number; status: VersionStatus; planRevision: number | null; revisionCode: string | null; content: VersionContent; meta: VersionMeta; createdAt: string },
+  v: {
+    id: string;
+    artifactId: string;
+    number: number;
+    status: VersionStatus;
+    planRevision: number | null;
+    revisionCode: string | null;
+    content: VersionContent;
+    meta: VersionMeta;
+    createdAt: string;
+  }
 ) {
   db.prepare(
     `INSERT INTO community_versions (id, artifact_id, number, status, plan_revision, revision_code, content_json, meta_json, created_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-  ).run(v.id, v.artifactId, v.number, v.status, v.planRevision, v.revisionCode, JSON.stringify(v.content), JSON.stringify(v.meta), v.createdAt);
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  ).run(
+    v.id,
+    v.artifactId,
+    v.number,
+    v.status,
+    v.planRevision,
+    v.revisionCode,
+    JSON.stringify(v.content),
+    JSON.stringify(v.meta),
+    v.createdAt
+  );
   if (v.meta.lineage) {
-    db.prepare('INSERT OR REPLACE INTO community_lineage (version_id, artifact_id, source_artifact_id, source_version_id) VALUES (?, ?, ?, ?)').run(
-      v.id,
-      v.artifactId,
-      v.meta.lineage.artifactId,
-      v.meta.lineage.versionId,
-    );
+    db.prepare(
+      'INSERT OR REPLACE INTO community_lineage (version_id, artifact_id, source_artifact_id, source_version_id) VALUES (?, ?, ?, ?)'
+    ).run(v.id, v.artifactId, v.meta.lineage.artifactId, v.meta.lineage.versionId);
   }
 }
 
@@ -113,14 +140,25 @@ function metaColumns(meta: VersionMeta) {
 
 function writeTerms(db: Database, artifactId: string, tags: ArtifactTags) {
   db.prepare('DELETE FROM community_artifact_terms WHERE artifact_id = ?').run(artifactId);
-  const ins = db.prepare('INSERT OR IGNORE INTO community_artifact_terms (artifact_id, kind, value) VALUES (?, ?, ?)');
+  const ins = db.prepare(
+    'INSERT OR IGNORE INTO community_artifact_terms (artifact_id, kind, value) VALUES (?, ?, ?)'
+  );
   for (const g of tags.grades) ins.run(artifactId, 'grade', g);
   for (const c of tags.competencyIds) ins.run(artifactId, 'competency', c);
 }
 
 export function insertArtifact(
   db: Database,
-  a: { id: string; authorId: string; sourcePlanId: string; versionId: string; status: ArtifactStatus; meta: VersionMeta; decision: ModerationDecision; now: string },
+  a: {
+    id: string;
+    authorId: string;
+    sourcePlanId: string;
+    versionId: string;
+    status: ArtifactStatus;
+    meta: VersionMeta;
+    decision: ModerationDecision;
+    now: string;
+  }
 ) {
   const cols = metaColumns(a.meta);
   db.prepare(
@@ -131,7 +169,7 @@ export function insertArtifact(
      VALUES (@id, @author_id, @source_plan_id, @current_version_id, @status, NULL, 0,
        @title, @summary, @author_display_name, @author_school, @tags_json, @language, @learning_area_id, @subject_name, @term_index,
        @duration_minutes, @region, @multigrade, @competency_count, @ai_drafted, @adapted, @lineage_artifact_id, @lineage_version_id,
-       @lineage_title, @lineage_author, @last_decision_json, @now, @now, NULL)`,
+       @lineage_title, @lineage_author, @last_decision_json, @now, @now, NULL)`
   ).run({
     ...cols,
     id: a.id,
@@ -148,11 +186,16 @@ export function insertArtifact(
 /** Make a version current: the artifact shows its content and metadata from now on. */
 export function promoteVersion(db: Database, artifactId: string, versionId: string, now: string) {
   const v = getVersion(db, versionId);
-  if (!v || v.artifact_id !== artifactId) throw new Error('promoteVersion: version does not belong to artifact');
+  if (!v || v.artifact_id !== artifactId)
+    throw new Error('promoteVersion: version does not belong to artifact');
   const meta = JSON.parse(v.meta_json) as VersionMeta;
   const cols = metaColumns(meta);
-  const sets = Object.keys(cols).map((k) => `${k} = @${k}`).join(', ');
-  db.prepare(`UPDATE community_artifacts SET ${sets}, current_version_id = @versionId, updated_at = @now WHERE id = @artifactId`).run({
+  const sets = Object.keys(cols)
+    .map((k) => `${k} = @${k}`)
+    .join(', ');
+  db.prepare(
+    `UPDATE community_artifacts SET ${sets}, current_version_id = @versionId, updated_at = @now WHERE id = @artifactId`
+  ).run({
     ...cols,
     versionId,
     artifactId,
@@ -165,12 +208,23 @@ export function setVersionStatus(db: Database, versionId: string, status: Versio
   db.prepare('UPDATE community_versions SET status = ? WHERE id = ?').run(status, versionId);
 }
 
-export function setArtifactStatus(db: Database, id: string, status: ArtifactStatus, hiddenBy: 'report' | 'staff' | null, now: string) {
-  db.prepare('UPDATE community_artifacts SET status = ?, hidden_by = ?, updated_at = ? WHERE id = ?').run(status, hiddenBy, now, id);
+export function setArtifactStatus(
+  db: Database,
+  id: string,
+  status: ArtifactStatus,
+  hiddenBy: 'report' | 'staff' | null,
+  now: string
+) {
+  db.prepare(
+    'UPDATE community_artifacts SET status = ?, hidden_by = ?, updated_at = ? WHERE id = ?'
+  ).run(status, hiddenBy, now, id);
 }
 
 export function setLastDecision(db: Database, id: string, decision: ModerationDecision) {
-  db.prepare('UPDATE community_artifacts SET last_decision_json = ? WHERE id = ?').run(JSON.stringify(decision), id);
+  db.prepare('UPDATE community_artifacts SET last_decision_json = ? WHERE id = ?').run(
+    JSON.stringify(decision),
+    id
+  );
 }
 
 export interface LogEntry {
@@ -194,7 +248,7 @@ export function logDecision(db: Database, e: LogEntry) {
   db.prepare(
     `INSERT INTO community_moderation_log (id, artifact_id, version_id, author_id, trigger, decision, categories, rule_kinds,
        guideline_version, provider, model, prompt_version, llm_outcome, created_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   ).run(
     e.id,
     e.artifactId,
@@ -209,7 +263,7 @@ export function logDecision(db: Database, e: LogEntry) {
     e.model,
     e.promptVersion,
     e.llmOutcome,
-    e.at,
+    e.at
   );
 }
 
@@ -219,7 +273,12 @@ function lineageOf(db: Database, row: ArtifactRow): ArtifactSummary['lineage'] {
   if (!row.lineage_artifact_id || !row.lineage_version_id) return null;
   const src = getArtifact(db, row.lineage_artifact_id);
   const srcVersion = getVersion(db, row.lineage_version_id);
-  const available = !!src && src.status === 'visible' && !!srcVersion && srcVersion.artifact_id === src.id && srcVersion.status === 'allowed';
+  const available =
+    !!src &&
+    src.status === 'visible' &&
+    !!srcVersion &&
+    srcVersion.artifact_id === src.id &&
+    srcVersion.status === 'allowed';
   return {
     artifactId: row.lineage_artifact_id,
     versionId: row.lineage_version_id,
@@ -230,11 +289,19 @@ function lineageOf(db: Database, row: ArtifactRow): ArtifactSummary['lineage'] {
   };
 }
 
-export function toSummary(db: Database, row: ArtifactRow, viewerId: string, overrides: Partial<ArtifactSummary> = {}): ArtifactSummary {
+export function toSummary(
+  db: Database,
+  row: ArtifactRow,
+  viewerId: string,
+  overrides: Partial<ArtifactSummary> = {}
+): ArtifactSummary {
   const version = getVersion(db, row.current_version_id);
   const mine = row.author_id === viewerId;
   // The latest decision (reasons and excerpts of the author's own text) goes to the author only.
-  const moderation = mine && row.last_decision_json ? { moderation: JSON.parse(row.last_decision_json) as ModerationDecision } : {};
+  const moderation =
+    mine && row.last_decision_json
+      ? { moderation: JSON.parse(row.last_decision_json) as ModerationDecision }
+      : {};
   return {
     id: row.id,
     title: row.title,
@@ -259,17 +326,33 @@ export function toSummary(db: Database, row: ArtifactRow, viewerId: string, over
 
 export function toVersion(v: VersionRow): ArtifactVersion {
   const content = JSON.parse(v.content_json) as VersionContent;
-  return { id: v.id, artifactId: v.artifact_id, number: v.number, ...content, createdAt: v.created_at };
+  return {
+    id: v.id,
+    artifactId: v.artifact_id,
+    number: v.number,
+    ...content,
+    createdAt: v.created_at,
+  };
 }
 
-export function toDetail(db: Database, row: ArtifactRow, version: VersionRow, viewerId: string): ArtifactDetail {
+export function toDetail(
+  db: Database,
+  row: ArtifactRow,
+  version: VersionRow,
+  viewerId: string
+): ArtifactDetail {
   return { ...toSummary(db, row, viewerId), version: toVersion(version) };
 }
 
 /** A summary for a post that was returned at posting time and therefore never stored. */
-export function previewSummary(
-  input: { id: string; versionId: string; number: number; meta: VersionMeta; now: string; decision?: ModerationDecision },
-): ArtifactSummary {
+export function previewSummary(input: {
+  id: string;
+  versionId: string;
+  number: number;
+  meta: VersionMeta;
+  now: string;
+  decision?: ModerationDecision;
+}): ArtifactSummary {
   const m = input.meta;
   return {
     id: input.id,

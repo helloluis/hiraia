@@ -67,7 +67,11 @@ export const GenerationInput = z.object({
 });
 export type GenerationInput = z.infer<typeof GenerationInput>;
 
-export const GeneratedSection = z.object({ key: SectionKey, content: SectionContent, gen: SectionGenMeta });
+export const GeneratedSection = z.object({
+  key: SectionKey,
+  content: SectionContent,
+  gen: SectionGenMeta,
+});
 export type GeneratedSection = z.infer<typeof GeneratedSection>;
 
 export const GenerationJob = z.object({
@@ -93,7 +97,14 @@ export const GenerationJob = z.object({
     .nullable(),
   failure: z
     .object({
-      reason: z.enum(['providers_unavailable', 'invalid_output', 'quota_exceeded', 'budget_exceeded', 'disabled', 'invalid_input']),
+      reason: z.enum([
+        'providers_unavailable',
+        'invalid_output',
+        'quota_exceeded',
+        'budget_exceeded',
+        'disabled',
+        'invalid_input',
+      ]),
       message: z.string(),
     })
     .nullable(),
@@ -163,7 +174,9 @@ export const RosterImportDraft = z.object({
   importId: Id,
   classId: Id,
   filename: z.string().max(260),
-  columns: z.array(z.object({ index: z.number().int(), header: z.string().max(200), field: RosterField })),
+  columns: z.array(
+    z.object({ index: z.number().int(), header: z.string().max(200), field: RosterField })
+  ),
   /** Human-readable names of sensitive columns that were discarded before storage (PRIV-2). */
   droppedColumns: z.array(z.string()),
   /** Up to maxRosterRows STUDENT rows plus the non-student lines found around them (headers, totals, notes). */
@@ -187,7 +200,10 @@ export const RosterImportRequest = z.object({
   filename: z.string().max(260),
   /** Exactly one of text / contentBase64. */
   text: z.string().max(LIMITS.maxRosterFileBytes).optional(),
-  contentBase64: z.string().max(Math.ceil((LIMITS.maxRosterFileBytes * 4) / 3) + 8).optional(),
+  contentBase64: z
+    .string()
+    .max(Math.ceil((LIMITS.maxRosterFileBytes * 4) / 3) + 8)
+    .optional(),
   sheet: z.string().optional(),
   /** Teacher's choice on the flagged screen: Clean with AI vs Clean without AI (§12.4.1). */
   useAi: z.boolean(),
@@ -219,7 +235,9 @@ export const RosterConfirmResponse = z.object({
    * Student records to create. The CLIENT writes them through the sync engine; the server stores nothing
    * from the import beyond the draft, which it deletes on confirm/abandon and within 24 hours (PRIV-2).
    */
-  students: z.array(RosterProposed.extend({ gradeGroupId: Id.nullable(), rowIndex: z.number().int() })),
+  students: z.array(
+    RosterProposed.extend({ gradeGroupId: Id.nullable(), rowIndex: z.number().int() })
+  ),
   pendingRows: z.array(z.number().int()),
 });
 
@@ -253,7 +271,13 @@ export const ArtifactSummary = z.object({
   license: z.literal(LICENSE),
   provenance: z.object({ aiDrafted: z.boolean(), adapted: z.boolean() }),
   lineage: z
-    .object({ artifactId: Id, versionId: Id, title: z.string(), authorDisplayName: z.string(), available: z.boolean() })
+    .object({
+      artifactId: Id,
+      versionId: Id,
+      title: z.string(),
+      authorDisplayName: z.string(),
+      available: z.boolean(),
+    })
     .nullable(),
   copyCount: z.number().int(),
   currentVersionId: Id,
@@ -298,7 +322,7 @@ export const ModerationDecision = z.object({
       /** Section key and a short excerpt so the author can fix it. */
       sectionKey: z.string().nullable(),
       excerpt: z.string().max(300).nullable(),
-    }),
+    })
   ),
   guidelineVersion: z.number().int(),
 });
@@ -345,7 +369,14 @@ export const CopyArtifactResponse = z.object({
 });
 
 export const ReportRequest = z.object({
-  reason: z.enum(['personal_data', 'unsuitable', 'copied_without_credit', 'inaccurate', 'spam', 'other']),
+  reason: z.enum([
+    'personal_data',
+    'unsuitable',
+    'copied_without_credit',
+    'inaccurate',
+    'spam',
+    'other',
+  ]),
   note: z.string().max(600).default(''),
 });
 

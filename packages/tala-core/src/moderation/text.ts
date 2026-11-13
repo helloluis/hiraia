@@ -54,7 +54,10 @@ export function sectionTextGroups(content: SectionContent): string[][] {
     case 'pergroup':
       return Object.values(content.groups).map(richTextLines);
     case 'multigrade':
-      return content.blocks.flatMap((b) => [splitLines(b.label), ...Object.values(b.groups).map((g) => richTextLines(g.activity))]);
+      return content.blocks.flatMap((b) => [
+        splitLines(b.label),
+        ...Object.values(b.groups).map((g) => richTextLines(g.activity)),
+      ]);
   }
 }
 
@@ -68,18 +71,29 @@ export function textUnits(input: ModerationTextInput): TextUnit[] {
   };
   if (input.title) push('title', splitLines(input.title));
   if (input.summary) push('summary', splitLines(input.summary));
-  for (const s of input.sections) for (const lines of sectionTextGroups(s.content)) push(s.key, lines);
+  for (const s of input.sections)
+    for (const lines of sectionTextGroups(s.content)) push(s.key, lines);
   return units;
 }
 
 /** Plain text for a model prompt: one `## key` heading per section. Bounded by `maxChars`. */
-export function moderationText(input: ModerationTextInput, maxChars = 20_000): { text: string; truncated: boolean } {
+export function moderationText(
+  input: ModerationTextInput,
+  maxChars = 20_000
+): { text: string; truncated: boolean } {
   const parts: string[] = [];
   if (input.title) parts.push(`## title\n${input.title}`);
   if (input.summary) parts.push(`## summary\n${input.summary}`);
-  for (const s of input.sections) parts.push(`## ${s.key}\n${sectionTextGroups(s.content).map((g) => g.join('\n')).join('\n\n')}`);
+  for (const s of input.sections)
+    parts.push(
+      `## ${s.key}\n${sectionTextGroups(s.content)
+        .map((g) => g.join('\n'))
+        .join('\n\n')}`
+    );
   const text = parts.join('\n\n');
-  return text.length > maxChars ? { text: text.slice(0, maxChars), truncated: true } : { text, truncated: false };
+  return text.length > maxChars
+    ? { text: text.slice(0, maxChars), truncated: true }
+    : { text, truncated: false };
 }
 
 /** Lower-case, accents removed, whitespace collapsed: for matching an excerpt or a name against content. */

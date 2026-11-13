@@ -7,7 +7,15 @@ import { HttpError, requireUser } from '../../kernel/types';
 import { copyArtifact } from './copy';
 import { communityMigrations } from './migrations';
 import { searchArtifacts } from './search';
-import { deleteAccountData, mergeAccountData, postArtifact, recheckPending, removeArtifact, reportArtifact, requireCommunity } from './service';
+import {
+  deleteAccountData,
+  mergeAccountData,
+  postArtifact,
+  recheckPending,
+  removeArtifact,
+  reportArtifact,
+  requireCommunity,
+} from './service';
 import type { CommunityDeps } from './service';
 import { getArtifact, getVersion, toDetail } from './store';
 
@@ -20,7 +28,14 @@ export const DEFAULT_RECHECK_INTERVAL_MS = 5 * 60_000;
 
 function deps(ctx: Ctx): CommunityDeps {
   requireCommunity(ctx.config);
-  return { db: ctx.db, services: ctx.services, config: ctx.config, now: ctx.now, newId: ctx.newId, log: ctx.log };
+  return {
+    db: ctx.db,
+    services: ctx.services,
+    config: ctx.config,
+    now: ctx.now,
+    newId: ctx.newId,
+    log: ctx.log,
+  };
 }
 
 export function createCommunityModule(options: CommunityModuleOptions = {}): ServerModule {
@@ -29,9 +44,11 @@ export function createCommunityModule(options: CommunityModuleOptions = {}): Ser
     name: 'community',
     migrations: communityMigrations,
     onAccountDeleted: (base: BaseDeps, userId: string) => deleteAccountData(base.db, userId),
-    onAccountMerged: (base: BaseDeps, fromUserId: string, toUserId: string) => mergeAccountData(base.db, fromUserId, toUserId),
+    onAccountMerged: (base: BaseDeps, fromUserId: string, toUserId: string) =>
+      mergeAccountData(base.db, fromUserId, toUserId),
     handlers: {
-      'community.search': (ctx, { query }) => searchArtifacts(deps(ctx), requireUser(ctx).id, query),
+      'community.search': (ctx, { query }) =>
+        searchArtifacts(deps(ctx), requireUser(ctx).id, query),
 
       'community.get': (ctx, { params, query }) => {
         const d = deps(ctx);
@@ -39,36 +56,55 @@ export function createCommunityModule(options: CommunityModuleOptions = {}): Ser
         const a = getArtifact(d.db, params.artifactId);
         const mine = a?.author_id === user.id;
         if (!a || a.status === 'removed' || (a.status !== 'visible' && !mine)) {
-          throw new HttpError('not_found', 'This community lesson is no longer available.', { reason: 'artifact_unavailable' });
+          throw new HttpError('not_found', 'This community lesson is no longer available.', {
+            reason: 'artifact_unavailable',
+          });
         }
         // Older versions stay reachable (§11.2): others see allowed versions only; the author sees all.
         const v = getVersion(d.db, query.versionId ?? a.current_version_id);
         if (!v || v.artifact_id !== a.id || (v.status !== 'allowed' && !mine)) {
-          throw new HttpError('not_found', 'That version of the lesson is not available.', { reason: 'version_unavailable' });
+          throw new HttpError('not_found', 'That version of the lesson is not available.', {
+            reason: 'version_unavailable',
+          });
         }
         return toDetail(d.db, a, v, user.id);
       },
 
       'community.post': (ctx, { body }) => postArtifact(deps(ctx), requireUser(ctx), body),
 
-      'community.copy': (ctx, { params, body }) => copyArtifact(deps(ctx), requireUser(ctx), params.artifactId, body),
+      'community.copy': (ctx, { params, body }) =>
+        copyArtifact(deps(ctx), requireUser(ctx), params.artifactId, body),
 
-      'community.remove': (ctx, { params }) => removeArtifact(deps(ctx), requireUser(ctx), params.artifactId),
+      'community.remove': (ctx, { params }) =>
+        removeArtifact(deps(ctx), requireUser(ctx), params.artifactId),
 
-      'community.report': (ctx, { params, body }) => reportArtifact(deps(ctx), requireUser(ctx), params.artifactId, body),
+      'community.report': (ctx, { params, body }) =>
+        reportArtifact(deps(ctx), requireUser(ctx), params.artifactId, body),
     },
     start: (base) => {
       if (!interval || !base.config.features.community) return () => {};
       let running = false;
-      const d: CommunityDeps = { db: base.db, services: base.services, config: base.config, now: base.now, newId: base.newId, log: base.log };
+      const d: CommunityDeps = {
+        db: base.db,
+        services: base.services,
+        config: base.config,
+        now: base.now,
+        newId: base.newId,
+        log: base.log,
+      };
       const timer = setInterval(() => {
         if (running) return;
         running = true;
         recheckPending(d)
           .then((r) => {
-            if (r.versions || r.reports) base.log.info('community.recheck', { versions: r.versions, reports: r.reports });
+            if (r.versions || r.reports)
+              base.log.info('community.recheck', { versions: r.versions, reports: r.reports });
           })
-          .catch((e: unknown) => base.log.error('community.recheck_failed', { error: e instanceof Error ? e.name : 'unknown' }))
+          .catch((e: unknown) =>
+            base.log.error('community.recheck_failed', {
+              error: e instanceof Error ? e.name : 'unknown',
+            })
+          )
           .finally(() => {
             running = false;
           });
@@ -82,5 +118,11 @@ export function createCommunityModule(options: CommunityModuleOptions = {}): Ser
 
 export const communityModule: ServerModule = createCommunityModule();
 
-export { deleteAccountData, mergeAccountData, recheckPending, staffRestore, staffTakedown } from './service';
+export {
+  deleteAccountData,
+  mergeAccountData,
+  recheckPending,
+  staffRestore,
+  staffTakedown,
+} from './service';
 export { runModeration } from './moderate';

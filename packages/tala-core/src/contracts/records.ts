@@ -124,10 +124,17 @@ export const TimetableSlot = z.object({
   id: Id,
   weekday: Weekday,
   /** 'HH:MM' 24h, optional: many teachers only know "Science is MWF, 50 minutes". */
-  startTime: z.string().regex(/^\d{2}:\d{2}$/).nullable().default(null),
+  startTime: z
+    .string()
+    .regex(/^\d{2}:\d{2}$/)
+    .nullable()
+    .default(null),
   minutes: z.number().int().min(5).max(480),
   /** Rotating schedules (SCH-3): slot is active only in week `week` of an `everyWeeks` cycle. null = every week. */
-  rotation: z.object({ everyWeeks: z.number().int().min(2).max(8), week: z.number().int().min(1).max(8) }).nullable().default(null),
+  rotation: z
+    .object({ everyWeeks: z.number().int().min(2).max(8), week: z.number().int().min(1).max(8) })
+    .nullable()
+    .default(null),
 });
 export type TimetableSlot = z.infer<typeof TimetableSlot>;
 
@@ -181,7 +188,7 @@ export const PacingTrack = z.object({
       z.object({
         competencyIds: z.array(z.string()).min(1),
         sessions: z.array(z.object({ date: IsoDate, slotId: Id })),
-      }),
+      })
     )
     .nullable()
     .default(null),
@@ -275,7 +282,10 @@ export const Plan = z.object({
     })
     .nullable()
     .default(null),
-  submitted: z.object({ date: IsoDate, note: z.string().max(300) }).nullable().default(null),
+  submitted: z
+    .object({ date: IsoDate, note: z.string().max(300) })
+    .nullable()
+    .default(null),
   /** True until the teacher edits or locks a generated draft (§9.4). */
   aiDraft: z.boolean().default(false),
   /** True if any section ever originated from generation; feeds community provenance (§11.3). */

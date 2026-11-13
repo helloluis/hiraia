@@ -34,7 +34,10 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-dvh flex flex-col wide:flex-row">
       <GenerationRunner />
-      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:px-3 focus:py-2 focus:rounded">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:px-3 focus:py-2 focus:rounded"
+      >
         {t('app.skipToContent')}
       </a>
       {/* Wide screens: left rail. Phones: top bar + bottom nav. */}
@@ -44,12 +47,23 @@ export function AppShell({ children }: { children: ReactNode }) {
           <TalaWordmark height={22} />
         </div>
         <nav aria-label={t('nav.main')} className="flex flex-col px-2">
-          {NAV.map(n => (
-            <NavLink key={n.href} href={n.href} label={t(n.key)} icon={n.icon} active={pathname?.startsWith(n.href) ?? false} />
+          {NAV.map((n) => (
+            <NavLink
+              key={n.href}
+              href={n.href}
+              label={t(n.key)}
+              icon={n.icon}
+              active={pathname?.startsWith(n.href) ?? false}
+            />
           ))}
         </nav>
         <div className="mt-auto px-2 pb-4 flex flex-col gap-2">
-          <NavLink href="/settings" label={t('nav.settings')} icon="⚙" active={pathname?.startsWith('/settings') ?? false} />
+          <NavLink
+            href="/settings"
+            label={t('nav.settings')}
+            icon="⚙"
+            active={pathname?.startsWith('/settings') ?? false}
+          />
           <SyncIndicator />
         </div>
       </aside>
@@ -62,21 +76,45 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Link>
           <div className="flex items-center gap-1">
             <SyncIndicator compact />
-            <Link href="/settings" className={cx('flex flex-col items-center justify-center min-h-touch min-w-touch px-2 rounded text-small', pathname?.startsWith('/settings') ? 'text-talaTeal font-medium' : 'text-forest')} aria-current={pathname?.startsWith('/settings') ? 'page' : undefined}>
+            <Link
+              href="/settings"
+              className={cx(
+                'flex flex-col items-center justify-center min-h-touch min-w-touch px-2 rounded text-small',
+                pathname?.startsWith('/settings') ? 'text-talaTeal font-medium' : 'text-forest'
+              )}
+              aria-current={pathname?.startsWith('/settings') ? 'page' : undefined}
+            >
               <span aria-hidden="true">⚙</span>
               <span>{t('nav.settings')}</span>
             </Link>
           </div>
         </header>
         <NetworkBanner />
-        <main id="main" className="flex-1 w-full max-w-[64rem] mx-auto px-3 py-4 wide:px-8 pb-24 wide:pb-8">
+        <main
+          id="main"
+          className="flex-1 w-full max-w-[64rem] mx-auto px-3 py-4 wide:px-8 pb-24 wide:pb-8"
+        >
           {children}
         </main>
-        <nav aria-label={t('nav.main')} className="no-print wide:hidden fixed bottom-0 inset-x-0 z-30 grid grid-cols-4 bg-white border-t border-hairline" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-          {NAV.map(n => {
+        <nav
+          aria-label={t('nav.main')}
+          className="no-print wide:hidden fixed bottom-0 inset-x-0 z-30 grid grid-cols-4 bg-white border-t border-hairline"
+          style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+        >
+          {NAV.map((n) => {
             const active = pathname?.startsWith(n.href) ?? false;
             return (
-              <Link key={n.href} href={n.href} aria-current={active ? 'page' : undefined} className={cx('flex flex-col items-center justify-center min-h-touch py-1 text-small leading-tight', active ? 'text-talaTeal font-medium border-t-2 border-talaTeal' : 'text-forest border-t-2 border-transparent')}>
+              <Link
+                key={n.href}
+                href={n.href}
+                aria-current={active ? 'page' : undefined}
+                className={cx(
+                  'flex flex-col items-center justify-center min-h-touch py-1 text-small leading-tight',
+                  active
+                    ? 'text-talaTeal font-medium border-t-2 border-talaTeal'
+                    : 'text-forest border-t-2 border-transparent'
+                )}
+              >
                 <span aria-hidden="true" className="text-body">
                   {n.icon}
                 </span>
@@ -90,9 +128,26 @@ export function AppShell({ children }: { children: ReactNode }) {
   );
 }
 
-function NavLink({ href, label, icon, active }: { href: string; label: string; icon: string; active: boolean }) {
+function NavLink({
+  href,
+  label,
+  icon,
+  active,
+}: {
+  href: string;
+  label: string;
+  icon: string;
+  active: boolean;
+}) {
   return (
-    <Link href={href} aria-current={active ? 'page' : undefined} className={cx('flex items-center gap-3 min-h-touch px-3 rounded', active ? 'bg-talaTeal text-white font-medium' : 'text-forest hover:bg-cream')}>
+    <Link
+      href={href}
+      aria-current={active ? 'page' : undefined}
+      className={cx(
+        'flex items-center gap-3 min-h-touch px-3 rounded',
+        active ? 'bg-talaTeal text-white font-medium' : 'text-forest hover:bg-cream'
+      )}
+    >
       <span aria-hidden="true">{icon}</span>
       <span>{label}</span>
     </Link>

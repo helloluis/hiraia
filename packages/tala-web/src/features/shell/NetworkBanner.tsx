@@ -15,13 +15,21 @@ export function NetworkBanner() {
           kind="warn"
           action={
             sessionLapsed && network.online ? (
-              <Link href="/sign-in" className="min-h-touch inline-flex items-center px-3 text-talaTealText underline">
+              <Link
+                href="/sign-in"
+                className="min-h-touch inline-flex items-center px-3 text-talaTealText underline"
+              >
                 {t('auth.signIn')}
               </Link>
             ) : undefined
           }
         >
-          <strong>{t('network.readOnlyTitle')}.</strong> {mergedAway ? t('google.accountMerged') : network.readOnlyReason === 'storage_full' ? t('network.storageFull') : t('network.readOnly')}
+          <strong>{t('network.readOnlyTitle')}.</strong>{' '}
+          {mergedAway
+            ? t('google.accountMerged')
+            : network.readOnlyReason === 'storage_full'
+              ? t('network.storageFull')
+              : t('network.readOnly')}
         </Banner>
       </div>
     );

@@ -107,9 +107,20 @@ const TEMPLATES: Record<MailTemplate, Record<Lang, TemplateText>> = {
   },
 };
 
-export function renderMail(msg: { to: string; template: MailTemplate; lang: Lang; vars: Record<string, string> }): RenderedMail {
+export function renderMail(msg: {
+  to: string;
+  template: MailTemplate;
+  lang: Lang;
+  vars: Record<string, string>;
+}): RenderedMail {
   const text = TEMPLATES[msg.template][msg.lang];
-  return { to: msg.to, template: msg.template, lang: msg.lang, subject: text.subject, body: text.body(msg.vars) };
+  return {
+    to: msg.to,
+    template: msg.template,
+    lang: msg.lang,
+    subject: text.subject,
+    body: text.body(msg.vars),
+  };
 }
 
 export interface OutboxMail extends RenderedMail {
@@ -118,10 +129,17 @@ export interface OutboxMail extends RenderedMail {
   createdAt: string;
 }
 
-export function createMailer(deps: { db: Db; config: TalaServerConfig; now: () => Date; newId: () => Id; log: Logger; transport?: MailTransport }): Mailer {
+export function createMailer(deps: {
+  db: Db;
+  config: TalaServerConfig;
+  now: () => Date;
+  newId: () => Id;
+  log: Logger;
+  transport?: MailTransport;
+}): Mailer {
   const { db, config, now, newId, log, transport } = deps;
   const insert = db.prepare(
-    'INSERT INTO core_mail_outbox (id, to_email, template, lang, subject, body, vars, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+    'INSERT INTO core_mail_outbox (id, to_email, template, lang, subject, body, vars, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
   );
   return {
     async send(msg) {
@@ -136,7 +154,16 @@ export function createMailer(deps: { db: Db; config: TalaServerConfig; now: () =
         throw new Error('No mail transport is configured.');
       }
       const id = newId();
-      insert.run(id, mail.to, mail.template, mail.lang, mail.subject, mail.body, JSON.stringify(msg.vars), now().toISOString());
+      insert.run(
+        id,
+        mail.to,
+        mail.template,
+        mail.lang,
+        mail.subject,
+        mail.body,
+        JSON.stringify(msg.vars),
+        now().toISOString()
+      );
       log.info('mail_queued_in_outbox', { template: mail.template, lang: mail.lang, outboxId: id });
     },
   };
@@ -144,7 +171,9 @@ export function createMailer(deps: { db: Db; config: TalaServerConfig; now: () =
 
 /** Read the dev outbox, newest first. For tests and the local outbox tool only. */
 export function readOutbox(db: Db, limit = 50): OutboxMail[] {
-  const rows = db.prepare('SELECT * FROM core_mail_outbox ORDER BY created_at DESC, rowid DESC LIMIT ?').all(limit) as Array<{
+  const rows = db
+    .prepare('SELECT * FROM core_mail_outbox ORDER BY created_at DESC, rowid DESC LIMIT ?')
+    .all(limit) as Array<{
     id: string;
     to_email: string;
     template: MailTemplate;

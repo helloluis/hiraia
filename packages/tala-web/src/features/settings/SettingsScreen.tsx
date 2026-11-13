@@ -9,7 +9,18 @@ import { useWorkspace } from '@/data/records';
 import { getClient } from '@/data/client';
 import { ensureProfile } from '@/data/profile';
 import { errorKey } from '@/data/errors';
-import { Banner, Button, List, ListRow, PageHeader, Select, Sheet, Switch, TextInput, Toast } from '@/components/ui';
+import {
+  Banner,
+  Button,
+  List,
+  ListRow,
+  PageHeader,
+  Select,
+  Sheet,
+  Switch,
+  TextInput,
+  Toast,
+} from '@/components/ui';
 import { LanguageSwitch } from '@/features/auth/LanguageSwitch';
 import { GoogleAccountSheets, type AccountSheet } from './GoogleAccountSheets';
 
@@ -20,13 +31,16 @@ export function SettingsScreen() {
   const [accountSheet, setAccountSheet] = useState<AccountSheet>('none');
   const googleOn = config?.features.googleSignIn === true;
   const ws = useWorkspace();
-  const [sheet, setSheet] = useState<'none' | 'password' | 'devices' | 'delete' | 'signout'>('none');
+  const [sheet, setSheet] = useState<'none' | 'password' | 'devices' | 'delete' | 'signout'>(
+    'none'
+  );
   const [toast, setToast] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
   // Language is a per-account preference too (TeacherProfile.uiLanguage); keep it in step with the device choice.
   useEffect(() => {
-    if (ws.profile && ws.profile.uiLanguage !== lang && engine) void engine.put('profile', { ...ws.profile, uiLanguage: lang });
+    if (ws.profile && ws.profile.uiLanguage !== lang && engine)
+      void engine.put('profile', { ...ws.profile, uiLanguage: lang });
   }, [lang, ws.profile, engine]);
   useEffect(() => {
     if (ws.profile) setDataSaver(ws.profile.dataSaver);
@@ -53,16 +67,45 @@ export function SettingsScreen() {
       <section className="rounded border border-hairline bg-white">
         <h2 className="px-3 pt-3 text-title">{t('settings.account')}</h2>
         <List className="border-0 rounded-none">
-          <ListRow title={user?.displayName ?? ''} subtitle={user?.email ?? ''} trailing={user && !user.emailVerified ? <Link href="/verify-email" className="text-talaTealText underline">{t('settings.verifyNow')}</Link> : undefined} />
+          <ListRow
+            title={user?.displayName ?? ''}
+            subtitle={user?.email ?? ''}
+            trailing={
+              user && !user.emailVerified ? (
+                <Link href="/verify-email" className="text-talaTealText underline">
+                  {t('settings.verifyNow')}
+                </Link>
+              ) : undefined
+            }
+          />
           {user && !user.emailVerified && (
             <div className="px-3 pb-2">
               <Banner kind="warn">{t('settings.emailUnverified')}</Banner>
             </div>
           )}
-          {user?.hasPassword && <ListRow title={t('settings.changePassword')} onClick={() => setSheet('password')} />}
-          {googleOn && !user?.hasGoogle && <ListRow title={t('google.notConnected')} subtitle={t('google.connect')} onClick={() => setAccountSheet('connect')} />}
-          {user?.hasGoogle && <ListRow title={t('google.connected')} subtitle={t('google.disconnect')} onClick={() => setAccountSheet('disconnect')} />}
-          {googleOn && user?.hasGoogle && user.hasPassword && <ListRow title={t('google.removePassword')} onClick={() => setAccountSheet('removePassword')} />}
+          {user?.hasPassword && (
+            <ListRow title={t('settings.changePassword')} onClick={() => setSheet('password')} />
+          )}
+          {googleOn && !user?.hasGoogle && (
+            <ListRow
+              title={t('google.notConnected')}
+              subtitle={t('google.connect')}
+              onClick={() => setAccountSheet('connect')}
+            />
+          )}
+          {user?.hasGoogle && (
+            <ListRow
+              title={t('google.connected')}
+              subtitle={t('google.disconnect')}
+              onClick={() => setAccountSheet('disconnect')}
+            />
+          )}
+          {googleOn && user?.hasGoogle && user.hasPassword && (
+            <ListRow
+              title={t('google.removePassword')}
+              onClick={() => setAccountSheet('removePassword')}
+            />
+          )}
           <ListRow title={t('merge.title')} onClick={() => setAccountSheet('merge')} />
           <ListRow title={t('settings.sessions')} onClick={() => setSheet('devices')} />
           <ListRow
@@ -71,7 +114,9 @@ export function SettingsScreen() {
               setBusy(true);
               try {
                 const data = await getClient().call('account.export');
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const blob = new Blob([JSON.stringify(data, null, 2)], {
+                  type: 'application/json',
+                });
                 const a = document.createElement('a');
                 a.href = URL.createObjectURL(blob);
                 a.download = 'tala-export.json';
@@ -83,7 +128,10 @@ export function SettingsScreen() {
               }
             }}
           />
-          <ListRow title={<span className="text-brick">{t('settings.deleteAccount')}</span>} onClick={() => setSheet('delete')} />
+          <ListRow
+            title={<span className="text-brick">{t('settings.deleteAccount')}</span>}
+            onClick={() => setSheet('delete')}
+          />
         </List>
       </section>
 
@@ -93,7 +141,7 @@ export function SettingsScreen() {
         <TextInput
           label={t('setup.schoolName')}
           defaultValue={ws.activeYear?.schoolName || ws.profile?.schoolName || ''}
-          onBlur={async e => {
+          onBlur={async (e) => {
             if (!engine) return;
             const v = e.target.value.trim();
             const p = await ensureProfile(engine, user, lang);
@@ -105,7 +153,7 @@ export function SettingsScreen() {
           label={t('settings.region')}
           optional
           defaultValue={ws.profile?.region ?? ''}
-          onBlur={async e => {
+          onBlur={async (e) => {
             if (!engine) return;
             const p = await ensureProfile(engine, user, lang);
             await engine.put('profile', { ...p, region: e.target.value.trim() });
@@ -115,13 +163,13 @@ export function SettingsScreen() {
           <Select
             label={t('settings.activeYear')}
             value={ws.activeYear?.id ?? ''}
-            onChange={async e => {
+            onChange={async (e) => {
               if (!engine) return;
               const p = await ensureProfile(engine, user, lang);
               await engine.put('profile', { ...p, activeSchoolYearId: e.target.value });
             }}
           >
-            {ws.years.map(y => (
+            {ws.years.map((y) => (
               <option key={y.id} value={y.id}>
                 {y.label} · {y.startDate} → {y.endDate}
                 {y.provisional ? ' *' : ''}
@@ -131,12 +179,19 @@ export function SettingsScreen() {
         ) : (
           <p className="text-forestMuted">{t('settings.noYear')}</p>
         )}
-        {ws.activeYear?.provisional && <p className="text-small text-forestMuted">* {t('setup.provisional')}</p>}
+        {ws.activeYear?.provisional && (
+          <p className="text-small text-forestMuted">* {t('setup.provisional')}</p>
+        )}
       </section>
 
       {/* 4. Data saver */}
       <section className="rounded border border-hairline bg-white p-3">
-        <Switch label={t('settings.dataSaver')} hint={`${t('settings.dataSaverHint')} ${t('settings.dataUsed', { kb: Math.round(network.bytesThisWeek / 1024) })}`} checked={network.dataSaver} onChange={v => void toggleSaver(v)} />
+        <Switch
+          label={t('settings.dataSaver')}
+          hint={`${t('settings.dataSaverHint')} ${t('settings.dataUsed', { kb: Math.round(network.bytesThisWeek / 1024) })}`}
+          checked={network.dataSaver}
+          onChange={(v) => void toggleSaver(v)}
+        />
       </section>
 
       {/* 5. Sign out */}
@@ -144,9 +199,21 @@ export function SettingsScreen() {
         {t('settings.signOut')}
       </Button>
 
-      <PasswordSheet open={sheet === 'password'} onClose={() => setSheet('none')} onDone={() => setToast(t('settings.passwordChanged'))} />
-      <GoogleAccountSheets sheet={accountSheet} onClose={() => setAccountSheet('none')} onDone={m => m && setToast(m)} />
-      <DevicesSheet open={sheet === 'devices'} onClose={() => setSheet('none')} onSignedOutEverywhere={() => router.replace('/sign-in')} />
+      <PasswordSheet
+        open={sheet === 'password'}
+        onClose={() => setSheet('none')}
+        onDone={() => setToast(t('settings.passwordChanged'))}
+      />
+      <GoogleAccountSheets
+        sheet={accountSheet}
+        onClose={() => setAccountSheet('none')}
+        onDone={(m) => m && setToast(m)}
+      />
+      <DevicesSheet
+        open={sheet === 'devices'}
+        onClose={() => setSheet('none')}
+        onSignedOutEverywhere={() => router.replace('/sign-in')}
+      />
       <Sheet
         open={sheet === 'signout'}
         onClose={() => setSheet('none')}
@@ -189,7 +256,15 @@ export function SettingsScreen() {
   );
 }
 
-function PasswordSheet({ open, onClose, onDone }: { open: boolean; onClose: () => void; onDone: () => void }) {
+function PasswordSheet({
+  open,
+  onClose,
+  onDone,
+}: {
+  open: boolean;
+  onClose: () => void;
+  onDone: () => void;
+}) {
   const { t } = useT();
   const [current, setCurrent] = useState('');
   const [next, setNext] = useState('');
@@ -213,7 +288,9 @@ function PasswordSheet({ open, onClose, onDone }: { open: boolean; onClose: () =
               setBusy(true);
               setError(null);
               try {
-                await getClient().call('auth.changePassword', { body: { currentPassword: current, newPassword: next } });
+                await getClient().call('auth.changePassword', {
+                  body: { currentPassword: current, newPassword: next },
+                });
                 onDone();
                 onClose();
                 setCurrent('');
@@ -230,24 +307,50 @@ function PasswordSheet({ open, onClose, onDone }: { open: boolean; onClose: () =
         </>
       }
     >
-      <TextInput label={t('settings.currentPassword')} type="password" autoComplete="current-password" value={current} onChange={e => setCurrent(e.target.value)} />
-      <TextInput label={t('auth.newPassword')} hint={t('auth.passwordHint')} type="password" autoComplete="new-password" value={next} onChange={e => setNext(e.target.value)} />
+      <TextInput
+        label={t('settings.currentPassword')}
+        type="password"
+        autoComplete="current-password"
+        value={current}
+        onChange={(e) => setCurrent(e.target.value)}
+      />
+      <TextInput
+        label={t('auth.newPassword')}
+        hint={t('auth.passwordHint')}
+        type="password"
+        autoComplete="new-password"
+        value={next}
+        onChange={(e) => setNext(e.target.value)}
+      />
       {error && <Banner kind="error">{error}</Banner>}
     </Sheet>
   );
 }
 
-function DevicesSheet({ open, onClose, onSignedOutEverywhere }: { open: boolean; onClose: () => void; onSignedOutEverywhere: () => void }) {
+function DevicesSheet({
+  open,
+  onClose,
+  onSignedOutEverywhere,
+}: {
+  open: boolean;
+  onClose: () => void;
+  onSignedOutEverywhere: () => void;
+}) {
   const { t, lang } = useT();
   const { signOut } = useSession();
-  const [sessions, setSessions] = useState<Array<{ id: string; deviceLabel: string; lastSeenAt: string; current: boolean }> | null>(null);
+  const [sessions, setSessions] = useState<Array<{
+    id: string;
+    deviceLabel: string;
+    lastSeenAt: string;
+    current: boolean;
+  }> | null>(null);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     if (!open) return;
     setSessions(null);
     getClient()
       .call('auth.sessions')
-      .then(r => setSessions(r.sessions))
+      .then((r) => setSessions(r.sessions))
       .catch(() => setError(t('error.generic')));
   }, [open, t]);
   return (
@@ -276,8 +379,13 @@ function DevicesSheet({ open, onClose, onSignedOutEverywhere }: { open: boolean;
       {!sessions && !error && <div className="placeholder h-12" />}
       {sessions && (
         <List>
-          {sessions.map(s => (
-            <ListRow key={s.id} title={s.deviceLabel || 'Web'} subtitle={formatTime(s.lastSeenAt, lang)} trailing={s.current ? t('settings.thisDevice') : undefined} />
+          {sessions.map((s) => (
+            <ListRow
+              key={s.id}
+              title={s.deviceLabel || 'Web'}
+              subtitle={formatTime(s.lastSeenAt, lang)}
+              trailing={s.current ? t('settings.thisDevice') : undefined}
+            />
           ))}
         </List>
       )}
@@ -285,7 +393,15 @@ function DevicesSheet({ open, onClose, onSignedOutEverywhere }: { open: boolean;
   );
 }
 
-function DeleteSheet({ open, onClose, onDeleted }: { open: boolean; onClose: () => void; onDeleted: () => void }) {
+function DeleteSheet({
+  open,
+  onClose,
+  onDeleted,
+}: {
+  open: boolean;
+  onClose: () => void;
+  onDeleted: () => void;
+}) {
   const { t } = useT();
   const [confirm, setConfirm] = useState('');
   const [password, setPassword] = useState('');
@@ -309,7 +425,9 @@ function DeleteSheet({ open, onClose, onDeleted }: { open: boolean; onClose: () 
               setBusy(true);
               setError(null);
               try {
-                await getClient().call('account.delete', { body: { confirm: 'DELETE', password: password || undefined } });
+                await getClient().call('account.delete', {
+                  body: { confirm: 'DELETE', password: password || undefined },
+                });
                 onDeleted();
               } catch (e) {
                 setError(t(errorKey(e)));
@@ -324,8 +442,14 @@ function DeleteSheet({ open, onClose, onDeleted }: { open: boolean; onClose: () 
       }
     >
       <p>{t('settings.deleteBody')}</p>
-      <TextInput label={t('auth.password')} type="password" autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} />
-      <TextInput label="DELETE" value={confirm} onChange={e => setConfirm(e.target.value)} />
+      <TextInput
+        label={t('auth.password')}
+        type="password"
+        autoComplete="current-password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <TextInput label="DELETE" value={confirm} onChange={(e) => setConfirm(e.target.value)} />
       {error && <Banner kind="error">{error}</Banner>}
     </Sheet>
   );

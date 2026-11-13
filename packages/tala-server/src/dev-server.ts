@@ -43,7 +43,12 @@ function toRequest(req: IncomingMessage): Request {
   const method = (req.method ?? 'GET').toUpperCase();
   if (method === 'GET' || method === 'HEAD') return new Request(url, { method, headers });
   // The body is streamed, so the kernel's size limit stops a large upload before it is buffered.
-  return new Request(url, { method, headers, body: Readable.toWeb(req) as ReadableStream<Uint8Array>, duplex: 'half' } as RequestInit);
+  return new Request(url, {
+    method,
+    headers,
+    body: Readable.toWeb(req) as ReadableStream<Uint8Array>,
+    duplex: 'half',
+  } as RequestInit);
 }
 
 async function send(res: ServerResponse, response: Response): Promise<void> {
@@ -63,7 +68,10 @@ export function startDevServer(options: DevServerOptions = {}): Promise<DevServe
     void (async () => {
       try {
         // The socket's own address: the one thing here a client cannot forge.
-        await send(res, await tala.handle(toRequest(req), { ip: req.socket.remoteAddress ?? null }));
+        await send(
+          res,
+          await tala.handle(toRequest(req), { ip: req.socket.remoteAddress ?? null })
+        );
       } catch {
         if (!res.headersSent) res.statusCode = 500;
         res.end();
@@ -96,7 +104,8 @@ export function startDevServer(options: DevServerOptions = {}): Promise<DevServe
 function portFromEnv(): number {
   const raw = process.env.TALA_PORT?.trim();
   if (!raw) return 8787;
-  if (!/^\d{1,5}$/.test(raw) || Number(raw) > 65535) throw new Error('TALA_PORT must be a port number.');
+  if (!/^\d{1,5}$/.test(raw) || Number(raw) > 65535)
+    throw new Error('TALA_PORT must be a port number.');
   return Number(raw);
 }
 
@@ -107,11 +116,16 @@ async function main(): Promise<void> {
     server = await startDevServer({ port, host: process.env.TALA_HOST?.trim() || '127.0.0.1' });
   } catch (err) {
     const code = (err as { code?: string }).code;
-    if (code === 'EADDRINUSE') console.error(`Port ${port} is already in use. Stop the other server or set TALA_PORT to a free port.`);
+    if (code === 'EADDRINUSE')
+      console.error(
+        `Port ${port} is already in use. Stop the other server or set TALA_PORT to a free port.`
+      );
     else console.error(err instanceof Error ? err.message : 'The server could not start.');
     process.exit(1);
   }
-  console.log(`Tala API (${server.tala.config.environment}) on ${server.url}${API_BASE}  ·  database: ${server.tala.config.dbPath}`);
+  console.log(
+    `Tala API (${server.tala.config.environment}) on ${server.url}${API_BASE}  ·  database: ${server.tala.config.dbPath}`
+  );
   let stopping = false;
   const stop = () => {
     if (stopping) return;

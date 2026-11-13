@@ -10,13 +10,30 @@
  * Deleting keeps a tombstone (so other devices learn of the delete) but not the words: see `scrub` below.
  */
 import { BUILTIN_TEMPLATES, parseRecordData, plan as planHelpers } from '@hiraia/tala-core';
-import type { EntityName, Id, Mutation, MutationResult, Plan, PlanSection, RecordData, RecordEnvelope, SectionRevision, Template } from '@hiraia/tala-core';
+import type {
+  EntityName,
+  Id,
+  Mutation,
+  MutationResult,
+  Plan,
+  PlanSection,
+  RecordData,
+  RecordEnvelope,
+  SectionRevision,
+  Template,
+} from '@hiraia/tala-core';
 import { ZodError } from 'zod';
 import type { Db } from '../../kernel/db';
 import { describeError } from '../../kernel/logger';
 import { HttpError } from '../../kernel/types';
 import type { Logger, RecordStore } from '../../kernel/types';
-import { effectivelyLocked, emptiedContent, isOutsideLock, lockedPlanViolations, normalisePlan } from './plan-rules';
+import {
+  effectivelyLocked,
+  emptiedContent,
+  isOutsideLock,
+  lockedPlanViolations,
+  normalisePlan,
+} from './plan-rules';
 import type { Revisions } from './revisions';
 import { sha256, stableStringify } from './stable';
 
@@ -33,7 +50,8 @@ const MESSAGES = {
   conflict: 'This was changed on another device.',
   locked: 'This lesson is locked. Unlock it to change it.',
   lockedDelete: 'This lesson is locked. Unlock it before deleting it.',
-  changedElsewhere: 'This lesson was changed on another device, so it was not locked. Open it, check the changes, and lock it again.',
+  changedElsewhere:
+    'This lesson was changed on another device, so it was not locked. Open it, check the changes, and lock it again.',
   invalid: 'Some details of this item were not right, so it was not saved.',
   tooLarge: 'This item is too large to save.',
   idMismatch: 'This item could not be saved because its details do not match.',
@@ -116,7 +134,16 @@ function scrub(entity: EntityName, data: unknown): unknown {
   switch (entity) {
     case 'student': {
       const d = data as RecordData<'student'>;
-      return { ...d, displayName: '—', familyName: '', givenName: '', middleName: '', suffix: '', sex: null, localId: null } satisfies RecordData<'student'>;
+      return {
+        ...d,
+        displayName: '—',
+        familyName: '',
+        givenName: '',
+        middleName: '',
+        suffix: '',
+        sex: null,
+        localId: null,
+      } satisfies RecordData<'student'>;
     }
     case 'day_note':
       return { ...(data as RecordData<'day_note'>), text: '' };
@@ -158,8 +185,12 @@ function encodeCursor(state: CursorState): string {
 
 function decodeCursor(text: string): CursorState | null {
   try {
-    const raw = JSON.parse(Buffer.from(text, 'base64url').toString('utf8')) as Record<string, unknown>;
-    if (raw.v !== 1 || typeof raw.s !== 'number' || !Number.isSafeInteger(raw.s) || raw.s < 0) return null;
+    const raw = JSON.parse(Buffer.from(text, 'base64url').toString('utf8')) as Record<
+      string,
+      unknown
+    >;
+    if (raw.v !== 1 || typeof raw.s !== 'number' || !Number.isSafeInteger(raw.s) || raw.s < 0)
+      return null;
     const state: CursorState = { s: raw.s };
     if (raw.u !== undefined) {
       if (typeof raw.u !== 'number' || !Number.isSafeInteger(raw.u) || raw.u < 0) return null;
@@ -174,7 +205,9 @@ function decodeCursor(text: string): CursorState | null {
 }
 
 function shiftDate(date: string, days: number): string {
-  return new Date(Date.parse(`${date}T00:00:00.000Z`) + days * 86_400_000).toISOString().slice(0, 10);
+  return new Date(Date.parse(`${date}T00:00:00.000Z`) + days * 86_400_000)
+    .toISOString()
+    .slice(0, 10);
 }
 
 /* ---------------- the engine ---------------- */
@@ -188,28 +221,46 @@ export function createRecordEngine(deps: RecordEngineDeps) {
       `INSERT INTO core_records (owner_id, entity, id, rev, seq, updated_at, deleted_at, data, device_id)
        VALUES (@owner_id, @entity, @id, @rev, @seq, @updated_at, @deleted_at, @data, @device_id)
        ON CONFLICT (owner_id, entity, id) DO UPDATE SET rev = excluded.rev, seq = excluded.seq, updated_at = excluded.updated_at,
-         deleted_at = excluded.deleted_at, data = excluded.data, device_id = excluded.device_id`,
+         deleted_at = excluded.deleted_at, data = excluded.data, device_id = excluded.device_id`
     ),
     nextSeq: db.prepare('UPDATE core_seq SET value = value + 1 WHERE id = 1 RETURNING value'),
     currentSeq: db.prepare('SELECT value FROM core_seq WHERE id = 1'),
-    listLive: db.prepare('SELECT * FROM core_records WHERE owner_id = ? AND entity = ? AND deleted_at IS NULL ORDER BY seq'),
-    listAll: db.prepare('SELECT * FROM core_records WHERE owner_id = ? AND entity = ? ORDER BY seq'),
+    listLive: db.prepare(
+      'SELECT * FROM core_records WHERE owner_id = ? AND entity = ? AND deleted_at IS NULL ORDER BY seq'
+    ),
+    listAll: db.prepare(
+      'SELECT * FROM core_records WHERE owner_id = ? AND entity = ? ORDER BY seq'
+    ),
     // The literal entity lets SQLite use the partial index core_records_sections_by_plan.
     sectionsOfPlan: db.prepare(
-      `SELECT * FROM core_records WHERE owner_id = ? AND entity = 'plan_section' AND json_extract(data, '$.planId') = ? AND deleted_at IS NULL ORDER BY seq`,
+      `SELECT * FROM core_records WHERE owner_id = ? AND entity = 'plan_section' AND json_extract(data, '$.planId') = ? AND deleted_at IS NULL ORDER BY seq`
     ),
-    allSectionsOfPlan: db.prepare(`SELECT * FROM core_records WHERE owner_id = ? AND entity = 'plan_section' AND json_extract(data, '$.planId') = ?`),
-    historyOfPlan: db.prepare(`SELECT * FROM core_records WHERE owner_id = ? AND entity = 'section_revision' AND json_extract(data, '$.planId') = ?`),
-    after: db.prepare('SELECT * FROM core_records WHERE owner_id = ? AND seq > ? ORDER BY seq LIMIT ?'),
-    everything: db.prepare('SELECT * FROM core_records WHERE owner_id = ? AND deleted_at IS NULL ORDER BY entity, seq'),
+    allSectionsOfPlan: db.prepare(
+      `SELECT * FROM core_records WHERE owner_id = ? AND entity = 'plan_section' AND json_extract(data, '$.planId') = ?`
+    ),
+    historyOfPlan: db.prepare(
+      `SELECT * FROM core_records WHERE owner_id = ? AND entity = 'section_revision' AND json_extract(data, '$.planId') = ?`
+    ),
+    after: db.prepare(
+      'SELECT * FROM core_records WHERE owner_id = ? AND seq > ? ORDER BY seq LIMIT ?'
+    ),
+    everything: db.prepare(
+      'SELECT * FROM core_records WHERE owner_id = ? AND deleted_at IS NULL ORDER BY entity, seq'
+    ),
     purge: db.prepare('DELETE FROM core_records WHERE owner_id = ?'),
 
-    logGet: db.prepare('SELECT payload_hash, result FROM core_sync_mutations WHERE owner_id = ? AND mutation_id = ?'),
-    logPut: db.prepare(
-      'INSERT INTO core_sync_mutations (owner_id, mutation_id, entity, record_id, op, payload_hash, result, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+    logGet: db.prepare(
+      'SELECT payload_hash, result FROM core_sync_mutations WHERE owner_id = ? AND mutation_id = ?'
     ),
-    logOfRecord: db.prepare('SELECT mutation_id, result FROM core_sync_mutations WHERE owner_id = ? AND entity = ? AND record_id = ?'),
-    logRewrite: db.prepare('UPDATE core_sync_mutations SET result = ? WHERE owner_id = ? AND mutation_id = ?'),
+    logPut: db.prepare(
+      'INSERT INTO core_sync_mutations (owner_id, mutation_id, entity, record_id, op, payload_hash, result, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+    ),
+    logOfRecord: db.prepare(
+      'SELECT mutation_id, result FROM core_sync_mutations WHERE owner_id = ? AND entity = ? AND record_id = ?'
+    ),
+    logRewrite: db.prepare(
+      'UPDATE core_sync_mutations SET result = ? WHERE owner_id = ? AND mutation_id = ?'
+    ),
     logPurge: db.prepare('DELETE FROM core_sync_mutations WHERE owner_id = ?'),
     logPrune: db.prepare('DELETE FROM core_sync_mutations WHERE created_at < ?'),
   };
@@ -223,13 +274,21 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     data: JSON.parse(row.data) as RecordData<E>,
   });
 
-  const rowOf = (ownerId: Id, entity: EntityName, id: Id): Row | null => (q.get.get(ownerId, entity, id) as Row | undefined) ?? null;
+  const rowOf = (ownerId: Id, entity: EntityName, id: Id): Row | null =>
+    (q.get.get(ownerId, entity, id) as Row | undefined) ?? null;
   const liveData = <E extends EntityName>(ownerId: Id, entity: E, id: Id): RecordData<E> | null => {
     const row = rowOf(ownerId, entity, id);
     return row && row.deleted_at === null ? (JSON.parse(row.data) as RecordData<E>) : null;
   };
 
-  function store(actor: WriteActor, entity: EntityName, id: Id, previous: Row | null, data: unknown, deleted: boolean): Row {
+  function store(
+    actor: WriteActor,
+    entity: EntityName,
+    id: Id,
+    previous: Row | null,
+    data: unknown,
+    deleted: boolean
+  ): Row {
     const at = now().toISOString();
     const row: Row = {
       owner_id: actor.ownerId,
@@ -246,7 +305,11 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     return row;
   }
 
-  const refuse = (status: Exclude<Status, 'applied'>, record: Row | null, message: string): Outcome => ({
+  const refuse = (
+    status: Exclude<Status, 'applied'>,
+    record: Row | null,
+    message: string
+  ): Outcome => ({
     status,
     record: record ? envelope(record) : null,
     message,
@@ -256,7 +319,10 @@ export function createRecordEngine(deps: RecordEngineDeps) {
   /* ---- rule helpers ---- */
 
   function templateOf(ownerId: Id, templateId: Id): Template | null {
-    return BUILTIN_TEMPLATES.find((t) => t.id === templateId) ?? liveData(ownerId, 'template', templateId);
+    return (
+      BUILTIN_TEMPLATES.find((t) => t.id === templateId) ??
+      liveData(ownerId, 'template', templateId)
+    );
   }
 
   function sectionsOf(ownerId: Id, planId: Id): Array<RecordEnvelope<'plan_section'>> {
@@ -272,22 +338,31 @@ export function createRecordEngine(deps: RecordEngineDeps) {
 
   /** DOC-1, with the same shared check the apps run before they let a teacher lock. */
   function whyNotLockable(ownerId: Id, plan: Plan): string | null {
-    const known = plan.placements.map((p) => liveData(ownerId, 'class', p.classId)?.curriculum).filter((c): c is 'deped' | 'none' => c !== undefined);
-    const classRecord = known.length > 0 ? { curriculum: known.includes('deped') ? ('deped' as const) : ('none' as const) } : undefined;
+    const known = plan.placements
+      .map((p) => liveData(ownerId, 'class', p.classId)?.curriculum)
+      .filter((c): c is 'deped' | 'none' => c !== undefined);
+    const classRecord =
+      known.length > 0
+        ? { curriculum: known.includes('deped') ? ('deped' as const) : ('none' as const) }
+        : undefined;
     const template = templateOf(ownerId, plan.templateId);
     const draft: Plan = { ...plan, state: 'draft', lock: null };
     if (!template) {
       // A custom template this server has not received: the sections cannot be checked, the competency rule still can.
       const tagged = Object.values(plan.competencies).some((ids) => ids.length > 0);
-      return classRecord?.curriculum === 'deped' && !tagged ? 'This lesson cannot be locked yet. Add at least one curriculum competency.' : null;
+      return classRecord?.curriculum === 'deped' && !tagged
+        ? 'This lesson cannot be locked yet. Add at least one curriculum competency.'
+        : null;
     }
     const result = planHelpers.validatePlanForLock(
       draft,
       sectionsOf(ownerId, plan.id).map((s) => s.data),
       template,
-      classRecord,
+      classRecord
     );
-    return result.ok ? null : `This lesson cannot be locked yet. ${result.errors.map((e) => e.message).join(' ')}`;
+    return result.ok
+      ? null
+      : `This lesson cannot be locked yet. ${result.errors.map((e) => e.message).join(' ')}`;
   }
 
   /**
@@ -296,7 +371,12 @@ export function createRecordEngine(deps: RecordEngineDeps) {
    * this same device wrote. Otherwise another device's edits would be locked in unseen.
    * Parts outside the lock (reflection) may differ freely.
    */
-  function sectionsChangedElsewhere(ownerId: Id, plan: Plan, seen: Record<string, number>, deviceId: string | null): boolean {
+  function sectionsChangedElsewhere(
+    ownerId: Id,
+    plan: Plan,
+    seen: Record<string, number>,
+    deviceId: string | null
+  ): boolean {
     const template = templateOf(ownerId, plan.templateId);
     const rows = q.allSectionsOfPlan.all(ownerId, plan.id) as Row[];
     const known = new Set<string>();
@@ -324,7 +404,14 @@ export function createRecordEngine(deps: RecordEngineDeps) {
 
   /* ---- one write ---- */
 
-  function writeUpsert(ownerId: Id, entity: EntityName, id: Id, raw: unknown, baseRev: number | null, scope: Scope): Outcome {
+  function writeUpsert(
+    ownerId: Id,
+    entity: EntityName,
+    id: Id,
+    raw: unknown,
+    baseRev: number | null,
+    scope: Scope
+  ): Outcome {
     const current = rowOf(ownerId, entity, id);
     const live = current && current.deleted_at === null ? current : null;
 
@@ -350,7 +437,15 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     }
 
     // Sending what the server already has changes nothing: no new rev, no conflict, no lock complaint.
-    if (live && stableStringify(JSON.parse(live.data)) === stableStringify(storedPlan && effectivelyLocked(storedPlan) ? withServerLockFields(data as Plan, storedPlan) : data)) {
+    if (
+      live &&
+      stableStringify(JSON.parse(live.data)) ===
+        stableStringify(
+          storedPlan && effectivelyLocked(storedPlan)
+            ? withServerLockFields(data as Plan, storedPlan)
+            : data
+        )
+    ) {
       return { status: 'applied', record: envelope(live), wrote: false };
     }
 
@@ -359,12 +454,14 @@ export function createRecordEngine(deps: RecordEngineDeps) {
       // not put to the teacher as a question that can only end the same way (DOC-4).
       const incoming = data as PlanSection;
       const stored = live ? (JSON.parse(live.data) as PlanSection) : null;
-      if (insideLock(ownerId, incoming) || (stored !== null && insideLock(ownerId, stored))) return refuse('locked', live, MESSAGES.locked);
+      if (insideLock(ownerId, incoming) || (stored !== null && insideLock(ownerId, stored)))
+        return refuse('locked', live, MESSAGES.locked);
     }
     if (entity === 'section_revision' && live) return refuse('forbidden', live, MESSAGES.history);
 
     // Rules 1, 2 and 6: the device must have seen the current version, unless that version is a tombstone.
-    if (live && baseRev !== null && baseRev !== live.rev) return refuse('conflict', live, MESSAGES.conflict);
+    if (live && baseRev !== null && baseRev !== live.rev)
+      return refuse('conflict', live, MESSAGES.conflict);
 
     if (entity === 'plan') {
       let plan = data as Plan;
@@ -372,12 +469,16 @@ export function createRecordEngine(deps: RecordEngineDeps) {
       const willBeLocked = effectivelyLocked(plan);
       if (wasLocked && willBeLocked) {
         plan = withServerLockFields(plan, storedPlan!);
-        if (lockedPlanViolations(storedPlan!, plan).length > 0) return refuse('locked', live, MESSAGES.locked);
+        if (lockedPlanViolations(storedPlan!, plan).length > 0)
+          return refuse('locked', live, MESSAGES.locked);
       } else if (!wasLocked && willBeLocked) {
         const problem = whyNotLockable(ownerId, plan);
         if (problem) return refuse('invalid', live, problem);
         const lock = plan.lock!;
-        if (lock.sectionRevs && sectionsChangedElsewhere(ownerId, plan, lock.sectionRevs, scope.actor.deviceId)) {
+        if (
+          lock.sectionRevs &&
+          sectionsChangedElsewhere(ownerId, plan, lock.sectionRevs, scope.actor.deviceId)
+        ) {
           return refuse('invalid', live, MESSAGES.changedElsewhere);
         }
         const tooFarAhead = Date.parse(lock.lockedAt) > now().getTime() + CLOCK_SLACK_MS;
@@ -386,7 +487,12 @@ export function createRecordEngine(deps: RecordEngineDeps) {
           ...plan,
           // A locked plan is the teacher's own, checked work: no longer an unreviewed AI draft (§9.4).
           aiDraft: false,
-          lock: { ...lock, lockedAt: tooFarAhead ? now().toISOString() : lock.lockedAt, lockedBy: lock.lockedBy || scope.actor.displayName, revision: lockRevision },
+          lock: {
+            ...lock,
+            lockedAt: tooFarAhead ? now().toISOString() : lock.lockedAt,
+            lockedBy: lock.lockedBy || scope.actor.displayName,
+            revision: lockRevision,
+          },
         };
         event = 'lock';
       } else if (wasLocked && !willBeLocked) {
@@ -403,7 +509,15 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     if (entity === 'plan') {
       if (event) {
         const snap = snapshot(ownerId, id)!;
-        revisions.recordEvent(ownerId, id, lockRevision, event, event === 'lock', snap, scope.actor);
+        revisions.recordEvent(
+          ownerId,
+          id,
+          lockRevision,
+          event,
+          event === 'lock',
+          snap,
+          scope.actor
+        );
         scope.touched.delete(id);
       } else {
         scope.touched.set(id, scope.touched.get(id) ?? 'save');
@@ -411,9 +525,13 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     } else if (entity === 'plan_section') {
       const incoming = data as PlanSection;
       const stored = live ? (JSON.parse(live.data) as PlanSection) : null;
-      const regenerated = incoming.origin === 'ai' && incoming.gen !== null && incoming.gen.at !== stored?.gen?.at;
+      const regenerated =
+        incoming.origin === 'ai' && incoming.gen !== null && incoming.gen.at !== stored?.gen?.at;
       for (const planId of new Set([incoming.planId, stored?.planId ?? incoming.planId])) {
-        scope.touched.set(planId, regenerated || scope.touched.get(planId) === 'regenerate' ? 'regenerate' : 'save');
+        scope.touched.set(
+          planId,
+          regenerated || scope.touched.get(planId) === 'regenerate' ? 'regenerate' : 'save'
+        );
       }
     } else if (entity === 'profile') {
       deps.onProfile?.(ownerId, data as RecordData<'profile'>);
@@ -427,31 +545,49 @@ export function createRecordEngine(deps: RecordEngineDeps) {
    * from a wrong device clock. A device that has not read those back yet must not be refused for it.
    */
   function withServerLockFields(incoming: Plan, stored: Plan): Plan {
-    if (!incoming.lock || !stored.lock || incoming.lock.revisionCode !== stored.lock.revisionCode) return incoming;
+    if (!incoming.lock || !stored.lock || incoming.lock.revisionCode !== stored.lock.revisionCode)
+      return incoming;
     return { ...incoming, lock: stored.lock };
   }
 
-  function writeDelete(ownerId: Id, entity: EntityName, id: Id, baseRev: number | null, scope: Scope): Outcome {
+  function writeDelete(
+    ownerId: Id,
+    entity: EntityName,
+    id: Id,
+    baseRev: number | null,
+    scope: Scope
+  ): Outcome {
     const current = rowOf(ownerId, entity, id);
     // Nothing to delete: the device made and removed it before the server ever saw it.
     if (!current) return { status: 'applied', record: null, wrote: false };
-    if (current.deleted_at !== null) return { status: 'applied', record: envelope(current), wrote: false };
+    if (current.deleted_at !== null)
+      return { status: 'applied', record: envelope(current), wrote: false };
 
     if (entity === 'plan_section') {
-      if (insideLock(ownerId, JSON.parse(current.data) as PlanSection)) return refuse('locked', current, MESSAGES.locked);
+      if (insideLock(ownerId, JSON.parse(current.data) as PlanSection))
+        return refuse('locked', current, MESSAGES.locked);
     }
-    if (entity === 'plan' && effectivelyLocked(JSON.parse(current.data) as Plan)) return refuse('locked', current, MESSAGES.lockedDelete);
+    if (entity === 'plan' && effectivelyLocked(JSON.parse(current.data) as Plan))
+      return refuse('locked', current, MESSAGES.lockedDelete);
 
     // Edited on one device, deleted on another: the edit wins (§10.5). The device gets the newer record back.
-    if (baseRev !== null && baseRev !== current.rev) return refuse('conflict', current, MESSAGES.conflict);
+    if (baseRev !== null && baseRev !== current.rev)
+      return refuse('conflict', current, MESSAGES.conflict);
 
     const scrubbed = scrub(entity, JSON.parse(current.data));
     const written = store(scope.actor, entity, id, current, scrubbed, true);
     // Earlier results kept for replays must not keep the words either.
-    for (const entry of q.logOfRecord.all(ownerId, entity, id) as Array<{ mutation_id: string; result: string }>) {
+    for (const entry of q.logOfRecord.all(ownerId, entity, id) as Array<{
+      mutation_id: string;
+      result: string;
+    }>) {
       const result = JSON.parse(entry.result) as RecordEnvelope | { c: 1 };
       if ('c' in result) continue; // holds no content
-      q.logRewrite.run(JSON.stringify({ ...result, data: scrub(entity, result.data) }), ownerId, entry.mutation_id);
+      q.logRewrite.run(
+        JSON.stringify({ ...result, data: scrub(entity, result.data) }),
+        ownerId,
+        entry.mutation_id
+      );
     }
     if (entity === 'plan_section') {
       const planId = (JSON.parse(current.data) as PlanSection).planId;
@@ -468,7 +604,14 @@ export function createRecordEngine(deps: RecordEngineDeps) {
       const snap = snapshot(scope.actor.ownerId, planId);
       // Sections can arrive before their plan; the plan's own arrival will take the snapshot.
       if (!snap) continue;
-      revisions.recordSave(scope.actor.ownerId, planId, reason, effectivelyLocked(snap.plan.data), snap, scope.actor);
+      revisions.recordSave(
+        scope.actor.ownerId,
+        planId,
+        reason,
+        effectivelyLocked(snap.plan.data),
+        snap,
+        scope.actor
+      );
     }
     scope.touched.clear();
   }
@@ -485,7 +628,11 @@ export function createRecordEngine(deps: RecordEngineDeps) {
   function remember(mutation: Mutation, record: RecordEnvelope): Remembered {
     if (mutation.op === 'upsert' && record.deletedAt === null) {
       try {
-        if (stableStringify(parseRecordData(mutation.entity, mutation.data)) === stableStringify(record.data)) return { c: 1, rev: record.rev, updatedAt: record.updatedAt };
+        if (
+          stableStringify(parseRecordData(mutation.entity, mutation.data)) ===
+          stableStringify(record.data)
+        )
+          return { c: 1, rev: record.rev, updatedAt: record.updatedAt };
       } catch {
         /* keep it whole */
       }
@@ -495,18 +642,45 @@ export function createRecordEngine(deps: RecordEngineDeps) {
 
   function recall(mutation: Mutation, kept: Remembered): RecordEnvelope {
     if (!('c' in kept)) return kept;
-    return { entity: mutation.entity, id: mutation.id, rev: kept.rev, updatedAt: kept.updatedAt, deletedAt: null, data: parseRecordData(mutation.entity, mutation.data) };
+    return {
+      entity: mutation.entity,
+      id: mutation.id,
+      rev: kept.rev,
+      updatedAt: kept.updatedAt,
+      deletedAt: null,
+      data: parseRecordData(mutation.entity, mutation.data),
+    };
   }
 
   function applyOne(mutation: Mutation, scope: Scope): MutationResult {
     const ownerId = scope.actor.ownerId;
-    const fingerprint = sha256(stableStringify({ entity: mutation.entity, id: mutation.id, op: mutation.op, baseRev: mutation.baseRev, data: mutation.data ?? null }));
+    const fingerprint = sha256(
+      stableStringify({
+        entity: mutation.entity,
+        id: mutation.id,
+        op: mutation.op,
+        baseRev: mutation.baseRev,
+        data: mutation.data ?? null,
+      })
+    );
 
     // Rule 3: a replay gets the original answer and changes nothing.
-    const earlier = q.logGet.get(ownerId, mutation.mutationId) as { payload_hash: string; result: string } | undefined;
+    const earlier = q.logGet.get(ownerId, mutation.mutationId) as
+      | { payload_hash: string; result: string }
+      | undefined;
     if (earlier) {
-      if (earlier.payload_hash !== fingerprint) return { mutationId: mutation.mutationId, status: 'invalid', record: null, message: MESSAGES.reused };
-      return { mutationId: mutation.mutationId, status: 'applied', record: recall(mutation, JSON.parse(earlier.result) as Remembered) };
+      if (earlier.payload_hash !== fingerprint)
+        return {
+          mutationId: mutation.mutationId,
+          status: 'invalid',
+          record: null,
+          message: MESSAGES.reused,
+        };
+      return {
+        mutationId: mutation.mutationId,
+        status: 'applied',
+        record: recall(mutation, JSON.parse(earlier.result) as Remembered),
+      };
     }
 
     let outcome: Outcome;
@@ -514,68 +688,114 @@ export function createRecordEngine(deps: RecordEngineDeps) {
       const size = mutation.data === undefined ? 0 : JSON.stringify(mutation.data).length;
       if (size > MAX_RECORD_BYTES) {
         const live = rowOf(ownerId, mutation.entity, mutation.id);
-        outcome = refuse('invalid', live && live.deleted_at === null ? live : null, MESSAGES.tooLarge);
+        outcome = refuse(
+          'invalid',
+          live && live.deleted_at === null ? live : null,
+          MESSAGES.tooLarge
+        );
       } else {
-        outcome = writeUpsert(ownerId, mutation.entity, mutation.id, mutation.data, mutation.baseRev, scope);
+        outcome = writeUpsert(
+          ownerId,
+          mutation.entity,
+          mutation.id,
+          mutation.data,
+          mutation.baseRev,
+          scope
+        );
       }
     } else {
       outcome = writeDelete(ownerId, mutation.entity, mutation.id, mutation.baseRev, scope);
     }
 
     if (outcome.wrote && outcome.record) {
-      q.logPut.run(ownerId, mutation.mutationId, mutation.entity, mutation.id, mutation.op, fingerprint, JSON.stringify(remember(mutation, outcome.record)), now().toISOString());
+      q.logPut.run(
+        ownerId,
+        mutation.mutationId,
+        mutation.entity,
+        mutation.id,
+        mutation.op,
+        fingerprint,
+        JSON.stringify(remember(mutation, outcome.record)),
+        now().toISOString()
+      );
     }
-    const result: MutationResult = { mutationId: mutation.mutationId, status: outcome.status, record: outcome.record };
+    const result: MutationResult = {
+      mutationId: mutation.mutationId,
+      status: outcome.status,
+      record: outcome.record,
+    };
     if (outcome.message) result.message = outcome.message;
     return result;
   }
 
-  const applyBatch = db.transaction((actor: WriteActor, mutations: Mutation[]): MutationResult[] => {
-    const scope: Scope = { actor, touched: new Map() };
-    const results: MutationResult[] = [];
-    const inBatch = new Map<string, MutationResult>();
-    for (const mutation of mutations) {
-      let result = inBatch.get(mutation.mutationId);
-      if (!result) {
-        try {
-          // A savepoint per mutation: one bad item cannot take the rest of the device's work down with it.
-          result = db.transaction(() => applyOne(mutation, scope))();
-        } catch (err) {
-          log.error('sync_mutation_failed', { entity: mutation.entity, op: mutation.op, ...describeError(err) });
-          result = { mutationId: mutation.mutationId, status: 'invalid', record: null, message: MESSAGES.failed };
+  const applyBatch = db.transaction(
+    (actor: WriteActor, mutations: Mutation[]): MutationResult[] => {
+      const scope: Scope = { actor, touched: new Map() };
+      const results: MutationResult[] = [];
+      const inBatch = new Map<string, MutationResult>();
+      for (const mutation of mutations) {
+        let result = inBatch.get(mutation.mutationId);
+        if (!result) {
+          try {
+            // A savepoint per mutation: one bad item cannot take the rest of the device's work down with it.
+            result = db.transaction(() => applyOne(mutation, scope))();
+          } catch (err) {
+            log.error('sync_mutation_failed', {
+              entity: mutation.entity,
+              op: mutation.op,
+              ...describeError(err),
+            });
+            result = {
+              mutationId: mutation.mutationId,
+              status: 'invalid',
+              record: null,
+              message: MESSAGES.failed,
+            };
+          }
+          inBatch.set(mutation.mutationId, result);
         }
-        inBatch.set(mutation.mutationId, result);
+        results.push(result);
       }
-      results.push(result);
+      try {
+        // History is secondary: a failure here must not undo the teacher's saved work.
+        db.transaction(() => flushRevisions(scope))();
+      } catch (err) {
+        log.error('revision_snapshot_failed', describeError(err));
+      }
+      return results;
     }
-    try {
-      // History is secondary: a failure here must not undo the teacher's saved work.
-      db.transaction(() => flushRevisions(scope))();
-    } catch (err) {
-      log.error('revision_snapshot_failed', describeError(err));
-    }
-    return results;
-  });
+  );
 
   /* ---- server-side writes (RecordStore.put / remove) ---- */
 
-  const serverWrite = db.transaction((actor: WriteActor, run: (scope: Scope) => Outcome): RecordEnvelope | null => {
-    const scope: Scope = { actor, touched: new Map() };
-    const outcome = run(scope);
-    if (outcome.status !== 'applied') {
-      const code = outcome.status === 'invalid' ? 'invalid_input' : outcome.status;
-      throw new HttpError(code, outcome.message ?? MESSAGES.failed);
+  const serverWrite = db.transaction(
+    (actor: WriteActor, run: (scope: Scope) => Outcome): RecordEnvelope | null => {
+      const scope: Scope = { actor, touched: new Map() };
+      const outcome = run(scope);
+      if (outcome.status !== 'applied') {
+        const code = outcome.status === 'invalid' ? 'invalid_input' : outcome.status;
+        throw new HttpError(code, outcome.message ?? MESSAGES.failed);
+      }
+      flushRevisions(scope);
+      return outcome.record;
     }
-    flushRevisions(scope);
-    return outcome.record;
-  });
+  );
 
-  const serverActor = (ownerId: Id): WriteActor => ({ ownerId, sessionId: null, deviceId: null, displayName: '' });
+  const serverActor = (ownerId: Id): WriteActor => ({
+    ownerId,
+    sessionId: null,
+    deviceId: null,
+    displayName: '',
+  });
 
   /* ---- sync.pull ---- */
 
   /** Plans a first sync leaves for later: dated wholly outside the window, unless locked in the term now running (OFF-2). */
-  function plansOutsideWindow(ownerId: Id, from: string | undefined, to: string | undefined): Set<Id> {
+  function plansOutsideWindow(
+    ownerId: Id,
+    from: string | undefined,
+    to: string | undefined
+  ): Set<Id> {
     const excluded = new Set<Id>();
     if (!from && !to) return excluded;
     // "Now" in school terms is a calendar date somewhere on Earth: allow a day either side of the server's date.
@@ -590,7 +810,11 @@ export function createRecordEngine(deps: RecordEngineDeps) {
       const dates = plan.placements.flatMap((p) => p.dates);
       if (dates.length === 0) continue; // not scheduled yet: probably being written now
       if (dates.some((d) => (!from || d >= from) && (!to || d <= to))) continue;
-      if (effectivelyLocked(plan) && dates.some((d) => running.some((term) => d >= term.startDate && d <= term.endDate))) continue;
+      if (
+        effectivelyLocked(plan) &&
+        dates.some((d) => running.some((term) => d >= term.startDate && d <= term.endDate))
+      )
+        continue;
       excluded.add(row.id);
     }
     return excluded;
@@ -602,17 +826,41 @@ export function createRecordEngine(deps: RecordEngineDeps) {
    * token and never touches the device's main cursor.
    */
   function pullPlans(ownerId: Id, input: PullInput & { planIds: string }): PullOutput {
-    const ids = [...new Set(input.planIds.split(',').map((s) => s.trim()).filter(Boolean))];
-    if (ids.length === 0 || ids.length > MAX_PLAN_IDS_PER_PULL || ids.some((id) => !/^[A-Za-z0-9_.:-]{1,64}$/.test(id))) {
-      throw new HttpError('invalid_input', 'Some of the details sent were not right. Please try again.', {
-        issues: [{ path: 'query.planIds', message: `Expected 1 to ${MAX_PLAN_IDS_PER_PULL} plan ids separated by commas.` }],
-      });
+    const ids = [
+      ...new Set(
+        input.planIds
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean)
+      ),
+    ];
+    if (
+      ids.length === 0 ||
+      ids.length > MAX_PLAN_IDS_PER_PULL ||
+      ids.some((id) => !/^[A-Za-z0-9_.:-]{1,64}$/.test(id))
+    ) {
+      throw new HttpError(
+        'invalid_input',
+        'Some of the details sent were not right. Please try again.',
+        {
+          issues: [
+            {
+              path: 'query.planIds',
+              message: `Expected 1 to ${MAX_PLAN_IDS_PER_PULL} plan ids separated by commas.`,
+            },
+          ],
+        }
+      );
     }
     let after = 0;
     if (input.cursor !== undefined) {
       try {
-        const raw = JSON.parse(Buffer.from(input.cursor, 'base64url').toString('utf8')) as { v?: unknown; p?: unknown };
-        if (raw.v === 1 && typeof raw.p === 'number' && Number.isSafeInteger(raw.p) && raw.p >= 0) after = raw.p;
+        const raw = JSON.parse(Buffer.from(input.cursor, 'base64url').toString('utf8')) as {
+          v?: unknown;
+          p?: unknown;
+        };
+        if (raw.v === 1 && typeof raw.p === 'number' && Number.isSafeInteger(raw.p) && raw.p >= 0)
+          after = raw.p;
       } catch {
         /* not one of ours: start this fetch from the beginning */
       }
@@ -621,7 +869,10 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     for (const planId of ids) {
       const plan = rowOf(ownerId, 'plan', planId);
       if (plan) rows.push(plan);
-      rows.push(...(q.allSectionsOfPlan.all(ownerId, planId) as Row[]), ...(q.historyOfPlan.all(ownerId, planId) as Row[]));
+      rows.push(
+        ...(q.allSectionsOfPlan.all(ownerId, planId) as Row[]),
+        ...(q.historyOfPlan.all(ownerId, planId) as Row[])
+      );
     }
     rows.sort((a, b) => a.seq - b.seq);
     const records: RecordEnvelope[] = [];
@@ -630,7 +881,10 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     let position = after;
     for (const row of rows) {
       if (row.seq <= after) continue;
-      if (records.length >= input.limit || (records.length > 0 && bytes + row.data.length > MAX_PULL_PAGE_BYTES)) {
+      if (
+        records.length >= input.limit ||
+        (records.length > 0 && bytes + row.data.length > MAX_PULL_PAGE_BYTES)
+      ) {
         hasMore = true;
         break;
       }
@@ -639,20 +893,31 @@ export function createRecordEngine(deps: RecordEngineDeps) {
       position = row.seq;
     }
     // The token only continues this same request. When there is nothing more it is empty.
-    const cursor = hasMore ? Buffer.from(JSON.stringify({ v: 1, p: position })).toString('base64url') : '';
+    const cursor = hasMore
+      ? Buffer.from(JSON.stringify({ v: 1, p: position })).toString('base64url')
+      : '';
     return { records, cursor, hasMore, serverTime: now().toISOString() };
   }
 
   function pull(ownerId: Id, input: PullInput): PullOutput {
-    if (input.planIds !== undefined) return pullPlans(ownerId, { ...input, planIds: input.planIds });
+    if (input.planIds !== undefined)
+      return pullPlans(ownerId, { ...input, planIds: input.planIds });
     let state = input.cursor === undefined ? null : decodeCursor(input.cursor);
     if (input.cursor !== undefined && state === null) {
       // A cursor we cannot read is treated as "start again" rather than an error the device cannot recover from.
       log.warn('sync_cursor_unreadable');
     }
     if (state === null) {
-      for (const [name, value] of [['windowFrom', input.windowFrom], ['windowTo', input.windowTo]] as const) {
-        if (value !== undefined && !DATE_RE.test(value)) throw new HttpError('invalid_input', 'Some of the details sent were not right. Please try again.', { issues: [{ path: `query.${name}`, message: 'Expected a date like 2027-06-14.' }] });
+      for (const [name, value] of [
+        ['windowFrom', input.windowFrom],
+        ['windowTo', input.windowTo],
+      ] as const) {
+        if (value !== undefined && !DATE_RE.test(value))
+          throw new HttpError(
+            'invalid_input',
+            'Some of the details sent were not right. Please try again.',
+            { issues: [{ path: `query.${name}`, message: 'Expected a date like 2027-06-14.' }] }
+          );
       }
       state = { s: 0, u: (q.currentSeq.get() as { value: number }).value };
       if (input.windowFrom) state.f = input.windowFrom;
@@ -660,7 +925,8 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     }
 
     const firstSyncUpTo = state.u ?? null;
-    const excluded = firstSyncUpTo !== null ? plansOutsideWindow(ownerId, state.f, state.t) : new Set<Id>();
+    const excluded =
+      firstSyncUpTo !== null ? plansOutsideWindow(ownerId, state.f, state.t) : new Set<Id>();
     const records: RecordEnvelope[] = [];
     let position = state.s;
     let bytes = 0;
@@ -676,11 +942,15 @@ export function createRecordEngine(deps: RecordEngineDeps) {
           if (row.deleted_at !== null) deliver = false;
           else if (excluded.size > 0) {
             if (row.entity === 'plan') deliver = !excluded.has(row.id);
-            else if (row.entity === 'plan_section' || row.entity === 'section_revision') deliver = !excluded.has((JSON.parse(row.data) as { planId: Id }).planId);
+            else if (row.entity === 'plan_section' || row.entity === 'section_revision')
+              deliver = !excluded.has((JSON.parse(row.data) as { planId: Id }).planId);
           }
         }
         if (deliver) {
-          if (records.length >= input.limit || (records.length > 0 && bytes + row.data.length > MAX_PULL_PAGE_BYTES)) {
+          if (
+            records.length >= input.limit ||
+            (records.length > 0 && bytes + row.data.length > MAX_PULL_PAGE_BYTES)
+          ) {
             hasMore = true;
             break scan;
           }
@@ -713,16 +983,24 @@ export function createRecordEngine(deps: RecordEngineDeps) {
       const row = rowOf(ownerId, entity, id);
       return row && row.deleted_at === null ? envelope<E>(row) : null;
     },
-    list<E extends EntityName>(ownerId: Id, entity: E, opts?: { includeDeleted?: boolean }): Array<RecordEnvelope<E>> {
+    list<E extends EntityName>(
+      ownerId: Id,
+      entity: E,
+      opts?: { includeDeleted?: boolean }
+    ): Array<RecordEnvelope<E>> {
       const rows = (opts?.includeDeleted ? q.listAll : q.listLive).all(ownerId, entity) as Row[];
       return rows.map((r) => envelope<E>(r));
     },
     put<E extends EntityName>(ownerId: Id, entity: E, data: RecordData<E>): RecordEnvelope<E> {
       const id = (data as { id: Id }).id;
-      return serverWrite.immediate(serverActor(ownerId), (scope) => writeUpsert(ownerId, entity, id, data, null, scope)) as RecordEnvelope<E>;
+      return serverWrite.immediate(serverActor(ownerId), (scope) =>
+        writeUpsert(ownerId, entity, id, data, null, scope)
+      ) as RecordEnvelope<E>;
     },
     remove(ownerId: Id, entity: EntityName, id: Id): void {
-      serverWrite.immediate(serverActor(ownerId), (scope) => writeDelete(ownerId, entity, id, null, scope));
+      serverWrite.immediate(serverActor(ownerId), (scope) =>
+        writeDelete(ownerId, entity, id, null, scope)
+      );
     },
     planSnapshot(ownerId: Id, planId: Id) {
       return snapshot(ownerId, planId);
@@ -742,9 +1020,13 @@ export function createRecordEngine(deps: RecordEngineDeps) {
               WHERE r.entity = 'competency_check' AND r.deleted_at IS NULL
                 AND json_extract(r.data, '$.curriculumVersion') = ?
                 AND json_extract(r.data, '$.competencyId') IN (${chunk.map(() => '?').join(', ')})
-              GROUP BY competency, status`,
+              GROUP BY competency, status`
           )
-          .all(curriculumVersion, ...chunk) as Array<{ competency: string; status: string; n: number }>;
+          .all(curriculumVersion, ...chunk) as Array<{
+          competency: string;
+          status: string;
+          n: number;
+        }>;
         for (const row of rows) {
           if (row.status === 'confirmed') confirmed[row.competency] = row.n;
           else if (row.status === 'corrected') corrected[row.competency] = row.n;
@@ -757,7 +1039,8 @@ export function createRecordEngine(deps: RecordEngineDeps) {
   return {
     service,
     // IMMEDIATE: take the write lock up front, so a second process cannot slip a write in between our read and our write.
-    applyBatch: (actor: WriteActor, mutations: Mutation[]): MutationResult[] => applyBatch.immediate(actor, mutations),
+    applyBatch: (actor: WriteActor, mutations: Mutation[]): MutationResult[] =>
+      applyBatch.immediate(actor, mutations),
     pull,
     /** Every live record of one teacher, for the account export (AUTH-6). */
     exportAll(ownerId: Id): RecordEnvelope[] {
@@ -773,15 +1056,27 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     reassignOwner(fromOwner: Id, toOwner: Id): { moved: number; kept: number } {
       let moved = 0;
       let kept = 0;
-      const move = db.prepare('UPDATE core_records SET owner_id = ?, seq = ?, device_id = NULL WHERE owner_id = ? AND entity = ? AND id = ?');
-      const drop = db.prepare('DELETE FROM core_records WHERE owner_id = ? AND entity = ? AND id = ?');
-      for (const row of db.prepare('SELECT entity, id, deleted_at FROM core_records WHERE owner_id = ? ORDER BY seq').all(fromOwner) as Array<{ entity: string; id: string; deleted_at: string | null }>) {
+      const move = db.prepare(
+        'UPDATE core_records SET owner_id = ?, seq = ?, device_id = NULL WHERE owner_id = ? AND entity = ? AND id = ?'
+      );
+      const drop = db.prepare(
+        'DELETE FROM core_records WHERE owner_id = ? AND entity = ? AND id = ?'
+      );
+      for (const row of db
+        .prepare('SELECT entity, id, deleted_at FROM core_records WHERE owner_id = ? ORDER BY seq')
+        .all(fromOwner) as Array<{ entity: string; id: string; deleted_at: string | null }>) {
         if (row.deleted_at !== null || q.get.get(toOwner, row.entity, row.id) !== undefined) {
           drop.run(fromOwner, row.entity, row.id);
           if (row.deleted_at === null) kept++;
           continue;
         }
-        move.run(toOwner, (q.nextSeq.get() as { value: number }).value, fromOwner, row.entity, row.id);
+        move.run(
+          toOwner,
+          (q.nextSeq.get() as { value: number }).value,
+          fromOwner,
+          row.entity,
+          row.id
+        );
         moved++;
       }
       q.logPurge.run(fromOwner);

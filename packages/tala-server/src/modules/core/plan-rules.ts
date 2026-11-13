@@ -20,7 +20,8 @@ export function effectivelyLocked(plan: Plan): boolean {
 
 /** Bring a plan into a consistent shape before any rule looks at it. Returns a problem instead of throwing. */
 export function normalisePlan(plan: Plan): { plan: Plan } | { problem: string } {
-  if (plan.state === 'locked' && plan.lock === null) return { problem: 'A locked lesson needs its lock details.' };
+  if (plan.state === 'locked' && plan.lock === null)
+    return { problem: 'A locked lesson needs its lock details.' };
   // Lock details only mean something on a locked (or archived-while-locked) plan.
   if (plan.state === 'draft' && plan.lock !== null) return { plan: { ...plan, lock: null } };
   return { plan };
@@ -57,7 +58,13 @@ export function emptiedContent(content: SectionContent): SectionContent {
  * Fields a locked plan may still change: its dates (the pacing engine reschedules it), the "submitted"
  * note (DOC-5), which unit it sits in, and moving between locked and archived. Everything else is content.
  */
-const CHANGEABLE_WHILE_LOCKED: ReadonlySet<keyof Plan> = new Set(['placements', 'submitted', 'unitId', 'state', 'lock']);
+const CHANGEABLE_WHILE_LOCKED: ReadonlySet<keyof Plan> = new Set([
+  'placements',
+  'submitted',
+  'unitId',
+  'state',
+  'lock',
+]);
 
 /** Names of fields that differ and are not allowed to while the plan stays locked. Empty = acceptable. */
 export function lockedPlanViolations(stored: Plan, incoming: Plan): string[] {
@@ -69,6 +76,7 @@ export function lockedPlanViolations(stored: Plan, incoming: Plan): string[] {
   }
   // The lock itself must be the same lock, which its revision code identifies. The other lock details are
   // the server's to keep (see withServerLockFields in records.ts).
-  if (!stored.lock || !incoming.lock || stored.lock.revisionCode !== incoming.lock.revisionCode) violations.push('lock');
+  if (!stored.lock || !incoming.lock || stored.lock.revisionCode !== incoming.lock.revisionCode)
+    violations.push('lock');
   return violations;
 }

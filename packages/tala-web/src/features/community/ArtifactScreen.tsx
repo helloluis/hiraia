@@ -12,10 +12,34 @@ import { packId as makePackId } from '@hiraia/tala-core/curriculum';
 import { copyArtifact } from '@/data/community';
 import { errorKey } from '@/data/errors';
 import { SectionEditor } from '@/features/editor/SectionEditors';
-import { Badge, Banner, Button, Choice, PageHeader, Placeholder, Select, Sheet, TextArea, Toast } from '@/components/ui';
+import {
+  Badge,
+  Banner,
+  Button,
+  Choice,
+  PageHeader,
+  Placeholder,
+  Select,
+  Sheet,
+  TextArea,
+  Toast,
+} from '@/components/ui';
 
-type Reason = 'personal_data' | 'unsuitable' | 'copied_without_credit' | 'inaccurate' | 'spam' | 'other';
-const REASONS: Reason[] = ['personal_data', 'unsuitable', 'copied_without_credit', 'inaccurate', 'spam', 'other'];
+type Reason =
+  | 'personal_data'
+  | 'unsuitable'
+  | 'copied_without_credit'
+  | 'inaccurate'
+  | 'spam'
+  | 'other';
+const REASONS: Reason[] = [
+  'personal_data',
+  'unsuitable',
+  'copied_without_credit',
+  'inaccurate',
+  'spam',
+  'other',
+];
 
 export function ArtifactScreen({ artifactId }: { artifactId: string }) {
   const { t, lang } = useT();
@@ -38,28 +62,38 @@ export function ArtifactScreen({ artifactId }: { artifactId: string }) {
     let alive = true;
     getClient()
       .call('community.get', { params: { artifactId }, query: {} })
-      .then(r => alive && setA(r))
-      .catch(err => alive && setError(err?.code === 'not_found' ? t('com.notFound') : t(errorKey(err))));
+      .then((r) => alive && setA(r))
+      .catch(
+        (err) => alive && setError(err?.code === 'not_found' ? t('com.notFound') : t(errorKey(err)))
+      );
     return () => {
       alive = false;
     };
   }, [artifactId, online, t]);
   useEffect(() => {
-    if (!classId && ws.classes[0]) setClassId(ws.classes.find(c => !c.isSample)?.id ?? ws.classes[0].id);
+    if (!classId && ws.classes[0])
+      setClassId(ws.classes.find((c) => !c.isSample)?.id ?? ws.classes[0].id);
   }, [ws.classes, classId]);
   // Competency text comes from the stored curriculum packs, never from the artifact (CUR-9).
-  const packIds = a?.tags.curriculumVersion && a.tags.learningAreaId ? a.tags.grades.map(g => makePackId(a.tags.curriculumVersion!, g, a.tags.learningAreaId!)) : [];
+  const packIds =
+    a?.tags.curriculumVersion && a.tags.learningAreaId
+      ? a.tags.grades.map((g) => makePackId(a.tags.curriculumVersion!, g, a.tags.learningAreaId!))
+      : [];
   const { competencies } = usePacks(packIds);
   const compText = (id: string) => {
-    const c = competencies.find(x => x.id === id);
+    const c = competencies.find((x) => x.id === id);
     return c ? `${c.code ? c.code + ' · ' : ''}${c.text}` : id;
   };
 
   // Default mapping: the artifact's i-th grade group → the class's i-th group (or its last one).
-  const copyClass = ws.classes.find(c => c.id === classId) ?? null;
+  const copyClass = ws.classes.find((c) => c.id === classId) ?? null;
   useEffect(() => {
     if (!a || !copyClass) return;
-    setMapping(a.version.gradeGroups.map((_, i) => copyClass.gradeGroups[Math.min(i, copyClass.gradeGroups.length - 1)]!.id));
+    setMapping(
+      a.version.gradeGroups.map(
+        (_, i) => copyClass.gradeGroups[Math.min(i, copyClass.gradeGroups.length - 1)]!.id
+      )
+    );
   }, [a, copyClass]);
 
   if (!online) return <Banner kind="info">{t('com.offline')}</Banner>;
@@ -73,15 +107,19 @@ export function ArtifactScreen({ artifactId }: { artifactId: string }) {
   }
   if (!a) return <Placeholder rows={6} />;
 
-  const template = a.version.template ?? BUILTIN_TEMPLATES.find(x => x.id === a.version.templateId) ?? BUILTIN_TEMPLATES[0]!;
-  const groups = a.version.gradeGroups.map(g => ({ id: g.id, grade: g.grade }));
+  const template =
+    a.version.template ??
+    BUILTIN_TEMPLATES.find((x) => x.id === a.version.templateId) ??
+    BUILTIN_TEMPLATES[0]!;
+  const groups = a.version.gradeGroups.map((g) => ({ id: g.id, grade: g.grade }));
 
   const copy = async () => {
-    const cls = ws.classes.find(c => c.id === classId);
+    const cls = ws.classes.find((c) => c.id === classId);
     if (!engine || !cls) return;
     setBusy(true);
     try {
-      const distinct = new Set(mapping).size === mapping.length && mapping.length === a.version.gradeGroups.length;
+      const distinct =
+        new Set(mapping).size === mapping.length && mapping.length === a.version.gradeGroups.length;
       const id = await copyArtifact(engine, getClient(), a.id, cls, distinct ? mapping : undefined);
       router.push(`/lessons/${id}`);
     } catch (err) {
@@ -93,7 +131,10 @@ export function ArtifactScreen({ artifactId }: { artifactId: string }) {
   const report = async () => {
     setBusy(true);
     try {
-      await getClient().call('community.report', { params: { artifactId: a.id }, body: { reason, note } });
+      await getClient().call('community.report', {
+        params: { artifactId: a.id },
+        body: { reason, note },
+      });
       setToast(t('com.reported'));
       setSheet('none');
     } catch (err) {
@@ -127,9 +168,15 @@ export function ArtifactScreen({ artifactId }: { artifactId: string }) {
         }
       />
       <div className="flex flex-wrap gap-2">
-        <Badge>{a.provenance.aiDrafted ? t('com.aiDrafted') : a.provenance.adapted ? t('com.adapted') : t('com.original')}</Badge>
+        <Badge>
+          {a.provenance.aiDrafted
+            ? t('com.aiDrafted')
+            : a.provenance.adapted
+              ? t('com.adapted')
+              : t('com.original')}
+        </Badge>
         <Badge>{a.tags.subjectName}</Badge>
-        {a.tags.grades.map(g => (
+        {a.tags.grades.map((g) => (
           <Badge key={g}>{t('common.grade', { g })}</Badge>
         ))}
         {a.tags.termIndex && <Badge>Q{a.tags.termIndex}</Badge>}
@@ -154,7 +201,9 @@ export function ArtifactScreen({ artifactId }: { artifactId: string }) {
             {a.moderation.reasons.map((r, i) => (
               <li key={i}>
                 {r.message}
-                {r.sectionKey ? ` (${t('com.in')} ${template.sections.find(s => s.key === r.sectionKey)?.label[lang] ?? r.sectionKey})` : ''}
+                {r.sectionKey
+                  ? ` (${t('com.in')} ${template.sections.find((s) => s.key === r.sectionKey)?.label[lang] ?? r.sectionKey})`
+                  : ''}
                 {r.excerpt ? `: “${r.excerpt}”` : ''}
               </li>
             ))}
@@ -166,12 +215,14 @@ export function ArtifactScreen({ artifactId }: { artifactId: string }) {
       {Object.keys(a.version.competencies).length > 0 && (
         <ul className="list-disc pl-5 text-small">
           {Object.entries(a.version.competencies).flatMap(([gid, ids]) =>
-            ids.map(id => (
+            ids.map((id) => (
               <li key={gid + id}>
-                {groups.length > 1 ? `${t('common.grade', { g: groups.find(g => g.id === gid)?.grade ?? '' })}: ` : ''}
+                {groups.length > 1
+                  ? `${t('common.grade', { g: groups.find((g) => g.id === gid)?.grade ?? '' })}: `
+                  : ''}
                 {compText(id)}
               </li>
-            )),
+            ))
           )}
         </ul>
       )}
@@ -182,13 +233,19 @@ export function ArtifactScreen({ artifactId }: { artifactId: string }) {
           ))}
         </ul>
       )}
-      {template.sections.map(ts => {
-        const s = a.version.sections.find(x => x.key === ts.key);
+      {template.sections.map((ts) => {
+        const s = a.version.sections.find((x) => x.key === ts.key);
         if (!s) return null;
         return (
           <section key={ts.key} className="rounded border border-hairline bg-white p-3">
             <h3 className="font-medium mb-2">{ts.label[lang]}</h3>
-            <SectionEditor content={s.content} readOnly groups={groups} label={ts.label[lang]} onChange={() => {}} />
+            <SectionEditor
+              content={s.content}
+              readOnly
+              groups={groups}
+              label={ts.label[lang]}
+              onChange={() => {}}
+            />
           </section>
         );
       })}
@@ -219,28 +276,43 @@ export function ArtifactScreen({ artifactId }: { artifactId: string }) {
           </>
         }
       >
-        <Select label={t('com.copyInto')} value={classId} onChange={e => setClassId(e.target.value)}>
-          {ws.classes.map(c => (
+        <Select
+          label={t('com.copyInto')}
+          value={classId}
+          onChange={(e) => setClassId(e.target.value)}
+        >
+          {ws.classes.map((c) => (
             <option key={c.id} value={c.id}>
               {c.name}
             </option>
           ))}
         </Select>
-        {copyClass && a.version.gradeGroups.length > 0 && (copyClass.gradeGroups.length > 1 || a.version.gradeGroups.length > 1) && (
-          <fieldset className="flex flex-col gap-2">
-            <legend className="font-medium mb-1">{t('com.mapGroups')}</legend>
-            {a.version.gradeGroups.map((g, i) => (
-              <Select key={g.id} label={t('common.grade', { g: g.grade })} value={mapping[i] ?? ''} onChange={e => setMapping(m => m.map((x, j) => (j === i ? e.target.value : x)))}>
-                {copyClass.gradeGroups.map(cg => (
-                  <option key={cg.id} value={cg.id}>
-                    {t('common.grade', { g: cg.grade })}
-                  </option>
-                ))}
-              </Select>
-            ))}
-            {new Set(mapping).size !== mapping.length && <p className="text-small text-brick">{t('com.mapDistinct')}</p>}
-          </fieldset>
-        )}
+        {copyClass &&
+          a.version.gradeGroups.length > 0 &&
+          (copyClass.gradeGroups.length > 1 || a.version.gradeGroups.length > 1) && (
+            <fieldset className="flex flex-col gap-2">
+              <legend className="font-medium mb-1">{t('com.mapGroups')}</legend>
+              {a.version.gradeGroups.map((g, i) => (
+                <Select
+                  key={g.id}
+                  label={t('common.grade', { g: g.grade })}
+                  value={mapping[i] ?? ''}
+                  onChange={(e) =>
+                    setMapping((m) => m.map((x, j) => (j === i ? e.target.value : x)))
+                  }
+                >
+                  {copyClass.gradeGroups.map((cg) => (
+                    <option key={cg.id} value={cg.id}>
+                      {t('common.grade', { g: cg.grade })}
+                    </option>
+                  ))}
+                </Select>
+              ))}
+              {new Set(mapping).size !== mapping.length && (
+                <p className="text-small text-brick">{t('com.mapDistinct')}</p>
+              )}
+            </fieldset>
+          )}
         <p className="text-small text-forestMuted">{t('com.license')}</p>
       </Sheet>
       <Sheet
@@ -259,8 +331,19 @@ export function ArtifactScreen({ artifactId }: { artifactId: string }) {
         }
       >
         <p>{t('com.reportBody')}</p>
-        <Choice label={t('com.reportTitle')} value={reason} onChange={setReason} options={REASONS.map(r => ({ value: r, label: t(`com.reportReason.${r}`) }))} />
-        <TextArea label={t('com.reportNote')} optional value={note} maxLength={600} onChange={e => setNote(e.target.value)} />
+        <Choice
+          label={t('com.reportTitle')}
+          value={reason}
+          onChange={setReason}
+          options={REASONS.map((r) => ({ value: r, label: t(`com.reportReason.${r}`) }))}
+        />
+        <TextArea
+          label={t('com.reportNote')}
+          optional
+          value={note}
+          maxLength={600}
+          onChange={(e) => setNote(e.target.value)}
+        />
       </Sheet>
       <Sheet
         open={sheet === 'remove'}

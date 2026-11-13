@@ -7,7 +7,8 @@ import type { StringKey } from './en';
 export const fil = {
   'app.name': 'Tala',
   'app.byHiraia': 'mula sa Hiraia',
-  'app.tagline': 'Planuhin ang mga aralin mo. Alam ng Tala ang kurikulum ng DepEd at ang kalendaryo ng paaralan mo.',
+  'app.tagline':
+    'Planuhin ang mga aralin mo. Alam ng Tala ang kurikulum ng DepEd at ang kalendaryo ng paaralan mo.',
   'app.skipToContent': 'Dumiretso sa nilalaman',
 
   'nav.week': 'Ngayong Linggo',
@@ -39,8 +40,10 @@ export const fil = {
   'common.no': 'Hindi',
   'common.notSure': 'Hindi sigurado',
   'common.comingSoon': 'Malapit na',
-  'common.comingSoonBody': 'Hindi pa handa ang bahaging ito ng Tala. Gumagana na ang lahat ng iba pa.',
-  'common.easierOnBigScreen': 'Mas madali itong baguhin sa mas malaking screen. Mababasa mo pa rin ito rito.',
+  'common.comingSoonBody':
+    'Hindi pa handa ang bahaging ito ng Tala. Gumagana na ang lahat ng iba pa.',
+  'common.easierOnBigScreen':
+    'Mas madali itong baguhin sa mas malaking screen. Mababasa mo pa rin ito rito.',
   'common.waiting': 'Sandali lang…',
   'common.search': 'Maghanap',
   'common.none': 'Wala',
@@ -48,11 +51,13 @@ export const fil = {
   'common.grade': 'Grade {g}',
   'common.kinder': 'Kindergarten',
 
-  'network.offline': 'Walang koneksyon. Naka-save ang gawa mo sa device na ito at ipapadala mamaya.',
+  'network.offline':
+    'Walang koneksyon. Naka-save ang gawa mo sa device na ito at ipapadala mamaya.',
   'network.slow': 'Mabagal ang koneksyon. Nakapatay ang mga larawan para makatipid ng data.',
   'network.readOnlyTitle': 'Nakahinto muna ang pag-edit',
   'network.readOnly': 'Kumonekta sa internet nang isang beses para makapag-sign in muli.',
-  'network.storageFull': 'Halos puno na ang device na ito. Itatabi ng Tala ang ngayong linggo at ang mga hindi pa naipapadala; walang mawawala.',
+  'network.storageFull':
+    'Halos puno na ang device na ito. Itatabi ng Tala ang ngayong linggo at ang mga hindi pa naipapadala; walang mawawala.',
 
   'sync.waiting': '{n} ang hinihintay na maipadala',
   'sync.lastSynced': 'Huling naipadala {time}',
@@ -73,24 +78,29 @@ export const fil = {
   'auth.noAccount': 'Bago sa Tala?',
   'auth.haveAccount': 'May account ka na?',
   'auth.resetTitle': 'I-reset ang password',
-  'auth.resetBody': 'Ilagay ang email mo. Kung may account ito, magpapadala kami ng link para sa bagong password.',
-  'auth.resetSent': 'Kung may account ang email na iyon, papunta na ang link. Tingnan ang inbox at spam folder mo.',
+  'auth.resetBody':
+    'Ilagay ang email mo. Kung may account ito, magpapadala kami ng link para sa bagong password.',
+  'auth.resetSent':
+    'Kung may account ang email na iyon, papunta na ang link. Tingnan ang inbox at spam folder mo.',
   'auth.sendLink': 'Ipadala ang link',
   'auth.newPassword': 'Bagong password',
   'auth.setPassword': 'Itakda ang bagong password',
   'auth.resetDone': 'Napalitan na ang password mo. Puwede ka nang mag-sign in.',
   'auth.resetBadLink': 'Expired na ang link na ito o nagamit na. Humingi ng bago.',
   'auth.verifyTitle': 'I-verify ang email mo',
-  'auth.verifyBody': 'Nagpadala kami ng link sa {email}. Buksan ito para ma-verify. Puwede mo pa ring gamitin ang Tala habang naghihintay; kailangan lang ang pag-verify bago mag-post sa komunidad o mag-upload ng listahan ng mga mag-aaral.',
+  'auth.verifyBody':
+    'Nagpadala kami ng link sa {email}. Buksan ito para ma-verify. Puwede mo pa ring gamitin ang Tala habang naghihintay; kailangan lang ang pag-verify bago mag-post sa komunidad o mag-upload ng listahan ng mga mag-aaral.',
   'auth.verifyCode': 'O idikit ang code mula sa email',
   'auth.verify': 'I-verify',
   'auth.verified': 'Na-verify na ang email mo.',
-  'auth.verifyFailed': 'Hindi gumana ang code na iyon. Tingnan itong muli o humingi ng bagong link.',
+  'auth.verifyFailed':
+    'Hindi gumana ang code na iyon. Tingnan itong muli o humingi ng bagong link.',
   'auth.resend': 'Ipadala muli ang link',
   'auth.resent': 'Naipadala. Tingnan ang inbox mo.',
   'auth.skipForNow': 'Mamaya na',
   'auth.signOut': 'Mag-sign out',
-  'auth.signOutConfirm': 'Mag-sign out sa device na ito? Kung online ka, ipapadala muna ang mga hinihintay na maipadala.',
+  'auth.signOutConfirm':
+    'Mag-sign out sa device na ito? Kung online ka, ipapadala muna ang mga hinihintay na maipadala.',
   'auth.invalid': 'Hindi tugma ang email at password na iyon.',
   'auth.emailTaken': 'May account na ang email na iyon. Mag-sign in na lang.',
   'auth.failed': 'Hindi makapag-sign in ngayon. Baka mahina ang koneksyon. Subukan muli.',
@@ -98,16 +108,19 @@ export const fil = {
   'auth.required': 'Pakipunan ito.',
   'auth.passwordShort': 'Gumamit ng hindi bababa sa 10 karakter.',
   'auth.emailInvalid': 'Hindi mukhang email address iyan.',
-  'auth.passwordCommon': 'Masyadong madaling hulaan ang password na iyan. Sumubok ng mas mahaba na gawa sa ilang salita.',
+  'auth.passwordCommon':
+    'Masyadong madaling hulaan ang password na iyan. Sumubok ng mas mahaba na gawa sa ilang salita.',
   'auth.wrongPassword': 'Hindi tama ang kasalukuyang password.',
 
   'lang.fil': 'Filipino',
   'lang.en': 'English',
 
   'setup.title': 'I-set up ang klase mo',
-  'setup.intro': 'Apat na maikling hakbang. Puwede mong tanggapin ang bawat mungkahi at baguhin ito mamaya.',
+  'setup.intro':
+    'Apat na maikling hakbang. Puwede mong tanggapin ang bawat mungkahi at baguhin ito mamaya.',
   'setup.sample': 'Subukan ang halimbawang klase',
-  'setup.sampleBody': 'Magdadagdag ng klase na may gawa-gawang mga mag-aaral at ilang halimbawang aralin. Alisin ito kahit kailan.',
+  'setup.sampleBody':
+    'Magdadagdag ng klase na may gawa-gawang mga mag-aaral at ilang halimbawang aralin. Alisin ito kahit kailan.',
   'setup.sampleAdding': 'Idinadagdag ang halimbawang klase…',
   'setup.step': 'Hakbang {n} ng {total}',
   'setup.step1': 'Taong panuruan',
@@ -122,8 +135,10 @@ export const fil = {
   'setup.startDate': 'Unang araw ng klase',
   'setup.endDate': 'Huling araw ng klase',
   'setup.terms': 'Mga quarter',
-  'setup.provisional': 'Pansamantala. Itatama ito ng Tala kapag inilabas na ng DepEd ang kalendaryo.',
-  'setup.presetsUnavailable': 'Hindi ma-load ang mga kalendaryo ng DepEd ngayon. Puwede kang magsimula sa blangkong taon.',
+  'setup.provisional':
+    'Pansamantala. Itatama ito ng Tala kapag inilabas na ng DepEd ang kalendaryo.',
+  'setup.presetsUnavailable':
+    'Hindi ma-load ang mga kalendaryo ng DepEd ngayon. Puwede kang magsimula sa blangkong taon.',
   'setup.className': 'Pangalan ng klase',
   'setup.classNameHint': 'hal. Grade 3 Sampaguita',
   'setup.gradeGroups': 'Mga baitang sa klaseng ito',
@@ -139,11 +154,13 @@ export const fil = {
   'setup.minutesPerSession': 'Minuto bawat sesyon',
   'setup.startTime': 'Oras ng simula',
   'setup.forGrades': 'Para sa mga baitang',
-  'setup.startingPositions': 'Tinantiya ng Tala kung nasaan ka na sa bawat asignatura batay sa kalendaryo. Baguhin ang mali.',
+  'setup.startingPositions':
+    'Tinantiya ng Tala kung nasaan ka na sa bawat asignatura batay sa kalendaryo. Baguhin ang mali.',
   'setup.estimated': 'Tantiya',
   'setup.coveredBefore': 'Ang mga naunang kompetensi ay mamarkahang natalakay na bago ang Tala.',
   'setup.finish': 'Ipakita ang linggo ko',
-  'setup.noPack': 'Wala pang datos ng kurikulum para sa baitang at asignaturang ito. Puwede mong i-type ang sarili mong mga layunin sa bawat aralin.',
+  'setup.noPack':
+    'Wala pang datos ng kurikulum para sa baitang at asignaturang ito. Puwede mong i-type ang sarili mong mga layunin sa bawat aralin.',
   'setup.needSubject': 'Magdagdag ng kahit isang asignatura.',
   'setup.needName': 'Bigyan ng pangalan ang klase.',
   'setup.needDays': 'Pumili ng kahit isang araw para sa {subject}.',
@@ -206,7 +223,8 @@ export const fil = {
   'noclass.saved': 'Namarkahan ang araw. Wala nang iskedyul ang mga aralin sa araw na iyon.',
 
   'realign.title': 'Iayos muli ang mga aralin',
-  'realign.intro': 'May nawalang araw ng klase. Piliin kung paano ikakasya ang natitirang mga aralin.',
+  'realign.intro':
+    'May nawalang araw ng klase. Piliin kung paano ikakasya ang natitirang mga aralin.',
   'realign.option.shift': 'Iusog',
   'realign.option.absorb': 'Gamitin ang mga buffer na araw',
   'realign.option.compress': 'Paikliin',
@@ -293,12 +311,15 @@ export const fil = {
   'editor.lock': 'I-lock',
   'editor.unlock': 'I-unlock',
   'editor.lockTitle': 'I-lock ang araling ito?',
-  'editor.lockBody': 'Ang pag-lock ay nangangahulugang ikaw mismo ang sumuri sa nilalaman at sa pagkakatugma nito sa kurikulum. Hindi mababago ang naka-lock na aralin hangga’t hindi mo ina-unlock.',
+  'editor.lockBody':
+    'Ang pag-lock ay nangangahulugang ikaw mismo ang sumuri sa nilalaman at sa pagkakatugma nito sa kurikulum. Hindi mababago ang naka-lock na aralin hangga’t hindi mo ina-unlock.',
   'editor.lockBlocked': 'Punan muna ang mga ito bago i-lock:',
   'editor.lockNeedsCompetency': 'Kahit isang kompetensi',
   'editor.unlockTitle': 'I-unlock ang araling ito?',
-  'editor.unlockBody': 'Magiging burador itong muli. Mananatili sa kasaysayan ang naka-lock na bersyon.',
-  'editor.unlockSubmitted': 'Minarkahan ang araling ito bilang naipasa na. Aalisin ng pag-unlock ang markang iyon sa bagong bersyon.',
+  'editor.unlockBody':
+    'Magiging burador itong muli. Mananatili sa kasaysayan ang naka-lock na bersyon.',
+  'editor.unlockSubmitted':
+    'Minarkahan ang araling ito bilang naipasa na. Aalisin ng pag-unlock ang markang iyon sa bagong bersyon.',
   'editor.lockedBanner': 'Na-lock noong {date}. Code {code}.',
   'editor.lockedReadOnly': 'Naka-lock ang araling ito. I-unlock para baguhin.',
   'editor.reflectionEditable': 'Puwede ka pa ring magsulat dito kahit naka-lock.',
@@ -310,7 +331,8 @@ export const fil = {
   'editor.pdf': 'I-download ang PDF',
   'editor.print': 'I-print',
   'editor.conflictTitle': 'Binago ang bahaging ito sa iba mong device',
-  'editor.conflictBody': 'Piliin kung alin ang itatabi. Walang itatapon hangga’t hindi ka pumipili.',
+  'editor.conflictBody':
+    'Piliin kung alin ang itatabi. Walang itatapon hangga’t hindi ka pumipili.',
   'editor.conflictMine': 'Itabi ito',
   'editor.conflictTheirs': 'Itabi ang isa',
   'editor.conflictBoth': 'Itabi pareho',
@@ -343,7 +365,8 @@ export const fil = {
   'pdf.copied': 'Nakopya. I-paste kahit saan.',
   'pdf.server': 'Kumuha ng PDF mula sa server ng Tala',
   'pdf.serverOffline': 'Kailangan ng koneksyon.',
-  'pdf.failed': 'Hindi iyon gumana rito. Subukan ang isa sa iba pang paraan; lagi kang may makukuhang mapi-print.',
+  'pdf.failed':
+    'Hindi iyon gumana rito. Subukan ang isa sa iba pang paraan; lagi kang may makukuhang mapi-print.',
   'pdf.draftWatermark': 'BURADOR',
   'pdf.preparedBy': 'Inihanda ni',
   'pdf.checkedBy': 'Sinuri ni',
@@ -360,7 +383,8 @@ export const fil = {
   'class.gradeGroups': 'Mga baitang',
   'class.timetable': 'Iskedyul',
   'class.profile': 'Tungkol sa klaseng ito',
-  'class.profileHint': 'Tumutulong sa Tala na magmungkahi ng aralin na angkop sa silid mo. Walang tungkol sa iisang mag-aaral dito.',
+  'class.profileHint':
+    'Tumutulong sa Tala na magmungkahi ng aralin na angkop sa silid mo. Walang tungkol sa iisang mag-aaral dito.',
   'class.materials': 'Mga kagamitang mayroon ka',
   'class.materialsHint': 'Paghiwalayin ng kuwit.',
   'class.electricity': 'Kuryente',
@@ -369,7 +393,8 @@ export const fil = {
   'class.outdoor': 'Espasyo sa labas',
   'class.notes': 'Mga tala tungkol sa klase',
   'class.advanced': 'Advanced',
-  'class.advancedHint': 'Mga setting ng bilis ng pagtuturo. Tama na ang mga default ng Tala; hindi mo kailangang baguhin ang mga ito.',
+  'class.advancedHint':
+    'Mga setting ng bilis ng pagtuturo. Tama na ang mga default ng Tala; hindi mo kailangang baguhin ang mga ito.',
   'class.bufferRatio': 'Buffer na sesyon bawat sampung sesyon ng pagtuturo',
   'class.assessmentSessions': 'Sesyon ng pagtataya bawat quarter',
   'class.minSessions': 'Pinakakaunting sesyon bawat kompetensi',
@@ -379,7 +404,8 @@ export const fil = {
   'class.pairing.sequence': 'Ayon sa pagkakasunod lang',
   'class.resetDefaults': 'Ibalik sa default',
   'class.removeSample': 'Alisin ang halimbawang klase',
-  'class.sampleBanner': 'Halimbawang klase ito na may gawa-gawang mga mag-aaral. Hindi ito maipo-post sa komunidad.',
+  'class.sampleBanner':
+    'Halimbawang klase ito na may gawa-gawang mga mag-aaral. Hindi ito maipo-post sa komunidad.',
   'class.roster': 'Mga mag-aaral',
   'class.rosterImport': 'Mag-import ng listahan ng mga mag-aaral',
   'class.none': 'Wala pang klase.',
@@ -391,7 +417,8 @@ export const fil = {
   'class.saved': 'Na-save ang klase.',
   'class.sampleRemoved': 'Naalis ang halimbawang klase.',
   'class.archive': 'I-archive ang klase',
-  'class.archiveConfirm': 'I-archive ang klaseng ito? Mawawala ito sa linggo mo; mananatili ang mga aralin.',
+  'class.archiveConfirm':
+    'I-archive ang klaseng ito? Mawawala ito sa linggo mo; mananatili ang mga aralin.',
   'class.curriculum': 'Kurikulum',
   'class.curriculum.deped': 'DepEd',
   'class.curriculum.none': 'Wala (ako ang magta-type ng mga layunin)',
@@ -402,7 +429,8 @@ export const fil = {
   'settings.account': 'Account',
   'settings.school': 'Paaralan at taong panuruan',
   'settings.dataSaver': 'Pagtitipid ng data',
-  'settings.dataSaverHint': 'Patay ang mga larawan, mas maliliit na pahina, ipapadala lang ang ngayong linggo at ang mga hindi pa naipapadala.',
+  'settings.dataSaverHint':
+    'Patay ang mga larawan, mas maliliit na pahina, ipapadala lang ang ngayong linggo at ang mga hindi pa naipapadala.',
   'settings.dataUsed': 'Mga {kb} KB ang nagamit ngayong linggo',
   'settings.signOut': 'Mag-sign out',
   'settings.changePassword': 'Palitan ang password',
@@ -412,7 +440,8 @@ export const fil = {
   'settings.signOutEverywhere': 'Mag-sign out sa lahat ng device',
   'settings.export': 'I-download ang data ko',
   'settings.deleteAccount': 'Burahin ang account',
-  'settings.deleteBody': 'Buburahin nito ang account mo at lahat ng aralin dito. I-type ang DELETE para kumpirmahin.',
+  'settings.deleteBody':
+    'Buburahin nito ang account mo at lahat ng aralin dito. I-type ang DELETE para kumpirmahin.',
   'settings.emailUnverified': 'Hindi pa na-verify ang email.',
   'settings.verifyNow': 'I-verify ngayon',
   'settings.thisDevice': 'Device na ito',
@@ -421,16 +450,21 @@ export const fil = {
   'settings.region': 'Rehiyon o dibisyon',
 
   'wave2.generate': 'Ipaburador sa AI',
-  'wave2.generateBody': 'Magbuburador ang Tala ng aralin mula sa mga nakatakdang kompetensi. Pansamantala, handa nang punan ang blangkong template.',
+  'wave2.generateBody':
+    'Magbuburador ang Tala ng aralin mula sa mga nakatakdang kompetensi. Pansamantala, handa nang punan ang blangkong template.',
   'wave2.roster': 'Mag-import ng mga mag-aaral',
-  'wave2.rosterBody': 'Dito mo mai-paste o mai-upload ang listahan ng mga mag-aaral. Sa ngayon, gumagana ang klase kahit wala nito.',
+  'wave2.rosterBody':
+    'Dito mo mai-paste o mai-upload ang listahan ng mga mag-aaral. Sa ngayon, gumagana ang klase kahit wala nito.',
   'wave2.community': 'Komunidad',
-  'wave2.communityBody': 'Dito lalabas ang mga araling ibinahagi ng ibang guro. Gumagana ang sarili mong mga aralin kahit wala ito.',
+  'wave2.communityBody':
+    'Dito lalabas ang mga araling ibinahagi ng ibang guro. Gumagana ang sarili mong mga aralin kahit wala ito.',
   'wave2.openTemplate': 'Buksan ang blangkong template',
 
   'gen.title': 'Ipaburador sa AI',
-  'gen.intro': 'Magbuburador ang Tala ng araling ito mula sa mga nakatakdang kompetensi at sa detalye ng klase mo. Babasahin at babaguhin mo ito bago ito mabilang.',
-  'gen.notice': 'Suriin ang mga katotohanan, halimbawa, sagot at pagkakatugma sa kompetensi bago gamitin. Hugis lang ng burador ang sinusuri ng Tala, hindi ang nilalaman.',
+  'gen.intro':
+    'Magbuburador ang Tala ng araling ito mula sa mga nakatakdang kompetensi at sa detalye ng klase mo. Babasahin at babaguhin mo ito bago ito mabilang.',
+  'gen.notice':
+    'Suriin ang mga katotohanan, halimbawa, sagot at pagkakatugma sa kompetensi bago gamitin. Hugis lang ng burador ang sinusuri ng Tala, hindi ang nilalaman.',
   'gen.forClass': 'Klase',
   'gen.groups': 'Mga baitang',
   'gen.learnersN': '{n} mag-aaral',
@@ -440,26 +474,35 @@ export const fil = {
   'gen.timeBudget': 'Oras na nakalaan',
   'gen.language': 'Wika ng burador',
   'gen.guidance': 'Anumang dapat sundin ng burador',
-  'gen.guidanceHint': 'hal. gamitin ang hardin ng paaralan, walang pag-print ngayong linggo, 30 minutong klase',
+  'gen.guidanceHint':
+    'hal. gamitin ang hardin ng paaralan, walang pag-print ngayong linggo, 30 minutong klase',
   'gen.start': 'Gawin ang burador',
-  'gen.allowance': '{full} buong burador at {section} pagsulat-muli ng bahagi ang natitira ngayong araw',
-  'gen.allowanceNone': 'Wala nang natitirang burador ngayong araw. Handa nang sulatan ang template na may paunang laman.',
+  'gen.allowance':
+    '{full} buong burador at {section} pagsulat-muli ng bahagi ang natitira ngayong araw',
+  'gen.allowanceNone':
+    'Wala nang natitirang burador ngayong araw. Handa nang sulatan ang template na may paunang laman.',
   'gen.degraded': 'Abala ang Tala ngayong buwan; maaaring pumila ang mga burador.',
   'gen.working': 'Isinusulat ang burador… karaniwang wala pang isang minuto.',
   'gen.background': 'Ituloy sa likuran',
-  'gen.backgroundNote': 'Lalabas ang burador sa aralin kapag handa na; puwede kang magpatuloy sa iba.',
+  'gen.backgroundNote':
+    'Lalabas ang burador sa aralin kapag handa na; puwede kang magpatuloy sa iba.',
   'gen.done': 'Handa na ang burador. Basahin nang buo bago i-lock.',
   'gen.failed': 'Hindi magawa ang burador ngayon. Nakatabi ang mga inilagay mo.',
-  'gen.failed.providers_unavailable': 'Hindi sumasagot ang serbisyo sa pagsulat. Nakatabi ang mga inilagay mo.',
-  'gen.failed.invalid_output': 'Maling hugis ang ibinalik na burador kaya hindi ito na-save. Nakatabi ang mga inilagay mo.',
+  'gen.failed.providers_unavailable':
+    'Hindi sumasagot ang serbisyo sa pagsulat. Nakatabi ang mga inilagay mo.',
+  'gen.failed.invalid_output':
+    'Maling hugis ang ibinalik na burador kaya hindi ito na-save. Nakatabi ang mga inilagay mo.',
   'gen.failed.quota_exceeded': 'Nagamit mo na ang mga burador para ngayong araw.',
   'gen.failed.budget_exceeded': 'Naabot na ng Tala ang buwanang limitasyon sa burador.',
   'gen.failed.disabled': 'Nakapatay muna ang pagbuburador.',
-  'gen.failed.invalid_input': 'May hindi tinanggap sa kahilingan. Puwede mo pa ring isulat nang mano-mano.',
+  'gen.failed.invalid_input':
+    'May hindi tinanggap sa kahilingan. Puwede mo pa ring isulat nang mano-mano.',
   'gen.usePrefilled': 'Buksan ang template na may paunang laman',
-  'gen.prefilledNote': 'Nakaayos na ang aralin na may mga kompetensi, detalye ng klase at bloke ng oras. Isulat ang iba nang mano-mano.',
+  'gen.prefilledNote':
+    'Nakaayos na ang aralin na may mga kompetensi, detalye ng klase at bloke ng oras. Isulat ang iba nang mano-mano.',
   'gen.keepWaiting': 'Hayaang maghintay ang kahilingan',
-  'gen.queued': 'Walang koneksyon. Naghihintay ang kahilingan at tatakbo kapag online ka na. Bukas muna ang template na may paunang laman.',
+  'gen.queued':
+    'Walang koneksyon. Naghihintay ang kahilingan at tatakbo kapag online ka na. Bukas muna ang template na may paunang laman.',
   'gen.queuedBadge': 'Naghihintay ang kahilingan sa burador',
   'gen.queuedCount': '{n} kahilingan sa burador ang hinihintay na maipadala',
   'gen.cancelled': 'Kinansela ang burador. Walang nabago.',
@@ -469,13 +512,15 @@ export const fil = {
   'gen.regenTitle': 'Isulat muli ang bahaging ito',
   'gen.regenInstruction': 'Paano ito dapat magbago?',
   'gen.regenInstructionHint': 'hal. paikliin, gumamit ng laro, walang worksheet',
-  'gen.regenEdited': 'Ikaw mismo ang nag-edit ng bahaging ito. Papalitan ng muling pagsulat ang teksto mo; nakatabi sa Kasaysayan ang kasalukuyang bersyon at maibabalik sa isang pindot.',
+  'gen.regenEdited':
+    'Ikaw mismo ang nag-edit ng bahaging ito. Papalitan ng muling pagsulat ang teksto mo; nakatabi sa Kasaysayan ang kasalukuyang bersyon at maibabalik sa isang pindot.',
   'gen.regenConfirm': 'Oo, isulat muli',
   'gen.regenDone': 'Naisulat muli ang bahagi. Nasa Kasaysayan ang naunang bersyon.',
   'gen.aiMark': 'Burador ng AI',
 
   'roster.title': 'Mag-import ng mga mag-aaral',
-  'roster.intro': 'Ibigay sa Tala ang listahang mayroon ka na. Susuriin mo ang bawat hindi tiyak na hanay bago may ma-save.',
+  'roster.intro':
+    'Ibigay sa Tala ang listahang mayroon ka na. Susuriin mo ang bawat hindi tiyak na hanay bago may ma-save.',
   'roster.pasteLabel': 'I-paste ang mga pangalan dito',
   'roster.pasteHint': 'Isang mag-aaral bawat linya, o kinopya mula sa sheet.',
   'roster.file': 'O pumili ng file',
@@ -486,10 +531,12 @@ export const fil = {
   'roster.cleanAi': 'Linisin gamit ang AI',
   'roster.cleanNoAi': 'Linisin nang walang AI',
   'roster.exactly': 'I-import nang eksakto kung paano nakasulat',
-  'roster.exactlyHint': 'Bawat linyang may laman ay magiging isang mag-aaral, hindi babaguhin ang pangalan.',
+  'roster.exactlyHint':
+    'Bawat linyang may laman ay magiging isang mag-aaral, hindi babaguhin ang pangalan.',
   'roster.reading': 'Binabasa ang listahan…',
   'roster.columns': 'Mga kolum',
-  'roster.columnsHint': 'Tingnan kung ano ang ibig sabihin ng bawat kolum. Baguhin ang isa at muling babasahin ng Tala ang listahan.',
+  'roster.columnsHint':
+    'Tingnan kung ano ang ibig sabihin ng bawat kolum. Baguhin ang isa at muling babasahin ng Tala ang listahan.',
   'roster.col.fullName': 'Buong pangalan',
   'roster.col.familyName': 'Apelyido',
   'roster.col.givenName': 'Pangalan',
@@ -501,7 +548,8 @@ export const fil = {
   'roster.col.ignore': 'Huwag pansinin',
   'roster.col.drop': 'Hindi itinatago (sensitibo)',
   'roster.dropped': 'Hindi itinatago at inalis na: {cols}',
-  'roster.counts': '{lines} linya ang nabasa: {students} mag-aaral, {review} ang kailangang suriin, {notStudents} ang hindi mag-aaral',
+  'roster.counts':
+    '{lines} linya ang nabasa: {students} mag-aaral, {review} ang kailangang suriin, {notStudents} ang hindi mag-aaral',
   'roster.needsReview': 'Kailangan ng desisyon mo',
   'roster.changed': 'Binago ng paglilinis',
   'roster.clean': 'Handa',
@@ -532,12 +580,16 @@ export const fil = {
   'roster.savePartial': 'I-save ang mga napagpasyahan, iwan ang {n} na nakabinbin',
   'roster.pendingLeft': '{n} hanay ang nakabinbin pa. Mababalikan mo ito mula sa screen ng klase.',
   'roster.saved': '{n} mag-aaral ang na-save.',
-  'roster.unresolved': 'Magpasya sa bawat hanay na kailangang suriin, o i-save lang ang mga napagpasyahan.',
+  'roster.unresolved':
+    'Magpasya sa bawat hanay na kailangang suriin, o i-save lang ang mga napagpasyahan.',
   'roster.aiMark': 'Nilinis gamit ang cloud AI (maagang pagsubok)',
   'roster.rulesMark': 'Nilinis nang walang AI',
-  'roster.cannotRead': 'Hindi mabasa ng Tala ang file na iyon. I-paste na lang ang mga pangalan bilang teksto.',
-  'roster.tooBig': 'Mas malaki sa 5 MB ang file na iyon. I-paste ang mga pangalan, o hatiin ang file.',
-  'roster.needsVerified': 'I-verify muna ang email mo bago mag-import ng listahan ng mga mag-aaral.',
+  'roster.cannotRead':
+    'Hindi mabasa ng Tala ang file na iyon. I-paste na lang ang mga pangalan bilang teksto.',
+  'roster.tooBig':
+    'Mas malaki sa 5 MB ang file na iyon. I-paste ang mga pangalan, o hatiin ang file.',
+  'roster.needsVerified':
+    'I-verify muna ang email mo bago mag-import ng listahan ng mga mag-aaral.',
   'roster.abandon': 'Itapon ang import na ito',
   'roster.learners': 'Mga mag-aaral',
   'roster.add': 'Magdagdag ng mag-aaral',
@@ -561,7 +613,8 @@ export const fil = {
   'roster.splitName': 'Pangalan {n}',
 
   'com.title': 'Komunidad',
-  'com.intro': 'Mga araling ibinahagi ng mga guro, kung ano sila. Suriin ang anumang aralin bago gamitin.',
+  'com.intro':
+    'Mga araling ibinahagi ng mga guro, kung ano sila. Suriin ang anumang aralin bago gamitin.',
   'com.search': 'Maghanap ng aralin',
   'com.searchHint': 'hal. Grade 4 matter, Science quarter 2',
   'com.filters': 'Mga filter',
@@ -585,8 +638,10 @@ export const fil = {
   'com.original': 'Orihinal',
   'com.adaptedFrom': 'Hinango sa “{title}” ni {author}',
   'com.sourceUnavailable': 'Wala na ang pinaghanguan',
-  'com.license': 'Lisensya: CC BY-NC 4.0 — malayang kopyahin at baguhin nang may pagkilala, hindi ipinagbibili.',
-  'com.checkNotice': 'Ibinahagi ng isang guro kung ano ito. Suriin ang mga katotohanan, sagot at pagkakaangkop sa klase mo bago gamitin.',
+  'com.license':
+    'Lisensya: CC BY-NC 4.0 — malayang kopyahin at baguhin nang may pagkilala, hindi ipinagbibili.',
+  'com.checkNotice':
+    'Ibinahagi ng isang guro kung ano ito. Suriin ang mga katotohanan, sagot at pagkakaangkop sa klase mo bago gamitin.',
   'com.copy': 'Kopyahin sa mga aralin ko',
   'com.copyInto': 'Kopyahin sa aling klase?',
   'com.mapGroups': 'Aling baitang mo ang kukuha ng bawat bahagi?',
@@ -594,7 +649,8 @@ export const fil = {
   'com.copied': 'Nakopya. Sarili mo na itong burador.',
   'com.report': 'I-report',
   'com.reportTitle': 'I-report ang araling ito',
-  'com.reportBody': 'Pumili ng dahilan. Hindi ipinapakita kaninuman ang isusulat mo maliban sa Hiraia.',
+  'com.reportBody':
+    'Pumili ng dahilan. Hindi ipinapakita kaninuman ang isusulat mo maliban sa Hiraia.',
   'com.reportReason.personal_data': 'May personal na datos ng mga mag-aaral',
   'com.reportReason.unsuitable': 'Hindi angkop na nilalaman',
   'com.reportReason.copied_without_credit': 'Kinopya nang walang pagkilala',
@@ -609,11 +665,13 @@ export const fil = {
   'com.status.hidden': 'Nakatago habang sinusuri',
   'com.status.removed': 'Inalis',
   'com.remove': 'Alisin ang post ko',
-  'com.removeBody': 'Mawawala ito sa komunidad. Mananatili sa ibang guro ang mga kopyang nagawa na nila, kasama ang pagkilala sa iyo, dahil hindi mababawi ang lisensya.',
+  'com.removeBody':
+    'Mawawala ito sa komunidad. Mananatili sa ibang guro ang mga kopyang nagawa na nila, kasama ang pagkilala sa iyo, dahil hindi mababawi ang lisensya.',
   'com.removed': 'Naalis ang post.',
   'com.post': 'I-post sa komunidad',
   'com.postTitle': 'Ano ang magiging pampubliko',
-  'com.postIntro': 'Ito lang ang ibabahagi. Hindi kasama ang paaralan, pangalan ng klase, mga petsa, puna at pirma mo.',
+  'com.postIntro':
+    'Ito lang ang ibabahagi. Hindi kasama ang paaralan, pangalan ng klase, mga petsa, puna at pirma mo.',
   'com.postNeedsLock': 'I-lock muna ang aralin. Mga naka-lock na aralin lang ang maipo-post.',
   'com.postSample': 'Hindi maipo-post ang mga halimbawang aralin.',
   'com.postNeedsVerified': 'I-verify muna ang email mo bago mag-post.',
@@ -637,46 +695,64 @@ export const fil = {
   'com.duration': '{n} min',
   'com.preview': 'Nilalaman',
 
-  'editor.fetchingOlder': 'Mas luma ang araling ito kaysa sa mga nakatabi sa device na ito. Kinukuha…',
+  'editor.fetchingOlder':
+    'Mas luma ang araling ito kaysa sa mga nakatabi sa device na ito. Kinukuha…',
   'editor.fetchOlder': 'Kunin mula sa Tala',
 
   'google.continue': 'Magpatuloy gamit ang Google',
   'google.or': 'o',
   'google.loading': 'Inihahanda ang Google…',
-  'google.unavailable': 'Hindi magamit ang pag-sign in gamit ang Google ngayon. Gamitin ang email at password mo.',
-  'google.notConfigured': 'Hindi pa naka-set up ang pag-sign in gamit ang Google sa server na ito. Gamitin ang email at password mo.',
-  'google.unreachable': 'Hindi maabot ang Google. Gamitin ang email at password mo, o subukan muli mamaya.',
+  'google.unavailable':
+    'Hindi magamit ang pag-sign in gamit ang Google ngayon. Gamitin ang email at password mo.',
+  'google.notConfigured':
+    'Hindi pa naka-set up ang pag-sign in gamit ang Google sa server na ito. Gamitin ang email at password mo.',
+  'google.unreachable':
+    'Hindi maabot ang Google. Gamitin ang email at password mo, o subukan muli mamaya.',
   'google.tokenInvalid': 'Hindi kinumpirma ng Google ang pag-sign in na iyon. Subukan muli.',
-  'google.emailNotVerified': 'Hindi pa kinukumpirma ng Google ang email ng Google account na iyon. Kumpirmahin muna ito sa Google, o gamitin ang email at password mo.',
+  'google.emailNotVerified':
+    'Hindi pa kinukumpirma ng Google ang email ng Google account na iyon. Kumpirmahin muna ito sa Google, o gamitin ang email at password mo.',
   'google.linkTitle': 'Ikonekta ang Google account mo',
-  'google.linkBody': 'May Tala account nang gumagamit ng {email}. Para ikonekta ang Google dito, ilagay nang isang beses ang Tala password mo, o humingi ng link sa email.',
+  'google.linkBody':
+    'May Tala account nang gumagamit ng {email}. Para ikonekta ang Google dito, ilagay nang isang beses ang Tala password mo, o humingi ng link sa email.',
   'google.linkWithPassword': 'Ikonekta gamit ang password ko',
   'google.emailMeLink': 'Padalhan na lang ako ng link sa email',
-  'google.linkMailSent': 'Kung may Tala account ang email na iyon, papunta na ang link. Buksan ito, saka mag-sign in gamit ang Google.',
-  'google.verifyFirst': 'May Tala account ang email na ito na hindi pa nakumpirma ang email. Mag-sign in gamit ang password at kumpirmahin muna ang email; saka maikokonekta ang Google.',
+  'google.linkMailSent':
+    'Kung may Tala account ang email na iyon, papunta na ang link. Buksan ito, saka mag-sign in gamit ang Google.',
+  'google.verifyFirst':
+    'May Tala account ang email na ito na hindi pa nakumpirma ang email. Mag-sign in gamit ang password at kumpirmahin muna ang email; saka maikokonekta ang Google.',
   'google.alreadyLinked': 'Nakakonekta na ang Tala account na ito sa ibang Google account.',
-  'google.inUse': 'Nakakonekta na ang Google account na iyon sa ibang Tala account. Mag-sign in sa account na iyon, o pagsamahin ang dalawang account mula sa Mga Setting.',
-  'google.noAccount': 'Walang Tala account na may email na iyon na maikokonekta. Magpatuloy gamit ang Google para gumawa ng isa.',
-  'google.lastMethod': 'Ito lang ang paraan para makapasok sa account mo. Idagdag muna ang isa pang paraan.',
+  'google.inUse':
+    'Nakakonekta na ang Google account na iyon sa ibang Tala account. Mag-sign in sa account na iyon, o pagsamahin ang dalawang account mula sa Mga Setting.',
+  'google.noAccount':
+    'Walang Tala account na may email na iyon na maikokonekta. Magpatuloy gamit ang Google para gumawa ng isa.',
+  'google.lastMethod':
+    'Ito lang ang paraan para makapasok sa account mo. Idagdag muna ang isa pang paraan.',
   'google.confirmTitle': 'Nakakonekta na ang Google account',
   'google.confirmBody': 'Puwede ka nang mag-sign in gamit ang Google o ang password mo.',
-  'google.confirmBad': 'Expired na ang link na ito o nagamit na. Humingi ng bago mula sa screen ng pag-sign in.',
+  'google.confirmBad':
+    'Expired na ang link na ito o nagamit na. Humingi ng bago mula sa screen ng pag-sign in.',
   'google.connected': 'Google: nakakonekta',
   'google.notConnected': 'Google: hindi nakakonekta',
   'google.connect': 'Ikonekta ang Google',
-  'google.connectBody': 'Ilagay ang Tala password mo, saka piliin ang Google account. Puwedeng iba ang email nito sa account na ito.',
-  'google.connectDone': 'Nakakonekta na ang Google. Gumagana na ang dalawang paraan ng pag-sign in.',
+  'google.connectBody':
+    'Ilagay ang Tala password mo, saka piliin ang Google account. Puwedeng iba ang email nito sa account na ito.',
+  'google.connectDone':
+    'Nakakonekta na ang Google. Gumagana na ang dalawang paraan ng pag-sign in.',
   'google.disconnect': 'Idiskonekta ang Google',
-  'google.disconnectBody': 'Password lang ang gagamitin mo sa pag-sign in. Ilagay ito para kumpirmahin.',
+  'google.disconnectBody':
+    'Password lang ang gagamitin mo sa pag-sign in. Ilagay ito para kumpirmahin.',
   'google.disconnectDone': 'Nadiskonekta na ang Google.',
   'google.removePassword': 'Alisin ang password ko',
-  'google.removePasswordBody': 'Google lang ang gagamitin mo sa pag-sign in. Ilagay ang kasalukuyang password para kumpirmahin.',
+  'google.removePasswordBody':
+    'Google lang ang gagamitin mo sa pag-sign in. Ilagay ang kasalukuyang password para kumpirmahin.',
   'google.removePasswordDone': 'Naalis na ang password. Mag-sign in gamit ang Google mula ngayon.',
   'google.passwordRequired': 'Magtakda muna ng password bago idiskonekta ang Google.',
-  'google.accountMerged': 'Pinagsama na ang account na ito sa isa pa. Mag-sign in sa account na iyon; mananatili sa device na ito ang hindi pa naipapadalang gawa hanggang doon.',
+  'google.accountMerged':
+    'Pinagsama na ang account na ito sa isa pa. Mag-sign in sa account na iyon; mananatili sa device na ito ang hindi pa naipapadalang gawa hanggang doon.',
 
   'merge.title': 'Pagsamahin sa isa pang account',
-  'merge.body': 'Kung nakagawa ka ng dalawang Tala account, isama ang isa dito. Lilipat dito ang mga klase, aralin at post nito na nakalagay pa rin ang pangalan mo. Aalisin na ang isa pang account. Patunayang hawak mo ang dalawa.',
+  'merge.body':
+    'Kung nakagawa ka ng dalawang Tala account, isama ang isa dito. Lilipat dito ang mga klase, aralin at post nito na nakalagay pa rin ang pangalan mo. Aalisin na ang isa pang account. Patunayang hawak mo ang dalawa.',
   'merge.current': 'Password mo para sa account na ito',
   'merge.otherBy': 'Ang isa pang account',
   'merge.byPassword': 'Email at password nito',
@@ -688,7 +764,8 @@ export const fil = {
   'merge.done': 'Tapos. {n} record ang nailipat sa account na ito.',
   'merge.notProven': 'Hindi makumpirma ang isa pang account. Tingnan ang email at password nito.',
   'merge.same': 'Iisang account lang iyan.',
-  'merge.proofMissing': 'Ibigay ang email at password ng isa pang account, o mag-sign in dito gamit ang Google.',
+  'merge.proofMissing':
+    'Ibigay ang email at password ng isa pang account, o mag-sign in dito gamit ang Google.',
 
   'error.generic': 'May nangyaring mali. Ligtas ang gawa mo sa device na ito. Subukan muli mamaya.',
   'error.rateLimited': 'Masyadong maraming pagsubok. Maghintay ng isang minuto at subukan muli.',

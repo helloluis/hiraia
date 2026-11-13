@@ -59,7 +59,11 @@ export function initCoreState(base: BaseDeps, options: CoreOptions): CoreState {
   const state: CoreState = {
     accounts,
     googleClientIds,
-    google: createGoogleVerifier({ clientIds: googleClientIds, fetchKeys: options.google?.fetchKeys ?? createGoogleKeyFetcher(), now: base.now }),
+    google: createGoogleVerifier({
+      clientIds: googleClientIds,
+      fetchKeys: options.google?.fetchKeys ?? createGoogleKeyFetcher(),
+      now: base.now,
+    }),
     revisions,
     records: createRecordEngine({
       db: base.db,
@@ -67,12 +71,20 @@ export function initCoreState(base: BaseDeps, options: CoreOptions): CoreState {
       log: base.log,
       revisions,
       // The profile record is where a teacher edits their name; emails and sessions read it from the account.
-      onProfile: (ownerId, profile) => accounts.updateProfile(ownerId, profile.displayName, profile.uiLanguage),
+      onProfile: (ownerId, profile) =>
+        accounts.updateProfile(ownerId, profile.displayName, profile.uiLanguage),
     }),
     hasher: createPasswordHasher(options.argon2 ?? DEFAULT_ARGON2_COST),
     throttle: createLoginThrottle(base.db, base.now),
     limiter: createSqliteRateLimiter(base.db, base.now),
-    mailer: createMailer({ db: base.db, config: base.config, now: base.now, newId: base.newId, log: base.log, transport: options.mailTransport }),
+    mailer: createMailer({
+      db: base.db,
+      config: base.config,
+      now: base.now,
+      newId: base.newId,
+      log: base.log,
+      transport: options.mailTransport,
+    }),
   };
   STATES.set(base.db, state);
   return state;

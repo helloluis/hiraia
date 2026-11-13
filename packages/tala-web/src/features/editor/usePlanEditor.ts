@@ -5,8 +5,19 @@
  * Saves go to the device immediately (IndexedDB) — a connection loss never loses an edit (OFF-7).
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { boundSectionHistory, lockPlan, restoreSectionRevision, sectionRevision } from '@hiraia/tala-core/plan';
-import type { Plan, PlanSection, SectionContent, SectionRevision, Template } from '@hiraia/tala-core/contracts';
+import {
+  boundSectionHistory,
+  lockPlan,
+  restoreSectionRevision,
+  sectionRevision,
+} from '@hiraia/tala-core/plan';
+import type {
+  Plan,
+  PlanSection,
+  SectionContent,
+  SectionRevision,
+  Template,
+} from '@hiraia/tala-core/contracts';
 import { useRecord, useRecords, useWorkspace } from '@/data/records';
 import { useSession } from '@/data/session';
 import { packIdFor, useCurriculumIndex, usePacks } from '@/data/curriculum';
@@ -34,15 +45,26 @@ export function usePlanEditor(planId: string) {
    * always rebuilds from the latest content — never from a prop that is still waiting on the save debounce.
    */
   const [drafts, setDrafts] = useState<Record<string, SectionContent>>({});
-  const storedSections = useMemo(() => sectionRecords.items.filter(s => s.data.planId === planId), [sectionRecords.items, planId]);
-  const sections = useMemo(() => storedSections.map(s => (drafts[s.id] ? { ...s, data: { ...s.data, content: drafts[s.id]!, editedByTeacher: true } } : s)), [storedSections, drafts]);
+  const storedSections = useMemo(
+    () => sectionRecords.items.filter((s) => s.data.planId === planId),
+    [sectionRecords.items, planId]
+  );
+  const sections = useMemo(
+    () =>
+      storedSections.map((s) =>
+        drafts[s.id]
+          ? { ...s, data: { ...s.data, content: drafts[s.id]!, editedByTeacher: true } }
+          : s
+      ),
+    [storedSections, drafts]
+  );
   // Drop a draft once the stored record carries the same content.
   useEffect(() => {
-    setDrafts(d => {
+    setDrafts((d) => {
       let changed = false;
       const next = { ...d };
       for (const [id, content] of Object.entries(d)) {
-        const rec = storedSections.find(s => s.id === id);
+        const rec = storedSections.find((s) => s.id === id);
         if (rec && JSON.stringify(rec.data.content) === JSON.stringify(content)) {
           delete next[id];
           changed = true;
@@ -51,23 +73,67 @@ export function usePlanEditor(planId: string) {
       return changed ? next : d;
     });
   }, [storedSections]);
-  const revisions = useMemo(() => revisionRecords.items.filter(r => r.data.planId === planId).sort((a, b) => b.data.savedAt.localeCompare(a.data.savedAt)), [revisionRecords.items, planId]);
-  const template: Template | null = plan ? templateById(plan.templateId, customTemplates.items.map(t => t.data)) : null;
+  const revisions = useMemo(
+    () =>
+      revisionRecords.items
+        .filter((r) => r.data.planId === planId)
+        .sort((a, b) => b.data.savedAt.localeCompare(a.data.savedAt)),
+    [revisionRecords.items, planId]
+  );
+  const template: Template | null = plan
+    ? templateById(
+        plan.templateId,
+        customTemplates.items.map((t) => t.data)
+      )
+    : null;
   const placement = plan?.placements[0] ?? null;
-  const cls = useMemo(() => (placement ? (ws.allClasses.find(c => c.id === placement.classId) ?? null) : null), [ws.allClasses, placement]);
-  const assignment = useMemo(() => (placement?.assignmentId ? (ws.assignments.find(a => a.id === placement.assignmentId) ?? null) : null), [ws.assignments, placement]);
+  const cls = useMemo(
+    () => (placement ? (ws.allClasses.find((c) => c.id === placement.classId) ?? null) : null),
+    [ws.allClasses, placement]
+  );
+  const assignment = useMemo(
+    () =>
+      placement?.assignmentId
+        ? (ws.assignments.find((a) => a.id === placement.assignmentId) ?? null)
+        : null,
+    [ws.assignments, placement]
+  );
   const groups = useMemo(() => {
     if (!plan) return [];
-    const ids = plan.gradeGroupIds.length ? plan.gradeGroupIds : (cls?.gradeGroups.map(g => g.id) ?? []);
-    return ids.map((id, i) => ({ id, grade: cls?.gradeGroups.find(g => g.id === id)?.grade ?? plan.grades[i] ?? plan.grades[0] ?? '' }));
+    const ids = plan.gradeGroupIds.length
+      ? plan.gradeGroupIds
+      : (cls?.gradeGroups.map((g) => g.id) ?? []);
+    return ids.map((id, i) => ({
+      id,
+      grade:
+        cls?.gradeGroups.find((g) => g.id === id)?.grade ?? plan.grades[i] ?? plan.grades[0] ?? '',
+    }));
   }, [plan, cls]);
   const packIds = useMemo(() => {
     if (!plan?.learningAreaId) return [];
-    const year = ws.years.find(y => y.id === cls?.schoolYearId) ?? ws.activeYear;
-    return [...new Set(groups.map(g => packIdFor(index, year?.label ?? null, g.grade, plan.learningAreaId)).filter((x): x is string => !!x))];
+    const year = ws.years.find((y) => y.id === cls?.schoolYearId) ?? ws.activeYear;
+    return [
+      ...new Set(
+        groups
+          .map((g) => packIdFor(index, year?.label ?? null, g.grade, plan.learningAreaId))
+          .filter((x): x is string => !!x)
+      ),
+    ];
   }, [plan, groups, index, ws.years, ws.activeYear, cls]);
   const { competencies: packCompetencies } = usePacks(packIds);
-  const competencies = useMemo(() => (cls?.isSample && ws.activeYear ? [...packCompetencies, ...sampleCompetenciesFor([cls], ws.activeYear.terms.map(t => t.index)).filter(c => !packCompetencies.some(p => p.id === c.id))] : packCompetencies), [packCompetencies, cls, ws.activeYear]);
+  const competencies = useMemo(
+    () =>
+      cls?.isSample && ws.activeYear
+        ? [
+            ...packCompetencies,
+            ...sampleCompetenciesFor(
+              [cls],
+              ws.activeYear.terms.map((t) => t.index)
+            ).filter((c) => !packCompetencies.some((p) => p.id === c.id)),
+          ]
+        : packCompetencies,
+    [packCompetencies, cls, ws.activeYear]
+  );
 
   /* ---------- debounced saves ---------- */
   const sectionTimers = useRef(new Map<string, ReturnType<typeof setTimeout>>());
@@ -88,34 +154,46 @@ export function usePlanEditor(planId: string) {
       const last = snapshotted.current.get(id) ?? 0;
       if (current && Date.now() - last > SNAPSHOT_WINDOW_MS) {
         snapshotted.current.set(id, Date.now());
-        await engine.put('section_revision', sectionRevision(current.data, { id: newId(), savedAt: nowIso(), reason: 'edit' }));
+        await engine.put(
+          'section_revision',
+          sectionRevision(current.data, { id: newId(), savedAt: nowIso(), reason: 'edit' })
+        );
         // Bounded history: keep the newest N per section; never prune unsent (dirty / rev 0) revisions.
-        const history = (await engine.list('section_revision')).filter(r => r.data.planId === planId).sort((a, b) => b.data.savedAt.localeCompare(a.data.savedAt));
-        const { remove } = boundSectionHistory(history.map(h => h.data), HISTORY_PER_SECTION);
+        const history = (await engine.list('section_revision'))
+          .filter((r) => r.data.planId === planId)
+          .sort((a, b) => b.data.savedAt.localeCompare(a.data.savedAt));
+        const { remove } = boundSectionHistory(
+          history.map((h) => h.data),
+          HISTORY_PER_SECTION
+        );
         for (const r of remove) {
-          const rec = history.find(h => h.id === r.id);
+          const rec = history.find((h) => h.id === r.id);
           if (rec && !rec.dirty && rec.rev > 0) await engine.remove('section_revision', r.id);
         }
       }
-      await engine.put('plan_section', current ? { ...current.data, content: next.content, editedByTeacher: true } : next);
+      await engine.put(
+        'plan_section',
+        current ? { ...current.data, content: next.content, editedByTeacher: true } : next
+      );
       const p = latestPlan.current;
-      if (p && p.aiDraft && next.origin === 'ai') await engine.put('plan', { ...p, aiDraft: false });
+      if (p && p.aiDraft && next.origin === 'ai')
+        await engine.put('plan', { ...p, aiDraft: false });
     },
-    [engine, planId],
+    [engine, planId]
   );
 
   const saveSection = useCallback(
     (section: PlanSection, content: SectionContent) => {
-      setDrafts(d => ({ ...d, [section.id]: content }));
+      setDrafts((d) => ({ ...d, [section.id]: content }));
       pendingSections.current.set(section.id, { ...section, content, editedByTeacher: true });
       const t = sectionTimers.current.get(section.id);
       if (t) clearTimeout(t);
       sectionTimers.current.set(
         section.id,
-        setTimeout(() => void flushSection(section.id), SECTION_DEBOUNCE_MS),
+        setTimeout(() => void flushSection(section.id), SECTION_DEBOUNCE_MS)
       );
     },
-    [flushSection],
+    [flushSection]
   );
 
   const flushPlan = useCallback(async () => {
@@ -135,7 +213,7 @@ export function usePlanEditor(planId: string) {
       if (immediate) void flushPlan();
       else planTimer.current = setTimeout(() => void flushPlan(), PLAN_DEBOUNCE_MS);
     },
-    [flushPlan],
+    [flushPlan]
   );
 
   const flushAll = useCallback(async () => {
@@ -163,16 +241,41 @@ export function usePlanEditor(planId: string) {
   const pendingCount = pendingSections.current.size + (pendingPlan.current ? 1 : 0);
 
   /* ---------- lock / unlock ---------- */
-  const problems: LockProblem[] = useMemo(() => (plan && template ? lockProblems(plan, sections.map(s => s.data), template, cls) : []), [plan, template, sections, cls]);
+  const problems: LockProblem[] = useMemo(
+    () =>
+      plan && template
+        ? lockProblems(
+            plan,
+            sections.map((s) => s.data),
+            template,
+            cls
+          )
+        : [],
+    [plan, template, sections, cls]
+  );
 
   const lock = useCallback(async () => {
     if (!engine || !plan || !template) return false;
     await flushAll();
-    const freshSections = (await engine.list('plan_section')).filter(s => s.data.planId === planId).map(s => s.data);
+    const freshSections = (await engine.list('plan_section'))
+      .filter((s) => s.data.planId === planId)
+      .map((s) => s.data);
     const freshPlan = (await engine.get('plan', planId))?.data ?? plan;
     try {
-      const locked = lockPlan({ plan: freshPlan, sections: freshSections, template, class: cls ?? undefined, teacherName: ws.profile?.displayName ?? user?.displayName ?? '', at: nowIso(), revision: planRecord?.rev || null });
-      for (const s of freshSections) await engine.put('section_revision', sectionRevision(s, { id: newId(), savedAt: nowIso(), reason: 'lock' }));
+      const locked = lockPlan({
+        plan: freshPlan,
+        sections: freshSections,
+        template,
+        class: cls ?? undefined,
+        teacherName: ws.profile?.displayName ?? user?.displayName ?? '',
+        at: nowIso(),
+        revision: planRecord?.rev || null,
+      });
+      for (const s of freshSections)
+        await engine.put(
+          'section_revision',
+          sectionRevision(s, { id: newId(), savedAt: nowIso(), reason: 'lock' })
+        );
       await engine.put('plan', locked);
       return true;
     } catch {
@@ -190,10 +293,14 @@ export function usePlanEditor(planId: string) {
     async (rev: SectionRevision) => {
       if (!engine) return;
       const current = await engine.get('plan_section', rev.sectionId);
-      if (current) await engine.put('section_revision', sectionRevision(current.data, { id: newId(), savedAt: nowIso(), reason: 'restore' }));
+      if (current)
+        await engine.put(
+          'section_revision',
+          sectionRevision(current.data, { id: newId(), savedAt: nowIso(), reason: 'restore' })
+        );
       await engine.put('plan_section', restoreSectionRevision(rev));
     },
-    [engine],
+    [engine]
   );
 
   return {

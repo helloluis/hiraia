@@ -36,14 +36,23 @@ export const BAD_LINK = 'This link does not work any more. Please ask for a new 
 
 export function cleanDisplayName(name: string): string {
   // eslint-disable-next-line no-control-regex
-  const cleaned = name.replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim();
-  if (!cleaned) throw new HttpError('invalid_input', 'Please type your name.', { reason: 'display_name_empty' });
+  const cleaned = name
+    .replace(/[\u0000-\u001f\u007f]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!cleaned)
+    throw new HttpError('invalid_input', 'Please type your name.', {
+      reason: 'display_name_empty',
+    });
   return cleaned;
 }
 
 function requirePolicy(password: string, account: { email?: string; displayName?: string }): void {
   const problem = checkPasswordPolicy(password, account);
-  if (problem) throw new HttpError('invalid_input', PASSWORD_PROBLEM_MESSAGE[problem], { reason: `password_${problem}` });
+  if (problem)
+    throw new HttpError('invalid_input', PASSWORD_PROBLEM_MESSAGE[problem], {
+      reason: `password_${problem}`,
+    });
 }
 
 export function limit(ctx: Ctx, key: string, max: number, windowSeconds: number): void {
@@ -67,7 +76,12 @@ export function limitByAddress(ctx: Ctx, name: string, max: number, windowSecond
  * Check a password with the same protections as sign-in: a ceiling per account, and a growing wait per
  * (email, address) after repeated wrong tries. Used wherever a password is asked for again.
  */
-export async function passwordMatches(ctx: Ctx, row: UserRow | null, emailNorm: string, password: string): Promise<boolean> {
+export async function passwordMatches(
+  ctx: Ctx,
+  row: UserRow | null,
+  emailNorm: string,
+  password: string
+): Promise<boolean> {
   const { hasher, throttle } = coreState(ctx);
   limit(ctx, `login:email:${emailNorm}`, 100, HOUR);
   const wait = throttle.waitSeconds(emailNorm, ctx.ip);
@@ -81,11 +95,20 @@ export async function passwordMatches(ctx: Ctx, row: UserRow | null, emailNorm: 
 }
 
 /** Every account starts with its profile record, so two devices signing in fresh agree on it from the first sync. */
-export function seedProfile(ctx: Ctx, userId: string, displayName: string, uiLanguage: 'fil' | 'en'): void {
+export function seedProfile(
+  ctx: Ctx,
+  userId: string,
+  displayName: string,
+  uiLanguage: 'fil' | 'en'
+): void {
   // Schema defaults fill in the rest. (Core's own store, not ctx.services.records: a test may have swapped that
   // service for a fake.) Skipped while the profile's fixed id is not a valid record id.
   if (!PROFILE_ID_SYNCS) return;
-  coreState(ctx).records.service.put(userId, 'profile', parseRecordData('profile', { id: PROFILE_ID, displayName, uiLanguage }));
+  coreState(ctx).records.service.put(
+    userId,
+    'profile',
+    parseRecordData('profile', { id: PROFILE_ID, displayName, uiLanguage })
+  );
 }
 
 export function authResult(ctx: Ctx, user: User, session: IssuedSession) {
@@ -114,14 +137,26 @@ export const register: Handler<'auth.register'> = async (ctx, { body }) => {
 
   // Hash before looking at whether the address is taken, so both outcomes cost the same.
   const passwordHash = await hasher.hash(body.password);
-  const row = accounts.createUser({ email: body.email, displayName, uiLanguage: body.uiLanguage, passwordHash });
+  const row = accounts.createUser({
+    email: body.email,
+    displayName,
+    uiLanguage: body.uiLanguage,
+    passwordHash,
+  });
   if (!row) {
-    throw new HttpError('conflict', 'There is already an account with this email. Sign in instead, or reset your password if you forgot it.', {
-      reason: 'email_taken',
-    });
+    throw new HttpError(
+      'conflict',
+      'There is already an account with this email. Sign in instead, or reset your password if you forgot it.',
+      {
+        reason: 'email_taken',
+      }
+    );
   }
   seedProfile(ctx, row.id, displayName, body.uiLanguage);
-  const session = accounts.issueSession(row.id, deviceLabelFrom(body.deviceLabel, effectsOf(ctx).userAgent));
+  const session = accounts.issueSession(
+    row.id,
+    deviceLabelFrom(body.deviceLabel, effectsOf(ctx).userAgent)
+  );
   ctx.log.info('account_created', { userId: row.id });
   // The account exists whether or not the mail goes out; the teacher can ask for it again.
   effectsOf(ctx).after.push(() => sendVerificationMail(ctx, row));
@@ -136,11 +171,15 @@ export const login: Handler<'auth.login'> = async (ctx, { body }) => {
   if (!(await passwordMatches(ctx, row, emailNorm, body.password)) || !row) {
     throw new HttpError('unauthenticated', BAD_CREDENTIALS, { reason: 'invalid_credentials' });
   }
-  if (row.password_hash && hasher.needsRehash(row.password_hash)) accounts.setPassword(row.id, await hasher.hash(body.password));
+  if (row.password_hash && hasher.needsRehash(row.password_hash))
+    accounts.setPassword(row.id, await hasher.hash(body.password));
 
   // Signing in again on a browser that already has this account's session replaces it.
   if (ctx.user?.id === row.id) accounts.revokeSession(row.id, ctx.user.sessionId);
-  const session = accounts.issueSession(row.id, deviceLabelFrom(body.deviceLabel, effectsOf(ctx).userAgent));
+  const session = accounts.issueSession(
+    row.id,
+    deviceLabelFrom(body.deviceLabel, effectsOf(ctx).userAgent)
+  );
   ctx.log.info('signed_in', { userId: row.id });
   return authResult(ctx, accounts.toUser(row), session);
 };
@@ -173,7 +212,13 @@ export const sessions: Handler<'auth.sessions'> = (ctx) => {
   return {
     sessions: coreState(ctx)
       .accounts.listSessions(user.id)
-      .map((s) => ({ id: s.id, deviceLabel: s.device_label, createdAt: s.created_at, lastSeenAt: s.last_seen_at, current: s.id === user.sessionId })),
+      .map((s) => ({
+        id: s.id,
+        deviceLabel: s.device_label,
+        createdAt: s.created_at,
+        lastSeenAt: s.last_seen_at,
+        current: s.id === user.sessionId,
+      })),
   };
 };
 
@@ -183,7 +228,8 @@ export const revokeSession: Handler<'auth.revokeSession'> = (ctx, { params }) =>
   if (!coreState(ctx).accounts.revokeSession(user.id, params.sessionId)) {
     throw new HttpError('not_found', 'We could not find that device.');
   }
-  if (params.sessionId === user.sessionId) effectsOf(ctx).cookies.push(clearedSessionCookie(ctx.config));
+  if (params.sessionId === user.sessionId)
+    effectsOf(ctx).cookies.push(clearedSessionCookie(ctx.config));
   return { ok: true as const };
 };
 
@@ -196,7 +242,11 @@ export const sendVerification: Handler<'auth.sendVerification'> = async (ctx) =>
   try {
     await sendVerificationMail(ctx, row);
   } catch {
-    throw new HttpError('unavailable', 'We could not send the email right now. Please try again in a little while.', { reason: 'mail_unavailable' });
+    throw new HttpError(
+      'unavailable',
+      'We could not send the email right now. Please try again in a little while.',
+      { reason: 'mail_unavailable' }
+    );
   }
   return { ok: true as const };
 };
@@ -238,7 +288,8 @@ export const reset: Handler<'auth.reset'> = async (ctx, { body }) => {
   const { accounts, hasher } = coreState(ctx);
   // Look first, so a password that fails the policy does not burn the link.
   const candidate = accounts.peekEmailToken(body.token, 'password_reset');
-  if (!candidate) throw new HttpError('invalid_input', BAD_LINK, { reason: 'link_invalid_or_expired' });
+  if (!candidate)
+    throw new HttpError('invalid_input', BAD_LINK, { reason: 'link_invalid_or_expired' });
   requirePolicy(body.password, { email: candidate.email, displayName: candidate.display_name });
   const passwordHash = await hasher.hash(body.password);
 
@@ -261,10 +312,16 @@ export const changePassword: Handler<'auth.changePassword'> = async (ctx, { body
   if (!row) throw new HttpError('unauthenticated', 'Please sign in again.');
   if (!row.password_hash) {
     // An account without a password proves the mailbox instead: the reset link sets the first password.
-    throw new HttpError('forbidden', 'This account has no password yet. Use "Forgot password" to set one by email.', { reason: 'no_password' });
+    throw new HttpError(
+      'forbidden',
+      'This account has no password yet. Use "Forgot password" to set one by email.',
+      { reason: 'no_password' }
+    );
   }
   if (!(await hasher.verify(row.password_hash, body.currentPassword))) {
-    throw new HttpError('forbidden', 'The current password is not right.', { reason: 'wrong_password' });
+    throw new HttpError('forbidden', 'The current password is not right.', {
+      reason: 'wrong_password',
+    });
   }
   requirePolicy(body.newPassword, { email: row.email, displayName: row.display_name });
   accounts.setPassword(row.id, await hasher.hash(body.newPassword));

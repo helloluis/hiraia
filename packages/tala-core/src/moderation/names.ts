@@ -39,4 +39,6 @@ export const COMMON_GIVEN_NAMES: ReadonlySet<string> = toSet(GIVEN);
 export const COMMON_FAMILY_NAMES: ReadonlySet<string> = toSet(FAMILY);
 
 /** Lower-case particles that may sit inside a Filipino or Spanish surname ("dela Cruz", "de los Santos"). */
-export const NAME_PARTICLES: ReadonlySet<string> = toSet('de dela del della delos los las la san santa sta. sto. y da di van von');
+export const NAME_PARTICLES: ReadonlySet<string> = toSet(
+  'de dela del della delos los las la san santa sta. sto. y da di van von'
+);

@@ -7,7 +7,17 @@ import { getClient } from '@/data/client';
 import { Banner, Button, TextInput, Waiting } from '@/components/ui';
 import { useAuthForm } from './useAuthForm';
 
-export function GoogleLinkStep({ idToken, email, onLinked, onCancel }: { idToken: string; email: string; onLinked: () => void; onCancel: () => void }) {
+export function GoogleLinkStep({
+  idToken,
+  email,
+  onLinked,
+  onCancel,
+}: {
+  idToken: string;
+  email: string;
+  onLinked: () => void;
+  onCancel: () => void;
+}) {
   const { t } = useT();
   const { googleLink } = useSession();
   const [password, setPassword] = useState('');
@@ -16,10 +26,12 @@ export function GoogleLinkStep({ idToken, email, onLinked, onCancel }: { idToken
   return (
     <form
       className="flex flex-col gap-4"
-      onSubmit={async e => {
+      onSubmit={async (e) => {
         e.preventDefault();
         if (!password) return;
-        const ok = await form.run(() => googleLink(idToken, password), { unauthenticated: 'auth.invalid' });
+        const ok = await form.run(() => googleLink(idToken, password), {
+          unauthenticated: 'auth.invalid',
+        });
         if (ok) onLinked();
       }}
     >
@@ -29,7 +41,13 @@ export function GoogleLinkStep({ idToken, email, onLinked, onCancel }: { idToken
         <Banner kind="success">{t('google.linkMailSent')}</Banner>
       ) : (
         <>
-          <TextInput label={t('auth.password')} type="password" autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} />
+          <TextInput
+            label={t('auth.password')}
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
           {form.error && <Banner kind="error">{form.error}</Banner>}
           {form.busy ? <Waiting label={t('common.waiting')} onCancel={form.cancel} /> : null}
           <Button type="submit" variant="primary" full busy={form.busy} disabled={!password}>
@@ -39,7 +57,7 @@ export function GoogleLinkStep({ idToken, email, onLinked, onCancel }: { idToken
             full
             disabled={form.busy}
             onClick={async () => {
-              const ok = await form.run(async signal => {
+              const ok = await form.run(async (signal) => {
                 await getClient().call('auth.googleLinkRequest', { body: { idToken }, signal });
               });
               if (ok) setMailed(true);

@@ -3,7 +3,17 @@
  * The design system: a handful of plain components on the Hiraia tokens. No UI kit (PRD §18.3).
  * Button, Field, ListRow, Sheet, Banner, Placeholder, PageHeader, EmptyState, Badge, Toast.
  */
-import { forwardRef, useEffect, useId, useRef, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from 'react';
+import {
+  forwardRef,
+  useEffect,
+  useId,
+  useRef,
+  type ButtonHTMLAttributes,
+  type InputHTMLAttributes,
+  type ReactNode,
+  type SelectHTMLAttributes,
+  type TextareaHTMLAttributes,
+} from 'react';
 import Link from 'next/link';
 import { useT } from '@/i18n';
 
@@ -27,7 +37,10 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   busy?: boolean;
 }
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button({ variant = 'secondary', full, busy, className, children, disabled, ...rest }, ref) {
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  { variant = 'secondary', full, busy, className, children, disabled, ...rest },
+  ref
+) {
   return (
     <button
       ref={ref}
@@ -39,7 +52,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
         'disabled:opacity-60 disabled:cursor-not-allowed',
         VARIANT[variant],
         full && 'w-full',
-        className,
+        className
       )}
       {...rest}
     >
@@ -48,9 +61,29 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   );
 });
 
-export function LinkButton({ href, variant = 'secondary', full, className, children }: { href: string; variant?: Variant; full?: boolean; className?: string; children: ReactNode }) {
+export function LinkButton({
+  href,
+  variant = 'secondary',
+  full,
+  className,
+  children,
+}: {
+  href: string;
+  variant?: Variant;
+  full?: boolean;
+  className?: string;
+  children: ReactNode;
+}) {
   return (
-    <Link href={href} className={cx('inline-flex items-center justify-center gap-2 min-h-touch px-4 py-2 rounded border text-body font-medium', VARIANT[variant], full && 'w-full', className)}>
+    <Link
+      href={href}
+      className={cx(
+        'inline-flex items-center justify-center gap-2 min-h-touch px-4 py-2 rounded border text-body font-medium',
+        VARIANT[variant],
+        full && 'w-full',
+        className
+      )}
+    >
       {children}
     </Link>
   );
@@ -64,7 +97,17 @@ interface FieldBase {
   error?: string;
   optional?: boolean;
 }
-export function Field({ label, hint, error, optional, children, id }: FieldBase & { children: (id: string, describedBy: string | undefined) => ReactNode; id?: string }) {
+export function Field({
+  label,
+  hint,
+  error,
+  optional,
+  children,
+  id,
+}: FieldBase & {
+  children: (id: string, describedBy: string | undefined) => ReactNode;
+  id?: string;
+}) {
   const { t } = useT();
   const auto = useId();
   const fid = id ?? auto;
@@ -92,29 +135,73 @@ export function Field({ label, hint, error, optional, children, id }: FieldBase 
   );
 }
 
-const inputCls = 'w-full min-h-touch rounded border border-hairline bg-white px-3 py-2 text-body text-forest placeholder:text-forestMuted aria-[invalid=true]:border-brick';
+const inputCls =
+  'w-full min-h-touch rounded border border-hairline bg-white px-3 py-2 text-body text-forest placeholder:text-forestMuted aria-[invalid=true]:border-brick';
 
-export function TextInput({ label, hint, error, optional, className, ...rest }: FieldBase & InputHTMLAttributes<HTMLInputElement>) {
-  return (
-    <Field label={label} hint={hint} error={error} optional={optional}>
-      {(id, describedBy) => <input id={id} aria-describedby={describedBy} aria-invalid={error ? true : undefined} className={cx(inputCls, className)} {...rest} />}
-    </Field>
-  );
-}
-
-export function TextArea({ label, hint, error, optional, className, ...rest }: FieldBase & TextareaHTMLAttributes<HTMLTextAreaElement>) {
-  return (
-    <Field label={label} hint={hint} error={error} optional={optional}>
-      {(id, describedBy) => <textarea id={id} aria-describedby={describedBy} aria-invalid={error ? true : undefined} className={cx(inputCls, 'min-h-[6rem]', className)} {...rest} />}
-    </Field>
-  );
-}
-
-export function Select({ label, hint, error, optional, className, children, ...rest }: FieldBase & SelectHTMLAttributes<HTMLSelectElement>) {
+export function TextInput({
+  label,
+  hint,
+  error,
+  optional,
+  className,
+  ...rest
+}: FieldBase & InputHTMLAttributes<HTMLInputElement>) {
   return (
     <Field label={label} hint={hint} error={error} optional={optional}>
       {(id, describedBy) => (
-        <select id={id} aria-describedby={describedBy} className={cx(inputCls, className)} {...rest}>
+        <input
+          id={id}
+          aria-describedby={describedBy}
+          aria-invalid={error ? true : undefined}
+          className={cx(inputCls, className)}
+          {...rest}
+        />
+      )}
+    </Field>
+  );
+}
+
+export function TextArea({
+  label,
+  hint,
+  error,
+  optional,
+  className,
+  ...rest
+}: FieldBase & TextareaHTMLAttributes<HTMLTextAreaElement>) {
+  return (
+    <Field label={label} hint={hint} error={error} optional={optional}>
+      {(id, describedBy) => (
+        <textarea
+          id={id}
+          aria-describedby={describedBy}
+          aria-invalid={error ? true : undefined}
+          className={cx(inputCls, 'min-h-[6rem]', className)}
+          {...rest}
+        />
+      )}
+    </Field>
+  );
+}
+
+export function Select({
+  label,
+  hint,
+  error,
+  optional,
+  className,
+  children,
+  ...rest
+}: FieldBase & SelectHTMLAttributes<HTMLSelectElement>) {
+  return (
+    <Field label={label} hint={hint} error={error} optional={optional}>
+      {(id, describedBy) => (
+        <select
+          id={id}
+          aria-describedby={describedBy}
+          className={cx(inputCls, className)}
+          {...rest}
+        >
           {children}
         </select>
       )}
@@ -122,37 +209,102 @@ export function Select({ label, hint, error, optional, className, children, ...r
   );
 }
 
-export function Checkbox({ label, checked, onChange, disabled }: { label: string; checked: boolean; onChange: (v: boolean) => void; disabled?: boolean }) {
+export function Checkbox({
+  label,
+  checked,
+  onChange,
+  disabled,
+}: {
+  label: string;
+  checked: boolean;
+  onChange: (v: boolean) => void;
+  disabled?: boolean;
+}) {
   return (
     <label className="flex items-center gap-3 min-h-touch cursor-pointer">
-      <input type="checkbox" className="h-6 w-6 accent-talaTeal" checked={checked} disabled={disabled} onChange={e => onChange(e.target.checked)} />
+      <input
+        type="checkbox"
+        className="h-6 w-6 accent-talaTeal"
+        checked={checked}
+        disabled={disabled}
+        onChange={(e) => onChange(e.target.checked)}
+      />
       <span>{label}</span>
     </label>
   );
 }
 
-export function Switch({ label, hint, checked, onChange }: { label: string; hint?: string; checked: boolean; onChange: (v: boolean) => void }) {
+export function Switch({
+  label,
+  hint,
+  checked,
+  onChange,
+}: {
+  label: string;
+  hint?: string;
+  checked: boolean;
+  onChange: (v: boolean) => void;
+}) {
   return (
-    <button type="button" role="switch" aria-checked={checked} onClick={() => onChange(!checked)} className="flex w-full items-center justify-between gap-4 min-h-touch py-2 text-left">
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      onClick={() => onChange(!checked)}
+      className="flex w-full items-center justify-between gap-4 min-h-touch py-2 text-left"
+    >
       <span className="min-w-0 flex-1 break-words">
         <span className="block font-medium">{label}</span>
         {hint && <span className="block text-small text-forestMuted">{hint}</span>}
       </span>
-      <span aria-hidden="true" className={cx('relative inline-block h-7 w-12 shrink-0 rounded-full border transition-none', checked ? 'bg-talaTeal border-talaTeal' : 'bg-white border-hairline')}>
-        <span className={cx('absolute top-0.5 h-6 w-6 rounded-full bg-white border border-hairline', checked ? 'right-0.5' : 'left-0.5')} />
+      <span
+        aria-hidden="true"
+        className={cx(
+          'relative inline-block h-7 w-12 shrink-0 rounded-full border transition-none',
+          checked ? 'bg-talaTeal border-talaTeal' : 'bg-white border-hairline'
+        )}
+      >
+        <span
+          className={cx(
+            'absolute top-0.5 h-6 w-6 rounded-full bg-white border border-hairline',
+            checked ? 'right-0.5' : 'left-0.5'
+          )}
+        />
       </span>
     </button>
   );
 }
 
 /** Segmented single choice as large buttons (used instead of radios for 48 dp targets). */
-export function Choice<T extends string>({ label, value, options, onChange }: { label: string; value: T; options: Array<{ value: T; label: string; hint?: string }>; onChange: (v: T) => void }) {
+export function Choice<T extends string>({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string;
+  value: T;
+  options: Array<{ value: T; label: string; hint?: string }>;
+  onChange: (v: T) => void;
+}) {
   return (
     <fieldset className="flex flex-col gap-2">
       <legend className="font-medium mb-1">{label}</legend>
-      {options.map(o => (
-        <label key={o.value} className={cx('flex items-start gap-3 min-h-touch rounded border bg-white px-3 py-2 cursor-pointer', value === o.value ? 'border-talaTeal ring-2 ring-talaTeal' : 'border-hairline')}>
-          <input type="radio" name={label} className="mt-1.5 h-5 w-5 accent-talaTeal" checked={value === o.value} onChange={() => onChange(o.value)} />
+      {options.map((o) => (
+        <label
+          key={o.value}
+          className={cx(
+            'flex items-start gap-3 min-h-touch rounded border bg-white px-3 py-2 cursor-pointer',
+            value === o.value ? 'border-talaTeal ring-2 ring-talaTeal' : 'border-hairline'
+          )}
+        >
+          <input
+            type="radio"
+            name={label}
+            className="mt-1.5 h-5 w-5 accent-talaTeal"
+            checked={value === o.value}
+            onChange={() => onChange(o.value)}
+          />
           <span>
             <span className="block">{o.label}</span>
             {o.hint && <span className="block text-small text-forestMuted">{o.hint}</span>}
@@ -165,18 +317,40 @@ export function Choice<T extends string>({ label, value, options, onChange }: { 
 
 /* ---------- ListRow ---------- */
 
-export function ListRow({ title, subtitle, trailing, href, onClick, leading, current }: { title: ReactNode; subtitle?: ReactNode; trailing?: ReactNode; href?: string; onClick?: () => void; leading?: ReactNode; current?: boolean }) {
+export function ListRow({
+  title,
+  subtitle,
+  trailing,
+  href,
+  onClick,
+  leading,
+  current,
+}: {
+  title: ReactNode;
+  subtitle?: ReactNode;
+  trailing?: ReactNode;
+  href?: string;
+  onClick?: () => void;
+  leading?: ReactNode;
+  current?: boolean;
+}) {
   const inner = (
     <>
       {leading}
       <span className="min-w-0 flex-1">
         <span className="block break-words">{title}</span>
-        {subtitle && <span className="block text-small text-forestMuted break-words">{subtitle}</span>}
+        {subtitle && (
+          <span className="block text-small text-forestMuted break-words">{subtitle}</span>
+        )}
       </span>
       {trailing && <span className="shrink-0 text-small">{trailing}</span>}
     </>
   );
-  const cls = cx('flex w-full items-center gap-3 min-h-touch px-3 py-2 text-left bg-white border-b border-hairline last:border-b-0', (href || onClick) && 'hover:bg-cream', current && 'border-l-4 border-l-talaTeal');
+  const cls = cx(
+    'flex w-full items-center gap-3 min-h-touch px-3 py-2 text-left bg-white border-b border-hairline last:border-b-0',
+    (href || onClick) && 'hover:bg-cream',
+    current && 'border-l-4 border-l-talaTeal'
+  );
   if (href) {
     return (
       <Link href={href} className={cls} aria-current={current ? 'true' : undefined}>
@@ -195,7 +369,11 @@ export function ListRow({ title, subtitle, trailing, href, onClick, leading, cur
 }
 
 export function List({ children, className }: { children: ReactNode; className?: string }) {
-  return <div className={cx('rounded border border-hairline bg-white overflow-hidden', className)}>{children}</div>;
+  return (
+    <div className={cx('rounded border border-hairline bg-white overflow-hidden', className)}>
+      {children}
+    </div>
+  );
 }
 
 /* ---------- Badge ---------- */
@@ -209,7 +387,16 @@ const TONE: Record<Tone, string> = {
   gold: 'bg-yellow text-forest border-yellow',
 };
 export function Badge({ tone = 'neutral', children }: { tone?: Tone; children: ReactNode }) {
-  return <span className={cx('inline-block rounded-sm border px-2 py-0.5 text-small whitespace-nowrap', TONE[tone])}>{children}</span>;
+  return (
+    <span
+      className={cx(
+        'inline-block rounded-sm border px-2 py-0.5 text-small whitespace-nowrap',
+        TONE[tone]
+      )}
+    >
+      {children}
+    </span>
+  );
 }
 
 /* ---------- Banner ---------- */
@@ -221,9 +408,23 @@ const BANNER: Record<'info' | 'warn' | 'error' | 'success', string> = {
   success: 'bg-white border-sage',
 };
 const BANNER_ICON = { info: 'ℹ', warn: '⚠', error: '⚠', success: '✓' } as const;
-export function Banner({ kind = 'info', children, action }: { kind?: keyof typeof BANNER; children: ReactNode; action?: ReactNode }) {
+export function Banner({
+  kind = 'info',
+  children,
+  action,
+}: {
+  kind?: keyof typeof BANNER;
+  children: ReactNode;
+  action?: ReactNode;
+}) {
   return (
-    <div role={kind === 'error' ? 'alert' : 'status'} className={cx('flex flex-wrap items-center gap-3 rounded border-l-4 border px-3 py-2', BANNER[kind])}>
+    <div
+      role={kind === 'error' ? 'alert' : 'status'}
+      className={cx(
+        'flex flex-wrap items-center gap-3 rounded border-l-4 border px-3 py-2',
+        BANNER[kind]
+      )}
+    >
       <span aria-hidden="true">{BANNER_ICON[kind]}</span>
       <span className="flex-1 basis-48 min-w-0 break-words">{children}</span>
       {action}
@@ -236,7 +437,12 @@ export function Banner({ kind = 'info', children, action }: { kind?: keyof typeo
 export function Placeholder({ rows = 3, label }: { rows?: number; label?: string }) {
   const { t } = useT();
   return (
-    <div role="status" aria-live="polite" aria-label={label ?? t('common.loading')} className="flex flex-col gap-2">
+    <div
+      role="status"
+      aria-live="polite"
+      aria-label={label ?? t('common.loading')}
+      className="flex flex-col gap-2"
+    >
       {Array.from({ length: rows }, (_, i) => (
         <div key={i} className="placeholder h-12" />
       ))}
@@ -246,11 +452,24 @@ export function Placeholder({ rows = 3, label }: { rows?: number; label?: string
 
 /* ---------- Page header: one title, at most one primary action ---------- */
 
-export function PageHeader({ title, action, back, subtitle }: { title: ReactNode; action?: ReactNode; back?: { href: string; label: string }; subtitle?: ReactNode }) {
+export function PageHeader({
+  title,
+  action,
+  back,
+  subtitle,
+}: {
+  title: ReactNode;
+  action?: ReactNode;
+  back?: { href: string; label: string };
+  subtitle?: ReactNode;
+}) {
   return (
     <header className="flex flex-col gap-2 mb-4">
       {back && (
-        <Link href={back.href} className="inline-flex items-center gap-1 min-h-touch text-talaTealText self-start">
+        <Link
+          href={back.href}
+          className="inline-flex items-center gap-1 min-h-touch text-talaTealText self-start"
+        >
           ← {back.label}
         </Link>
       )}
@@ -265,7 +484,13 @@ export function PageHeader({ title, action, back, subtitle }: { title: ReactNode
   );
 }
 
-export function SectionTitle({ children, trailing }: { children: ReactNode; trailing?: ReactNode }) {
+export function SectionTitle({
+  children,
+  trailing,
+}: {
+  children: ReactNode;
+  trailing?: ReactNode;
+}) {
   return (
     <div className="flex items-center justify-between gap-3 mt-6 mb-2">
       <h2 className="text-title">{children}</h2>
@@ -287,7 +512,19 @@ export function EmptyState({ children, action }: { children: ReactNode; action?:
 
 /* ---------- Sheet (dialog). Bottom sheet on phones, centred on wide screens. ---------- */
 
-export function Sheet({ open, onClose, title, children, actions }: { open: boolean; onClose: () => void; title: string; children: ReactNode; actions?: ReactNode }) {
+export function Sheet({
+  open,
+  onClose,
+  title,
+  children,
+  actions,
+}: {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  children: ReactNode;
+  actions?: ReactNode;
+}) {
   const ref = useRef<HTMLDialogElement>(null);
   const { t } = useT();
   const titleId = useId();
@@ -301,7 +538,7 @@ export function Sheet({ open, onClose, title, children, actions }: { open: boole
     <dialog
       ref={ref}
       onClose={onClose}
-      onCancel={e => {
+      onCancel={(e) => {
         e.preventDefault();
         onClose();
       }}
@@ -319,7 +556,11 @@ export function Sheet({ open, onClose, title, children, actions }: { open: boole
             </Button>
           </div>
           <div className="flex flex-col gap-3">{children}</div>
-          {actions && <div className="flex flex-col-reverse wide:flex-row wide:justify-end gap-2 pt-2">{actions}</div>}
+          {actions && (
+            <div className="flex flex-col-reverse wide:flex-row wide:justify-end gap-2 pt-2">
+              {actions}
+            </div>
+          )}
         </div>
       )}
     </dialog>
@@ -328,7 +569,15 @@ export function Sheet({ open, onClose, title, children, actions }: { open: boole
 
 /* ---------- Toast with optional Undo (SIMPLE-11) ---------- */
 
-export function Toast({ message, onUndo, onDone }: { message: string | null; onUndo?: () => void; onDone: () => void }) {
+export function Toast({
+  message,
+  onUndo,
+  onDone,
+}: {
+  message: string | null;
+  onUndo?: () => void;
+  onDone: () => void;
+}) {
   const { t } = useT();
   useEffect(() => {
     if (!message) return;
@@ -337,10 +586,17 @@ export function Toast({ message, onUndo, onDone }: { message: string | null; onU
   }, [message, onDone, onUndo]);
   if (!message) return null;
   return (
-    <div role="status" className="fixed bottom-20 wide:bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 rounded bg-forest text-cream px-4 py-3 shadow max-w-[calc(100vw-2rem)]">
+    <div
+      role="status"
+      className="fixed bottom-20 wide:bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 rounded bg-forest text-cream px-4 py-3 shadow max-w-[calc(100vw-2rem)]"
+    >
       <span>{message}</span>
       {onUndo && (
-        <button type="button" onClick={onUndo} className="min-h-touch px-2 font-medium text-yellow underline">
+        <button
+          type="button"
+          onClick={onUndo}
+          className="min-h-touch px-2 font-medium text-yellow underline"
+        >
           {t('common.undo')}
         </button>
       )}
@@ -352,7 +608,11 @@ export function Toast({ message, onUndo, onDone }: { message: string | null; onU
 export function Waiting({ label, onCancel }: { label: string; onCancel?: () => void }) {
   const { t } = useT();
   return (
-    <div role="status" aria-live="polite" className="flex items-center gap-3 rounded border border-hairline bg-white px-3 py-2">
+    <div
+      role="status"
+      aria-live="polite"
+      className="flex items-center gap-3 rounded border border-hairline bg-white px-3 py-2"
+    >
       <span className="placeholder h-5 w-5 rounded-full" aria-hidden="true" />
       <span className="flex-1">{label}</span>
       {onCancel && (

@@ -15,7 +15,12 @@ export function useAuthForm() {
   const cancel = useCallback(() => ctrl.current?.abort(), []);
 
   const run = useCallback(
-    async (fn: (signal: AbortSignal) => Promise<void>, messages: Partial<Record<'unauthenticated' | 'conflict' | 'invalid_input' | 'rate_limited', StringKey>> = {}) => {
+    async (
+      fn: (signal: AbortSignal) => Promise<void>,
+      messages: Partial<
+        Record<'unauthenticated' | 'conflict' | 'invalid_input' | 'rate_limited', StringKey>
+      > = {}
+    ) => {
       setBusy(true);
       setError(null);
       const c = new AbortController();
@@ -29,7 +34,8 @@ export function useAuthForm() {
           const reason = (err.details as { reason?: string } | undefined)?.reason;
           const key = messages[err.code as keyof typeof messages];
           if (key && !reason) setError(t(key));
-          else if (err.code === 'network' || err.code === 'timeout' || err.code === 'unavailable') setError(t('auth.failed'));
+          else if (err.code === 'network' || err.code === 'timeout' || err.code === 'unavailable')
+            setError(t('auth.failed'));
           else setError(t(errorKey(err)));
         } else setError(t('error.generic'));
         return false;
@@ -38,7 +44,7 @@ export function useAuthForm() {
         ctrl.current = null;
       }
     },
-    [t],
+    [t]
   );
 
   return { busy, error, setError, run, cancel };

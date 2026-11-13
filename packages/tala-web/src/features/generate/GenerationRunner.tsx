@@ -37,15 +37,25 @@ export function GenerationRunner() {
             if (job.status === 'done') {
               const planRec = await engine.get('plan', item.planId);
               if (planRec && !planRec.deletedAt && planRec.data.state === 'draft') {
-                const sections = (await engine.list('plan_section')).filter(s => s.data.planId === item.planId).map(s => s.data);
-                await applyGenerationJob(engine, planRec.data, sections, job, newId, item.confirmedSectionIds);
+                const sections = (await engine.list('plan_section'))
+                  .filter((s) => s.data.planId === item.planId)
+                  .map((s) => s.data);
+                await applyGenerationJob(
+                  engine,
+                  planRec.data,
+                  sections,
+                  job,
+                  newId,
+                  item.confirmedSectionIds
+                );
               }
             }
             // failed / cancelled: the pre-filled template is already in place; drop the request.
             await dequeue(cache, item.id);
           } catch (err) {
             // Permanent refusals leave the queue; anything retryable waits for the next tick.
-            if (err instanceof TalaApiError && !err.retryable && err.code !== 'unauthenticated') await dequeue(cache, item.id);
+            if (err instanceof TalaApiError && !err.retryable && err.code !== 'unauthenticated')
+              await dequeue(cache, item.id);
           }
         }
       } finally {

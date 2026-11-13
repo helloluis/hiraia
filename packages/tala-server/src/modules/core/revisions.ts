@@ -65,36 +65,68 @@ function unpack(packed: Buffer): PlanSnapshotEnvelopes {
 
 export function createRevisions(db: Db, now: () => Date) {
   const q = {
-    latest: db.prepare('SELECT * FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ? ORDER BY revision DESC LIMIT 1'),
-    max: db.prepare('SELECT COALESCE(MAX(revision), 0) AS n FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ?'),
+    latest: db.prepare(
+      'SELECT * FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ? ORDER BY revision DESC LIMIT 1'
+    ),
+    max: db.prepare(
+      'SELECT COALESCE(MAX(revision), 0) AS n FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ?'
+    ),
     insert: db.prepare(
       `INSERT INTO core_plan_revisions (owner_id, plan_id, revision, reason, locked, created_at, updated_at, session_id, device_id, digest, snapshot)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     ),
-    overwrite: db.prepare('UPDATE core_plan_revisions SET digest = ?, snapshot = ?, updated_at = ? WHERE owner_id = ? AND plan_id = ? AND revision = ?'),
-    list: db.prepare('SELECT revision, reason, locked, created_at FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ? ORDER BY revision DESC'),
-    one: db.prepare('SELECT * FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ? AND revision = ?'),
+    overwrite: db.prepare(
+      'UPDATE core_plan_revisions SET digest = ?, snapshot = ?, updated_at = ? WHERE owner_id = ? AND plan_id = ? AND revision = ?'
+    ),
+    list: db.prepare(
+      'SELECT revision, reason, locked, created_at FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ? ORDER BY revision DESC'
+    ),
+    one: db.prepare(
+      'SELECT * FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ? AND revision = ?'
+    ),
     prune: db.prepare(
       `DELETE FROM core_plan_revisions
         WHERE owner_id = ? AND plan_id = ? AND reason = 'save' AND revision IN (
           SELECT revision FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ? AND reason = 'save'
-           ORDER BY revision DESC LIMIT -1 OFFSET ?)`,
+           ORDER BY revision DESC LIMIT -1 OFFSET ?)`
     ),
     purgeOwner: db.prepare('DELETE FROM core_plan_revisions WHERE owner_id = ?'),
     purgePlan: db.prepare('DELETE FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ?'),
   };
 
-  const meta = (row: Pick<RevisionRow, 'revision' | 'reason' | 'locked' | 'created_at'>): RevisionMeta => ({
+  const meta = (
+    row: Pick<RevisionRow, 'revision' | 'reason' | 'locked' | 'created_at'>
+  ): RevisionMeta => ({
     revision: row.revision,
     createdAt: row.created_at,
     reason: row.reason,
     locked: row.locked === 1,
   });
 
-  function append(ownerId: Id, planId: Id, revision: number, reason: RevisionReason, locked: boolean, snapshot: PlanSnapshotEnvelopes, actor: RevisionActor): void {
+  function append(
+    ownerId: Id,
+    planId: Id,
+    revision: number,
+    reason: RevisionReason,
+    locked: boolean,
+    snapshot: PlanSnapshotEnvelopes,
+    actor: RevisionActor
+  ): void {
     const at = now().toISOString();
     const { digest, packed } = pack(snapshot);
-    q.insert.run(ownerId, planId, revision, reason, locked ? 1 : 0, at, at, actor.sessionId, actor.deviceId, digest, packed);
+    q.insert.run(
+      ownerId,
+      planId,
+      revision,
+      reason,
+      locked ? 1 : 0,
+      at,
+      at,
+      actor.sessionId,
+      actor.deviceId,
+      digest,
+      packed
+    );
   }
 
   return {
@@ -104,12 +136,27 @@ export function createRevisions(db: Db, now: () => Date) {
     },
 
     /** A lock or unlock: always its own revision, with the number the caller reserved. */
-    recordEvent(ownerId: Id, planId: Id, revision: number, reason: 'lock' | 'unlock', locked: boolean, snapshot: PlanSnapshotEnvelopes, actor: RevisionActor): void {
+    recordEvent(
+      ownerId: Id,
+      planId: Id,
+      revision: number,
+      reason: 'lock' | 'unlock',
+      locked: boolean,
+      snapshot: PlanSnapshotEnvelopes,
+      actor: RevisionActor
+    ): void {
       append(ownerId, planId, revision, reason, locked, snapshot, actor);
     },
 
     /** Ordinary edits: fold into the newest revision when it is a recent save of the same kind, else add one. */
-    recordSave(ownerId: Id, planId: Id, reason: 'save' | 'regenerate', locked: boolean, snapshot: PlanSnapshotEnvelopes, actor: RevisionActor): number {
+    recordSave(
+      ownerId: Id,
+      planId: Id,
+      reason: 'save' | 'regenerate',
+      locked: boolean,
+      snapshot: PlanSnapshotEnvelopes,
+      actor: RevisionActor
+    ): number {
       const latest = q.latest.get(ownerId, planId) as RevisionRow | undefined;
       const { digest, packed } = pack(snapshot);
       if (latest && latest.digest === digest) return latest.revision;
@@ -134,7 +181,15 @@ export function createRevisions(db: Db, now: () => Date) {
       return (q.list.all(ownerId, planId) as RevisionRow[]).map(meta);
     },
 
-    get(ownerId: Id, planId: Id, revision: number): { meta: RevisionMeta; plan: RecordEnvelope<'plan'>; sections: Array<RecordEnvelope<'plan_section'>> } | null {
+    get(
+      ownerId: Id,
+      planId: Id,
+      revision: number
+    ): {
+      meta: RevisionMeta;
+      plan: RecordEnvelope<'plan'>;
+      sections: Array<RecordEnvelope<'plan_section'>>;
+    } | null {
       const row = q.one.get(ownerId, planId, revision) as RevisionRow | undefined;
       if (!row) return null;
       const snapshot = unpack(row.snapshot);
@@ -147,8 +202,13 @@ export function createRevisions(db: Db, now: () => Date) {
 
     /** Account merge: plan history follows its plans. History of a plan id the other account also has is dropped. */
     reassignOwner(fromOwner: Id, toOwner: Id): void {
-      db.prepare('DELETE FROM core_plan_revisions WHERE owner_id = ? AND plan_id IN (SELECT plan_id FROM core_plan_revisions WHERE owner_id = ?)').run(fromOwner, toOwner);
-      db.prepare('UPDATE core_plan_revisions SET owner_id = ? WHERE owner_id = ?').run(toOwner, fromOwner);
+      db.prepare(
+        'DELETE FROM core_plan_revisions WHERE owner_id = ? AND plan_id IN (SELECT plan_id FROM core_plan_revisions WHERE owner_id = ?)'
+      ).run(fromOwner, toOwner);
+      db.prepare('UPDATE core_plan_revisions SET owner_id = ? WHERE owner_id = ?').run(
+        toOwner,
+        fromOwner
+      );
     },
 
     /** A deleted plan's history goes with it: the words of a deleted lesson are not kept. */

@@ -5,7 +5,11 @@
 import { z } from 'zod';
 
 /** Client-generated identifier (UUID v4 or ULID; fixed ids such as 'profile' are also valid). Records are created offline, so ids never come from the server. */
-export const Id = z.string().min(1).max(64).regex(/^[A-Za-z0-9_.:-]+$/);
+export const Id = z
+  .string()
+  .min(1)
+  .max(64)
+  .regex(/^[A-Za-z0-9_.:-]+$/);
 export type Id = z.infer<typeof Id>;
 
 /** Calendar date in the school's local time, `YYYY-MM-DD`. Never a timestamp. */
@@ -22,7 +26,21 @@ export type Lang = z.infer<typeof Lang>;
 export const Localized = z.object({ fil: z.string(), en: z.string() });
 export type Localized = z.infer<typeof Localized>;
 
-export const GradeLevel = z.enum(['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']);
+export const GradeLevel = z.enum([
+  'K',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
+  '11',
+  '12',
+]);
 export type GradeLevel = z.infer<typeof GradeLevel>;
 
 /** ISO weekday: 1 = Monday … 7 = Sunday. */

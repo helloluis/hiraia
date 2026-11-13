@@ -36,10 +36,24 @@ const LEARNING_AREAS: Array<[RegExp, string]> = [
   [/^(?:math|maths|mathematics|matematika)$/, 'mathematics'],
 ];
 
-const ORDINALS: Record<string, number> = { una: 1, unang: 1, first: 1, ikalawa: 2, ikalawang: 2, second: 2, ikatlo: 3, ikatlong: 3, third: 3, ikaapat: 4, fourth: 4 };
+const ORDINALS: Record<string, number> = {
+  una: 1,
+  unang: 1,
+  first: 1,
+  ikalawa: 2,
+  ikalawang: 2,
+  second: 2,
+  ikatlo: 3,
+  ikatlong: 3,
+  third: 3,
+  ikaapat: 4,
+  fourth: 4,
+};
 
 const STOPWORDS = new Set(
-  'the a an of for in on to and at ng sa mga ang na lesson lessons plan plans aralin banghay dll dlp about tungkol para'.split(' '),
+  'the a an of for in on to and at ng sa mga ang na lesson lessons plan plans aralin banghay dll dlp about tungkol para'.split(
+    ' '
+  )
 );
 
 /**
@@ -61,7 +75,10 @@ export function parseQuery(q: string): ParsedQuery {
     if ((GradeLevel.options as readonly string[]).includes(g)) out.grade = g as GradeLevel;
   });
   take(/\b(?:q|quarter|markahan|term)\s*(\d)\b/, (m) => (out.termIndex = Number(m[1])));
-  take(/\b(una|unang|first|ikalawa|ikalawang|second|ikatlo|ikatlong|third|ikaapat|fourth)\s+(?:na\s+)?(?:markahan|quarter)\b/, (m) => (out.termIndex = ORDINALS[m[1]!] ?? null));
+  take(
+    /\b(una|unang|first|ikalawa|ikalawang|second|ikatlo|ikatlong|third|ikaapat|fourth)\s+(?:na\s+)?(?:markahan|quarter)\b/,
+    (m) => (out.termIndex = ORDINALS[m[1]!] ?? null)
+  );
   const words = text.split(/[^\p{L}\p{N}-]+/u).filter(Boolean);
   for (const w of words) {
     const area = !out.learningAreaId ? LEARNING_AREAS.find(([re]) => re.test(w)) : undefined;
@@ -86,24 +103,33 @@ export function decodeCursor(cursor: string | undefined): number {
   if (!cursor) return 0;
   try {
     const o = (JSON.parse(Buffer.from(cursor, 'base64url').toString('utf8')) as { o?: unknown }).o;
-    if (typeof o === 'number' && Number.isInteger(o) && o >= 0 && o <= LIMITS.maxCommunityResults) return o;
+    if (typeof o === 'number' && Number.isInteger(o) && o >= 0 && o <= LIMITS.maxCommunityResults)
+      return o;
   } catch {
     /* fall through */
   }
-  throw new HttpError('invalid_input', 'This list is out of date. Please search again.', { reason: 'cursor_invalid' });
+  throw new HttpError('invalid_input', 'This list is out of date. Please search again.', {
+    reason: 'cursor_invalid',
+  });
 }
 
 /* ---------------- search ---------------- */
 
 const likeEscape = (s: string) => s.replace(/[\\%_]/g, (c) => `\\${c}`);
 
-export function searchArtifacts(deps: CommunityDeps, userId: string, query: Query): { items: ArtifactSummary[]; nextCursor: string | null } {
+export function searchArtifacts(
+  deps: CommunityDeps,
+  userId: string,
+  query: Query
+): { items: ArtifactSummary[]; nextCursor: string | null } {
   const pageSize = Math.min(deps.config.limits.pageSize, LIMITS.pageSize);
   const cap = LIMITS.maxCommunityResults;
   const offset = decodeCursor(query.cursor);
   if (offset >= cap) return { items: [], nextCursor: null };
 
-  const parsed = query.q ? parseQuery(query.q) : { grade: null, termIndex: null, learningAreaId: null, keywords: [] };
+  const parsed = query.q
+    ? parseQuery(query.q)
+    : { grade: null, termIndex: null, learningAreaId: null, keywords: [] };
   const grade = query.grade ?? parsed.grade;
   const termIndex = query.termIndex ?? parsed.termIndex;
   const learningAreaId = query.learningAreaId ?? parsed.learningAreaId;
@@ -113,11 +139,15 @@ export function searchArtifacts(deps: CommunityDeps, userId: string, query: Quer
   if (query.mine) where.push("a.author_id = @me AND a.status != 'removed'");
   else where.push("(a.status = 'visible' OR (a.author_id = @me AND a.status != 'removed'))");
   if (grade) {
-    where.push("EXISTS (SELECT 1 FROM community_artifact_terms t WHERE t.artifact_id = a.id AND t.kind = 'grade' AND t.value = @grade)");
+    where.push(
+      "EXISTS (SELECT 1 FROM community_artifact_terms t WHERE t.artifact_id = a.id AND t.kind = 'grade' AND t.value = @grade)"
+    );
     params['grade'] = grade;
   }
   if (query.competencyId) {
-    where.push("EXISTS (SELECT 1 FROM community_artifact_terms t WHERE t.artifact_id = a.id AND t.kind = 'competency' AND t.value = @competency)");
+    where.push(
+      "EXISTS (SELECT 1 FROM community_artifact_terms t WHERE t.artifact_id = a.id AND t.kind = 'competency' AND t.value = @competency)"
+    );
     params['competency'] = query.competencyId;
   }
   if (learningAreaId) {
@@ -144,7 +174,9 @@ export function searchArtifacts(deps: CommunityDeps, userId: string, query: Quer
       .filter(Boolean);
     const order = GradeLevel.options as readonly string[];
     where.push('a.multigrade = @multigrade');
-    params['multigrade'] = [...new Set(combo)].sort((x, y) => order.indexOf(x) - order.indexOf(y)).join(',');
+    params['multigrade'] = [...new Set(combo)]
+      .sort((x, y) => order.indexOf(x) - order.indexOf(y))
+      .join(',');
   }
   if (query.maxMinutes != null) {
     where.push('a.duration_minutes <= @maxMinutes');
@@ -154,7 +186,9 @@ export function searchArtifacts(deps: CommunityDeps, userId: string, query: Quer
   parsed.keywords.forEach((k, i) => {
     const key = `kw${i}`;
     params[key] = `%${likeEscape(k)}%`;
-    where.push(`(lower(a.title) LIKE @${key} ESCAPE '\\' OR lower(a.summary) LIKE @${key} ESCAPE '\\' OR lower(a.subject_name) LIKE @${key} ESCAPE '\\')`);
+    where.push(
+      `(lower(a.title) LIKE @${key} ESCAPE '\\' OR lower(a.summary) LIKE @${key} ESCAPE '\\' OR lower(a.subject_name) LIKE @${key} ESCAPE '\\')`
+    );
     keywordScore.push(`(CASE WHEN lower(a.title) LIKE @${key} ESCAPE '\\' THEN 2 ELSE 1 END)`);
   });
 
@@ -169,7 +203,7 @@ export function searchArtifacts(deps: CommunityDeps, userId: string, query: Quer
       `SELECT a.* FROM community_artifacts a
        WHERE ${where.join(' AND ')}
        ORDER BY ${order.join(', ')}
-       LIMIT @limit OFFSET @offset`,
+       LIMIT @limit OFFSET @offset`
     )
     .all({ ...params, limit: limit + 1, offset }) as ArtifactRow[];
 

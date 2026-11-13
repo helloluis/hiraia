@@ -98,42 +98,72 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
     userByEmail: db.prepare('SELECT * FROM core_users WHERE email_norm = ?'),
     insertUser: db.prepare(
       `INSERT INTO core_users (id, email, email_norm, email_verified, display_name, ui_language, password_hash, password_changed_at, created_at, updated_at)
-       VALUES (@id, @email, @email_norm, @email_verified, @display_name, @ui_language, @password_hash, @password_changed_at, @created_at, @updated_at)`,
+       VALUES (@id, @email, @email_norm, @email_verified, @display_name, @ui_language, @password_hash, @password_changed_at, @created_at, @updated_at)`
     ),
-    setPassword: db.prepare('UPDATE core_users SET password_hash = ?, password_changed_at = ?, updated_at = ? WHERE id = ?'),
-    setVerified: db.prepare('UPDATE core_users SET email_verified = 1, updated_at = ? WHERE id = ?'),
-    setProfile: db.prepare('UPDATE core_users SET display_name = ?, ui_language = ?, updated_at = ? WHERE id = ?'),
+    setPassword: db.prepare(
+      'UPDATE core_users SET password_hash = ?, password_changed_at = ?, updated_at = ? WHERE id = ?'
+    ),
+    setVerified: db.prepare(
+      'UPDATE core_users SET email_verified = 1, updated_at = ? WHERE id = ?'
+    ),
+    setProfile: db.prepare(
+      'UPDATE core_users SET display_name = ?, ui_language = ?, updated_at = ? WHERE id = ?'
+    ),
     deleteUser: db.prepare('DELETE FROM core_users WHERE id = ?'),
     deleteMailTo: db.prepare('DELETE FROM core_mail_outbox WHERE lower(to_email) = ?'),
-    hasGoogle: db.prepare(`SELECT 1 FROM core_identities WHERE user_id = ? AND provider = 'google' LIMIT 1`),
-    identityBySubject: db.prepare('SELECT * FROM core_identities WHERE provider = ? AND subject = ?'),
+    hasGoogle: db.prepare(
+      `SELECT 1 FROM core_identities WHERE user_id = ? AND provider = 'google' LIMIT 1`
+    ),
+    identityBySubject: db.prepare(
+      'SELECT * FROM core_identities WHERE provider = ? AND subject = ?'
+    ),
     identityOfUser: db.prepare('SELECT * FROM core_identities WHERE user_id = ? AND provider = ?'),
-    insertIdentity: db.prepare('INSERT INTO core_identities (provider, subject, user_id, email, created_at) VALUES (?, ?, ?, ?, ?)'),
+    insertIdentity: db.prepare(
+      'INSERT INTO core_identities (provider, subject, user_id, email, created_at) VALUES (?, ?, ?, ?, ?)'
+    ),
     deleteIdentity: db.prepare('DELETE FROM core_identities WHERE user_id = ? AND provider = ?'),
-    moveIdentity: db.prepare('UPDATE core_identities SET user_id = ? WHERE user_id = ? AND provider = ?'),
-    setIdentityEmail: db.prepare('UPDATE core_identities SET email = ? WHERE provider = ? AND subject = ?'),
-    clearPassword: db.prepare('UPDATE core_users SET password_hash = NULL, password_changed_at = ?, updated_at = ? WHERE id = ?'),
+    moveIdentity: db.prepare(
+      'UPDATE core_identities SET user_id = ? WHERE user_id = ? AND provider = ?'
+    ),
+    setIdentityEmail: db.prepare(
+      'UPDATE core_identities SET email = ? WHERE provider = ? AND subject = ?'
+    ),
+    clearPassword: db.prepare(
+      'UPDATE core_users SET password_hash = NULL, password_changed_at = ?, updated_at = ? WHERE id = ?'
+    ),
 
     insertSession: db.prepare(
-      `INSERT INTO core_sessions (id, user_id, token_hash, device_label, created_at, last_seen_at, expires_at) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO core_sessions (id, user_id, token_hash, device_label, created_at, last_seen_at, expires_at) VALUES (?, ?, ?, ?, ?, ?, ?)`
     ),
     sessionByHash: db.prepare('SELECT * FROM core_sessions WHERE token_hash = ?'),
-    sessionsOfUser: db.prepare('SELECT * FROM core_sessions WHERE user_id = ? AND expires_at > ? ORDER BY last_seen_at DESC, created_at DESC'),
+    sessionsOfUser: db.prepare(
+      'SELECT * FROM core_sessions WHERE user_id = ? AND expires_at > ? ORDER BY last_seen_at DESC, created_at DESC'
+    ),
     sessionOfUser: db.prepare('SELECT * FROM core_sessions WHERE id = ? AND user_id = ?'),
     allSessionsOfUser: db.prepare('SELECT * FROM core_sessions WHERE user_id = ?'),
-    touchSession: db.prepare('UPDATE core_sessions SET last_seen_at = ?, expires_at = ? WHERE id = ?'),
+    touchSession: db.prepare(
+      'UPDATE core_sessions SET last_seen_at = ?, expires_at = ? WHERE id = ?'
+    ),
     deleteSession: db.prepare('DELETE FROM core_sessions WHERE id = ?'),
-    endToken: db.prepare('INSERT OR REPLACE INTO core_ended_tokens (token_hash, reason, ended_at) VALUES (?, ?, ?)'),
+    endToken: db.prepare(
+      'INSERT OR REPLACE INTO core_ended_tokens (token_hash, reason, ended_at) VALUES (?, ?, ?)'
+    ),
     endedToken: db.prepare('SELECT reason FROM core_ended_tokens WHERE token_hash = ?'),
     pruneEnded: db.prepare('DELETE FROM core_ended_tokens WHERE ended_at < ?'),
     pruneSessions: db.prepare('DELETE FROM core_sessions WHERE expires_at < ?'),
 
     insertEmailToken: db.prepare(
-      `INSERT INTO core_email_tokens (id, user_id, purpose, token_hash, email_norm, created_at, expires_at, used_at, payload) VALUES (?, ?, ?, ?, ?, ?, ?, NULL, ?)`,
+      `INSERT INTO core_email_tokens (id, user_id, purpose, token_hash, email_norm, created_at, expires_at, used_at, payload) VALUES (?, ?, ?, ?, ?, ?, ?, NULL, ?)`
     ),
-    emailTokenByHash: db.prepare('SELECT * FROM core_email_tokens WHERE token_hash = ? AND purpose = ?'),
-    useEmailToken: db.prepare('UPDATE core_email_tokens SET used_at = ? WHERE id = ? AND used_at IS NULL'),
-    retireEmailTokens: db.prepare('UPDATE core_email_tokens SET used_at = ? WHERE user_id = ? AND purpose = ? AND used_at IS NULL'),
+    emailTokenByHash: db.prepare(
+      'SELECT * FROM core_email_tokens WHERE token_hash = ? AND purpose = ?'
+    ),
+    useEmailToken: db.prepare(
+      'UPDATE core_email_tokens SET used_at = ? WHERE id = ? AND used_at IS NULL'
+    ),
+    retireEmailTokens: db.prepare(
+      'UPDATE core_email_tokens SET used_at = ? WHERE user_id = ? AND purpose = ? AND used_at IS NULL'
+    ),
     pruneEmailTokens: db.prepare('DELETE FROM core_email_tokens WHERE expires_at < ?'),
   };
 
@@ -149,7 +179,10 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
     };
   }
 
-  function endSessionRow(row: SessionRow, reason: 'revoked' | 'account_deleted' | 'account_merged'): void {
+  function endSessionRow(
+    row: SessionRow,
+    reason: 'revoked' | 'account_deleted' | 'account_merged'
+  ): void {
     q.endToken.run(row.token_hash, reason, now().toISOString());
     q.deleteSession.run(row.id);
   }
@@ -166,7 +199,13 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
     },
 
     /** Returns null when the email is already taken. */
-    createUser(input: { email: string; displayName: string; uiLanguage: string; passwordHash: string | null; emailVerified?: boolean }): UserRow | null {
+    createUser(input: {
+      email: string;
+      displayName: string;
+      uiLanguage: string;
+      passwordHash: string | null;
+      emailVerified?: boolean;
+    }): UserRow | null {
       const at = now().toISOString();
       const row: UserRow = {
         id: newId(),
@@ -207,8 +246,12 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
      * Remove the account. Its sessions are remembered (as hashes) as ended by deletion, so its other devices
      * learn why they were signed out. Rows in tables that reference the user go with it.
      */
-    deleteUser(user: UserRow, reason: 'account_deleted' | 'account_merged' = 'account_deleted'): void {
-      for (const row of q.allSessionsOfUser.all(user.id) as SessionRow[]) endSessionRow(row, reason);
+    deleteUser(
+      user: UserRow,
+      reason: 'account_deleted' | 'account_merged' = 'account_deleted'
+    ): void {
+      for (const row of q.allSessionsOfUser.all(user.id) as SessionRow[])
+        endSessionRow(row, reason);
       q.deleteMailTo.run(user.email_norm);
       q.deleteUser.run(user.id);
     },
@@ -220,7 +263,15 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
       const at = now();
       const expiresAt = new Date(at.getTime() + ttlMs);
       const sessionId = newId();
-      q.insertSession.run(sessionId, userId, hashToken(token), deviceLabel, at.toISOString(), at.toISOString(), expiresAt.toISOString());
+      q.insertSession.run(
+        sessionId,
+        userId,
+        hashToken(token),
+        deviceLabel,
+        at.toISOString(),
+        at.toISOString(),
+        expiresAt.toISOString()
+      );
       return { sessionId, token, expiresAt };
     },
 
@@ -243,7 +294,11 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
       const user = q.userById.get(session.user_id) as UserRow | undefined;
       if (!user) return { user: null, reason: 'unknown' };
       if (at.getTime() - Date.parse(session.last_seen_at) >= TOUCH_AFTER_MS) {
-        q.touchSession.run(at.toISOString(), new Date(at.getTime() + ttlMs).toISOString(), session.id);
+        q.touchSession.run(
+          at.toISOString(),
+          new Date(at.getTime() + ttlMs).toISOString(),
+          session.id
+        );
       }
       const sessionUser: SessionUser = {
         id: user.id,
@@ -267,7 +322,10 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
       return true;
     },
 
-    revokeAllSessions(userId: Id, options: { except?: Id; reason?: 'revoked' | 'account_deleted' } = {}): number {
+    revokeAllSessions(
+      userId: Id,
+      options: { except?: Id; reason?: 'revoked' | 'account_deleted' } = {}
+    ): number {
       let n = 0;
       for (const row of q.allSessionsOfUser.all(userId) as SessionRow[]) {
         if (row.id === options.except) continue;
@@ -280,19 +338,47 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
     /* ---------------- emailed tokens ---------------- */
 
     /** Issue a single-use token. Earlier unused tokens of the same purpose stop working. */
-    issueEmailToken(user: UserRow, purpose: EmailTokenPurpose, payload: Record<string, string> | null = null): string {
+    issueEmailToken(
+      user: UserRow,
+      purpose: EmailTokenPurpose,
+      payload: Record<string, string> | null = null
+    ): string {
       const token = newToken();
       const at = now();
-      const ttl = purpose === 'verify_email' ? VERIFY_EMAIL_TTL_MS : purpose === 'password_reset' ? PASSWORD_RESET_TTL_MS : LINK_GOOGLE_TTL_MS;
+      const ttl =
+        purpose === 'verify_email'
+          ? VERIFY_EMAIL_TTL_MS
+          : purpose === 'password_reset'
+            ? PASSWORD_RESET_TTL_MS
+            : LINK_GOOGLE_TTL_MS;
       q.retireEmailTokens.run(at.toISOString(), user.id, purpose);
-      q.insertEmailToken.run(newId(), user.id, purpose, hashToken(token), user.email_norm, at.toISOString(), new Date(at.getTime() + ttl).toISOString(), payload ? JSON.stringify(payload) : null);
+      q.insertEmailToken.run(
+        newId(),
+        user.id,
+        purpose,
+        hashToken(token),
+        user.email_norm,
+        at.toISOString(),
+        new Date(at.getTime() + ttl).toISOString(),
+        payload ? JSON.stringify(payload) : null
+      );
       return token;
     },
 
     /** Like consumeEmailToken, and also hands back what was stored with the token. */
-    consumeEmailTokenWithPayload(token: string, purpose: EmailTokenPurpose): { user: UserRow; payload: Record<string, string> } | null {
+    consumeEmailTokenWithPayload(
+      token: string,
+      purpose: EmailTokenPurpose
+    ): { user: UserRow; payload: Record<string, string> } | null {
       const row = q.emailTokenByHash.get(hashToken(token), purpose) as
-        | { id: string; user_id: string; email_norm: string; expires_at: string; used_at: string | null; payload: string | null }
+        | {
+            id: string;
+            user_id: string;
+            email_norm: string;
+            expires_at: string;
+            used_at: string | null;
+            payload: string | null;
+          }
         | undefined;
       const at = now().toISOString();
       if (!row || row.used_at !== null || row.expires_at <= at || row.payload === null) return null;
@@ -357,7 +443,13 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
      */
     consumeEmailToken(token: string, purpose: EmailTokenPurpose): UserRow | null {
       const row = q.emailTokenByHash.get(hashToken(token), purpose) as
-        | { id: string; user_id: string; email_norm: string; expires_at: string; used_at: string | null }
+        | {
+            id: string;
+            user_id: string;
+            email_norm: string;
+            expires_at: string;
+            used_at: string | null;
+          }
         | undefined;
       const at = now().toISOString();
       if (!row || row.used_at !== null || row.expires_at <= at) return null;

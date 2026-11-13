@@ -68,18 +68,32 @@ export function validateMigrations(sources: MigrationSource[]): void {
     let last = 0;
     for (const m of source.migrations) {
       const match = MIGRATION_ID_RE.exec(m.id);
-      if (!match) throw new MigrationError(`Migration id "${m.id}" must look like "${source.name}:001_name".`);
-      if (match[1] !== source.name) throw new MigrationError(`Migration "${m.id}" belongs to module "${source.name}" and must start with "${source.name}:".`);
+      if (!match)
+        throw new MigrationError(
+          `Migration id "${m.id}" must look like "${source.name}:001_name".`
+        );
+      if (match[1] !== source.name)
+        throw new MigrationError(
+          `Migration "${m.id}" belongs to module "${source.name}" and must start with "${source.name}:".`
+        );
       if (seen.has(m.id)) throw new MigrationError(`Migration id "${m.id}" is used twice.`);
       seen.add(m.id);
       const n = Number(match[2]);
-      if (n <= last) throw new MigrationError(`Migration "${m.id}" is out of order: numbers must increase within a module.`);
+      if (n <= last)
+        throw new MigrationError(
+          `Migration "${m.id}" is out of order: numbers must increase within a module.`
+        );
       last = n;
     }
   }
 }
 
-export function runMigrations(db: Db, sources: MigrationSource[], now: () => Date, log?: Logger): string[] {
+export function runMigrations(
+  db: Db,
+  sources: MigrationSource[],
+  now: () => Date,
+  log?: Logger
+): string[] {
   validateMigrations(sources);
   db.exec(`CREATE TABLE IF NOT EXISTS kernel_migrations (
     id TEXT PRIMARY KEY,
@@ -88,10 +102,15 @@ export function runMigrations(db: Db, sources: MigrationSource[], now: () => Dat
     applied_at TEXT NOT NULL
   )`);
   const recorded = new Map<string, string>();
-  for (const row of db.prepare('SELECT id, checksum FROM kernel_migrations').all() as Array<{ id: string; checksum: string }>) {
+  for (const row of db.prepare('SELECT id, checksum FROM kernel_migrations').all() as Array<{
+    id: string;
+    checksum: string;
+  }>) {
     recorded.set(row.id, row.checksum);
   }
-  const insert = db.prepare('INSERT INTO kernel_migrations (id, module, checksum, applied_at) VALUES (?, ?, ?, ?)');
+  const insert = db.prepare(
+    'INSERT INTO kernel_migrations (id, module, checksum, applied_at) VALUES (?, ?, ?, ?)'
+  );
   const applied: string[] = [];
 
   for (const source of sources) {
@@ -103,11 +122,13 @@ export function runMigrations(db: Db, sources: MigrationSource[], now: () => Dat
         if (previous !== sum) {
           throw new MigrationError(
             `Migration "${m.id}" was changed after it was applied. A shipped migration must not be edited: add a new one instead. ` +
-              `(For a local scratch database, delete the file named by TALA_DB_PATH and start again.)`,
+              `(For a local scratch database, delete the file named by TALA_DB_PATH and start again.)`
           );
         }
         if (pendingSeen) {
-          throw new MigrationError(`Migration "${pendingSeen}" was added before "${m.id}", which is already applied. New migrations go at the end.`);
+          throw new MigrationError(
+            `Migration "${pendingSeen}" was added before "${m.id}", which is already applied. New migrations go at the end.`
+          );
         }
         continue;
       }
@@ -119,7 +140,9 @@ export function runMigrations(db: Db, sources: MigrationSource[], now: () => Dat
       try {
         apply();
       } catch (err) {
-        throw new MigrationError(`Migration "${m.id}" failed: ${err instanceof Error ? err.message : 'unknown error'}`);
+        throw new MigrationError(
+          `Migration "${m.id}" failed: ${err instanceof Error ? err.message : 'unknown error'}`
+        );
       }
       applied.push(m.id);
       log?.info('migration_applied', { migration: m.id, module: source.name });

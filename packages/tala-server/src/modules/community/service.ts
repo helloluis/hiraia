@@ -3,11 +3,22 @@
  * Handlers in index.ts are thin wrappers around these.
  */
 import { LIMITS } from '@hiraia/tala-core';
-import type { ArtifactSummary, ModerationDecision, PostArtifactRequest, ReportRequest } from '@hiraia/tala-core';
+import type {
+  ArtifactSummary,
+  ModerationDecision,
+  PostArtifactRequest,
+  ReportRequest,
+} from '@hiraia/tala-core';
 import type { Database } from 'better-sqlite3';
 import type { z } from 'zod';
 import { HttpError } from '../../kernel/types';
-import type { Logger, RecordStore, Services, SessionUser, TalaServerConfig } from '../../kernel/types';
+import type {
+  Logger,
+  RecordStore,
+  Services,
+  SessionUser,
+  TalaServerConfig,
+} from '../../kernel/types';
 import { runModeration } from './moderate';
 import type { ModerationOutcome } from './moderate';
 import { moderationSections, preparePost } from './publish';
@@ -44,11 +55,24 @@ const DAY_SECONDS = 86_400;
 export const RECHECK_BATCH = 20;
 
 export function requireCommunity(config: TalaServerConfig) {
-  if (!config.features.community) throw new HttpError('unavailable', 'The community is turned off right now. Your own lessons are not affected.', { reason: 'community_off' });
+  if (!config.features.community)
+    throw new HttpError(
+      'unavailable',
+      'The community is turned off right now. Your own lessons are not affected.',
+      { reason: 'community_off' }
+    );
 }
 
-function log(deps: CommunityDeps, entry: Omit<LogEntry, 'id' | 'at' | 'guidelineVersion'> & { guidelineVersion?: number }) {
-  logDecision(deps.db, { ...entry, id: deps.newId(), at: deps.now().toISOString(), guidelineVersion: entry.guidelineVersion ?? deps.config.moderation.guidelineVersion });
+function log(
+  deps: CommunityDeps,
+  entry: Omit<LogEntry, 'id' | 'at' | 'guidelineVersion'> & { guidelineVersion?: number }
+) {
+  logDecision(deps.db, {
+    ...entry,
+    id: deps.newId(),
+    at: deps.now().toISOString(),
+    guidelineVersion: entry.guidelineVersion ?? deps.config.moderation.guidelineVersion,
+  });
   // Structured log: ids, decision and provider only. Never content, excerpts or report notes.
   deps.log.info('community.moderation', {
     trigger: entry.trigger,
@@ -90,16 +114,32 @@ function knownNamesOf(records: RecordStore, userId: string): string[] {
 
 type PostBody = z.output<typeof PostArtifactRequest>;
 
-export async function postArtifact(deps: CommunityDeps, user: SessionUser, body: PostBody): Promise<{ artifact: ArtifactSummary; moderation: ModerationDecision }> {
-  if (!user.emailVerified) throw new HttpError('forbidden', 'Please confirm your email address before posting to the community.', { reason: 'email_unverified' });
+export async function postArtifact(
+  deps: CommunityDeps,
+  user: SessionUser,
+  body: PostBody
+): Promise<{ artifact: ArtifactSummary; moderation: ModerationDecision }> {
+  if (!user.emailVerified)
+    throw new HttpError(
+      'forbidden',
+      'Please confirm your email address before posting to the community.',
+      { reason: 'email_unverified' }
+    );
   const { db } = deps;
 
   let existing: ArtifactRow | undefined;
   if (body.artifactId) {
     existing = getArtifact(db, body.artifactId);
-    if (!existing || existing.author_id !== user.id || existing.status === 'removed') throw new HttpError('not_found', 'We could not find that community post.', { reason: 'artifact_not_found' });
+    if (!existing || existing.author_id !== user.id || existing.status === 'removed')
+      throw new HttpError('not_found', 'We could not find that community post.', {
+        reason: 'artifact_not_found',
+      });
     if (existing.source_plan_id !== body.planId) {
-      throw new HttpError('conflict', 'That community post was made from a different lesson. Post this lesson as a new one instead.', { reason: 'different_plan' });
+      throw new HttpError(
+        'conflict',
+        'That community post was made from a different lesson. Post this lesson as a new one instead.',
+        { reason: 'different_plan' }
+      );
     }
   } else {
     existing = artifactForPlan(db, user.id, body.planId);
@@ -109,11 +149,23 @@ export async function postArtifact(deps: CommunityDeps, user: SessionUser, body:
   const latest = existing ? latestVersion(db, existing.id) : undefined;
 
   // Same locked revision posted again (an offline-queued retry): answer with what is already there.
-  if (existing && latest && latest.status !== 'returned' && latest.revision_code === prepared.revisionCode && latest.plan_revision === prepared.planRevision) {
-    const last = existing.last_decision_json ? (JSON.parse(existing.last_decision_json) as ModerationDecision) : null;
+  if (
+    existing &&
+    latest &&
+    latest.status !== 'returned' &&
+    latest.revision_code === prepared.revisionCode &&
+    latest.plan_revision === prepared.planRevision
+  ) {
+    const last = existing.last_decision_json
+      ? (JSON.parse(existing.last_decision_json) as ModerationDecision)
+      : null;
     return {
       artifact: toSummary(db, existing, user.id),
-      moderation: last ?? { decision: latest.status === 'pending' ? 'pending' : 'allow', reasons: [], guidelineVersion: deps.config.moderation.guidelineVersion },
+      moderation: last ?? {
+        decision: latest.status === 'pending' ? 'pending' : 'allow',
+        reasons: [],
+        guidelineVersion: deps.config.moderation.guidelineVersion,
+      },
     };
   }
 
@@ -124,17 +176,34 @@ export async function postArtifact(deps: CommunityDeps, user: SessionUser, body:
     throw new HttpError(
       'invalid_input',
       `This lesson is too long to share in the community (about ${Math.ceil(bytes / 1024)} KB; the limit is ${Math.floor(limit / 1024)} KB). Shorten it or split it into two lessons, then post again.`,
-      { reason: 'too_large', bytes, limit },
+      { reason: 'too_large', bytes, limit }
     );
   }
 
-  if (!deps.services.rateLimit.take(`community.post:${user.id}`, deps.config.abuse.postPerUserPerDay, DAY_SECONDS)) {
-    throw new HttpError('rate_limited', 'You have posted many lessons today. Please try again tomorrow.', { reason: 'rate_limited' });
+  if (
+    !deps.services.rateLimit.take(
+      `community.post:${user.id}`,
+      deps.config.abuse.postPerUserPerDay,
+      DAY_SECONDS
+    )
+  ) {
+    throw new HttpError(
+      'rate_limited',
+      'You have posted many lessons today. Please try again tomorrow.',
+      { reason: 'rate_limited' }
+    );
   }
 
   const outcome = await runModeration(
     { llm: deps.services.llm, config: deps.config },
-    { title: prepared.meta.title, summary: prepared.meta.summary, displayName: prepared.meta.authorDisplayName, sections: moderationSections(prepared.content), knownNames: prepared.knownNames, userId: user.id },
+    {
+      title: prepared.meta.title,
+      summary: prepared.meta.summary,
+      displayName: prepared.meta.authorDisplayName,
+      sections: moderationSections(prepared.content),
+      knownNames: prepared.knownNames,
+      userId: user.id,
+    }
   );
   const decision = outcome.decision;
   const now = deps.now().toISOString();
@@ -144,8 +213,24 @@ export async function postArtifact(deps: CommunityDeps, user: SessionUser, body:
 
   if (decision.decision === 'return') {
     // Nothing is stored: the post may hold a learner's personal data. The author fixes the plan and posts again.
-    log(deps, { ...outcomeLog(outcome), trigger: 'post', artifactId: existing?.id ?? null, versionId: null, authorId: user.id });
-    return { artifact: previewSummary({ id: artifactId, versionId, number, meta: prepared.meta, now, decision }), moderation: decision };
+    log(deps, {
+      ...outcomeLog(outcome),
+      trigger: 'post',
+      artifactId: existing?.id ?? null,
+      versionId: null,
+      authorId: user.id,
+    });
+    return {
+      artifact: previewSummary({
+        id: artifactId,
+        versionId,
+        number,
+        meta: prepared.meta,
+        now,
+        decision,
+      }),
+      moderation: decision,
+    };
   }
 
   const versionStatus = decision.decision === 'allow' ? 'allowed' : 'pending';
@@ -202,8 +287,23 @@ export function maxPostBytes(): number {
 
 /** Size of the `community.get` body this post would produce, as uncompressed JSON (stricter than the compressed budget). */
 function detailBytes(meta: VersionMeta, content: VersionContent, now: string): number {
-  const summary = previewSummary({ id: 'x'.repeat(64), versionId: 'x'.repeat(64), number: 9999, meta, now });
-  const detail = { ...summary, version: { id: 'x'.repeat(64), artifactId: 'x'.repeat(64), number: 9999, ...content, createdAt: now } };
+  const summary = previewSummary({
+    id: 'x'.repeat(64),
+    versionId: 'x'.repeat(64),
+    number: 9999,
+    meta,
+    now,
+  });
+  const detail = {
+    ...summary,
+    version: {
+      id: 'x'.repeat(64),
+      artifactId: 'x'.repeat(64),
+      number: 9999,
+      ...content,
+      createdAt: now,
+    },
+  };
   return Buffer.byteLength(JSON.stringify(detail), 'utf8');
 }
 
@@ -212,28 +312,41 @@ function detailBytes(meta: VersionMeta, content: VersionContent, now: string): n
 function versionInput(v: VersionRow) {
   const content = JSON.parse(v.content_json) as VersionContent;
   const meta = JSON.parse(v.meta_json) as VersionMeta;
-  return { title: meta.title, summary: meta.summary, displayName: meta.authorDisplayName, sections: moderationSections(content) };
+  return {
+    title: meta.title,
+    summary: meta.summary,
+    displayName: meta.authorDisplayName,
+    sections: moderationSections(content),
+  };
 }
 
 /** Decide pending versions and pending report checks. Safe to call at any time; returns what it decided. */
-export async function recheckPending(deps: CommunityDeps): Promise<{ versions: number; reports: number }> {
+export async function recheckPending(
+  deps: CommunityDeps
+): Promise<{ versions: number; reports: number }> {
   const { db } = deps;
   let versions = 0;
   const pending = db
     .prepare(
       `SELECT v.* FROM community_versions v JOIN community_artifacts a ON a.id = v.artifact_id
-       WHERE v.status = 'pending' AND a.status != 'removed' ORDER BY v.created_at LIMIT ?`,
+       WHERE v.status = 'pending' AND a.status != 'removed' ORDER BY v.created_at LIMIT ?`
     )
     .all(RECHECK_BATCH) as VersionRow[];
   for (const v of pending) {
     const a = getArtifact(db, v.artifact_id)!;
     const outcome = await runModeration(
       { llm: deps.services.llm, config: deps.config },
-      { ...versionInput(v), knownNames: knownNamesOf(deps.services.records, a.author_id), userId: a.author_id },
+      {
+        ...versionInput(v),
+        knownNames: knownNamesOf(deps.services.records, a.author_id),
+        userId: a.author_id,
+      }
     );
     const d = outcome.decision;
     if (d.decision === 'pending') {
-      db.prepare('UPDATE community_versions SET pending_attempts = pending_attempts + 1 WHERE id = ?').run(v.id);
+      db.prepare(
+        'UPDATE community_versions SET pending_attempts = pending_attempts + 1 WHERE id = ?'
+      ).run(v.id);
       continue;
     }
     versions++;
@@ -243,19 +356,28 @@ export async function recheckPending(deps: CommunityDeps): Promise<{ versions: n
       if (d.decision === 'allow') {
         setVersionStatus(db, v.id, 'allowed');
         promoteVersion(db, a.id, v.id, now);
-        if (current.status === 'pending_check' || current.status === 'returned') setArtifactStatus(db, a.id, 'visible', null, now);
+        if (current.status === 'pending_check' || current.status === 'returned')
+          setArtifactStatus(db, a.id, 'visible', null, now);
       } else {
         setVersionStatus(db, v.id, 'returned');
         if (current.current_version_id === v.id) setArtifactStatus(db, a.id, 'returned', null, now);
       }
       setLastDecision(db, a.id, d);
     })();
-    log(deps, { ...outcomeLog(outcome), trigger: 'recheck', artifactId: a.id, versionId: v.id, authorId: a.author_id });
+    log(deps, {
+      ...outcomeLog(outcome),
+      trigger: 'recheck',
+      artifactId: a.id,
+      versionId: v.id,
+      authorId: a.author_id,
+    });
   }
 
   let reports = 0;
   const pendingReports = db
-    .prepare("SELECT id FROM community_reports WHERE check_status = 'pending' ORDER BY created_at LIMIT ?")
+    .prepare(
+      "SELECT id FROM community_reports WHERE check_status = 'pending' ORDER BY created_at LIMIT ?"
+    )
     .all(RECHECK_BATCH) as Array<{ id: string }>;
   for (const r of pendingReports) if ((await runReportCheck(deps, r.id)) !== 'pending') reports++;
   return { versions, reports };
@@ -276,19 +398,43 @@ interface ReportRow {
 /** Reasons the guidelines never act on: accuracy is not moderated (§11.6), so no model call is spent on it. */
 const UNMODERATED_REASONS = new Set(['inaccurate']);
 
-export async function reportArtifact(deps: CommunityDeps, user: SessionUser, artifactId: string, body: z.output<typeof ReportRequest>) {
+export async function reportArtifact(
+  deps: CommunityDeps,
+  user: SessionUser,
+  artifactId: string,
+  body: z.output<typeof ReportRequest>
+) {
   const { db } = deps;
   const a = getArtifact(db, artifactId);
-  const reportable = a && (a.status === 'visible' || (a.status === 'hidden' && a.hidden_by === 'report') || (a.author_id === user.id && a.status !== 'removed'));
-  if (!a || !reportable) throw new HttpError('not_found', 'We could not find that community lesson.', { reason: 'artifact_not_found' });
+  const reportable =
+    a &&
+    (a.status === 'visible' ||
+      (a.status === 'hidden' && a.hidden_by === 'report') ||
+      (a.author_id === user.id && a.status !== 'removed'));
+  if (!a || !reportable)
+    throw new HttpError('not_found', 'We could not find that community lesson.', {
+      reason: 'artifact_not_found',
+    });
 
   const open = db
-    .prepare("SELECT id FROM community_reports WHERE reporter_id = ? AND artifact_id = ? AND version_id = ? AND reason = ? AND check_status = 'pending'")
+    .prepare(
+      "SELECT id FROM community_reports WHERE reporter_id = ? AND artifact_id = ? AND version_id = ? AND reason = ? AND check_status = 'pending'"
+    )
     .get(user.id, a.id, a.current_version_id, body.reason);
   if (open) return { ok: true as const };
 
-  if (!deps.services.rateLimit.take(`community.report:${user.id}`, deps.config.abuse.reportPerUserPerDay, DAY_SECONDS)) {
-    throw new HttpError('rate_limited', 'You have sent many reports today. Please try again tomorrow.', { reason: 'rate_limited' });
+  if (
+    !deps.services.rateLimit.take(
+      `community.report:${user.id}`,
+      deps.config.abuse.reportPerUserPerDay,
+      DAY_SECONDS
+    )
+  ) {
+    throw new HttpError(
+      'rate_limited',
+      'You have sent many reports today. Please try again tomorrow.',
+      { reason: 'rate_limited' }
+    );
   }
 
   const now = deps.now().toISOString();
@@ -296,11 +442,26 @@ export async function reportArtifact(deps: CommunityDeps, user: SessionUser, art
   const skipped = UNMODERATED_REASONS.has(body.reason);
   db.prepare(
     `INSERT INTO community_reports (id, artifact_id, version_id, reporter_id, reason, note, check_status, outcome, created_at, checked_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-  ).run(id, a.id, a.current_version_id, user.id, body.reason, body.note, skipped ? 'skipped' : 'pending', skipped ? 'not_moderated' : null, now, skipped ? now : null);
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  ).run(
+    id,
+    a.id,
+    a.current_version_id,
+    user.id,
+    body.reason,
+    body.note,
+    skipped ? 'skipped' : 'pending',
+    skipped ? 'not_moderated' : null,
+    now,
+    skipped ? now : null
+  );
   deps.log.info('community.report', { artifactId: a.id, reason: body.reason });
 
-  if (body.reason === 'personal_data' && deps.config.moderation.autoHideOnPersonalDataReport && a.status === 'visible') {
+  if (
+    body.reason === 'personal_data' &&
+    deps.config.moderation.autoHideOnPersonalDataReport &&
+    a.status === 'visible'
+  ) {
     setArtifactStatus(db, a.id, 'hidden', 'report', now);
   }
   if (!skipped) await runReportCheck(deps, id);
@@ -308,14 +469,23 @@ export async function reportArtifact(deps: CommunityDeps, user: SessionUser, art
 }
 
 /** A fresh moderation check of the reported version, with the reporter's reason. Returns the outcome. */
-export async function runReportCheck(deps: CommunityDeps, reportId: string): Promise<'allow' | 'return' | 'pending' | 'gone'> {
+export async function runReportCheck(
+  deps: CommunityDeps,
+  reportId: string
+): Promise<'allow' | 'return' | 'pending' | 'gone'> {
   const { db } = deps;
-  const r = db.prepare('SELECT * FROM community_reports WHERE id = ?').get(reportId) as ReportRow | undefined;
+  const r = db.prepare('SELECT * FROM community_reports WHERE id = ?').get(reportId) as
+    | ReportRow
+    | undefined;
   if (!r || r.check_status !== 'pending') return 'gone';
   const a = getArtifact(db, r.artifact_id);
   const v = getVersion(db, r.version_id);
   const finish = (outcome: string) =>
-    db.prepare("UPDATE community_reports SET check_status = 'done', outcome = ?, checked_at = ? WHERE id = ?").run(outcome, deps.now().toISOString(), r.id);
+    db
+      .prepare(
+        "UPDATE community_reports SET check_status = 'done', outcome = ?, checked_at = ? WHERE id = ?"
+      )
+      .run(outcome, deps.now().toISOString(), r.id);
   if (!a || !v || a.status === 'removed') {
     finish('gone');
     return 'gone';
@@ -323,7 +493,12 @@ export async function runReportCheck(deps: CommunityDeps, reportId: string): Pro
 
   const outcome = await runModeration(
     { llm: deps.services.llm, config: deps.config },
-    { ...versionInput(v), knownNames: knownNamesOf(deps.services.records, a.author_id), report: { reason: r.reason, note: r.note }, userId: null },
+    {
+      ...versionInput(v),
+      knownNames: knownNamesOf(deps.services.records, a.author_id),
+      report: { reason: r.reason, note: r.note },
+      userId: null,
+    }
   );
   const d = outcome.decision;
   if (d.decision === 'pending') return 'pending';
@@ -335,18 +510,27 @@ export async function runReportCheck(deps: CommunityDeps, reportId: string): Pro
       // Nothing found: restore what a personal-data report hid. A staff takedown is not undone here.
       if (current.status === 'hidden' && current.hidden_by === 'report') {
         const stillOpen = db
-          .prepare("SELECT 1 FROM community_reports WHERE artifact_id = ? AND reason = 'personal_data' AND check_status = 'pending' AND id != ?")
+          .prepare(
+            "SELECT 1 FROM community_reports WHERE artifact_id = ? AND reason = 'personal_data' AND check_status = 'pending' AND id != ?"
+          )
           .get(a.id, r.id);
         if (!stillOpen) setArtifactStatus(db, a.id, 'visible', null, now);
       }
     } else {
       setVersionStatus(db, v.id, 'returned');
-      if (current.current_version_id === v.id && current.hidden_by !== 'staff') setArtifactStatus(db, a.id, 'returned', null, now);
+      if (current.current_version_id === v.id && current.hidden_by !== 'staff')
+        setArtifactStatus(db, a.id, 'returned', null, now);
       setLastDecision(db, a.id, d);
     }
     finish(d.decision);
   })();
-  log(deps, { ...outcomeLog(outcome), trigger: 'report', artifactId: a.id, versionId: v.id, authorId: a.author_id });
+  log(deps, {
+    ...outcomeLog(outcome),
+    trigger: 'report',
+    artifactId: a.id,
+    versionId: v.id,
+    authorId: a.author_id,
+  });
   return d.decision;
 }
 
@@ -354,10 +538,20 @@ export async function runReportCheck(deps: CommunityDeps, reportId: string): Pro
 
 export function removeArtifact(deps: CommunityDeps, user: SessionUser, artifactId: string) {
   const a = getArtifact(deps.db, artifactId);
-  if (!a || a.status === 'removed') throw new HttpError('not_found', 'We could not find that community post.', { reason: 'artifact_not_found' });
-  if (a.author_id !== user.id) throw new HttpError('forbidden', 'Only the teacher who posted a lesson can remove it.', { reason: 'not_author' });
+  if (!a || a.status === 'removed')
+    throw new HttpError('not_found', 'We could not find that community post.', {
+      reason: 'artifact_not_found',
+    });
+  if (a.author_id !== user.id)
+    throw new HttpError('forbidden', 'Only the teacher who posted a lesson can remove it.', {
+      reason: 'not_author',
+    });
   const now = deps.now().toISOString();
-  deps.db.prepare("UPDATE community_artifacts SET status = 'removed', hidden_by = NULL, removed_at = ?, updated_at = ? WHERE id = ?").run(now, now, a.id);
+  deps.db
+    .prepare(
+      "UPDATE community_artifacts SET status = 'removed', hidden_by = NULL, removed_at = ?, updated_at = ? WHERE id = ?"
+    )
+    .run(now, now, a.id);
   deps.log.info('community.remove', { artifactId: a.id });
   return { ok: true as const };
 }
@@ -407,12 +601,17 @@ export function staffTakedown(deps: StaffDeps, artifactId: string): ArtifactRow 
 export function staffRestore(deps: StaffDeps, artifactId: string): ArtifactRow {
   const a = getArtifact(deps.db, artifactId);
   if (!a) throw new Error(`No artifact ${artifactId}`);
-  if (a.status === 'removed') throw new Error('The author removed this artifact; it cannot be restored.');
+  if (a.status === 'removed')
+    throw new Error('The author removed this artifact; it cannot be restored.');
   const now = deps.now().toISOString();
   deps.db.transaction(() => {
     setVersionStatus(deps.db, a.current_version_id, 'allowed');
     setArtifactStatus(deps.db, a.id, 'visible', null, now);
-    setLastDecision(deps.db, a.id, { decision: 'allow', reasons: [], guidelineVersion: deps.guidelineVersion });
+    setLastDecision(deps.db, a.id, {
+      decision: 'allow',
+      reasons: [],
+      guidelineVersion: deps.guidelineVersion,
+    });
   })();
   staffLog(deps, a, 'restore');
   return getArtifact(deps.db, a.id)!;
@@ -428,11 +627,19 @@ export function staffRestore(deps: StaffDeps, artifactId: string): ArtifactRow {
  */
 export function deleteAccountData(db: Database, userId: string): void {
   const own = `SELECT id FROM community_artifacts WHERE author_id = @u`;
-  db.prepare(`DELETE FROM community_artifact_terms WHERE artifact_id IN (${own})`).run({ u: userId });
+  db.prepare(`DELETE FROM community_artifact_terms WHERE artifact_id IN (${own})`).run({
+    u: userId,
+  });
   db.prepare(`DELETE FROM community_lineage WHERE artifact_id IN (${own})`).run({ u: userId });
-  db.prepare(`DELETE FROM community_copies WHERE artifact_id IN (${own}) OR user_id = @u`).run({ u: userId });
-  db.prepare(`DELETE FROM community_reports WHERE artifact_id IN (${own}) OR reporter_id = @u`).run({ u: userId });
-  db.prepare(`UPDATE community_moderation_log SET author_id = NULL WHERE author_id = @u`).run({ u: userId });
+  db.prepare(`DELETE FROM community_copies WHERE artifact_id IN (${own}) OR user_id = @u`).run({
+    u: userId,
+  });
+  db.prepare(`DELETE FROM community_reports WHERE artifact_id IN (${own}) OR reporter_id = @u`).run(
+    { u: userId }
+  );
+  db.prepare(`UPDATE community_moderation_log SET author_id = NULL WHERE author_id = @u`).run({
+    u: userId,
+  });
   db.prepare(`DELETE FROM community_versions WHERE artifact_id IN (${own})`).run({ u: userId });
   db.prepare(`DELETE FROM community_artifacts WHERE author_id = @u`).run({ u: userId });
 }

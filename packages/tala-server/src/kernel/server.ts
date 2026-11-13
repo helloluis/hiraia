@@ -10,7 +10,13 @@
  */
 import { randomUUID } from 'node:crypto';
 import type { Id, RouteName } from '@hiraia/tala-core';
-import { attachEffects, extractCredentials, isCrossSite, kernelExtension, registerAccountHooks } from './auth';
+import {
+  attachEffects,
+  extractCredentials,
+  isCrossSite,
+  kernelExtension,
+  registerAccountHooks,
+} from './auth';
 import type { AuthFailure, Authenticator, RequestEffects } from './auth';
 import { loadConfigWithWarnings } from './config';
 import type { DeepPartial } from './config';
@@ -33,7 +39,16 @@ import type { LogSink } from './logger';
 import { compileRoutes, matchRoute } from './router';
 import { createDefaultServices } from './services';
 import { HttpError } from './types';
-import type { BaseDeps, BinaryResponse, Ctx, Logger, ServerModule, Services, SessionUser, TalaServerConfig } from './types';
+import type {
+  BaseDeps,
+  BinaryResponse,
+  Ctx,
+  Logger,
+  ServerModule,
+  Services,
+  SessionUser,
+  TalaServerConfig,
+} from './types';
 
 export interface TalaServer {
   /**
@@ -74,18 +89,26 @@ export interface KernelOptions {
   startupWarnings?: string[];
 }
 
-type AnyHandler = (ctx: Ctx, input: { params: Record<string, string>; query: unknown; body: unknown }) => unknown;
+type AnyHandler = (
+  ctx: Ctx,
+  input: { params: Record<string, string>; query: unknown; body: unknown }
+) => unknown;
 
 const AUTH_FAILURE_MESSAGE: Record<AuthFailure, string> = {
   unknown: MESSAGES.unauthenticated,
-  expired: 'You have been signed out because this device was not used for a long time. Please sign in again.',
+  expired:
+    'You have been signed out because this device was not used for a long time. Please sign in again.',
   revoked: 'You were signed out on this device. Please sign in again.',
   account_deleted: 'This account was deleted.',
   account_merged: 'This account was joined with your other account. Please sign in to that one.',
 };
 
 function isBinaryResult(value: unknown): value is BinaryResponse {
-  return typeof value === 'object' && value !== null && (value as BinaryResponse).binary instanceof Uint8Array;
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    (value as BinaryResponse).binary instanceof Uint8Array
+  );
 }
 
 export function createServer(options: KernelOptions): KernelServer {
@@ -126,7 +149,8 @@ export function createServer(options: KernelOptions): KernelServer {
     for (const [key, value] of Object.entries(provided)) {
       if (value === undefined) continue;
       const earlier = provider.get(key);
-      if (earlier) log.warn('service_replaced', { service: key, module: m.name, replaces: earlier });
+      if (earlier)
+        log.warn('service_replaced', { service: key, module: m.name, replaces: earlier });
       provider.set(key, m.name);
       (services as unknown as Record<string, unknown>)[key] = value;
     }
@@ -143,8 +167,14 @@ export function createServer(options: KernelOptions): KernelServer {
       if (typeof handler !== 'function') continue;
       const routeName = name as RouteName;
       const existing = handlers.get(routeName);
-      if (existing) throw new Error(`Route "${name}" has two handlers: modules "${existing.module}" and "${m.name}".`);
-      if (!routes.some((r) => r.name === routeName)) throw new Error(`Module "${m.name}" has a handler for "${name}", which is not in the API table.`);
+      if (existing)
+        throw new Error(
+          `Route "${name}" has two handlers: modules "${existing.module}" and "${m.name}".`
+        );
+      if (!routes.some((r) => r.name === routeName))
+        throw new Error(
+          `Module "${m.name}" has a handler for "${name}", which is not in the API table.`
+        );
       handlers.set(routeName, { handler: handler as AnyHandler, module: m.name });
     }
   }
@@ -154,7 +184,8 @@ export function createServer(options: KernelOptions): KernelServer {
   for (const m of modules) {
     const make = kernelExtension(m).authenticator;
     if (!make) continue;
-    if (authenticator) throw new Error(`Two modules provide an authenticator; "${m.name}" is the second.`);
+    if (authenticator)
+      throw new Error(`Two modules provide an authenticator; "${m.name}" is the second.`);
     authenticator = make({ ...base, services });
   }
 
@@ -166,12 +197,23 @@ export function createServer(options: KernelOptions): KernelServer {
       const hook = m.onAccountDeleted ?? kernelExtension(m).onAccountDeleted;
       const merge = m.onAccountMerged ?? kernelExtension(m).onAccountMerged;
       if (!hook) return [];
-      return [{ module: m.name, run: (userId: Id) => hook(base, userId), ...(merge ? { merge: (from: Id, to: Id) => merge(base, from, to) } : {}) }];
-    }),
+      return [
+        {
+          module: m.name,
+          run: (userId: Id) => hook(base, userId),
+          ...(merge ? { merge: (from: Id, to: Id) => merge(base, from, to) } : {}),
+        },
+      ];
+    })
   );
 
-  for (const warning of options.startupWarnings ?? []) log.warn('config_warning', { note: warning });
-  log.info('server_started', { environment: config.environment, modules: modules.length, routes: handlers.size });
+  for (const warning of options.startupWarnings ?? [])
+    log.warn('config_warning', { note: warning });
+  log.info('server_started', {
+    environment: config.environment,
+    modules: modules.length,
+    routes: handlers.size,
+  });
 
   /* ---- background work declared by modules ---- */
   for (const m of modules) {
@@ -196,7 +238,7 @@ export function createServer(options: KernelOptions): KernelServer {
     request: Request,
     requestId: string,
     info: { ip?: string | null } | undefined,
-    seen: { route: RouteName | null; userId: string | null },
+    seen: { route: RouteName | null; userId: string | null }
   ): Promise<Response> {
     let url: URL;
     try {
@@ -207,9 +249,15 @@ export function createServer(options: KernelOptions): KernelServer {
 
     const match = matchRoute(routes, request.method.toUpperCase(), url.pathname);
     if (match.kind === 'not_found') return errorResponse('not_found', MESSAGES.notFound, requestId);
-    if (match.kind === 'bad_path') return errorResponse('invalid_input', MESSAGES.invalid, requestId, { details: { reason: 'bad_path' } });
+    if (match.kind === 'bad_path')
+      return errorResponse('invalid_input', MESSAGES.invalid, requestId, {
+        details: { reason: 'bad_path' },
+      });
     if (match.kind === 'method_not_allowed') {
-      return errorResponse('not_found', MESSAGES.methodNotAllowed, requestId, { status: 405, headers: { allow: match.allow.join(', ') } });
+      return errorResponse('not_found', MESSAGES.methodNotAllowed, requestId, {
+        status: 405,
+        headers: { allow: match.allow.join(', ') },
+      });
     }
 
     const { route, params } = match;
@@ -217,9 +265,15 @@ export function createServer(options: KernelOptions): KernelServer {
     seen.route = route.name;
 
     const entry = handlers.get(route.name);
-    if (!entry) return errorResponse('not_implemented', MESSAGES.notImplemented, requestId, { details: { route: route.name } });
+    if (!entry)
+      return errorResponse('not_implemented', MESSAGES.notImplemented, requestId, {
+        details: { route: route.name },
+      });
 
-    if (isCrossSite(request, config)) return errorResponse('forbidden', MESSAGES.crossSite, requestId, { details: { reason: 'cross_site' } });
+    if (isCrossSite(request, config))
+      return errorResponse('forbidden', MESSAGES.crossSite, requestId, {
+        details: { reason: 'cross_site' },
+      });
 
     /* authenticate */
     const credentials = extractCredentials(request, config.session.cookieName);
@@ -231,7 +285,9 @@ export function createServer(options: KernelOptions): KernelServer {
       else failure = outcome.reason;
     }
     if (spec.auth === 'user' && !user) {
-      return errorResponse('unauthenticated', AUTH_FAILURE_MESSAGE[failure], requestId, { details: { reason: credentials ? failure : 'no_credentials' } });
+      return errorResponse('unauthenticated', AUTH_FAILURE_MESSAGE[failure], requestId, {
+        details: { reason: credentials ? failure : 'no_credentials' },
+      });
     }
     seen.userId = user?.id ?? null;
 
@@ -240,7 +296,9 @@ export function createServer(options: KernelOptions): KernelServer {
     if (spec.query) {
       const parsed = spec.query.safeParse(queryToObject(url.searchParams));
       if (!parsed.success) {
-        return errorResponse('invalid_input', MESSAGES.invalid, requestId, { details: { issues: summariseIssues('query', parsed.error.issues) } });
+        return errorResponse('invalid_input', MESSAGES.invalid, requestId, {
+          details: { issues: summariseIssues('query', parsed.error.issues) },
+        });
       }
       query = parsed.data;
     }
@@ -250,7 +308,9 @@ export function createServer(options: KernelOptions): KernelServer {
       const json = parseJsonBody(text, request.headers.get('content-type'));
       const parsed = spec.body.safeParse(json === undefined ? {} : json);
       if (!parsed.success) {
-        return errorResponse('invalid_input', MESSAGES.invalid, requestId, { details: { issues: summariseIssues('body', parsed.error.issues) } });
+        return errorResponse('invalid_input', MESSAGES.invalid, requestId, {
+          details: { issues: summariseIssues('body', parsed.error.issues) },
+        });
       }
       body = parsed.data;
     }
@@ -281,7 +341,10 @@ export function createServer(options: KernelOptions): KernelServer {
     } catch (err) {
       // Cookies set before the failure (for example a cleared session) still apply.
       if (err instanceof HttpError) {
-        return errorResponse(err.code, err.message, requestId, { details: err.details, cookies: effects.cookies });
+        return errorResponse(err.code, err.message, requestId, {
+          details: err.details,
+          cookies: effects.cookies,
+        });
       }
       throw err;
     } finally {
@@ -289,7 +352,10 @@ export function createServer(options: KernelOptions): KernelServer {
     }
 
     if (spec.binary) {
-      if (!isBinaryResult(result)) throw new Error(`Route ${route.name} is binary but its handler did not return a BinaryResponse.`);
+      if (!isBinaryResult(result))
+        throw new Error(
+          `Route ${route.name} is binary but its handler did not return a BinaryResponse.`
+        );
       return binaryResponse(result, requestId);
     }
     // Only what the contract names leaves the server: unknown keys are stripped, a wrong shape is a 500.
@@ -304,7 +370,9 @@ export function createServer(options: KernelOptions): KernelServer {
           .map((i) => i.path.join('.'))
           .join(' | '),
       });
-      throw new Error(`Response for ${route.name} does not match the contract: ${checked.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; ')}`);
+      throw new Error(
+        `Response for ${route.name} does not match the contract: ${checked.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; ')}`
+      );
     }
     return jsonResponse(200, checked.data, requestId, effects.cookies);
   }
@@ -375,7 +443,10 @@ export function createServer(options: KernelOptions): KernelServer {
   };
 }
 
-function trustedHopsFromEnv(env: Record<string, string | undefined>, environment: TalaServerConfig['environment']): number {
+function trustedHopsFromEnv(
+  env: Record<string, string | undefined>,
+  environment: TalaServerConfig['environment']
+): number {
   const raw = env.TALA_TRUSTED_PROXY_HOPS?.trim();
   if (raw === undefined || raw === '') return environment === 'local' ? 0 : 1;
   if (!/^\d$/.test(raw)) throw new Error('TALA_TRUSTED_PROXY_HOPS must be a number from 0 to 9.');
@@ -396,7 +467,11 @@ function sinkFromEnv(env: Record<string, string | undefined>): LogSink {
 }
 
 /** Build a server from the environment and an explicit module list. `createTalaServer` in ../index.ts supplies the registry. */
-export function createServerFromEnv(modules: ServerModule[], overrides?: DeepPartial<TalaServerConfig>, env: Record<string, string | undefined> = process.env): KernelServer {
+export function createServerFromEnv(
+  modules: ServerModule[],
+  overrides?: DeepPartial<TalaServerConfig>,
+  env: Record<string, string | undefined> = process.env
+): KernelServer {
   const { config, warnings } = loadConfigWithWarnings(env, overrides);
   return createServer({
     config,

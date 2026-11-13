@@ -17,7 +17,7 @@ export function LinkGoogleScreen() {
       getClient()
         .call('auth.googleLinkConfirm', { body: { token } })
         .then(() => setState('done'))
-        .catch(err => {
+        .catch((err) => {
           setMessage(t(errorKey(err)));
           setState('bad');
         });
@@ -37,8 +37,13 @@ export function LinkGoogleScreen() {
       <h1 className="text-display">{t('google.confirmTitle')}</h1>
       {state === 'working' && <Placeholder rows={2} />}
       {state === 'done' && <Banner kind="success">{t('google.confirmBody')}</Banner>}
-      {(state === 'bad' || state === 'none') && <Banner kind="warn">{state === 'none' ? t('google.confirmBad') : message}</Banner>}
-      <Link href="/sign-in" className="inline-flex items-center justify-center min-h-touch rounded bg-talaTeal text-white px-4 font-medium">
+      {(state === 'bad' || state === 'none') && (
+        <Banner kind="warn">{state === 'none' ? t('google.confirmBad') : message}</Banner>
+      )}
+      <Link
+        href="/sign-in"
+        className="inline-flex items-center justify-center min-h-touch rounded bg-talaTeal text-white px-4 font-medium"
+      >
         {t('auth.signIn')}
       </Link>
     </div>

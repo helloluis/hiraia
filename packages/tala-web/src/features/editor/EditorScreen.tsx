@@ -5,7 +5,17 @@ import type { LocalRecord, PlanSection, SectionContent } from '@hiraia/tala-core
 import { formatDate, formatTime, useT } from '@/i18n';
 import { useSession } from '@/data/session';
 import { planDates } from '@/data/plans';
-import { Badge, Banner, Button, PageHeader, Placeholder, Sheet, TextInput, Waiting, cx } from '@/components/ui';
+import {
+  Badge,
+  Banner,
+  Button,
+  PageHeader,
+  Placeholder,
+  Sheet,
+  TextInput,
+  Waiting,
+  cx,
+} from '@/components/ui';
 import { usePlanEditor } from './usePlanEditor';
 import { SectionEditor } from './SectionEditors';
 import { RichTextView } from './RichTextEditor';
@@ -33,7 +43,9 @@ export function EditorScreen({ planId }: { planId: string }) {
   const [regen, setRegen] = useState<LocalRecord<'plan_section'> | null>(null);
   const [postOpen, setPostOpen] = useState(false);
   const search = useSearchParams();
-  const [toast, setToast] = useState<string | null>(() => (search.get('drafted') ? 'drafted' : search.get('queued') ? 'queued' : null));
+  const [toast, setToast] = useState<string | null>(() =>
+    search.get('drafted') ? 'drafted' : search.get('queued') ? 'queued' : null
+  );
   const { config } = useSession();
   const canGenerate = config?.features.generation !== false;
 
@@ -41,7 +53,7 @@ export function EditorScreen({ planId }: { planId: string }) {
     if (plan && title === null) setTitle(plan.title);
   }, [plan, title]);
 
-  const conflicts = useMemo(() => ed.sections.filter(s => s.conflict), [ed.sections]);
+  const conflicts = useMemo(() => ed.sections.filter((s) => s.conflict), [ed.sections]);
   const { network } = useSession();
   const [fetching, setFetching] = useState(false);
   const fetched = useRef(false);
@@ -52,12 +64,15 @@ export function EditorScreen({ planId }: { planId: string }) {
     setFetching(true);
     void engine.fetchPlans([planId]).finally(() => setFetching(false));
   }, [ed.loading, plan, engine, network.online, planId]);
-  const dirty = ed.planRecord?.dirty || ed.sections.some(s => s.dirty);
+  const dirty = ed.planRecord?.dirty || ed.sections.some((s) => s.dirty);
 
   if (ed.loading && !plan) {
     return (
       <>
-        <PageHeader title={<span className="placeholder inline-block w-48 h-8" />} back={{ href: '/lessons', label: t('lessons.title') }} />
+        <PageHeader
+          title={<span className="placeholder inline-block w-48 h-8" />}
+          back={{ href: '/lessons', label: t('lessons.title') }}
+        />
         <Placeholder rows={5} />
       </>
     );
@@ -65,15 +80,28 @@ export function EditorScreen({ planId }: { planId: string }) {
   if (!plan || !template) {
     return (
       <>
-        <PageHeader title={t('lessons.title')} back={{ href: '/lessons', label: t('lessons.title') }} />
-        {fetching ? <Waiting label={t('editor.fetchingOlder')} /> : <Banner kind="warn">{t('editor.notFound')}</Banner>}
+        <PageHeader
+          title={t('lessons.title')}
+          back={{ href: '/lessons', label: t('lessons.title') }}
+        />
+        {fetching ? (
+          <Waiting label={t('editor.fetchingOlder')} />
+        ) : (
+          <Banner kind="warn">{t('editor.notFound')}</Banner>
+        )}
       </>
     );
   }
 
   const locked = plan.state === 'locked';
   const dates = planDates(plan);
-  const subtitle = [plan.subjectName, ed.cls?.name, dates.length ? dates.map(d => formatDate(d, lang)).join(', ') : t('lessons.noDate')].filter(Boolean).join(' · ');
+  const subtitle = [
+    plan.subjectName,
+    ed.cls?.name,
+    dates.length ? dates.map((d) => formatDate(d, lang)).join(', ') : t('lessons.noDate'),
+  ]
+    .filter(Boolean)
+    .join(' · ');
   const compCount = Object.values(plan.competencies).flat().length;
 
   const doLock = async () => {
@@ -103,7 +131,7 @@ export function EditorScreen({ planId }: { planId: string }) {
                 placeholder={t('editor.titlePlaceholder')}
                 value={title ?? ''}
                 maxLength={200}
-                onChange={e => {
+                onChange={(e) => {
                   setTitle(e.target.value);
                   ed.savePlan({ title: e.target.value });
                 }}
@@ -130,13 +158,24 @@ export function EditorScreen({ planId }: { planId: string }) {
       />
 
       <p className="text-small text-forestMuted" aria-live="polite">
-        {ed.pendingCount > 0 ? t('editor.saving') : dirty ? `${t('editor.saved')} · ${t('editor.waitingToSend')}` : t('editor.saved')}
+        {ed.pendingCount > 0
+          ? t('editor.saving')
+          : dirty
+            ? `${t('editor.saved')} · ${t('editor.waitingToSend')}`
+            : t('editor.saved')}
       </p>
 
       {locked && plan.lock && (
         <Banner kind="info">
-          🔒 {t('editor.lockedBanner', { date: formatDate(plan.lock.lockedAt.slice(0, 10), lang), code: plan.lock.revisionCode })} {t('editor.lockedReadOnly')}
-          {plan.submitted && <> · {t('editor.submitted', { date: formatDate(plan.submitted.date, lang) })}</>}
+          🔒{' '}
+          {t('editor.lockedBanner', {
+            date: formatDate(plan.lock.lockedAt.slice(0, 10), lang),
+            code: plan.lock.revisionCode,
+          })}{' '}
+          {t('editor.lockedReadOnly')}
+          {plan.submitted && (
+            <> · {t('editor.submitted', { date: formatDate(plan.submitted.date, lang) })}</>
+          )}
         </Banner>
       )}
       {plan.conflictCopyOf && <Banner kind="warn">{t('editor.conflictCopy')}</Banner>}
@@ -157,8 +196,14 @@ export function EditorScreen({ planId }: { planId: string }) {
       {/* Competencies / objectives */}
       <section className="rounded border border-hairline bg-white p-3 flex flex-col gap-2">
         <div className="flex items-center justify-between gap-2">
-          <h2 className="text-title">{ed.cls?.curriculum === 'none' ? t('editor.customObjectives') : t('editor.competencies')}</h2>
-          {!locked && ed.cls?.curriculum !== 'none' && <Button onClick={() => setPickerOpen(true)}>{t('editor.pickCompetency')}</Button>}
+          <h2 className="text-title">
+            {ed.cls?.curriculum === 'none'
+              ? t('editor.customObjectives')
+              : t('editor.competencies')}
+          </h2>
+          {!locked && ed.cls?.curriculum !== 'none' && (
+            <Button onClick={() => setPickerOpen(true)}>{t('editor.pickCompetency')}</Button>
+          )}
         </div>
         {ed.cls?.curriculum === 'none' || (!plan.learningAreaId && compCount === 0) ? (
           <textarea
@@ -167,38 +212,67 @@ export function EditorScreen({ planId }: { planId: string }) {
             placeholder={t('editor.customObjectivesHint')}
             readOnly={locked}
             defaultValue={plan.customObjectives.join('\n')}
-            onChange={e => ed.savePlan({ customObjectives: e.target.value.split('\n').map(s => s.trim()).filter(Boolean).slice(0, 30) })}
+            onChange={(e) =>
+              ed.savePlan({
+                customObjectives: e.target.value
+                  .split('\n')
+                  .map((s) => s.trim())
+                  .filter(Boolean)
+                  .slice(0, 30),
+              })
+            }
           />
         ) : compCount === 0 ? (
           <p className="text-forestMuted">{t('editor.noCompetency')}</p>
         ) : (
           <ul className="flex flex-col gap-1">
             {Object.entries(plan.competencies).flatMap(([gid, ids]) =>
-              ids.map(id => {
-                const c = ed.competencies.find(x => x.id === id);
-                const g = ed.groups.find(x => x.id === gid);
+              ids.map((id) => {
+                const c = ed.competencies.find((x) => x.id === id);
+                const g = ed.groups.find((x) => x.id === gid);
                 return (
                   <li key={gid + id} className="text-small">
-                    {ed.groups.length > 1 && g && <Badge>{t('common.grade', { g: g.grade })}</Badge>} {c ? `${c.code ? c.code + ' · ' : ''}${c.text}` : id}
+                    {ed.groups.length > 1 && g && (
+                      <Badge>{t('common.grade', { g: g.grade })}</Badge>
+                    )}{' '}
+                    {c ? `${c.code ? c.code + ' · ' : ''}${c.text}` : id}
                   </li>
                 );
-              }),
+              })
             )}
           </ul>
         )}
         <div className="max-w-[10rem]">
-          <TextInput label={t('editor.duration')} hint={t('common.minutes', { n: plan.durationMinutes })} inputMode="numeric" readOnly={locked} defaultValue={String(plan.durationMinutes)} onChange={e => ed.savePlan({ durationMinutes: Math.max(5, Math.min(600, parseInt(e.target.value, 10) || 5)) })} />
+          <TextInput
+            label={t('editor.duration')}
+            hint={t('common.minutes', { n: plan.durationMinutes })}
+            inputMode="numeric"
+            readOnly={locked}
+            defaultValue={String(plan.durationMinutes)}
+            onChange={(e) =>
+              ed.savePlan({
+                durationMinutes: Math.max(5, Math.min(600, parseInt(e.target.value, 10) || 5)),
+              })
+            }
+          />
         </div>
       </section>
 
       {/* Sections in template order */}
-      {template.sections.map(ts => {
-        const rec = ed.sections.find(s => s.data.key === ts.key);
+      {template.sections.map((ts) => {
+        const rec = ed.sections.find((s) => s.data.key === ts.key);
         if (!rec) return null;
         const readOnly = locked && !ts.outsideLock;
-        const missing = ed.problems.some(p => p.kind === 'empty' && p.key === ts.key);
+        const missing = ed.problems.some((p) => p.kind === 'empty' && p.key === ts.key);
         return (
-          <section key={ts.key} aria-labelledby={`s-${ts.key}`} className={cx('rounded border bg-white p-3 flex flex-col gap-2', missing && !locked ? 'border-yellow' : 'border-hairline')}>
+          <section
+            key={ts.key}
+            aria-labelledby={`s-${ts.key}`}
+            className={cx(
+              'rounded border bg-white p-3 flex flex-col gap-2',
+              missing && !locked ? 'border-yellow' : 'border-hairline'
+            )}
+          >
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 id={`s-${ts.key}`} className="text-title">
                 {ts.label[lang]}
@@ -212,7 +286,9 @@ export function EditorScreen({ planId }: { planId: string }) {
                 )}
               </span>
             </div>
-            {locked && ts.outsideLock && <p className="text-small text-forestMuted">{t('editor.reflectionEditable')}</p>}
+            {locked && ts.outsideLock && (
+              <p className="text-small text-forestMuted">{t('editor.reflectionEditable')}</p>
+            )}
             {!readOnly && canGenerate && ed.cls && (
               <div>
                 <Button variant="quiet" onClick={() => setRegen(rec)}>
@@ -220,7 +296,13 @@ export function EditorScreen({ planId }: { planId: string }) {
                 </Button>
               </div>
             )}
-            <SectionEditor content={rec.data.content} readOnly={readOnly} groups={ed.groups} label={ts.label[lang]} onChange={(c: SectionContent) => ed.saveSection(rec.data, c)} />
+            <SectionEditor
+              content={rec.data.content}
+              readOnly={readOnly}
+              groups={ed.groups}
+              label={ts.label[lang]}
+              onChange={(c: SectionContent) => ed.saveSection(rec.data, c)}
+            />
           </section>
         );
       })}
@@ -235,7 +317,12 @@ export function EditorScreen({ planId }: { planId: string }) {
             <Button variant="quiet" onClick={() => setLockOpen(false)}>
               {t('common.cancel')}
             </Button>
-            <Button variant="primary" onClick={() => void doLock()} disabled={ed.problems.length > 0} busy={busy}>
+            <Button
+              variant="primary"
+              onClick={() => void doLock()}
+              disabled={ed.problems.length > 0}
+              busy={busy}
+            >
               {t('editor.lock')}
             </Button>
           </>
@@ -247,7 +334,13 @@ export function EditorScreen({ planId }: { planId: string }) {
             <p className="font-medium">{t('editor.lockBlocked')}</p>
             <ul className="list-disc pl-6">
               {ed.problems.map((p, i) => (
-                <li key={i}>{p.kind === 'empty' ? template.sections.find(s => s.key === p.key)?.label[lang] ?? p.key : p.kind === 'competency' ? t('editor.lockNeedsCompetency') : p.message}</li>
+                <li key={i}>
+                  {p.kind === 'empty'
+                    ? (template.sections.find((s) => s.key === p.key)?.label[lang] ?? p.key)
+                    : p.kind === 'competency'
+                      ? t('editor.lockNeedsCompetency')
+                      : p.message}
+                </li>
               ))}
             </ul>
           </div>
@@ -264,7 +357,11 @@ export function EditorScreen({ planId }: { planId: string }) {
             <Button variant="quiet" onClick={() => setUnlockOpen(false)}>
               {t('common.cancel')}
             </Button>
-            <Button variant={plan.submitted ? 'danger' : 'primary'} onClick={() => void doUnlock()} busy={busy}>
+            <Button
+              variant={plan.submitted ? 'danger' : 'primary'}
+              onClick={() => void doUnlock()}
+              busy={busy}
+            >
               {t('editor.unlock')}
             </Button>
           </>
@@ -291,19 +388,42 @@ export function EditorScreen({ planId }: { planId: string }) {
         onGenerate={() => router.push(`/generate?planId=${plan.id}`)}
         onDeleted={() => router.replace('/lessons')}
       />
-      <RegenSheet section={regen} onClose={() => setRegen(null)} ed={ed} onDone={m => setToast(m)} />
-      <PostSheet open={postOpen} onClose={() => setPostOpen(false)} ed={ed} onPosted={m => setToast(m)} />
-      <Toast message={toast === 'drafted' ? t('gen.done') : toast === 'queued' ? t('gen.queued') : toast} onDone={() => setToast(null)} />
+      <RegenSheet
+        section={regen}
+        onClose={() => setRegen(null)}
+        ed={ed}
+        onDone={(m) => setToast(m)}
+      />
+      <PostSheet
+        open={postOpen}
+        onClose={() => setPostOpen(false)}
+        ed={ed}
+        onPosted={(m) => setToast(m)}
+      />
+      <Toast
+        message={toast === 'drafted' ? t('gen.done') : toast === 'queued' ? t('gen.queued') : toast}
+        onDone={() => setToast(null)}
+      />
 
       {/* Conflict: stacked versions, three plain choices (§10.5) */}
       <Sheet open={!!conflict} onClose={() => setConflict(null)} title={t('editor.conflictTitle')}>
         {conflict && (
           <>
             <p>{t('editor.conflictBody')}</p>
-            <ConflictVersion label={t('editor.conflictThisDevice')} time={conflict.updatedAt} section={conflict.data} groups={ed.groups} />
-            <ConflictVersion label={t('editor.conflictOtherDevice')} time={conflict.conflict!.server.updatedAt} section={conflict.conflict!.server.data} groups={ed.groups} />
+            <ConflictVersion
+              label={t('editor.conflictThisDevice')}
+              time={conflict.updatedAt}
+              section={conflict.data}
+              groups={ed.groups}
+            />
+            <ConflictVersion
+              label={t('editor.conflictOtherDevice')}
+              time={conflict.conflict!.server.updatedAt}
+              section={conflict.conflict!.server.data}
+              groups={ed.groups}
+            />
             <div className="flex flex-col gap-2">
-              {(['mine', 'theirs', 'both'] as const).map(choice => (
+              {(['mine', 'theirs', 'both'] as const).map((choice) => (
                 <Button
                   key={choice}
                   variant={choice === 'mine' ? 'primary' : 'secondary'}
@@ -313,7 +433,9 @@ export function EditorScreen({ planId }: { planId: string }) {
                     setConflict(null);
                   }}
                 >
-                  {t(`editor.conflict${choice === 'mine' ? 'Mine' : choice === 'theirs' ? 'Theirs' : 'Both'}`)}
+                  {t(
+                    `editor.conflict${choice === 'mine' ? 'Mine' : choice === 'theirs' ? 'Theirs' : 'Both'}`
+                  )}
                 </Button>
               ))}
             </div>
@@ -324,7 +446,17 @@ export function EditorScreen({ planId }: { planId: string }) {
   );
 }
 
-function ConflictVersion({ label, time, section, groups }: { label: string; time: string; section: PlanSection; groups: Array<{ id: string; grade: string }> }) {
+function ConflictVersion({
+  label,
+  time,
+  section,
+  groups,
+}: {
+  label: string;
+  time: string;
+  section: PlanSection;
+  groups: Array<{ id: string; grade: string }>;
+}) {
   const { lang } = useT();
   return (
     <div className="rounded border border-hairline bg-cream/50 p-3">
@@ -332,7 +464,13 @@ function ConflictVersion({ label, time, section, groups }: { label: string; time
         <strong className="text-forest">{label}</strong> · {formatTime(time, lang)}
       </p>
       <div className="max-h-48 overflow-y-auto">
-        <SectionEditor content={section.content} readOnly groups={groups} label={label} onChange={() => {}} />
+        <SectionEditor
+          content={section.content}
+          readOnly
+          groups={groups}
+          label={label}
+          onChange={() => {}}
+        />
       </div>
     </div>
   );

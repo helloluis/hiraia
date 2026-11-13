@@ -27,7 +27,10 @@ export const LearningArea = z.object({
   /** Primary stage. Prefer `stages` (a learning area such as Science spans elementary and JHS). */
   stage: z.enum(['kinder', 'elementary', 'jhs', 'shs_core']),
   /** All stages this learning area spans. One entry per learning area id — do not duplicate the area per stage. */
-  stages: z.array(z.enum(['kinder', 'elementary', 'jhs', 'shs_core'])).min(1).optional(),
+  stages: z
+    .array(z.enum(['kinder', 'elementary', 'jhs', 'shs_core']))
+    .min(1)
+    .optional(),
 });
 export type LearningArea = z.infer<typeof LearningArea>;
 
@@ -101,13 +104,15 @@ export const CalendarPreset = z.object({
   provisional: z.boolean(),
   startDate: IsoDate,
   endDate: IsoDate,
-  terms: z.array(z.object({ index: z.number().int(), name: z.string(), startDate: IsoDate, endDate: IsoDate })),
+  terms: z.array(
+    z.object({ index: z.number().int(), name: z.string(), startDate: IsoDate, endDate: IsoDate })
+  ),
   days: z.array(
     z.object({
       date: IsoDate,
       kind: z.enum(['national_holiday', 'deped_event', 'exam']),
       label: z.string(),
-    }),
+    })
   ),
   source: z.string().max(300),
 });
@@ -192,7 +197,10 @@ export interface TimelineEntry {
   mark: 'taught' | 'assumed_taught' | 'partial' | 'not_taught' | 'before_tala' | null;
   /** Per grade group, for multi-grade sessions where groups differ. Absent = same as `kind` / `mark` for all groups. */
   byGroupKind?: Record<Id, 'lesson' | 'buffer' | 'assessment' | 'other_subject' | 'before_tala'>;
-  byGroupMark?: Record<Id, 'taught' | 'assumed_taught' | 'partial' | 'not_taught' | 'before_tala' | null>;
+  byGroupMark?: Record<
+    Id,
+    'taught' | 'assumed_taught' | 'partial' | 'not_taught' | 'before_tala' | null
+  >;
   /** Whether the multi-grade pairing shares a theme, and across which groups (§7.4). */
   pairing: { shared: boolean; groupIds: Id[]; overridden: boolean } | null;
 }
@@ -246,18 +254,23 @@ export interface PacingEngine {
     schoolYear: SchoolYear,
     term: Term,
     assignment: TeachingAssignment,
-    calendarDays: CalendarDay[],
+    calendarDays: CalendarDay[]
   ): TeachingSession[];
   computePacing(input: PacingInput): PacingPlan;
   /** Any-day onboarding (§7.5): the competency default pacing would have reached on `today`. */
-  proposeStartPosition(input: Omit<PacingInput, 'marks' | 'checks'>): { competencyId: string; date: IsoDate; estimated: true } | null;
+  proposeStartPosition(
+    input: Omit<PacingInput, 'marks' | 'checks'>
+  ): { competencyId: string; date: IsoDate; estimated: true } | null;
   buildTimeline(input: TimelineInput): TimelineEntry[];
   /**
    * `baseline` is the pacing plan as it stood before the disruption (the last plan the teacher saw), so that
    * `before`, `moved` and `planMoves` are measured against what was actually scheduled. Omit it to use
    * computePacing(input) with the disrupting calendar days / marks ignored where derivable.
    */
-  previewRealignment(input: PacingInput & { plans: Plan[]; baseline?: PacingPlan }, request: RealignmentRequest): RealignmentPreview;
+  previewRealignment(
+    input: PacingInput & { plans: Plan[]; baseline?: PacingPlan },
+    request: RealignmentRequest
+  ): RealignmentPreview;
   /** Which realignment options are applicable right now, with the default first (§7.6). */
   availableRealignments(input: PacingInput): RealignmentOption[];
   /** Term containing `date`, or null between terms. */

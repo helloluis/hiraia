@@ -4,17 +4,45 @@ import type { RealignmentOption } from '@hiraia/tala-core/contracts';
 import { useT } from '@/i18n';
 import { useSession } from '@/data/session';
 import type { useTimeline } from '@/data/timeline';
-import { affectedTracks, applyPreview, optionsFor, previewOption, undoApplied, type CombinedPreview } from '@/data/realign';
+import {
+  affectedTracks,
+  applyPreview,
+  optionsFor,
+  previewOption,
+  undoApplied,
+  type CombinedPreview,
+} from '@/data/realign';
 import { addDays } from '@/data/ids';
 import { Badge, Banner, Button, Placeholder, Sheet, TextInput, cx } from '@/components/ui';
 
 /** Preview-and-confirm realignment (§7.6, PACE-6). Default option first; apply is reversible in one step. */
-export function RealignSheet({ open, onClose, dayIds, tl, onApplied }: { open: boolean; onClose: () => void; dayIds: string[]; tl: ReturnType<typeof useTimeline>; onApplied: (undo: () => void) => void }) {
+export function RealignSheet({
+  open,
+  onClose,
+  dayIds,
+  tl,
+  onApplied,
+}: {
+  open: boolean;
+  onClose: () => void;
+  dayIds: string[];
+  tl: ReturnType<typeof useTimeline>;
+  onApplied: (undo: () => void) => void;
+}) {
   const { t } = useT();
   const { engine } = useSession();
-  const days = useMemo(() => tl.ws.calendarDays.filter(d => dayIds.includes(d.id)), [tl.ws.calendarDays, dayIds]);
-  const tracks = useMemo(() => (tl.currentTerm ? affectedTracks(tl.ws, days, tl.currentTerm.id) : []), [tl.ws, days, tl.currentTerm]);
-  const options = useMemo(() => optionsFor(tl.ws, tl.competencies, tracks, tl.today, tl.defaults), [tl.ws, tl.competencies, tracks, tl.today, tl.defaults]);
+  const days = useMemo(
+    () => tl.ws.calendarDays.filter((d) => dayIds.includes(d.id)),
+    [tl.ws.calendarDays, dayIds]
+  );
+  const tracks = useMemo(
+    () => (tl.currentTerm ? affectedTracks(tl.ws, days, tl.currentTerm.id) : []),
+    [tl.ws, days, tl.currentTerm]
+  );
+  const options = useMemo(
+    () => optionsFor(tl.ws, tl.competencies, tracks, tl.today, tl.defaults),
+    [tl.ws, tl.competencies, tracks, tl.today, tl.defaults]
+  );
   const [option, setOption] = useState<RealignmentOption | null>(null);
   const [makeup, setMakeup] = useState(() => nextSaturday(tl.today));
   const [preview, setPreview] = useState<CombinedPreview | null>(null);
@@ -30,7 +58,11 @@ export function RealignSheet({ open, onClose, dayIds, tl, onApplied }: { open: b
     setPreview(null);
     const id = setTimeout(() => {
       try {
-        setPreview(previewOption(tl.ws, tl.competencies, tracks, dayIds, option, tl.today, tl.defaults, { makeupDates: option === 'add_time' ? [makeup] : undefined }));
+        setPreview(
+          previewOption(tl.ws, tl.competencies, tracks, dayIds, option, tl.today, tl.defaults, {
+            makeupDates: option === 'add_time' ? [makeup] : undefined,
+          })
+        );
         setFailed(false);
       } catch {
         setFailed(true);
@@ -64,7 +96,12 @@ export function RealignSheet({ open, onClose, dayIds, tl, onApplied }: { open: b
           <Button variant="quiet" onClick={onClose}>
             {t('realign.later')}
           </Button>
-          <Button variant="primary" onClick={() => void apply()} disabled={!preview || nothingToDo === true} busy={busy}>
+          <Button
+            variant="primary"
+            onClick={() => void apply()}
+            disabled={!preview || nothingToDo === true}
+            busy={busy}
+          >
             {t('realign.apply')}
           </Button>
         </>
@@ -73,7 +110,17 @@ export function RealignSheet({ open, onClose, dayIds, tl, onApplied }: { open: b
       <p>{t('realign.intro')}</p>
       <div role="radiogroup" aria-label={t('realign.title')} className="flex flex-col gap-2">
         {options.map((o, i) => (
-          <button key={o} type="button" role="radio" aria-checked={option === o} onClick={() => setOption(o)} className={cx('flex flex-col items-start gap-0.5 min-h-touch rounded border px-3 py-2 text-left bg-white', option === o ? 'border-talaTeal ring-2 ring-talaTeal' : 'border-hairline')}>
+          <button
+            key={o}
+            type="button"
+            role="radio"
+            aria-checked={option === o}
+            onClick={() => setOption(o)}
+            className={cx(
+              'flex flex-col items-start gap-0.5 min-h-touch rounded border px-3 py-2 text-left bg-white',
+              option === o ? 'border-talaTeal ring-2 ring-talaTeal' : 'border-hairline'
+            )}
+          >
             <span className="flex items-center gap-2 font-medium">
               {t(`realign.option.${o}`)}
               {i === 0 && <Badge tone="teal">{t('realign.recommended')}</Badge>}
@@ -82,7 +129,14 @@ export function RealignSheet({ open, onClose, dayIds, tl, onApplied }: { open: b
           </button>
         ))}
       </div>
-      {option === 'add_time' && <TextInput label={t('realign.pickDate')} type="date" value={makeup} onChange={e => setMakeup(e.target.value)} />}
+      {option === 'add_time' && (
+        <TextInput
+          label={t('realign.pickDate')}
+          type="date"
+          value={makeup}
+          onChange={(e) => setMakeup(e.target.value)}
+        />
+      )}
       {failed && <Banner kind="error">{t('error.generic')}</Banner>}
       {!preview && !failed && option && <Placeholder rows={2} />}
       {preview && (
@@ -92,8 +146,12 @@ export function RealignSheet({ open, onClose, dayIds, tl, onApplied }: { open: b
           ) : (
             <>
               <span>{t('realign.moved', { n: preview.movedCompetencies })}</span>
-              {preview.movedPlans > 0 && <span>{t('realign.plansMoved', { n: preview.movedPlans })}</span>}
-              {preview.dropped > 0 && <span className="text-brick">⚠ {t('realign.dropped', { n: preview.dropped })}</span>}
+              {preview.movedPlans > 0 && (
+                <span>{t('realign.plansMoved', { n: preview.movedPlans })}</span>
+              )}
+              {preview.dropped > 0 && (
+                <span className="text-brick">⚠ {t('realign.dropped', { n: preview.dropped })}</span>
+              )}
             </>
           )}
         </div>

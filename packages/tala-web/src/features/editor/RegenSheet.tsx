@@ -11,7 +11,17 @@ import { errorKey } from '@/data/errors';
 import { Banner, Button, Sheet, TextInput, Waiting } from '@/components/ui';
 import type { PlanEditor } from './usePlanEditor';
 
-export function RegenSheet({ section, onClose, ed, onDone }: { section: LocalRecord<'plan_section'> | null; onClose: () => void; ed: PlanEditor; onDone: (message: string) => void }) {
+export function RegenSheet({
+  section,
+  onClose,
+  ed,
+  onDone,
+}: {
+  section: LocalRecord<'plan_section'> | null;
+  onClose: () => void;
+  ed: PlanEditor;
+  onDone: (message: string) => void;
+}) {
   const { t, lang } = useT();
   const { engine, cache, network } = useSession();
   const [instruction, setInstruction] = useState('');
@@ -21,16 +31,32 @@ export function RegenSheet({ section, onClose, ed, onDone }: { section: LocalRec
   const jobId = useRef<string | null>(null);
   const online = network.online && network.rung !== 'offline';
   if (!section || !ed.plan || !ed.template) return null;
-  const label = ed.template.sections.find(s => s.key === section.data.key)?.label[lang] ?? section.data.key;
+  const label =
+    ed.template.sections.find((s) => s.key === section.data.key)?.label[lang] ?? section.data.key;
   const edited = section.data.editedByTeacher;
 
   const run = async () => {
     if (!engine || !ed.plan || !ed.template) return;
     setError(null);
-    const input = buildGenerationInput({ plan: ed.plan, cls: ed.cls, template: ed.template, language: ed.plan.language, kind: 'section', sectionKey: section.data.key, instruction });
+    const input = buildGenerationInput({
+      plan: ed.plan,
+      cls: ed.cls,
+      template: ed.template,
+      language: ed.plan.language,
+      kind: 'section',
+      sectionKey: section.data.key,
+      instruction,
+    });
     await ed.flushAll();
     if (!online) {
-      await enqueue(cache, { id: newId(), planId: ed.plan.id, input, jobId: null, confirmedSectionIds: [section.id], createdAt: new Date().toISOString() });
+      await enqueue(cache, {
+        id: newId(),
+        planId: ed.plan.id,
+        input,
+        jobId: null,
+        confirmedSectionIds: [section.id],
+        createdAt: new Date().toISOString(),
+      });
       onDone(t('gen.queued'));
       onClose();
       return;
@@ -44,12 +70,15 @@ export function RegenSheet({ section, onClose, ed, onDone }: { section: LocalRec
       const finished = await pollJob(getClient(), job.id, c.signal);
       if (finished.status === 'done') {
         const fresh = (await engine.get('plan', ed.plan.id))?.data ?? ed.plan;
-        const sections = (await engine.list('plan_section')).filter(s => s.data.planId === ed.plan!.id).map(s => s.data);
+        const sections = (await engine.list('plan_section'))
+          .filter((s) => s.data.planId === ed.plan!.id)
+          .map((s) => s.data);
         await applyGenerationJob(engine, fresh, sections, finished, newId, [section.id]);
         onDone(t('gen.regenDone'));
         onClose();
       } else if (finished.status === 'cancelled') onClose();
-      else setError(finished.failure ? t(`gen.failed.${finished.failure.reason}`) : t('gen.failed'));
+      else
+        setError(finished.failure ? t(`gen.failed.${finished.failure.reason}`) : t('gen.failed'));
     } catch (err) {
       if ((err as { name?: string }).name !== 'AbortError') setError(t(errorKey(err)));
     } finally {
@@ -59,7 +88,10 @@ export function RegenSheet({ section, onClose, ed, onDone }: { section: LocalRec
 
   const cancel = async () => {
     ctrl.current?.abort();
-    if (jobId.current) await getClient().call('generation.cancel', { params: { jobId: jobId.current } }).catch(() => {});
+    if (jobId.current)
+      await getClient()
+        .call('generation.cancel', { params: { jobId: jobId.current } })
+        .catch(() => {});
     setWorking(false);
   };
 
@@ -82,7 +114,15 @@ export function RegenSheet({ section, onClose, ed, onDone }: { section: LocalRec
       }
     >
       {edited && <Banner kind="warn">{t('gen.regenEdited')}</Banner>}
-      <TextInput label={t('gen.regenInstruction')} optional hint={t('gen.regenInstructionHint')} value={instruction} maxLength={500} onChange={e => setInstruction(e.target.value)} disabled={working} />
+      <TextInput
+        label={t('gen.regenInstruction')}
+        optional
+        hint={t('gen.regenInstructionHint')}
+        value={instruction}
+        maxLength={500}
+        onChange={(e) => setInstruction(e.target.value)}
+        disabled={working}
+      />
       <p className="text-small text-forestMuted">{t('gen.notice')}</p>
       {working && <Waiting label={t('gen.working')} onCancel={() => void cancel()} />}
       {error && <Banner kind="warn">{error}</Banner>}

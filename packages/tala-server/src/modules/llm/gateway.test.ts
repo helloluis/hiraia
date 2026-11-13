@@ -4,63 +4,558 @@ import Database from 'better-sqlite3';
 import { z } from 'zod';
 import { createLlmGateway, migrations, type ProviderCall } from './index';
 import type { BaseDeps, TalaServerConfig } from '../../kernel/types';
-export function fixture(call?:ProviderCall) {
-  const db=new Database(':memory:');for(const m of migrations)db.exec(m.sql);
-  const logs:unknown[]=[];
-  const provider={apiKeyEnv:'TEST_NEVER_READ',baseUrl:'https://api.deepseek.com',model:'fake',timeoutMs:30};
-  const config={environment:'staging',features:{generation:true},llm:{primary:provider,fallback:provider,local:provider,routes:{'lesson.generate':'cloud','lesson.regenerate':'cloud','roster.names':'cloud'},promptVersions:{},quotas:{fullPerDay:20,sectionPerDay:20},budget:{monthlyUsd:10,alertAtUsd:9},cacheSeconds:30}} as TalaServerConfig;
-  const deps:BaseDeps={db,config,now:()=>new Date('2026-11-13T12:00:00Z'),newId:()=>crypto.randomUUID(),log:{info:(...a)=>{logs.push(a);},warn:(...a)=>{logs.push(a);},error:(...a)=>{logs.push(a);}}};
-  return {deps,db,logs,gateway:createLlmGateway(deps,{call:call??(async()=>({content:'{"value":"ok"}',inputTokens:1,outputTokens:2,costUsd:0.01}))})};
+export function fixture(call?: ProviderCall) {
+  const db = new Database(':memory:');
+  for (const m of migrations) db.exec(m.sql);
+  const logs: unknown[] = [];
+  const provider = {
+    apiKeyEnv: 'TEST_NEVER_READ',
+    baseUrl: 'https://api.deepseek.com',
+    model: 'fake',
+    timeoutMs: 30,
+  };
+  const config = {
+    environment: 'staging',
+    features: { generation: true },
+    llm: {
+      primary: provider,
+      fallback: provider,
+      local: provider,
+      routes: { 'lesson.generate': 'cloud', 'lesson.regenerate': 'cloud', 'roster.names': 'cloud' },
+      promptVersions: {},
+      quotas: { fullPerDay: 20, sectionPerDay: 20 },
+      budget: { monthlyUsd: 10, alertAtUsd: 9 },
+      cacheSeconds: 30,
+    },
+  } as TalaServerConfig;
+  const deps: BaseDeps = {
+    db,
+    config,
+    now: () => new Date('2026-11-13T12:00:00Z'),
+    newId: () => crypto.randomUUID(),
+    log: {
+      info: (...a) => {
+        logs.push(a);
+      },
+      warn: (...a) => {
+        logs.push(a);
+      },
+      error: (...a) => {
+        logs.push(a);
+      },
+    },
+  };
+  return {
+    deps,
+    db,
+    logs,
+    gateway: createLlmGateway(deps, {
+      call:
+        call ??
+        (async () => ({
+          content: '{"value":"ok"}',
+          inputTokens: 1,
+          outputTokens: 2,
+          costUsd: 0.01,
+        })),
+    }),
+  };
 }
-const request=()=>({feature:'lesson.generate' as const,promptId:'lesson/single',vars:{input:'PRIVATE_CONTENT',schema:'PRIVATE_CONTENT'},schema:z.object({value:z.literal('ok')}),userId:'teacher'});
-test('validates retry, fallback, caches and logs metadata only',async()=>{let calls=0;const f=fixture(async p=>{calls++;return {content:p==='deepseek'?'{}':'{"value":"ok"}',inputTokens:1,outputTokens:1,costUsd:.01};});try{const result=await f.gateway.complete(request());assert.equal(result.ok,true);if(result.ok)assert.equal(result.fellBack,true);assert.equal(calls,3);await f.gateway.complete(request());assert.equal(calls,3);assert.equal(JSON.stringify(f.logs).includes('PRIVATE_CONTENT'),false);assert.equal(f.db.prepare('SELECT COUNT(*) AS n FROM llm_usage').get() && (f.db.prepare('SELECT COUNT(*) AS n FROM llm_usage').get() as {n:number}).n,3);}finally{f.db.close();}});
-test('typed invalid output after four validation attempts',async()=>{let calls=0;const f=fixture(async()=>{calls++;return {content:'{}',inputTokens:1,outputTokens:1,costUsd:0};});try{const r=await f.gateway.complete(request());assert.equal(r.ok,false);if(!r.ok)assert.equal(r.reason,'invalid_output');assert.equal(calls,4);}finally{f.db.close();}});
-test('production roster cloud cannot be restored by caller',async()=>{let calls=0;const f=fixture(async()=>{calls++;throw Error('secret');});try{f.deps.config.environment='production';assert.equal(f.gateway.routeFor('roster.names'),'rules');const r=await f.gateway.complete({...request(),feature:'roster.names',route:'cloud'});assert.equal(r.ok,false);assert.equal(calls,0);}finally{f.db.close();}});
-test('local never falls back to cloud',async()=>{const seen:string[]=[];const f=fixture(async p=>{seen.push(p);throw Error('SECRET');});try{const r=await f.gateway.complete({...request(),route:'local'});assert.equal(r.ok,false);assert.deepEqual(seen,['local']);assert.equal(JSON.stringify(r).includes('SECRET'),false);}finally{f.db.close();}});
-test('quotas and monthly budget stop calls',async()=>{const f=fixture();try{f.deps.config.llm.quotas.fullPerDay=0;let r=await f.gateway.complete(request());if(!r.ok)assert.equal(r.reason,'quota_exceeded');else assert.fail();f.deps.config.llm.quotas.fullPerDay=10;f.deps.config.llm.budget.monthlyUsd=-1;r=await f.gateway.complete(request());if(!r.ok)assert.equal(r.reason,'budget_exceeded');else assert.fail();}finally{f.db.close();}});
-test('cancel interrupts provider and timeout falls back',async()=>{const f=fixture(async(p,_c,_t,signal)=>new Promise((resolve,reject)=>{signal.addEventListener('abort',()=>reject(Error('private')));if(p==='qwen')resolve({content:'{"value":"ok"}',inputTokens:0,outputTokens:0,costUsd:0});}));try{const c=new AbortController();const pending=f.gateway.complete({...request(),signal:c.signal});setTimeout(()=>c.abort(),5);const r=await pending;assert.equal(r.ok,false);if(!r.ok)assert.equal(r.reason,'cancelled');const retry=await f.gateway.complete(request());assert.equal(retry.ok,true);}finally{f.db.close();}});
-test('schema/check are re-run for cached data',async()=>{const f=fixture();try{assert.equal((await f.gateway.complete(request())).ok,true);const r=await f.gateway.complete({...request(),check:()=>['rejected']});assert.equal(r.ok,false);}finally{f.db.close();}});
-test('queued cancellation returns promptly without bypassing active request',async()=>{let finish!:()=>void;let calls=0;const f=fixture(async()=>{calls++;if(calls===1)await new Promise<void>(r=>{finish=r;});return {content:'{"value":"ok"}',inputTokens:1,outputTokens:1,costUsd:0};});try{f.deps.config.llm.primary.timeoutMs=1000;const first=f.gateway.complete(request());await new Promise(r=>setTimeout(r,2));const c=new AbortController();const second=f.gateway.complete({...request(),signal:c.signal});c.abort();const r=await second;assert.equal(r.ok,false);assert.equal(calls,1);finish();await first;}finally{f.db.close();}});
-test('per-attempt cost reservations use config pricing and stop overspend',async()=>{let calls=0;const f=fixture(async()=>{calls++;throw Error('private provider error');});try{f.deps.config.llm.primary.pricing={inputUsdPerMillion:0,outputUsdPerMillion:1};f.deps.config.llm.budget.monthlyUsd=.006;const r=await f.gateway.complete(request());assert.equal(r.ok,false);if(!r.ok)assert.equal(r.reason,'budget_exceeded');assert.equal(calls,1);}finally{f.db.close();}});
-test('direct adapter reads keys at call time and never exposes provider response bodies',async()=>{
-  const {directProvider}=await import('./index');const original=globalThis.fetch;const captured:string[]=[];const keyEnv='TALA_TEST_SECRET';
-  globalThis.fetch=async(_url,init)=>{captured.push((init?.headers as Record<string,string>).Authorization!);return new Response('PRIVATE_PROVIDER_BODY',{status:429});};
-  try {for(const value of ['private-first','private-second']){process.env[keyEnv]=value;await assert.rejects(directProvider('deepseek',{apiKeyEnv:keyEnv,baseUrl:'https://api.deepseek.com',model:'fake',timeoutMs:10},'PRIVATE_PROMPT',new AbortController().signal,10),e=>e instanceof Error&&!e.message.includes(value)&&!e.message.includes('PRIVATE_PROVIDER_BODY')&&!e.message.includes('PRIVATE_PROMPT'));}assert.equal(captured[0]==='Bearer private-first',true);assert.equal(captured[1]==='Bearer private-second',true);}
-  finally {globalThis.fetch=original;delete process.env[keyEnv];}
+const request = () => ({
+  feature: 'lesson.generate' as const,
+  promptId: 'lesson/single',
+  vars: { input: 'PRIVATE_CONTENT', schema: 'PRIVATE_CONTENT' },
+  schema: z.object({ value: z.literal('ok') }),
+  userId: 'teacher',
 });
-test('direct adapter refuses aggregators and prompt identifiers cannot escape prompt root',async()=>{const {directProvider,loadPrompt}=await import('./index');process.env.TALA_TEST_SECRET='private';try{await assert.rejects(directProvider('deepseek',{apiKeyEnv:'TALA_TEST_SECRET',baseUrl:'https://example.com',model:'fake',timeoutMs:10},'',new AbortController().signal,10));assert.throws(()=>loadPrompt('../secrets'));}finally{delete process.env.TALA_TEST_SECRET;}});
-test('length finish reason retries before JSON parsing and is classified without content',async()=>{const f=fixture();const events:unknown[]=[];let count=0;const gateway=createLlmGateway(f.deps,{onAttempt:event=>events.push(event),call:async()=>({content:++count===1?'PRIVATE_TRUNCATED':'{"value":"ok"}',inputTokens:10,outputTokens:20,costUsd:0,httpStatus:200,finishReason:count===1?'length':'stop',latencyMs:2})});try{assert.equal((await gateway.complete(request())).ok,true);assert.equal(count,2);assert.equal((events[0] as {stage:string}).stage,'truncated');assert.equal(JSON.stringify(events).includes('PRIVATE_TRUNCATED'),false);}finally{f.db.close();}});
-test('transformed schemas cache raw JSON and return converted values',async()=>{const f=fixture();try{const req={...request(),schema:z.object({value:z.string()}).transform(v=>({converted:v.value}))};const one=await f.gateway.complete(req);const two=await f.gateway.complete(req);assert.equal(one.ok,true);assert.equal(two.ok,true);if(two.ok)assert.equal(two.data.converted,'ok');assert.equal((f.db.prepare('SELECT count(*) AS n FROM llm_usage').get() as {n:number}).n,1);}finally{f.db.close();}});
-test('account deletion aborts in-flight and queued requests without reintroducing user rows',async()=>{
-  const {llmModule,monthlySpend}=await import('./index');let calls=0;const f=fixture(async(_p,_c,_text,signal)=>{calls++;await new Promise<void>((_resolve,reject)=>signal.addEventListener('abort',()=>reject(Error('Cancelled.')),{once:true}));throw Error('unreachable');});
-  try{const one=f.gateway.complete(request());await new Promise(r=>setTimeout(r,2));const two=f.gateway.complete(request());llmModule.onAccountDeleted!(f.deps,'teacher');const results=await Promise.all([one,two]);assert.ok(results.every(r=>!r.ok&&r.reason==='cancelled'));assert.equal(calls,1);assert.equal((f.db.prepare('SELECT count(*) AS n FROM llm_usage WHERE user_id=?').get('teacher') as {n:number}).n,0);assert.equal((f.db.prepare('SELECT count(*) AS n FROM llm_quota WHERE user_id=?').get('teacher') as {n:number}).n,0);assert.equal(monthlySpend(f.db,'2026-11'),0);}finally{f.db.close();}
+test('validates retry, fallback, caches and logs metadata only', async () => {
+  let calls = 0;
+  const f = fixture(async (p) => {
+    calls++;
+    return {
+      content: p === 'deepseek' ? '{}' : '{"value":"ok"}',
+      inputTokens: 1,
+      outputTokens: 1,
+      costUsd: 0.01,
+    };
+  });
+  try {
+    const result = await f.gateway.complete(request());
+    assert.equal(result.ok, true);
+    if (result.ok) assert.equal(result.fellBack, true);
+    assert.equal(calls, 3);
+    await f.gateway.complete(request());
+    assert.equal(calls, 3);
+    assert.equal(JSON.stringify(f.logs).includes('PRIVATE_CONTENT'), false);
+    assert.equal(
+      f.db.prepare('SELECT COUNT(*) AS n FROM llm_usage').get() &&
+        (f.db.prepare('SELECT COUNT(*) AS n FROM llm_usage').get() as { n: number }).n,
+      3
+    );
+  } finally {
+    f.db.close();
+  }
 });
-test('account merge moves usage, sums quota collisions, isolates others, and is idempotent',async()=>{
-  const {llmModule,monthlySpend}=await import('./index');const f=fixture();try{
-    for(const [owner,bucket,used]of [['from','full',3],['to','full',4],['from','section',2],['other','full',8]] as const)f.db.prepare('INSERT INTO llm_quota VALUES(?,?,?,?)').run('2026-11-13',owner,bucket,used);
-    for(const owner of ['from','to','other'])f.db.prepare('INSERT INTO llm_usage(day,month,user_id,feature,provider,input_tokens,output_tokens,cost) VALUES(?,?,?,?,?,?,?,?)').run('2026-11-13','2026-11',owner,'lesson.generate','qwen',1,2,.01);
-    const before=monthlySpend(f.db,'2026-11'),other=f.db.prepare('SELECT * FROM llm_usage WHERE user_id=?').all('other');
-    const merge=()=>f.db.transaction(()=>llmModule.onAccountMerged!(f.deps,'from','to'))();merge();const snapshot=f.db.prepare('SELECT * FROM llm_quota ORDER BY user_id,bucket').all();merge();
-    assert.deepEqual(f.db.prepare('SELECT * FROM llm_quota ORDER BY user_id,bucket').all(),snapshot);assert.equal((f.db.prepare('SELECT used FROM llm_quota WHERE user_id=? AND bucket=?').get('to','full') as {used:number}).used,7);assert.equal((f.db.prepare('SELECT used FROM llm_quota WHERE user_id=? AND bucket=?').get('to','section') as {used:number}).used,2);assert.equal((f.db.prepare('SELECT count(*) AS n FROM llm_usage WHERE user_id=?').get('to') as {n:number}).n,2);assert.deepEqual(f.db.prepare('SELECT * FROM llm_usage WHERE user_id=?').all('other'),other);assert.equal(monthlySpend(f.db,'2026-11'),before);
-    llmModule.onAccountMerged!(f.deps,'to','to');assert.deepEqual(f.db.prepare('SELECT * FROM llm_quota ORDER BY user_id,bucket').all(),snapshot);
-  }finally{f.db.close();}
+test('typed invalid output after four validation attempts', async () => {
+  let calls = 0;
+  const f = fixture(async () => {
+    calls++;
+    return { content: '{}', inputTokens: 1, outputTokens: 1, costUsd: 0 };
+  });
+  try {
+    const r = await f.gateway.complete(request());
+    assert.equal(r.ok, false);
+    if (!r.ok) assert.equal(r.reason, 'invalid_output');
+    assert.equal(calls, 4);
+  } finally {
+    f.db.close();
+  }
 });
-test('account merge rekeys cached responses and aborts old-account in-flight work',async()=>{
-  const {llmModule}=await import('./index');let calls=0;const f=fixture(async(_p,_c,_t,signal)=>{calls++;if(calls>1)await new Promise<void>((_resolve,reject)=>signal.addEventListener('abort',()=>reject(Error('Cancelled.')),{once:true}));return {content:'{"value":"ok"}',inputTokens:1,outputTokens:1,costUsd:.01};});try{
-    await f.gateway.complete({...request(),userId:'from'});llmModule.onAccountMerged!(f.deps,'from','to');assert.equal((await f.gateway.complete({...request(),userId:'to'})).ok,true);assert.equal(calls,1);
-    const work=f.gateway.complete({...request(),userId:'from',vars:{input:'different',schema:''}});await new Promise(r=>setTimeout(r,2));llmModule.onAccountMerged!(f.deps,'from','to');const result=await work;assert.equal(result.ok,false);if(!result.ok)assert.equal(result.reason,'cancelled');assert.equal((f.db.prepare('SELECT count(*) AS n FROM llm_usage WHERE user_id=?').get('from') as {n:number}).n,0);
-  }finally{f.db.close();}
+test('production roster cloud cannot be restored by caller', async () => {
+  let calls = 0;
+  const f = fixture(async () => {
+    calls++;
+    throw Error('secret');
+  });
+  try {
+    f.deps.config.environment = 'production';
+    assert.equal(f.gateway.routeFor('roster.names'), 'rules');
+    const r = await f.gateway.complete({ ...request(), feature: 'roster.names', route: 'cloud' });
+    assert.equal(r.ok, false);
+    assert.equal(calls, 0);
+  } finally {
+    f.db.close();
+  }
 });
-test('provider request parameters use DeepSeek non-thinking JSON mode without changing Qwen',async()=>{
-  const {directProvider}=await import('./index');const original=globalThis.fetch;const bodies:Record<string,unknown>[]=[];
-  globalThis.fetch=async(_url,init)=>{bodies.push(JSON.parse(String(init?.body)));return Response.json({choices:[{finish_reason:'stop',message:{content:'{"ok":true}'}}],usage:{prompt_tokens:2,completion_tokens:3}});};
-  process.env.TALA_EVAL_TEST_PROVIDER_KEY='fixture-only';
-  try{for(const provider of ['deepseek','qwen']as const){const result=await directProvider(provider,{apiKeyEnv:'TALA_EVAL_TEST_PROVIDER_KEY',baseUrl:provider==='deepseek'?'https://api.deepseek.com':'https://dashscope-intl.aliyuncs.com/compatible-mode/v1',model:'fixture-model',timeoutMs:10,pricing:{inputUsdPerMillion:.3,outputUsdPerMillion:1.2}},'Return JSON',new AbortController().signal,100);assert.equal(result.finishReason,'stop');}
-    assert.deepEqual(bodies[0]?.thinking,{type:'disabled'});assert.deepEqual(bodies[0]?.response_format,{type:'json_object'});assert.equal(bodies[0]?.enable_thinking,undefined);assert.equal(bodies[1]?.enable_thinking,false);assert.equal(bodies[1]?.thinking,undefined);
-  }finally{globalThis.fetch=original;delete process.env.TALA_EVAL_TEST_PROVIDER_KEY;}
+test('local never falls back to cloud', async () => {
+  const seen: string[] = [];
+  const f = fixture(async (p) => {
+    seen.push(p);
+    throw Error('SECRET');
+  });
+  try {
+    const r = await f.gateway.complete({ ...request(), route: 'local' });
+    assert.equal(r.ok, false);
+    assert.deepEqual(seen, ['local']);
+    assert.equal(JSON.stringify(r).includes('SECRET'), false);
+  } finally {
+    f.db.close();
+  }
 });
-test('alternate Alibaba credential does not bypass a deliberately disabled configured provider',async()=>{const {directProvider}=await import('./index');const previous=process.env.ALIBABACLOUD_API_KEY;process.env.ALIBABACLOUD_API_KEY='fixture-only';try{await assert.rejects(directProvider('qwen',{apiKeyEnv:'TALA_EVAL_DISABLED_FALLBACK',baseUrl:'https://dashscope-intl.aliyuncs.com/compatible-mode/v1',model:'fake',timeoutMs:10},'JSON',new AbortController().signal,10),/Provider unavailable/);}finally{if(previous===undefined)delete process.env.ALIBABACLOUD_API_KEY;else process.env.ALIBABACLOUD_API_KEY=previous;}});
-test('evaluation dispatch guard prevents outbound calls before the provider is invoked',async()=>{
-  let calls=0;const f=fixture();const gateway=createLlmGateway(f.deps,{beforeCall:()=>{throw Error('Evaluation limit reached.');},call:async()=>{calls++;throw Error('Must not dispatch.');}});
-  try{const result=await gateway.complete(request());assert.equal(result.ok,false);assert.equal(calls,0);}finally{f.db.close();}
+test('quotas and monthly budget stop calls', async () => {
+  const f = fixture();
+  try {
+    f.deps.config.llm.quotas.fullPerDay = 0;
+    let r = await f.gateway.complete(request());
+    if (!r.ok) assert.equal(r.reason, 'quota_exceeded');
+    else assert.fail();
+    f.deps.config.llm.quotas.fullPerDay = 10;
+    f.deps.config.llm.budget.monthlyUsd = -1;
+    r = await f.gateway.complete(request());
+    if (!r.ok) assert.equal(r.reason, 'budget_exceeded');
+    else assert.fail();
+  } finally {
+    f.db.close();
+  }
+});
+test('cancel interrupts provider and timeout falls back', async () => {
+  const f = fixture(
+    async (p, _c, _t, signal) =>
+      new Promise((resolve, reject) => {
+        signal.addEventListener('abort', () => reject(Error('private')));
+        if (p === 'qwen')
+          resolve({ content: '{"value":"ok"}', inputTokens: 0, outputTokens: 0, costUsd: 0 });
+      })
+  );
+  try {
+    const c = new AbortController();
+    const pending = f.gateway.complete({ ...request(), signal: c.signal });
+    setTimeout(() => c.abort(), 5);
+    const r = await pending;
+    assert.equal(r.ok, false);
+    if (!r.ok) assert.equal(r.reason, 'cancelled');
+    const retry = await f.gateway.complete(request());
+    assert.equal(retry.ok, true);
+  } finally {
+    f.db.close();
+  }
+});
+test('schema/check are re-run for cached data', async () => {
+  const f = fixture();
+  try {
+    assert.equal((await f.gateway.complete(request())).ok, true);
+    const r = await f.gateway.complete({ ...request(), check: () => ['rejected'] });
+    assert.equal(r.ok, false);
+  } finally {
+    f.db.close();
+  }
+});
+test('queued cancellation returns promptly without bypassing active request', async () => {
+  let finish!: () => void;
+  let calls = 0;
+  const f = fixture(async () => {
+    calls++;
+    if (calls === 1)
+      await new Promise<void>((r) => {
+        finish = r;
+      });
+    return { content: '{"value":"ok"}', inputTokens: 1, outputTokens: 1, costUsd: 0 };
+  });
+  try {
+    f.deps.config.llm.primary.timeoutMs = 1000;
+    const first = f.gateway.complete(request());
+    await new Promise((r) => setTimeout(r, 2));
+    const c = new AbortController();
+    const second = f.gateway.complete({ ...request(), signal: c.signal });
+    c.abort();
+    const r = await second;
+    assert.equal(r.ok, false);
+    assert.equal(calls, 1);
+    finish();
+    await first;
+  } finally {
+    f.db.close();
+  }
+});
+test('per-attempt cost reservations use config pricing and stop overspend', async () => {
+  let calls = 0;
+  const f = fixture(async () => {
+    calls++;
+    throw Error('private provider error');
+  });
+  try {
+    f.deps.config.llm.primary.pricing = { inputUsdPerMillion: 0, outputUsdPerMillion: 1 };
+    f.deps.config.llm.budget.monthlyUsd = 0.006;
+    const r = await f.gateway.complete(request());
+    assert.equal(r.ok, false);
+    if (!r.ok) assert.equal(r.reason, 'budget_exceeded');
+    assert.equal(calls, 1);
+  } finally {
+    f.db.close();
+  }
+});
+test('direct adapter reads keys at call time and never exposes provider response bodies', async () => {
+  const { directProvider } = await import('./index');
+  const original = globalThis.fetch;
+  const captured: string[] = [];
+  const keyEnv = 'TALA_TEST_SECRET';
+  globalThis.fetch = async (_url, init) => {
+    captured.push((init?.headers as Record<string, string>).Authorization!);
+    return new Response('PRIVATE_PROVIDER_BODY', { status: 429 });
+  };
+  try {
+    for (const value of ['private-first', 'private-second']) {
+      process.env[keyEnv] = value;
+      await assert.rejects(
+        directProvider(
+          'deepseek',
+          { apiKeyEnv: keyEnv, baseUrl: 'https://api.deepseek.com', model: 'fake', timeoutMs: 10 },
+          'PRIVATE_PROMPT',
+          new AbortController().signal,
+          10
+        ),
+        (e) =>
+          e instanceof Error &&
+          !e.message.includes(value) &&
+          !e.message.includes('PRIVATE_PROVIDER_BODY') &&
+          !e.message.includes('PRIVATE_PROMPT')
+      );
+    }
+    assert.equal(captured[0] === 'Bearer private-first', true);
+    assert.equal(captured[1] === 'Bearer private-second', true);
+  } finally {
+    globalThis.fetch = original;
+    delete process.env[keyEnv];
+  }
+});
+test('direct adapter refuses aggregators and prompt identifiers cannot escape prompt root', async () => {
+  const { directProvider, loadPrompt } = await import('./index');
+  process.env.TALA_TEST_SECRET = 'private';
+  try {
+    await assert.rejects(
+      directProvider(
+        'deepseek',
+        {
+          apiKeyEnv: 'TALA_TEST_SECRET',
+          baseUrl: 'https://example.com',
+          model: 'fake',
+          timeoutMs: 10,
+        },
+        '',
+        new AbortController().signal,
+        10
+      )
+    );
+    assert.throws(() => loadPrompt('../secrets'));
+  } finally {
+    delete process.env.TALA_TEST_SECRET;
+  }
+});
+test('length finish reason retries before JSON parsing and is classified without content', async () => {
+  const f = fixture();
+  const events: unknown[] = [];
+  let count = 0;
+  const gateway = createLlmGateway(f.deps, {
+    onAttempt: (event) => events.push(event),
+    call: async () => ({
+      content: ++count === 1 ? 'PRIVATE_TRUNCATED' : '{"value":"ok"}',
+      inputTokens: 10,
+      outputTokens: 20,
+      costUsd: 0,
+      httpStatus: 200,
+      finishReason: count === 1 ? 'length' : 'stop',
+      latencyMs: 2,
+    }),
+  });
+  try {
+    assert.equal((await gateway.complete(request())).ok, true);
+    assert.equal(count, 2);
+    assert.equal((events[0] as { stage: string }).stage, 'truncated');
+    assert.equal(JSON.stringify(events).includes('PRIVATE_TRUNCATED'), false);
+  } finally {
+    f.db.close();
+  }
+});
+test('transformed schemas cache raw JSON and return converted values', async () => {
+  const f = fixture();
+  try {
+    const req = {
+      ...request(),
+      schema: z.object({ value: z.string() }).transform((v) => ({ converted: v.value })),
+    };
+    const one = await f.gateway.complete(req);
+    const two = await f.gateway.complete(req);
+    assert.equal(one.ok, true);
+    assert.equal(two.ok, true);
+    if (two.ok) assert.equal(two.data.converted, 'ok');
+    assert.equal((f.db.prepare('SELECT count(*) AS n FROM llm_usage').get() as { n: number }).n, 1);
+  } finally {
+    f.db.close();
+  }
+});
+test('account deletion aborts in-flight and queued requests without reintroducing user rows', async () => {
+  const { llmModule, monthlySpend } = await import('./index');
+  let calls = 0;
+  const f = fixture(async (_p, _c, _text, signal) => {
+    calls++;
+    await new Promise<void>((_resolve, reject) =>
+      signal.addEventListener('abort', () => reject(Error('Cancelled.')), { once: true })
+    );
+    throw Error('unreachable');
+  });
+  try {
+    const one = f.gateway.complete(request());
+    await new Promise((r) => setTimeout(r, 2));
+    const two = f.gateway.complete(request());
+    llmModule.onAccountDeleted!(f.deps, 'teacher');
+    const results = await Promise.all([one, two]);
+    assert.ok(results.every((r) => !r.ok && r.reason === 'cancelled'));
+    assert.equal(calls, 1);
+    assert.equal(
+      (
+        f.db.prepare('SELECT count(*) AS n FROM llm_usage WHERE user_id=?').get('teacher') as {
+          n: number;
+        }
+      ).n,
+      0
+    );
+    assert.equal(
+      (
+        f.db.prepare('SELECT count(*) AS n FROM llm_quota WHERE user_id=?').get('teacher') as {
+          n: number;
+        }
+      ).n,
+      0
+    );
+    assert.equal(monthlySpend(f.db, '2026-11'), 0);
+  } finally {
+    f.db.close();
+  }
+});
+test('account merge moves usage, sums quota collisions, isolates others, and is idempotent', async () => {
+  const { llmModule, monthlySpend } = await import('./index');
+  const f = fixture();
+  try {
+    for (const [owner, bucket, used] of [
+      ['from', 'full', 3],
+      ['to', 'full', 4],
+      ['from', 'section', 2],
+      ['other', 'full', 8],
+    ] as const)
+      f.db.prepare('INSERT INTO llm_quota VALUES(?,?,?,?)').run('2026-11-13', owner, bucket, used);
+    for (const owner of ['from', 'to', 'other'])
+      f.db
+        .prepare(
+          'INSERT INTO llm_usage(day,month,user_id,feature,provider,input_tokens,output_tokens,cost) VALUES(?,?,?,?,?,?,?,?)'
+        )
+        .run('2026-11-13', '2026-11', owner, 'lesson.generate', 'qwen', 1, 2, 0.01);
+    const before = monthlySpend(f.db, '2026-11'),
+      other = f.db.prepare('SELECT * FROM llm_usage WHERE user_id=?').all('other');
+    const merge = () => f.db.transaction(() => llmModule.onAccountMerged!(f.deps, 'from', 'to'))();
+    merge();
+    const snapshot = f.db.prepare('SELECT * FROM llm_quota ORDER BY user_id,bucket').all();
+    merge();
+    assert.deepEqual(
+      f.db.prepare('SELECT * FROM llm_quota ORDER BY user_id,bucket').all(),
+      snapshot
+    );
+    assert.equal(
+      (
+        f.db
+          .prepare('SELECT used FROM llm_quota WHERE user_id=? AND bucket=?')
+          .get('to', 'full') as { used: number }
+      ).used,
+      7
+    );
+    assert.equal(
+      (
+        f.db
+          .prepare('SELECT used FROM llm_quota WHERE user_id=? AND bucket=?')
+          .get('to', 'section') as { used: number }
+      ).used,
+      2
+    );
+    assert.equal(
+      (
+        f.db.prepare('SELECT count(*) AS n FROM llm_usage WHERE user_id=?').get('to') as {
+          n: number;
+        }
+      ).n,
+      2
+    );
+    assert.deepEqual(f.db.prepare('SELECT * FROM llm_usage WHERE user_id=?').all('other'), other);
+    assert.equal(monthlySpend(f.db, '2026-11'), before);
+    llmModule.onAccountMerged!(f.deps, 'to', 'to');
+    assert.deepEqual(
+      f.db.prepare('SELECT * FROM llm_quota ORDER BY user_id,bucket').all(),
+      snapshot
+    );
+  } finally {
+    f.db.close();
+  }
+});
+test('account merge rekeys cached responses and aborts old-account in-flight work', async () => {
+  const { llmModule } = await import('./index');
+  let calls = 0;
+  const f = fixture(async (_p, _c, _t, signal) => {
+    calls++;
+    if (calls > 1)
+      await new Promise<void>((_resolve, reject) =>
+        signal.addEventListener('abort', () => reject(Error('Cancelled.')), { once: true })
+      );
+    return { content: '{"value":"ok"}', inputTokens: 1, outputTokens: 1, costUsd: 0.01 };
+  });
+  try {
+    await f.gateway.complete({ ...request(), userId: 'from' });
+    llmModule.onAccountMerged!(f.deps, 'from', 'to');
+    assert.equal((await f.gateway.complete({ ...request(), userId: 'to' })).ok, true);
+    assert.equal(calls, 1);
+    const work = f.gateway.complete({
+      ...request(),
+      userId: 'from',
+      vars: { input: 'different', schema: '' },
+    });
+    await new Promise((r) => setTimeout(r, 2));
+    llmModule.onAccountMerged!(f.deps, 'from', 'to');
+    const result = await work;
+    assert.equal(result.ok, false);
+    if (!result.ok) assert.equal(result.reason, 'cancelled');
+    assert.equal(
+      (
+        f.db.prepare('SELECT count(*) AS n FROM llm_usage WHERE user_id=?').get('from') as {
+          n: number;
+        }
+      ).n,
+      0
+    );
+  } finally {
+    f.db.close();
+  }
+});
+test('provider request parameters use DeepSeek non-thinking JSON mode without changing Qwen', async () => {
+  const { directProvider } = await import('./index');
+  const original = globalThis.fetch;
+  const bodies: Record<string, unknown>[] = [];
+  globalThis.fetch = async (_url, init) => {
+    bodies.push(JSON.parse(String(init?.body)));
+    return Response.json({
+      choices: [{ finish_reason: 'stop', message: { content: '{"ok":true}' } }],
+      usage: { prompt_tokens: 2, completion_tokens: 3 },
+    });
+  };
+  process.env.TALA_EVAL_TEST_PROVIDER_KEY = 'fixture-only';
+  try {
+    for (const provider of ['deepseek', 'qwen'] as const) {
+      const result = await directProvider(
+        provider,
+        {
+          apiKeyEnv: 'TALA_EVAL_TEST_PROVIDER_KEY',
+          baseUrl:
+            provider === 'deepseek'
+              ? 'https://api.deepseek.com'
+              : 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1',
+          model: 'fixture-model',
+          timeoutMs: 10,
+          pricing: { inputUsdPerMillion: 0.3, outputUsdPerMillion: 1.2 },
+        },
+        'Return JSON',
+        new AbortController().signal,
+        100
+      );
+      assert.equal(result.finishReason, 'stop');
+    }
+    assert.deepEqual(bodies[0]?.thinking, { type: 'disabled' });
+    assert.deepEqual(bodies[0]?.response_format, { type: 'json_object' });
+    assert.equal(bodies[0]?.enable_thinking, undefined);
+    assert.equal(bodies[1]?.enable_thinking, false);
+    assert.equal(bodies[1]?.thinking, undefined);
+  } finally {
+    globalThis.fetch = original;
+    delete process.env.TALA_EVAL_TEST_PROVIDER_KEY;
+  }
+});
+test('alternate Alibaba credential does not bypass a deliberately disabled configured provider', async () => {
+  const { directProvider } = await import('./index');
+  const previous = process.env.ALIBABACLOUD_API_KEY;
+  process.env.ALIBABACLOUD_API_KEY = 'fixture-only';
+  try {
+    await assert.rejects(
+      directProvider(
+        'qwen',
+        {
+          apiKeyEnv: 'TALA_EVAL_DISABLED_FALLBACK',
+          baseUrl: 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1',
+          model: 'fake',
+          timeoutMs: 10,
+        },
+        'JSON',
+        new AbortController().signal,
+        10
+      ),
+      /Provider unavailable/
+    );
+  } finally {
+    if (previous === undefined) delete process.env.ALIBABACLOUD_API_KEY;
+    else process.env.ALIBABACLOUD_API_KEY = previous;
+  }
+});
+test('evaluation dispatch guard prevents outbound calls before the provider is invoked', async () => {
+  let calls = 0;
+  const f = fixture();
+  const gateway = createLlmGateway(f.deps, {
+    beforeCall: () => {
+      throw Error('Evaluation limit reached.');
+    },
+    call: async () => {
+      calls++;
+      throw Error('Must not dispatch.');
+    },
+  });
+  try {
+    const result = await gateway.complete(request());
+    assert.equal(result.ok, false);
+    assert.equal(calls, 0);
+  } finally {
+    f.db.close();
+  }
 });

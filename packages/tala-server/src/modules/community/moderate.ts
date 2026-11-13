@@ -9,7 +9,13 @@
  */
 import { z } from 'zod';
 import type { ModerationDecision, SectionContent } from '@hiraia/tala-core';
-import { detectPersonalData, hasBlockingFinding, moderationText, normalizeForMatch, textUnits } from '@hiraia/tala-core/moderation';
+import {
+  detectPersonalData,
+  hasBlockingFinding,
+  moderationText,
+  normalizeForMatch,
+  textUnits,
+} from '@hiraia/tala-core/moderation';
 import type { PersonalDataFinding } from '@hiraia/tala-core/moderation';
 import type { LlmGateway, TalaServerConfig } from '../../kernel/types';
 
@@ -27,7 +33,7 @@ export const ModelVerdict = z.object({
         message: z.string().max(400),
         sectionKey: z.string().max(64).nullable().default(null),
         excerpt: z.string().max(600).nullable().default(null),
-      }),
+      })
     )
     .max(10)
     .default([]),
@@ -57,15 +63,23 @@ export interface ModerationOutcome {
 }
 
 const GENERIC_MESSAGES: Record<ModerationDecision['reasons'][number]['category'], string> = {
-  student_personal_data: "This lesson seems to include a learner's personal information. Please remove it and post again.",
-  unsuitable: 'Part of this lesson is not suitable for a shared teaching library. Please change it and post again.',
+  student_personal_data:
+    "This lesson seems to include a learner's personal information. Please remove it and post again.",
+  unsuitable:
+    'Part of this lesson is not suitable for a shared teaching library. Please change it and post again.',
   not_a_lesson: 'This does not look like a lesson. The community is for lesson plans only.',
 };
 
-export async function runModeration(deps: { llm: LlmGateway; config: TalaServerConfig }, input: ModerationInput): Promise<ModerationOutcome> {
+export async function runModeration(
+  deps: { llm: LlmGateway; config: TalaServerConfig },
+  input: ModerationInput
+): Promise<ModerationOutcome> {
   const guidelineVersion = deps.config.moderation.guidelineVersion;
   const sections = input.displayName
-    ? [...input.sections, { key: 'displayName', content: { type: 'list' as const, items: [input.displayName] } }]
+    ? [
+        ...input.sections,
+        { key: 'displayName', content: { type: 'list' as const, items: [input.displayName] } },
+      ]
     : input.sections;
   const textInput = { title: input.title, summary: input.summary, sections };
   const findings = detectPersonalData(textInput, { knownNames: input.knownNames });
@@ -73,7 +87,11 @@ export async function runModeration(deps: { llm: LlmGateway; config: TalaServerC
 
   if (hasBlockingFinding(findings)) {
     return {
-      decision: { decision: 'return', reasons: findings.filter((f) => f.confidence === 'high').map(toReason), guidelineVersion },
+      decision: {
+        decision: 'return',
+        reasons: findings.filter((f) => f.confidence === 'high').map(toReason),
+        guidelineVersion,
+      },
       provider: 'rules',
       model: null,
       promptVersion: null,
@@ -91,7 +109,8 @@ export async function runModeration(deps: { llm: LlmGateway; config: TalaServerC
     ruleKinds,
   });
   const route = deps.llm.routeFor('community.moderate');
-  if (!deps.config.moderation.enabled || route === 'rules' || route === 'off') return rulesOnly('rules_only');
+  if (!deps.config.moderation.enabled || route === 'rules' || route === 'off')
+    return rulesOnly('rules_only');
 
   const { text } = moderationText(textInput, MODERATION_MAX_CHARS);
   const sectionKeys = new Set(['title', 'summary', ...sections.map((s) => s.key)]);
@@ -102,17 +121,25 @@ export async function runModeration(deps: { llm: LlmGateway; config: TalaServerC
     version: guidelineVersion,
     vars: {
       lesson: text,
-      hints: JSON.stringify(findings.map((f) => ({ kind: f.kind, sectionKey: f.sectionKey, excerpt: f.excerpt }))),
-      report: input.report ? JSON.stringify({ reason: input.report.reason, note: input.report.note }) : 'none',
+      hints: JSON.stringify(
+        findings.map((f) => ({ kind: f.kind, sectionKey: f.sectionKey, excerpt: f.excerpt }))
+      ),
+      report: input.report
+        ? JSON.stringify({ reason: input.report.reason, note: input.report.note })
+        : 'none',
     },
     schema: ModelVerdict,
     userId: input.userId,
     maxOutputTokens: 800,
-    check: (v) => (v.decision === 'return' && v.reasons.length === 0 ? ['A "return" decision needs at least one reason.'] : []),
+    check: (v) =>
+      v.decision === 'return' && v.reasons.length === 0
+        ? ['A "return" decision needs at least one reason.']
+        : [],
   });
 
   if (!result.ok) {
-    if (result.reason === 'disabled' || result.reason === 'rules_only') return rulesOnly('rules_only');
+    if (result.reason === 'disabled' || result.reason === 'rules_only')
+      return rulesOnly('rules_only');
     return {
       decision: { decision: 'pending', reasons: [], guidelineVersion },
       provider: 'none',
@@ -123,7 +150,10 @@ export async function runModeration(deps: { llm: LlmGateway; config: TalaServerC
     };
   }
 
-  const units = textUnits(textInput).map((u) => ({ key: u.sectionKey, norm: normalizeForMatch(u.text) }));
+  const units = textUnits(textInput).map((u) => ({
+    key: u.sectionKey,
+    norm: normalizeForMatch(u.text),
+  }));
   const reasons: ModerationDecision['reasons'] = [];
   if (result.data.decision === 'return') {
     for (const r of result.data.reasons) {
@@ -133,7 +163,8 @@ export async function runModeration(deps: { llm: LlmGateway; config: TalaServerC
       reasons.push({
         category: r.category,
         message: r.message.trim() ? r.message.trim().slice(0, 300) : GENERIC_MESSAGES[r.category],
-        sectionKey: excerpt?.key ?? (r.sectionKey && sectionKeys.has(r.sectionKey) ? r.sectionKey : null),
+        sectionKey:
+          excerpt?.key ?? (r.sectionKey && sectionKeys.has(r.sectionKey) ? r.sectionKey : null),
         excerpt: excerpt?.text ?? null,
       });
     }
@@ -159,17 +190,30 @@ const KIND: Record<PersonalDataFinding['kind'], string> = {
 };
 
 function toReason(f: PersonalDataFinding): ModerationDecision['reasons'][number] {
-  return { category: 'student_personal_data', kind: KIND[f.kind], message: f.message, sectionKey: f.sectionKey, excerpt: f.excerpt.slice(0, 300) };
+  return {
+    category: 'student_personal_data',
+    kind: KIND[f.kind],
+    message: f.message,
+    sectionKey: f.sectionKey,
+    excerpt: f.excerpt.slice(0, 300),
+  };
 }
 
 /**
  * Keep a model excerpt only if it really is in the lesson (model output is untrusted, PRD §9.6), and report
  * the section it is actually in.
  */
-function traceExcerpt(excerpt: string | null, units: Array<{ key: string; norm: string }>): { key: string; text: string } | null {
+function traceExcerpt(
+  excerpt: string | null,
+  units: Array<{ key: string; norm: string }>
+): { key: string; text: string } | null {
   if (!excerpt) return null;
-  const needle = normalizeForMatch(excerpt).replace(/[….]+$/, '').trim();
+  const needle = normalizeForMatch(excerpt)
+    .replace(/[….]+$/, '')
+    .trim();
   if (needle.length < 3) return null;
-  const hit = units.find((u) => u.norm.includes(needle)) ?? units.find((u) => needle.includes(u.norm) && u.norm.length >= 8);
+  const hit =
+    units.find((u) => u.norm.includes(needle)) ??
+    units.find((u) => needle.includes(u.norm) && u.norm.length >= 8);
   return hit ? { key: hit.key, text: excerpt.trim().slice(0, 300) } : null;
 }

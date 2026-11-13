@@ -44,7 +44,10 @@ export function splitApiPath(pathname: string): string[] | null {
     .filter((s, i, all) => s !== '' || (i !== 0 && i !== all.length - 1));
 }
 
-function matchSegments(route: CompiledRoute, parts: string[]): Record<string, string> | 'bad' | null {
+function matchSegments(
+  route: CompiledRoute,
+  parts: string[]
+): Record<string, string> | 'bad' | null {
   if (route.segments.length !== parts.length) return null;
   const params: Record<string, string> = {};
   for (let i = 0; i < parts.length; i++) {
@@ -61,7 +64,12 @@ function matchSegments(route: CompiledRoute, parts: string[]): Record<string, st
       return 'bad';
     }
     // eslint-disable-next-line no-control-regex
-    if (value.length === 0 || value.length > MAX_PARAM_LENGTH || /[\u0000-\u001f\u007f]/.test(value)) return 'bad';
+    if (
+      value.length === 0 ||
+      value.length > MAX_PARAM_LENGTH ||
+      /[\u0000-\u001f\u007f]/.test(value)
+    )
+      return 'bad';
     params[segment.param] = value;
   }
   return params;

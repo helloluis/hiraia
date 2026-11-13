@@ -105,77 +105,181 @@ export const PlanRevisionMeta = z.object({
 
 export const API = {
   /* core — workstream A */
-  'config.get': route({ method: 'GET', path: '/config', auth: 'none', owner: 'core', response: ClientConfig }),
+  'config.get': route({
+    method: 'GET',
+    path: '/config',
+    auth: 'none',
+    owner: 'core',
+    response: ClientConfig,
+  }),
 
   'auth.register': route({
-    method: 'POST', path: '/auth/register', auth: 'none', owner: 'core',
-    body: z.object({ email: Email, password: Password, displayName: z.string().min(1).max(120), uiLanguage: Lang.default('fil'), deviceLabel: z.string().max(80).default('') }),
+    method: 'POST',
+    path: '/auth/register',
+    auth: 'none',
+    owner: 'core',
+    body: z.object({
+      email: Email,
+      password: Password,
+      displayName: z.string().min(1).max(120),
+      uiLanguage: Lang.default('fil'),
+      deviceLabel: z.string().max(80).default(''),
+    }),
     response: AuthResult,
   }),
   'auth.login': route({
-    method: 'POST', path: '/auth/login', auth: 'none', owner: 'core',
-    body: z.object({ email: Email, password: z.string().max(200), deviceLabel: z.string().max(80).default('') }),
+    method: 'POST',
+    path: '/auth/login',
+    auth: 'none',
+    owner: 'core',
+    body: z.object({
+      email: Email,
+      password: z.string().max(200),
+      deviceLabel: z.string().max(80).default(''),
+    }),
     response: AuthResult,
   }),
-  'auth.logout': route({ method: 'POST', path: '/auth/logout', auth: 'user', owner: 'core', response: Ok }),
-  'auth.logoutAll': route({ method: 'POST', path: '/auth/logout-all', auth: 'user', owner: 'core', response: Ok }),
-  'auth.me': route({ method: 'GET', path: '/auth/me', auth: 'user', owner: 'core', response: z.object({ user: User }) }),
-  'auth.sessions': route({ method: 'GET', path: '/auth/sessions', auth: 'user', owner: 'core', response: z.object({ sessions: z.array(SessionInfo) }) }),
-  'auth.revokeSession': route({ method: 'DELETE', path: '/auth/sessions/:sessionId', auth: 'user', owner: 'core', response: Ok }),
-  'auth.sendVerification': route({ method: 'POST', path: '/auth/verify-email/send', auth: 'user', owner: 'core', response: Ok }),
+  'auth.logout': route({
+    method: 'POST',
+    path: '/auth/logout',
+    auth: 'user',
+    owner: 'core',
+    response: Ok,
+  }),
+  'auth.logoutAll': route({
+    method: 'POST',
+    path: '/auth/logout-all',
+    auth: 'user',
+    owner: 'core',
+    response: Ok,
+  }),
+  'auth.me': route({
+    method: 'GET',
+    path: '/auth/me',
+    auth: 'user',
+    owner: 'core',
+    response: z.object({ user: User }),
+  }),
+  'auth.sessions': route({
+    method: 'GET',
+    path: '/auth/sessions',
+    auth: 'user',
+    owner: 'core',
+    response: z.object({ sessions: z.array(SessionInfo) }),
+  }),
+  'auth.revokeSession': route({
+    method: 'DELETE',
+    path: '/auth/sessions/:sessionId',
+    auth: 'user',
+    owner: 'core',
+    response: Ok,
+  }),
+  'auth.sendVerification': route({
+    method: 'POST',
+    path: '/auth/verify-email/send',
+    auth: 'user',
+    owner: 'core',
+    response: Ok,
+  }),
   'auth.verifyEmail': route({
-    method: 'POST', path: '/auth/verify-email', auth: 'none', owner: 'core',
-    body: z.object({ token: z.string().min(6).max(200) }), response: Ok,
+    method: 'POST',
+    path: '/auth/verify-email',
+    auth: 'none',
+    owner: 'core',
+    body: z.object({ token: z.string().min(6).max(200) }),
+    response: Ok,
   }),
   /** Always returns ok, whether or not the email is registered (AUTH-3). */
   'auth.requestReset': route({
-    method: 'POST', path: '/auth/password-reset/request', auth: 'none', owner: 'core',
-    body: z.object({ email: Email }), response: Ok,
+    method: 'POST',
+    path: '/auth/password-reset/request',
+    auth: 'none',
+    owner: 'core',
+    body: z.object({ email: Email }),
+    response: Ok,
   }),
   'auth.reset': route({
-    method: 'POST', path: '/auth/password-reset', auth: 'none', owner: 'core',
-    body: z.object({ token: z.string().min(6).max(200), password: Password }), response: Ok,
+    method: 'POST',
+    path: '/auth/password-reset',
+    auth: 'none',
+    owner: 'core',
+    body: z.object({ token: z.string().min(6).max(200), password: Password }),
+    response: Ok,
   }),
   'auth.changePassword': route({
-    method: 'POST', path: '/auth/password', auth: 'user', owner: 'core',
-    body: z.object({ currentPassword: z.string().max(200), newPassword: Password }), response: Ok,
+    method: 'POST',
+    path: '/auth/password',
+    auth: 'user',
+    owner: 'core',
+    body: z.object({ currentPassword: z.string().max(200), newPassword: Password }),
+    response: Ok,
   }),
   /** Google sign-in (pre-production gate, Phase 4). Returns not_implemented until then. */
   'auth.google': route({
-    method: 'POST', path: '/auth/google', auth: 'none', owner: 'core',
+    method: 'POST',
+    path: '/auth/google',
+    auth: 'none',
+    owner: 'core',
     body: z.object({ idToken: z.string().max(4000), deviceLabel: z.string().max(80).default('') }),
     response: AuthResult,
   }),
   /* Google account linking and account merging (PRD §13.3 cases 1–5). All behind features.googleSignIn. */
   /** Case 1, password path: `auth.google` answered 409 `link_required`; the teacher proves the Tala account once. */
   'auth.googleLink': route({
-    method: 'POST', path: '/auth/google/link', auth: 'none', owner: 'core',
-    body: z.object({ idToken: z.string().max(4000), password: z.string().max(200), deviceLabel: z.string().max(80).default('') }),
+    method: 'POST',
+    path: '/auth/google/link',
+    auth: 'none',
+    owner: 'core',
+    body: z.object({
+      idToken: z.string().max(4000),
+      password: z.string().max(200),
+      deviceLabel: z.string().max(80).default(''),
+    }),
     response: AuthResult,
   }),
   /** Case 1, emailed-link path. Always answers ok; a single-use 30-minute link is mailed if the address has a confirmed account. */
   'auth.googleLinkRequest': route({
-    method: 'POST', path: '/auth/google/link/request', auth: 'none', owner: 'core',
-    body: z.object({ idToken: z.string().max(4000) }), response: Ok,
+    method: 'POST',
+    path: '/auth/google/link/request',
+    auth: 'none',
+    owner: 'core',
+    body: z.object({ idToken: z.string().max(4000) }),
+    response: Ok,
   }),
   'auth.googleLinkConfirm': route({
-    method: 'POST', path: '/auth/google/link/confirm', auth: 'none', owner: 'core',
-    body: z.object({ token: z.string().min(6).max(200) }), response: Ok,
+    method: 'POST',
+    path: '/auth/google/link/confirm',
+    auth: 'none',
+    owner: 'core',
+    body: z.object({ token: z.string().min(6).max(200) }),
+    response: Ok,
   }),
   /** Case 3. Settings: connect a Google account (its email may differ) after re-entering the Tala password. */
   'auth.googleConnect': route({
-    method: 'POST', path: '/auth/google/connect', auth: 'user', owner: 'core',
-    body: z.object({ idToken: z.string().max(4000), password: z.string().max(200) }), response: z.object({ user: User }),
+    method: 'POST',
+    path: '/auth/google/connect',
+    auth: 'user',
+    owner: 'core',
+    body: z.object({ idToken: z.string().max(4000), password: z.string().max(200) }),
+    response: z.object({ user: User }),
   }),
   /** Case 5. Refused when Google is the only way into the account. */
   'auth.googleDisconnect': route({
-    method: 'POST', path: '/auth/google/disconnect', auth: 'user', owner: 'core',
-    body: z.object({ password: z.string().max(200) }), response: z.object({ user: User }),
+    method: 'POST',
+    path: '/auth/google/disconnect',
+    auth: 'user',
+    owner: 'core',
+    body: z.object({ password: z.string().max(200) }),
+    response: z.object({ user: User }),
   }),
   /** Case 5. Refused when the password is the only way into the account. */
   'auth.removePassword': route({
-    method: 'POST', path: '/auth/password/remove', auth: 'user', owner: 'core',
-    body: z.object({ currentPassword: z.string().max(200) }), response: z.object({ user: User }),
+    method: 'POST',
+    path: '/auth/password/remove',
+    auth: 'user',
+    owner: 'core',
+    body: z.object({ currentPassword: z.string().max(200) }),
+    response: z.object({ user: User }),
   }),
   /**
    * Case 4. Join another account of the same teacher into the signed-in one. Control of BOTH is proven:
@@ -183,7 +287,10 @@ export const API = {
    * or by a Google `idToken` for the identity linked to it. Records move; the other account is removed.
    */
   'account.merge': route({
-    method: 'POST', path: '/account/merge', auth: 'user', owner: 'core',
+    method: 'POST',
+    path: '/account/merge',
+    auth: 'user',
+    owner: 'core',
     body: z.object({
       confirm: z.literal('MERGE'),
       currentPassword: z.string().max(200).optional(),
@@ -194,79 +301,234 @@ export const API = {
     response: z.object({ user: User, movedRecords: z.number().int() }),
   }),
   'account.delete': route({
-    method: 'POST', path: '/account/delete', auth: 'user', owner: 'core',
-    body: z.object({ password: z.string().max(200).optional(), confirm: z.literal('DELETE') }), response: Ok,
+    method: 'POST',
+    path: '/account/delete',
+    auth: 'user',
+    owner: 'core',
+    body: z.object({ password: z.string().max(200).optional(), confirm: z.literal('DELETE') }),
+    response: Ok,
   }),
   /** Everything the teacher owns, as records (AUTH-6). PDFs are produced client-side from this. */
   'account.export': route({
-    method: 'GET', path: '/account/export', auth: 'user', owner: 'core',
-    response: z.object({ exportedAt: IsoDateTime, user: User, records: z.array(RecordEnvelopeSchema) }),
+    method: 'GET',
+    path: '/account/export',
+    auth: 'user',
+    owner: 'core',
+    response: z.object({
+      exportedAt: IsoDateTime,
+      user: User,
+      records: z.array(RecordEnvelopeSchema),
+    }),
   }),
 
-  'sync.push': route({ method: 'POST', path: '/sync/push', auth: 'user', owner: 'core', body: PushRequest, response: PushResponse }),
-  'sync.pull': route({ method: 'GET', path: '/sync/pull', auth: 'user', owner: 'core', query: PullQuery, response: PullResponse }),
+  'sync.push': route({
+    method: 'POST',
+    path: '/sync/push',
+    auth: 'user',
+    owner: 'core',
+    body: PushRequest,
+    response: PushResponse,
+  }),
+  'sync.pull': route({
+    method: 'GET',
+    path: '/sync/pull',
+    auth: 'user',
+    owner: 'core',
+    query: PullQuery,
+    response: PullResponse,
+  }),
 
   'plans.revisions': route({
-    method: 'GET', path: '/plans/:planId/revisions', auth: 'user', owner: 'core',
+    method: 'GET',
+    path: '/plans/:planId/revisions',
+    auth: 'user',
+    owner: 'core',
     response: z.object({ revisions: z.array(PlanRevisionMeta) }),
   }),
   /** A past revision's plan + sections, read-only. Restoring = the client writes them back as new edits. */
   'plans.revision': route({
-    method: 'GET', path: '/plans/:planId/revisions/:revision', auth: 'user', owner: 'core',
-    response: z.object({ meta: PlanRevisionMeta, plan: RecordEnvelopeSchema, sections: z.array(RecordEnvelopeSchema) }),
+    method: 'GET',
+    path: '/plans/:planId/revisions/:revision',
+    auth: 'user',
+    owner: 'core',
+    response: z.object({
+      meta: PlanRevisionMeta,
+      plan: RecordEnvelopeSchema,
+      sections: z.array(RecordEnvelopeSchema),
+    }),
   }),
 
   /* curriculum — workstream B */
-  'curriculum.index': route({ method: 'GET', path: '/curriculum/index', auth: 'none', owner: 'curriculum', response: CurriculumIndex }),
-  'curriculum.pack': route({ method: 'GET', path: '/curriculum/packs/:packId', auth: 'none', owner: 'curriculum', response: CurriculumPack }),
-  'curriculum.checkSummary': route({ method: 'GET', path: '/curriculum/packs/:packId/checks', auth: 'user', owner: 'curriculum', response: CheckSummary }),
+  'curriculum.index': route({
+    method: 'GET',
+    path: '/curriculum/index',
+    auth: 'none',
+    owner: 'curriculum',
+    response: CurriculumIndex,
+  }),
+  'curriculum.pack': route({
+    method: 'GET',
+    path: '/curriculum/packs/:packId',
+    auth: 'none',
+    owner: 'curriculum',
+    response: CurriculumPack,
+  }),
+  'curriculum.checkSummary': route({
+    method: 'GET',
+    path: '/curriculum/packs/:packId/checks',
+    auth: 'user',
+    owner: 'curriculum',
+    response: CheckSummary,
+  }),
   'calendar.presets': route({
-    method: 'GET', path: '/calendar/presets', auth: 'none', owner: 'curriculum',
+    method: 'GET',
+    path: '/calendar/presets',
+    auth: 'none',
+    owner: 'curriculum',
     response: z.object({ presets: z.array(CalendarPreset.omit({ days: true, terms: true })) }),
   }),
-  'calendar.preset': route({ method: 'GET', path: '/calendar/presets/:presetId', auth: 'none', owner: 'curriculum', response: CalendarPreset }),
+  'calendar.preset': route({
+    method: 'GET',
+    path: '/calendar/presets/:presetId',
+    auth: 'none',
+    owner: 'curriculum',
+    response: CalendarPreset,
+  }),
 
   /* generation — workstream C */
-  'generation.allowance': route({ method: 'GET', path: '/generation/allowance', auth: 'user', owner: 'generation', response: GenerationAllowance }),
-  'generation.create': route({ method: 'POST', path: '/generation/jobs', auth: 'user', owner: 'generation', body: GenerationInput, response: GenerationJob }),
-  'generation.get': route({ method: 'GET', path: '/generation/jobs/:jobId', auth: 'user', owner: 'generation', response: GenerationJob }),
-  'generation.cancel': route({ method: 'POST', path: '/generation/jobs/:jobId/cancel', auth: 'user', owner: 'generation', response: GenerationJob }),
+  'generation.allowance': route({
+    method: 'GET',
+    path: '/generation/allowance',
+    auth: 'user',
+    owner: 'generation',
+    response: GenerationAllowance,
+  }),
+  'generation.create': route({
+    method: 'POST',
+    path: '/generation/jobs',
+    auth: 'user',
+    owner: 'generation',
+    body: GenerationInput,
+    response: GenerationJob,
+  }),
+  'generation.get': route({
+    method: 'GET',
+    path: '/generation/jobs/:jobId',
+    auth: 'user',
+    owner: 'generation',
+    response: GenerationJob,
+  }),
+  'generation.cancel': route({
+    method: 'POST',
+    path: '/generation/jobs/:jobId/cancel',
+    auth: 'user',
+    owner: 'generation',
+    response: GenerationJob,
+  }),
 
   /* roster — workstream F */
-  'roster.import': route({ method: 'POST', path: '/roster/imports', auth: 'user', owner: 'roster', body: RosterImportRequest, response: RosterImportDraft }),
-  'roster.get': route({ method: 'GET', path: '/roster/imports/:importId', auth: 'user', owner: 'roster', response: RosterImportDraft }),
-  'roster.remap': route({
-    method: 'POST', path: '/roster/imports/:importId/remap', auth: 'user', owner: 'roster',
-    body: z.object({ columns: z.array(z.object({ index: z.number().int(), field: RosterField })) }), response: RosterImportDraft,
+  'roster.import': route({
+    method: 'POST',
+    path: '/roster/imports',
+    auth: 'user',
+    owner: 'roster',
+    body: RosterImportRequest,
+    response: RosterImportDraft,
   }),
-  'roster.confirm': route({ method: 'POST', path: '/roster/imports/:importId/confirm', auth: 'user', owner: 'roster', body: RosterConfirmRequest, response: RosterConfirmResponse }),
-  'roster.abandon': route({ method: 'DELETE', path: '/roster/imports/:importId', auth: 'user', owner: 'roster', response: Ok }),
+  'roster.get': route({
+    method: 'GET',
+    path: '/roster/imports/:importId',
+    auth: 'user',
+    owner: 'roster',
+    response: RosterImportDraft,
+  }),
+  'roster.remap': route({
+    method: 'POST',
+    path: '/roster/imports/:importId/remap',
+    auth: 'user',
+    owner: 'roster',
+    body: z.object({ columns: z.array(z.object({ index: z.number().int(), field: RosterField })) }),
+    response: RosterImportDraft,
+  }),
+  'roster.confirm': route({
+    method: 'POST',
+    path: '/roster/imports/:importId/confirm',
+    auth: 'user',
+    owner: 'roster',
+    body: RosterConfirmRequest,
+    response: RosterConfirmResponse,
+  }),
+  'roster.abandon': route({
+    method: 'DELETE',
+    path: '/roster/imports/:importId',
+    auth: 'user',
+    owner: 'roster',
+    response: Ok,
+  }),
 
   /* community — workstream G */
-  'community.search': route({ method: 'GET', path: '/community/artifacts', auth: 'user', owner: 'community', query: ArtifactSearchQuery, response: Page(ArtifactSummary) }),
+  'community.search': route({
+    method: 'GET',
+    path: '/community/artifacts',
+    auth: 'user',
+    owner: 'community',
+    query: ArtifactSearchQuery,
+    response: Page(ArtifactSummary),
+  }),
   /** `versionId` views an older version; default is the current one. */
   'community.get': route({
-    method: 'GET', path: '/community/artifacts/:artifactId', auth: 'user', owner: 'community',
-    query: z.object({ versionId: Id.optional() }), response: ArtifactDetail,
+    method: 'GET',
+    path: '/community/artifacts/:artifactId',
+    auth: 'user',
+    owner: 'community',
+    query: z.object({ versionId: Id.optional() }),
+    response: ArtifactDetail,
   }),
   'community.post': route({
-    method: 'POST', path: '/community/artifacts', auth: 'user', owner: 'community',
+    method: 'POST',
+    path: '/community/artifacts',
+    auth: 'user',
+    owner: 'community',
     body: PostArtifactRequest,
     /** When `moderation.decision` is 'return', `artifact` is a preview that was NOT stored. */
     response: z.object({ artifact: ArtifactSummary, moderation: ModerationDecision }),
   }),
   'community.copy': route({
-    method: 'POST', path: '/community/artifacts/:artifactId/copy', auth: 'user', owner: 'community',
-    body: z.object({ versionId: Id.optional(), gradeGroupIds: z.array(Id).max(4).optional() }), response: CopyArtifactResponse,
+    method: 'POST',
+    path: '/community/artifacts/:artifactId/copy',
+    auth: 'user',
+    owner: 'community',
+    body: z.object({ versionId: Id.optional(), gradeGroupIds: z.array(Id).max(4).optional() }),
+    response: CopyArtifactResponse,
   }),
-  'community.remove': route({ method: 'DELETE', path: '/community/artifacts/:artifactId', auth: 'user', owner: 'community', response: Ok }),
-  'community.report': route({ method: 'POST', path: '/community/artifacts/:artifactId/report', auth: 'user', owner: 'community', body: ReportRequest, response: Ok }),
+  'community.remove': route({
+    method: 'DELETE',
+    path: '/community/artifacts/:artifactId',
+    auth: 'user',
+    owner: 'community',
+    response: Ok,
+  }),
+  'community.report': route({
+    method: 'POST',
+    path: '/community/artifacts/:artifactId/report',
+    auth: 'user',
+    owner: 'community',
+    body: ReportRequest,
+    response: Ok,
+  }),
 
   /* print — workstream H (server PDF fallback, PDF-4a) */
   'print.planPdf': route({
-    method: 'GET', path: '/plans/:planId/pdf', auth: 'user', owner: 'print',
-    query: z.object({ paper: z.enum(['a4', 'long']).default('a4'), images: QueryBool.default(true) }),
-    response: z.unknown(), binary: true,
+    method: 'GET',
+    path: '/plans/:planId/pdf',
+    auth: 'user',
+    owner: 'print',
+    query: z.object({
+      paper: z.enum(['a4', 'long']).default('a4'),
+      images: QueryBool.default(true),
+    }),
+    response: z.unknown(),
+    binary: true,
   }),
 } as const;
 
@@ -279,11 +541,15 @@ type ZOut<T> = T extends z.ZodTypeAny ? z.output<T> : undefined;
 
 /** What a client sends (schema defaults optional). */
 export type BodyIn<K extends RouteName> = SpecOf<K> extends { body: infer B } ? ZIn<B> : undefined;
-export type QueryIn<K extends RouteName> = SpecOf<K> extends { query: infer Q } ? ZIn<Q> : undefined;
+export type QueryIn<K extends RouteName> =
+  SpecOf<K> extends { query: infer Q } ? ZIn<Q> : undefined;
 /** What a handler receives after validation (defaults applied). */
-export type BodyOut<K extends RouteName> = SpecOf<K> extends { body: infer B } ? ZOut<B> : undefined;
-export type QueryOut<K extends RouteName> = SpecOf<K> extends { query: infer Q } ? ZOut<Q> : undefined;
-export type ResponseOf<K extends RouteName> = SpecOf<K> extends { binary: true } ? ArrayBuffer : z.output<SpecOf<K>['response']>;
+export type BodyOut<K extends RouteName> =
+  SpecOf<K> extends { body: infer B } ? ZOut<B> : undefined;
+export type QueryOut<K extends RouteName> =
+  SpecOf<K> extends { query: infer Q } ? ZOut<Q> : undefined;
+export type ResponseOf<K extends RouteName> =
+  SpecOf<K> extends { binary: true } ? ArrayBuffer : z.output<SpecOf<K>['response']>;
 
 type ParamNames<P extends string> = P extends `${string}:${infer Name}/${infer Rest}`
   ? Name | ParamNames<`/${Rest}`>

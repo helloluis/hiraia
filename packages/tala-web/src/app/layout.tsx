@@ -11,7 +11,11 @@ export const metadata: Metadata = {
   applicationName: 'Tala',
 };
 
-export const viewport: Viewport = { width: 'device-width', initialScale: 1, themeColor: THEME_COLOR };
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: THEME_COLOR,
+};
 
 /** Server-rendered root: the theme variables are inlined from the token file so the first paint is on brand. */
 export default function RootLayout({ children }: { children: ReactNode }) {

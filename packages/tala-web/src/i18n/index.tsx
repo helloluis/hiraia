@@ -1,5 +1,13 @@
 'use client';
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react';
 import type { Lang } from '@hiraia/tala-core/contracts';
 import { en, type StringKey } from './en';
 import { fil } from './fil';
@@ -60,7 +68,11 @@ export function useT(): LangCtx {
 
 const locale = (lang: Lang) => (lang === 'fil' ? 'fil-PH' : 'en-PH');
 
-export function formatDate(iso: string, lang: Lang, opts: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'short' }): string {
+export function formatDate(
+  iso: string,
+  lang: Lang,
+  opts: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'short' }
+): string {
   const [y, m, d] = iso.split('-').map(Number);
   if (!y || !m || !d) return iso;
   try {
@@ -69,11 +81,18 @@ export function formatDate(iso: string, lang: Lang, opts: Intl.DateTimeFormatOpt
     return iso;
   }
 }
-export const formatLongDate = (iso: string, lang: Lang) => formatDate(iso, lang, { weekday: 'long', day: 'numeric', month: 'long' });
-export const formatWeekday = (iso: string, lang: Lang) => formatDate(iso, lang, { weekday: 'long' });
+export const formatLongDate = (iso: string, lang: Lang) =>
+  formatDate(iso, lang, { weekday: 'long', day: 'numeric', month: 'long' });
+export const formatWeekday = (iso: string, lang: Lang) =>
+  formatDate(iso, lang, { weekday: 'long' });
 export function formatTime(iso: string, lang: Lang): string {
   try {
-    return new Intl.DateTimeFormat(locale(lang), { hour: 'numeric', minute: '2-digit', day: 'numeric', month: 'short' }).format(new Date(iso));
+    return new Intl.DateTimeFormat(locale(lang), {
+      hour: 'numeric',
+      minute: '2-digit',
+      day: 'numeric',
+      month: 'short',
+    }).format(new Date(iso));
   } catch {
     return iso;
   }

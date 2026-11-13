@@ -18,11 +18,12 @@ import type { ProviderConfig, TalaServerConfig } from './types';
 
 export type Env = Record<string, string | undefined>;
 
-export type DeepPartial<T> = T extends ReadonlyArray<unknown>
-  ? T
-  : T extends object
-    ? { [K in keyof T]?: DeepPartial<T[K]> }
-    : T;
+export type DeepPartial<T> =
+  T extends ReadonlyArray<unknown>
+    ? T
+    : T extends object
+      ? { [K in keyof T]?: DeepPartial<T[K]> }
+      : T;
 
 /** A configuration mistake. The message names the variable; it never contains a value. */
 export class ConfigError extends Error {
@@ -59,14 +60,16 @@ function reader(env: Env) {
       if (v === undefined) return fallback;
       if (!/^-?\d+$/.test(v)) throw new ConfigError(`${name} must be a whole number.`);
       const n = Number(v);
-      if (!Number.isSafeInteger(n) || n < min || n > max) throw new ConfigError(`${name} must be between ${min} and ${max}.`);
+      if (!Number.isSafeInteger(n) || n < min || n > max)
+        throw new ConfigError(`${name} must be between ${min} and ${max}.`);
       return n;
     },
     num(name: string, fallback: number, min: number, max: number): number {
       const v = raw(name);
       if (v === undefined) return fallback;
       const n = Number(v);
-      if (!Number.isFinite(n) || n < min || n > max) throw new ConfigError(`${name} must be a number between ${min} and ${max}.`);
+      if (!Number.isFinite(n) || n < min || n > max)
+        throw new ConfigError(`${name} must be a number between ${min} and ${max}.`);
       return n;
     },
     bool(name: string, fallback: boolean): boolean {
@@ -79,7 +82,8 @@ function reader(env: Env) {
     oneOf<T extends string>(name: string, allowed: readonly T[], fallback: T): T {
       const v = raw(name)?.toLowerCase();
       if (v === undefined) return fallback;
-      if (!(allowed as readonly string[]).includes(v)) throw new ConfigError(`${name} must be one of: ${allowed.join(', ')}.`);
+      if (!(allowed as readonly string[]).includes(v))
+        throw new ConfigError(`${name} must be one of: ${allowed.join(', ')}.`);
       return v as T;
     },
   };
@@ -96,7 +100,8 @@ export function routeEnvName(feature: LlmFeature): string {
  */
 function defaultLocalDbPath(): string {
   const cwd = process.cwd();
-  if (existsSync(join(cwd, 'node_modules'))) return resolve(cwd, 'node_modules', '.cache', 'tala', 'local.sqlite');
+  if (existsSync(join(cwd, 'node_modules')))
+    return resolve(cwd, 'node_modules', '.cache', 'tala', 'local.sqlite');
   const tag = createHash('sha256').update(cwd).digest('hex').slice(0, 12);
   return join(tmpdir(), `tala-local-${tag}`, 'local.sqlite');
 }
@@ -108,7 +113,8 @@ function normaliseOrigin(name: string, value: string): string {
   } catch {
     throw new ConfigError(`${name} must be a full origin such as https://tala.hiraia.org.`);
   }
-  if (url.protocol !== 'https:' && url.protocol !== 'http:') throw new ConfigError(`${name} must start with https:// or http://.`);
+  if (url.protocol !== 'https:' && url.protocol !== 'http:')
+    throw new ConfigError(`${name} must start with https:// or http://.`);
   return url.origin;
 }
 
@@ -127,7 +133,12 @@ function parsePromptVersions(name: string, value: string | undefined): Record<st
 }
 
 function isPlainObject(v: unknown): v is Record<string, unknown> {
-  return typeof v === 'object' && v !== null && !Array.isArray(v) && Object.getPrototypeOf(v) === Object.prototype;
+  return (
+    typeof v === 'object' &&
+    v !== null &&
+    !Array.isArray(v) &&
+    Object.getPrototypeOf(v) === Object.prototype
+  );
 }
 
 /** Recursive merge: plain objects merge, everything else (arrays, null, primitives) replaces. `undefined` is skipped. */
@@ -152,21 +163,30 @@ export function deepFreeze<T>(value: T): T {
 
 /** Rules that hold whatever the source of a value (environment or override). */
 function enforce(config: TalaServerConfig, warnings: string[]): TalaServerConfig {
-  const next: TalaServerConfig = { ...config, llm: { ...config.llm, routes: { ...config.llm.routes } }, limits: { ...config.limits } };
+  const next: TalaServerConfig = {
+    ...config,
+    llm: { ...config.llm, routes: { ...config.llm.routes } },
+    limits: { ...config.limits },
+  };
 
   // §12.4.1: learners' names never go to a cloud model in production. Enforced here and again in the gateway.
   if (next.environment === 'production') {
     for (const feature of ROSTER_FEATURES) {
       if (next.llm.routes[feature] === 'cloud') {
         next.llm.routes[feature] = next.llm.local ? 'local' : 'rules';
-        warnings.push(`roster route "cloud" is not allowed in production; ${feature} now uses "${next.llm.routes[feature]}" (TALA_ROSTER_LLM_ROUTE).`);
+        warnings.push(
+          `roster route "cloud" is not allowed in production; ${feature} now uses "${next.llm.routes[feature]}" (TALA_ROSTER_LLM_ROUTE).`
+        );
       }
     }
-    if (!next.publicOrigin.startsWith('https://')) throw new ConfigError('TALA_PUBLIC_ORIGIN must be an https:// origin in production.');
+    if (!next.publicOrigin.startsWith('https://'))
+      throw new ConfigError('TALA_PUBLIC_ORIGIN must be an https:// origin in production.');
   }
   for (const feature of LlmFeature.options) {
     if (next.llm.routes[feature] === 'local' && !next.llm.local) {
-      warnings.push(`${feature} is routed to "local" but no local model is configured (TALA_LLM_LOCAL_ENDPOINT, TALA_LLM_LOCAL_MODEL).`);
+      warnings.push(
+        `${feature} is routed to "local" but no local model is configured (TALA_LLM_LOCAL_ENDPOINT, TALA_LLM_LOCAL_MODEL).`
+      );
     }
   }
 
@@ -175,12 +195,17 @@ function enforce(config: TalaServerConfig, warnings: string[]): TalaServerConfig
   if (next.limits.pageSize < 1) throw new ConfigError('TALA_PAGE_SIZE must be at least 1.');
 
   if (next.environment !== 'local' && next.session.ttlDays < MIN_SESSION_DAYS) {
-    throw new ConfigError(`TALA_SESSION_TTL_DAYS must be at least ${MIN_SESSION_DAYS} so a phone stays signed in through 30 days offline.`);
+    throw new ConfigError(
+      `TALA_SESSION_TTL_DAYS must be at least ${MIN_SESSION_DAYS} so a phone stays signed in through 30 days offline.`
+    );
   }
   if (next.session.ttlDays < 1) throw new ConfigError('TALA_SESSION_TTL_DAYS must be at least 1.');
-  if (!/^[A-Za-z0-9_-]{1,64}$/.test(next.session.cookieName)) throw new ConfigError('TALA_SESSION_COOKIE may only contain letters, digits, "-" and "_".');
+  if (!/^[A-Za-z0-9_-]{1,64}$/.test(next.session.cookieName))
+    throw new ConfigError('TALA_SESSION_COOKIE may only contain letters, digits, "-" and "_".');
   if (next.session.cookieName.startsWith('__Host-') && !next.publicOrigin.startsWith('https://')) {
-    throw new ConfigError('TALA_SESSION_COOKIE may only start with "__Host-" when TALA_PUBLIC_ORIGIN is https.');
+    throw new ConfigError(
+      'TALA_SESSION_COOKIE may only start with "__Host-" when TALA_PUBLIC_ORIGIN is https.'
+    );
   }
   return next;
 }
@@ -192,12 +217,18 @@ function fromEnv(env: Env, warnings: string[]): TalaServerConfig {
   const isLocal = environment === 'local';
 
   const dbPathRaw = r.raw('TALA_DB_PATH');
-  if (!dbPathRaw && !isLocal) throw new ConfigError('TALA_DB_PATH is required outside the local environment.');
+  if (!dbPathRaw && !isLocal)
+    throw new ConfigError('TALA_DB_PATH is required outside the local environment.');
   const dbPath = dbPathRaw ?? defaultLocalDbPath();
 
   const originRaw = r.raw('TALA_PUBLIC_ORIGIN');
-  if (!originRaw && environment === 'staging') throw new ConfigError('TALA_PUBLIC_ORIGIN is required in staging.');
-  const publicOrigin = normaliseOrigin('TALA_PUBLIC_ORIGIN', originRaw ?? (environment === 'production' ? 'https://tala.hiraia.org' : 'http://localhost:3000'));
+  if (!originRaw && environment === 'staging')
+    throw new ConfigError('TALA_PUBLIC_ORIGIN is required in staging.');
+  const publicOrigin = normaliseOrigin(
+    'TALA_PUBLIC_ORIGIN',
+    originRaw ??
+      (environment === 'production' ? 'https://tala.hiraia.org' : 'http://localhost:3000')
+  );
 
   const timeoutMs = r.int('TALA_LLM_TIMEOUT_MS', 60_000, 1_000, 600_000);
 
@@ -210,10 +241,15 @@ function fromEnv(env: Env, warnings: string[]): TalaServerConfig {
     const hasOut = r.raw(outName) !== undefined;
     if (!hasIn && !hasOut) return null;
     if (hasIn !== hasOut) {
-      warnings.push(`${inName} and ${outName} must both be set; this provider is treated as unpriced.`);
+      warnings.push(
+        `${inName} and ${outName} must both be set; this provider is treated as unpriced.`
+      );
       return null;
     }
-    return { inputUsdPerMillion: r.num(inName, 0, 0, 100_000), outputUsdPerMillion: r.num(outName, 0, 0, 100_000) };
+    return {
+      inputUsdPerMillion: r.num(inName, 0, 0, 100_000),
+      outputUsdPerMillion: r.num(outName, 0, 0, 100_000),
+    };
   };
 
   // Model identifiers are configuration (PRD §9.1): there is deliberately no built-in guess at a model name.
@@ -226,8 +262,14 @@ function fromEnv(env: Env, warnings: string[]): TalaServerConfig {
   };
   const fallback: ProviderConfig = {
     // Only the presence of the variable is checked. Its value is read by the gateway at call time.
-    apiKeyEnv: r.raw('DASHSCOPE_API_KEY') === undefined && r.raw('ALIBABACLOUD_API_KEY') !== undefined ? 'ALIBABACLOUD_API_KEY' : 'DASHSCOPE_API_KEY',
-    baseUrl: r.str('TALA_LLM_FALLBACK_BASE_URL', 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1'),
+    apiKeyEnv:
+      r.raw('DASHSCOPE_API_KEY') === undefined && r.raw('ALIBABACLOUD_API_KEY') !== undefined
+        ? 'ALIBABACLOUD_API_KEY'
+        : 'DASHSCOPE_API_KEY',
+    baseUrl: r.str(
+      'TALA_LLM_FALLBACK_BASE_URL',
+      'https://dashscope-intl.aliyuncs.com/compatible-mode/v1'
+    ),
     model: r.str('TALA_LLM_FALLBACK_MODEL', ''),
     timeoutMs,
     pricing: pricing('FALLBACK'),
@@ -235,15 +277,27 @@ function fromEnv(env: Env, warnings: string[]): TalaServerConfig {
   const localEndpoint = r.raw('TALA_LLM_LOCAL_ENDPOINT');
   const localModel = r.raw('TALA_LLM_LOCAL_MODEL');
   if ((localEndpoint === undefined) !== (localModel === undefined)) {
-    warnings.push('TALA_LLM_LOCAL_ENDPOINT and TALA_LLM_LOCAL_MODEL must both be set; the local model is treated as not configured.');
+    warnings.push(
+      'TALA_LLM_LOCAL_ENDPOINT and TALA_LLM_LOCAL_MODEL must both be set; the local model is treated as not configured.'
+    );
   }
   const local: ProviderConfig | null =
     localEndpoint && localModel
-      ? { apiKeyEnv: 'TALA_LLM_LOCAL_API_KEY', baseUrl: localEndpoint, model: localModel, timeoutMs, pricing: pricing('LOCAL') }
+      ? {
+          apiKeyEnv: 'TALA_LLM_LOCAL_API_KEY',
+          baseUrl: localEndpoint,
+          model: localModel,
+          timeoutMs,
+          pricing: pricing('LOCAL'),
+        }
       : null;
 
   // Roster cleaning: flagged cloud route before production, local (or rules) in production (§12.4.1).
-  const rosterRoute = r.oneOf('TALA_ROSTER_LLM_ROUTE', ROUTES, environment === 'production' ? (local ? 'local' : 'rules') : 'cloud');
+  const rosterRoute = r.oneOf(
+    'TALA_ROSTER_LLM_ROUTE',
+    ROUTES,
+    environment === 'production' ? (local ? 'local' : 'rules') : 'cloud'
+  );
   const routes = {} as Record<LlmFeature, LlmRoute>;
   for (const feature of LlmFeature.options) {
     const base: LlmRoute = ROSTER_FEATURES.includes(feature) ? rosterRoute : 'cloud';
@@ -254,12 +308,27 @@ function fromEnv(env: Env, warnings: string[]): TalaServerConfig {
 
   const pacingDefaults = PacingParams.safeParse({
     bufferRatio: r.num('TALA_PACING_BUFFER_RATIO', DEFAULT_PACING_PARAMS.bufferRatio, 0, 0.5),
-    assessmentSessionsPerTerm: r.int('TALA_PACING_ASSESSMENT_SESSIONS_PER_TERM', DEFAULT_PACING_PARAMS.assessmentSessionsPerTerm, 0, 20),
-    minSessionsPerCompetency: r.int('TALA_PACING_MIN_SESSIONS_PER_COMPETENCY', DEFAULT_PACING_PARAMS.minSessionsPerCompetency, 1, 10),
+    assessmentSessionsPerTerm: r.int(
+      'TALA_PACING_ASSESSMENT_SESSIONS_PER_TERM',
+      DEFAULT_PACING_PARAMS.assessmentSessionsPerTerm,
+      0,
+      20
+    ),
+    minSessionsPerCompetency: r.int(
+      'TALA_PACING_MIN_SESSIONS_PER_COMPETENCY',
+      DEFAULT_PACING_PARAMS.minSessionsPerCompetency,
+      1,
+      10
+    ),
     assumeTaught: r.bool('TALA_PACING_ASSUME_TAUGHT', DEFAULT_PACING_PARAMS.assumeTaught),
-    pairingRule: r.oneOf('TALA_PACING_PAIRING_RULE', ['theme_then_sequence', 'sequence'] as const, DEFAULT_PACING_PARAMS.pairingRule),
+    pairingRule: r.oneOf(
+      'TALA_PACING_PAIRING_RULE',
+      ['theme_then_sequence', 'sequence'] as const,
+      DEFAULT_PACING_PARAMS.pairingRule
+    ),
   });
-  if (!pacingDefaults.success) throw new ConfigError('The TALA_PACING_* variables do not form valid pacing defaults.');
+  if (!pacingDefaults.success)
+    throw new ConfigError('The TALA_PACING_* variables do not form valid pacing defaults.');
 
   return {
     environment,
@@ -268,7 +337,10 @@ function fromEnv(env: Env, warnings: string[]): TalaServerConfig {
     session: {
       // Sliding: every use extends it, so 90 idle days comfortably covers 30 days offline (OFF-5).
       ttlDays: r.int('TALA_SESSION_TTL_DAYS', 90, 1, 3650),
-      cookieName: r.str('TALA_SESSION_COOKIE', publicOrigin.startsWith('https://') ? '__Host-tala_session' : 'tala_session'),
+      cookieName: r.str(
+        'TALA_SESSION_COOKIE',
+        publicOrigin.startsWith('https://') ? '__Host-tala_session' : 'tala_session'
+      ),
     },
     llm: {
       primary,
@@ -281,7 +353,15 @@ function fromEnv(env: Env, warnings: string[]): TalaServerConfig {
         fullPerDay: r.int('TALA_QUOTA_FULL_PER_DAY', 20, 0, 100_000),
         sectionPerDay: r.int('TALA_QUOTA_SECTION_PER_DAY', 60, 0, 100_000),
       },
-      budget: { monthlyUsd, alertAtUsd: r.num('TALA_BUDGET_ALERT_USD', Math.round(monthlyUsd * 0.8 * 100) / 100, 0, 1_000_000) },
+      budget: {
+        monthlyUsd,
+        alertAtUsd: r.num(
+          'TALA_BUDGET_ALERT_USD',
+          Math.round(monthlyUsd * 0.8 * 100) / 100,
+          0,
+          1_000_000
+        ),
+      },
       cacheSeconds: r.int('TALA_LLM_CACHE_SECONDS', 300, 0, 86_400),
     },
     moderation: {
@@ -291,7 +371,12 @@ function fromEnv(env: Env, warnings: string[]): TalaServerConfig {
     },
     limits: {
       rosterRows: r.int('TALA_LIMIT_ROSTER_ROWS', LIMITS.maxRosterRows, 1, LIMITS.maxRosterRows),
-      rosterFileBytes: r.int('TALA_LIMIT_ROSTER_FILE_BYTES', LIMITS.maxRosterFileBytes, 1, LIMITS.maxRosterFileBytes),
+      rosterFileBytes: r.int(
+        'TALA_LIMIT_ROSTER_FILE_BYTES',
+        LIMITS.maxRosterFileBytes,
+        1,
+        LIMITS.maxRosterFileBytes
+      ),
       attachmentBytes: r.int('TALA_LIMIT_ATTACHMENT_BYTES', 5 * 1024 * 1024, 1, 100 * 1024 * 1024),
       pageSize: r.int('TALA_PAGE_SIZE', LIMITS.pageSize, 1, LIMITS.pageSize),
     },
@@ -313,7 +398,12 @@ function fromEnv(env: Env, warnings: string[]): TalaServerConfig {
       reportPerUserPerDay: r.int('TALA_ABUSE_REPORT_PER_USER_PER_DAY', 20, 0, 100_000),
     },
     curriculum: {
-      confirmationsToMarkChecked: r.int('TALA_CURRICULUM_CONFIRMATIONS_TO_MARK_CHECKED', 1, 1, 1_000),
+      confirmationsToMarkChecked: r.int(
+        'TALA_CURRICULUM_CONFIRMATIONS_TO_MARK_CHECKED',
+        1,
+        1,
+        1_000
+      ),
       correctionsToReview: r.int('TALA_CURRICULUM_CORRECTIONS_TO_REVIEW', 2, 1, 1_000),
     },
     pacingDefaults: pacingDefaults.data,
@@ -329,13 +419,19 @@ function fromEnv(env: Env, warnings: string[]): TalaServerConfig {
 }
 
 /** Environment → configuration, then `overrides` on top (deep), then the rules in `enforce`. Frozen. */
-export function loadConfigWithWarnings(env: Env = process.env, overrides?: DeepPartial<TalaServerConfig>): LoadedConfig {
+export function loadConfigWithWarnings(
+  env: Env = process.env,
+  overrides?: DeepPartial<TalaServerConfig>
+): LoadedConfig {
   const warnings: string[] = [];
   const merged = deepMerge<TalaServerConfig>(fromEnv(env, warnings), overrides);
   const config = deepFreeze(enforce(merged, warnings));
   return { config, warnings };
 }
 
-export function loadConfig(env: Env = process.env, overrides?: DeepPartial<TalaServerConfig>): TalaServerConfig {
+export function loadConfig(
+  env: Env = process.env,
+  overrides?: DeepPartial<TalaServerConfig>
+): TalaServerConfig {
   return loadConfigWithWarnings(env, overrides).config;
 }

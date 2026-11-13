@@ -10,7 +10,23 @@ import type { PlanEditor } from './usePlanEditor';
 type View = 'menu' | 'duplicate' | 'submitted' | 'history' | 'delete';
 
 /** Secondary actions behind "More" (SIMPLE-2): PDF, copy to another date, mark submitted, history, delete. */
-export function MoreSheet({ open, onClose, ed, onPdf, onPost, onGenerate, onDeleted }: { open: boolean; onClose: () => void; ed: PlanEditor; onPdf: () => void; onPost: () => void; onGenerate: () => void; onDeleted: () => void }) {
+export function MoreSheet({
+  open,
+  onClose,
+  ed,
+  onPdf,
+  onPost,
+  onGenerate,
+  onDeleted,
+}: {
+  open: boolean;
+  onClose: () => void;
+  ed: PlanEditor;
+  onPdf: () => void;
+  onPost: () => void;
+  onGenerate: () => void;
+  onDeleted: () => void;
+}) {
   const { t, lang } = useT();
   const router = useRouter();
   const { engine } = useSession();
@@ -29,8 +45,24 @@ export function MoreSheet({ open, onClose, ed, onPdf, onPost, onGenerate, onDele
   const duplicate = async () => {
     if (!engine) return;
     const id = newId();
-    const copy = { ...plan, id, title: plan.title, state: 'draft' as const, lock: null, submitted: null, conflictCopyOf: null, placements: plan.placements.slice(0, 1).map(p => ({ ...p, dates: [date] })) };
-    await engine.batch([{ op: 'put', entity: 'plan', data: copy }, ...ed.sections.map(s => ({ op: 'put' as const, entity: 'plan_section' as const, data: { ...s.data, id: newId(), planId: id, origin: 'copied' as const, gen: null } }))]);
+    const copy = {
+      ...plan,
+      id,
+      title: plan.title,
+      state: 'draft' as const,
+      lock: null,
+      submitted: null,
+      conflictCopyOf: null,
+      placements: plan.placements.slice(0, 1).map((p) => ({ ...p, dates: [date] })),
+    };
+    await engine.batch([
+      { op: 'put', entity: 'plan', data: copy },
+      ...ed.sections.map((s) => ({
+        op: 'put' as const,
+        entity: 'plan_section' as const,
+        data: { ...s.data, id: newId(), planId: id, origin: 'copied' as const, gen: null },
+      })),
+    ]);
     close();
     router.push(`/lessons/${id}`);
   };
@@ -48,21 +80,57 @@ export function MoreSheet({ open, onClose, ed, onPdf, onPost, onGenerate, onDele
 
   return (
     <>
-      <Sheet open={open} onClose={close} title={view === 'menu' ? t('editor.moreActions') : view === 'duplicate' ? t('editor.duplicate') : view === 'submitted' ? t('editor.markSubmitted') : view === 'history' ? t('editor.history') : t('editor.delete')}>
+      <Sheet
+        open={open}
+        onClose={close}
+        title={
+          view === 'menu'
+            ? t('editor.moreActions')
+            : view === 'duplicate'
+              ? t('editor.duplicate')
+              : view === 'submitted'
+                ? t('editor.markSubmitted')
+                : view === 'history'
+                  ? t('editor.history')
+                  : t('editor.delete')
+        }
+      >
         {view === 'menu' && (
           <List>
             <ListRow title={t('editor.pdf')} onClick={onPdf} />
-            {!locked && ed.cls && <ListRow title={t('lessons.generate')} subtitle={t('gen.notice')} onClick={onGenerate} />}
+            {!locked && ed.cls && (
+              <ListRow
+                title={t('lessons.generate')}
+                subtitle={t('gen.notice')}
+                onClick={onGenerate}
+              />
+            )}
             {locked && !ed.cls?.isSample && <ListRow title={t('com.post')} onClick={onPost} />}
             <ListRow title={t('editor.duplicate')} onClick={() => setView('duplicate')} />
-            {locked && <ListRow title={t('editor.markSubmitted')} onClick={() => setView('submitted')} />}
-            <ListRow title={t('editor.history')} subtitle={ed.revisions.length ? `${ed.revisions.length}` : t('editor.noHistory')} onClick={() => setView('history')} />
-            {!locked && <ListRow title={<span className="text-brick">{t('editor.delete')}</span>} onClick={() => setView('delete')} />}
+            {locked && (
+              <ListRow title={t('editor.markSubmitted')} onClick={() => setView('submitted')} />
+            )}
+            <ListRow
+              title={t('editor.history')}
+              subtitle={ed.revisions.length ? `${ed.revisions.length}` : t('editor.noHistory')}
+              onClick={() => setView('history')}
+            />
+            {!locked && (
+              <ListRow
+                title={<span className="text-brick">{t('editor.delete')}</span>}
+                onClick={() => setView('delete')}
+              />
+            )}
           </List>
         )}
         {view === 'duplicate' && (
           <>
-            <TextInput label={t('lessons.date')} type="date" value={date} onChange={e => setDate(e.target.value)} />
+            <TextInput
+              label={t('lessons.date')}
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
             <Button variant="primary" full onClick={() => void duplicate()}>
               {t('editor.duplicate')}
             </Button>
@@ -70,8 +138,19 @@ export function MoreSheet({ open, onClose, ed, onPdf, onPost, onGenerate, onDele
         )}
         {view === 'submitted' && (
           <>
-            <TextInput label={t('lessons.date')} type="date" value={date} onChange={e => setDate(e.target.value)} />
-            <TextInput label={t('editor.submittedTo')} optional value={note} onChange={e => setNote(e.target.value)} maxLength={300} />
+            <TextInput
+              label={t('lessons.date')}
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+            <TextInput
+              label={t('editor.submittedTo')}
+              optional
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              maxLength={300}
+            />
             <Button variant="primary" full onClick={() => void markSubmitted()}>
               {t('common.save')}
             </Button>
@@ -80,8 +159,9 @@ export function MoreSheet({ open, onClose, ed, onPdf, onPost, onGenerate, onDele
         {view === 'history' && (
           <List>
             {ed.revisions.length === 0 && <ListRow title={t('editor.noHistory')} />}
-            {ed.revisions.slice(0, 40).map(r => {
-              const label = ed.template?.sections.find(s => s.key === r.data.key)?.label[lang] ?? r.data.key;
+            {ed.revisions.slice(0, 40).map((r) => {
+              const label =
+                ed.template?.sections.find((s) => s.key === r.data.key)?.label[lang] ?? r.data.key;
               return (
                 <ListRow
                   key={r.id}

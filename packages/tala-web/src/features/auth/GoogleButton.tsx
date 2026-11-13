@@ -6,7 +6,13 @@ import { useSession } from '@/data/session';
 import { Banner } from '@/components/ui';
 import { GOOGLE_CLIENT_ID, renderGoogleButton } from './google';
 
-export function GoogleButton({ onCredential, text }: { onCredential: (idToken: string) => void; text?: 'continue_with' | 'signin_with' | 'signup_with' }) {
+export function GoogleButton({
+  onCredential,
+  text,
+}: {
+  onCredential: (idToken: string) => void;
+  text?: 'continue_with' | 'signin_with' | 'signup_with';
+}) {
   const { t, lang } = useT();
   const { config } = useSession();
   const ref = useRef<HTMLDivElement>(null);
@@ -27,8 +33,14 @@ export function GoogleButton({ onCredential, text }: { onCredential: (idToken: s
   if (!enabled) return null;
   return (
     <div className="flex flex-col gap-2">
-      <div ref={ref} aria-label={t('google.continue')} className="min-h-touch flex justify-center" />
-      {state === 'loading' && <p className="text-small text-forestMuted text-center">{t('google.loading')}</p>}
+      <div
+        ref={ref}
+        aria-label={t('google.continue')}
+        className="min-h-touch flex justify-center"
+      />
+      {state === 'loading' && (
+        <p className="text-small text-forestMuted text-center">{t('google.loading')}</p>
+      )}
       {state === 'failed' && <Banner kind="info">{t('google.unreachable')}</Banner>}
       {state === 'unconfigured' && <Banner kind="info">{t('google.notConfigured')}</Banner>}
       <p className="text-center text-small text-forestMuted" aria-hidden="true">

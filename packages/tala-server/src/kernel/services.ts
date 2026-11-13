@@ -4,7 +4,15 @@
  * OWNER: workstream A.
  */
 import { HttpError } from './types';
-import type { BaseDeps, CurriculumService, LlmGateway, Mailer, RateLimiter, RecordStore, Services } from './types';
+import type {
+  BaseDeps,
+  CurriculumService,
+  LlmGateway,
+  Mailer,
+  RateLimiter,
+  RecordStore,
+  Services,
+} from './types';
 
 /** No model module loaded: every call says so and every feature routes to 'off'. */
 export const disabledLlm: LlmGateway = {
@@ -27,7 +35,11 @@ export const emptyCurriculum: CurriculumService = {
 };
 
 function missingRecords(): never {
-  throw new HttpError('unavailable', 'Saving is not available right now. Please try again in a moment.', { reason: 'records_service_missing' });
+  throw new HttpError(
+    'unavailable',
+    'Saving is not available right now. Please try again in a moment.',
+    { reason: 'records_service_missing' }
+  );
 }
 
 const noRecords: RecordStore = {

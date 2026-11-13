@@ -148,7 +148,7 @@ export function RosterScreen(props: FeatureProps & { classId: string }) {
       keyboardShouldPersistTaps="handled"
       contentContainerStyle={styles.pad}
       data={(review ? rows : students) as Array<RosterRow | Student>}
-      keyExtractor={(r) => 'rowIndex' in r ? String(r.rowIndex) : r.id}
+      keyExtractor={(r) => ('rowIndex' in r ? String(r.rowIndex) : r.id)}
       initialNumToRender={10}
       maxToRenderPerBatch={10}
       windowSize={3}
@@ -371,134 +371,136 @@ export function RosterScreen(props: FeatureProps & { classId: string }) {
         </>
       }
       renderItem={({ item }) => {
-        if (!('rowIndex' in item)) return (
-          <View style={styles.card}>
-            <Body>{item.displayName}</Body>
-            <Button label={t('edit')} disabled={!canWrite} onPress={() => setManual(item)} />
-          </View>
-        );
+        if (!('rowIndex' in item))
+          return (
+            <View style={styles.card}>
+              <Body>{item.displayName}</Body>
+              <Button label={t('edit')} disabled={!canWrite} onPress={() => setManual(item)} />
+            </View>
+          );
         const row = item;
         return (
-        <View style={styles.card}>
-          <Body>
-            {row.rowIndex + 1} · {t(`roster_${row.status}` as never)}
-          </Body>
-          <Body>
-            {t('originalText')}: {row.original}
-          </Body>
-          <Body>
-            {t('proposedText')}: {row.proposed.displayName}
-          </Body>
-          <Body>
-            {[
-              row.proposed.familyName,
-              row.proposed.givenName,
-              row.proposed.middleName,
-              row.proposed.suffix,
-            ]
-              .filter(Boolean)
-              .join(' · ')}
-          </Body>
-          {row.flags.map((flag) => (
-            <Body key={flag}>{t(`flag_${flag}` as never)}</Body>
-          ))}
-          {row.removed.length > 0 && <Body>{t('annotationsRemoved')}</Body>}
-          {review?.resolutions.find((r) => r.rowIndex === row.rowIndex) && (
-            <Body>{t('resolved')}</Body>
-          )}
-          {(['accept', 'keep_original', 'not_student'] as const).map((kind) => (
+          <View style={styles.card}>
+            <Body>
+              {row.rowIndex + 1} · {t(`roster_${row.status}` as never)}
+            </Body>
+            <Body>
+              {t('originalText')}: {row.original}
+            </Body>
+            <Body>
+              {t('proposedText')}: {row.proposed.displayName}
+            </Body>
+            <Body>
+              {[
+                row.proposed.familyName,
+                row.proposed.givenName,
+                row.proposed.middleName,
+                row.proposed.suffix,
+              ]
+                .filter(Boolean)
+                .join(' · ')}
+            </Body>
+            {row.flags.map((flag) => (
+              <Body key={flag}>{t(`flag_${flag}` as never)}</Body>
+            ))}
+            {row.removed.length > 0 && <Body>{t('annotationsRemoved')}</Body>}
+            {review?.resolutions.find((r) => r.rowIndex === row.rowIndex) && (
+              <Body>{t('resolved')}</Body>
+            )}
+            {(['accept', 'keep_original', 'not_student'] as const).map((kind) => (
+              <Button
+                key={kind}
+                disabled={!canWrite || !!review?.key}
+                label={t(`row_${kind}` as never)}
+                onPress={() => void action.run(() => resolve(row, kind))}
+              />
+            ))}
             <Button
-              key={kind}
+              label={t('row_edit')}
               disabled={!canWrite || !!review?.key}
-              label={t(`row_${kind}` as never)}
-              onPress={() => void action.run(() => resolve(row, kind))}
+              onPress={() => {
+                setEditRow(row.rowIndex);
+                setRowMode('edit');
+                setEdited(row.proposed.displayName);
+                setEditedProposal(row.proposed);
+                setSplit(row.original);
+              }}
             />
-          ))}
-          <Button
-            label={t('row_edit')}
-            disabled={!canWrite || !!review?.key}
-            onPress={() => {
-              setEditRow(row.rowIndex);
-              setRowMode('edit');
-              setEdited(row.proposed.displayName);
-              setEditedProposal(row.proposed);
-              setSplit(row.original);
-            }}
-          />
-          <Button
-            label={t('row_split')}
-            disabled={!canWrite || !!review?.key}
-            onPress={() => {
-              setEditRow(row.rowIndex);
-              setRowMode('split');
-              setSplit(row.original);
-              setEditedProposal(row.proposed);
-            }}
-          />
-          {editRow === row.rowIndex && (
-            <>
-              {rowMode === 'edit' && (
-                <>
-                  <Field label={t('name')} value={edited} onChange={setEdited} />
-                  {editedProposal &&
-                    (['familyName', 'givenName', 'middleName', 'suffix', 'localId'] as const).map(
-                      (field) => (
-                        <Field
-                          key={field}
-                          label={t(`rosterField_${field}` as never)}
-                          value={editedProposal[field] ?? ''}
-                          onChange={(value) =>
-                            setEditedProposal({ ...editedProposal, [field]: value })
-                          }
-                        />
-                      )
-                    )}
-                  {editedProposal && (
-                    <Button
-                      label={`${t('rosterField_sex')}: ${editedProposal.sex ?? t('notProvided')}`}
-                      onPress={() =>
-                        setEditedProposal({
-                          ...editedProposal,
-                          sex:
-                            editedProposal.sex === null
-                              ? 'M'
-                              : editedProposal.sex === 'M'
-                                ? 'F'
-                                : null,
-                        })
-                      }
-                    />
-                  )}
-                  {editedProposal &&
-                    groups.map((g) => (
+            <Button
+              label={t('row_split')}
+              disabled={!canWrite || !!review?.key}
+              onPress={() => {
+                setEditRow(row.rowIndex);
+                setRowMode('split');
+                setSplit(row.original);
+                setEditedProposal(row.proposed);
+              }}
+            />
+            {editRow === row.rowIndex && (
+              <>
+                {rowMode === 'edit' && (
+                  <>
+                    <Field label={t('name')} value={edited} onChange={setEdited} />
+                    {editedProposal &&
+                      (['familyName', 'givenName', 'middleName', 'suffix', 'localId'] as const).map(
+                        (field) => (
+                          <Field
+                            key={field}
+                            label={t(`rosterField_${field}` as never)}
+                            value={editedProposal[field] ?? ''}
+                            onChange={(value) =>
+                              setEditedProposal({ ...editedProposal, [field]: value })
+                            }
+                          />
+                        )
+                      )}
+                    {editedProposal && (
                       <Button
-                        key={g.id}
-                        label={`${editedProposal.grade === g.grade ? '✓ ' : ''}${t('group')} ${g.grade}`}
+                        label={`${t('rosterField_sex')}: ${editedProposal.sex ?? t('notProvided')}`}
                         onPress={() =>
-                          setEditedProposal({ ...editedProposal, grade: g.grade as never })
+                          setEditedProposal({
+                            ...editedProposal,
+                            sex:
+                              editedProposal.sex === null
+                                ? 'M'
+                                : editedProposal.sex === 'M'
+                                  ? 'F'
+                                  : null,
+                          })
                         }
                       />
-                    ))}
-                  <Button
-                    label={t('row_edit')}
-                    onPress={() => void action.run(() => resolve(row, 'edit'))}
-                  />
-                </>
-              )}
-              {rowMode === 'split' && (
-                <>
-                  {' '}
-                  <Field label={t('splitNames')} multiline value={split} onChange={setSplit} />
-                  <Button
-                    label={t('row_split')}
-                    onPress={() => void action.run(() => resolve(row, 'split'))}
-                  />
-                </>
-              )}
-            </>
-          )}
-        </View>
-      ); }}
+                    )}
+                    {editedProposal &&
+                      groups.map((g) => (
+                        <Button
+                          key={g.id}
+                          label={`${editedProposal.grade === g.grade ? '✓ ' : ''}${t('group')} ${g.grade}`}
+                          onPress={() =>
+                            setEditedProposal({ ...editedProposal, grade: g.grade as never })
+                          }
+                        />
+                      ))}
+                    <Button
+                      label={t('row_edit')}
+                      onPress={() => void action.run(() => resolve(row, 'edit'))}
+                    />
+                  </>
+                )}
+                {rowMode === 'split' && (
+                  <>
+                    {' '}
+                    <Field label={t('splitNames')} multiline value={split} onChange={setSplit} />
+                    <Button
+                      label={t('row_split')}
+                      onPress={() => void action.run(() => resolve(row, 'split'))}
+                    />
+                  </>
+                )}
+              </>
+            )}
+          </View>
+        );
+      }}
     />
   );
 }

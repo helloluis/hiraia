@@ -32,7 +32,8 @@ export type PasswordProblem = 'too_short' | 'too_common' | 'too_simple' | 'match
 
 export const PASSWORD_PROBLEM_MESSAGE: Record<PasswordProblem, string> = {
   too_short: 'Please use a password with at least 10 characters.',
-  too_common: 'Many people use that password, so it is easy to guess. Please choose a different one.',
+  too_common:
+    'Many people use that password, so it is easy to guess. Please choose a different one.',
   too_simple: 'That password is too easy to guess. Please choose a different one.',
   matches_account: 'Please choose a password that is different from your email and your name.',
 };
@@ -58,7 +59,10 @@ function isTrivial(password: string): boolean {
   return up || down;
 }
 
-export function checkPasswordPolicy(password: string, account: { email?: string; displayName?: string } = {}): PasswordProblem | null {
+export function checkPasswordPolicy(
+  password: string,
+  account: { email?: string; displayName?: string } = {}
+): PasswordProblem | null {
   if ([...password].length < MIN_PASSWORD_LENGTH) return 'too_short';
   const p = password.normalize('NFKC').toLowerCase().trim();
   const email = account.email?.normalize('NFKC').toLowerCase().trim();
@@ -84,7 +88,12 @@ export interface PasswordHasher {
 }
 
 export function createPasswordHasher(cost: Argon2Cost = DEFAULT_ARGON2_COST): PasswordHasher {
-  const options = { algorithm: ARGON2ID, memoryCost: cost.memoryCost, timeCost: cost.timeCost, parallelism: cost.parallelism };
+  const options = {
+    algorithm: ARGON2ID,
+    memoryCost: cost.memoryCost,
+    timeCost: cost.timeCost,
+    parallelism: cost.parallelism,
+  };
   let dummy: Promise<string> | null = null;
   return {
     hash: (password) => hash(password, options),
@@ -106,7 +115,11 @@ export function createPasswordHasher(cost: Argon2Cost = DEFAULT_ARGON2_COST): Pa
     needsRehash(stored) {
       const m = /^\$argon2id\$v=\d+\$m=(\d+),t=(\d+),p=(\d+)\$/.exec(stored);
       if (!m) return true;
-      return Number(m[1]) < cost.memoryCost || Number(m[2]) < cost.timeCost || Number(m[3]) < cost.parallelism;
+      return (
+        Number(m[1]) < cost.memoryCost ||
+        Number(m[2]) < cost.timeCost ||
+        Number(m[3]) < cost.parallelism
+      );
     },
   };
 }

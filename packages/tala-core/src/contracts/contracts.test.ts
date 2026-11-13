@@ -1,6 +1,15 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { API, BUILTIN_TEMPLATES, CONFLICT_POLICY, ENTITY_NAMES, ROUTE_NAMES, Template, buildPath, parseRecordData } from './index';
+import {
+  API,
+  BUILTIN_TEMPLATES,
+  CONFLICT_POLICY,
+  ENTITY_NAMES,
+  ROUTE_NAMES,
+  Template,
+  buildPath,
+  parseRecordData,
+} from './index';
 import { CONTRAST_PAIRS, colors, contrastRatio } from '../tokens';
 
 test('built-in templates validate', () => {
@@ -22,12 +31,16 @@ test('route table: unique method+path, valid shapes', () => {
     assert.ok(r.path.startsWith('/'));
     if (r.method === 'GET') assert.ok(!('body' in r), `${name}: GET with body`);
   }
-  assert.equal(buildPath('/plans/:planId/revisions/:revision', { planId: 'p 1', revision: '3' }), '/plans/p%201/revisions/3');
+  assert.equal(
+    buildPath('/plans/:planId/revisions/:revision', { planId: 'p 1', revision: '3' }),
+    '/plans/p%201/revisions/3'
+  );
 });
 
 test('a class accepts one to four grade groups and no more (decision 13)', () => {
   const base = { id: 'class-0001', schoolYearId: 'sy-000001', name: 'Grade 2 & 4' };
-  const gg = (n: number) => Array.from({ length: n }, (_, i) => ({ id: `gg-00000${i}`, grade: String(i + 1) }));
+  const gg = (n: number) =>
+    Array.from({ length: n }, (_, i) => ({ id: `gg-00000${i}`, grade: String(i + 1) }));
   assert.equal(parseRecordData('class', { ...base, gradeGroups: gg(4) }).gradeGroups.length, 4);
   assert.throws(() => parseRecordData('class', { ...base, gradeGroups: gg(5) }));
   assert.throws(() => parseRecordData('class', { ...base, gradeGroups: [] }));

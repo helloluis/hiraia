@@ -16,7 +16,15 @@ const HOUR = 3600;
 export const push: Handler<'sync.push'> = (ctx, { body }) => {
   const user = requireUser(ctx);
   if (!ctx.services.rateLimit.take(`sync-push:user:${user.id}`, 300, 60)) tooMany(30);
-  const results = coreState(ctx).records.applyBatch({ ownerId: user.id, sessionId: user.sessionId, deviceId: body.deviceId, displayName: user.displayName }, body.mutations);
+  const results = coreState(ctx).records.applyBatch(
+    {
+      ownerId: user.id,
+      sessionId: user.sessionId,
+      deviceId: body.deviceId,
+      displayName: user.displayName,
+    },
+    body.mutations
+  );
   return { results };
 };
 
@@ -34,7 +42,9 @@ export const planRevisions: Handler<'plans.revisions'> = (ctx, { params }) => {
 export const planRevision: Handler<'plans.revision'> = (ctx, { params }) => {
   const user = requireUser(ctx);
   const number = /^\d{1,9}$/.test(params.revision) ? Number(params.revision) : Number.NaN;
-  const found = Number.isNaN(number) ? null : coreState(ctx).revisions.get(user.id, params.planId, number);
+  const found = Number.isNaN(number)
+    ? null
+    : coreState(ctx).revisions.get(user.id, params.planId, number);
   // Another teacher's plan, a plan that never existed and a revision that never existed all look the same.
   if (!found) throw new HttpError('not_found', 'We could not find that earlier version.');
   return found;
@@ -46,7 +56,11 @@ export const accountExport: Handler<'account.export'> = (ctx) => {
   const row = accounts.userById(user.id);
   if (!row) throw new HttpError('unauthenticated', 'Please sign in again.');
   if (!ctx.services.rateLimit.take(`export:user:${user.id}`, 20, HOUR)) tooMany();
-  return { exportedAt: ctx.now().toISOString(), user: accounts.toUser(row), records: records.exportAll(user.id) };
+  return {
+    exportedAt: ctx.now().toISOString(),
+    user: accounts.toUser(row),
+    records: records.exportAll(user.id),
+  };
 };
 
 export const accountDelete: Handler<'account.delete'> = async (ctx, { body }) => {
@@ -57,8 +71,14 @@ export const accountDelete: Handler<'account.delete'> = async (ctx, { body }) =>
   if (!ctx.services.rateLimit.take(`account-delete:user:${user.id}`, 10, HOUR)) tooMany();
   // An account with a password must give it: a borrowed, still-signed-in phone is not enough to delete everything.
   if (row.password_hash) {
-    const ok = body.password !== undefined && (await hasher.verify(row.password_hash, body.password));
-    if (!ok) throw new HttpError('forbidden', 'The password is not right, so the account was not deleted.', { reason: 'wrong_password' });
+    const ok =
+      body.password !== undefined && (await hasher.verify(row.password_hash, body.password));
+    if (!ok)
+      throw new HttpError(
+        'forbidden',
+        'The password is not right, so the account was not deleted.',
+        { reason: 'wrong_password' }
+      );
   }
 
   const remove = ctx.db.transaction((): string[] => {

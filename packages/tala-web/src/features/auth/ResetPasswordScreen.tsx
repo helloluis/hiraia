@@ -33,7 +33,7 @@ export function ResetPasswordScreen() {
     e.preventDefault();
     if (!validEmail(email)) return setFieldError(t('auth.emailInvalid'));
     setFieldError(null);
-    const ok = await form.run(async signal => {
+    const ok = await form.run(async (signal) => {
       await getClient().call('auth.requestReset', { body: { email: email.trim() }, signal });
     });
     if (ok) setSent(true);
@@ -43,9 +43,12 @@ export function ResetPasswordScreen() {
     e.preventDefault();
     if (password.length < 10) return setFieldError(t('auth.passwordShort'));
     setFieldError(null);
-    const ok = await form.run(async signal => {
-      await getClient().call('auth.reset', { body: { token: token!, password }, signal });
-    }, { invalid_input: 'auth.resetBadLink', not_found: 'auth.resetBadLink' } as never);
+    const ok = await form.run(
+      async (signal) => {
+        await getClient().call('auth.reset', { body: { token: token!, password }, signal });
+      },
+      { invalid_input: 'auth.resetBadLink', not_found: 'auth.resetBadLink' } as never
+    );
     if (ok) setDone(true);
   };
 
@@ -54,7 +57,10 @@ export function ResetPasswordScreen() {
       <div className="flex flex-col gap-4">
         <h1 className="text-display">{t('auth.resetTitle')}</h1>
         <Banner kind="success">{t('auth.resetDone')}</Banner>
-        <Link href="/sign-in" className="inline-flex items-center justify-center min-h-touch rounded bg-talaTeal text-white px-4 font-medium">
+        <Link
+          href="/sign-in"
+          className="inline-flex items-center justify-center min-h-touch rounded bg-talaTeal text-white px-4 font-medium"
+        >
           {t('auth.signIn')}
         </Link>
       </div>
@@ -65,7 +71,17 @@ export function ResetPasswordScreen() {
     return (
       <form onSubmit={reset} className="flex flex-col gap-4" noValidate>
         <h1 className="text-display">{t('auth.setPassword')}</h1>
-        <TextInput label={t('auth.newPassword')} hint={t('auth.passwordHint')} type="password" autoComplete="new-password" value={password} onChange={e => setPassword(e.target.value)} error={fieldError ?? undefined} minLength={10} required />
+        <TextInput
+          label={t('auth.newPassword')}
+          hint={t('auth.passwordHint')}
+          type="password"
+          autoComplete="new-password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          error={fieldError ?? undefined}
+          minLength={10}
+          required
+        />
         {form.error && <Banner kind="error">{form.error}</Banner>}
         {form.busy ? <Waiting label={t('common.waiting')} onCancel={form.cancel} /> : null}
         <Button type="submit" variant="primary" full busy={form.busy}>
@@ -83,7 +99,16 @@ export function ResetPasswordScreen() {
         <Banner kind="success">{t('auth.resetSent')}</Banner>
       ) : (
         <>
-          <TextInput label={t('auth.email')} type="email" autoComplete="email" inputMode="email" value={email} onChange={e => setEmail(e.target.value)} error={fieldError ?? undefined} required />
+          <TextInput
+            label={t('auth.email')}
+            type="email"
+            autoComplete="email"
+            inputMode="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            error={fieldError ?? undefined}
+            required
+          />
           {form.error && <Banner kind="error">{form.error}</Banner>}
           {form.busy ? <Waiting label={t('common.waiting')} onCancel={form.cancel} /> : null}
           <Button type="submit" variant="primary" full busy={form.busy}>
@@ -91,7 +116,10 @@ export function ResetPasswordScreen() {
           </Button>
         </>
       )}
-      <Link href="/sign-in" className="min-h-touch inline-flex items-center text-talaTealText underline">
+      <Link
+        href="/sign-in"
+        className="min-h-touch inline-flex items-center text-talaTealText underline"
+      >
         ← {t('auth.signIn')}
       </Link>
     </form>

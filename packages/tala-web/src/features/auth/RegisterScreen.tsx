@@ -31,7 +31,9 @@ export function RegisterScreen() {
     if (password.length < 10) next.password = t('auth.passwordShort');
     setErrors(next);
     if (Object.keys(next).length) return;
-    const ok = await form.run(() => register(email.trim(), password, name.trim(), lang), { conflict: 'auth.emailTaken' });
+    const ok = await form.run(() => register(email.trim(), password, name.trim(), lang), {
+      conflict: 'auth.emailTaken',
+    });
     if (ok) router.replace('/verify-email');
   };
 
@@ -47,16 +49,51 @@ export function RegisterScreen() {
     }
   };
 
-  if (link) return <GoogleLinkStep idToken={link.idToken} email={link.email} onLinked={() => router.replace('/week')} onCancel={() => setLink(null)} />;
+  if (link)
+    return (
+      <GoogleLinkStep
+        idToken={link.idToken}
+        email={link.email}
+        onLinked={() => router.replace('/week')}
+        onCancel={() => setLink(null)}
+      />
+    );
 
   return (
     <form onSubmit={submit} className="flex flex-col gap-4" noValidate>
       <h1 className="text-display">{t('auth.register')}</h1>
-      <GoogleButton onCredential={id => void onGoogle(id)} text="signup_with" />
+      <GoogleButton onCredential={(id) => void onGoogle(id)} text="signup_with" />
       {googleError && <Banner kind="warn">{googleError}</Banner>}
-      <TextInput label={t('auth.displayName')} hint={t('auth.displayNameHint')} autoComplete="name" value={name} onChange={e => setName(e.target.value)} error={errors.name} required />
-      <TextInput label={t('auth.email')} type="email" autoComplete="email" inputMode="email" value={email} onChange={e => setEmail(e.target.value)} error={errors.email} required />
-      <TextInput label={t('auth.password')} hint={t('auth.passwordHint')} type="password" autoComplete="new-password" value={password} onChange={e => setPassword(e.target.value)} error={errors.password} required minLength={10} />
+      <TextInput
+        label={t('auth.displayName')}
+        hint={t('auth.displayNameHint')}
+        autoComplete="name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        error={errors.name}
+        required
+      />
+      <TextInput
+        label={t('auth.email')}
+        type="email"
+        autoComplete="email"
+        inputMode="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        error={errors.email}
+        required
+      />
+      <TextInput
+        label={t('auth.password')}
+        hint={t('auth.passwordHint')}
+        type="password"
+        autoComplete="new-password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        error={errors.password}
+        required
+        minLength={10}
+      />
       {form.error && <Banner kind="error">{form.error}</Banner>}
       {form.busy ? <Waiting label={t('common.waiting')} onCancel={form.cancel} /> : null}
       <Button type="submit" variant="primary" full busy={form.busy}>
@@ -64,7 +101,10 @@ export function RegisterScreen() {
       </Button>
       <p className="pt-2 border-t border-hairline">
         {t('auth.haveAccount')}{' '}
-        <Link href="/sign-in" className="text-talaTealText underline min-h-touch inline-flex items-center">
+        <Link
+          href="/sign-in"
+          className="text-talaTealText underline min-h-touch inline-flex items-center"
+        >
           {t('auth.signIn')}
         </Link>
       </p>

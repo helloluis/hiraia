@@ -11,9 +11,15 @@ import type { VersionContent, VersionMeta } from './publish';
 import type { CommunityDeps } from './service';
 import { getArtifact, getVersion } from './store';
 
-export function remapContent(c: SectionContent, map: Map<string, string>, newId: () => string): SectionContent {
+export function remapContent(
+  c: SectionContent,
+  map: Map<string, string>,
+  newId: () => string
+): SectionContent {
   const groups = <T>(rec: Record<string, T>): Record<string, T> =>
-    Object.fromEntries(Object.entries(rec).flatMap(([k, v]) => (map.has(k) ? [[map.get(k)!, v] as const] : [])));
+    Object.fromEntries(
+      Object.entries(rec).flatMap(([k, v]) => (map.has(k) ? [[map.get(k)!, v] as const] : []))
+    );
   switch (c.type) {
     case 'pergroup':
       return { ...c, groups: groups(c.groups) };
@@ -26,10 +32,13 @@ export function remapContent(c: SectionContent, map: Map<string, string>, newId:
           (b): MultigradeBlock => ({
             ...b,
             id: newId(),
-            teacherWith: b.teacherWith === 'all' || b.teacherWith === 'none' ? b.teacherWith : (map.get(b.teacherWith) ?? 'none'),
+            teacherWith:
+              b.teacherWith === 'all' || b.teacherWith === 'none'
+                ? b.teacherWith
+                : (map.get(b.teacherWith) ?? 'none'),
             pairedGroupIds: b.pairedGroupIds.flatMap((g) => (map.has(g) ? [map.get(g)!] : [])),
             groups: groups(b.groups),
-          }),
+          })
         ),
       };
     default:
@@ -41,14 +50,20 @@ export function copyArtifact(
   deps: CommunityDeps,
   user: SessionUser,
   artifactId: string,
-  body: { versionId?: string; gradeGroupIds?: string[] },
+  body: { versionId?: string; gradeGroupIds?: string[] }
 ): z.output<typeof CopyArtifactResponse> {
   const { db } = deps;
   const a = getArtifact(db, artifactId);
   const mine = a?.author_id === user.id;
-  if (!a || a.status === 'removed' || (a.status !== 'visible' && !mine)) throw new HttpError('not_found', 'This community lesson is no longer available.', { reason: 'artifact_unavailable' });
+  if (!a || a.status === 'removed' || (a.status !== 'visible' && !mine))
+    throw new HttpError('not_found', 'This community lesson is no longer available.', {
+      reason: 'artifact_unavailable',
+    });
   const v = getVersion(db, body.versionId ?? a.current_version_id);
-  if (!v || v.artifact_id !== a.id || (v.status !== 'allowed' && !mine)) throw new HttpError('not_found', 'That version of the lesson is not available.', { reason: 'version_unavailable' });
+  if (!v || v.artifact_id !== a.id || (v.status !== 'allowed' && !mine))
+    throw new HttpError('not_found', 'That version of the lesson is not available.', {
+      reason: 'version_unavailable',
+    });
 
   const content = JSON.parse(v.content_json) as VersionContent;
   const meta = JSON.parse(v.meta_json) as VersionMeta;
@@ -60,11 +75,13 @@ export function copyArtifact(
       source.length === 1
         ? 'This lesson is for one grade. Choose one grade group of your class.'
         : `This lesson is for ${source.length} grade groups. Choose ${source.length} grade groups of your class, in the same order.`,
-      { reason: 'grade_groups_mismatch', expected: source.length },
+      { reason: 'grade_groups_mismatch', expected: source.length }
     );
   }
   if (body.gradeGroupIds && new Set(body.gradeGroupIds).size !== body.gradeGroupIds.length) {
-    throw new HttpError('invalid_input', 'Choose a different grade group for each grade.', { reason: 'grade_groups_duplicate' });
+    throw new HttpError('invalid_input', 'Choose a different grade group for each grade.', {
+      reason: 'grade_groups_duplicate',
+    });
   }
   const map = new Map(source.map((g, i) => [g.id, body.gradeGroupIds?.[i] ?? deps.newId()]));
 
@@ -78,7 +95,11 @@ export function copyArtifact(
     learningAreaId: meta.tags.learningAreaId,
     grades: source.length ? source.map((g) => g.grade) : meta.tags.grades,
     gradeGroupIds: source.map((g) => map.get(g.id)!),
-    competencies: Object.fromEntries(Object.entries(content.competencies).flatMap(([k, ids]) => (map.has(k) ? [[map.get(k)!, [...ids]]] : []))),
+    competencies: Object.fromEntries(
+      Object.entries(content.competencies).flatMap(([k, ids]) =>
+        map.has(k) ? [[map.get(k)!, [...ids]]] : []
+      )
+    ),
     curriculumVersion: meta.tags.curriculumVersion,
     customObjectives: [...content.customObjectives],
     durationMinutes: Math.min(600, Math.max(5, meta.tags.durationMinutes)),
@@ -89,20 +110,38 @@ export function copyArtifact(
     aiDraft: false,
     // Carries the AI-drafted provenance forward until the copier rewrites it (§11.3).
     aiAssisted: meta.provenance.aiDrafted,
-    lineage: { artifactId: a.id, versionId: v.id, title: meta.title, authorDisplayName: meta.authorDisplayName },
+    lineage: {
+      artifactId: a.id,
+      versionId: v.id,
+      title: meta.title,
+      authorDisplayName: meta.authorDisplayName,
+    },
     unitId: null,
     conflictCopyOf: null,
   });
   const sections = content.sections.map((s) =>
-    PlanSection.parse({ id: deps.newId(), planId, key: s.key, content: remapContent(s.content, map, deps.newId), origin: 'copied', editedByTeacher: false, gen: null }),
+    PlanSection.parse({
+      id: deps.newId(),
+      planId,
+      key: s.key,
+      content: remapContent(s.content, map, deps.newId),
+      origin: 'copied',
+      editedByTeacher: false,
+      gen: null,
+    })
   );
 
   // Copy count = distinct teachers other than the author (COM-6).
   if (!mine) {
     const inserted = db
-      .prepare('INSERT OR IGNORE INTO community_copies (artifact_id, user_id, version_id, created_at) VALUES (?, ?, ?, ?)')
+      .prepare(
+        'INSERT OR IGNORE INTO community_copies (artifact_id, user_id, version_id, created_at) VALUES (?, ?, ?, ?)'
+      )
       .run(a.id, user.id, v.id, deps.now().toISOString());
-    if (inserted.changes > 0) db.prepare('UPDATE community_artifacts SET copy_count = copy_count + 1 WHERE id = ?').run(a.id);
+    if (inserted.changes > 0)
+      db.prepare('UPDATE community_artifacts SET copy_count = copy_count + 1 WHERE id = ?').run(
+        a.id
+      );
   }
   deps.log.info('community.copy', { artifactId: a.id, versionId: v.id });
   return CopyArtifactResponse.parse({ plan, sections });

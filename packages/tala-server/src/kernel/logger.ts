@@ -89,7 +89,9 @@ export function sanitiseFields(fields: Record<string, unknown> | undefined): Log
 }
 
 export const stdoutSink: LogSink = (entry) => {
-  process.stdout.write(`${JSON.stringify({ ts: entry.ts, level: entry.level, event: entry.event, ...entry.fields })}\n`);
+  process.stdout.write(
+    `${JSON.stringify({ ts: entry.ts, level: entry.level, event: entry.event, ...entry.fields })}\n`
+  );
 };
 
 export const silentSink: LogSink = () => {};

@@ -130,7 +130,11 @@ function cookieAttributes(config: TalaServerConfig): string {
   return `; Path=/; HttpOnly; SameSite=Lax${secure}`;
 }
 
-export function sessionCookie(config: TalaServerConfig, token: string, maxAgeSeconds: number): string {
+export function sessionCookie(
+  config: TalaServerConfig,
+  token: string,
+  maxAgeSeconds: number
+): string {
   return `${config.session.cookieName}=${token}; Max-Age=${Math.max(0, Math.floor(maxAgeSeconds))}${cookieAttributes(config)}`;
 }
 
@@ -181,6 +185,7 @@ export function attachEffects(ctx: Ctx, effects: RequestEffects): void {
 
 export function effectsOf(ctx: Ctx): RequestEffects {
   const effects = EFFECTS.get(ctx);
-  if (!effects) throw new Error('effectsOf(ctx) was called with a context the kernel did not create.');
+  if (!effects)
+    throw new Error('effectsOf(ctx) was called with a context the kernel did not create.');
   return effects;
 }

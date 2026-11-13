@@ -13,7 +13,15 @@ import { GoogleButton } from '@/features/auth/GoogleButton';
 
 export type AccountSheet = 'none' | 'connect' | 'disconnect' | 'removePassword' | 'merge';
 
-export function GoogleAccountSheets({ sheet, onClose, onDone }: { sheet: AccountSheet; onClose: () => void; onDone: (message: string) => void }) {
+export function GoogleAccountSheets({
+  sheet,
+  onClose,
+  onDone,
+}: {
+  sheet: AccountSheet;
+  onClose: () => void;
+  onDone: (message: string) => void;
+}) {
   const { t } = useT();
   const { user, refreshUser, syncNow } = useSession();
   const [password, setPassword] = useState('');
@@ -54,10 +62,18 @@ export function GoogleAccountSheets({ sheet, onClose, onDone }: { sheet: Account
       {/* Case 3: connect Google after re-entering the password */}
       <Sheet open={sheet === 'connect'} onClose={close} title={t('google.connect')}>
         <p>{t('google.connectBody')}</p>
-        {user?.hasPassword && <TextInput label={t('auth.password')} type="password" autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} />}
+        {user?.hasPassword && (
+          <TextInput
+            label={t('auth.password')}
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        )}
         {(password || !user?.hasPassword) && (
           <GoogleButton
-            onCredential={idToken =>
+            onCredential={(idToken) =>
               void run(async () => {
                 await getClient().call('auth.googleConnect', { body: { idToken, password } });
               }, t('google.connectDone'))
@@ -93,8 +109,19 @@ export function GoogleAccountSheets({ sheet, onClose, onDone }: { sheet: Account
           </>
         }
       >
-        {user && !user.hasPassword ? <Banner kind="warn">{t('google.passwordRequired')}</Banner> : <p>{t('google.disconnectBody')}</p>}
-        <TextInput label={t('auth.password')} type="password" autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} disabled={!!user && !user.hasPassword} />
+        {user && !user.hasPassword ? (
+          <Banner kind="warn">{t('google.passwordRequired')}</Banner>
+        ) : (
+          <p>{t('google.disconnectBody')}</p>
+        )}
+        <TextInput
+          label={t('auth.password')}
+          type="password"
+          autoComplete="current-password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          disabled={!!user && !user.hasPassword}
+        />
         {error && <Banner kind="error">{error}</Banner>}
       </Sheet>
 
@@ -114,7 +141,9 @@ export function GoogleAccountSheets({ sheet, onClose, onDone }: { sheet: Account
               disabled={!password}
               onClick={() =>
                 void run(async () => {
-                  await getClient().call('auth.removePassword', { body: { currentPassword: password } });
+                  await getClient().call('auth.removePassword', {
+                    body: { currentPassword: password },
+                  });
                 }, t('google.removePasswordDone'))
               }
             >
@@ -123,8 +152,18 @@ export function GoogleAccountSheets({ sheet, onClose, onDone }: { sheet: Account
           </>
         }
       >
-        {user && !user.hasGoogle ? <Banner kind="warn">{t('google.lastMethod')}</Banner> : <p>{t('google.removePasswordBody')}</p>}
-        <TextInput label={t('settings.currentPassword')} type="password" autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} />
+        {user && !user.hasGoogle ? (
+          <Banner kind="warn">{t('google.lastMethod')}</Banner>
+        ) : (
+          <p>{t('google.removePasswordBody')}</p>
+        )}
+        <TextInput
+          label={t('settings.currentPassword')}
+          type="password"
+          autoComplete="current-password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
         {error && <Banner kind="error">{error}</Banner>}
       </Sheet>
 
@@ -141,11 +180,21 @@ export function GoogleAccountSheets({ sheet, onClose, onDone }: { sheet: Account
             <Button
               variant="danger"
               busy={busy}
-              disabled={confirm !== 'MERGE' || (user?.hasPassword && !password) || (mergeBy === 'password' ? !otherEmail || !otherPassword : !otherToken)}
+              disabled={
+                confirm !== 'MERGE' ||
+                (user?.hasPassword && !password) ||
+                (mergeBy === 'password' ? !otherEmail || !otherPassword : !otherToken)
+              }
               onClick={() =>
                 void run(async () => {
                   const r = await getClient().call('account.merge', {
-                    body: { confirm: 'MERGE', currentPassword: user?.hasPassword ? password : undefined, email: mergeBy === 'password' ? otherEmail.trim() : undefined, password: mergeBy === 'password' ? otherPassword : undefined, idToken: mergeBy === 'google' ? (otherToken ?? undefined) : undefined },
+                    body: {
+                      confirm: 'MERGE',
+                      currentPassword: user?.hasPassword ? password : undefined,
+                      email: mergeBy === 'password' ? otherEmail.trim() : undefined,
+                      password: mergeBy === 'password' ? otherPassword : undefined,
+                      idToken: mergeBy === 'google' ? (otherToken ?? undefined) : undefined,
+                    },
                   });
                   await syncNow();
                   onDone(t('merge.done', { n: r.movedRecords }));
@@ -158,7 +207,15 @@ export function GoogleAccountSheets({ sheet, onClose, onDone }: { sheet: Account
         }
       >
         <p>{t('merge.body')}</p>
-        {user?.hasPassword && <TextInput label={t('merge.current')} type="password" autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} />}
+        {user?.hasPassword && (
+          <TextInput
+            label={t('merge.current')}
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        )}
         <Choice
           label={t('merge.otherBy')}
           value={mergeBy}
@@ -170,15 +227,32 @@ export function GoogleAccountSheets({ sheet, onClose, onDone }: { sheet: Account
         />
         {mergeBy === 'password' ? (
           <>
-            <TextInput label={t('merge.otherEmail')} type="email" autoComplete="off" value={otherEmail} onChange={e => setOtherEmail(e.target.value)} />
-            <TextInput label={t('merge.otherPassword')} type="password" autoComplete="off" value={otherPassword} onChange={e => setOtherPassword(e.target.value)} />
+            <TextInput
+              label={t('merge.otherEmail')}
+              type="email"
+              autoComplete="off"
+              value={otherEmail}
+              onChange={(e) => setOtherEmail(e.target.value)}
+            />
+            <TextInput
+              label={t('merge.otherPassword')}
+              type="password"
+              autoComplete="off"
+              value={otherPassword}
+              onChange={(e) => setOtherPassword(e.target.value)}
+            />
           </>
         ) : otherToken ? (
           <Banner kind="success">✓ Google</Banner>
         ) : (
           <GoogleButton onCredential={setOtherToken} />
         )}
-        <TextInput label={t('merge.confirmWord')} value={confirm} onChange={e => setConfirm(e.target.value)} autoComplete="off" />
+        <TextInput
+          label={t('merge.confirmWord')}
+          value={confirm}
+          onChange={(e) => setConfirm(e.target.value)}
+          autoComplete="off"
+        />
         {error && <Banner kind="error">{error}</Banner>}
       </Sheet>
     </>

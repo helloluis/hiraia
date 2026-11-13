@@ -17,7 +17,9 @@ function hashKey(key: string): string {
 
 export function createSqliteRateLimiter(db: Db, now: () => Date): RateLimiter & { prune(): void } {
   const get = db.prepare('SELECT window_start, count FROM core_rate_limits WHERE key_hash = ?');
-  const reset = db.prepare('INSERT OR REPLACE INTO core_rate_limits (key_hash, window_start, count) VALUES (?, ?, 1)');
+  const reset = db.prepare(
+    'INSERT OR REPLACE INTO core_rate_limits (key_hash, window_start, count) VALUES (?, ?, 1)'
+  );
   const bump = db.prepare('UPDATE core_rate_limits SET count = count + 1 WHERE key_hash = ?');
   const prune = db.prepare('DELETE FROM core_rate_limits WHERE window_start < ?');
 
@@ -49,7 +51,9 @@ export function tooMany(retryAfterSeconds?: number): never {
   throw new HttpError(
     'rate_limited',
     'Too many tries. Please wait a little and try again.',
-    retryAfterSeconds === undefined ? { reason: 'rate_limited' } : { reason: 'rate_limited', retryAfterSeconds },
+    retryAfterSeconds === undefined
+      ? { reason: 'rate_limited' }
+      : { reason: 'rate_limited', retryAfterSeconds }
   );
 }
 
@@ -73,11 +77,16 @@ export function delayAfter(failures: number): number {
  * hammering an address from elsewhere cannot lock its owner out of their own connection.
  */
 export function createLoginThrottle(db: Db, now: () => Date) {
-  const get = db.prepare('SELECT failures, last_failure_at FROM core_login_failures WHERE key_hash = ?');
-  const put = db.prepare('INSERT OR REPLACE INTO core_login_failures (key_hash, failures, last_failure_at) VALUES (?, ?, ?)');
+  const get = db.prepare(
+    'SELECT failures, last_failure_at FROM core_login_failures WHERE key_hash = ?'
+  );
+  const put = db.prepare(
+    'INSERT OR REPLACE INTO core_login_failures (key_hash, failures, last_failure_at) VALUES (?, ?, ?)'
+  );
   const del = db.prepare('DELETE FROM core_login_failures WHERE key_hash = ?');
   const prune = db.prepare('DELETE FROM core_login_failures WHERE last_failure_at < ?');
-  const keyOf = (emailNorm: string, ip: string | null) => hashKey(`login-pair:${emailNorm}|${ip ?? 'unknown'}`);
+  const keyOf = (emailNorm: string, ip: string | null) =>
+    hashKey(`login-pair:${emailNorm}|${ip ?? 'unknown'}`);
 
   function current(k: string): { failures: number; last: number } | null {
     const row = get.get(k) as { failures: number; last_failure_at: number } | undefined;

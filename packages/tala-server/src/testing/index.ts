@@ -13,7 +13,17 @@
  * captured mail outbox and captured logs. Nothing touches the network or the disk.
  */
 import { API, API_BASE, buildPath, createTalaClient } from '@hiraia/tala-core';
-import type { ApiErrorCode, BodyIn, Id, ParamsOf, QueryIn, ResponseOf, RouteName, TalaClient, User } from '@hiraia/tala-core';
+import type {
+  ApiErrorCode,
+  BodyIn,
+  Id,
+  ParamsOf,
+  QueryIn,
+  ResponseOf,
+  RouteName,
+  TalaClient,
+  User,
+} from '@hiraia/tala-core';
 import { loadConfig } from '../kernel/config';
 import type { DeepPartial } from '../kernel/config';
 import type { Db } from '../kernel/db';
@@ -62,7 +72,12 @@ export function createTestClock(start: Date | string | number = DEFAULT_TEST_TIM
     },
     advance(by) {
       const d: Duration = typeof by === 'number' ? { ms: by } : by;
-      t += (d.days ?? 0) * 86_400_000 + (d.hours ?? 0) * 3_600_000 + (d.minutes ?? 0) * 60_000 + (d.seconds ?? 0) * 1_000 + (d.ms ?? 0);
+      t +=
+        (d.days ?? 0) * 86_400_000 +
+        (d.hours ?? 0) * 3_600_000 +
+        (d.minutes ?? 0) * 60_000 +
+        (d.seconds ?? 0) * 1_000 +
+        (d.ms ?? 0);
     },
   };
 }
@@ -81,12 +96,15 @@ export interface CallExtras {
   ip?: string | null;
 }
 
-export type CallArgs<K extends RouteName> = (HasKeys<ParamsOf<K>> extends true ? { params: ParamsOf<K> } : { params?: undefined }) &
+export type CallArgs<K extends RouteName> = (HasKeys<ParamsOf<K>> extends true
+  ? { params: ParamsOf<K> }
+  : { params?: undefined }) &
   (BodyIn<K> extends undefined ? { body?: undefined } : { body: BodyIn<K> }) &
   (QueryIn<K> extends undefined ? { query?: undefined } : { query?: QueryIn<K> }) &
   CallExtras;
 
-export type MaybeCallArgs<K extends RouteName> = {} extends CallArgs<K> ? [args?: CallArgs<K>] : [args: CallArgs<K>];
+export type MaybeCallArgs<K extends RouteName> =
+  {} extends CallArgs<K> ? [args?: CallArgs<K>] : [args: CallArgs<K>];
 
 export interface ApiFailure {
   code: ApiErrorCode;
@@ -177,7 +195,12 @@ export interface TestServer {
 const TEST_ORIGIN = 'http://tala.test';
 
 /** Abuse limits high enough that ordinary tests never meet them. Override in `config.abuse` to test a limit. */
-const RELAXED_ABUSE = { registerPerIpPerHour: 100_000, loginPerIpPerMinute: 100_000, postPerUserPerDay: 100_000, reportPerUserPerDay: 100_000 };
+const RELAXED_ABUSE = {
+  registerPerIpPerHour: 100_000,
+  loginPerIpPerMinute: 100_000,
+  postPerUserPerDay: 100_000,
+  reportPerUserPerDay: 100_000,
+};
 
 export function tokenFromMail(mail: OutboxMail): string | null {
   const m = /#token=([A-Za-z0-9_%-]+)/.exec(mail.vars.link ?? mail.body);
@@ -189,12 +212,21 @@ export function createTestServer(options: TestServerOptions = {}): TestServer {
   const logs: LogEntry[] = [];
   const errors: unknown[] = [];
 
-  const base: DeepPartial<TalaServerConfig> = { dbPath: ':memory:', publicOrigin: TEST_ORIGIN, abuse: RELAXED_ABUSE };
-  const config = loadConfig({ TALA_ENV: 'local' }, { ...base, ...options.config, abuse: { ...RELAXED_ABUSE, ...options.config?.abuse } });
+  const base: DeepPartial<TalaServerConfig> = {
+    dbPath: ':memory:',
+    publicOrigin: TEST_ORIGIN,
+    abuse: RELAXED_ABUSE,
+  };
+  const config = loadConfig(
+    { TALA_ENV: 'local' },
+    { ...base, ...options.config, abuse: { ...RELAXED_ABUSE, ...options.config?.abuse } }
+  );
 
   const extra = options.modules ?? [];
   const modules: ServerModule[] =
-    options.withoutCore || extra.some((m) => m.name === 'core') ? [...extra] : [createCoreModule({ argon2: TEST_ARGON2_COST, ...options.core }), ...extra];
+    options.withoutCore || extra.some((m) => m.name === 'core')
+      ? [...extra]
+      : [createCoreModule({ argon2: TEST_ARGON2_COST, ...options.core }), ...extra];
 
   const server = createServer({
     config,
@@ -208,14 +240,20 @@ export function createTestServer(options: TestServerOptions = {}): TestServer {
       errors.push(error);
       if (!options.quiet) {
         const detail = error instanceof Error ? (error.stack ?? error.message) : String(error);
-        process.stderr.write(`[tala test server] unexpected error in ${info.route ?? 'unmatched route'}:\n${detail}\n`);
+        process.stderr.write(
+          `[tala test server] unexpected error in ${info.route ?? 'unmatched route'}:\n${detail}\n`
+        );
       }
     },
   });
 
   let userCounter = 0;
 
-  function toRequest(method: string, path: string, init: RawRequest = {}): { request: Request; ip: string | null | undefined } {
+  function toRequest(
+    method: string,
+    path: string,
+    init: RawRequest = {}
+  ): { request: Request; ip: string | null | undefined } {
     const url = TEST_ORIGIN + (path.startsWith(API_BASE) ? path : API_BASE + path);
     const headers = new Headers(init.headers);
     if (init.token) headers.set('authorization', `Bearer ${init.token}`);
@@ -237,9 +275,16 @@ export function createTestServer(options: TestServerOptions = {}): TestServer {
     return response;
   }
 
-  async function call<K extends RouteName>(route: K, ...rest: MaybeCallArgs<K>): Promise<CallResult<K>> {
+  async function call<K extends RouteName>(
+    route: K,
+    ...rest: MaybeCallArgs<K>
+  ): Promise<CallResult<K>> {
     const spec = API[route];
-    const args = (rest[0] ?? {}) as CallExtras & { params?: Record<string, string>; query?: Record<string, unknown>; body?: unknown };
+    const args = (rest[0] ?? {}) as CallExtras & {
+      params?: Record<string, string>;
+      query?: Record<string, unknown>;
+      body?: unknown;
+    };
     let path = buildPath(spec.path, args.params);
     if (args.query) {
       const qs = Object.entries(args.query)
@@ -248,20 +293,36 @@ export function createTestServer(options: TestServerOptions = {}): TestServer {
         .join('&');
       if (qs) path += `?${qs}`;
     }
-    const response = await request(spec.method, path, { token: args.token, cookie: args.cookie, headers: args.headers, ip: args.ip, body: args.body });
+    const response = await request(spec.method, path, {
+      token: args.token,
+      cookie: args.cookie,
+      headers: args.headers,
+      ip: args.ip,
+      body: args.body,
+    });
     if (response.ok) {
-      const data = ('binary' in spec && spec.binary ? await response.arrayBuffer() : await response.json()) as ResponseOf<K>;
+      const data = (
+        'binary' in spec && spec.binary ? await response.arrayBuffer() : await response.json()
+      ) as ResponseOf<K>;
       return { ok: true, status: response.status, data, error: null, headers: response.headers };
     }
     const parsed = (await response.json().catch(() => null)) as { error?: ApiFailure } | null;
-    const error: ApiFailure = parsed?.error ?? { code: 'internal', message: `Unreadable error body (HTTP ${response.status}).` };
+    const error: ApiFailure = parsed?.error ?? {
+      code: 'internal',
+      message: `Unreadable error body (HTTP ${response.status}).`,
+    };
     return { ok: false, status: response.status, data: null, error, headers: response.headers };
   }
 
-  async function ok<K extends RouteName>(route: K, ...rest: MaybeCallArgs<K>): Promise<ResponseOf<K>> {
+  async function ok<K extends RouteName>(
+    route: K,
+    ...rest: MaybeCallArgs<K>
+  ): Promise<ResponseOf<K>> {
     const result = await call(route, ...rest);
     if (!result.ok) {
-      throw new Error(`${route} failed: ${result.status} ${result.error.code}: ${result.error.message} ${result.error.details ? JSON.stringify(result.error.details) : ''}`);
+      throw new Error(
+        `${route} failed: ${result.status} ${result.error.code}: ${result.error.message} ${result.error.details ? JSON.stringify(result.error.details) : ''}`
+      );
     }
     return result.data;
   }
@@ -282,17 +343,28 @@ export function createTestServer(options: TestServerOptions = {}): TestServer {
   const outbox = () => readOutbox(server.db, 500);
 
   function mailToken(email: string, template: MailTemplate): string | null {
-    const mail = outbox().find((m) => m.to.toLowerCase() === email.toLowerCase() && m.template === template);
+    const mail = outbox().find(
+      (m) => m.to.toLowerCase() === email.toLowerCase() && m.template === template
+    );
     return mail ? tokenFromMail(mail) : null;
   }
 
   async function registerUser(opts: RegisterOptions = {}): Promise<TestUser> {
-    if (options.withoutCore) throw new Error('registerUser needs the core module; this test server was created with withoutCore.');
+    if (options.withoutCore)
+      throw new Error(
+        'registerUser needs the core module; this test server was created with withoutCore.'
+      );
     const n = ++userCounter;
     const email = opts.email ?? `teacher${n}@example.test`;
     const password = opts.password ?? `Tala-test-${n}-kalabaw-bituin`;
     const registered = await ok('auth.register', {
-      body: { email, password, displayName: opts.displayName ?? `Teacher ${n}`, uiLanguage: opts.uiLanguage ?? 'fil', deviceLabel: opts.deviceLabel ?? 'Test device' },
+      body: {
+        email,
+        password,
+        displayName: opts.displayName ?? `Teacher ${n}`,
+        uiLanguage: opts.uiLanguage ?? 'fil',
+        deviceLabel: opts.deviceLabel ?? 'Test device',
+      },
       // A different address per user, so the per-address sign-up limit never gets in a test's way.
       ip: `10.${(n >> 16) & 255}.${(n >> 8) & 255}.${n & 255}`,
     });
@@ -303,7 +375,14 @@ export function createTestServer(options: TestServerOptions = {}): TestServer {
       await ok('auth.verifyEmail', { body: { token } });
       user = (await ok('auth.me', { token: registered.token })).user;
     }
-    return { user, id: user.id, email, password, token: registered.token, cookie: `${config.session.cookieName}=${registered.token}` };
+    return {
+      user,
+      id: user.id,
+      email,
+      password,
+      token: registered.token,
+      cookie: `${config.session.cookieName}=${registered.token}`,
+    };
   }
 
   return {

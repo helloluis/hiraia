@@ -5,7 +5,7 @@ import { colors, sizes } from '../tala-core/src/tokens';
  * Every colour is a CSS variable written by src/theme/css.ts from @hiraia/tala-core/tokens (BRAND-2).
  * Nothing here is a literal colour.
  */
-const colorVars = Object.fromEntries(Object.keys(colors).map(k => [k, `var(--c-${k})`]));
+const colorVars = Object.fromEntries(Object.keys(colors).map((k) => [k, `var(--c-${k})`]));
 
 export default {
   content: ['./src/**/*.{ts,tsx}'],

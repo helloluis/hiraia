@@ -4,14 +4,24 @@
  */
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { BUILTIN_TEMPLATES, parseRecordData, plan as planHelpers, sync as syncEngine } from '@hiraia/tala-core';
+import {
+  BUILTIN_TEMPLATES,
+  parseRecordData,
+  plan as planHelpers,
+  sync as syncEngine,
+} from '@hiraia/tala-core';
 import type { Plan, PlanSection, SyncEngine, SyncTransport } from '@hiraia/tala-core';
 import { createTestServer } from '../../testing';
 import type { TestServer } from '../../testing';
 
 const DLP = BUILTIN_TEMPLATES.find((t) => t.id === 'tpl.dlp.v1')!;
 
-function device(t: TestServer, token: string, name: string, wrap: (transport: SyncTransport) => SyncTransport = (x) => x) {
+function device(
+  t: TestServer,
+  token: string,
+  name: string,
+  wrap: (transport: SyncTransport) => SyncTransport = (x) => x
+) {
   let n = 0;
   const store = syncEngine.createMemoryStore();
   const engine: SyncEngine = syncEngine.createSyncEngine({
@@ -24,24 +34,51 @@ function device(t: TestServer, token: string, name: string, wrap: (transport: Sy
   return { engine, store };
 }
 
-const text = (value: string) => ({ type: 'text' as const, blocks: [{ t: 'p' as const, spans: [{ text: value }] }] });
+const text = (value: string) => ({
+  type: 'text' as const,
+  blocks: [{ t: 'p' as const, spans: [{ text: value }] }],
+});
 
 async function writePlan(engine: SyncEngine, planId = 'plan-0001') {
-  await engine.put('plan', parseRecordData('plan', { id: planId, templateId: DLP.id, language: 'fil', grades: ['4'], durationMinutes: 50, title: 'Mga Halaman' }));
+  await engine.put(
+    'plan',
+    parseRecordData('plan', {
+      id: planId,
+      templateId: DLP.id,
+      language: 'fil',
+      grades: ['4'],
+      durationMinutes: 50,
+      title: 'Mga Halaman',
+    })
+  );
   const contents: Record<string, PlanSection['content']> = {
     objectives: { type: 'list', items: ['Natutukoy ang mga bahagi ng halaman'] },
     materials: { type: 'list', items: ['Tunay na halaman'] },
-    procedure: { type: 'procedure', steps: [{ id: 'step-0001', title: 'Panimula', minutes: 10, body: text('Ipakita ang halaman.').blocks }] },
+    procedure: {
+      type: 'procedure',
+      steps: [
+        {
+          id: 'step-0001',
+          title: 'Panimula',
+          minutes: 10,
+          body: text('Ipakita ang halaman.').blocks,
+        },
+      ],
+    },
     assessment: text('Iguhit ang halaman.'),
     content: text('Mga bahagi ng halaman'),
     reflection: { type: 'text', blocks: [] },
   };
   for (const [key, content] of Object.entries(contents)) {
-    await engine.put('plan_section', parseRecordData('plan_section', { id: `${planId}-${key}`, planId, key, content }));
+    await engine.put(
+      'plan_section',
+      parseRecordData('plan_section', { id: `${planId}-${key}`, planId, key, content })
+    );
   }
 }
 
-const sectionText = async (engine: SyncEngine, id: string) => JSON.stringify((await engine.get('plan_section', id))?.data.content);
+const sectionText = async (engine: SyncEngine, id: string) =>
+  JSON.stringify((await engine.get('plan_section', id))?.data.content);
 
 test('two devices: what one writes offline, the other receives', async () => {
   const t = createTestServer();
@@ -50,7 +87,15 @@ test('two devices: what one writes offline, the other receives', async () => {
   const laptop = device(t, u.token, 'laptop');
 
   await writePlan(phone.engine);
-  await phone.engine.put('day_note', parseRecordData('day_note', { id: 'note-0001', classId: 'class-0001', date: '2026-11-16', text: 'Walang pasok dahil sa bagyo' }));
+  await phone.engine.put(
+    'day_note',
+    parseRecordData('day_note', {
+      id: 'note-0001',
+      classId: 'class-0001',
+      date: '2026-11-16',
+      text: 'Walang pasok dahil sa bagyo',
+    })
+  );
   const first = await phone.engine.sync();
   assert.deepEqual([first.ok, first.error, first.pushed, first.conflicts], [true, null, 8, 0]);
   assert.equal((await phone.engine.status()).pending, 0);
@@ -65,7 +110,10 @@ test('two devices: what one writes offline, the other receives', async () => {
   const onPhone = (await phone.engine.get('plan_section', 'plan-0001-assessment'))!.data;
   const onLaptop = (await laptop.engine.get('plan_section', 'plan-0001-content'))!.data;
   await phone.engine.put('plan_section', { ...onPhone, content: text('Pagtataya mula sa phone') });
-  await laptop.engine.put('plan_section', { ...onLaptop, content: text('Nilalaman mula sa laptop') });
+  await laptop.engine.put('plan_section', {
+    ...onLaptop,
+    content: text('Nilalaman mula sa laptop'),
+  });
   assert.equal((await phone.engine.sync()).conflicts, 0);
   assert.equal((await laptop.engine.sync()).conflicts, 0);
   await phone.engine.sync();
@@ -75,8 +123,14 @@ test('two devices: what one writes offline, the other receives', async () => {
   }
 
   // Different fields of the plan record: merged field by field.
-  await phone.engine.put('plan', { ...(await phone.engine.get('plan', 'plan-0001'))!.data, title: 'Mga Bahagi ng Halaman' });
-  await laptop.engine.put('plan', { ...(await laptop.engine.get('plan', 'plan-0001'))!.data, durationMinutes: 40 });
+  await phone.engine.put('plan', {
+    ...(await phone.engine.get('plan', 'plan-0001'))!.data,
+    title: 'Mga Bahagi ng Halaman',
+  });
+  await laptop.engine.put('plan', {
+    ...(await laptop.engine.get('plan', 'plan-0001'))!.data,
+    durationMinutes: 40,
+  });
   await phone.engine.sync();
   await laptop.engine.sync();
   await phone.engine.sync();
@@ -104,9 +158,21 @@ test('the same part edited on two devices: both versions are kept until the teac
   assert.equal(report.conflicts, 1);
 
   const held = (await laptop.engine.get('plan_section', 'plan-0001-assessment'))!;
-  assert.match(JSON.stringify(held.data.content), /Bersyon sa laptop/, 'the laptop’s words are not lost');
-  assert.match(JSON.stringify(held.conflict!.server.data), /Bersyon sa phone/, 'and it holds the other version beside them');
-  assert.match(JSON.stringify(t.services.records.get(u.id, 'plan_section', 'plan-0001-assessment')!.data), /Bersyon sa phone/, 'nothing was overwritten on the server');
+  assert.match(
+    JSON.stringify(held.data.content),
+    /Bersyon sa laptop/,
+    'the laptop’s words are not lost'
+  );
+  assert.match(
+    JSON.stringify(held.conflict!.server.data),
+    /Bersyon sa phone/,
+    'and it holds the other version beside them'
+  );
+  assert.match(
+    JSON.stringify(t.services.records.get(u.id, 'plan_section', 'plan-0001-assessment')!.data),
+    /Bersyon sa phone/,
+    'nothing was overwritten on the server'
+  );
 
   await laptop.engine.resolveConflict('plan_section', 'plan-0001-assessment', 'both');
   assert.equal((await laptop.engine.sync()).conflicts, 0);
@@ -129,17 +195,31 @@ test('a lock made on one device wins; the other device’s edit becomes a separa
   // Phone locks, with the shared helper the apps use.
   const plan = (await phone.engine.get('plan', 'plan-0001'))!.data;
   const sections = (await phone.engine.list('plan_section')).map((r) => r.data);
-  const locked: Plan = planHelpers.lockPlan({ plan, sections, template: DLP, teacherName: 'Gng. Reyes', at: t.clock.now().toISOString(), revision: null });
+  const locked: Plan = planHelpers.lockPlan({
+    plan,
+    sections,
+    template: DLP,
+    teacherName: 'Gng. Reyes',
+    at: t.clock.now().toISOString(),
+    revision: null,
+  });
   await phone.engine.put('plan', locked);
   const lockReport = await phone.engine.sync();
   assert.deepEqual([lockReport.ok, lockReport.conflicts, lockReport.rejected], [true, 0, 0]);
   const afterLock = (await phone.engine.get('plan', 'plan-0001'))!.data;
   assert.equal(afterLock.state, 'locked');
-  assert.equal(typeof afterLock.lock!.revision, 'number', 'the phone now knows the server revision of its lock');
+  assert.equal(
+    typeof afterLock.lock!.revision,
+    'number',
+    'the phone now knows the server revision of its lock'
+  );
 
   // Laptop, not having synced, edits a locked part and the reflection.
   const assessment = (await laptop.engine.get('plan_section', 'plan-0001-assessment'))!.data;
-  await laptop.engine.put('plan_section', { ...assessment, content: text('Binago sa laptop pagkatapos i-lock sa phone') });
+  await laptop.engine.put('plan_section', {
+    ...assessment,
+    content: text('Binago sa laptop pagkatapos i-lock sa phone'),
+  });
   const report = await laptop.engine.sync();
   assert.equal(report.ok, true);
   assert.equal(report.lockCopies.length, 1);
@@ -160,10 +240,16 @@ test('a lock made on one device wins; the other device’s edit becomes a separa
 
   // The reflection is outside the lock and syncs normally afterwards.
   const reflection = (await laptop.engine.get('plan_section', 'plan-0001-reflection'))!.data;
-  await laptop.engine.put('plan_section', { ...reflection, content: text('Naging masigla ang klase.') });
+  await laptop.engine.put('plan_section', {
+    ...reflection,
+    content: text('Naging masigla ang klase.'),
+  });
   const later = await laptop.engine.sync();
   assert.deepEqual([later.ok, later.conflicts, later.lockCopies.length], [true, 0, 0]);
-  assert.match(JSON.stringify(t.services.records.get(u.id, 'plan_section', 'plan-0001-reflection')!.data), /masigla/);
+  assert.match(
+    JSON.stringify(t.services.records.get(u.id, 'plan_section', 'plan-0001-reflection')!.data),
+    /masigla/
+  );
   t.close();
 });
 
@@ -183,12 +269,24 @@ test('a lost reply is replayed without applying anything twice (RES-5)', async (
     },
   });
   const phone = device(t, u.token, 'phone', flaky);
-  await phone.engine.put('day_note', parseRecordData('day_note', { id: 'note-0001', classId: 'class-0001', date: '2026-11-16', text: 'isang beses lang' }));
+  await phone.engine.put(
+    'day_note',
+    parseRecordData('day_note', {
+      id: 'note-0001',
+      classId: 'class-0001',
+      date: '2026-11-16',
+      text: 'isang beses lang',
+    })
+  );
 
   dropNextReply = true;
   const failed = await phone.engine.sync();
   assert.deepEqual([failed.ok, failed.error], [false, 'offline']);
-  assert.equal(t.services.records.get(u.id, 'day_note', 'note-0001')!.rev, 1, 'the server did apply it');
+  assert.equal(
+    t.services.records.get(u.id, 'day_note', 'note-0001')!.rev,
+    1,
+    'the server did apply it'
+  );
   assert.equal((await phone.engine.status()).pending, 1, 'the phone does not know that yet');
 
   const retried = await phone.engine.sync();
@@ -204,7 +302,13 @@ test('deletes travel between devices, and an edit made elsewhere brings a delete
   const u = await t.registerUser();
   const phone = device(t, u.token, 'phone');
   const laptop = device(t, u.token, 'laptop');
-  const note = (text: string) => parseRecordData('day_note', { id: 'note-0001', classId: 'class-0001', date: '2026-11-16', text });
+  const note = (text: string) =>
+    parseRecordData('day_note', {
+      id: 'note-0001',
+      classId: 'class-0001',
+      date: '2026-11-16',
+      text,
+    });
   await phone.engine.put('day_note', note('una'));
   await phone.engine.put('day_note', { ...note('ikalawa'), id: 'note-0002' });
   await phone.engine.sync();
@@ -213,7 +317,10 @@ test('deletes travel between devices, and an edit made elsewhere brings a delete
   await phone.engine.remove('day_note', 'note-0002');
   await phone.engine.sync();
   await laptop.engine.sync();
-  assert.deepEqual((await laptop.engine.list('day_note')).map((r) => r.id), ['note-0001']);
+  assert.deepEqual(
+    (await laptop.engine.list('day_note')).map((r) => r.id),
+    ['note-0001']
+  );
 
   // Phone deletes note 1; laptop, not knowing, edits it. The edit wins (§10.5).
   await phone.engine.remove('day_note', 'note-0001');
@@ -223,7 +330,10 @@ test('deletes travel between devices, and an edit made elsewhere brings a delete
   assert.equal(report.ok, true);
   await laptop.engine.sync();
   await phone.engine.sync();
-  assert.equal(t.services.records.get(u.id, 'day_note', 'note-0001')!.data.text, 'inayos sa laptop');
+  assert.equal(
+    t.services.records.get(u.id, 'day_note', 'note-0001')!.data.text,
+    'inayos sa laptop'
+  );
   assert.equal((await phone.engine.get('day_note', 'note-0001'))!.data.text, 'inayos sa laptop');
   assert.equal((await phone.engine.get('day_note', 'note-0001'))!.deletedAt, null);
   t.close();
@@ -234,20 +344,34 @@ test('a first sync with a window, then everything else on later syncs', async ()
   const u = await t.registerUser();
   const phone = device(t, u.token, 'phone');
   const placed = (id: string, date: string) =>
-    parseRecordData('plan', { id, templateId: DLP.id, language: 'fil', grades: ['4'], durationMinutes: 50, placements: [{ classId: 'class-0001', assignmentId: null, dates: [date] }] });
-  for (let i = 0; i < 30; i++) await phone.engine.put('plan', placed(`plan-old-${String(i).padStart(4, '0')}`, '2026-06-22'));
+    parseRecordData('plan', {
+      id,
+      templateId: DLP.id,
+      language: 'fil',
+      grades: ['4'],
+      durationMinutes: 50,
+      placements: [{ classId: 'class-0001', assignmentId: null, dates: [date] }],
+    });
+  for (let i = 0; i < 30; i++)
+    await phone.engine.put('plan', placed(`plan-old-${String(i).padStart(4, '0')}`, '2026-06-22'));
   await phone.engine.put('plan', placed('plan-this-week', '2026-11-18'));
   assert.equal((await phone.engine.sync()).ok, true);
 
   const tablet = device(t, u.token, 'tablet');
   const report = await tablet.engine.sync({ windowFrom: '2026-10-19', windowTo: '2027-01-11' });
   assert.equal(report.ok, true);
-  assert.deepEqual((await tablet.engine.list('plan')).map((r) => r.id), ['plan-this-week']);
+  assert.deepEqual(
+    (await tablet.engine.list('plan')).map((r) => r.id),
+    ['plan-this-week']
+  );
 
   // A change to an old plan after that reaches the tablet even though it is outside the window.
   await phone.engine.put('plan', { ...placed('plan-old-0007', '2026-06-22'), title: 'Binago' });
   await phone.engine.sync();
   await tablet.engine.sync({ windowFrom: '2026-10-19', windowTo: '2027-01-11' });
-  assert.deepEqual((await tablet.engine.list('plan')).map((r) => r.id).sort(), ['plan-old-0007', 'plan-this-week']);
+  assert.deepEqual((await tablet.engine.list('plan')).map((r) => r.id).sort(), [
+    'plan-old-0007',
+    'plan-this-week',
+  ]);
   t.close();
 });

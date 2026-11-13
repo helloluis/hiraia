@@ -166,7 +166,13 @@ export interface LocalStore {
 /** The slice of the API client the engine needs; satisfied by createTalaClient(). */
 export interface SyncTransport {
   push(body: z.infer<typeof PushRequest>): Promise<z.infer<typeof PushResponse>>;
-  pull(query: { cursor?: string; limit?: number; windowFrom?: string; windowTo?: string; planIds?: string }): Promise<z.infer<typeof PullResponse>>;
+  pull(query: {
+    cursor?: string;
+    limit?: number;
+    windowFrom?: string;
+    windowTo?: string;
+    planIds?: string;
+  }): Promise<z.infer<typeof PullResponse>>;
 }
 
 export interface SyncReport {
@@ -202,7 +208,12 @@ export interface SyncEngine {
    * applying or undoing a realignment): either every change is on the device and queued, or none is, so a
    * killed app never leaves half an operation.
    */
-  batch(ops: Array<{ op: 'put'; entity: EntityName; data: unknown } | { op: 'remove'; entity: EntityName; id: Id }>): Promise<void>;
+  batch(
+    ops: Array<
+      | { op: 'put'; entity: EntityName; data: unknown }
+      | { op: 'remove'; entity: EntityName; id: Id }
+    >
+  ): Promise<void>;
   /** Resolve an 'ask' conflict: keep the device version, take the server version, or keep both (second appended). */
   resolveConflict(entity: EntityName, id: Id, choice: 'mine' | 'theirs' | 'both'): Promise<void>;
   /** One push+pull cycle. Never throws for network trouble; reports it. Retries/backoff are the caller's schedule. */

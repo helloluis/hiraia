@@ -38,7 +38,9 @@ const BODY_LIMIT_SIGNED_IN = 1 * MB;
 const BODY_LIMIT_ANONYMOUS = 64 * KB;
 
 export function bodyLimitFor(route: RouteName, auth: 'none' | 'user'): number {
-  return BODY_LIMIT_BY_ROUTE[route] ?? (auth === 'user' ? BODY_LIMIT_SIGNED_IN : BODY_LIMIT_ANONYMOUS);
+  return (
+    BODY_LIMIT_BY_ROUTE[route] ?? (auth === 'user' ? BODY_LIMIT_SIGNED_IN : BODY_LIMIT_ANONYMOUS)
+  );
 }
 
 /** Read the body as text, refusing to buffer more than `limit` bytes. */
@@ -82,7 +84,10 @@ export function parseJsonBody(text: string, contentType: string | null): unknown
   if (text.trim() === '') return undefined;
   const type = (contentType ?? '').split(';')[0]!.trim().toLowerCase();
   // Requiring JSON also stops cross-site form posts, which cannot set this content type without a preflight.
-  if (type !== 'application/json') throw new HttpError('invalid_input', MESSAGES.needJson, { reason: 'content_type_must_be_json' });
+  if (type !== 'application/json')
+    throw new HttpError('invalid_input', MESSAGES.needJson, {
+      reason: 'content_type_must_be_json',
+    });
   try {
     return JSON.parse(text) as unknown;
   } catch {
@@ -105,8 +110,13 @@ export interface IssueSummary {
 }
 
 /** Zod issues reduced to where and what; never the offending value. */
-export function summariseIssues(where: 'body' | 'query', issues: ReadonlyArray<{ path: ReadonlyArray<string | number>; message: string }>): IssueSummary[] {
-  return issues.slice(0, 20).map((issue) => ({ path: [where, ...issue.path].join('.'), message: issue.message }));
+export function summariseIssues(
+  where: 'body' | 'query',
+  issues: ReadonlyArray<{ path: ReadonlyArray<string | number>; message: string }>
+): IssueSummary[] {
+  return issues
+    .slice(0, 20)
+    .map((issue) => ({ path: [where, ...issue.path].join('.'), message: issue.message }));
 }
 
 /* ---------------- responses ---------------- */
@@ -120,7 +130,12 @@ function baseHeaders(requestId: string): Headers {
   return headers;
 }
 
-export function jsonResponse(status: number, body: unknown, requestId: string, cookies: readonly string[] = []): Response {
+export function jsonResponse(
+  status: number,
+  body: unknown,
+  requestId: string,
+  cookies: readonly string[] = []
+): Response {
   const headers = baseHeaders(requestId);
   headers.set('content-type', 'application/json; charset=utf-8');
   for (const cookie of cookies) headers.append('set-cookie', cookie);
@@ -129,7 +144,12 @@ export function jsonResponse(status: number, body: unknown, requestId: string, c
 
 export function binaryResponse(result: BinaryResponse, requestId: string): Response {
   const headers = baseHeaders(requestId);
-  headers.set('content-type', /^[\w.+-]+\/[\w.+-]+$/.test(result.contentType) ? result.contentType : 'application/octet-stream');
+  headers.set(
+    'content-type',
+    /^[\w.+-]+\/[\w.+-]+$/.test(result.contentType)
+      ? result.contentType
+      : 'application/octet-stream'
+  );
   if (result.filename) {
     const safe = result.filename.replace(/[^A-Za-z0-9._-]+/g, '_').slice(0, 120) || 'download';
     headers.set('content-disposition', `attachment; filename="${safe}"`);
@@ -142,13 +162,26 @@ export function errorResponse(
   code: ApiErrorCode,
   message: string,
   requestId: string,
-  options: { details?: unknown; status?: number; headers?: Record<string, string>; cookies?: readonly string[] } = {},
+  options: {
+    details?: unknown;
+    status?: number;
+    headers?: Record<string, string>;
+    cookies?: readonly string[];
+  } = {}
 ): Response {
-  const body: { error: { code: ApiErrorCode; message: string; details?: unknown } } = { error: { code, message } };
+  const body: { error: { code: ApiErrorCode; message: string; details?: unknown } } = {
+    error: { code, message },
+  };
   if (options.details !== undefined) body.error.details = options.details;
-  const response = jsonResponse(options.status ?? STATUS_BY_CODE[code], body, requestId, options.cookies);
+  const response = jsonResponse(
+    options.status ?? STATUS_BY_CODE[code],
+    body,
+    requestId,
+    options.cookies
+  );
   for (const [k, v] of Object.entries(options.headers ?? {})) response.headers.set(k, v);
-  const retryAfter = (options.details as { retryAfterSeconds?: unknown } | undefined)?.retryAfterSeconds;
+  const retryAfter = (options.details as { retryAfterSeconds?: unknown } | undefined)
+    ?.retryAfterSeconds;
   if (typeof retryAfter === 'number' && Number.isFinite(retryAfter) && retryAfter > 0) {
     response.headers.set('retry-after', String(Math.ceil(retryAfter)));
   }
@@ -164,12 +197,19 @@ export function errorResponse(
  * are ignored entirely, because any client can write them. With n, the n-th entry from the right of
  * X-Forwarded-For is the address the outermost trusted proxy saw.
  */
-export function clientAddress(request: Request, hops: number, direct: string | null | undefined): string | null {
+export function clientAddress(
+  request: Request,
+  hops: number,
+  direct: string | null | undefined
+): string | null {
   if (direct) return normaliseAddress(direct);
   if (hops <= 0) return null;
   const header = request.headers.get('x-forwarded-for');
   if (!header) return null;
-  const parts = header.split(',').map((p) => p.trim()).filter(Boolean);
+  const parts = header
+    .split(',')
+    .map((p) => p.trim())
+    .filter(Boolean);
   const picked = parts[parts.length - hops];
   return picked ? normaliseAddress(picked) : null;
 }

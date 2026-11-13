@@ -6,17 +6,42 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { engine as pacing } from '@hiraia/tala-core/pacing';
-import type { CalendarPreset, ClassRecord, Competency, GradeLevel, PacingTrack, SchoolYear, TeachingAssignment } from '@hiraia/tala-core/contracts';
+import type {
+  CalendarPreset,
+  ClassRecord,
+  Competency,
+  GradeLevel,
+  PacingTrack,
+  SchoolYear,
+  TeachingAssignment,
+} from '@hiraia/tala-core/contracts';
 import { useT } from '@/i18n';
 import { useSession } from '@/data/session';
 import { useWorkspace } from '@/data/records';
-import { useCalendarPresets, useCurriculumIndex, loadPack, packIdFor, curriculumVersionFor } from '@/data/curriculum';
+import {
+  useCalendarPresets,
+  useCurriculumIndex,
+  loadPack,
+  packIdFor,
+  curriculumVersionFor,
+} from '@/data/curriculum';
 import { getClient } from '@/data/client';
 import { isoDate, newId } from '@/data/ids';
 import { ensureProfile } from '@/data/profile';
 import { blankSchoolYear, createSampleClass, schoolYearFromPreset } from '@/data/sample';
 import { pacingDefaults } from '@/data/timeline';
-import { Banner, Button, Checkbox, Choice, EmptyState, Placeholder, Select, TextInput, Waiting, cx } from '@/components/ui';
+import {
+  Banner,
+  Button,
+  Checkbox,
+  Choice,
+  EmptyState,
+  Placeholder,
+  Select,
+  TextInput,
+  Waiting,
+  cx,
+} from '@/components/ui';
 
 const GRADES: GradeLevel[] = ['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
 const WEEKDAYS = [1, 2, 3, 4, 5, 6] as const;
@@ -90,10 +115,9 @@ export function SetupScreen() {
   }, [ws.profile, schoolName]);
 
   const areas = useMemo(() => {
-    const grades = new Set(groups.map(g => g.grade));
-    return (index?.learningAreas ?? []).filter(a => a.grades.some(g => grades.has(g)));
+    const grades = new Set(groups.map((g) => g.grade));
+    return (index?.learningAreas ?? []).filter((a) => a.grades.some((g) => grades.has(g)));
   }, [index, groups]);
-
 
   /* ---------- step 4 data ---------- */
   const prepareStarts = async (year: SchoolYear) => {
@@ -105,25 +129,60 @@ export function SetupScreen() {
     }
     for (const s of subjects) {
       for (const gid of s.groupIds) {
-        const g = groups.find(x => x.id === gid)!;
+        const g = groups.find((x) => x.id === gid)!;
         const pid = packIdFor(index, year.label, g.grade, s.learningAreaId);
         const pack = pid ? await loadPack(getClient(), cache, pid) : null;
         if (!pack) {
-          out.push({ subjectId: s.id, groupId: gid, competencies: [], chosen: null, proposed: null, noPack: true });
+          out.push({
+            subjectId: s.id,
+            groupId: gid,
+            competencies: [],
+            chosen: null,
+            proposed: null,
+            noPack: true,
+          });
           continue;
         }
-        const comps = term ? pack.competencies.filter(c => c.termIndex === term.index) : [];
+        const comps = term ? pack.competencies.filter((c) => c.termIndex === term.index) : [];
         let proposed: string | null = null;
         if (term && comps.length) {
           const assignment = draftAssignment(s, 'class', year);
-          const track: PacingTrack = { id: 'x', classId: 'class', assignmentId: assignment.id, gradeGroupId: gid, termId: term.id, curriculumVersion: pack.curriculumVersion, startPosition: null, params: {}, overrides: {}, allocation: null };
+          const track: PacingTrack = {
+            id: 'x',
+            classId: 'class',
+            assignmentId: assignment.id,
+            gradeGroupId: gid,
+            termId: term.id,
+            curriculumVersion: pack.curriculumVersion,
+            startPosition: null,
+            params: {},
+            overrides: {},
+            allocation: null,
+          };
           try {
-            proposed = pacing.proposeStartPosition({ track, schoolYear: year, term, assignment, calendarDays: [], competencies: comps, today, defaults: pacingDefaults(config) })?.competencyId ?? null;
+            proposed =
+              pacing.proposeStartPosition({
+                track,
+                schoolYear: year,
+                term,
+                assignment,
+                calendarDays: [],
+                competencies: comps,
+                today,
+                defaults: pacingDefaults(config),
+              })?.competencyId ?? null;
           } catch {
             proposed = null;
           }
         }
-        out.push({ subjectId: s.id, groupId: gid, competencies: comps, chosen: proposed ?? comps[0]?.id ?? null, proposed, noPack: false });
+        out.push({
+          subjectId: s.id,
+          groupId: gid,
+          competencies: comps,
+          chosen: proposed ?? comps[0]?.id ?? null,
+          proposed,
+          noPack: false,
+        });
       }
     }
     setStarts(out);
@@ -145,7 +204,7 @@ export function SetupScreen() {
     }
     if (step === 3) {
       if (!subjects.length) return setError(t('setup.needSubject'));
-      const missingDays = subjects.find(s => !s.days.length);
+      const missingDays = subjects.find((s) => !s.days.length);
       if (missingDays) return setError(t('setup.needDays', { subject: missingDays.name }));
       setBusy(t('common.loading'));
       try {
@@ -154,7 +213,14 @@ export function SetupScreen() {
           const preset = await loadPreset(presetId);
           if (preset) year = schoolYearFromPreset(preset, 'draft-year', () => newId()).year;
         } else if (!existingYear) {
-          year = { ...year, label: yearLabel, startDate, endDate, schoolName, terms: evenTerms(startDate, endDate) };
+          year = {
+            ...year,
+            label: yearLabel,
+            startDate,
+            endDate,
+            schoolName,
+            terms: evenTerms(startDate, endDate),
+          };
         }
         await prepareStarts(year);
         setStep(4);
@@ -171,7 +237,17 @@ export function SetupScreen() {
     setError(null);
     try {
       const profile = await ensureProfile(engine, user, lang);
-      const ops: Array<{ op: 'put'; entity: 'school_year' | 'calendar_day' | 'profile' | 'class' | 'assignment' | 'pacing_track'; data: unknown }> = [];
+      const ops: Array<{
+        op: 'put';
+        entity:
+          | 'school_year'
+          | 'calendar_day'
+          | 'profile'
+          | 'class'
+          | 'assignment'
+          | 'pacing_track';
+        data: unknown;
+      }> = [];
       let year = existingYear;
       if (!year) {
         const yid = newId();
@@ -182,13 +258,43 @@ export function SetupScreen() {
           year = built.year;
           ops.push({ op: 'put', entity: 'school_year', data: year });
           for (const d of built.days) {
-            ops.push({ op: 'put', entity: 'calendar_day', data: { id: newId(), schoolYearId: yid, date: d.date, kind: d.kind, label: d.label, classId: null, minutesOverride: null, source: 'preset', followsWeekday: null, assignmentIds: null } });
+            ops.push({
+              op: 'put',
+              entity: 'calendar_day',
+              data: {
+                id: newId(),
+                schoolYearId: yid,
+                date: d.date,
+                kind: d.kind,
+                label: d.label,
+                classId: null,
+                minutesOverride: null,
+                source: 'preset',
+                followsWeekday: null,
+                assignmentIds: null,
+              },
+            });
           }
         } else {
-          year = { ...blankSchoolYear(yid, today, newId), label: yearLabel.trim() || yearLabel, startDate, endDate, schoolName: schoolName.trim(), terms: evenTerms(startDate, endDate) };
+          year = {
+            ...blankSchoolYear(yid, today, newId),
+            label: yearLabel.trim() || yearLabel,
+            startDate,
+            endDate,
+            schoolName: schoolName.trim(),
+            terms: evenTerms(startDate, endDate),
+          };
           ops.push({ op: 'put', entity: 'school_year', data: year });
         }
-        ops.push({ op: 'put', entity: 'profile', data: { ...profile, activeSchoolYearId: year.id, schoolName: schoolName.trim() || profile.schoolName } });
+        ops.push({
+          op: 'put',
+          entity: 'profile',
+          data: {
+            ...profile,
+            activeSchoolYearId: year.id,
+            schoolName: schoolName.trim() || profile.schoolName,
+          },
+        });
       } else if (schoolName.trim() && !year.schoolName) {
         year = { ...year, schoolName: schoolName.trim() };
         ops.push({ op: 'put', entity: 'school_year', data: year });
@@ -198,9 +304,23 @@ export function SetupScreen() {
         schoolYearId: year.id,
         name: className.trim(),
         curriculum,
-        gradeGroups: groups.map(g => ({ id: g.id, grade: g.grade, learnerCount: g.learners.trim() ? Math.max(0, Math.min(200, Number(g.learners) || 0)) : null })),
+        gradeGroups: groups.map((g) => ({
+          id: g.id,
+          grade: g.grade,
+          learnerCount: g.learners.trim()
+            ? Math.max(0, Math.min(200, Number(g.learners) || 0))
+            : null,
+        })),
         languages: [lang],
-        profile: { materials: [], textbooks: [], electricity: null, projector: null, printing: null, outdoorSpace: null, notes: '' },
+        profile: {
+          materials: [],
+          textbooks: [],
+          electricity: null,
+          projector: null,
+          printing: null,
+          outdoorSpace: null,
+          notes: '',
+        },
         isSample: false,
         archived: false,
       };
@@ -211,7 +331,7 @@ export function SetupScreen() {
         ops.push({ op: 'put', entity: 'assignment', data: a });
         if (curriculum === 'none') continue;
         for (const gid of s.groupIds) {
-          const chosen = starts?.find(x => x.subjectId === s.id && x.groupId === gid);
+          const chosen = starts?.find((x) => x.subjectId === s.id && x.groupId === gid);
           for (const term of year.terms) {
             const isCurrent = term.startDate <= today && term.endDate >= today;
             const track: PacingTrack = {
@@ -221,7 +341,14 @@ export function SetupScreen() {
               gradeGroupId: gid,
               termId: term.id,
               curriculumVersion: version,
-              startPosition: isCurrent && chosen?.chosen ? { competencyId: chosen.chosen, date: today, estimated: chosen.chosen === chosen.proposed } : null,
+              startPosition:
+                isCurrent && chosen?.chosen
+                  ? {
+                      competencyId: chosen.chosen,
+                      date: today,
+                      estimated: chosen.chosen === chosen.proposed,
+                    }
+                  : null,
               params: {},
               overrides: {},
               allocation: null,
@@ -271,14 +398,31 @@ export function SetupScreen() {
             {wantNewClass ? t('class.addClass') : t('common.next')}
           </Button>
           {!wantNewClass && (
-            <EmptyState action={sampleBusy ? <Waiting label={t('setup.sampleAdding')} /> : <Button onClick={() => void addSample()}>{t('setup.sample')}</Button>}>{t('setup.sampleBody')}</EmptyState>
+            <EmptyState
+              action={
+                sampleBusy ? (
+                  <Waiting label={t('setup.sampleAdding')} />
+                ) : (
+                  <Button onClick={() => void addSample()}>{t('setup.sample')}</Button>
+                )
+              }
+            >
+              {t('setup.sampleBody')}
+            </EmptyState>
           )}
         </>
       )}
 
       {step > 0 && (
         <p className="text-small text-forestMuted">
-          {t('setup.step', { n: stepNo, total: totalSteps })} · {step === 1 ? t('setup.step1') : step === 2 ? t('setup.step2') : step === 3 ? t('setup.step3') : t('setup.step4')}
+          {t('setup.step', { n: stepNo, total: totalSteps })} ·{' '}
+          {step === 1
+            ? t('setup.step1')
+            : step === 2
+              ? t('setup.step2')
+              : step === 3
+                ? t('setup.step3')
+                : t('setup.step4')}
         </p>
       )}
 
@@ -291,55 +435,124 @@ export function SetupScreen() {
             value={yearMode}
             onChange={setYearMode}
             options={[
-              { value: 'preset', label: t('setup.preset'), hint: presets?.map(p => p.label).join(', ') },
+              {
+                value: 'preset',
+                label: t('setup.preset'),
+                hint: presets?.map((p) => p.label).join(', '),
+              },
               { value: 'blank', label: t('setup.blank') },
             ]}
           />
           {yearMode === 'preset' && presets && (
-            <Select label={t('setup.yearLabel')} value={presetId} onChange={e => setPresetId(e.target.value)}>
-              {presets.map(p => (
+            <Select
+              label={t('setup.yearLabel')}
+              value={presetId}
+              onChange={(e) => setPresetId(e.target.value)}
+            >
+              {presets.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.label}
                 </option>
               ))}
             </Select>
           )}
-          {yearMode === 'preset' && presets?.find(p => p.id === presetId)?.provisional && <Banner kind="info">{t('setup.provisional')}</Banner>}
+          {yearMode === 'preset' && presets?.find((p) => p.id === presetId)?.provisional && (
+            <Banner kind="info">{t('setup.provisional')}</Banner>
+          )}
           {yearMode === 'blank' && (
             <>
-              <TextInput label={t('setup.yearLabel')} hint={t('setup.yearLabelHint')} value={yearLabel} onChange={e => setYearLabel(e.target.value)} />
-              <TextInput label={t('setup.startDate')} type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
-              <TextInput label={t('setup.endDate')} type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
+              <TextInput
+                label={t('setup.yearLabel')}
+                hint={t('setup.yearLabelHint')}
+                value={yearLabel}
+                onChange={(e) => setYearLabel(e.target.value)}
+              />
+              <TextInput
+                label={t('setup.startDate')}
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+              <TextInput
+                label={t('setup.endDate')}
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
             </>
           )}
-          <TextInput label={t('setup.schoolName')} optional value={schoolName} onChange={e => setSchoolName(e.target.value)} autoComplete="organization" />
+          <TextInput
+            label={t('setup.schoolName')}
+            optional
+            value={schoolName}
+            onChange={(e) => setSchoolName(e.target.value)}
+            autoComplete="organization"
+          />
         </>
       )}
 
       {step === 2 && (
         <>
           <h2 className="text-title">{t('setup.step2')}</h2>
-          <TextInput label={t('setup.className')} hint={t('setup.classNameHint')} value={className} onChange={e => setClassName(e.target.value)} required />
+          <TextInput
+            label={t('setup.className')}
+            hint={t('setup.classNameHint')}
+            value={className}
+            onChange={(e) => setClassName(e.target.value)}
+            required
+          />
           <fieldset className="flex flex-col gap-2">
             <legend className="font-medium">{t('setup.gradeGroups')}</legend>
             <p className="text-small text-forestMuted">{t('setup.gradeGroupsHint')}</p>
             {groups.map((g, i) => (
-              <div key={g.id} className="grid grid-cols-[1fr_1fr_auto] gap-2 items-end rounded border border-hairline bg-white p-2">
-                <Select label={t('setup.grade')} value={g.grade} onChange={e => setGroups(gs => gs.map(x => (x.id === g.id ? { ...x, grade: e.target.value as GradeLevel } : x)))}>
-                  {GRADES.map(gr => (
+              <div
+                key={g.id}
+                className="grid grid-cols-[1fr_1fr_auto] gap-2 items-end rounded border border-hairline bg-white p-2"
+              >
+                <Select
+                  label={t('setup.grade')}
+                  value={g.grade}
+                  onChange={(e) =>
+                    setGroups((gs) =>
+                      gs.map((x) =>
+                        x.id === g.id ? { ...x, grade: e.target.value as GradeLevel } : x
+                      )
+                    )
+                  }
+                >
+                  {GRADES.map((gr) => (
                     <option key={gr} value={gr}>
                       {gr === 'K' ? t('common.kinder') : t('common.grade', { g: gr })}
                     </option>
                   ))}
                 </Select>
-                <TextInput label={t('setup.learners')} optional inputMode="numeric" value={g.learners} onChange={e => setGroups(gs => gs.map(x => (x.id === g.id ? { ...x, learners: e.target.value } : x)))} />
-                <Button variant="quiet" disabled={groups.length === 1} onClick={() => setGroups(gs => gs.filter(x => x.id !== g.id))} aria-label={`${t('common.remove')} ${i + 1}`}>
+                <TextInput
+                  label={t('setup.learners')}
+                  optional
+                  inputMode="numeric"
+                  value={g.learners}
+                  onChange={(e) =>
+                    setGroups((gs) =>
+                      gs.map((x) => (x.id === g.id ? { ...x, learners: e.target.value } : x))
+                    )
+                  }
+                />
+                <Button
+                  variant="quiet"
+                  disabled={groups.length === 1}
+                  onClick={() => setGroups((gs) => gs.filter((x) => x.id !== g.id))}
+                  aria-label={`${t('common.remove')} ${i + 1}`}
+                >
                   ✕
                 </Button>
               </div>
             ))}
             {groups.length < 4 && (
-              <Button onClick={() => setGroups(gs => [...gs, { id: newId(), grade: nextGrade(gs), learners: '' }])}>
+              <Button
+                onClick={() =>
+                  setGroups((gs) => [...gs, { id: newId(), grade: nextGrade(gs), learners: '' }])
+                }
+              >
                 + {t('setup.addGrade')}
               </Button>
             )}
@@ -359,21 +572,49 @@ export function SetupScreen() {
       {step === 3 && (
         <>
           <h2 className="text-title">{t('setup.subjects')}</h2>
-          {subjects.map(s => (
-            <div key={s.id} className="rounded border border-hairline bg-white p-3 flex flex-col gap-3">
+          {subjects.map((s) => (
+            <div
+              key={s.id}
+              className="rounded border border-hairline bg-white p-3 flex flex-col gap-3"
+            >
               <div className="flex items-start justify-between gap-2">
                 <strong>{s.name}</strong>
-                <Button variant="quiet" onClick={() => setSubjects(ss => ss.filter(x => x.id !== s.id))}>
+                <Button
+                  variant="quiet"
+                  onClick={() => setSubjects((ss) => ss.filter((x) => x.id !== s.id))}
+                >
                   {t('common.remove')}
                 </Button>
               </div>
               <fieldset>
                 <legend className="font-medium mb-1">{t('setup.days')}</legend>
                 <div className="flex flex-wrap gap-2">
-                  {WEEKDAYS.map(d => {
+                  {WEEKDAYS.map((d) => {
                     const on = s.days.includes(d);
                     return (
-                      <button key={d} type="button" aria-pressed={on} onClick={() => setSubjects(ss => ss.map(x => (x.id === s.id ? { ...x, days: on ? x.days.filter(y => y !== d) : [...x.days, d].sort() } : x)))} className={cx('min-h-touch min-w-touch px-3 rounded border', on ? 'bg-talaTeal text-white border-talaTeal' : 'bg-white border-hairline')}>
+                      <button
+                        key={d}
+                        type="button"
+                        aria-pressed={on}
+                        onClick={() =>
+                          setSubjects((ss) =>
+                            ss.map((x) =>
+                              x.id === s.id
+                                ? {
+                                    ...x,
+                                    days: on
+                                      ? x.days.filter((y) => y !== d)
+                                      : [...x.days, d].sort(),
+                                  }
+                                : x
+                            )
+                          )
+                        }
+                        className={cx(
+                          'min-h-touch min-w-touch px-3 rounded border',
+                          on ? 'bg-talaTeal text-white border-talaTeal' : 'bg-white border-hairline'
+                        )}
+                      >
                         {weekdayShort(d, lang)}
                       </button>
                     );
@@ -381,23 +622,71 @@ export function SetupScreen() {
                 </div>
               </fieldset>
               <div className="grid grid-cols-2 gap-2">
-                <TextInput label={t('setup.minutesPerSession')} inputMode="numeric" value={s.minutes} onChange={e => setSubjects(ss => ss.map(x => (x.id === s.id ? { ...x, minutes: e.target.value } : x)))} />
-                <TextInput label={t('setup.startTime')} optional type="time" value={s.startTime} onChange={e => setSubjects(ss => ss.map(x => (x.id === s.id ? { ...x, startTime: e.target.value } : x)))} />
+                <TextInput
+                  label={t('setup.minutesPerSession')}
+                  inputMode="numeric"
+                  value={s.minutes}
+                  onChange={(e) =>
+                    setSubjects((ss) =>
+                      ss.map((x) => (x.id === s.id ? { ...x, minutes: e.target.value } : x))
+                    )
+                  }
+                />
+                <TextInput
+                  label={t('setup.startTime')}
+                  optional
+                  type="time"
+                  value={s.startTime}
+                  onChange={(e) =>
+                    setSubjects((ss) =>
+                      ss.map((x) => (x.id === s.id ? { ...x, startTime: e.target.value } : x))
+                    )
+                  }
+                />
               </div>
               {groups.length > 1 && (
                 <fieldset>
                   <legend className="font-medium mb-1">{t('setup.forGrades')}</legend>
-                  {groups.map(g => (
-                    <Checkbox key={g.id} label={t('common.grade', { g: g.grade })} checked={s.groupIds.includes(g.id)} onChange={v => setSubjects(ss => ss.map(x => (x.id === s.id ? { ...x, groupIds: v ? [...x.groupIds, g.id] : x.groupIds.filter(y => y !== g.id) } : x)))} />
+                  {groups.map((g) => (
+                    <Checkbox
+                      key={g.id}
+                      label={t('common.grade', { g: g.grade })}
+                      checked={s.groupIds.includes(g.id)}
+                      onChange={(v) =>
+                        setSubjects((ss) =>
+                          ss.map((x) =>
+                            x.id === s.id
+                              ? {
+                                  ...x,
+                                  groupIds: v
+                                    ? [...x.groupIds, g.id]
+                                    : x.groupIds.filter((y) => y !== g.id),
+                                }
+                              : x
+                          )
+                        )
+                      }
+                    />
                   ))}
                 </fieldset>
               )}
             </div>
           ))}
           <AddSubject
-            areas={areas.map(a => ({ id: a.id, name: a.name[lang] }))}
+            areas={areas.map((a) => ({ id: a.id, name: a.name[lang] }))}
             onAdd={(learningAreaId, name) =>
-              setSubjects(ss => [...ss, { id: newId(), learningAreaId: curriculum === 'none' ? null : learningAreaId, name, days: [1, 2, 3, 4, 5], minutes: '50', startTime: '', groupIds: groups.map(g => g.id) }])
+              setSubjects((ss) => [
+                ...ss,
+                {
+                  id: newId(),
+                  learningAreaId: curriculum === 'none' ? null : learningAreaId,
+                  name,
+                  days: [1, 2, 3, 4, 5],
+                  minutes: '50',
+                  startTime: '',
+                  groupIds: groups.map((g) => g.id),
+                },
+              ])
             }
           />
         </>
@@ -407,15 +696,39 @@ export function SetupScreen() {
         <>
           <h2 className="text-title">{t('setup.step4')}</h2>
           <p>{t('setup.startingPositions')}</p>
-          {starts.map(sd => {
-            const s = subjects.find(x => x.id === sd.subjectId)!;
-            const g = groups.find(x => x.id === sd.groupId)!;
+          {starts.map((sd) => {
+            const s = subjects.find((x) => x.id === sd.subjectId)!;
+            const g = groups.find((x) => x.id === sd.groupId)!;
             const label = `${s.name} · ${t('common.grade', { g: g.grade })}`;
-            if (sd.noPack) return <Banner key={sd.subjectId + sd.groupId} kind="info">{label}: {t('setup.noPack')}</Banner>;
-            if (!sd.competencies.length) return <Banner key={sd.subjectId + sd.groupId} kind="info">{label}: {t('week.betweenTerms')}</Banner>;
+            if (sd.noPack)
+              return (
+                <Banner key={sd.subjectId + sd.groupId} kind="info">
+                  {label}: {t('setup.noPack')}
+                </Banner>
+              );
+            if (!sd.competencies.length)
+              return (
+                <Banner key={sd.subjectId + sd.groupId} kind="info">
+                  {label}: {t('week.betweenTerms')}
+                </Banner>
+              );
             return (
-              <Select key={sd.subjectId + sd.groupId} label={label} hint={sd.chosen === sd.proposed && sd.proposed ? `${t('setup.estimated')} · ${t('setup.coveredBefore')}` : t('setup.coveredBefore')} value={sd.chosen ?? ''} onChange={e => setStarts(st => st!.map(x => (x === sd ? { ...x, chosen: e.target.value } : x)))}>
-                {sd.competencies.map(c => (
+              <Select
+                key={sd.subjectId + sd.groupId}
+                label={label}
+                hint={
+                  sd.chosen === sd.proposed && sd.proposed
+                    ? `${t('setup.estimated')} · ${t('setup.coveredBefore')}`
+                    : t('setup.coveredBefore')
+                }
+                value={sd.chosen ?? ''}
+                onChange={(e) =>
+                  setStarts((st) =>
+                    st!.map((x) => (x === sd ? { ...x, chosen: e.target.value } : x))
+                  )
+                }
+              >
+                {sd.competencies.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.code ? `${c.code} — ` : ''}
                     {c.text.slice(0, 90)}
@@ -432,7 +745,10 @@ export function SetupScreen() {
       {busy && <Waiting label={busy} />}
       {step > 0 && (
         <div className="flex flex-col-reverse wide:flex-row wide:justify-between gap-2 pt-2">
-          <Button onClick={() => setStep(s => (s === 2 && existingYear ? 0 : ((s - 1) as typeof step)))} disabled={!!busy}>
+          <Button
+            onClick={() => setStep((s) => (s === 2 && existingYear ? 0 : ((s - 1) as typeof step)))}
+            disabled={!!busy}
+          >
             {t('common.back')}
           </Button>
           {step < 4 ? (
@@ -450,28 +766,44 @@ export function SetupScreen() {
   );
 }
 
-function AddSubject({ areas, onAdd }: { areas: Array<{ id: string; name: string }>; onAdd: (learningAreaId: string | null, name: string) => void }) {
+function AddSubject({
+  areas,
+  onAdd,
+}: {
+  areas: Array<{ id: string; name: string }>;
+  onAdd: (learningAreaId: string | null, name: string) => void;
+}) {
   const { t } = useT();
   const [choice, setChoice] = useState('');
   const [custom, setCustom] = useState('');
   const isCustom = choice === '__custom';
   return (
     <div className="rounded border border-dashed border-hairline p-3 flex flex-col gap-2">
-      <Select label={t('setup.addSubject')} value={choice} onChange={e => setChoice(e.target.value)}>
+      <Select
+        label={t('setup.addSubject')}
+        value={choice}
+        onChange={(e) => setChoice(e.target.value)}
+      >
         <option value="">—</option>
-        {areas.map(a => (
+        {areas.map((a) => (
           <option key={a.id} value={a.id}>
             {a.name}
           </option>
         ))}
         <option value="__custom">{t('common.more')}…</option>
       </Select>
-      {isCustom && <TextInput label={t('setup.subjectName')} value={custom} onChange={e => setCustom(e.target.value)} />}
+      {isCustom && (
+        <TextInput
+          label={t('setup.subjectName')}
+          value={custom}
+          onChange={(e) => setCustom(e.target.value)}
+        />
+      )}
       <Button
         disabled={!choice || (isCustom && !custom.trim())}
         onClick={() => {
           if (isCustom) onAdd(null, custom.trim());
-          else onAdd(choice, areas.find(a => a.id === choice)?.name ?? choice);
+          else onAdd(choice, areas.find((a) => a.id === choice)?.name ?? choice);
           setChoice('');
           setCustom('');
         }}
@@ -492,7 +824,13 @@ function draftAssignment(s: SubjectDraft, classId: string, year: SchoolYear): Te
     subjectName: s.name,
     gradeGroupIds: s.groupIds,
     language: 'fil',
-    slots: s.days.map(weekday => ({ id: `${s.id}-${weekday}`, weekday, startTime: /^\d{2}:\d{2}$/.test(s.startTime) ? s.startTime : null, minutes, rotation: null })),
+    slots: s.days.map((weekday) => ({
+      id: `${s.id}-${weekday}`,
+      weekday,
+      startTime: /^\d{2}:\d{2}$/.test(s.startTime) ? s.startTime : null,
+      minutes,
+      rotation: null,
+    })),
   };
 }
 
@@ -506,9 +844,10 @@ function nextGrade(gs: GroupDraft[]): GradeLevel {
 export function evenTerms(start: string, end: string): SchoolYear['terms'] {
   const s = Date.parse(start + 'T12:00:00Z');
   const e = Date.parse(end + 'T12:00:00Z');
-  if (!(s < e)) return [{ id: newId(), index: 1, name: 'Quarter 1', startDate: start, endDate: end }];
+  if (!(s < e))
+    return [{ id: newId(), index: 1, name: 'Quarter 1', startDate: start, endDate: end }];
   const span = (e - s) / 4;
-  return [0, 1, 2, 3].map(i => ({
+  return [0, 1, 2, 3].map((i) => ({
     id: newId(),
     index: i + 1,
     name: `Quarter ${i + 1}`,
@@ -519,5 +858,7 @@ export function evenTerms(start: string, end: string): SchoolYear['terms'] {
 
 function weekdayShort(d: number, lang: 'fil' | 'en'): string {
   const date = new Date(Date.UTC(2024, 0, d)); // 2024-01-01 is a Monday
-  return new Intl.DateTimeFormat(lang === 'fil' ? 'fil-PH' : 'en-PH', { weekday: 'short' }).format(date);
+  return new Intl.DateTimeFormat(lang === 'fil' ? 'fil-PH' : 'en-PH', { weekday: 'short' }).format(
+    date
+  );
 }

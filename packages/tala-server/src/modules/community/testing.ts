@@ -12,13 +12,20 @@ import type { ModelVerdict } from './moderate';
 export const T0 = '2026-11-16T00:00:00.000Z';
 
 /** Write a record through the real store, validating loose test data first. */
-export function put<E extends EntityName>(store: RecordStore, ownerId: string, entity: E, data: unknown): RecordEnvelope<E> {
+export function put<E extends EntityName>(
+  store: RecordStore,
+  ownerId: string,
+  entity: E,
+  data: unknown
+): RecordEnvelope<E> {
   return store.put(ownerId, entity, parseRecordData(entity, data));
 }
 
 /* ---------------- LLM ---------------- */
 
-export type LlmScript = (req: LlmRequest<unknown>) => LlmResult<unknown> | Promise<LlmResult<unknown>>;
+export type LlmScript = (
+  req: LlmRequest<unknown>
+) => LlmResult<unknown> | Promise<LlmResult<unknown>>;
 
 export interface FakeLlm extends LlmGateway {
   calls: Array<LlmRequest<unknown>>;
@@ -26,7 +33,9 @@ export interface FakeLlm extends LlmGateway {
   route: LlmRoute;
 }
 
-export function okVerdict(verdict: ModelVerdict | { decision: 'allow' | 'return'; reasons?: unknown[] }): LlmResult<unknown> {
+export function okVerdict(
+  verdict: ModelVerdict | { decision: 'allow' | 'return'; reasons?: unknown[] }
+): LlmResult<unknown> {
   return {
     ok: true,
     data: { reasons: [], ...verdict },
@@ -40,7 +49,11 @@ export function okVerdict(verdict: ModelVerdict | { decision: 'allow' | 'return'
 }
 
 export const allowAll: LlmScript = () => okVerdict({ decision: 'allow', reasons: [] });
-export const unavailable: LlmScript = () => ({ ok: false, reason: 'providers_unavailable', message: 'down' });
+export const unavailable: LlmScript = () => ({
+  ok: false,
+  reason: 'providers_unavailable',
+  message: 'down',
+});
 
 export function createFakeLlm(script: LlmScript = allowAll): FakeLlm {
   const llm: FakeLlm = {
@@ -55,7 +68,8 @@ export function createFakeLlm(script: LlmScript = allowAll): FakeLlm {
       // Like the real gateway: the caller's schema and check run on the model output.
       const parsed = req.schema.safeParse(r.data);
       if (!parsed.success) return { ok: false, reason: 'invalid_output', message: 'schema' };
-      if (req.check?.(parsed.data).length) return { ok: false, reason: 'invalid_output', message: 'check' };
+      if (req.check?.(parsed.data).length)
+        return { ok: false, reason: 'invalid_output', message: 'check' };
       return { ...r, data: parsed.data };
     },
   };
@@ -79,10 +93,21 @@ export const fid = (prefix: string) => `${prefix}-${String(++seq).padStart(6, '0
 export function seedTeacher(
   store: RecordStore,
   ownerId: string,
-  opts: { grades?: string[]; schoolName?: string; className?: string; isSample?: boolean; students?: Array<{ givenName: string; familyName: string }> } = {},
+  opts: {
+    grades?: string[];
+    schoolName?: string;
+    className?: string;
+    isSample?: boolean;
+    students?: Array<{ givenName: string; familyName: string }>;
+  } = {}
 ): TeacherSetup {
   const grades = opts.grades ?? ['4'];
-  put(store, ownerId, 'profile', { id: 'profile', displayName: 'Gng. Teacher', schoolName: opts.schoolName ?? 'Malinao Elementary School', region: 'Region V' });
+  put(store, ownerId, 'profile', {
+    id: 'profile',
+    displayName: 'Gng. Teacher',
+    schoolName: opts.schoolName ?? 'Malinao Elementary School',
+    region: 'Region V',
+  });
   const schoolYearId = fid('sy');
   put(store, ownerId, 'school_year', {
     id: schoolYearId,
@@ -107,7 +132,13 @@ export function seedTeacher(
     isSample: opts.isSample ?? false,
   });
   for (const s of opts.students ?? []) {
-    put(store, ownerId, 'student', { id: fid('st'), classId, displayName: `${s.givenName} ${s.familyName}`, givenName: s.givenName, familyName: s.familyName });
+    put(store, ownerId, 'student', {
+      id: fid('st'),
+      classId,
+      displayName: `${s.givenName} ${s.familyName}`,
+      givenName: s.givenName,
+      familyName: s.familyName,
+    });
   }
   return { classId, groupIds, schoolYearId };
 }
@@ -120,7 +151,12 @@ export interface PlanOptions {
   revisionCode?: string;
   aiAssisted?: boolean;
   sectionOrigin?: 'manual' | 'ai' | 'copied';
-  lineage?: { artifactId: string; versionId: string; title: string; authorDisplayName: string } | null;
+  lineage?: {
+    artifactId: string;
+    versionId: string;
+    title: string;
+    authorDisplayName: string;
+  } | null;
   planId?: string;
   competencies?: string[];
   durationMinutes?: number;
@@ -130,11 +166,21 @@ export interface PlanOptions {
 }
 
 /** A locked plan. One grade group → DLP template; several → multi-grade template with pergroup + multigrade sections. */
-export function seedPlan(store: RecordStore, ownerId: string, setup: TeacherSetup, grades: string[], opts: PlanOptions = {}) {
+export function seedPlan(
+  store: RecordStore,
+  ownerId: string,
+  setup: TeacherSetup,
+  grades: string[],
+  opts: PlanOptions = {}
+) {
   const planId = opts.planId ?? fid('plan');
   const multi = setup.groupIds.length > 1;
-  const template = BUILTIN_TEMPLATES.find((t) => t.id === (multi ? 'tpl.multigrade.v1' : 'tpl.dlp.v1'))!;
-  const competencies = Object.fromEntries(setup.groupIds.map((g, i) => [g, opts.competencies ?? [`S${grades[i]}-COMP-${i + 1}`]]));
+  const template = BUILTIN_TEMPLATES.find(
+    (t) => t.id === (multi ? 'tpl.multigrade.v1' : 'tpl.dlp.v1')
+  )!;
+  const competencies = Object.fromEntries(
+    setup.groupIds.map((g, i) => [g, opts.competencies ?? [`S${grades[i]}-COMP-${i + 1}`]])
+  );
   const planData = {
     id: planId,
     title: opts.title ?? 'Parts of a Plant',
@@ -147,16 +193,26 @@ export function seedPlan(store: RecordStore, ownerId: string, setup: TeacherSetu
     competencies,
     curriculumVersion: 'science-bow-2026',
     durationMinutes: opts.durationMinutes ?? 50,
-    placements: [{ classId: setup.classId, assignmentId: null, dates: [opts.date ?? '2026-11-16'] }],
+    placements: [
+      { classId: setup.classId, assignmentId: null, dates: [opts.date ?? '2026-11-16'] },
+    ],
     aiAssisted: opts.aiAssisted ?? false,
     lineage: opts.lineage ?? null,
   };
   // Like a device: write the plan as a draft (unlocking it if it was locked), replace its sections, then lock.
   put(store, ownerId, 'plan', { ...planData, state: 'draft', lock: null });
-  for (const s of store.list(ownerId, 'plan_section')) if (s.data.planId === planId) store.remove(ownerId, 'plan_section', s.id);
+  for (const s of store.list(ownerId, 'plan_section'))
+    if (s.data.planId === planId) store.remove(ownerId, 'plan_section', s.id);
   const origin = opts.sectionOrigin ?? 'manual';
   const section = (key: string, content: SectionContent) =>
-    put(store, ownerId, 'plan_section', { id: fid('sec'), planId, key, content, origin, editedByTeacher: false });
+    put(store, ownerId, 'plan_section', {
+      id: fid('sec'),
+      planId,
+      key,
+      content,
+      origin,
+      editedByTeacher: false,
+    });
   const contentLines = [
     'Plants have roots, stems and leaves. This lesson was used at Malinao Elementary School in Grade 4 - Sampaguita on November 16, 2026.',
     ...(opts.contentText ?? []),
@@ -164,14 +220,37 @@ export function seedPlan(store: RecordStore, ownerId: string, setup: TeacherSetu
   if (!multi) {
     section('objectives', { type: 'list', items: ['Identify the parts of a plant'] });
     section('content', { type: 'text', blocks: p(...contentLines) });
-    section('materials', { type: 'list', items: ['Manila Paper', 'Pentel Pen', 'Prepared by:', 'MARIA C. SANTOS', 'Teacher III'] });
-    section('procedure', { type: 'procedure', steps: [{ id: fid('step'), title: 'Motivation', minutes: 10, body: p('Show a real plant.') }] });
-    section('assessment', { type: 'text', blocks: p('Label the parts of a plant.', 'Prepared by:', 'MARIA C. SANTOS', 'Teacher III', 'Noted by: JUAN DELA CRUZ, Principal I') });
+    section('materials', {
+      type: 'list',
+      items: ['Manila Paper', 'Pentel Pen', 'Prepared by:', 'MARIA C. SANTOS', 'Teacher III'],
+    });
+    section('procedure', {
+      type: 'procedure',
+      steps: [{ id: fid('step'), title: 'Motivation', minutes: 10, body: p('Show a real plant.') }],
+    });
+    section('assessment', {
+      type: 'text',
+      blocks: p(
+        'Label the parts of a plant.',
+        'Prepared by:',
+        'MARIA C. SANTOS',
+        'Teacher III',
+        'Noted by: JUAN DELA CRUZ, Principal I'
+      ),
+    });
     section('reflection', { type: 'text', blocks: p('Juan Reyes was absent today.') });
   } else {
-    const groups = Object.fromEntries(setup.groupIds.map((g, i) => [g, p(`Objective for grade ${grades[i]}`, ...(i === 0 ? contentLines : []))]));
+    const groups = Object.fromEntries(
+      setup.groupIds.map((g, i) => [
+        g,
+        p(`Objective for grade ${grades[i]}`, ...(i === 0 ? contentLines : [])),
+      ])
+    );
     section('objectives', { type: 'pergroup', groups });
-    section('materials', { type: 'pergroup', groups: Object.fromEntries(setup.groupIds.map((g) => [g, p('Manila Paper')])) });
+    section('materials', {
+      type: 'pergroup',
+      groups: Object.fromEntries(setup.groupIds.map((g) => [g, p('Manila Paper')])),
+    });
     section('multigrade', {
       type: 'multigrade',
       blocks: [
@@ -182,19 +261,44 @@ export function seedPlan(store: RecordStore, ownerId: string, setup: TeacherSetu
           transitionMinutes: 2,
           teacherWith: setup.groupIds[0]!,
           pairedGroupIds: setup.groupIds.slice(1, 2),
-          groups: Object.fromEntries(setup.groupIds.map((g, i) => [g, { mode: i === 0 ? 'direct' : 'independent', activity: p(`Activity ${i + 1}`) }])),
+          groups: Object.fromEntries(
+            setup.groupIds.map((g, i) => [
+              g,
+              { mode: i === 0 ? 'direct' : 'independent', activity: p(`Activity ${i + 1}`) },
+            ])
+          ),
         },
       ],
     });
-    section('assessment', { type: 'pergroup', groups: Object.fromEntries(setup.groupIds.map((g) => [g, p('Quiz')])) });
+    section('assessment', {
+      type: 'pergroup',
+      groups: Object.fromEntries(setup.groupIds.map((g) => [g, p('Quiz')])),
+    });
     section('reflection', { type: 'text', blocks: p('Private notes.') });
   }
   if ((opts.state ?? 'locked') === 'locked') {
-    put(store, ownerId, 'plan', { ...planData, state: 'locked', lock: { lockedAt: T0, lockedBy: 'Gng. Teacher', revisionCode: opts.revisionCode ?? 'ABC123', revision: null } });
+    put(store, ownerId, 'plan', {
+      ...planData,
+      state: 'locked',
+      lock: {
+        lockedAt: T0,
+        lockedBy: 'Gng. Teacher',
+        revisionCode: opts.revisionCode ?? 'ABC123',
+        revision: null,
+      },
+    });
   }
   return planId;
 }
 
 export function postBody(planId: string, extra: Record<string, unknown> = {}) {
-  return { planId, title: 'Parts of a Plant', summary: 'A short lesson.', displayName: 'Teacher Ana', licenseAccepted: true as const, affirmed: true as const, ...extra };
+  return {
+    planId,
+    title: 'Parts of a Plant',
+    summary: 'A short lesson.',
+    displayName: 'Teacher Ana',
+    licenseAccepted: true as const,
+    affirmed: true as const,
+    ...extra,
+  };
 }

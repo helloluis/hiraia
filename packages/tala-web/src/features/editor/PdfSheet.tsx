@@ -12,7 +12,15 @@ import type { PlanEditor } from './usePlanEditor';
  * PDF (PDF-1, PDF-4a). Device path: the browser's print window with "Save as PDF". Fallbacks, in order:
  * a plain printable page, copy as text, and a server-made PDF when online. The teacher always leaves with something.
  */
-export function PdfSheet({ open, onClose, ed }: { open: boolean; onClose: () => void; ed: PlanEditor }) {
+export function PdfSheet({
+  open,
+  onClose,
+  ed,
+}: {
+  open: boolean;
+  onClose: () => void;
+  ed: PlanEditor;
+}) {
   const { t, lang } = useT();
   const router = useRouter();
   const { network } = useSession();
@@ -22,10 +30,11 @@ export function PdfSheet({ open, onClose, ed }: { open: boolean; onClose: () => 
   const [serverBusy, setServerBusy] = useState<AbortController | null>(null);
 
   if (!ed.plan || !ed.template) return null;
-  const year = ed.ws.years.find(y => y.id === ed.cls?.schoolYearId) ?? ed.ws.activeYear ?? undefined;
+  const year =
+    ed.ws.years.find((y) => y.id === ed.cls?.schoolYearId) ?? ed.ws.activeYear ?? undefined;
   const input = {
     plan: ed.plan,
-    sections: ed.sections.map(s => s.data),
+    sections: ed.sections.map((s) => s.data),
     template: ed.template,
     class: ed.cls ?? undefined,
     schoolYear: year,
@@ -60,7 +69,11 @@ export function PdfSheet({ open, onClose, ed }: { open: boolean; onClose: () => 
     const ctrl = new AbortController();
     setServerBusy(ctrl);
     try {
-      const buf = await getClient().call('print.planPdf', { params: { planId: ed.plan!.id }, query: { paper, images: false }, signal: ctrl.signal });
+      const buf = await getClient().call('print.planPdf', {
+        params: { planId: ed.plan!.id },
+        query: { paper, images: false },
+        signal: ctrl.signal,
+      });
       const blob = new Blob([buf], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -100,7 +113,11 @@ export function PdfSheet({ open, onClose, ed }: { open: boolean; onClose: () => 
       {serverBusy ? (
         <Waiting label={t('common.waiting')} onCancel={() => serverBusy.abort()} />
       ) : (
-        <Button full onClick={() => void serverPdf()} disabled={!network.online || network.rung === 'offline'}>
+        <Button
+          full
+          onClick={() => void serverPdf()}
+          disabled={!network.online || network.rung === 'offline'}
+        >
           {t('pdf.server')}
           {!network.online || network.rung === 'offline' ? ` · ${t('pdf.serverOffline')}` : ''}
         </Button>

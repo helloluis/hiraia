@@ -11,7 +11,19 @@ type Kind = 'suspension' | 'local_holiday' | 'school_event' | 'exam';
 const KINDS: Kind[] = ['suspension', 'local_holiday', 'school_event', 'exam'];
 
 /** Mark a date as a non-teaching day (SCH-4), for one class or all; nothing moves until confirmed (SCH-6). */
-export function NoClassSheet({ open, onClose, ws, defaultDate, onSaved }: { open: boolean; onClose: () => void; ws: Workspace; defaultDate: string; onSaved: (day: CalendarDay) => void }) {
+export function NoClassSheet({
+  open,
+  onClose,
+  ws,
+  defaultDate,
+  onSaved,
+}: {
+  open: boolean;
+  onClose: () => void;
+  ws: Workspace;
+  defaultDate: string;
+  onSaved: (day: CalendarDay) => void;
+}) {
   const { t } = useT();
   const { engine } = useSession();
   const [date, setDate] = useState(defaultDate);
@@ -53,23 +65,52 @@ export function NoClassSheet({ open, onClose, ws, defaultDate, onSaved }: { open
           <Button variant="quiet" onClick={onClose}>
             {t('common.cancel')}
           </Button>
-          <Button variant="primary" onClick={() => void save()} busy={busy} disabled={!/^\d{4}-\d{2}-\d{2}$/.test(date)}>
+          <Button
+            variant="primary"
+            onClick={() => void save()}
+            busy={busy}
+            disabled={!/^\d{4}-\d{2}-\d{2}$/.test(date)}
+          >
             {t('common.save')}
           </Button>
         </>
       }
     >
-      <TextInput label={t('noclass.date')} type="date" value={date} onChange={e => setDate(e.target.value)} required />
-      <Select label={t('noclass.reason')} value={kind} onChange={e => setKind(e.target.value as Kind)}>
-        {KINDS.map(k => (
+      <TextInput
+        label={t('noclass.date')}
+        type="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        required
+      />
+      <Select
+        label={t('noclass.reason')}
+        value={kind}
+        onChange={(e) => setKind(e.target.value as Kind)}
+      >
+        {KINDS.map((k) => (
           <option key={k} value={k}>
             {t(`noclass.kind.${k}`)}
           </option>
         ))}
       </Select>
-      <TextInput label={t('noclass.label')} optional value={label} onChange={e => setLabel(e.target.value)} maxLength={200} />
+      <TextInput
+        label={t('noclass.label')}
+        optional
+        value={label}
+        onChange={(e) => setLabel(e.target.value)}
+        maxLength={200}
+      />
       {ws.classes.length > 1 && (
-        <Choice label={t('lessons.class')} value={scope} onChange={setScope} options={[{ value: 'all', label: t('noclass.allClasses') }, ...ws.classes.map(c => ({ value: c.id, label: c.name }))]} />
+        <Choice
+          label={t('lessons.class')}
+          value={scope}
+          onChange={setScope}
+          options={[
+            { value: 'all', label: t('noclass.allClasses') },
+            ...ws.classes.map((c) => ({ value: c.id, label: c.name })),
+          ]}
+        />
       )}
       <Banner kind="info">{t('noclass.preview')}</Banner>
     </Sheet>

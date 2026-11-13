@@ -687,10 +687,23 @@ test('queued posts require the same reviewed public snapshot after profile or da
     },
   });
   const service = createCommunity({ ...f, tasks: taskStore(f.store) });
-  await assert.rejects(service.post({
-    planId: 'plan', title: 'A lesson for sharing', summary: '', displayName: 'Teacher',
-    showSchool: true, region: null, termIndex: null, licenseAccepted: true, affirmed: true,
-  }, 'outdated review'), /Review changed/);
+  await assert.rejects(
+    service.post(
+      {
+        planId: 'plan',
+        title: 'A lesson for sharing',
+        summary: '',
+        displayName: 'Teacher',
+        showSchool: true,
+        region: null,
+        termIndex: null,
+        licenseAccepted: true,
+        affirmed: true,
+      },
+      'outdated review'
+    ),
+    /Review changed/
+  );
   await service.post({
     planId: 'plan',
     title: 'A lesson for sharing',

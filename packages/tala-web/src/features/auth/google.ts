@@ -15,7 +15,13 @@ interface GsiButtonOptions {
   locale?: string;
 }
 interface GsiId {
-  initialize(config: { client_id: string; callback: (r: { credential: string }) => void; ux_mode?: 'popup'; auto_select?: boolean; itp_support?: boolean }): void;
+  initialize(config: {
+    client_id: string;
+    callback: (r: { credential: string }) => void;
+    ux_mode?: 'popup';
+    auto_select?: boolean;
+    itp_support?: boolean;
+  }): void;
   renderButton(el: HTMLElement, opts: GsiButtonOptions): void;
   prompt(): void;
   cancel(): void;
@@ -38,7 +44,10 @@ export function loadGoogleIdentity(): Promise<GsiId> {
       s.src = SRC;
       s.async = true;
       s.defer = true;
-      s.onload = () => (window.google?.accounts?.id ? resolve(window.google.accounts.id) : reject(new Error('gsi missing')));
+      s.onload = () =>
+        window.google?.accounts?.id
+          ? resolve(window.google.accounts.id)
+          : reject(new Error('gsi missing'));
       s.onerror = () => {
         loading = null;
         reject(new Error('gsi failed'));
@@ -50,12 +59,30 @@ export function loadGoogleIdentity(): Promise<GsiId> {
 }
 
 /** Render the official button into `el`; resolves credentials through `onCredential`. */
-export async function renderGoogleButton(el: HTMLElement, onCredential: (idToken: string) => void, opts: { locale: string; text?: GsiButtonOptions['text'] }): Promise<void> {
+export async function renderGoogleButton(
+  el: HTMLElement,
+  onCredential: (idToken: string) => void,
+  opts: { locale: string; text?: GsiButtonOptions['text'] }
+): Promise<void> {
   if (!GOOGLE_CLIENT_ID) throw new Error('no client id');
   const id = await loadGoogleIdentity();
-  id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: r => onCredential(r.credential), ux_mode: 'popup', auto_select: false, itp_support: true });
+  id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: (r) => onCredential(r.credential),
+    ux_mode: 'popup',
+    auto_select: false,
+    itp_support: true,
+  });
   el.innerHTML = '';
-  id.renderButton(el, { type: 'standard', theme: 'outline', size: 'large', text: opts.text ?? 'continue_with', shape: 'rectangular', width: Math.min(400, Math.max(200, el.clientWidth || 320)), locale: opts.locale });
+  id.renderButton(el, {
+    type: 'standard',
+    theme: 'outline',
+    size: 'large',
+    text: opts.text ?? 'continue_with',
+    shape: 'rectangular',
+    width: Math.min(400, Math.max(200, el.clientWidth || 320)),
+    locale: opts.locale,
+  });
 }
 
 /** Email claim of an ID token, for display only (the server verifies the token). */

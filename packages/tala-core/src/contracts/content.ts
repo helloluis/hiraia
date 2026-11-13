@@ -54,7 +54,14 @@ export const SectionContent = z.discriminatedUnion('type', [
   z.object({
     type: z.literal('procedure'),
     steps: z
-      .array(z.object({ id: Id, title: z.string().max(200), minutes: z.number().int().min(0).max(480), body: RichText }))
+      .array(
+        z.object({
+          id: Id,
+          title: z.string().max(200),
+          minutes: z.number().int().min(0).max(480),
+          body: RichText,
+        })
+      )
       .max(40),
   }),
   z.object({ type: z.literal('multigrade'), blocks: z.array(MultigradeBlock).max(24) }),
@@ -68,7 +75,7 @@ export const SectionContent = z.discriminatedUnion('type', [
           /** Minutes planned for that day's session, when known; lets a week plan be checked against the time budget. */
           minutes: z.number().int().min(0).max(600).nullable().optional(),
           body: RichText,
-        }),
+        })
       )
       .max(7),
   }),
@@ -131,14 +138,62 @@ export const BUILTIN_TEMPLATES: Template[] = [
     span: 'session',
     orientation: 'portrait',
     sections: [
-      { key: 'objectives', label: L('Mga Layunin', 'Objectives'), contentType: 'list', required: true, outsideLock: false },
-      { key: 'content', label: L('Nilalaman', 'Content'), contentType: 'text', required: false, outsideLock: false },
-      { key: 'materials', label: L('Mga Kagamitan', 'Learning Resources'), contentType: 'list', required: true, outsideLock: false },
-      { key: 'procedure', label: L('Pamamaraan', 'Procedure'), contentType: 'procedure', required: true, outsideLock: false },
-      { key: 'assessment', label: L('Pagtataya', 'Assessment'), contentType: 'text', required: true, outsideLock: false },
-      { key: 'differentiation', label: L('Remediation at Pagpapayaman', 'Remediation and Enrichment'), contentType: 'text', required: false, outsideLock: false },
-      { key: 'assignment', label: L('Takdang-Aralin', 'Assignment'), contentType: 'text', required: false, outsideLock: false },
-      { key: 'reflection', label: L('Pagninilay', 'Reflection'), contentType: 'text', required: false, outsideLock: true },
+      {
+        key: 'objectives',
+        label: L('Mga Layunin', 'Objectives'),
+        contentType: 'list',
+        required: true,
+        outsideLock: false,
+      },
+      {
+        key: 'content',
+        label: L('Nilalaman', 'Content'),
+        contentType: 'text',
+        required: false,
+        outsideLock: false,
+      },
+      {
+        key: 'materials',
+        label: L('Mga Kagamitan', 'Learning Resources'),
+        contentType: 'list',
+        required: true,
+        outsideLock: false,
+      },
+      {
+        key: 'procedure',
+        label: L('Pamamaraan', 'Procedure'),
+        contentType: 'procedure',
+        required: true,
+        outsideLock: false,
+      },
+      {
+        key: 'assessment',
+        label: L('Pagtataya', 'Assessment'),
+        contentType: 'text',
+        required: true,
+        outsideLock: false,
+      },
+      {
+        key: 'differentiation',
+        label: L('Remediation at Pagpapayaman', 'Remediation and Enrichment'),
+        contentType: 'text',
+        required: false,
+        outsideLock: false,
+      },
+      {
+        key: 'assignment',
+        label: L('Takdang-Aralin', 'Assignment'),
+        contentType: 'text',
+        required: false,
+        outsideLock: false,
+      },
+      {
+        key: 'reflection',
+        label: L('Pagninilay', 'Reflection'),
+        contentType: 'text',
+        required: false,
+        outsideLock: true,
+      },
     ],
   },
   {
@@ -149,12 +204,48 @@ export const BUILTIN_TEMPLATES: Template[] = [
     span: 'week',
     orientation: 'landscape',
     sections: [
-      { key: 'objectives', label: L('Mga Layunin', 'Objectives'), contentType: 'list', required: true, outsideLock: false },
-      { key: 'content', label: L('Nilalaman', 'Content'), contentType: 'text', required: false, outsideLock: false },
-      { key: 'materials', label: L('Mga Kagamitan', 'Learning Resources'), contentType: 'list', required: true, outsideLock: false },
-      { key: 'weekgrid', label: L('Pamamaraan sa Bawat Araw', 'Daily Procedures'), contentType: 'weekgrid', required: true, outsideLock: false },
-      { key: 'assessment', label: L('Pagtataya', 'Assessment'), contentType: 'text', required: true, outsideLock: false },
-      { key: 'reflection', label: L('Pagninilay', 'Reflection'), contentType: 'text', required: false, outsideLock: true },
+      {
+        key: 'objectives',
+        label: L('Mga Layunin', 'Objectives'),
+        contentType: 'list',
+        required: true,
+        outsideLock: false,
+      },
+      {
+        key: 'content',
+        label: L('Nilalaman', 'Content'),
+        contentType: 'text',
+        required: false,
+        outsideLock: false,
+      },
+      {
+        key: 'materials',
+        label: L('Mga Kagamitan', 'Learning Resources'),
+        contentType: 'list',
+        required: true,
+        outsideLock: false,
+      },
+      {
+        key: 'weekgrid',
+        label: L('Pamamaraan sa Bawat Araw', 'Daily Procedures'),
+        contentType: 'weekgrid',
+        required: true,
+        outsideLock: false,
+      },
+      {
+        key: 'assessment',
+        label: L('Pagtataya', 'Assessment'),
+        contentType: 'text',
+        required: true,
+        outsideLock: false,
+      },
+      {
+        key: 'reflection',
+        label: L('Pagninilay', 'Reflection'),
+        contentType: 'text',
+        required: false,
+        outsideLock: true,
+      },
     ],
   },
   {
@@ -165,11 +256,41 @@ export const BUILTIN_TEMPLATES: Template[] = [
     span: 'session',
     orientation: 'portrait',
     sections: [
-      { key: 'objectives', label: L('Mga Layunin ng Bawat Baitang', 'Objectives per Grade'), contentType: 'pergroup', required: true, outsideLock: false },
-      { key: 'materials', label: L('Mga Kagamitan ng Bawat Baitang', 'Materials per Grade'), contentType: 'pergroup', required: true, outsideLock: false },
-      { key: 'multigrade', label: L('Daloy ng Klase', 'Session Flow'), contentType: 'multigrade', required: true, outsideLock: false },
-      { key: 'assessment', label: L('Pagtataya ng Bawat Baitang', 'Assessment per Grade'), contentType: 'pergroup', required: true, outsideLock: false },
-      { key: 'reflection', label: L('Pagninilay', 'Reflection'), contentType: 'text', required: false, outsideLock: true },
+      {
+        key: 'objectives',
+        label: L('Mga Layunin ng Bawat Baitang', 'Objectives per Grade'),
+        contentType: 'pergroup',
+        required: true,
+        outsideLock: false,
+      },
+      {
+        key: 'materials',
+        label: L('Mga Kagamitan ng Bawat Baitang', 'Materials per Grade'),
+        contentType: 'pergroup',
+        required: true,
+        outsideLock: false,
+      },
+      {
+        key: 'multigrade',
+        label: L('Daloy ng Klase', 'Session Flow'),
+        contentType: 'multigrade',
+        required: true,
+        outsideLock: false,
+      },
+      {
+        key: 'assessment',
+        label: L('Pagtataya ng Bawat Baitang', 'Assessment per Grade'),
+        contentType: 'pergroup',
+        required: true,
+        outsideLock: false,
+      },
+      {
+        key: 'reflection',
+        label: L('Pagninilay', 'Reflection'),
+        contentType: 'text',
+        required: false,
+        outsideLock: true,
+      },
     ],
   },
 ];

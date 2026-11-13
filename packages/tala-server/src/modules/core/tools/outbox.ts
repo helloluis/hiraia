@@ -28,7 +28,9 @@ try {
   const mails = readOutbox(db, limit);
   if (mails.length === 0) console.log('The outbox is empty.');
   for (const mail of mails.reverse()) {
-    console.log(`\n--- ${mail.createdAt}  ${mail.template} (${mail.lang})  to ${mail.to}\nSubject: ${mail.subject}\n\n${mail.body}`);
+    console.log(
+      `\n--- ${mail.createdAt}  ${mail.template} (${mail.lang})  to ${mail.to}\nSubject: ${mail.subject}\n\n${mail.body}`
+    );
   }
 } finally {
   db.close();

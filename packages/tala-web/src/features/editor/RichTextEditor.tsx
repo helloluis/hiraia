@@ -18,7 +18,14 @@ export interface RichTextEditorProps {
   minRows?: number;
 }
 
-export function RichTextEditor({ value, onChange, label, placeholder, readOnly, minRows = 3 }: RichTextEditorProps) {
+export function RichTextEditor({
+  value,
+  onChange,
+  label,
+  placeholder,
+  readOnly,
+  minRows = 3,
+}: RichTextEditorProps) {
   const { t } = useT();
   const ref = useRef<HTMLDivElement>(null);
   const last = useRef<RichText>(value);
@@ -63,11 +70,32 @@ export function RichTextEditor({ value, onChange, label, placeholder, readOnly, 
     <div className="group flex flex-col gap-1">
       {/* The toolbar shows for the box being edited (focus-within), so a long plan is not a wall of buttons. */}
       {!readOnly && (
-        <div role="toolbar" aria-label={t('editor.formatting')} aria-controls={id} className="hidden group-focus-within:flex flex-wrap gap-1">
-          <ToolButton onClick={() => exec('bold')} label={t('editor.bold')} glyph={<strong>B</strong>} />
-          <ToolButton onClick={() => exec('italic')} label={t('editor.italic')} glyph={<em>I</em>} />
-          <ToolButton onClick={() => exec('insertUnorderedList')} label={t('editor.bullets')} glyph="•" />
-          <ToolButton onClick={() => exec('insertOrderedList')} label={t('editor.numbers')} glyph="1." />
+        <div
+          role="toolbar"
+          aria-label={t('editor.formatting')}
+          aria-controls={id}
+          className="hidden group-focus-within:flex flex-wrap gap-1"
+        >
+          <ToolButton
+            onClick={() => exec('bold')}
+            label={t('editor.bold')}
+            glyph={<strong>B</strong>}
+          />
+          <ToolButton
+            onClick={() => exec('italic')}
+            label={t('editor.italic')}
+            glyph={<em>I</em>}
+          />
+          <ToolButton
+            onClick={() => exec('insertUnorderedList')}
+            label={t('editor.bullets')}
+            glyph="•"
+          />
+          <ToolButton
+            onClick={() => exec('insertOrderedList')}
+            label={t('editor.numbers')}
+            glyph="1."
+          />
         </div>
       )}
       <div
@@ -84,16 +112,32 @@ export function RichTextEditor({ value, onChange, label, placeholder, readOnly, 
         onInput={emit}
         onBlur={emit}
         onPaste={onPaste}
-        className={cx('rich w-full rounded border bg-white px-3 py-2 text-body break-words', readOnly ? 'border-transparent bg-transparent px-0' : 'border-hairline')}
+        className={cx(
+          'rich w-full rounded border bg-white px-3 py-2 text-body break-words',
+          readOnly ? 'border-transparent bg-transparent px-0' : 'border-hairline'
+        )}
         style={{ minHeight: `${minRows * 1.5 + 1}rem` }}
       />
     </div>
   );
 }
 
-function ToolButton({ onClick, label, glyph }: { onClick: () => void; label: string; glyph: React.ReactNode }) {
+function ToolButton({
+  onClick,
+  label,
+  glyph,
+}: {
+  onClick: () => void;
+  label: string;
+  glyph: React.ReactNode;
+}) {
   return (
-    <button type="button" onMouseDown={e => e.preventDefault()} onClick={onClick} className="inline-flex items-center gap-1 min-h-touch px-3 rounded border border-hairline bg-white text-small">
+    <button
+      type="button"
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={onClick}
+      className="inline-flex items-center gap-1 min-h-touch px-3 rounded border border-hairline bg-white text-small"
+    >
       <span aria-hidden="true" className="w-4 text-center">
         {glyph}
       </span>
@@ -104,5 +148,10 @@ function ToolButton({ onClick, label, glyph }: { onClick: () => void; label: str
 
 /** Read-only rendering of rich text (same HTML as the editor). */
 export function RichTextView({ value, className }: { value: RichText; className?: string }) {
-  return <div className={cx('rich', className)} dangerouslySetInnerHTML={{ __html: richTextToHtml(value) }} />;
+  return (
+    <div
+      className={cx('rich', className)}
+      dangerouslySetInnerHTML={{ __html: richTextToHtml(value) }}
+    />
+  );
 }

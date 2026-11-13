@@ -58,24 +58,61 @@ export function createFakeLlm(options: FakeLlmOptions = {}): FakeLlm {
     },
     async complete<T>(request: LlmRequest<T>): Promise<LlmResult<T>> {
       const route = request.route ?? routeFor(request.feature);
-      if (route === 'off') return { ok: false, reason: 'disabled', message: 'AI help is switched off for this feature.' };
-      if (route === 'rules') return { ok: false, reason: 'rules_only', message: 'This feature is set to work without AI.' };
+      if (route === 'off')
+        return {
+          ok: false,
+          reason: 'disabled',
+          message: 'AI help is switched off for this feature.',
+        };
+      if (route === 'rules')
+        return {
+          ok: false,
+          reason: 'rules_only',
+          message: 'This feature is set to work without AI.',
+        };
       if (request.signal?.aborted) return { ok: false, reason: 'cancelled', message: 'Cancelled.' };
 
-      calls.push({ feature: request.feature, promptId: request.promptId, version: request.version, vars: { ...request.vars }, userId: request.userId, route });
-      const scripted = answers.has(request.feature) ? answers.get(request.feature) : answers.get('*');
-      if (scripted === undefined) return { ok: false, reason: 'providers_unavailable', message: 'No answer is scripted for this feature.' };
+      calls.push({
+        feature: request.feature,
+        promptId: request.promptId,
+        version: request.version,
+        vars: { ...request.vars },
+        userId: request.userId,
+        route,
+      });
+      const scripted = answers.has(request.feature)
+        ? answers.get(request.feature)
+        : answers.get('*');
+      if (scripted === undefined)
+        return {
+          ok: false,
+          reason: 'providers_unavailable',
+          message: 'No answer is scripted for this feature.',
+        };
 
       let raw: unknown;
       try {
-        raw = typeof scripted === 'function' ? (scripted as (r: LlmRequest<unknown>) => unknown)(request as LlmRequest<unknown>) : scripted;
+        raw =
+          typeof scripted === 'function'
+            ? (scripted as (r: LlmRequest<unknown>) => unknown)(request as LlmRequest<unknown>)
+            : scripted;
       } catch {
-        return { ok: false, reason: 'providers_unavailable', message: 'The scripted provider failed.' };
+        return {
+          ok: false,
+          reason: 'providers_unavailable',
+          message: 'The scripted provider failed.',
+        };
       }
       const parsed = request.schema.safeParse(raw);
-      if (!parsed.success) return { ok: false, reason: 'invalid_output', message: 'The scripted answer does not fit the schema.' };
+      if (!parsed.success)
+        return {
+          ok: false,
+          reason: 'invalid_output',
+          message: 'The scripted answer does not fit the schema.',
+        };
       const problems = request.check?.(parsed.data) ?? [];
-      if (problems.length > 0) return { ok: false, reason: 'invalid_output', message: problems.join(' ') };
+      if (problems.length > 0)
+        return { ok: false, reason: 'invalid_output', message: problems.join(' ') };
 
       return {
         ok: true,
