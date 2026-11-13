@@ -74,5 +74,6 @@ UI confirmation/undo transactions, notifications, sample roster/plans, device
 storage, PDF regeneration and sync are the app/other workers' integration work.
 The core provides payloads, not persistence. Official curriculum breadth, policy
 applicability and calendar verification are tracked in the server data README.
-Teacher-level pacing defaults currently need a client-side resolved defaults
-input; the record contract has no persistent profile.pacingParams field.
+Teacher-level defaults are synced as profile.pacingParams. Pass
+`{ ...publishedDefaults, ...profile.pacingParams }` as defaults; track.params then
+overrides those values.
