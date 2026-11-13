@@ -221,3 +221,23 @@ test('a module’s onAccountDeleted (the contract field) runs inside the deletio
   assert.deepEqual(seen, [u.id, u.id]);
   t.close();
 });
+
+test('onAccountDeleted runs once per module, whether it is set on the module, under `kernel`, or both', async () => {
+  const calls: string[] = [];
+  const hook = (label: string) => () => {
+    calls.push(label);
+  };
+  const both = hook('both');
+  const modulesUnderTest = [
+    { name: 'contractfield', migrations: [], handlers: {}, onAccountDeleted: hook('contract') },
+    { name: 'kernelonly', migrations: [], handlers: {}, kernel: { onAccountDeleted: hook('kernel') } },
+    // Modules written before the contract field existed set both to the same function.
+    { name: 'bothways', migrations: [], handlers: {}, onAccountDeleted: both, kernel: { onAccountDeleted: both } },
+    { name: 'nohook', migrations: [], handlers: {} },
+  ];
+  const t = createTestServer({ modules: modulesUnderTest as never });
+  const u = await t.registerUser({ password: 'kalabaw-bituin-ilog-27' });
+  assert.equal((await t.call('account.delete', { token: u.token, body: { confirm: 'DELETE', password: 'kalabaw-bituin-ilog-27' } })).ok, true);
+  assert.deepEqual(calls, ['contract', 'kernel', 'both']);
+  t.close();
+});
