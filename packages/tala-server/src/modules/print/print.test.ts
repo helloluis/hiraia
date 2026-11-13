@@ -37,3 +37,12 @@ test('handler denies unauthenticated and unavailable private plans', async () =>
   await assert.rejects(Promise.resolve().then(() => planPdf(context(''), args)), { code: 'unauthenticated' });
   await assert.rejects(Promise.resolve().then(() => planPdf(context('owner001', false), args)), { code: 'not_found' });
 });
+
+test('bundled fallback font explicitly covers Filipino orthography', async () => {
+  const { frauncesBase64 } = await import('@hiraia/tala-core/print');
+  const { default: fontkit } = await import('@pdf-lib/fontkit');
+  const doc = await PDFDocument.create(); doc.registerFontkit(fontkit);
+  const font = await doc.embedFont(Buffer.from(frauncesBase64, 'base64'), { subset: true });
+  const set = new Set(font.getCharacterSet());
+  for (const char of 'ñÑáÁéÉíÍóÓúÚàÀèÈìÌòÒùÙâÂêÊîÎôÔûÛ') assert.ok(set.has(char.codePointAt(0)!), char);
+});

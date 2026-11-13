@@ -177,7 +177,7 @@ test('student keep-both is atomic, including when the store is full', async () =
 test('new rejected section exists only in lock draft, not as an unsynced ghost in locked original', async () => {
   const s = new Server(), a = client(s).engine, b = client(s).engine;
   await a.put('plan', plan()); await a.sync(); await b.sync();
-  await a.put('plan', { ...plan(), state: 'locked', lock: { lockedAt: at, revisionCode: 'ABC', revision: 1 } }); await a.sync();
+  await a.put('plan', { ...plan(), state: 'locked', lock: { lockedBy: 'Guro Peña', lockedAt: at, revisionCode: 'ABC', revision: 1 } }); await a.sync();
   await b.put('plan_section', section('newsect1', 'Keep new content'));
   const report = await b.sync(); assert.equal(report.lockCopies.length, 1);
   assert.ok(!(await b.list('plan_section')).some(r => r.data.planId === 'plan0001'));

@@ -52,7 +52,27 @@ test('generation requires confirmation and returns restorable previous revision 
   assert.throws(() => applyGeneratedSections(input), /Confirm/);
   const result = applyGeneratedSections({ ...input, confirmedSectionIds: [section.id] });
   assert.equal(result.plan.aiAssisted, true); assert.equal(result.sections[0]!.origin, 'ai');
-  assert.deepEqual(restoreSectionRevision(result.revisions[0]!), section);
+  assert.deepEqual(restoreSectionRevision(result.revisions[0]!), { ...section, editedByTeacher: true });
+  assert.equal(result.revisions[0]!.reason, 'regenerate');
   assert.deepEqual(input.sections, [section]);
   assert.throws(() => applyGeneratedSections({ ...input, plan: { ...plan, state: 'locked' } }), /Unlock/);
+});
+
+test('shared revision records support restore, bounded history and conservative provenance', async () => {
+  const { sectionRevision, boundSectionHistory, planProvenance } = await import('./index');
+  const ai = { ...section, origin: 'ai' as const, content: text('one two three four') };
+  const revision = sectionRevision(ai, { id: 'revision1', savedAt: '2026-11-13T00:00:00Z', reason: 'edit' });
+  assert.equal(restoreSectionRevision(revision).id, section.id);
+  assert.equal(boundSectionHistory([revision, { ...revision, id: 'revision2' }], 1).remove.length, 1);
+  const edited = { ...ai, editedByTeacher: true, content: text('new words entirely rewritten') };
+  assert.equal(planProvenance({ plan: { ...plan, aiAssisted: true }, sections: [edited], revisions: [] }).aiDrafted, true);
+  assert.equal(planProvenance({ plan: { ...plan, aiAssisted: true }, sections: [edited], revisions: [revision] }).aiDrafted, false);
+});
+test('lock records actor, time and exact content revision code', async () => {
+  const { lockPlan } = await import('./index');
+  const template = { ...BUILTIN_TEMPLATES[0]!, sections: [{ key: 'content', label: { en: 'Content', fil: 'Nilalaman' }, required: true, contentType: 'text' as const, outsideLock: false }] };
+  const args = { plan, sections: [section], template, class: { curriculum: 'none' as const }, teacherName: 'Teacher', at: '2026-11-13T00:00:00Z', revision: null };
+  const locked = lockPlan(args);
+  assert.equal(locked.lock?.lockedBy, 'Teacher'); assert.equal(locked.lock?.lockedAt, args.at); assert.equal(locked.state, 'locked');
+  assert.notEqual(locked.lock?.revisionCode, lockPlan({ ...args, sections: [{ ...section, content: text('Changed lesson') }] }).lock?.revisionCode);
 });

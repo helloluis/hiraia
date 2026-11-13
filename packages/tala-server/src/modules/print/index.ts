@@ -1,11 +1,11 @@
-import { BUILTIN_TEMPLATES, Id } from '@hiraia/tala-core';
+import { BUILTIN_TEMPLATES } from '@hiraia/tala-core';
 import { HttpError, requireUser, type Handler, type ServerModule } from '../../kernel/types';
 import { createPlanPdf } from './pdf';
 export { createPlanPdf } from './pdf';
 
 export const planPdf: Handler<'print.planPdf'> = async (ctx, input) => {
   const user = requireUser(ctx);
-  const snapshot = ctx.services.records.planSnapshot(user.id, Id.parse((input.params as { planId: string }).planId));
+  const snapshot = ctx.services.records.planSnapshot(user.id, input.params.planId);
   if (!snapshot) throw new HttpError('not_found', 'This lesson could not be found.');
   const plan = snapshot.plan.data;
   const template = BUILTIN_TEMPLATES.find(t => t.id === plan.templateId) ?? ctx.services.records.get(user.id, 'template', plan.templateId)?.data;

@@ -22,15 +22,14 @@ export interface RenderPlanOptions {
   /** V1 content contains no image fields. Kept for the common fallback call shape. */
   includeImages?: boolean;
 }
-// Local adapter until the orchestrator adds a monochrome ink token (BRAND-6).
-const printInk = '#000000';
+const printInk = colors.printInk;
 const escape = (s: string | number) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 const labels = {
   en: { teacher: 'Teacher', school: 'School', class: 'Class', grade: 'Grade', subject: 'Learning area', dates: 'Dates', term: 'Term', competencies: 'Competencies', minutes: 'min', prepared: 'Prepared by', checked: 'Checked by', time: 'Time block', transition: 'Transition', locked: 'Locked', revision: 'Revision', adapted: 'Adapted from', by: 'by', all: 'All groups', none: 'Supervision', direct: 'Teacher-led', independent: 'Independent', peer: 'Peer learning', shared: 'Together', notice: 'Tala lesson plan · Hiraia', days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] },
   fil: { teacher: 'Guro', school: 'Paaralan', class: 'Klase', grade: 'Baitang', subject: 'Asignatura', dates: 'Mga Petsa', term: 'Markahan', competencies: 'Mga Kasanayan', minutes: 'min', prepared: 'Prepared by', checked: 'Checked by', time: 'Bahagi ng oras', transition: 'Paglipat', locked: 'Naka-lock', revision: 'Rebisyon', adapted: 'Hango sa', by: 'ni', all: 'Lahat ng pangkat', none: 'Pagbabantay', direct: 'Kasama ang guro', independent: 'Sariling gawain', peer: 'Tulungan', shared: 'Sama-sama', notice: 'Banghay-aralin sa Tala · Hiraia', days: ['Lunes', 'Martes', 'Miyerkules', 'Huwebes', 'Biyernes', 'Sabado', 'Linggo'] },
 } as const;
 export function printOrientation(options: RenderPlanOptions): 'portrait' | 'landscape' {
-  return options.template.kind === 'multigrade' && options.plan.gradeGroupIds.length >= 3 ? 'landscape' : options.template.orientation;
+  return options.template.kind === 'multigrade' && Math.max(options.plan.gradeGroupIds.length, options.plan.grades.length) >= 3 ? 'landscape' : options.template.orientation;
 }
 export function printPageSize(options: RenderPlanOptions): [number, number] {
   const size: [number, number] = options.paper === 'a4' ? [595.276, 841.89] : [612, 936];
@@ -55,7 +54,7 @@ function competencyLines(o: RenderPlanOptions): string[] {
 }
 function footer(o: RenderPlanOptions): string[] {
   const l = labels[o.lang], result: string[] = [];
-  if (o.plan.lock) result.push(`${l.locked}: ${o.plan.lock.lockedAt} · ${l.revision}: ${o.plan.lock.revisionCode}`);
+  if (o.plan.lock) result.push(`${l.locked}: ${o.plan.lock.lockedAt}${o.plan.lock.lockedBy ? ` · ${o.plan.lock.lockedBy}` : ''} · ${l.revision}: ${o.plan.lock.revisionCode}`);
   if (o.plan.lineage) result.push(`${l.adapted} “${o.plan.lineage.title}” ${l.by} ${o.plan.lineage.authorDisplayName} · ${o.plan.lineage.artifactId}/${o.plan.lineage.versionId}`);
   result.push(l.notice);
   return result;

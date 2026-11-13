@@ -1,4 +1,4 @@
-import { Plan, PlanSection } from '../contracts/records';
+import { Plan, PlanSection, SectionRevision } from '../contracts/records';
 import type { GradeGroup, ClassRecord, SectionGenMeta } from '../contracts/records';
 import type { SectionContent, Template } from '../contracts/content';
 import type { ArtifactVersion } from '../contracts/features';
@@ -85,7 +85,7 @@ export function substantiallyRewritten(originalAi: SectionContent[], current: Se
   for (const word of after) { const n = counts.get(word) ?? 0; if (n) counts.set(word, n - 1); else novel++; }
   return novel / Math.max(before.length, after.length) >= threshold;
 }
-export interface SectionRevision { sectionId: string; previous: PlanSection; replacement: PlanSection }
+export { SectionRevision } from '../contracts/records';
 /** Caller atomically persists returned plan, sections AND revisions before acknowledging generation. */
 export function applyGeneratedSections(input: { plan: Plan; sections: PlanSection[]; generated: Array<{ key: string; content: SectionContent }>; gen: SectionGenMeta; newId: () => string; confirmedSectionIds?: string[] }): { plan: Plan; sections: PlanSection[]; revisions: SectionRevision[] } {
   if (input.plan.state !== 'draft') throw new Error('Unlock the lesson before generating sections.');
@@ -96,8 +96,48 @@ export function applyGeneratedSections(input: { plan: Plan; sections: PlanSectio
     const i = sections.findIndex(s => s.planId === input.plan.id && s.key === generated.key), previous = sections[i];
     if (previous && (previous.editedByTeacher || (previous.origin === 'manual' && hasSectionContent(previous.content))) && !input.confirmedSectionIds?.includes(previous.id)) throw new Error(`Confirm replacing section ${previous.key} first.`);
     const next = PlanSection.parse({ id: previous?.id ?? input.newId(), planId: input.plan.id, key: generated.key, content: generated.content, origin: 'ai', editedByTeacher: false, gen: input.gen });
-    if (previous) { revisions.push({ sectionId: previous.id, previous: clone(previous), replacement: clone(next) }); sections[i] = next; } else sections.push(next);
+    if (previous) { revisions.push(SectionRevision.parse({ id: input.newId(), planId: previous.planId, sectionId: previous.id, key: previous.key, content: previous.content, origin: previous.origin, gen: previous.gen, reason: 'regenerate', savedAt: input.gen.at })); sections[i] = next; } else sections.push(next);
   }
   return { plan: Plan.parse({ ...input.plan, aiDraft: true, aiAssisted: true }), sections, revisions };
 }
-export function restoreSectionRevision(revision: SectionRevision): PlanSection { return clone(revision.previous); }
+export function restoreSectionRevision(revision: SectionRevision): PlanSection {
+  return PlanSection.parse({ id: revision.sectionId, planId: revision.planId, key: revision.key, content: clone(revision.content), origin: revision.origin, gen: revision.gen, editedByTeacher: true });
+}
+/** Snapshot the old section before editing; persist this record before its replacement. */
+export function sectionRevision(section: PlanSection, options: { id: string; savedAt: string; reason: SectionRevision['reason'] }): SectionRevision {
+  return SectionRevision.parse({ ...options, sectionId: section.id, planId: section.planId, key: section.key, content: section.content, origin: section.origin, gen: section.gen });
+}
+/** Caller supplies newest-first history using server ordering; unsent revisions must not be pruned. */
+export function boundSectionHistory(newestFirst: SectionRevision[], limit = 20): { keep: SectionRevision[]; remove: SectionRevision[] } {
+  if (!Number.isInteger(limit) || limit < 1) throw new Error('Keep at least one previous version.');
+  const counts = new Map<string, number>();
+  const keep: SectionRevision[] = [], remove: SectionRevision[] = [];
+  for (const revision of newestFirst) {
+    const count = counts.get(revision.sectionId) ?? 0;
+    (count < limit ? keep : remove).push(clone(revision));
+    counts.set(revision.sectionId, count + 1);
+  }
+  return { keep, remove };
+}
+
+export function lockPlan(input: { plan: Plan; sections: PlanSection[]; template: Template; class?: Pick<ClassRecord, 'curriculum'>; teacherName: string; at: string; revision: number | null }): Plan {
+  const result = validatePlanForLock(input.plan, input.sections, input.template, input.class);
+  if (!result.ok) throw new Error(result.errors.map(e => e.message).join(' '));
+  const snapshot = { ...input.plan, state: 'locked', aiDraft: false, lock: null };
+  return Plan.parse({ ...snapshot, lock: { lockedBy: input.teacherName, lockedAt: input.at, revision: input.revision, revisionCode: revisionCode({ plan: snapshot, sections: input.sections.filter(s => s.planId === input.plan.id && !input.template.sections.find(t => t.key === s.key)?.outsideLock).sort((a, b) => a.key.localeCompare(b.key)) }) } });
+}
+/** History must be newest-first by server ordering. Missing history conservatively retains AI attribution. */
+export function planProvenance(input: { plan: Plan; sections: PlanSection[]; revisions: SectionRevision[]; rewriteThreshold?: number }): { aiDrafted: boolean; adapted: boolean; substantiallyRewritten: boolean } {
+  const sections = input.sections.filter(s => s.planId === input.plan.id);
+  const history = input.revisions.filter(r => r.planId === input.plan.id);
+  const assisted = input.plan.aiAssisted || sections.some(s => s.origin === 'ai') || history.some(r => r.origin === 'ai');
+  const baselines: SectionContent[] = [], current: SectionContent[] = [];
+  for (const section of sections) {
+    const ai = history.filter(r => r.sectionId === section.id && r.origin === 'ai');
+    const baseline = ai[ai.length - 1]?.content ?? (section.origin === 'ai' && !section.editedByTeacher ? section.content : null);
+    if (baseline) { baselines.push(baseline); current.push(section.content); }
+    else if (section.origin === 'ai') return { aiDrafted: true, adapted: !!input.plan.lineage, substantiallyRewritten: false };
+  }
+  const rewritten = assisted && baselines.length > 0 && substantiallyRewritten(baselines, current, input.rewriteThreshold);
+  return { aiDrafted: assisted && !rewritten, adapted: !!input.plan.lineage, substantiallyRewritten: rewritten };
+}
