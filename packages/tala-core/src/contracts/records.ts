@@ -62,6 +62,8 @@ export const CalendarDay = z.object({
   /** For `shortened`: minutes available per session that day. */
   minutesOverride: z.number().int().min(0).max(600).nullable().default(null),
   source: z.enum(['preset', 'teacher']).default('teacher'),
+  /** A teacher-entered non-teaching day whose effect on pacing has been reviewed and applied (or dismissed) — synced so every device agrees. */
+  realigned: z.boolean().optional(),
   /**
    * For `makeup`: which weekday's timetable the make-up day follows (a Saturday class that "follows Monday").
    * null = use the date's own weekday (only slots that already fall on it).

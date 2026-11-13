@@ -197,6 +197,12 @@ export interface SyncEngine {
   /** Validate, write locally, queue for upload. Resolves once durable on the device. */
   put<E extends EntityName>(entity: E, data: RecordData<E>): Promise<LocalRecord<E>>;
   remove(entity: EntityName, id: Id): Promise<void>;
+  /**
+   * Write several records as ONE durable local operation (class setup, creating a plan with its sections,
+   * applying or undoing a realignment): either every change is on the device and queued, or none is, so a
+   * killed app never leaves half an operation. Optional until worker H implements it; then required.
+   */
+  batch?(ops: Array<{ op: 'put'; entity: EntityName; data: unknown } | { op: 'remove'; entity: EntityName; id: Id }>): Promise<void>;
   /** Resolve an 'ask' conflict: keep the device version, take the server version, or keep both (second appended). */
   resolveConflict(entity: EntityName, id: Id, choice: 'mine' | 'theirs' | 'both'): Promise<void>;
   /** One push+pull cycle. Never throws for network trouble; reports it. Retries/backoff are the caller's schedule. */
