@@ -1,6 +1,8 @@
 /**
  * Google sign-in and account linking (PRD §13.3, AUTH-9 to AUTH-13), and joining two accounts.
  * OWNER: workstream A. Token verification is in google.ts; this file is what happens after it.
+ * With `features.googleSignIn` off, every route here that would use or depend on Google answers
+ * `not_implemented` / `google_sign_in_not_available` without contacting Google.
  *
  * The seven numbered cases of §13.3, and where each lives:
  *  1. Same email, Tala email confirmed  → `auth.google` answers 409 `link_required`; the teacher proves the
@@ -30,8 +32,6 @@ import type { UserRow } from './accounts';
 import { BAD_CREDENTIALS, BAD_LINK, authResult, cleanDisplayName, limit, limitByAddress, passwordMatches, seedProfile } from './auth-handlers';
 import type { GoogleIdentity } from './google';
 import { mailLink } from './mailer';
-import { PENDING_ROUTES } from './pending-routes';
-import type { PendingBody, PendingRouteName } from './pending-routes';
 import { coreState } from './state';
 import type { CoreState } from './state';
 
@@ -148,12 +148,10 @@ export const googleSignIn: Handler<'auth.google'> = async (ctx, { body }) => {
   throw new HttpError('conflict', MESSAGES.linkRequired, { reason: 'link_required', methods: ['password', 'email_link'] });
 };
 
-/* ---------------- routes waiting for the contract (pending-routes.ts) ---------------- */
-
-type PendingHandler<K extends PendingRouteName> = (ctx: Ctx, body: PendingBody<K>) => unknown;
+/* ---------------- linking ---------------- */
 
 /** Case 1 by password. */
-const googleLink: PendingHandler<'auth.googleLink'> = async (ctx, body) => {
+export const googleLink: Handler<'auth.googleLink'> = async (ctx, { body }) => {
   const { accounts } = requireGoogle(ctx);
   limitByAddress(ctx, 'google', ctx.config.abuse.loginPerIpPerMinute, 60);
   const identity = await verifiedIdentity(ctx, body.idToken);
@@ -178,7 +176,7 @@ const googleLink: PendingHandler<'auth.googleLink'> = async (ctx, body) => {
 };
 
 /** Case 1 by emailed link: ask. */
-const googleLinkRequest: PendingHandler<'auth.googleLinkRequest'> = async (ctx, body) => {
+export const googleLinkRequest: Handler<'auth.googleLinkRequest'> = async (ctx, { body }) => {
   requireGoogle(ctx);
   limitByAddress(ctx, 'google-link-request', 20, HOUR);
   const identity = await verifiedIdentity(ctx, body.idToken);
@@ -189,7 +187,7 @@ const googleLinkRequest: PendingHandler<'auth.googleLinkRequest'> = async (ctx, 
     if (!ctx.services.rateLimit.take(`link-mail:user:${account.id}`, 3, HOUR)) return;
     // The link remembers which Google account asked, so opening it can only attach that one.
     const token = accounts.issueEmailToken(account, 'link_google', { subject: identity.subject, email: identity.email });
-    await mailer.sendAny({
+    await mailer.send({
       to: account.email,
       template: 'link_google',
       lang: account.ui_language === 'en' ? 'en' : 'fil',
@@ -200,7 +198,7 @@ const googleLinkRequest: PendingHandler<'auth.googleLinkRequest'> = async (ctx, 
 };
 
 /** Case 1 by emailed link: the link was opened. */
-const googleLinkConfirm: PendingHandler<'auth.googleLinkConfirm'> = (ctx, body) => {
+export const googleLinkConfirm: Handler<'auth.googleLinkConfirm'> = (ctx, { body }) => {
   const { accounts } = requireGoogle(ctx);
   limitByAddress(ctx, 'google-link-confirm', 30, HOUR);
   const found = accounts.consumeEmailTokenWithPayload(body.token, 'link_google');
@@ -215,7 +213,7 @@ const googleLinkConfirm: PendingHandler<'auth.googleLinkConfirm'> = (ctx, body) 
 };
 
 /** Case 3: from Settings. */
-const googleConnect: PendingHandler<'auth.googleConnect'> = async (ctx, body) => {
+export const googleConnect: Handler<'auth.googleConnect'> = async (ctx, { body }) => {
   const { accounts } = requireGoogle(ctx);
   const row = signedInRow(ctx);
   limit(ctx, `google-connect:user:${row.id}`, 10, HOUR);
@@ -234,8 +232,11 @@ const googleConnect: PendingHandler<'auth.googleConnect'> = async (ctx, body) =>
   return userOut(ctx, row.id);
 };
 
-/** Case 5: remove the Google link. Works even if Google sign-in has since been switched off. */
-const googleDisconnect: PendingHandler<'auth.googleDisconnect'> = async (ctx, body) => {
+/**
+ * Case 5: remove the Google link. Deliberately NOT behind the feature switch: it only ever takes a way in
+ * away from an account that keeps its password, so it stays possible if Google sign-in is switched off later.
+ */
+export const googleDisconnect: Handler<'auth.googleDisconnect'> = async (ctx, { body }) => {
   const { accounts } = coreState(ctx);
   const row = signedInRow(ctx);
   limit(ctx, `google-disconnect:user:${row.id}`, 10, HOUR);
@@ -247,9 +248,12 @@ const googleDisconnect: PendingHandler<'auth.googleDisconnect'> = async (ctx, bo
   return userOut(ctx, row.id);
 };
 
-/** Case 5: remove the password. */
-const removePassword: PendingHandler<'auth.removePassword'> = async (ctx, body) => {
-  const { accounts } = coreState(ctx);
+/**
+ * Case 5: remove the password. Behind the feature switch: with Google sign-in off, an account left with
+ * only its Google link could not be opened at all.
+ */
+export const removePassword: Handler<'auth.removePassword'> = async (ctx, { body }) => {
+  const { accounts } = requireGoogle(ctx);
   const row = signedInRow(ctx);
   limit(ctx, `password-remove:user:${row.id}`, 10, HOUR);
   if (!row.password_hash) return userOut(ctx, row.id);
@@ -261,7 +265,7 @@ const removePassword: PendingHandler<'auth.removePassword'> = async (ctx, body) 
 };
 
 /** Case 4: join another account of the same teacher into this one. */
-const accountMerge: PendingHandler<'account.merge'> = async (ctx, body) => {
+export const accountMerge: Handler<'account.merge'> = async (ctx, { body }) => {
   const state = coreState(ctx);
   const { accounts, records } = state;
   const survivor = signedInRow(ctx);
@@ -309,34 +313,3 @@ const accountMerge: PendingHandler<'account.merge'> = async (ctx, body) => {
   ctx.log.info('accounts_merged', { userId: survivor.id, records: outcome.moved.moved, modules: outcome.modules.length });
   return { ...userOut(ctx, survivor.id), movedRecords: outcome.moved.moved };
 };
-
-const PENDING_HANDLERS: { [K in PendingRouteName]: PendingHandler<K> } = {
-  'auth.googleLink': googleLink,
-  'auth.googleLinkRequest': googleLinkRequest,
-  'auth.googleLinkConfirm': googleLinkConfirm,
-  'auth.googleConnect': googleConnect,
-  'auth.googleDisconnect': googleDisconnect,
-  'auth.removePassword': removePassword,
-  'account.merge': accountMerge,
-};
-
-/**
- * Handlers for the pending routes, in the kernel's handler shape. Each validates its body against the spec
- * in pending-routes.ts again: if the contract adopts a route with a different body, the mismatch shows up
- * as a clear 400 instead of undefined behaviour.
- */
-export function pendingHandlers(): Record<PendingRouteName, (ctx: Ctx, input: { body: unknown }) => unknown> {
-  const out = {} as Record<PendingRouteName, (ctx: Ctx, input: { body: unknown }) => unknown>;
-  for (const name of Object.keys(PENDING_HANDLERS) as PendingRouteName[]) {
-    out[name] = (ctx, input) => {
-      const parsed = PENDING_ROUTES[name].body.safeParse(input.body);
-      if (!parsed.success) {
-        throw new HttpError('invalid_input', 'Some of the details sent were not right. Please check them and try again.', {
-          issues: parsed.error.issues.slice(0, 20).map((i) => ({ path: ['body', ...i.path].join('.'), message: i.message })),
-        });
-      }
-      return (PENDING_HANDLERS[name] as (ctx: Ctx, body: unknown) => unknown)(ctx, parsed.data);
-    };
-  }
-  return out;
-}

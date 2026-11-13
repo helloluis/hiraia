@@ -33,14 +33,11 @@ export interface KernelExtension {
    * Must be synchronous and must only touch the module's own tables.
    */
   onAccountDeleted?: (deps: BaseDeps, userId: Id) => void;
-  /**
-   * Two accounts of one teacher are being merged: move (or remove) what this module stores for `fromUserId`
-   * so it belongs to `toUserId`. Runs inside the merge transaction; synchronous. See CONTRACT-REQUESTS.md.
-   */
+  /** The same as `ServerModule.onAccountMerged`, for a module written before that was in the contract. */
   onAccountMerged?: (deps: BaseDeps, fromUserId: Id, toUserId: Id) => void;
 }
 
-export type ExtendedModule = ServerModule & { kernel?: KernelExtension; onAccountMerged?: KernelExtension['onAccountMerged'] };
+export type ExtendedModule = ServerModule & { kernel?: KernelExtension };
 
 export function kernelExtension(module: ServerModule): KernelExtension {
   const ext = (module as ExtendedModule).kernel;
