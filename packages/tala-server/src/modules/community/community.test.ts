@@ -551,3 +551,12 @@ test('staff CLI shows, takes down and restores without printing lesson content',
   assert.ok(!out.includes('Plants have roots'), 'no lesson body');
   w.t.close();
 });
+
+test('the display name is checked too', async () => {
+  const w = world();
+  const { user, planId } = await teacherWithPlan(w);
+  const res = await w.t.ok('community.post', { body: postBody(planId, { displayName: 'Text me 09171234567' }), token: user.token });
+  assert.equal(res.moderation.decision, 'return');
+  assert.equal(res.moderation.reasons[0]!.sectionKey, 'displayName');
+  w.t.close();
+});

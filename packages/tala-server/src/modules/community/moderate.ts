@@ -37,6 +37,8 @@ export type ModelVerdict = z.infer<typeof ModelVerdict>;
 export interface ModerationInput {
   title: string;
   summary: string;
+  /** The name the author posts under (a pseudonym is allowed); checked like any other public text. */
+  displayName?: string;
   sections: ReadonlyArray<{ key: string; content: SectionContent }>;
   /** Variants of learner names from the author's own class lists. Never logged, never sent to a model. */
   knownNames: readonly string[];
@@ -62,7 +64,10 @@ const GENERIC_MESSAGES: Record<ModerationDecision['reasons'][number]['category']
 
 export async function runModeration(deps: { llm: LlmGateway; config: TalaServerConfig }, input: ModerationInput): Promise<ModerationOutcome> {
   const guidelineVersion = deps.config.moderation.guidelineVersion;
-  const textInput = { title: input.title, summary: input.summary, sections: input.sections };
+  const sections = input.displayName
+    ? [...input.sections, { key: 'displayName', content: { type: 'list' as const, items: [input.displayName] } }]
+    : input.sections;
+  const textInput = { title: input.title, summary: input.summary, sections };
   const findings = detectPersonalData(textInput, { knownNames: input.knownNames });
   const ruleKinds = [...new Set(findings.map((f) => `${f.kind}:${f.confidence}`))].sort();
 
@@ -89,7 +94,7 @@ export async function runModeration(deps: { llm: LlmGateway; config: TalaServerC
   if (!deps.config.moderation.enabled || route === 'rules' || route === 'off') return rulesOnly('rules_only');
 
   const { text } = moderationText(textInput, MODERATION_MAX_CHARS);
-  const sectionKeys = new Set(['title', 'summary', ...input.sections.map((s) => s.key)]);
+  const sectionKeys = new Set(['title', 'summary', ...sections.map((s) => s.key)]);
   const result = await deps.llm.complete({
     feature: 'community.moderate',
     promptId: MODERATION_PROMPT_ID,

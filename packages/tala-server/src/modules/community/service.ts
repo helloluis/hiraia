@@ -122,7 +122,7 @@ export async function postArtifact(deps: CommunityDeps, user: SessionUser, body:
 
   const outcome = await runModeration(
     { llm: deps.services.llm, config: deps.config },
-    { title: prepared.meta.title, summary: prepared.meta.summary, sections: prepared.content.sections, knownNames: prepared.knownNames, userId: user.id },
+    { title: prepared.meta.title, summary: prepared.meta.summary, displayName: prepared.meta.authorDisplayName, sections: prepared.content.sections, knownNames: prepared.knownNames, userId: user.id },
   );
   const decision = outcome.decision;
   const now = deps.now().toISOString();
@@ -181,7 +181,7 @@ export async function postArtifact(deps: CommunityDeps, user: SessionUser, body:
 function versionInput(v: VersionRow) {
   const content = JSON.parse(v.content_json) as VersionContent;
   const meta = JSON.parse(v.meta_json) as VersionMeta;
-  return { title: meta.title, summary: meta.summary, sections: content.sections };
+  return { title: meta.title, summary: meta.summary, displayName: meta.authorDisplayName, sections: content.sections };
 }
 
 /** Decide pending versions and pending report checks. Safe to call at any time; returns what it decided. */
