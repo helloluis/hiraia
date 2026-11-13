@@ -185,4 +185,11 @@ export const coreMigrations: Migration[] = [
       ) STRICT;
     `,
   },
+  {
+    id: 'core:005_email_token_payload',
+    sql: `
+      -- An emailed link that connects a Google identity must remember WHICH Google account asked for it.
+      ALTER TABLE core_email_tokens ADD COLUMN payload TEXT;
+    `,
+  },
 ];

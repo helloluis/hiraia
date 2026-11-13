@@ -22,9 +22,15 @@ export type RouteMatch =
 
 const MAX_PARAM_LENGTH = 200;
 
-export function compileRoutes(): CompiledRoute[] {
-  const routes = ROUTE_NAMES.map((name): CompiledRoute => {
-    const spec: RouteSpec = API[name];
+/**
+ * `extra` adds routes that are not in the contract table yet. It exists so handlers written ahead of a
+ * contract change can be tested through the whole request path; production never passes it. A name that
+ * is already in the table is ignored here: the contract's own spec wins.
+ */
+export function compileRoutes(extra: Record<string, RouteSpec> = {}): CompiledRoute[] {
+  const specs: Array<[string, RouteSpec]> = [...ROUTE_NAMES.map((name): [string, RouteSpec] => [name, API[name]]), ...Object.entries(extra).filter(([name]) => !(name in API))];
+  const routes = specs.map(([routeName, spec]): CompiledRoute => {
+    const name = routeName as RouteName;
     const segments = spec.path
       .split('/')
       .filter(Boolean)

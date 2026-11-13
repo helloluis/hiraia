@@ -16,6 +16,28 @@ getTalaServer();                                   // one shared instance per pr
 
 `better-sqlite3` and `@node-rs/argon2` are native modules. In Next.js list both in `serverExternalPackages`.
 
+## Running the dev server
+
+```bash
+pnpm install --filter "@hiraia/tala-server..."        # once, from the repository root
+
+pnpm --filter @hiraia/tala-server dev                 # watches and restarts: tsx watch src/dev-server.ts
+pnpm --filter @hiraia/tala-server exec tsx src/dev-server.ts    # one run, no watcher
+
+TALA_PORT=8790 pnpm --filter @hiraia/tala-server dev  # another port (default 8787)
+```
+
+It prints `Tala API (local) on http://127.0.0.1:8787/api/v1 · database: <path>` and serves every route in the
+contract. With no variables set it runs in `local` mode on a private SQLite file under this package's
+`node_modules/.cache`, calls no model provider, and sends no mail.
+
+- Check it: `curl http://127.0.0.1:8787/api/v1/config`
+- Read the mail it "sent" (verification, reset and link mails are written to a table instead):
+  `pnpm --filter @hiraia/tala-server exec tsx src/modules/core/tools/outbox.ts`
+- Start again from nothing: stop it and delete the database file it printed.
+- It listens on 127.0.0.1 only. Set `TALA_HOST` to reach it from a phone on the same network.
+- Before starting, make sure the port is free (`ss -tlnp | grep 8787`); it stops with a clear message if not.
+
 ## What happens to a request
 
 1. The path is matched against the `API` table in `@hiraia/tala-core`. Nothing outside the table exists.
@@ -43,8 +65,13 @@ export const myModule: ServerModule = {
   services: (base) => ({ … }),             // optional: what this module offers through ctx.services
   start: (deps) => () => {},               // optional: timers and job runners; return a stop function
   onAccountDeleted: (deps, userId) => {},  // delete this module's rows for a deleted account (PRIV-6)
+  onAccountMerged: (deps, from, to) => {}, // requested, not in the contract yet: hand this module's rows to another account
 };
 ```
+
+- `onAccountDeleted` runs once per module inside the deletion transaction (also when a module still sets it
+  under `kernel`). If it throws, the account is not deleted. A module that has it but no `onAccountMerged`
+  blocks account merging: its rows would otherwise be orphaned or lost.
 
 - Migrations run once, in order, each in its own transaction, and are recorded with a checksum. An applied
   migration that was edited stops the server at start: add a new one instead. Ids must be
@@ -70,6 +97,8 @@ Names only are ever printed in errors; values are not. Everything has a safe loc
 | `TALA_LOG_LEVEL` | `info` | `info`, `warn`, `error` or `silent`. Logs are JSON lines on stdout. |
 | `TALA_SESSION_TTL_DAYS` | `90` | Sliding session lifetime. At least 31 outside local, so a phone stays signed in through 30 days offline (OFF-5). |
 | `TALA_SESSION_COOKIE` | `__Host-tala_session` on https, `tala_session` on http | Cookie name. |
+| `GOOGLE_OAUTH_CLIENT_ID` | — | Client id(s) a Google ID token must be issued for; several (web, Android) separated by commas. Needed when `TALA_FEATURE_GOOGLE_SIGNIN` is on; without it Google sign-in answers "not set up". |
+| `GOOGLE_OAUTH_CLIENT_SECRET` | — | Not read by this server: verifying an ID token needs no secret. Listed because the PRD (AUTH-12) names it for the web app's own Google set-up. |
 | `DEEPSEEK_API_KEY` | — | Primary model key. Read by the gateway at call time; the config holds only this name. |
 | `DASHSCOPE_API_KEY` (or `ALIBABACLOUD_API_KEY`) | — | Fallback model key, same rule. |
 | `TALA_LLM_PRIMARY_MODEL`, `TALA_LLM_FALLBACK_MODEL` | empty | Model identifiers. Deliberately no built-in guess: empty means not configured. |
@@ -96,6 +125,16 @@ Names only are ever printed in errors; values are not. Everything has a safe loc
 
 A change takes effect when the server restarts. No client release is needed.
 
+## Google sign-in
+
+Off by default (`TALA_FEATURE_GOOGLE_SIGNIN`). When on, `auth.google` accepts a Google ID token and checks
+its RS256 signature against Google's published keys (fetched from Google and cached as long as Google says),
+that it was issued by Google for one of our client ids, that it has not expired, and that Google has confirmed
+the email. A new Google sign-in creates an account with a confirmed email. An existing Tala account is never
+linked on Google's word alone; the linking rules (PRD §13.3) are at the top of
+`src/modules/core/google-handlers.ts`, and the routes they need that are not in the contract yet are in
+`src/modules/core/pending-routes.ts`. The only outside call is to Google's key endpoint; tests replace it.
+
 ## Mail
 
 Local and staging do not send mail. Messages go to the `core_mail_outbox` table, and
@@ -111,7 +150,7 @@ store working sign-in links.
 | `server.ts` | `createServer`, the request path above, service wiring, module start/stop |
 | `router.ts` | Route matching from the `API` table |
 | `http.ts` | Body reading with limits, JSON parsing, responses, client address |
-| `auth.ts` | Credentials, cookies, the cross-site check, kernel-private hooks for core |
+| `auth.ts` | Credentials, cookies, the cross-site check, account deletion and merge hooks |
 | `config.ts` | Environment → `TalaServerConfig` |
 | `db.ts` | SQLite connection and the migration runner |
 | `logger.ts` | The logger and its redaction rules |

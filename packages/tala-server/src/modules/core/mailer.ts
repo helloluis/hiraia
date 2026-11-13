@@ -18,7 +18,12 @@ import type { Id, Lang } from '@hiraia/tala-core';
 import type { Db } from '../../kernel/db';
 import type { Logger, Mailer, TalaServerConfig } from '../../kernel/types';
 
-export type MailTemplate = 'verify_email' | 'password_reset';
+export type MailTemplate = 'verify_email' | 'password_reset' | 'link_google';
+
+/** Core's own mailer: the contract's `Mailer`, plus templates only core sends. */
+export interface CoreMailer extends Mailer {
+  sendAny(msg: { to: string; template: MailTemplate; lang: Lang; vars: Record<string, string> }): Promise<void>;
+}
 
 export interface RenderedMail {
   to: string;
@@ -35,6 +40,8 @@ export type MailTransport = (mail: RenderedMail) => Promise<void>;
 const LINK_PATH: Record<MailTemplate, string> = {
   verify_email: MAIL_LINK_PATHS.verifyEmail,
   password_reset: MAIL_LINK_PATHS.resetPassword,
+  // Not in the contract yet (requested): the page posts the token to `auth.googleLinkConfirm`.
+  link_google: (MAIL_LINK_PATHS as Record<string, string>).linkGoogle ?? '/link-google',
 };
 
 export function mailLink(config: TalaServerConfig, template: MailTemplate, token: string): string {
@@ -84,6 +91,26 @@ const TEMPLATES: Record<MailTemplate, Record<Lang, TemplateText>> = {
         `Tala, mula sa Hiraia`,
     },
   },
+  link_google: {
+    en: {
+      subject: 'Connect Google to your Tala account',
+      body: (v) =>
+        `Hello ${v.displayName ?? ''},\n\n` +
+        `Someone asked to connect the Google account ${v.googleEmail ?? ''} to your Tala account, so that you can sign in with Google. ` +
+        `If this was you, open this link:\n\n${v.link ?? ''}\n\n` +
+        `The link works for 30 minutes and only once. If this was not you, you can ignore this message. Nothing will change.\n\n` +
+        `Tala, by Hiraia`,
+    },
+    fil: {
+      subject: 'Ikonekta ang Google sa iyong Tala account',
+      body: (v) =>
+        `Kumusta ${v.displayName ?? ''},\n\n` +
+        `May humiling na ikonekta ang Google account na ${v.googleEmail ?? ''} sa iyong Tala account, para makapag-sign in ka gamit ang Google. ` +
+        `Kung ikaw ito, buksan ang link na ito:\n\n${v.link ?? ''}\n\n` +
+        `Gagana ang link sa loob ng 30 minuto at isang beses lang. Kung hindi ikaw ito, huwag mo na lang pansinin ang mensaheng ito. Walang magbabago.\n\n` +
+        `Tala, mula sa Hiraia`,
+    },
+  },
 };
 
 export function renderMail(msg: { to: string; template: MailTemplate; lang: Lang; vars: Record<string, string> }): RenderedMail {
@@ -97,13 +124,12 @@ export interface OutboxMail extends RenderedMail {
   createdAt: string;
 }
 
-export function createMailer(deps: { db: Db; config: TalaServerConfig; now: () => Date; newId: () => Id; log: Logger; transport?: MailTransport }): Mailer {
+export function createMailer(deps: { db: Db; config: TalaServerConfig; now: () => Date; newId: () => Id; log: Logger; transport?: MailTransport }): CoreMailer {
   const { db, config, now, newId, log, transport } = deps;
   const insert = db.prepare(
     'INSERT INTO core_mail_outbox (id, to_email, template, lang, subject, body, vars, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
   );
-  return {
-    async send(msg) {
+  const sendAny: CoreMailer['sendAny'] = async (msg) => {
       const mail = renderMail(msg);
       if (transport) {
         await transport(mail);
@@ -117,8 +143,8 @@ export function createMailer(deps: { db: Db; config: TalaServerConfig; now: () =
       const id = newId();
       insert.run(id, mail.to, mail.template, mail.lang, mail.subject, mail.body, JSON.stringify(msg.vars), now().toISOString());
       log.info('mail_queued_in_outbox', { template: mail.template, lang: mail.lang, outboxId: id });
-    },
   };
+  return { send: sendAny, sendAny };
 }
 
 /** Read the dev outbox, newest first. For tests and the local outbox tool only. */

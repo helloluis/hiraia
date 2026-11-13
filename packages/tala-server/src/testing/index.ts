@@ -13,7 +13,7 @@
  * captured mail outbox and captured logs. Nothing touches the network or the disk.
  */
 import { API, API_BASE, buildPath, createTalaClient } from '@hiraia/tala-core';
-import type { ApiErrorCode, BodyIn, Id, ParamsOf, QueryIn, ResponseOf, RouteName, TalaClient, User } from '@hiraia/tala-core';
+import type { ApiErrorCode, BodyIn, Id, ParamsOf, QueryIn, ResponseOf, RouteName, RouteSpec, TalaClient, User } from '@hiraia/tala-core';
 import { loadConfig } from '../kernel/config';
 import type { DeepPartial } from '../kernel/config';
 import type { Db } from '../kernel/db';
@@ -146,6 +146,8 @@ export interface TestServerOptions {
   quiet?: boolean;
   newId?: () => Id;
   trustedProxyHops?: number;
+  /** Routes not in the contract table yet (see KernelOptions.extraRoutes). Call them with `request()`. */
+  extraRoutes?: Record<string, RouteSpec>;
 }
 
 export interface TestServer {
@@ -204,6 +206,7 @@ export function createTestServer(options: TestServerOptions = {}): TestServer {
     newId: options.newId,
     logSink: (entry) => logs.push(entry),
     trustedProxyHops: options.trustedProxyHops ?? 0,
+    extraRoutes: options.extraRoutes,
     onInternalError(error, info) {
       errors.push(error);
       if (!options.quiet) {

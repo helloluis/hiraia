@@ -23,8 +23,16 @@ const ENDED_TOKEN_DAYS = 120;
 
 export const VERIFY_EMAIL_TTL_MS = 48 * 60 * 60 * 1000;
 export const PASSWORD_RESET_TTL_MS = 30 * 60 * 1000;
+export const LINK_GOOGLE_TTL_MS = 30 * 60 * 1000;
 
-export type EmailTokenPurpose = 'verify_email' | 'password_reset';
+export type EmailTokenPurpose = 'verify_email' | 'password_reset' | 'link_google';
+
+export interface IdentityRow {
+  provider: string;
+  subject: string;
+  user_id: string;
+  email: string;
+}
 
 export interface UserRow {
   id: string;
@@ -98,6 +106,13 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
     deleteUser: db.prepare('DELETE FROM core_users WHERE id = ?'),
     deleteMailTo: db.prepare('DELETE FROM core_mail_outbox WHERE lower(to_email) = ?'),
     hasGoogle: db.prepare(`SELECT 1 FROM core_identities WHERE user_id = ? AND provider = 'google' LIMIT 1`),
+    identityBySubject: db.prepare('SELECT * FROM core_identities WHERE provider = ? AND subject = ?'),
+    identityOfUser: db.prepare('SELECT * FROM core_identities WHERE user_id = ? AND provider = ?'),
+    insertIdentity: db.prepare('INSERT INTO core_identities (provider, subject, user_id, email, created_at) VALUES (?, ?, ?, ?, ?)'),
+    deleteIdentity: db.prepare('DELETE FROM core_identities WHERE user_id = ? AND provider = ?'),
+    moveIdentity: db.prepare('UPDATE core_identities SET user_id = ? WHERE user_id = ? AND provider = ?'),
+    setIdentityEmail: db.prepare('UPDATE core_identities SET email = ? WHERE provider = ? AND subject = ?'),
+    clearPassword: db.prepare('UPDATE core_users SET password_hash = NULL, password_changed_at = ?, updated_at = ? WHERE id = ?'),
 
     insertSession: db.prepare(
       `INSERT INTO core_sessions (id, user_id, token_hash, device_label, created_at, last_seen_at, expires_at) VALUES (?, ?, ?, ?, ?, ?, ?)`,
@@ -114,7 +129,7 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
     pruneSessions: db.prepare('DELETE FROM core_sessions WHERE expires_at < ?'),
 
     insertEmailToken: db.prepare(
-      `INSERT INTO core_email_tokens (id, user_id, purpose, token_hash, email_norm, created_at, expires_at, used_at) VALUES (?, ?, ?, ?, ?, ?, ?, NULL)`,
+      `INSERT INTO core_email_tokens (id, user_id, purpose, token_hash, email_norm, created_at, expires_at, used_at, payload) VALUES (?, ?, ?, ?, ?, ?, ?, NULL, ?)`,
     ),
     emailTokenByHash: db.prepare('SELECT * FROM core_email_tokens WHERE token_hash = ? AND purpose = ?'),
     useEmailToken: db.prepare('UPDATE core_email_tokens SET used_at = ? WHERE id = ? AND used_at IS NULL'),
@@ -134,7 +149,7 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
     };
   }
 
-  function endSessionRow(row: SessionRow, reason: 'revoked' | 'account_deleted'): void {
+  function endSessionRow(row: SessionRow, reason: 'revoked' | 'account_deleted' | 'account_merged'): void {
     q.endToken.run(row.token_hash, reason, now().toISOString());
     q.deleteSession.run(row.id);
   }
@@ -192,8 +207,8 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
      * Remove the account. Its sessions are remembered (as hashes) as ended by deletion, so its other devices
      * learn why they were signed out. Rows in tables that reference the user go with it.
      */
-    deleteUser(user: UserRow): void {
-      for (const row of q.allSessionsOfUser.all(user.id) as SessionRow[]) endSessionRow(row, 'account_deleted');
+    deleteUser(user: UserRow, reason: 'account_deleted' | 'account_merged' = 'account_deleted'): void {
+      for (const row of q.allSessionsOfUser.all(user.id) as SessionRow[]) endSessionRow(row, reason);
       q.deleteMailTo.run(user.email_norm);
       q.deleteUser.run(user.id);
     },
@@ -217,6 +232,7 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
       if (!session) {
         const ended = q.endedToken.get(tokenHash) as { reason: string } | undefined;
         if (ended?.reason === 'account_deleted') return { user: null, reason: 'account_deleted' };
+        if (ended?.reason === 'account_merged') return { user: null, reason: 'account_merged' };
         if (ended) return { user: null, reason: 'revoked' };
         return { user: null, reason: 'unknown' };
       }
@@ -264,13 +280,65 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
     /* ---------------- emailed tokens ---------------- */
 
     /** Issue a single-use token. Earlier unused tokens of the same purpose stop working. */
-    issueEmailToken(user: UserRow, purpose: EmailTokenPurpose): string {
+    issueEmailToken(user: UserRow, purpose: EmailTokenPurpose, payload: Record<string, string> | null = null): string {
       const token = newToken();
       const at = now();
-      const ttl = purpose === 'verify_email' ? VERIFY_EMAIL_TTL_MS : PASSWORD_RESET_TTL_MS;
+      const ttl = purpose === 'verify_email' ? VERIFY_EMAIL_TTL_MS : purpose === 'password_reset' ? PASSWORD_RESET_TTL_MS : LINK_GOOGLE_TTL_MS;
       q.retireEmailTokens.run(at.toISOString(), user.id, purpose);
-      q.insertEmailToken.run(newId(), user.id, purpose, hashToken(token), user.email_norm, at.toISOString(), new Date(at.getTime() + ttl).toISOString());
+      q.insertEmailToken.run(newId(), user.id, purpose, hashToken(token), user.email_norm, at.toISOString(), new Date(at.getTime() + ttl).toISOString(), payload ? JSON.stringify(payload) : null);
       return token;
+    },
+
+    /** Like consumeEmailToken, and also hands back what was stored with the token. */
+    consumeEmailTokenWithPayload(token: string, purpose: EmailTokenPurpose): { user: UserRow; payload: Record<string, string> } | null {
+      const row = q.emailTokenByHash.get(hashToken(token), purpose) as
+        | { id: string; user_id: string; email_norm: string; expires_at: string; used_at: string | null; payload: string | null }
+        | undefined;
+      const at = now().toISOString();
+      if (!row || row.used_at !== null || row.expires_at <= at || row.payload === null) return null;
+      if (q.useEmailToken.run(at, row.id).changes !== 1) return null;
+      const user = q.userById.get(row.user_id) as UserRow | undefined;
+      if (!user || user.email_norm !== row.email_norm) return null;
+      return { user, payload: JSON.parse(row.payload) as Record<string, string> };
+    },
+
+    /* ---------------- external identities (Google) ---------------- */
+
+    identityBySubject(provider: string, subject: string): IdentityRow | null {
+      return (q.identityBySubject.get(provider, subject) as IdentityRow | undefined) ?? null;
+    },
+
+    identityOfUser(userId: Id, provider: string): IdentityRow | null {
+      return (q.identityOfUser.get(userId, provider) as IdentityRow | undefined) ?? null;
+    },
+
+    /** False when that identity already belongs to an account (one identity, one account: AUTH-11). */
+    attachIdentity(userId: Id, provider: string, subject: string, email: string): boolean {
+      try {
+        q.insertIdentity.run(provider, subject, userId, email, now().toISOString());
+        return true;
+      } catch (err) {
+        if ((err as { code?: string }).code === 'SQLITE_CONSTRAINT_PRIMARYKEY') return false;
+        throw err;
+      }
+    },
+
+    detachIdentity(userId: Id, provider: string): boolean {
+      return q.deleteIdentity.run(userId, provider).changes > 0;
+    },
+
+    moveIdentity(fromUserId: Id, toUserId: Id, provider: string): void {
+      q.moveIdentity.run(toUserId, fromUserId, provider);
+    },
+
+    rememberIdentityEmail(provider: string, subject: string, email: string): void {
+      q.setIdentityEmail.run(email, provider, subject);
+    },
+
+    /** The account keeps working through its other sign-in method. The caller has checked that there is one. */
+    clearPassword(userId: Id): void {
+      const at = now().toISOString();
+      q.clearPassword.run(at, at, userId);
     },
 
     /** The account a still-valid token belongs to, without using it up. */

@@ -9,9 +9,9 @@
  * only the route NAME, status, duration and the internal user id.
  */
 import { randomUUID } from 'node:crypto';
-import type { Id, RouteName } from '@hiraia/tala-core';
+import type { Id, RouteName, RouteSpec } from '@hiraia/tala-core';
 import { attachEffects, extractCredentials, isCrossSite, kernelExtension, registerAccountHooks } from './auth';
-import type { AuthFailure, Authenticator, RequestEffects } from './auth';
+import type { AuthFailure, Authenticator, ExtendedModule, RequestEffects } from './auth';
 import { loadConfigWithWarnings } from './config';
 import type { DeepPartial } from './config';
 import { openDatabase, runMigrations } from './db';
@@ -72,6 +72,11 @@ export interface KernelOptions {
   onInternalError?: (error: unknown, info: { route: RouteName | null; requestId: string }) => void;
   /** Messages for the operator from config loading, logged once at startup. */
   startupWarnings?: string[];
+  /**
+   * Routes that are not in the contract table yet, for testing handlers written ahead of a contract change.
+   * Never set in production: `createTalaServer` does not pass it.
+   */
+  extraRoutes?: Record<string, RouteSpec>;
 }
 
 type AnyHandler = (ctx: Ctx, input: { params: Record<string, string>; query: unknown; body: unknown }) => unknown;
@@ -81,6 +86,7 @@ const AUTH_FAILURE_MESSAGE: Record<AuthFailure, string> = {
   expired: 'You have been signed out because this device was not used for a long time. Please sign in again.',
   revoked: 'You were signed out on this device. Please sign in again.',
   account_deleted: 'This account was deleted.',
+  account_merged: 'This account was joined with your other account. Please sign in to that one.',
 };
 
 function isBinaryResult(value: unknown): value is BinaryResponse {
@@ -135,7 +141,7 @@ export function createServer(options: KernelOptions): KernelServer {
   }
 
   /* ---- handlers: one module per route ---- */
-  const routes = compileRoutes();
+  const routes = compileRoutes(options.extraRoutes);
   const handlers = new Map<RouteName, { handler: AnyHandler; module: string }>();
   for (const m of modules) {
     for (const [name, handler] of Object.entries(m.handlers)) {
@@ -160,9 +166,12 @@ export function createServer(options: KernelOptions): KernelServer {
   registerAccountHooks(
     db,
     modules.flatMap((m) => {
-      // The contract field, or the older kernel-private spelling of the same thing.
+      // The contract field, or the older kernel-private spelling of the same thing. Never both: a module that
+      // sets the two to one function is called once.
       const hook = m.onAccountDeleted ?? kernelExtension(m).onAccountDeleted;
-      return hook ? [{ module: m.name, run: (userId: Id) => hook(base, userId) }] : [];
+      const merge = (m as ExtendedModule).onAccountMerged ?? kernelExtension(m).onAccountMerged;
+      if (!hook) return [];
+      return [{ module: m.name, run: (userId: Id) => hook(base, userId), ...(merge ? { merge: (from: Id, to: Id) => merge(base, from, to) } : {}) }];
     }),
   );
 

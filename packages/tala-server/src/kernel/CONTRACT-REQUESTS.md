@@ -16,6 +16,62 @@ open items.
 | `createTestServer` was not importable from other packages. | `@hiraia/tala-server/testing` export. |
 | Boolean query strings parsed `'false'` as true. | `QueryBool` (found independently by worker H). |
 
+## 1a. New in wave 2: needed for Google account linking and merging (PRD §13.3)
+
+Everything below is implemented and tested. The handlers switch on by themselves when the contract gains a
+route with the same name; until then no real server exposes them.
+
+### Routes to add to `API` (exact specs, as code, in `src/modules/core/pending-routes.ts`)
+
+| Name | Method and path | Auth | Body | Response | §13.3 case |
+|---|---|---|---|---|---|
+| `auth.googleLink` | `POST /auth/google/link` | none | `{ idToken: string ≤4000, password: string ≤200, deviceLabel: string ≤80 = '' }` | `AuthResult` | 1 (password) |
+| `auth.googleLinkRequest` | `POST /auth/google/link/request` | none | `{ idToken }` | `Ok` (always) | 1 (emailed link) |
+| `auth.googleLinkConfirm` | `POST /auth/google/link/confirm` | none | `{ token: string 6–200 }` | `Ok` | 1 (emailed link) |
+| `auth.googleConnect` | `POST /auth/google/connect` | user | `{ idToken, password }` | `{ user: User }` | 3 |
+| `auth.googleDisconnect` | `POST /auth/google/disconnect` | user | `{ password }` | `{ user: User }` | 5 |
+| `auth.removePassword` | `POST /auth/password/remove` | user | `{ currentPassword }` | `{ user: User }` | 5 |
+| `account.merge` | `POST /account/merge` | user | `{ confirm: 'MERGE', currentPassword?, email?, password?, idToken? }` | `{ user: User, movedRecords: int }` | 4 |
+
+Copy the entries of `PENDING_ROUTES` into `API` wrapped in `route(...)`; all are `owner: 'core'`.
+
+### Other contract additions
+
+- **`MAIL_LINK_PATHS.linkGoogle = '/link-google'`**. The page reads `#token=…` and posts it to
+  `auth.googleLinkConfirm`. Until it is in the contract the mailer uses that literal path.
+- **`ServerModule.onAccountMerged?: (deps: BaseDeps, fromUserId: Id, toUserId: Id) => void`**. Runs inside the
+  merge transaction; synchronous. Move (or remove) the module's rows for `fromUserId` so they belong to
+  `toUserId`. **A module with `onAccountDeleted` and no `onAccountMerged` blocks `account.merge`**
+  (`503`, `details: { reason: 'merge_not_available', modules: [...] }`), because its rows would be orphaned
+  or have to be deleted. Today that is `community`, `generation`, `llm` and `roster`. Suggested behaviour:
+  community re-points `author_id`, copies and reports to the surviving account (attribution text unchanged);
+  generation, llm and roster may simply delete, as on account deletion.
+- **`Mailer` template `'link_google'`** (vars `displayName`, `googleEmail`, `link`). Core sends it through its
+  own mailer today; adding it to the `Mailer` interface would let a production transport handle it uniformly.
+
+### What clients see (all `details.reason` values)
+
+| Situation | Answer |
+|---|---|
+| Google sign-in switched off | `501 not_implemented`, `google_sign_in_not_available` |
+| Switched on, `GOOGLE_OAUTH_CLIENT_ID` missing | `503 unavailable`, `google_not_configured` |
+| Google's keys cannot be fetched | `503 unavailable`, `google_unreachable` (offer email and password) |
+| Token refused (signature, audience, issuer, expiry, shape) | `401 unauthenticated`, `google_token_invalid` |
+| Google has not confirmed the Google account's email | `403 forbidden`, `google_email_not_verified` |
+| A confirmed Tala account has this email | `409 conflict`, `link_required`, `methods: ['password', 'email_link']` |
+| A Tala account has this email but never confirmed it | `409 conflict`, `verify_email_first` |
+| The Tala account already has a (different) Google account | `409 conflict`, `google_already_linked` |
+| That Google account belongs to another Tala account | `409 conflict`, `google_in_use` |
+| `auth.googleLink` for an address with no Tala account | `409 conflict`, `no_account_to_link` |
+| Removing the only way into an account | `403 forbidden`, `last_sign_in_method` |
+| Wrong password where one is asked again | `403 forbidden`, `wrong_password` (`401 invalid_credentials` on `auth.googleLink`) |
+| Merge: other account not proven / same account / nothing given | `403 other_account_not_proven` / `400 same_account` / `400 merge_proof_missing` |
+| A device of an account that was merged away | `401 unauthenticated`, `account_merged` (do not wipe unsent work; sign in to the other account) |
+
+Web and mobile each need: a "Continue with Google" button that posts the ID token to `auth.google`; a
+"connect" step that handles `link_required` (password field, or "email me a link"); the `/link-google` page;
+and connect / disconnect / remove password / join accounts in Settings.
+
 ## 2. Decision still open: sign-up reveals that an email is registered
 
 `auth.register` returns a session, so signing up with an address that already has an account must fail

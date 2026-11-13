@@ -16,7 +16,7 @@ import type { BaseDeps, Ctx, ServerModule, Services, SessionUser, TalaServerConf
 
 /* ---------------- authenticator ---------------- */
 
-export type AuthFailure = 'unknown' | 'expired' | 'revoked' | 'account_deleted';
+export type AuthFailure = 'unknown' | 'expired' | 'revoked' | 'account_deleted' | 'account_merged';
 
 export type AuthOutcome = { user: SessionUser } | { user: null; reason: AuthFailure };
 
@@ -33,9 +33,14 @@ export interface KernelExtension {
    * Must be synchronous and must only touch the module's own tables.
    */
   onAccountDeleted?: (deps: BaseDeps, userId: Id) => void;
+  /**
+   * Two accounts of one teacher are being merged: move (or remove) what this module stores for `fromUserId`
+   * so it belongs to `toUserId`. Runs inside the merge transaction; synchronous. See CONTRACT-REQUESTS.md.
+   */
+  onAccountMerged?: (deps: BaseDeps, fromUserId: Id, toUserId: Id) => void;
 }
 
-export type ExtendedModule = ServerModule & { kernel?: KernelExtension };
+export type ExtendedModule = ServerModule & { kernel?: KernelExtension; onAccountMerged?: KernelExtension['onAccountMerged'] };
 
 export function kernelExtension(module: ServerModule): KernelExtension {
   const ext = (module as ExtendedModule).kernel;
@@ -44,11 +49,35 @@ export function kernelExtension(module: ServerModule): KernelExtension {
 
 /* ---------------- account deletion hooks ---------------- */
 
-const ACCOUNT_HOOKS = new WeakMap<object, Array<{ module: string; run: (userId: Id) => void }>>();
+export interface AccountHooks {
+  module: string;
+  /** Present when the module stores per-teacher rows. */
+  run: (userId: Id) => void;
+  /** Present when the module can also hand those rows to another account. */
+  merge?: (fromUserId: Id, toUserId: Id) => void;
+}
 
-/** Kernel: remember each module's `onAccountDeleted` for this database connection. */
-export function registerAccountHooks(db: object, hooks: Array<{ module: string; run: (userId: Id) => void }>): void {
+const ACCOUNT_HOOKS = new WeakMap<object, AccountHooks[]>();
+
+/** Kernel: remember each module's account hooks for this database connection. */
+export function registerAccountHooks(db: object, hooks: AccountHooks[]): void {
   ACCOUNT_HOOKS.set(db, hooks);
+}
+
+/** Modules that hold per-teacher rows but cannot move them to another account. A merge must not go ahead past these. */
+export function modulesBlockingMerge(db: object): string[] {
+  return (ACCOUNT_HOOKS.get(db) ?? []).filter((h) => !h.merge).map((h) => h.module);
+}
+
+/** Core: let every module move its rows from one account to the other. Call inside the merge transaction. */
+export function runAccountMergedHooks(db: object, fromUserId: Id, toUserId: Id): string[] {
+  const ran: string[] = [];
+  for (const hook of ACCOUNT_HOOKS.get(db) ?? []) {
+    if (!hook.merge) continue;
+    hook.merge(fromUserId, toUserId);
+    ran.push(hook.module);
+  }
+  return ran;
 }
 
 /** Core: run every other module's clean-up for a deleted account. Call inside the deletion transaction. */
