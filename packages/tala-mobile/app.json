@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "Tala",
+    "slug": "tala-next",
+    "version": "1.0.0",
+    "orientation": "default",
+    "userInterfaceStyle": "light",
+    "jsEngine": "hermes",
+    "android": {
+      "allowBackup": false
+    },
+    "plugins": [
+      [
+        "expo-sqlite",
+        {
+          "useSQLCipher": true
+        }
+      ],
+      "expo-secure-store",
+      "expo-font",
+      "expo-background-task"
+    ],
+    "experiments": {
+      "autolinkingModuleResolution": true
+    }
+  }
+}
