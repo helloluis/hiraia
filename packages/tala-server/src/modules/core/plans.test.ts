@@ -340,3 +340,47 @@ test('a device’s own edits, sent just before its lock, do not count as changes
   assert.equal((await pushFrom('device-phone', [upsert('plan', draft({ id: 'plan-0002', state: 'locked', lock: LOCK }), 1)]))[0]!.status, 'applied');
   t.close();
 });
+
+test('deleting a draft plan removes its stored history', async () => {
+  const t = createTestServer();
+  const u = await t.registerUser();
+  await seedDraft(t, u.token);
+  assert.equal((await t.ok('plans.revisions', { token: u.token, params: { planId: 'plan-0001' } })).revisions.length, 1);
+  assert.equal((await push(t, u.token, [del('plan', 'plan-0001', 1)]))[0]!.status, 'applied');
+  assert.deepEqual((await t.ok('plans.revisions', { token: u.token, params: { planId: 'plan-0001' } })).revisions, []);
+  assert.equal((t.db.prepare('SELECT count(*) AS n FROM core_plan_revisions').get() as { n: number }).n, 0);
+  t.close();
+});
+
+test('revision snapshots are stored compressed and read back intact', async () => {
+  const t = createTestServer();
+  const u = await t.registerUser();
+  const long = 'Ang halaman ay may ugat, tangkay, dahon, bulaklak at bunga. '.repeat(200);
+  await push(t, u.token, [upsert('plan', draft()), upsert('plan_section', text('sec-content-01', 'content', long.slice(0, 3900)))]);
+  const row = t.db.prepare('SELECT length(snapshot) AS bytes FROM core_plan_revisions').get() as { bytes: number };
+  assert.ok(row.bytes < 1200, `expected a small packed snapshot, got ${row.bytes} bytes`);
+  const back = await t.ok('plans.revision', { token: u.token, params: { planId: 'plan-0001', revision: '1' } });
+  assert.match(JSON.stringify(back.sections), /ugat, tangkay, dahon/);
+  assert.equal((back.plan.data as Plan).title, 'Mga Halaman');
+  t.close();
+});
+
+test('a device that has not read back the server’s lock details is not refused for it', async () => {
+  const t = createTestServer();
+  const u = await t.registerUser({ displayName: 'Gng. Reyes' });
+  await seedDraft(t, u.token);
+  // The device's clock is a year ahead and it sent no name: the server corrects the time and fills the name.
+  const deviceLock = { lockedAt: '2027-12-01T00:00:00.000Z', lockedBy: '', revisionCode: 'K7Q2M9A', revision: null };
+  const [locked] = await push(t, u.token, [upsert('plan', draft({ state: 'locked', lock: deviceLock }), 1)]);
+  const server = (locked!.record!.data as Plan).lock!;
+  assert.deepEqual([server.lockedAt, server.lockedBy, server.revision], [t.clock.now().toISOString(), 'Gng. Reyes', 2]);
+
+  // Still holding its own copy of the lock, the device moves the lesson to another day.
+  const [moved] = await push(t, u.token, [upsert('plan', draft({ state: 'locked', lock: deviceLock, placements: [{ classId: 'class-0001', assignmentId: null, dates: ['2026-11-20'] }] }), locked!.record!.rev)]);
+  assert.equal(moved!.status, 'applied');
+  assert.deepEqual((moved!.record!.data as Plan).lock, server, 'the server’s lock details stand');
+  // Sending the very same thing again changes nothing.
+  const [again] = await push(t, u.token, [upsert('plan', draft({ state: 'locked', lock: deviceLock, placements: [{ classId: 'class-0001', assignmentId: null, dates: ['2026-11-20'] }] }), locked!.record!.rev)]);
+  assert.equal(again!.record!.rev, moved!.record!.rev);
+  t.close();
+});

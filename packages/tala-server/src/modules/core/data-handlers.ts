@@ -68,7 +68,7 @@ export const accountDelete: Handler<'account.delete'> = async (ctx, { body }) =>
     accounts.deleteUser(row);
     return modules;
   });
-  const cleaned = remove();
+  const cleaned = remove.immediate();
   effectsOf(ctx).cookies.push(clearedSessionCookie(ctx.config));
   ctx.log.info('account_deleted', { modules: cleaned.length });
   return { ok: true as const };

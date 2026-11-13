@@ -375,3 +375,15 @@ test('nothing secret or personal reaches the logs across a whole account lifecyc
   assert.ok(t.logs.some((l) => l.event === 'account_created' && l.fields.userId === u.id));
   t.close();
 });
+
+test('when the client address is unknown, the shared limit is wide enough not to lock everyone out', async () => {
+  const t = createTestServer({ config: { abuse: { registerPerIpPerHour: 2 } } });
+  const body = (n: number) => ({ email: `shared${n}@example.test`, password: GOOD_PASSWORD, displayName: `S ${n}` });
+  // No address at all (a proxy that is not configured as trusted): many more than 2 sign-ups still work…
+  for (let n = 0; n < 12; n++) assert.equal((await t.call('auth.register', { body: body(n) })).ok, true, `sign-up ${n}`);
+  // …while a known address is still held to the configured limit.
+  assert.equal((await t.call('auth.register', { body: body(100), ip: '203.0.113.50' })).ok, true);
+  assert.equal((await t.call('auth.register', { body: body(101), ip: '203.0.113.50' })).ok, true);
+  assert.equal((await t.call('auth.register', { body: body(102), ip: '203.0.113.50' })).status, 429);
+  t.close();
+});

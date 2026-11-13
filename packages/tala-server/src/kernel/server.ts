@@ -94,6 +94,7 @@ export function createServer(options: KernelOptions): KernelServer {
   const sink = options.logSink ?? stdoutSink;
   const log = createLogger({ sink, now });
   const trustedProxyHops = options.trustedProxyHops ?? 0;
+  const useHsts = config.publicOrigin.startsWith('https://');
 
   const names = new Set<string>();
   for (const m of modules) {
@@ -328,6 +329,8 @@ export function createServer(options: KernelOptions): KernelServer {
         }
       }
     }
+    // TLS only, once a browser has seen the site over https (PRD §14.4).
+    if (useHsts) response.headers.set('strict-transport-security', 'max-age=15552000');
     log.info('http_request', {
       requestId,
       method: request.method,

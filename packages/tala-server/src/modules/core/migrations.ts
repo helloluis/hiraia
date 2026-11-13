@@ -162,4 +162,27 @@ export const coreMigrations: Migration[] = [
       CREATE INDEX core_records_history_by_plan ON core_records (owner_id, json_extract(data, '$.planId')) WHERE entity = 'section_revision';
     `,
   },
+  {
+    id: 'core:004_packed_revisions',
+    sql: `
+      -- Snapshots are stored compressed: a year of lessons with their history is many megabytes otherwise.
+      -- The table is rebuilt rather than converted (SQL cannot compress). Tala holds no production data yet,
+      -- so the only history lost is in development databases.
+      DROP TABLE core_plan_revisions;
+      CREATE TABLE core_plan_revisions (
+        owner_id TEXT NOT NULL REFERENCES core_users(id) ON DELETE CASCADE,
+        plan_id TEXT NOT NULL,
+        revision INTEGER NOT NULL,
+        reason TEXT NOT NULL,
+        locked INTEGER NOT NULL,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        session_id TEXT,
+        device_id TEXT,
+        digest TEXT NOT NULL,
+        snapshot BLOB NOT NULL,
+        PRIMARY KEY (owner_id, plan_id, revision)
+      ) STRICT;
+    `,
+  },
 ];

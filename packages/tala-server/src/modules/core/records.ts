@@ -24,6 +24,8 @@ import { sha256, stableStringify } from './stable';
 export const MAX_RECORD_BYTES = 256 * 1024;
 /** A pull page stops growing past this many bytes of record data, whatever `limit` says (slow links, RES-7). */
 export const MAX_PULL_PAGE_BYTES = 400 * 1024;
+/** How long the answer to an applied mutation is remembered for replays. */
+export const REPLAY_DAYS = 30;
 /** How far in the future a device's lock time may be before the server's clock is used instead. */
 const CLOCK_SLACK_MS = 5 * 60 * 1000;
 
@@ -419,10 +421,14 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     return { status: 'applied', record: envelope(written), wrote: true };
   }
 
-  /** `lock.revision` belongs to the server. A device that has not seen it yet still sends null. */
+  /**
+   * The same lock (same revision code) as the server holds: the server's copy of its details stands.
+   * `revision` is the server's own field, and it may also have filled in the name or corrected a lock time
+   * from a wrong device clock. A device that has not read those back yet must not be refused for it.
+   */
   function withServerLockFields(incoming: Plan, stored: Plan): Plan {
-    if (!incoming.lock || !stored.lock) return incoming;
-    return { ...incoming, lock: { ...incoming.lock, revision: stored.lock.revision } };
+    if (!incoming.lock || !stored.lock || incoming.lock.revisionCode !== stored.lock.revisionCode) return incoming;
+    return { ...incoming, lock: stored.lock };
   }
 
   function writeDelete(ownerId: Id, entity: EntityName, id: Id, baseRev: number | null, scope: Scope): Outcome {
@@ -443,12 +449,16 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     const written = store(scope.actor, entity, id, current, scrubbed, true);
     // Earlier results kept for replays must not keep the words either.
     for (const entry of q.logOfRecord.all(ownerId, entity, id) as Array<{ mutation_id: string; result: string }>) {
-      const result = JSON.parse(entry.result) as RecordEnvelope;
+      const result = JSON.parse(entry.result) as RecordEnvelope | { c: 1 };
+      if ('c' in result) continue; // holds no content
       q.logRewrite.run(JSON.stringify({ ...result, data: scrub(entity, result.data) }), ownerId, entry.mutation_id);
     }
     if (entity === 'plan_section') {
       const planId = (JSON.parse(current.data) as PlanSection).planId;
       scope.touched.set(planId, scope.touched.get(planId) ?? 'save');
+    } else if (entity === 'plan') {
+      revisions.purgePlan(ownerId, id);
+      scope.touched.delete(id);
     }
     return { status: 'applied', record: envelope(written), wrote: true };
   }
@@ -465,6 +475,29 @@ export function createRecordEngine(deps: RecordEngineDeps) {
 
   /* ---- sync.push ---- */
 
+  /**
+   * What is kept so a replay can be answered. Usually the stored record is exactly what the device sent
+   * (after schema defaults), so only its rev and time are kept and the rest is rebuilt from the replay itself.
+   * The whole record is kept only when the server changed it on the way in (a lock, an unlock) or deleted it.
+   */
+  type Remembered = RecordEnvelope | { c: 1; rev: number; updatedAt: string };
+
+  function remember(mutation: Mutation, record: RecordEnvelope): Remembered {
+    if (mutation.op === 'upsert' && record.deletedAt === null) {
+      try {
+        if (stableStringify(parseRecordData(mutation.entity, mutation.data)) === stableStringify(record.data)) return { c: 1, rev: record.rev, updatedAt: record.updatedAt };
+      } catch {
+        /* keep it whole */
+      }
+    }
+    return record;
+  }
+
+  function recall(mutation: Mutation, kept: Remembered): RecordEnvelope {
+    if (!('c' in kept)) return kept;
+    return { entity: mutation.entity, id: mutation.id, rev: kept.rev, updatedAt: kept.updatedAt, deletedAt: null, data: parseRecordData(mutation.entity, mutation.data) };
+  }
+
   function applyOne(mutation: Mutation, scope: Scope): MutationResult {
     const ownerId = scope.actor.ownerId;
     const fingerprint = sha256(stableStringify({ entity: mutation.entity, id: mutation.id, op: mutation.op, baseRev: mutation.baseRev, data: mutation.data ?? null }));
@@ -473,7 +506,7 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     const earlier = q.logGet.get(ownerId, mutation.mutationId) as { payload_hash: string; result: string } | undefined;
     if (earlier) {
       if (earlier.payload_hash !== fingerprint) return { mutationId: mutation.mutationId, status: 'invalid', record: null, message: MESSAGES.reused };
-      return { mutationId: mutation.mutationId, status: 'applied', record: JSON.parse(earlier.result) as RecordEnvelope };
+      return { mutationId: mutation.mutationId, status: 'applied', record: recall(mutation, JSON.parse(earlier.result) as Remembered) };
     }
 
     let outcome: Outcome;
@@ -490,7 +523,7 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     }
 
     if (outcome.wrote && outcome.record) {
-      q.logPut.run(ownerId, mutation.mutationId, mutation.entity, mutation.id, mutation.op, fingerprint, JSON.stringify(outcome.record), now().toISOString());
+      q.logPut.run(ownerId, mutation.mutationId, mutation.entity, mutation.id, mutation.op, fingerprint, JSON.stringify(remember(mutation, outcome.record)), now().toISOString());
     }
     const result: MutationResult = { mutationId: mutation.mutationId, status: outcome.status, record: outcome.record };
     if (outcome.message) result.message = outcome.message;
@@ -515,7 +548,12 @@ export function createRecordEngine(deps: RecordEngineDeps) {
       }
       results.push(result);
     }
-    flushRevisions(scope);
+    try {
+      // History is secondary: a failure here must not undo the teacher's saved work.
+      db.transaction(() => flushRevisions(scope))();
+    } catch (err) {
+      log.error('revision_snapshot_failed', describeError(err));
+    }
     return results;
   });
 
@@ -681,10 +719,10 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     },
     put<E extends EntityName>(ownerId: Id, entity: E, data: RecordData<E>): RecordEnvelope<E> {
       const id = (data as { id: Id }).id;
-      return serverWrite(serverActor(ownerId), (scope) => writeUpsert(ownerId, entity, id, data, null, scope)) as RecordEnvelope<E>;
+      return serverWrite.immediate(serverActor(ownerId), (scope) => writeUpsert(ownerId, entity, id, data, null, scope)) as RecordEnvelope<E>;
     },
     remove(ownerId: Id, entity: EntityName, id: Id): void {
-      serverWrite(serverActor(ownerId), (scope) => writeDelete(ownerId, entity, id, null, scope));
+      serverWrite.immediate(serverActor(ownerId), (scope) => writeDelete(ownerId, entity, id, null, scope));
     },
     planSnapshot(ownerId: Id, planId: Id) {
       return snapshot(ownerId, planId);
@@ -718,7 +756,8 @@ export function createRecordEngine(deps: RecordEngineDeps) {
 
   return {
     service,
-    applyBatch: (actor: WriteActor, mutations: Mutation[]): MutationResult[] => applyBatch(actor, mutations),
+    // IMMEDIATE: take the write lock up front, so a second process cannot slip a write in between our read and our write.
+    applyBatch: (actor: WriteActor, mutations: Mutation[]): MutationResult[] => applyBatch.immediate(actor, mutations),
     pull,
     /** Every live record of one teacher, for the account export (AUTH-6). */
     exportAll(ownerId: Id): RecordEnvelope[] {
@@ -730,9 +769,12 @@ export function createRecordEngine(deps: RecordEngineDeps) {
       q.logPurge.run(ownerId);
       revisions.purgeOwner(ownerId);
     },
-    /** Replay answers are kept long enough for a device that was offline for a long while, then dropped. */
+    /**
+     * Replay answers are kept for REPLAY_DAYS. A replay that arrives later is simply judged afresh: it meets a
+     * newer rev, comes back as a conflict, and the device finds the server already holds what it sent.
+     */
     prune(): void {
-      q.logPrune.run(new Date(now().getTime() - 60 * 86_400_000).toISOString());
+      q.logPrune.run(new Date(now().getTime() - REPLAY_DAYS * 86_400_000).toISOString());
     },
   };
 }

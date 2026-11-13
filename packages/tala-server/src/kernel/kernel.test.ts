@@ -411,3 +411,13 @@ test('client address: forwarding headers are ignored unless a proxy is trusted',
   trusting.close();
   assert.deepEqual(ips, [null, '192.0.2.44', '203.0.113.7']);
 });
+
+test('https sites send Strict-Transport-Security; plain-http development does not', async () => {
+  const secure = createTestServer({ withoutCore: true, modules: [probeModule()], config: { publicOrigin: 'https://tala.hiraia.org', session: { cookieName: '__Host-tala_session' } } });
+  const plain = createTestServer({ withoutCore: true, modules: [probeModule()] });
+  assert.equal((await secure.call('calendar.presets')).headers.get('strict-transport-security'), 'max-age=15552000');
+  assert.equal((await secure.request('GET', '/nothing')).headers.get('strict-transport-security'), 'max-age=15552000', 'on errors too');
+  assert.equal((await plain.call('calendar.presets')).headers.get('strict-transport-security'), null);
+  secure.close();
+  plain.close();
+});

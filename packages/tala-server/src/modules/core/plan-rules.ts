@@ -67,9 +67,8 @@ export function lockedPlanViolations(stored: Plan, incoming: Plan): string[] {
     if (CHANGEABLE_WHILE_LOCKED.has(key)) continue;
     if (stableStringify(stored[key]) !== stableStringify(incoming[key])) violations.push(key);
   }
-  // The lock itself must be the same lock. `revision` is the server's field and is not compared.
-  const a = stored.lock;
-  const b = incoming.lock;
-  if (!a || !b || a.lockedAt !== b.lockedAt || a.revisionCode !== b.revisionCode || a.lockedBy !== b.lockedBy) violations.push('lock');
+  // The lock itself must be the same lock, which its revision code identifies. The other lock details are
+  // the server's to keep (see withServerLockFields in records.ts).
+  if (!stored.lock || !incoming.lock || stored.lock.revisionCode !== incoming.lock.revisionCode) violations.push('lock');
   return violations;
 }

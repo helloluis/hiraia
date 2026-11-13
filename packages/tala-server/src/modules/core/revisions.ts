@@ -13,8 +13,10 @@
  * Per-section history for one-step restore on the device is the `section_revision` synced record
  * (workstream H). These snapshots are the server's own, reachable through `plans.revisions`.
  */
+import { deflateSync, inflateSync } from 'node:zlib';
 import type { Id, RecordEnvelope } from '@hiraia/tala-core';
 import type { Db } from '../../kernel/db';
+import { sha256 } from './stable';
 
 export type RevisionReason = 'save' | 'lock' | 'unlock' | 'regenerate' | 'restore' | 'conflict';
 
@@ -38,7 +40,7 @@ export interface RevisionActor {
 /** Saves closer together than this are one revision. */
 export const COALESCE_MS = 10 * 60 * 1000;
 /** Ordinary save revisions kept per plan. Lock and unlock revisions are never pruned. */
-export const MAX_SAVE_REVISIONS = 40;
+export const MAX_SAVE_REVISIONS = 20;
 
 interface RevisionRow {
   revision: number;
@@ -46,8 +48,19 @@ interface RevisionRow {
   locked: number;
   created_at: string;
   updated_at: string;
-  plan: string;
-  sections: string;
+  /** SHA-256 of the snapshot's JSON: tells "nothing changed" without unpacking. */
+  digest: string;
+  /** The snapshot, zlib-compressed JSON `{ plan, sections }`. */
+  snapshot: Buffer;
+}
+
+function pack(snapshot: PlanSnapshotEnvelopes): { digest: string; packed: Buffer } {
+  const json = JSON.stringify({ plan: snapshot.plan, sections: snapshot.sections });
+  return { digest: sha256(json), packed: deflateSync(Buffer.from(json, 'utf8')) };
+}
+
+function unpack(packed: Buffer): PlanSnapshotEnvelopes {
+  return JSON.parse(inflateSync(packed).toString('utf8')) as PlanSnapshotEnvelopes;
 }
 
 export function createRevisions(db: Db, now: () => Date) {
@@ -55,10 +68,10 @@ export function createRevisions(db: Db, now: () => Date) {
     latest: db.prepare('SELECT * FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ? ORDER BY revision DESC LIMIT 1'),
     max: db.prepare('SELECT COALESCE(MAX(revision), 0) AS n FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ?'),
     insert: db.prepare(
-      `INSERT INTO core_plan_revisions (owner_id, plan_id, revision, reason, locked, created_at, updated_at, session_id, device_id, plan, sections)
+      `INSERT INTO core_plan_revisions (owner_id, plan_id, revision, reason, locked, created_at, updated_at, session_id, device_id, digest, snapshot)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     ),
-    overwrite: db.prepare('UPDATE core_plan_revisions SET plan = ?, sections = ?, updated_at = ? WHERE owner_id = ? AND plan_id = ? AND revision = ?'),
+    overwrite: db.prepare('UPDATE core_plan_revisions SET digest = ?, snapshot = ?, updated_at = ? WHERE owner_id = ? AND plan_id = ? AND revision = ?'),
     list: db.prepare('SELECT revision, reason, locked, created_at FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ? ORDER BY revision DESC'),
     one: db.prepare('SELECT * FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ? AND revision = ?'),
     prune: db.prepare(
@@ -68,6 +81,7 @@ export function createRevisions(db: Db, now: () => Date) {
            ORDER BY revision DESC LIMIT -1 OFFSET ?)`,
     ),
     purgeOwner: db.prepare('DELETE FROM core_plan_revisions WHERE owner_id = ?'),
+    purgePlan: db.prepare('DELETE FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ?'),
   };
 
   const meta = (row: Pick<RevisionRow, 'revision' | 'reason' | 'locked' | 'created_at'>): RevisionMeta => ({
@@ -79,7 +93,8 @@ export function createRevisions(db: Db, now: () => Date) {
 
   function append(ownerId: Id, planId: Id, revision: number, reason: RevisionReason, locked: boolean, snapshot: PlanSnapshotEnvelopes, actor: RevisionActor): void {
     const at = now().toISOString();
-    q.insert.run(ownerId, planId, revision, reason, locked ? 1 : 0, at, at, actor.sessionId, actor.deviceId, JSON.stringify(snapshot.plan), JSON.stringify(snapshot.sections));
+    const { digest, packed } = pack(snapshot);
+    q.insert.run(ownerId, planId, revision, reason, locked ? 1 : 0, at, at, actor.sessionId, actor.deviceId, digest, packed);
   }
 
   return {
@@ -96,9 +111,8 @@ export function createRevisions(db: Db, now: () => Date) {
     /** Ordinary edits: fold into the newest revision when it is a recent save of the same kind, else add one. */
     recordSave(ownerId: Id, planId: Id, reason: 'save' | 'regenerate', locked: boolean, snapshot: PlanSnapshotEnvelopes, actor: RevisionActor): number {
       const latest = q.latest.get(ownerId, planId) as RevisionRow | undefined;
-      const planJson = JSON.stringify(snapshot.plan);
-      const sectionsJson = JSON.stringify(snapshot.sections);
-      if (latest && latest.plan === planJson && latest.sections === sectionsJson) return latest.revision;
+      const { digest, packed } = pack(snapshot);
+      if (latest && latest.digest === digest) return latest.revision;
       const at = now();
       if (
         reason === 'save' &&
@@ -107,7 +121,7 @@ export function createRevisions(db: Db, now: () => Date) {
         (latest.locked === 1) === locked &&
         at.getTime() - Date.parse(latest.created_at) < COALESCE_MS
       ) {
-        q.overwrite.run(planJson, sectionsJson, at.toISOString(), ownerId, planId, latest.revision);
+        q.overwrite.run(digest, packed, at.toISOString(), ownerId, planId, latest.revision);
         return latest.revision;
       }
       const revision = (latest?.revision ?? 0) + 1;
@@ -123,15 +137,17 @@ export function createRevisions(db: Db, now: () => Date) {
     get(ownerId: Id, planId: Id, revision: number): { meta: RevisionMeta; plan: RecordEnvelope<'plan'>; sections: Array<RecordEnvelope<'plan_section'>> } | null {
       const row = q.one.get(ownerId, planId, revision) as RevisionRow | undefined;
       if (!row) return null;
-      return {
-        meta: meta(row),
-        plan: JSON.parse(row.plan) as RecordEnvelope<'plan'>,
-        sections: JSON.parse(row.sections) as Array<RecordEnvelope<'plan_section'>>,
-      };
+      const snapshot = unpack(row.snapshot);
+      return { meta: meta(row), plan: snapshot.plan, sections: snapshot.sections };
     },
 
     purgeOwner(ownerId: Id): void {
       q.purgeOwner.run(ownerId);
+    },
+
+    /** A deleted plan's history goes with it: the words of a deleted lesson are not kept. */
+    purgePlan(ownerId: Id, planId: Id): void {
+      q.purgePlan.run(ownerId, planId);
     },
   };
 }

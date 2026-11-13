@@ -296,11 +296,14 @@ test('a deleted learner’s name does not stay on the server', async () => {
   const dump = ['core_records', 'core_sync_mutations', 'core_plan_revisions'].map((n) => JSON.stringify(t.db.prepare(`SELECT * FROM ${n}`).all())).join('\n');
   for (const piece of [NAME, 'Juan Miguel', 'Dela Cruz', 'A-17', 'absent today']) assert.ok(!dump.includes(piece), piece);
 
-  // A replay of the original create is still answered, without bringing the name back.
+  // A replay of the original create is still answered as it was (rev 1), built from what the device itself
+  // re-sent. It does not bring the learner back, and the server still holds no copy of the name.
   const [replay] = await push(t, u.token, [create]);
   assert.equal(replay!.status, 'applied');
   assert.equal(replay!.record!.rev, 1);
-  assert.ok(!JSON.stringify(replay).includes('Juan'));
+  assert.equal(t.services.records.get(u.id, 'student', 'student-0001'), null);
+  const after = ['core_records', 'core_sync_mutations'].map((n) => JSON.stringify(t.db.prepare(`SELECT * FROM ${n}`).all())).join('\n');
+  for (const piece of [NAME, 'Juan Miguel', 'Dela Cruz', 'A-17']) assert.ok(!after.includes(piece), piece);
 
   // Another device learns of the delete on its next pull.
   const pulled = await pullAll(t, u.token);
