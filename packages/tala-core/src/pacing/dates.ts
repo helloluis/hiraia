@@ -18,7 +18,7 @@ export function civil(day: number): string {
   const prefix = `${String(y).padStart(4, '0')}-${String(m).padStart(2, '0')}`;
   return `${prefix}-${String(day - ordinal(`${prefix}-01`) + 1).padStart(2, '0')}`;
 }
-export function weekday(date: string): number { return (ordinal(date) + 1) % 7; }
+export function weekday(date: string): number { return ordinal(date) % 7 + 1; }
 export function datesBetween(from: string, to: string): string[] {
   const start = ordinal(from), end = ordinal(to);
   if (end - start > 3660) throw new Error('Calendar range exceeds ten years.');
