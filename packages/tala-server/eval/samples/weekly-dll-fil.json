@@ -1,0 +1,254 @@
+{
+  "input": {
+    "kind": "full",
+    "templateId": "tpl.dll.v1",
+    "language": "fil",
+    "subjectName": "Science",
+    "learningAreaId": "science",
+    "timeBudgetMinutes": 40,
+    "sessions": 5,
+    "gradeGroups": [
+      {
+        "id": "group-004",
+        "grade": "4",
+        "learnerCount": 10
+      }
+    ],
+    "competencies": {
+      "group-004": [
+        "C4"
+      ]
+    },
+    "curriculumVersion": "eval.v1",
+    "customObjectives": [],
+    "classProfile": {
+      "materials": [
+        "paper",
+        "pencils"
+      ],
+      "textbooks": [],
+      "electricity": true,
+      "projector": null,
+      "printing": false,
+      "outdoorSpace": null,
+      "notes": ""
+    },
+    "guidance": ""
+  },
+  "plan": {
+    "title": "Mga Bahagi ng Halaman at Angkan",
+    "sections": [
+      {
+        "key": "objectives",
+        "content": {
+          "type": "list",
+          "items": [
+            "C4: Ilarawan ang mga halaman.",
+            "Iilalarawan ang mga bahagi ng halaman."
+          ]
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/week",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "content",
+        "content": {
+          "type": "text",
+          "blocks": [
+            {
+              "t": "p",
+              "spans": [
+                {
+                  "text": "Ang mga bahagi ng halaman ay kinabibilangan ng ugat, stalk, dahon, bulaklak, bunga, at buto. Ang bawat bahagi ay may tiyak na tungkulin sa buhay ng halaman."
+                }
+              ]
+            }
+          ]
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/week",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "materials",
+        "content": {
+          "type": "list",
+          "items": [
+            "paper",
+            "pencils"
+          ]
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/week",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "weekgrid",
+        "content": {
+          "type": "weekgrid",
+          "days": [
+            {
+              "date": null,
+              "weekday": 1,
+              "minutes": 40,
+              "body": [
+                {
+                  "t": "p",
+                  "spans": [
+                    {
+                      "text": "Magbigay ng halimbawa ng tatlong kilalang halaman at gumuhit ng isang halaman gamit ang papel at karayom."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "date": null,
+              "weekday": 2,
+              "minutes": 40,
+              "body": [
+                {
+                  "t": "p",
+                  "spans": [
+                    {
+                      "text": "I-label ang ugat sa sariling guhit at ipaliwanag kung ano ang gamit nito."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "date": null,
+              "weekday": 3,
+              "minutes": 40,
+              "body": [
+                {
+                  "t": "p",
+                  "spans": [
+                    {
+                      "text": "I-label ang dahon sa guhit at ipaliwanag kung paano ito nakakatulong sa paggawa ng pagkain ng halaman."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "date": null,
+              "weekday": 4,
+              "minutes": 40,
+              "body": [
+                {
+                  "t": "p",
+                  "spans": [
+                    {
+                      "text": "Kumparahin ang dalawang halaman: isa ay may mataas na dahon at isa ay may maliit na dahon. Iulat ang mga pagkakaiba."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "date": null,
+              "weekday": 5,
+              "minutes": 40,
+              "body": [
+                {
+                  "t": "p",
+                  "spans": [
+                    {
+                      "text": "Gumuhit ng isang halaman at i-label ang ugat at dahon. Ipaliwanag ang kanilang mga tungkulin bilang pagsusulit."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/week",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "assessment",
+        "content": {
+          "type": "text",
+          "blocks": [
+            {
+              "t": "p",
+              "spans": [
+                {
+                  "text": "C4: Ilarawan ang mga halaman."
+                }
+              ]
+            },
+            {
+              "t": "p",
+              "spans": [
+                {
+                  "text": "Tanungin ang mga mag-aaral kung ano ang gamit ng ugat at dahon, at hilingin sa kanila na i-label ang mga ito sa isang guhit ng halaman."
+                }
+              ]
+            }
+          ]
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/week",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "reflection",
+        "content": {
+          "type": "text",
+          "blocks": [
+            {
+              "t": "p",
+              "spans": [
+                {
+                  "text": "Tingnan ang mga guhit ng mga mag-aaral at suriin kung ang kanilang paglalarawan ng mga bahagi ng halaman ay tama. Isulat ang mga pangalan ng mga mag-aaral na kailangan ng dagdag na tulong."
+                }
+              ]
+            }
+          ]
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/week",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      }
+    ],
+    "provider": "qwen",
+    "model": "qwen-flash",
+    "warnings": []
+  },
+  "review": "Teacher quality review pending; structural checks do not establish scientific or pedagogical quality."
+}

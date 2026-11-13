@@ -19,7 +19,7 @@ export function buildPrefilledDraft(input: DraftInput): { title: string; section
       case 'pergroup': content = { type: 'pergroup', groups: s.key === 'objectives' ? groups : Object.fromEntries(input.gradeGroups.map(g => [g.id, []])) }; break;
       case 'multigrade': content = { type: 'multigrade', blocks: [{ id: 'draft-block', label: '', minutes: input.timeBudgetMinutes, transitionMinutes: 0, teacherWith: 'none', pairedGroupIds: [], groups: Object.fromEntries(input.gradeGroups.map(g => [g.id, { mode: 'independent' as const, activity: [] }])) }] }; break;
       case 'procedure': content = { type: 'procedure', steps: [{ id: 'draft-step', title: '', minutes: input.timeBudgetMinutes, body: [] }] }; break;
-      case 'weekgrid': content = { type: 'weekgrid', days: Array.from({length: input.sessions}, (_,i) => ({ date: null, weekday: i+1, body: [] })) }; break;
+      case 'weekgrid': content = { type: 'weekgrid', days: Array.from({length: input.sessions}, (_,i) => ({ date: null, weekday: i+1, minutes: input.timeBudgetMinutes, body: [] })) }; break;
       default: content = { type: 'text', blocks: [] };
     }
     return { key: s.key, content };

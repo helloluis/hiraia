@@ -33,22 +33,24 @@ export async function runJob(ctx:Ctx,id:string):Promise<void> {
     const resolved=resolveInput(ctx,input);
     const promptId=`lesson/${input.kind==='full'?(input.gradeGroups.length>1?'multigrade':resolved.template.span==='week'?'week':'single'):input.kind}`;
     const result=await ctx.services.llm.complete(lessonRequest({...input,template:resolved.template,resolvedObjectives:resolved.resolvedObjectives},{userId:requireUser(ctx).id,newId:ctx.newId,source:resolved.source,prior:resolved.prior,signal:controller.signal,version:ctx.config.llm.promptVersions[promptId]??2}));
-    if(read(ctx,id).job.status==='cancelled')return;
+    const live=ctx.db.prepare('SELECT status FROM generation_jobs WHERE id=?').get(id) as {status:string}|undefined;if(!live||live.status==='cancelled')return;
     if(result.ok) {job.status='done';job.result={title:result.data.title,sections:result.data.sections.map(s=>({...s,gen:{provider:result.provider,model:result.model,promptId:result.promptId,promptVersion:result.promptVersion,curriculumVersion:input.curriculumVersion,at:ctx.now().toISOString()}})),provider:result.provider,model:result.model,warnings:result.data.warnings??[]};}
     else if(result.reason==='cancelled')job.status='cancelled';
     else {job.status='failed';job.failure={reason:result.reason==='rules_only'?'disabled':result.reason,message:result.message};}
   } catch {job.status='failed';job.failure={reason:'invalid_input',message:'Check your inputs. You can continue with the pre-filled draft.'};}
-  finally {controls(ctx.db).delete(id);if(read(ctx,id).job.status!=='cancelled'){job.finishedAt=ctx.now().toISOString();save(ctx,job);}}
+  finally {controls(ctx.db).delete(id);const live=ctx.db.prepare('SELECT status FROM generation_jobs WHERE id=?').get(id) as {status:string}|undefined;if(live&&live.status!=='cancelled'){job.finishedAt=ctx.now().toISOString();save(ctx,job);}}
 }
-export const generationModule:ServerModule={name:'generation',migrations,handlers:{
+export const generationModule:ServerModule={name:'generation',migrations,onAccountDeleted:(deps,userId)=>{const jobs=deps.db.prepare('SELECT id FROM generation_jobs WHERE owner_id=?').all(userId) as {id:string}[];for(const job of jobs)controls(deps.db).get(job.id)?.abort();deps.db.prepare('DELETE FROM generation_jobs WHERE owner_id=?').run(userId);},handlers:{
   'generation.create':(ctx,{body})=> {const user=requireUser(ctx);resolveInput(ctx,body);const job:GenerationJob={id:ctx.newId(),status:'queued',kind:body.kind,planId:body.planId??null,createdAt:ctx.now().toISOString(),finishedAt:null,result:null,failure:null};ctx.db.prepare('INSERT INTO generation_jobs VALUES(?,?,?,?,?)').run(job.id,user.id,JSON.stringify(body),JSON.stringify(job),job.status);return job;},
   'generation.get':(ctx,{params})=>read(ctx,params.jobId).job,
   'generation.cancel':(ctx,{params})=>{const {job}=read(ctx,params.jobId);if(job.status==='queued'||job.status==='running'){job.status='cancelled';job.finishedAt=ctx.now().toISOString();save(ctx,job);controls(ctx.db).get(job.id)?.abort();}return job;},
-  'generation.allowance':ctx=>{const user=requireUser(ctx),day=ctx.now().toISOString().slice(0,10);const used=(bucket:string)=>(ctx.db.prepare('SELECT used FROM llm_quota WHERE day=? AND user_id=? AND bucket=?').get(day,user.id,bucket) as {used:number}|undefined)?.used??0;const spent=(ctx.db.prepare('SELECT COALESCE(SUM(cost),0) AS cost FROM llm_usage WHERE month=?').get(day.slice(0,7)) as {cost:number}).cost;return {fullRemainingToday:Math.max(0,ctx.config.llm.quotas.fullPerDay-used('full')),sectionRemainingToday:Math.max(0,ctx.config.llm.quotas.sectionPerDay-used('section')),degraded:spent>=ctx.config.llm.budget.monthlyUsd};}
+  'generation.allowance':ctx=>{const user=requireUser(ctx),day=ctx.now().toISOString().slice(0,10);const used=(bucket:string)=>(ctx.db.prepare('SELECT used FROM llm_quota WHERE day=? AND user_id=? AND bucket=?').get(day,user.id,bucket) as {used:number}|undefined)?.used??0;const spent=(ctx.db.prepare('SELECT COALESCE((SELECT SUM(cost) FROM llm_usage WHERE month=?),0)+COALESCE((SELECT cost FROM llm_deleted_spend WHERE month=?),0) AS cost').get(day.slice(0,7),day.slice(0,7)) as {cost:number}).cost;return {fullRemainingToday:Math.max(0,ctx.config.llm.quotas.fullPerDay-used('full')),sectionRemainingToday:Math.max(0,ctx.config.llm.quotas.sectionPerDay-used('section')),degraded:spent>=ctx.config.llm.budget.monthlyUsd};}
 },start:deps=>{
   deps.db.prepare("UPDATE generation_jobs SET status='queued',job=json_set(job,'$.status','queued') WHERE status='running'").run();
   let stopped=false,busy=false;
   const tick=async()=>{if(stopped||busy)return;busy=true;try {const row=deps.db.prepare("SELECT id,owner_id FROM generation_jobs WHERE status='queued' LIMIT 1").get() as {id:string;owner_id:string}|undefined;if(row)await runJob({...deps,user:{id:row.owner_id,email:'',emailVerified:true,displayName:'',sessionId:'job'},requestId:row.id,ip:null},row.id);}catch{deps.log.error('generation.runner_failed');}finally{busy=false;}};
   const timer=setInterval(()=>{void tick();},100);timer.unref();return()=>{stopped=true;clearInterval(timer);for(const c of controls(deps.db).values())c.abort();};
 }};
+// Compatibility with kernels that still read the pre-contract extension location.
+Object.assign(generationModule,{kernel:{onAccountDeleted:generationModule.onAccountDeleted}});
 export default generationModule;

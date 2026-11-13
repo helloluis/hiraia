@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, appendFileSync, mkdirSync } from 'node:fs';
 import { parseEnv } from 'node:util';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -14,12 +14,14 @@ const live=process.argv.includes('--live');
 if(live){try{const env=parseEnv(readFileSync('/home/b11/code/hiraia/.env.local','utf8'));for(const key of ['DEEPSEEK_API_KEY','DASHSCOPE_API_KEY','ALIBABACLOUD_API_KEY'])if(!process.env[key]&&env[key])process.env[key]=env[key];}catch{/* Only authorized source. */}}
 const root=dirname(fileURLToPath(import.meta.url));
 const rows:unknown[]=[];
+const runId=new Date().toISOString();
 let paidCalls=0,failures=0;
 const filter=process.env.TALA_EVAL_CASE;
-const cases=evaluationCases.filter(c=>!filter||c.id===filter);
+const cases=evaluationCases.filter(c=>!filter||filter.split(',').includes(c.id));
 for(const provider of (live?['qwen']:['deepseek','qwen']) as ('deepseek'|'qwen')[]) {
   if(live&&!process.env.DASHSCOPE_API_KEY&&!process.env.ALIBABACLOUD_API_KEY){console.log(JSON.stringify({provider,status:'skipped',reason:'missing_key'}));continue;}
   for(const fixture of cases){
+    if(live&&paidCalls+2>40)throw Error('Live evaluation call budget exhausted.');
     const input={...fixture.input,resolvedObjectives:objectivesFor(fixture.input)};
     const attempts:AttemptDiagnostic[]=[];
     const fake:ProviderCall=async p=>{if(p!==provider)throw Error('Unavailable fixture provider.');return {content:JSON.stringify(fakeCompactRaw(input)),inputTokens:100,outputTokens:200,costUsd:0,httpStatus:200,finishReason:'stop',latencyMs:1};};
@@ -29,7 +31,7 @@ for(const provider of (live?['qwen']:['deepseek','qwen']) as ('deepseek'|'qwen')
       if(process.env.TALA_EVAL_SHAPE==='1') {try{const raw=JSON.parse(reply.content);console.log(JSON.stringify({case:fixture.id,shape:(raw.sections??[]).map((s:Record<string,unknown>)=>({key:['objectives','materials','multigrade','assessment','reflection','procedure','content','assignment','differentiation','weekgrid'].includes(String(s.key))?s.key:'other',fields:Object.keys(s).filter(k=>['text','targets','items','groups','blocks','steps','days','content'].includes(k)),targetCount:Array.isArray(s.targets)?s.targets.length:0,groups:Array.isArray(s.groups)?s.groups.map((g:Record<string,unknown>)=>({grade:/^[1-9]$/.test(String(g.grade))?g.grade:'other',targetCount:Array.isArray(g.targets)?g.targets.length:0,itemCount:Array.isArray(g.items)?g.items.length:0})):[],minutes:Array.isArray(s.blocks)?s.blocks.map((b:Record<string,unknown>)=>b.minutes):[]}))}));}catch{/* No content logged. */}}
       return reply;
     };
-    const module={...llmModule,services:(deps:Parameters<NonNullable<typeof llmModule.services>>[0])=>({llm:createLlmGateway(deps,{...(live?(process.env.TALA_EVAL_SHAPE==='1'?{call:liveCall}:{}):{call:fake}),onAttempt:event=>{attempts.push(event);if(live&&process.env.TALA_EVAL_SHAPE!=='1'&&event.provider==='qwen'&&event.attempt>0)paidCalls++;console.log(JSON.stringify({case:fixture.id,...event}));}})})};
+    const module={...llmModule,services:(deps:Parameters<NonNullable<typeof llmModule.services>>[0])=>({llm:createLlmGateway(deps,{...(live?(process.env.TALA_EVAL_SHAPE==='1'?{call:liveCall}:{}):{call:fake}),onAttempt:event=>{attempts.push(event);if(live)appendFileSync(resolve(root,'live-attempts.jsonl'),JSON.stringify({run:runId,case:fixture.id,...event})+'\n');if(live&&process.env.TALA_EVAL_SHAPE!=='1'&&event.provider==='qwen'&&event.attempt>0)paidCalls++;console.log(JSON.stringify({case:fixture.id,...event}));}})})};
     const t=createTestServer({modules:[module,generationModule],config:{features:{generation:true},llm:{primary:{apiKeyEnv:'TALA_EVAL_NO_PRIMARY_KEY',model:'unused',baseUrl:'https://api.deepseek.com',timeoutMs:120000,pricing:{inputUsdPerMillion:.05,outputUsdPerMillion:.4}},fallback:{apiKeyEnv:'DASHSCOPE_API_KEY',model:process.env.TALA_LLM_FALLBACK_MODEL||'qwen-flash',baseUrl:'https://dashscope-intl.aliyuncs.com/compatible-mode/v1',timeoutMs:120000,pricing:{inputUsdPerMillion:.05,outputUsdPerMillion:.4}},budget:{monthlyUsd:2,alertAtUsd:1.5},quotas:{fullPerDay:50,sectionPerDay:50},cacheSeconds:0}},services:{curriculum:{getCompetencies:(_version,ids)=>ids.map(id=>({id,text:fixture.input.language==='fil'?'Ilarawan ang mga halaman.':'Describe plants.'})) as never,versionFor:()=>null}},quiet:true});
     const started=Date.now();
     try{
@@ -51,5 +53,9 @@ for(const provider of (live?['qwen']:['deepseek','qwen']) as ('deepseek'|'qwen')
     }finally{t.close();}
   }
 }
-if(live)writeFileSync(resolve(root,'live-results.json'),JSON.stringify({model:process.env.TALA_LLM_FALLBACK_MODEL||'qwen-flash',paidCalls,results:rows},null,2)+'\n');
+if(live){
+  let previous:{results?:{case:string}[]}={};try{previous=JSON.parse(readFileSync(resolve(root,'live-results.json'),'utf8'));}catch{/* First run. */}
+  const latest=new Map((previous.results??[]).map(r=>[r.case,r]));for(const row of rows as {case:string}[])latest.set(row.case,{...row,sourceRun:runId} as never);
+  writeFileSync(resolve(root,'live-results.json'),JSON.stringify({...previous,model:process.env.TALA_LLM_FALLBACK_MODEL||'qwen-flash',lastRun:{id:runId,paidCalls},results:[...latest.values()]},null,2)+'\n');
+}
 process.exitCode=failures?1:0;

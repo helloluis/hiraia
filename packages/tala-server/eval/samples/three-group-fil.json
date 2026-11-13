@@ -1,0 +1,558 @@
+{
+  "input": {
+    "kind": "full",
+    "templateId": "tpl.multigrade.v1",
+    "language": "fil",
+    "subjectName": "Science",
+    "learningAreaId": "science",
+    "timeBudgetMinutes": 50,
+    "sessions": 1,
+    "gradeGroups": [
+      {
+        "id": "group-001",
+        "grade": "1",
+        "learnerCount": 10
+      },
+      {
+        "id": "group-002",
+        "grade": "2",
+        "learnerCount": 10
+      },
+      {
+        "id": "group-003",
+        "grade": "3",
+        "learnerCount": 10
+      }
+    ],
+    "competencies": {
+      "group-001": [
+        "C1"
+      ],
+      "group-002": [
+        "C2"
+      ],
+      "group-003": [
+        "C3"
+      ]
+    },
+    "curriculumVersion": "eval.v1",
+    "customObjectives": [],
+    "classProfile": {
+      "materials": [
+        "paper",
+        "pencils"
+      ],
+      "textbooks": [],
+      "electricity": true,
+      "projector": null,
+      "printing": false,
+      "outdoorSpace": null,
+      "notes": ""
+    },
+    "guidance": ""
+  },
+  "plan": {
+    "title": "Paglalarawan ng mga Halaman",
+    "sections": [
+      {
+        "key": "objectives",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-001": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "C1: Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman gamit ang mga pangunahing katangian tulad ng kulay, laki, at anyo."
+                  }
+                ]
+              }
+            ],
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "C2: Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman gamit ang mga bahagi tulad ng ugat, stalk, dahon, at bulaklak."
+                  }
+                ]
+              }
+            ],
+            "group-003": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "C3: Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman batay sa kanilang pagtubo at pangangalaga."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "materials",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-001": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ],
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ],
+            "group-003": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "multigrade",
+        "content": {
+          "type": "multigrade",
+          "blocks": [
+            {
+              "id": "ee590a3d-d19d-49a8-a205-33643df3899d",
+              "label": "Opening",
+              "minutes": 5,
+              "transitionMinutes": 0,
+              "teacherWith": "all",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Magbigay ng isang halimbawa ng halaman at sabihin kung ano ang kulay, laki, at anyo nito."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Tukuyin ang apat na pangunahing bahagi ng halaman: ugat, stalk, dahon, at bulaklak."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Sabihin kung paano nabubuhay ang isang halaman at ano ang kailangan nito para lumago."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "08927b95-d2e3-479e-9daa-af4f622a2908",
+              "label": "Gawain: Pagguhit at Pagsulat",
+              "minutes": 14,
+              "transitionMinutes": 1,
+              "teacherWith": "group-001",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Guhitin ang isang halaman at lagyan ng kulay. Ipaunawa kung bakit ito ganyan."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Guhitin ang isang halaman at tukuyin ang bawat bahagi gamit ang mga label."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Guhitin ang isang halaman at isulat ang dalawang bagay na kailangan nito upang lumago."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "9ac55fb9-6322-4c5b-b1b8-b2ced6446a72",
+              "label": "Gawain: Paghahambing",
+              "minutes": 13,
+              "transitionMinutes": 1,
+              "teacherWith": "group-002",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Ihambing ang dalawang halaman at sabihin kung pareho o iba ang kanilang kulay at laki."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Hambingin ang dalawang halaman at ipaliwanag kung ano ang magkaiba sa kanilang mga bahagi."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Ipaliwanag kung ano ang magkakaiba sa paraan ng pagtubo ng dalawang halaman."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "e947a3bf-847a-4e32-ad02-b33b9ea98eea",
+              "label": "Gawain: Pagsasalaysay",
+              "minutes": 13,
+              "transitionMinutes": 1,
+              "teacherWith": "group-003",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Kathang-isip ang isang halaman at sabihin kung ano ito, kung anong kulay, at kung paano ito nakikita."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Sabiin kung ano ang tungkulin ng bawat bahagi ng halaman sa paglalakas ng halaman."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Isulat ang isang maikling talata kung paano ito binabantayan at nililigawan ang isang halaman."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "d5f623d7-8f60-482a-9671-97022362c5b5",
+              "label": "Closing",
+              "minutes": 5,
+              "transitionMinutes": 0,
+              "teacherWith": "all",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Sabihin ang isa pang halaman at ilarawan ito gamit ang kulay at laki."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Tukuyin ang isang bahagi ng halaman at sabihin kung ano ito at bakit mahalaga."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Ibahagi ang isang bagay na natutunan tungkol sa pagtubo ng halaman."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "assessment",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-001": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "C1: Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Pakinggan ang pagsasalaysay ng bata tungkol sa isang halaman at suriin kung mayroon siyang wastong paglalarawan ng kulay, laki, at anyo."
+                  }
+                ]
+              }
+            ],
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "C2: Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Tignan ang guhit ng halaman at suriin kung ang bawat bahagi ay tamang inilalarawan at may label."
+                  }
+                ]
+              }
+            ],
+            "group-003": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "C3: Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Basahin ang maikling talata at suriin kung ang pagtuturo sa pagtubo at pangangalaga ng halaman ay tama at malinaw."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "reflection",
+        "content": {
+          "type": "text",
+          "blocks": [
+            {
+              "t": "p",
+              "spans": [
+                {
+                  "text": "Suriin ang mga sagot ng mga bata at tiyakin na ang bawat grado ay nakapag-ilaraw ng mga halaman ayon sa kanilang antas. I-adjust ang susunod na aralin batay sa mga kahinaan."
+                }
+              ]
+            }
+          ]
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 2,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      }
+    ],
+    "provider": "qwen",
+    "model": "qwen-flash",
+    "warnings": []
+  },
+  "review": "Teacher quality review pending; structural checks do not establish scientific or pedagogical quality."
+}

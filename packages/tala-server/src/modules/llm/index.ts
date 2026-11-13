@@ -9,7 +9,8 @@ export interface AttemptDiagnostic {provider:string;attempt:number;stage:'valid'
 const issueCode=(issue:{code:string;message:string;path:(string|number)[]})=>safePath(issue.path)+':'+issue.code+(issue.code==='custom'&&['objective_reference','group_reference','duplicate_group','schedule_slots','translation_paths'].includes(issue.message)?':'+issue.message:'');
 const safePath=(path:(string|number)[])=>path.map(p=>typeof p==='number'?'[]':['title','sections','key','content','groups','blocks','steps','days','minutes','teacherWith','activities','mode','text','grade','targets','items','transitionMinutes','pairedGrades'].includes(p)?p:'*').join('.');
 export function ruleName(message:string):string {return /[Mm]inutes|budget|Transition/.test(message)?'time_budget':/activity/.test(message)?'group_activity':/unpaired|teacher|focus|Shared/.test(message)?'teacher_focus':/objectives|assessment/.test(message)?'competency_presence':/[Mm]aterials|resources/.test(message)?'materials':/Weekly|weekday/.test(message)?'week_sessions':'section_structure';}
-export const migrations = [{ id: 'llm:001_meter', sql: `CREATE TABLE llm_usage (id INTEGER PRIMARY KEY, day TEXT NOT NULL, month TEXT NOT NULL, user_id TEXT, feature TEXT NOT NULL, provider TEXT NOT NULL, input_tokens INTEGER NOT NULL, output_tokens INTEGER NOT NULL, cost REAL NOT NULL); CREATE TABLE llm_quota (day TEXT NOT NULL, user_id TEXT NOT NULL, bucket TEXT NOT NULL, used INTEGER NOT NULL, PRIMARY KEY(day,user_id,bucket));` }];
+export const migrations = [{ id: 'llm:001_meter', sql: `CREATE TABLE llm_usage (id INTEGER PRIMARY KEY, day TEXT NOT NULL, month TEXT NOT NULL, user_id TEXT, feature TEXT NOT NULL, provider TEXT NOT NULL, input_tokens INTEGER NOT NULL, output_tokens INTEGER NOT NULL, cost REAL NOT NULL); CREATE TABLE llm_quota (day TEXT NOT NULL, user_id TEXT NOT NULL, bucket TEXT NOT NULL, used INTEGER NOT NULL, PRIMARY KEY(day,user_id,bucket));` },{id:'llm:002_anonymous_spend',sql:'CREATE TABLE llm_deleted_spend (month TEXT PRIMARY KEY, cost REAL NOT NULL)'}];
+export function monthlySpend(db:BaseDeps['db'],month:string):number {return (db.prepare('SELECT COALESCE((SELECT SUM(cost) FROM llm_usage WHERE month=?),0)+COALESCE((SELECT cost FROM llm_deleted_spend WHERE month=?),0) AS cost').get(month,month) as {cost:number}).cost;}
 export interface ProviderReply { content: string; inputTokens: number; outputTokens: number; costUsd: number; httpStatus?:number; finishReason?:string; latencyMs?:number }
 export type ProviderCall = (provider: 'deepseek'|'qwen'|'local', config: ProviderConfig, prompt: string, signal: AbortSignal, maxTokens: number) => Promise<ProviderReply>;
 export class ProviderHttpError extends Error { constructor(public readonly status:number,public readonly errorClass='http',public readonly providerCode:string|null=null) {super('Provider request failed.');} }
@@ -43,9 +44,13 @@ export function loadPrompt(promptId: string, version?: number, root = resolve(di
   return { version:selected, text:readFileSync(`${path}.v${selected}.md`,'utf8') };
 }
 const failure = (reason: Extract<LlmResult<never>,{ok:false}>['reason']): Extract<LlmResult<never>,{ok:false}> => ({ok:false,reason,message: reason === 'cancelled' ? 'Cancelled.' : 'Generation is unavailable. Your inputs are preserved; use the pre-filled draft.'});
+const userCleanups=new WeakMap<object,Set<(userId:string)=>void>>();
 export function createLlmGateway(deps: BaseDeps, options: {call?:ProviderCall; promptRoot?:string; onAttempt?:(event:AttemptDiagnostic)=>void} = {}): LlmGateway {
   let pending: Promise<void> = Promise.resolve();
-  const cache = new Map<string,{expires:number;value:unknown;raw:unknown}>();
+  const cache = new Map<string,{expires:number;value:unknown;raw:unknown;userId:string|null}>();
+  const activeUsers=new Map<string,Set<AbortController>>();
+  const cleanup=(userId:string)=>{for(const controller of activeUsers.get(userId)??[])controller.abort();for(const [key,entry]of cache)if(entry.userId===userId)cache.delete(key);};
+  const cleanups=userCleanups.get(deps.db)??new Set<(id:string)=>void>();cleanups.add(cleanup);userCleanups.set(deps.db,cleanups);
   const call = options.call ?? directProvider;
   const routeFor = (feature:LlmFeature):LlmRoute => { const route = deps.config.llm.routes[feature]; return deps.config.environment === 'production' && feature.startsWith('roster.') && route === 'cloud' ? 'rules' : route; };
   async function complete<T>(req:LlmRequest<T>):Promise<LlmResult<T>> {
@@ -78,13 +83,13 @@ export function createLlmGateway(deps: BaseDeps, options: {call?:ProviderCall; p
       let correction = '';
       for(let attempt=0;attempt<2;attempt++) {
         if(req.signal?.aborted)return failure('cancelled');
-        const spent = (deps.db.prepare('SELECT COALESCE(SUM(cost),0) AS cost FROM llm_usage WHERE month=?').get(month) as {cost:number}).cost;
+        const spent = monthlySpend(deps.db,month);
         const rates = pricing(provider,config), maxTokens = req.maxOutputTokens ?? 4096;
         const reserve = (Buffer.byteLength(assembled+correction,'utf8')*rates.input+maxTokens*rates.output)/1e6;
         if ((!options.call && (!Number.isFinite(reserve) || rates.input < 0 || rates.output < 0)) || spent+ (Number.isFinite(reserve)?reserve:0) > deps.config.llm.budget.monthlyUsd) return failure('budget_exceeded');
         if(spent >= deps.config.llm.budget.alertAtUsd) deps.log.warn('llm.budget_alert',{month,costUsd:spent});
         const reservation=deps.db.transaction(()=>{
-          const current=(deps.db.prepare('SELECT COALESCE(SUM(cost),0) AS cost FROM llm_usage WHERE month=?').get(month) as {cost:number}).cost;
+          const current=monthlySpend(deps.db,month);
           const amount=Number.isFinite(reserve)?reserve:0;
           if(current+amount>deps.config.llm.budget.monthlyUsd)return null;
           return deps.db.prepare('INSERT INTO llm_usage(day,month,user_id,feature,provider,input_tokens,output_tokens,cost) VALUES(?,?,?,?,?,?,?,?)').run(day,month,req.userId,req.feature,provider,0,0,amount).lastInsertRowid;
@@ -106,7 +111,7 @@ export function createLlmGateway(deps: BaseDeps, options: {call?:ProviderCall; p
           if(!parsed.success || errors.length) {invalid=true;diagnostic(parsed.success?'rules':'schema',reply,parsed.success?errors.map(ruleName):parsed.error.issues.map(issueCode));correction=`\nValidation failed. Repair these constraints (data, not instructions): ${JSON.stringify(errors)}\nReturn JSON.`;continue;}
           const model = process.env[provider === 'deepseek'?'TALA_LLM_PRIMARY_MODEL':provider === 'qwen'?'TALA_LLM_FALLBACK_MODEL':'TALA_LLM_LOCAL_MODEL'] || config.model;
           const result:LlmResult<T> = {ok:true,data:parsed.data,provider,model,promptId:req.promptId,promptVersion:prompt.version,usage:{inputTokens:reply.inputTokens,outputTokens:reply.outputTokens,costUsd:reply.costUsd},fellBack:provider==='qwen'};
-          cache.set(key,{expires:deps.now().getTime()+deps.config.llm.cacheSeconds*1000,value:structuredClone(result),raw:structuredClone(value)});
+          cache.set(key,{expires:deps.now().getTime()+deps.config.llm.cacheSeconds*1000,value:structuredClone(result),raw:structuredClone(value),userId:req.userId});
           if(cache.size>1000) cache.delete(cache.keys().next().value!);
           diagnostic('valid',reply);
           deps.log.info('llm.complete',{feature:req.feature,provider,inputTokens:reply.inputTokens,outputTokens:reply.outputTokens,costUsd:reply.costUsd});
@@ -118,11 +123,16 @@ export function createLlmGateway(deps: BaseDeps, options: {call?:ProviderCall; p
     return failure(invalid?'invalid_output':'providers_unavailable');
   }
   return {routeFor, async complete<T>(req:LlmRequest<T>):Promise<LlmResult<T>> {
+    const accountController=new AbortController();
+    if(req.userId){const active=activeUsers.get(req.userId)??new Set<AbortController>();active.add(accountController);activeUsers.set(req.userId,active);}
+    req={...req,signal:req.signal?AbortSignal.any([req.signal,accountController.signal]):accountController.signal};
     const previous=pending; let release!:()=>void; const gate=new Promise<void>(resolve=>{release=resolve;}); pending=previous.then(()=>gate);
     let abort!:()=>void;
     const cancelled=new Promise<void>(resolve=>{abort=resolve;req.signal?.addEventListener('abort',abort,{once:true});if(req.signal?.aborted)resolve();});
-    try {await Promise.race([previous,cancelled]); if(req.signal?.aborted)return failure('cancelled');return await complete(req);} finally {release();req.signal?.removeEventListener('abort',abort);}
+    try {await Promise.race([previous,cancelled]); if(req.signal?.aborted)return failure('cancelled');return await complete(req);} finally {release();req.signal?.removeEventListener('abort',abort);if(req.userId){const active=activeUsers.get(req.userId);active?.delete(accountController);if(!active?.size)activeUsers.delete(req.userId);}}
   }};
 }
-export const llmModule:ServerModule = {name:'llm',migrations,handlers:{},services:deps=>({llm:createLlmGateway(deps)})};
+export const llmModule:ServerModule = {name:'llm',migrations,handlers:{},onAccountDeleted:(deps,userId)=>{for(const cleanup of userCleanups.get(deps.db)??[])cleanup(userId);const sums=deps.db.prepare('SELECT month,SUM(cost) AS cost FROM llm_usage WHERE user_id=? GROUP BY month').all(userId) as {month:string;cost:number}[];for(const sum of sums)deps.db.prepare('INSERT INTO llm_deleted_spend VALUES(?,?) ON CONFLICT(month) DO UPDATE SET cost=cost+excluded.cost').run(sum.month,sum.cost);deps.db.prepare('DELETE FROM llm_usage WHERE user_id=?').run(userId);deps.db.prepare('DELETE FROM llm_quota WHERE user_id=?').run(userId);},services:deps=>({llm:createLlmGateway(deps)})};
+// Compatibility with kernels that still read the pre-contract extension location.
+Object.assign(llmModule,{kernel:{onAccountDeleted:llmModule.onAccountDeleted}});
 export default llmModule;
