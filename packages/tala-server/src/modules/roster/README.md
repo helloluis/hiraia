@@ -20,7 +20,13 @@ Pure/offline functions are exported at `@hiraia/tala-core/roster` (`decodeText`,
    body returns conflict. Full confirmation/abandon deletes the draft. Replay receipts are encrypted with
    a per-process AES-GCM key and expire at the original draft deadline; account deletion purges them too.
 
-Drafts live only in a per-module memory map, with no SQLite tables/migrations and no logs. They expire at
+Draft content lives only in a per-module memory map, with no persistent tables/migrations and no logs.
+A SQLite TEMP table holds only import ID, owner ID and expiry. It contains no names, request bodies or
+receipts. `onAccountMerged` updates this ownership table synchronously inside the merge transaction;
+if a later merge step fails, SQLite rolls ownership back while the in-memory content stays intact.
+Retry keys are scoped by globally unique import ID, so identical client keys from separate accounts
+remain separate. Repeating a merge, or merging an account into itself, leaves the content unchanged.
+The temporary ownership rows are cleared on account deletion, expiry and shutdown. Drafts expire at
 23 h 59 min; a one-minute cleanup timer guarantees removal by 24 h during normal operation. Access also
 checks expiry and class ownership/deletion. Shutdown/restart drops all drafts. Uploaded bytes are not kept
 for review. Server process memory, swap/core-dump protection and HTTPS are deployment responsibilities.
