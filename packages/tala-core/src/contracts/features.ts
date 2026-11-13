@@ -3,7 +3,7 @@
  * OWNER: orchestrator.
  */
 import { z } from 'zod';
-import { GradeLevel, Id, IsoDateTime, Lang, LIMITS } from './common';
+import { GradeLevel, Id, IsoDateTime, Lang, LIMITS, QueryBool } from './common';
 import { SectionContent, SectionKey, TemplateKind } from './content';
 import { ClassProfile, GradeGroup, Plan, PlanSection, SectionGenMeta } from './records';
 
@@ -320,7 +320,7 @@ export const ArtifactSearchQuery = z.object({
   /** Comma-separated sorted grades, e.g. '2,4'. */
   multigrade: z.string().optional(),
   maxMinutes: z.coerce.number().int().optional(),
-  mine: z.coerce.boolean().optional(),
+  mine: QueryBool.optional(),
   cursor: z.string().optional(),
 });
 

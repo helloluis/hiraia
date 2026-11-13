@@ -9,6 +9,7 @@
  *  4. Device clocks are never used for ordering; the server assigns `rev`, `updatedAt` and the pull cursor.
  *  5. A locked plan rejects mutations to its plan_section records (except sections with outsideLock) with
  *     result `locked`. The client turns the rejected edits into a new draft plan with `conflictCopyOf` set (DOC-4).
+ *     section_revision records are history and are NOT subject to the lock rule.
  *  6. edit vs delete: an upsert against a server-deleted record is applied and restores it.
  *
  * Client conflict rules by entity (§10.5):
@@ -99,6 +100,7 @@ export const CONFLICT_POLICY: Record<EntityName, ConflictPolicy> = {
   pairing_override: 'merge_fields',
   plan: 'merge_fields',
   plan_section: 'ask',
+  section_revision: 'merge_fields',
   unit: 'merge_fields',
   session_mark: 'merge_fields',
   day_note: 'merge_fields',

@@ -248,6 +248,8 @@ export const Plan = z.object({
   lock: z
     .object({
       lockedAt: IsoDateTime,
+      /** Teacher's display name at the moment of locking (DOC-1 "who"); printed with the lock date. */
+      lockedBy: z.string().max(120).default(''),
       /** Short human-readable code printed in the PDF footer (PDF-3). */
       revisionCode: z.string().max(16),
       /** Server plan revision number the lock applies to; null while the lock is still only on the device. */
@@ -287,6 +289,26 @@ export const PlanSection = z.object({
   gen: SectionGenMeta.nullable().default(null),
 });
 export type PlanSection = z.infer<typeof PlanSection>;
+
+/**
+ * A previous version of one section, kept on the device so it can be restored offline in one step
+ * (PLAN-10, LLM-4) and so provenance can tell how far an AI draft was rewritten (§11.3).
+ * Immutable once written. Clients keep a bounded history per section (newest N) and delete the rest.
+ */
+export const SectionRevision = z.object({
+  id: Id,
+  planId: Id,
+  sectionId: Id,
+  key: SectionKey,
+  content: SectionContent,
+  origin: z.enum(['manual', 'ai', 'copied']),
+  gen: SectionGenMeta.nullable().default(null),
+  /** Why the section was about to change when this copy was taken. */
+  reason: z.enum(['edit', 'regenerate', 'restore', 'conflict', 'lock', 'unlock']),
+  /** Device time, for display only; ordering uses the record's server rev / updatedAt. */
+  savedAt: IsoDateTime,
+});
+export type SectionRevision = z.infer<typeof SectionRevision>;
 
 export const Unit = z.object({
   id: Id,
@@ -388,6 +410,7 @@ export const RECORD_SCHEMAS = {
   pairing_override: PairingOverride,
   plan: Plan,
   plan_section: PlanSection,
+  section_revision: SectionRevision,
   unit: Unit,
   session_mark: SessionMark,
   day_note: DayNote,

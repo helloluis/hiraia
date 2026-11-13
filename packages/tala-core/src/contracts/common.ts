@@ -64,4 +64,12 @@ export type ApiErrorCode = ApiError['error']['code'];
 export const Page = <T extends z.ZodTypeAny>(item: T) =>
   z.object({ items: z.array(item).max(LIMITS.pageSize), nextCursor: z.string().nullable() });
 
+/**
+ * Boolean in a query string. `z.coerce.boolean()` treats the string 'false' as true, so never use it for queries.
+ * Clients may pass a real boolean; on the wire it is 'true' / 'false' (also accepts '1' / '0').
+ */
+export const QueryBool = z
+  .union([z.boolean(), z.enum(['true', 'false', '1', '0'])])
+  .transform((v) => v === true || v === 'true' || v === '1');
+
 export const Ok = z.object({ ok: z.literal(true) });
