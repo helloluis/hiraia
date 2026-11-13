@@ -1,17 +1,20 @@
 'use client';
-import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { LocalRecord, PlanSection, SectionContent } from '@hiraia/tala-core/contracts';
 import { formatDate, formatTime, useT } from '@/i18n';
 import { useSession } from '@/data/session';
 import { planDates } from '@/data/plans';
-import { Badge, Banner, Button, PageHeader, Placeholder, Sheet, TextInput, cx } from '@/components/ui';
+import { Badge, Banner, Button, PageHeader, Placeholder, Sheet, TextInput, Waiting, cx } from '@/components/ui';
 import { usePlanEditor } from './usePlanEditor';
 import { SectionEditor } from './SectionEditors';
 import { RichTextView } from './RichTextEditor';
 import { CompetencyPicker } from './CompetencyPicker';
 import { PdfSheet } from './PdfSheet';
 import { MoreSheet } from './MoreSheet';
+import { RegenSheet } from './RegenSheet';
+import { PostSheet } from '@/features/community/PostSheet';
+import { Toast } from '@/components/ui';
 
 export function EditorScreen({ planId }: { planId: string }) {
   const { t, lang } = useT();
@@ -27,12 +30,28 @@ export function EditorScreen({ planId }: { planId: string }) {
   const [moreOpen, setMoreOpen] = useState(false);
   const [conflict, setConflict] = useState<LocalRecord<'plan_section'> | null>(null);
   const [busy, setBusy] = useState(false);
+  const [regen, setRegen] = useState<LocalRecord<'plan_section'> | null>(null);
+  const [postOpen, setPostOpen] = useState(false);
+  const search = useSearchParams();
+  const [toast, setToast] = useState<string | null>(() => (search.get('drafted') ? 'drafted' : search.get('queued') ? 'queued' : null));
+  const { config } = useSession();
+  const canGenerate = config?.features.generation !== false;
 
   useEffect(() => {
     if (plan && title === null) setTitle(plan.title);
   }, [plan, title]);
 
   const conflicts = useMemo(() => ed.sections.filter(s => s.conflict), [ed.sections]);
+  const { network } = useSession();
+  const [fetching, setFetching] = useState(false);
+  const fetched = useRef(false);
+  // An older lesson outside the device window: fetch it once through sync.pull planIds (cursor untouched).
+  useEffect(() => {
+    if (ed.loading || plan || !engine || fetched.current || !network.online) return;
+    fetched.current = true;
+    setFetching(true);
+    void engine.fetchPlans([planId]).finally(() => setFetching(false));
+  }, [ed.loading, plan, engine, network.online, planId]);
   const dirty = ed.planRecord?.dirty || ed.sections.some(s => s.dirty);
 
   if (ed.loading && !plan) {
@@ -47,7 +66,7 @@ export function EditorScreen({ planId }: { planId: string }) {
     return (
       <>
         <PageHeader title={t('lessons.title')} back={{ href: '/lessons', label: t('lessons.title') }} />
-        <Banner kind="warn">{t('editor.notFound')}</Banner>
+        {fetching ? <Waiting label={t('editor.fetchingOlder')} /> : <Banner kind="warn">{t('editor.notFound')}</Banner>}
       </>
     );
   }
@@ -194,6 +213,13 @@ export function EditorScreen({ planId }: { planId: string }) {
               </span>
             </div>
             {locked && ts.outsideLock && <p className="text-small text-forestMuted">{t('editor.reflectionEditable')}</p>}
+            {!readOnly && canGenerate && ed.cls && (
+              <div>
+                <Button variant="quiet" onClick={() => setRegen(rec)}>
+                  ✦ {t('gen.regen')}
+                </Button>
+              </div>
+            )}
             <SectionEditor content={rec.data.content} readOnly={readOnly} groups={ed.groups} label={ts.label[lang]} onChange={(c: SectionContent) => ed.saveSection(rec.data, c)} />
           </section>
         );
@@ -258,8 +284,16 @@ export function EditorScreen({ planId }: { planId: string }) {
           setMoreOpen(false);
           setPdfOpen(true);
         }}
+        onPost={() => {
+          setMoreOpen(false);
+          setPostOpen(true);
+        }}
+        onGenerate={() => router.push(`/generate?planId=${plan.id}`)}
         onDeleted={() => router.replace('/lessons')}
       />
+      <RegenSheet section={regen} onClose={() => setRegen(null)} ed={ed} onDone={m => setToast(m)} />
+      <PostSheet open={postOpen} onClose={() => setPostOpen(false)} ed={ed} onPosted={m => setToast(m)} />
+      <Toast message={toast === 'drafted' ? t('gen.done') : toast === 'queued' ? t('gen.queued') : toast} onDone={() => setToast(null)} />
 
       {/* Conflict: stacked versions, three plain choices (§10.5) */}
       <Sheet open={!!conflict} onClose={() => setConflict(null)} title={t('editor.conflictTitle')}>

@@ -1,13 +1,13 @@
 'use client';
 import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { CalendarDay, TimelineEntry } from '@hiraia/tala-core/contracts';
 import { NON_TEACHING_KINDS } from '@hiraia/tala-core/contracts';
 import { formatDate, formatLongDate, useT } from '@/i18n';
 import { addDays, isoDate, mondayOf, monthEnd, monthStart } from '@/data/ids';
 import { useSession } from '@/data/session';
 import { groupByDate, useTimeline } from '@/data/timeline';
-import { pendingDisruptions } from '@/data/realign';
+import { pendingDisruptionIds } from '@/data/realign';
 import { Badge, Banner, Button, EmptyState, LinkButton, List, ListRow, PageHeader, Placeholder, SectionTitle, Toast, type Tone } from '@/components/ui';
 import { MarkSheet } from './MarkSheet';
 import { NoClassSheet } from './NoClassSheet';
@@ -15,7 +15,7 @@ import { RealignSheet } from './RealignSheet';
 
 export function WeekScreen() {
   const { t, lang } = useT();
-  const { cache, engine } = useSession();
+  const { engine } = useSession();
   const today = isoDate();
   const [weekStart, setWeekStart] = useState(() => mondayOf(today));
   const weekEnd = addDays(weekStart, 6);
@@ -27,13 +27,9 @@ export function WeekScreen() {
   const [marking, setMarking] = useState<TimelineEntry | null>(null);
   const [noClass, setNoClass] = useState(false);
   const [realignIds, setRealignIds] = useState<string[] | null>(null);
-  const [pending, setPending] = useState<string[]>([]);
   const [toast, setToast] = useState<{ message: string; undo?: () => void } | null>(null);
 
-  const refreshPending = useCallback(() => {
-    void pendingDisruptions(cache).then(ids => setPending(ids.filter(id => tl.ws.calendarDays.some(d => d.id === id))));
-  }, [cache, tl.ws.calendarDays]);
-  useEffect(refreshPending, [refreshPending]);
+  const pending = useMemo(() => pendingDisruptionIds(tl.ws, tl.currentTerm?.id ?? null), [tl.ws, tl.currentTerm]);
 
   const weekEntries = useMemo(() => tl.entries.filter(e => e.date >= weekStart && e.date <= weekEnd), [tl.entries, weekStart, weekEnd]);
   const days = useMemo(() => groupByDate(weekEntries), [weekEntries]);
@@ -176,26 +172,17 @@ export function WeekScreen() {
         defaultDate={today}
         onSaved={(day: CalendarDay) => {
           setNoClass(false);
-          void pendingDisruptions(cache).then(ids => {
-            const next = [...ids, day.id];
-            setPending(next);
-            void import('@/data/realign').then(m => m.setPendingDisruptions(cache, next));
-            setRealignIds([day.id]);
-          });
+          setRealignIds([day.id]);
         }}
       />
       {realignIds && engine && (
         <RealignSheet
           open
-          onClose={() => {
-            setRealignIds(null);
-            refreshPending();
-          }}
+          onClose={() => setRealignIds(null)}
           dayIds={realignIds}
           tl={tl}
           onApplied={undo => {
             setRealignIds(null);
-            refreshPending();
             setToast({ message: t('realign.applied'), undo });
           }}
         />
@@ -227,6 +214,19 @@ function SessionRow({ entry, tl, onMark }: { entry: TimelineEntry; tl: ReturnTyp
   const kindLabel = entry.kind === 'buffer' ? t('week.buffer') : entry.kind === 'assessment' ? t('week.assessment') : null;
   const href = entry.planId ? `/lessons/${entry.planId}` : `/lessons/new?classId=${entry.classId}&assignmentId=${entry.assignmentId}&date=${entry.date}&slotId=${entry.slotId}`;
   const past = entry.date <= tl.today;
+  const beforeTala = (entry.kind as string) === 'before_tala' || (entry.mark as string | null) === 'before_tala';
+  if (beforeTala) {
+    // Covered before the teacher started using Tala: no plan needed, never behind (PACE-5). A quiet completed row.
+    return (
+      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 px-3 py-2 bg-white border-b border-hairline last:border-b-0 text-forestMuted">
+        <span>
+          {slot?.startTime ? `${slot.startTime} · ` : ''}
+          {entry.subjectName}
+        </span>
+        <Badge tone="sage">✓ {t('week.state.beforeTala')}</Badge>
+      </div>
+    );
+  }
   return (
     <div className="flex flex-col gap-2 px-3 py-3 bg-white border-b border-hairline last:border-b-0">
       <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">

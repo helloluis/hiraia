@@ -117,7 +117,7 @@ export function ClassScreen() {
 
       <SectionTitle>{t('class.roster')}</SectionTitle>
       <List>
-        <ListRow title={t('class.learnersCount', { n: learnerCount })} subtitle={t('class.rosterImport')} href="/class/roster/import" trailing={<Badge>{t('common.comingSoon')}</Badge>} />
+        <ListRow title={t('class.learnersCount', { n: learnerCount })} subtitle={t('class.rosterImport')} href="/class/roster" trailing={<Badge>{t('common.edit')}</Badge>} />
       </List>
 
       <SectionTitle>{t('class.profile')}</SectionTitle>

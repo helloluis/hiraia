@@ -28,9 +28,10 @@ export function MarkSheet({ entry, onClose, ws, onSaved }: { entry: TimelineEntr
     if (!entry || !engine || !status) return;
     setBusy(true);
     try {
+      const ops: Array<{ op: 'put'; entity: 'session_mark'; data: SessionMark }> = [];
       for (const [gid, comps] of Object.entries(entry.byGroup)) {
         const existing = ws.marks.find(m => m.classId === entry.classId && m.assignmentId === entry.assignmentId && m.gradeGroupId === gid && m.date === entry.date && (m.slotId === null || m.slotId === entry.slotId));
-        await engine.put('session_mark', {
+        ops.push({ op: 'put', entity: 'session_mark', data: {
           id: existing?.id ?? newId(),
           classId: entry.classId,
           assignmentId: entry.assignmentId,
@@ -41,8 +42,9 @@ export function MarkSheet({ entry, onClose, ws, onSaved }: { entry: TimelineEntr
           competencyIds: comps,
           status,
           remark: remark.trim(),
-        });
+        } });
       }
+      await engine.batch(ops);
       onSaved();
       onClose();
     } finally {

@@ -28,13 +28,18 @@ export function VerifyEmailScreen() {
   };
 
   useEffect(() => {
-    const m = window.location.hash.match(/token=([^&]+)/);
-    if (m?.[1]) {
+    const readHash = () => {
+      const m = window.location.hash.match(/token=([^&]+)/);
+      if (!m?.[1]) return;
       const token = decodeURIComponent(m[1]);
       setCode(token);
       void verify(token);
       history.replaceState(null, '', window.location.pathname);
-    }
+    };
+    readHash();
+    // The link may also arrive while this page is already open (same tab, hash-only navigation).
+    window.addEventListener('hashchange', readHash);
+    return () => window.removeEventListener('hashchange', readHash);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

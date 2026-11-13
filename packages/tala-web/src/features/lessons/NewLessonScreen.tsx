@@ -9,6 +9,7 @@ import { useTimeline } from '@/data/timeline';
 import { curriculumVersionFor } from '@/data/curriculum';
 import { defaultTemplateFor, newPlan } from '@/data/plans';
 import { Banner, Button, LinkButton, PageHeader, Placeholder, Select, TextInput } from '@/components/ui';
+import { MatchingLessons } from '@/features/community/MatchingLessons';
 
 /** Create: write by hand (works offline), draft with AI (wave 2), or find in the community (wave 2). */
 export function NewLessonScreen() {
@@ -40,23 +41,21 @@ export function NewLessonScreen() {
 
   const entry = tl.entries.find(e => e.classId === classId && e.assignmentId === assignmentId && e.date === date && (!params.get('slotId') || e.slotId === params.get('slotId')));
 
-  const create = async () => {
+  const create = async (ai = false) => {
     if (!engine) return;
     setBusy(true);
     try {
       const template = BUILTIN_TEMPLATES.find(x => x.id === templateId) ?? defaultTemplateFor(cls, assignment);
       const competencies = entry ? Object.fromEntries(Object.entries(entry.byGroup).map(([g, ids]) => [g, [...ids]])) : {};
       const { plan, sections } = newPlan({ template, cls, assignment, dates: date ? [date] : [], language: lang, competencies, curriculumVersion: curriculumVersionFor(index, ws.activeYear?.label ?? null), newId });
-      await engine.put('plan', plan);
-      for (const s of sections) await engine.put('plan_section', s);
-      router.replace(`/lessons/${plan.id}`);
+      await engine.batch([{ op: 'put', entity: 'plan', data: plan }, ...sections.map(s => ({ op: 'put' as const, entity: 'plan_section' as const, data: s }))]);
+      router.replace(ai ? `/generate?planId=${plan.id}` : `/lessons/${plan.id}`);
     } finally {
       setBusy(false);
     }
   };
 
   if (ws.loading) return <Placeholder rows={4} />;
-  const q = `?classId=${classId}&assignmentId=${assignmentId}&date=${date}`;
 
   return (
     <div className="flex flex-col gap-4 max-w-[36rem]">
@@ -112,15 +111,16 @@ export function NewLessonScreen() {
         </p>
       )}
       <h2 className="text-title">{t('lessons.howToStart')}</h2>
-      <Button variant="primary" full onClick={() => void create()} busy={busy}>
+      <Button variant="primary" full onClick={() => void create()} busy={busy || tl.loading} disabled={!cls}>
         {t('lessons.write')}
       </Button>
-      <LinkButton href={`/generate${q}`} full>
-        {t('lessons.generate')} · {t('common.comingSoon')}
+      <Button full onClick={() => void create(true)} disabled={busy || tl.loading || !cls}>
+        {t('lessons.generate')}
+      </Button>
+      <LinkButton href={`/community${entry ? `?competencyId=${encodeURIComponent(Object.values(entry.byGroup).flat()[0] ?? '')}&grade=${cls?.gradeGroups[0]?.grade ?? ''}` : ''}`} full>
+        {t('lessons.fromCommunity')}
       </LinkButton>
-      <LinkButton href="/community" full>
-        {t('lessons.fromCommunity')} · {t('common.comingSoon')}
-      </LinkButton>
+      <MatchingLessons entry={entry} grade={cls?.gradeGroups[0]?.grade ?? null} language={assignment?.language ?? lang} />
     </div>
   );
 }
