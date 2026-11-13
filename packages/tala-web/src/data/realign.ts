@@ -4,13 +4,22 @@
  * combined preview per option, confirms, and can undo as one step. All maths is the shared pacing engine.
  */
 import { engine as pacing, applyRealignment, allocationFromPlan, realignmentUndo } from '@hiraia/tala-core/pacing';
-import type { CalendarDay, Competency, PacingParams, PacingTrack, Plan, RealignmentOption, RealignmentPreview, SyncEngine } from '@hiraia/tala-core/contracts';
+import { NON_TEACHING_KINDS, type CalendarDay, type Competency, type PacingParams, type PacingTrack, type Plan, type RealignmentOption, type RealignmentPreview, type SyncEngine } from '@hiraia/tala-core/contracts';
 import type { KvCache } from './cache';
 import { pacingInputFor } from './timeline';
 import type { Workspace } from './records';
 
-const PENDING_KEY = 'realign.pending';
+/** Teacher-entered non-teaching days not yet fitted (synced `CalendarDay.realigned`), within the current term. */
+export function pendingDisruptionIds(ws: Workspace, termId: string | null): string[] {
+  const term = ws.activeYear?.terms.find(t => t.id === termId);
+  if (!term || !ws.activeYear) return [];
+  return ws.calendarDays
+    .filter(d => d.schoolYearId === ws.activeYear!.id && d.source === 'teacher' && !d.realigned && NON_TEACHING_KINDS.includes(d.kind) && d.date >= term.startDate && d.date <= term.endDate)
+    .map(d => d.id);
+}
 
+/** Legacy per-device list (before the synced flag existed); still cleared on apply. */
+const PENDING_KEY = 'realign.pending';
 export async function pendingDisruptions(cache: KvCache): Promise<string[]> {
   return (await cache.get<string[]>(PENDING_KEY)) ?? [];
 }
@@ -29,6 +38,7 @@ export interface TrackPreview {
 
 export interface CombinedPreview {
   option: RealignmentOption;
+  dayIds: string[];
   tracks: TrackPreview[];
   movedCompetencies: number;
   movedPlans: number;
@@ -88,45 +98,55 @@ export function previewOption(ws: Workspace, competencies: Competency[], tracks:
       /* an option the engine rejects for this track is simply not previewed */
     }
   }
-  return { option, tracks: out, movedCompetencies: moved.size, movedPlans: plansMoved.size, dropped };
+  return { option, dayIds: disruptionIds, tracks: out, movedCompetencies: moved.size, movedPlans: plansMoved.size, dropped };
 }
 
 export interface AppliedRealignment {
   tracks: PacingTrack[];
   calendarDays: CalendarDay[];
   plans: Plan[];
+  /** Disruption days marked `realigned` by this apply (undo clears the flag). */
+  fittedDays: CalendarDay[];
 }
 
 /** Persist the preview: tracks (with accepted allocation), new calendar days and moved plans. Returns the undo set. */
 export async function applyPreview(engine: SyncEngine, combined: CombinedPreview): Promise<AppliedRealignment> {
-  const undo: AppliedRealignment = { tracks: [], calendarDays: [], plans: [] };
+  const undo: AppliedRealignment = { tracks: [], calendarDays: [], plans: [], fittedDays: [] };
   const seenDays = new Set<string>();
   const seenPlans = new Set<string>();
+  const ops: Array<{ op: 'put'; entity: 'pacing_track' | 'calendar_day' | 'plan'; data: unknown }> = [];
   for (const tp of combined.tracks) {
     const applied = applyRealignment(tp.input, tp.preview);
     undo.tracks.push(tp.undo.track);
     const nextTrack: PacingTrack = { ...applied.track, allocation: allocationFromPlan(tp.preview.after) };
-    await engine.put('pacing_track', nextTrack);
+    ops.push({ op: 'put', entity: 'pacing_track', data: nextTrack });
     for (const d of applied.calendarDays) {
       if (tp.input.calendarDays.some(x => x.id === d.id) || seenDays.has(d.id)) continue;
       seenDays.add(d.id);
       undo.calendarDays.push(d);
-      await engine.put('calendar_day', d);
+      ops.push({ op: 'put', entity: 'calendar_day', data: d });
     }
     for (const p of applied.plans) {
       const before = tp.input.plans.find(x => x.id === p.id);
       if (!before || seenPlans.has(p.id) || JSON.stringify(before.placements) === JSON.stringify(p.placements)) continue;
       seenPlans.add(p.id);
       undo.plans.push(before);
-      await engine.put('plan', p);
+      ops.push({ op: 'put', entity: 'plan', data: p });
     }
   }
+  // Mark the disruption days as fitted (CalendarDay.realigned) in the same operation.
+  for (const tp of combined.tracks) for (const d of tp.input.calendarDays) if (combined.dayIds.includes(d.id) && !d.realigned && !undo.fittedDays.some(x => x.id === d.id) && !ops.some(o => o.entity === 'calendar_day' && (o.data as CalendarDay).id === d.id)) { undo.fittedDays.push(d); ops.push({ op: 'put', entity: 'calendar_day', data: { ...d, realigned: true } }); }
+  // One durable operation: either the whole realignment is on the device, or none of it (§7.6 reversible as one step).
+  if (ops.length) await engine.batch(ops);
   return undo;
 }
 
 /** Reverse an applied realignment in one step. */
 export async function undoApplied(engine: SyncEngine, undo: AppliedRealignment): Promise<void> {
-  for (const t of undo.tracks) await engine.put('pacing_track', t);
-  for (const d of undo.calendarDays) await engine.remove('calendar_day', d.id);
-  for (const p of undo.plans) await engine.put('plan', p);
+  await engine.batch([
+    ...undo.tracks.map(t => ({ op: 'put' as const, entity: 'pacing_track' as const, data: t })),
+    ...undo.calendarDays.map(d => ({ op: 'remove' as const, entity: 'calendar_day' as const, id: d.id })),
+    ...undo.plans.map(p => ({ op: 'put' as const, entity: 'plan' as const, data: p })),
+    ...undo.fittedDays.map(d => ({ op: 'put' as const, entity: 'calendar_day' as const, data: { ...d, realigned: false } })),
+  ]);
 }

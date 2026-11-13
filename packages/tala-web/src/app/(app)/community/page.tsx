@@ -1,6 +1,12 @@
-import { ComingSoon } from '@/features/shell/ComingSoon';
+import { Suspense } from 'react';
+import { CommunityScreen } from '@/features/community/CommunityScreen';
 
-/** WAVE 2: Community (search, copy, post). See WAVE2.md. */
+export const metadata = { title: 'Community' };
+
 export default function Page() {
-  return <ComingSoon titleKey="wave2.community" bodyKey="wave2.communityBody" action={{ href: '/lessons', labelKey: 'nav.lessons' }} />;
+  return (
+    <Suspense>
+      <CommunityScreen />
+    </Suspense>
+  );
 }

@@ -10,7 +10,7 @@ import type { PlanEditor } from './usePlanEditor';
 type View = 'menu' | 'duplicate' | 'submitted' | 'history' | 'delete';
 
 /** Secondary actions behind "More" (SIMPLE-2): PDF, copy to another date, mark submitted, history, delete. */
-export function MoreSheet({ open, onClose, ed, onPdf, onDeleted }: { open: boolean; onClose: () => void; ed: PlanEditor; onPdf: () => void; onDeleted: () => void }) {
+export function MoreSheet({ open, onClose, ed, onPdf, onPost, onGenerate, onDeleted }: { open: boolean; onClose: () => void; ed: PlanEditor; onPdf: () => void; onPost: () => void; onGenerate: () => void; onDeleted: () => void }) {
   const { t, lang } = useT();
   const router = useRouter();
   const { engine } = useSession();
@@ -30,8 +30,7 @@ export function MoreSheet({ open, onClose, ed, onPdf, onDeleted }: { open: boole
     if (!engine) return;
     const id = newId();
     const copy = { ...plan, id, title: plan.title, state: 'draft' as const, lock: null, submitted: null, conflictCopyOf: null, placements: plan.placements.slice(0, 1).map(p => ({ ...p, dates: [date] })) };
-    await engine.put('plan', copy);
-    for (const s of ed.sections) await engine.put('plan_section', { ...s.data, id: newId(), planId: id, origin: 'copied', gen: null });
+    await engine.batch([{ op: 'put', entity: 'plan', data: copy }, ...ed.sections.map(s => ({ op: 'put' as const, entity: 'plan_section' as const, data: { ...s.data, id: newId(), planId: id, origin: 'copied' as const, gen: null } }))]);
     close();
     router.push(`/lessons/${id}`);
   };
@@ -53,6 +52,8 @@ export function MoreSheet({ open, onClose, ed, onPdf, onDeleted }: { open: boole
         {view === 'menu' && (
           <List>
             <ListRow title={t('editor.pdf')} onClick={onPdf} />
+            {!locked && ed.cls && <ListRow title={t('lessons.generate')} subtitle={t('gen.notice')} onClick={onGenerate} />}
+            {locked && !ed.cls?.isSample && <ListRow title={t('com.post')} onClick={onPost} />}
             <ListRow title={t('editor.duplicate')} onClick={() => setView('duplicate')} />
             {locked && <ListRow title={t('editor.markSubmitted')} onClick={() => setView('submitted')} />}
             <ListRow title={t('editor.history')} subtitle={ed.revisions.length ? `${ed.revisions.length}` : t('editor.noHistory')} onClick={() => setView('history')} />

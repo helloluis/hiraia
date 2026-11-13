@@ -165,7 +165,7 @@ export async function createSampleClass(deps: SampleDeps): Promise<{ classId: st
   const term = engine.termForDate(year, deps.today);
   if (term) {
     const sciSessions = engine.enumerateSessions(year, term, science, []).filter(s => s.date >= deps.today).slice(0, 2);
-    const mathSessions = engine.enumerateSessions(year, term, math, []).filter(s => s.date < deps.today).slice(-1);
+    const pastSessions = engine.enumerateSessions(year, term, science, []).filter(s => s.date < deps.today).slice(-1);
     const sampleText = (t: string) => [{ t: 'p' as const, spans: [{ text: t }] }];
     const mg = BUILTIN_TEMPLATES.find(t => t.kind === 'multigrade')!;
     const dlp = BUILTIN_TEMPLATES.find(t => t.kind === 'dlp')!;
@@ -180,14 +180,15 @@ export async function createSampleClass(deps: SampleDeps): Promise<{ classId: st
       await eng.put('plan', plan);
       for (const s of sections) await eng.put('plan_section', s);
     }
-    if (mathSessions[0]) {
-      const { plan, sections } = newPlan({ template: dlp, cls, assignment: math, dates: [mathSessions[0].date], language: deps.lang, curriculumVersion: version, newId, title: deps.lang === 'fil' ? 'Halimbawa: Naka-lock na aralin' : 'Sample: Locked lesson' });
+    if (pastSessions[0]) {
+      const single: ClassRecord = { ...cls, gradeGroups: cls.gradeGroups.slice(0, 1) };
+      const { plan, sections } = newPlan({ template: dlp, cls: single, assignment: { ...science, gradeGroupIds: [g3] }, dates: [pastSessions[0].date], language: deps.lang, curriculumVersion: version, newId, title: deps.lang === 'fil' ? 'Halimbawa: Naka-lock na aralin' : 'Sample: Locked lesson' });
       for (const s of sections) {
         if (s.content.type === 'list') s.content = { type: 'list', items: [deps.lang === 'fil' ? 'Halimbawang aytem' : 'Sample item'] };
         if (s.content.type === 'text') s.content = { type: 'text', blocks: sampleText(deps.lang === 'fil' ? 'Halimbawang teksto.' : 'Sample text.') };
         if (s.content.type === 'procedure') s.content = { type: 'procedure', steps: [{ id: newId(), title: deps.lang === 'fil' ? 'Panimula' : 'Opening', minutes: 10, body: sampleText('…') }] };
       }
-      const g3Comp = allCompetencies.find(c => c.grade === '3' && c.learningAreaId === 'mathematics');
+      const g3Comp = allCompetencies.find(c => c.grade === '3' && c.learningAreaId === 'science');
       if (g3Comp) plan.competencies = { [g3]: [g3Comp.id] };
       let locked: Plan = plan;
       try {
@@ -197,7 +198,7 @@ export async function createSampleClass(deps: SampleDeps): Promise<{ classId: st
       }
       await eng.put('plan', locked);
       for (const s of sections) await eng.put('plan_section', s);
-      await eng.put('session_mark', { id: newId(), classId: cls.id, assignmentId: math.id, gradeGroupId: g3, date: mathSessions[0].date, slotId: null, planId: locked.id, competencyIds: [], status: 'taught', remark: '' });
+      await eng.put('session_mark', { id: newId(), classId: cls.id, assignmentId: science.id, gradeGroupId: g3, date: pastSessions[0].date, slotId: null, planId: locked.id, competencyIds: [], status: 'taught', remark: '' });
     }
   }
   return { classId: cls.id, yearId: year.id };

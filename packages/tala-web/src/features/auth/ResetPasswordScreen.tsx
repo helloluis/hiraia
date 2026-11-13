@@ -18,11 +18,15 @@ export function ResetPasswordScreen() {
   const form = useAuthForm();
 
   useEffect(() => {
-    const m = window.location.hash.match(/token=([^&]+)/);
-    if (m?.[1]) {
+    const readHash = () => {
+      const m = window.location.hash.match(/token=([^&]+)/);
+      if (!m?.[1]) return;
       setToken(decodeURIComponent(m[1]));
       history.replaceState(null, '', window.location.pathname);
-    }
+    };
+    readHash();
+    window.addEventListener('hashchange', readHash);
+    return () => window.removeEventListener('hashchange', readHash);
   }, []);
 
   const request = async (e: React.FormEvent) => {

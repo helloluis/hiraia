@@ -4,14 +4,14 @@ import type { RealignmentOption } from '@hiraia/tala-core/contracts';
 import { useT } from '@/i18n';
 import { useSession } from '@/data/session';
 import type { useTimeline } from '@/data/timeline';
-import { affectedTracks, applyPreview, optionsFor, pendingDisruptions, previewOption, setPendingDisruptions, undoApplied, type CombinedPreview } from '@/data/realign';
+import { affectedTracks, applyPreview, optionsFor, previewOption, undoApplied, type CombinedPreview } from '@/data/realign';
 import { addDays } from '@/data/ids';
 import { Badge, Banner, Button, Placeholder, Sheet, TextInput, cx } from '@/components/ui';
 
 /** Preview-and-confirm realignment (§7.6, PACE-6). Default option first; apply is reversible in one step. */
 export function RealignSheet({ open, onClose, dayIds, tl, onApplied }: { open: boolean; onClose: () => void; dayIds: string[]; tl: ReturnType<typeof useTimeline>; onApplied: (undo: () => void) => void }) {
   const { t } = useT();
-  const { engine, cache } = useSession();
+  const { engine } = useSession();
   const days = useMemo(() => tl.ws.calendarDays.filter(d => dayIds.includes(d.id)), [tl.ws.calendarDays, dayIds]);
   const tracks = useMemo(() => (tl.currentTerm ? affectedTracks(tl.ws, days, tl.currentTerm.id) : []), [tl.ws, days, tl.currentTerm]);
   const options = useMemo(() => optionsFor(tl.ws, tl.competencies, tracks, tl.today, tl.defaults), [tl.ws, tl.competencies, tracks, tl.today, tl.defaults]);
@@ -44,11 +44,7 @@ export function RealignSheet({ open, onClose, dayIds, tl, onApplied }: { open: b
     setBusy(true);
     try {
       const undo = await applyPreview(engine, preview);
-      const remaining = (await pendingDisruptions(cache)).filter(id => !dayIds.includes(id));
-      await setPendingDisruptions(cache, remaining);
-      onApplied(() => {
-        void undoApplied(engine, undo).then(async () => setPendingDisruptions(cache, [...(await pendingDisruptions(cache)), ...dayIds]));
-      });
+      onApplied(() => void undoApplied(engine, undo));
     } catch {
       setFailed(true);
     } finally {

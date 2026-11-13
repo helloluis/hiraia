@@ -8,6 +8,7 @@ import { HiraiaGlyph, TalaWordmark } from '@/components/Brand';
 import { cx } from '@/components/ui';
 import { NetworkBanner } from './NetworkBanner';
 import { SyncIndicator } from './SyncIndicator';
+import { GenerationRunner } from '@/features/generate/GenerationRunner';
 
 const NAV = [
   { href: '/week', key: 'nav.week', icon: '▦' },
@@ -32,6 +33,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-dvh flex flex-col wide:flex-row">
+      <GenerationRunner />
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:px-3 focus:py-2 focus:rounded">
         {t('app.skipToContent')}
       </a>

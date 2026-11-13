@@ -171,6 +171,7 @@ export function SetupScreen() {
     setError(null);
     try {
       const profile = await ensureProfile(engine, user, lang);
+      const ops: Array<{ op: 'put'; entity: 'school_year' | 'calendar_day' | 'profile' | 'class' | 'assignment' | 'pacing_track'; data: unknown }> = [];
       let year = existingYear;
       if (!year) {
         const yid = newId();
@@ -179,18 +180,18 @@ export function SetupScreen() {
         if (preset) {
           const built = schoolYearFromPreset(preset, yid, newId, schoolName.trim());
           year = built.year;
-          await engine.put('school_year', year);
+          ops.push({ op: 'put', entity: 'school_year', data: year });
           for (const d of built.days) {
-            await engine.put('calendar_day', { id: newId(), schoolYearId: yid, date: d.date, kind: d.kind, label: d.label, classId: null, minutesOverride: null, source: 'preset', followsWeekday: null, assignmentIds: null });
+            ops.push({ op: 'put', entity: 'calendar_day', data: { id: newId(), schoolYearId: yid, date: d.date, kind: d.kind, label: d.label, classId: null, minutesOverride: null, source: 'preset', followsWeekday: null, assignmentIds: null } });
           }
         } else {
           year = { ...blankSchoolYear(yid, today, newId), label: yearLabel.trim() || yearLabel, startDate, endDate, schoolName: schoolName.trim(), terms: evenTerms(startDate, endDate) };
-          await engine.put('school_year', year);
+          ops.push({ op: 'put', entity: 'school_year', data: year });
         }
-        await engine.put('profile', { ...profile, activeSchoolYearId: year.id, schoolName: schoolName.trim() || profile.schoolName });
+        ops.push({ op: 'put', entity: 'profile', data: { ...profile, activeSchoolYearId: year.id, schoolName: schoolName.trim() || profile.schoolName } });
       } else if (schoolName.trim() && !year.schoolName) {
         year = { ...year, schoolName: schoolName.trim() };
-        await engine.put('school_year', year);
+        ops.push({ op: 'put', entity: 'school_year', data: year });
       }
       const cls: ClassRecord = {
         id: newId(),
@@ -203,11 +204,11 @@ export function SetupScreen() {
         isSample: false,
         archived: false,
       };
-      await engine.put('class', cls);
+      ops.push({ op: 'put', entity: 'class', data: cls });
       const version = curriculumVersionFor(index, year.label);
       for (const s of subjects) {
         const a = draftAssignment(s, cls.id, year);
-        await engine.put('assignment', a);
+        ops.push({ op: 'put', entity: 'assignment', data: a });
         if (curriculum === 'none') continue;
         for (const gid of s.groupIds) {
           const chosen = starts?.find(x => x.subjectId === s.id && x.groupId === gid);
@@ -225,10 +226,12 @@ export function SetupScreen() {
               overrides: {},
               allocation: null,
             };
-            await engine.put('pacing_track', track);
+            ops.push({ op: 'put', entity: 'pacing_track', data: track });
           }
         }
       }
+      // Class setup is one durable operation (SyncEngine.batch): a killed tab never leaves half a class.
+      await engine.batch(ops);
       router.replace('/week');
     } catch {
       setError(t('error.generic'));
