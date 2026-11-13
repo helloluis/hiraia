@@ -52,7 +52,8 @@ export function extractText(text: string, extension = 'txt'): string[][] {
   const normalized = text.replace(/^\uFEFF/, '');
   if (extension === 'tsv') return parseDelimited(normalized, '\t');
   // A comma in a plain surname-first list is name punctuation, not a column separator.
-  const candidates = ['\t', ';', '|', ...(extension === 'csv' ? [','] : [])];
+  const commaTable = extension === 'csv' || /^(?:name|full name|name of learners?|first name|last name|surname|pangalan|apelyido|lrn|no\.?)\s*,/im.test(normalized);
+  const candidates = ['\t', ';', '|', ...(commaTable ? [','] : [])];
   let best = '', score = 0;
   for (const delimiter of candidates) {
     const parsed = parseDelimited(normalized, delimiter);

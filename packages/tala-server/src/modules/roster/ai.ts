@@ -6,7 +6,9 @@ import { HttpError } from '../../kernel/types';
 
 export function aiRoute(ctx: Ctx, useAi: boolean, acknowledged: boolean): LlmRoute {
   if (!useAi || !ctx.config.features.rosterAi) return 'rules';
-  const routes = ['roster.columns', 'roster.names'].map(f => ctx.services.llm.routeFor(f as 'roster.columns' | 'roster.names'));
+  let routes: LlmRoute[];
+  try { routes = ['roster.columns', 'roster.names'].map(f => ctx.services.llm.routeFor(f as 'roster.columns' | 'roster.names')); }
+  catch { return 'rules'; }
   if (ctx.config.environment === 'production' && routes.includes('cloud')) return 'rules';
   if (routes.includes('cloud') && !acknowledged) throw new HttpError('invalid_input', 'Please acknowledge the early-access cloud AI notice, or choose Clean without AI.');
   return routes.includes('cloud') ? 'cloud' : routes.includes('local') ? 'local' : routes.includes('rules') ? 'rules' : 'off';
@@ -30,6 +32,7 @@ export async function assistDraft(ctx: Ctx, draft: RosterImportDraft): Promise<v
   // Samples are fully masked, a stricter minimisation policy than pattern masking.
   if (draft.columns.some(c => c.field === 'ignore')) {
     try {
+      draft.aiUsed = true; // Records that data processing was attempted, even if output is rejected.
       const result = await bounded(signal => ctx.services.llm.complete({ feature: 'roster.columns', promptId: 'roster/columns', version: 1, route: draft.route, userId: null, vars: { columns: JSON.stringify(draft.columns.map(c => ({ index: c.index, header: fieldForHeader(c.header) === 'ignore' ? '[unmapped]' : c.field, sample: '[masked]' }))) }, schema: ColumnOutput, maxOutputTokens: 1500, signal }));
       if (result.ok && ColumnOutput.safeParse(result.data).success) {
         draft.aiUsed = true;
@@ -42,6 +45,7 @@ export async function assistDraft(ctx: Ctx, draft: RosterImportDraft): Promise<v
   for (let offset = 0; offset < unresolved.length; offset += 40) {
     const batch = unresolved.slice(offset, offset + 40);
     try {
+      draft.aiUsed = true; // Records that data processing was attempted, even if output is rejected.
       const result = await bounded(signal => ctx.services.llm.complete({ feature: 'roster.names', promptId: 'roster/names', version: 1, route: draft.route, userId: null, vars: { rows: JSON.stringify(batch.map(r => ({ rowIndex: r.rowIndex, name: r.original }))) }, schema: NameOutput, maxOutputTokens: 8000, signal }));
       if (!result.ok) { for (const row of batch) flag(row, 'model_rules_disagree'); continue; }
       const parsed = NameOutput.safeParse(result.data);

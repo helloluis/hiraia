@@ -1,6 +1,6 @@
 import type { RosterImportDraft, RosterProposed as Proposed, RosterRow } from '@hiraia/tala-core';
 import { RosterProposed } from '@hiraia/tala-core';
-import { emptyName, normalizeSource, rosterCounts, structureRows, type SafeSource } from '@hiraia/tala-core/roster';
+import { emptyName, normalizeSource, rosterCounts, safeNameCell, structureRows, type SafeSource } from '@hiraia/tala-core/roster';
 import { HttpError, requireUser, type Ctx, type ServerModule } from '../../kernel/types';
 import { aiRoute, assistDraft } from './ai';
 import { readRoster } from './reader';
@@ -55,9 +55,11 @@ export function createRosterModule(): ServerModule {
         let parsed;
         try { parsed = structureRows(extracted.rows, { maxRows: ctx.config.limits.rosterRows, exactlyAsWritten: body.exactlyAsWritten, encodingReview: extracted.encodingReview }); }
         catch { throw new HttpError('invalid_input', 'This list exceeds the import limits. Paste up to 500 names as text.'); }
+        extracted.rows.length = 0; // Release unapproved cells before any model call.
         const draft: RosterImportDraft = { importId: ctx.newId(), classId: body.classId, filename: body.filename, columns: parsed.columns, droppedColumns: parsed.droppedColumns, rows: parsed.rows, counts: parsed.counts, route, aiUsed: false, sheets: extracted.sheets, expiresAt: new Date(ctx.now().getTime() + TTL).toISOString() };
         await assistDraft(ctx, draft);
         draft.counts = rosterCounts(draft.rows);
+        classFor(ctx, body.classId); // Recheck after asynchronous parsing/model work.
         drafts.set(draft.importId, { owner: user.id, draft, source: parsed.source, exact: body.exactlyAsWritten, saved: new Set() });
         return clone(draft);
       },
@@ -79,7 +81,9 @@ export function createRosterModule(): ServerModule {
         for (const c of columns) if (c.field === 'drop' || c.field === 'ignore') for (const s of stored.source) s.cells[c.index] = '';
         stored.draft.columns = columns;
         stored.draft.droppedColumns = [...new Set([...stored.draft.droppedColumns, ...columns.filter(c => c.field === 'drop' || c.field === 'ignore').map(c => c.header)])];
+        const uncertainEncoding = new Set(stored.draft.rows.filter(r => r.flags.includes('corrupted_characters')).map(r => r.rowIndex));
         stored.draft.rows = normalizeSource(stored.source, columns, stored.exact);
+        for (const row of stored.draft.rows) if (uncertainEncoding.has(row.rowIndex)) { row.flags.push('corrupted_characters'); row.status = 'needs_review'; }
         stored.draft.counts = rosterCounts(stored.draft.rows);
         return clone(stored.draft);
       },
@@ -108,7 +112,7 @@ export function createRosterModule(): ServerModule {
           else if (row.status !== 'not_student') { pendingRows.push(row.rowIndex); continue; }
           for (const value of values) {
             const checked = RosterProposed.safeParse(value);
-            if (!checked.success || !value.displayName.trim() || value.displayName === '[withheld]' || (value.localId && /\d{8,}/.test(value.localId))) throw new HttpError('invalid_input', 'Check the name and optional local ID before saving.');
+            if (!checked.success || ![value.displayName, value.givenName, value.familyName, value.middleName, value.suffix].every(safeNameCell) || !value.displayName.trim() || value.displayName === '[withheld]' || (value.localId && /\d{8,}/.test(value.localId))) throw new HttpError('invalid_input', 'Check the name and optional local ID before saving.');
             const gradeGroupId = value.grade ? cls.gradeGroups.find(g => g.grade === value.grade)?.id ?? null : body.defaultGradeGroupId;
             if (value.grade && !gradeGroupId) { pendingRows.push(row.rowIndex); break; }
             students.push({ ...checked.data, gradeGroupId, rowIndex: row.rowIndex });

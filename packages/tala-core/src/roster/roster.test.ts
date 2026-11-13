@@ -66,3 +66,38 @@ test('separate fields and grade subheadings', () => {
   assert.equal(result.rows[2]!.proposed.givenName, 'Ma. Lira');
   assert.equal(result.rows[2]!.status, 'clean');
 });
+for (const [i, base] of ['Ma. Miro A. Dela Cruz','Lira B. De los Santos','Neri C. Sta. Maria','Zoë D. Peña','Jona E. Macapagal-Arroyo','Mika F. San Jose','Teri G. Delos Reyes','Ivo H. de la Peña'].entries()) {
+  for (const [j, transform] of [
+    (s: string) => s, (s: string) => s.toUpperCase(), (s: string) => s.toLowerCase(),
+    (s: string) => `  ${s.replace(/ /g, '   ')}  `, (s: string) => `Mr. ${s}`, (s: string) => `${i + 1}. ${s}`,
+    (s: string) => `${s} (transferee)`, (s: string) => `${s} - moved`, (s: string) => `✓ ${s}`,
+  ].entries()) test(`messy Filipino fixture ${i}-${j} conserves all identity runs`, () => {
+    const original = transform(base), row = normalizeName(original, i);
+    assert.equal(traceable(original, row.proposed), true); assert.equal(row.status, 'needs_review');
+    assert.equal(row.original, original);
+  });
+}
+test('near spelling variants only group, never autocorrect', () => {
+  const result = structureRows([['Miro Peña'], ['Miro Peña'], ['Miro Peñá']]);
+  assert.equal(result.rows.length, 3); assert.ok(result.rows.every(r => r.flags.includes('possible_duplicate')));
+  assert.deepEqual(result.rows.map(r => r.proposed.displayName), ['Miro Peña','Miro Peña','Miro Peñá']);
+});
+test('exact mode preserves header-like names and layout without guessing', () => {
+  const result = structureRows([['  Ma. Miro Peña  '], ['Name'], ['J. Reyes']], { exactlyAsWritten: true });
+  assert.deepEqual(result.rows.map(r => r.proposed.displayName), ['  Ma. Miro Peña  ','Name','J. Reyes']);
+  assert.ok(result.rows.every(r => !r.proposed.familyName && !r.proposed.givenName));
+});
+test('explicit initial mapping supports sparse/reordered columns but cannot remap sensitive headers', () => {
+  const parsed = structureRows([['Unusual','LRN','Custom'],['Miro','123456789012','Peña']], { headerRowIndex: 0, columns: [{ index: 2, field: 'familyName', header: 'Custom' }, { index: 0, field: 'givenName', header: 'Unusual' }, { index: 1, field: 'fullName', header: 'LRN' }] });
+  assert.equal(parsed.rows[1]!.proposed.givenName, 'Miro'); assert.equal(parsed.rows[1]!.proposed.familyName, 'Peña');
+  assert.ok(!JSON.stringify(parsed).includes('123456789012'));
+  const sparse = structureRows([['Private','Peña, Miro A.']], { columns: [{ index: 1, field: 'fullName', header: 'Name' }], headerRowIndex: null });
+  assert.equal(sparse.rows[0]!.proposed.displayName, 'Peña, Miro A.'); assert.ok(!JSON.stringify(sparse).includes('Private'));
+});
+test('oversized display names remain pending for editing without invalid response fields', () => {
+  const parsed = structureRows([['X'.repeat(220)]]);
+  assert.equal(parsed.rows[0]!.status, 'needs_review'); assert.equal(parsed.rows[0]!.proposed.displayName, ''); assert.equal(parsed.rows[0]!.original.length, 220);
+});
+test('pasted CSV header distinguishes a table from surname-first plain lines', () => {
+  assert.deepEqual(extractText('Name,Grade\n"Peña, Miro A.",3'), [['Name','Grade'],['Peña, Miro A.','3']]);
+});

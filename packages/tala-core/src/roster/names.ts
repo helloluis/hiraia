@@ -21,7 +21,7 @@ export function displayCase(value: string): string {
 }
 export function normalizeName(original: string, rowIndex: number, exact = false): RosterRow {
   const row: RosterRow = { rowIndex, original, proposed: emptyName(original), status: 'clean', flags: [], removed: [], duplicateGroup: null };
-  if (original.length > 200) row.flags.push('maybe_not_person');
+  if (original.length > 200) { row.proposed = emptyName(); row.flags.push('maybe_not_person'); row.status = 'needs_review'; return row; }
   if (/[\uFFFD\x00-\x08]|Ã.|Â.|â€/.test(original)) row.flags.push('corrupted_characters');
   if (exact) { if (row.flags.length) row.status = 'needs_review'; return row; }
   let value = original;
@@ -62,7 +62,19 @@ export function groupDuplicates(rows: RosterRow[]): void {
   let group = 0;
   const normalized = (r: RosterRow) => runs(r.proposed.displayName).join(' ');
   const similar = (a: RosterRow, b: RosterRow) => {
-    if (normalized(a) === normalized(b)) return true;
+    const aa = normalized(a), bb = normalized(b);
+    if (aa === bb) return true;
+    // One insertion, deletion or substitution is only a duplicate suggestion, never a correction.
+    if (Math.min(aa.length, bb.length) >= 6 && Math.abs(aa.length - bb.length) <= 1) {
+      let i = 0, j = 0, edits = 0;
+      while (i < aa.length && j < bb.length) {
+        if (aa[i] === bb[j]) { i++; j++; continue; }
+        if (++edits > 1) break;
+        if (aa.length <= bb.length) j++;
+        if (aa.length >= bb.length) i++;
+      }
+      if (edits + (aa.length - i) + (bb.length - j) <= 1) return true;
+    }
     const x = a.proposed, y = b.proposed;
     if (x.familyName && y.familyName && fold(x.familyName) === fold(y.familyName) && fold(x.givenName) === fold(y.givenName)) {
       return !x.middleName || !y.middleName || fold(x.middleName)[0] === fold(y.middleName)[0];
