@@ -1,3 +1,4 @@
+import { atomic, type Operation } from '../features/atomic';
 import type { SyncEngine, TimelineEntry, SessionMark } from '@hiraia/tala-core/contracts';
 export async function markSession(
   engine: SyncEngine,
@@ -7,6 +8,7 @@ export async function markSession(
 ) {
   const existing = await engine.list('session_mark');
   const previous: { id: string; data: SessionMark | null }[] = [];
+  const ops: Operation[] = [];
   for (const [group, competencyIds] of Object.entries(entry.byGroup)) {
     const old = existing.find(
       (m) =>
@@ -17,23 +19,32 @@ export async function markSession(
     );
     const id = old?.id ?? newId();
     previous.push({ id, data: old?.data ?? null });
-    await engine.put('session_mark', {
-      id,
-      slotId: entry.slotId,
-      classId: entry.classId,
-      assignmentId: entry.assignmentId,
-      gradeGroupId: group,
-      date: entry.date,
-      planId: entry.planId,
-      competencyIds,
-      status,
-      remark: old?.data.remark ?? '',
+    ops.push({
+      op: 'put',
+      entity: 'session_mark',
+      data: {
+        id,
+        slotId: entry.slotId,
+        classId: entry.classId,
+        assignmentId: entry.assignmentId,
+        gradeGroupId: group,
+        date: entry.date,
+        planId: entry.planId,
+        competencyIds,
+        status,
+        remark: old?.data.remark ?? '',
+      },
     });
   }
+  await atomic(engine, ops);
   return async () => {
-    for (const old of previous) {
-      if (old.data) await engine.put('session_mark', old.data);
-      else await engine.remove('session_mark', old.id);
-    }
+    await atomic(
+      engine,
+      previous.map((old) =>
+        old.data
+          ? { op: 'put', entity: 'session_mark', data: old.data }
+          : { op: 'remove', entity: 'session_mark', id: old.id }
+      )
+    );
   };
 }

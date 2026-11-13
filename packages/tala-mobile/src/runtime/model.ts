@@ -19,6 +19,7 @@ import { blankSections } from '@hiraia/tala-core/plan';
 import { allocationFromPlan } from '@hiraia/tala-core/pacing';
 import { BUILTIN_TEMPLATES } from '@hiraia/tala-core/contracts';
 import { engine as pacing } from '@hiraia/tala-core/pacing';
+import { staged } from '../features/atomic';
 import * as Crypto from 'expo-crypto';
 export const today = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Manila' });
 export const newId = () => Crypto.randomUUID();
@@ -54,7 +55,7 @@ export async function timelineInput(
     defaults: { ...DEFAULT_PACING_PARAMS, ...profile?.data.pacingParams },
   };
 }
-export async function setupClass(
+async function setupClassDraft(
   engine: SyncEngine,
   input: {
     name: string;
@@ -180,12 +181,16 @@ export async function setupClass(
     }
   return cls;
 }
-export async function createPlan(
+export function setupClass(engine: SyncEngine, input: Parameters<typeof setupClassDraft>[1]) {
+  return staged(engine, (view) => setupClassDraft(view, input));
+}
+async function createPlanDraft(
   engine: SyncEngine,
   cls: Awaited<ReturnType<typeof setupClass>>,
   date = today(),
   assignmentId: string | null = null,
-  templateId?: string
+  templateId?: string,
+  overrides: Partial<Plan> = {}
 ) {
   const plan = Plan.parse({
     id: newId(),
@@ -196,6 +201,7 @@ export async function createPlan(
     gradeGroupIds: cls.gradeGroups.map((g) => g.id),
     durationMinutes: 50,
     placements: [{ classId: cls.id, assignmentId, dates: [date] }],
+    ...overrides,
   });
   await engine.put('plan', plan);
   const template = BUILTIN_TEMPLATES.find((t) => t.id === plan.templateId)!;
@@ -225,6 +231,18 @@ export async function createPlan(
     await engine.put('plan_section', section);
   }
   return plan;
+}
+export function createPlan(
+  engine: SyncEngine,
+  cls: Parameters<typeof createPlanDraft>[1],
+  date?: string,
+  assignmentId?: string | null,
+  templateId?: string,
+  overrides?: Partial<Plan>
+) {
+  return staged(engine, (view) =>
+    createPlanDraft(view, cls, date, assignmentId, templateId, overrides)
+  );
 }
 export function samplePreset(): CalendarPreset {
   const d = today();
