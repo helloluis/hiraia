@@ -19,7 +19,7 @@ export function buildPrefilledDraft(input: DraftInput): { title: string; section
       case 'pergroup': content = { type: 'pergroup', groups: s.key === 'objectives' ? groups : Object.fromEntries(input.gradeGroups.map(g => [g.id, []])) }; break;
       case 'multigrade': content = { type: 'multigrade', blocks: [{ id: 'draft-block', label: '', minutes: input.timeBudgetMinutes, transitionMinutes: 0, teacherWith: 'none', pairedGroupIds: [], groups: Object.fromEntries(input.gradeGroups.map(g => [g.id, { mode: 'independent' as const, activity: [] }])) }] }; break;
       case 'procedure': content = { type: 'procedure', steps: [{ id: 'draft-step', title: '', minutes: input.timeBudgetMinutes, body: [] }] }; break;
-      case 'weekgrid': content = { type: 'weekgrid', days: Array.from({length: input.sessions}, (_,i) => ({ date: null, weekday: i+1, body: [] })) }; break;
+      case 'weekgrid': content = { type: 'weekgrid', days: Array.from({length: input.sessions}, (_,i) => ({ date: null, weekday: i+1, minutes: input.timeBudgetMinutes, body: [] })) }; break;
       default: content = { type: 'text', blocks: [] };
     }
     return { key: s.key, content };
@@ -39,6 +39,11 @@ export function validateGeneratedSections(input: DraftInput, sections: DraftSect
   for (const section of sections) {
     if (!template?.sections.some(s => s.key === section.key)) errors.push(`Unknown section ${section.key}.`);
     if (section.content.type === 'procedure' && section.content.steps.reduce((n,b) => n+b.minutes,0) !== input.timeBudgetMinutes) errors.push('Procedure minutes must equal time budget.');
+    if (section.content.type === 'weekgrid') {
+      if(section.content.days.length!==input.sessions) errors.push('Weekly session count must match.');
+      if(new Set(section.content.days.map(d=>d.weekday)).size!==section.content.days.length) errors.push('Duplicate weekday.');
+      for(const day of section.content.days) if(day.minutes!==input.timeBudgetMinutes) errors.push('Weekly minutes must equal time budget.');
+    }
     if (section.content.type !== 'multigrade') continue;
     if (section.content.blocks.reduce((n,b) => n+b.minutes,0) !== input.timeBudgetMinutes) errors.push('Block minutes must equal time budget.');
     for (const b of section.content.blocks) {

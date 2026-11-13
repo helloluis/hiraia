@@ -1,6 +1,19 @@
-1. Add llm.pricing per provider (inputUsdPerMillion/outputUsdPerMillion, optionally model-specific). Current ProviderConfig lacks pricing, so implementation uses documented TALA_LLM_<PROVIDER>_INPUT_USD_PER_MILLION / OUTPUT_USD_PER_MILLION environment adapters and refuses unpriced cloud calls.
-2. GenerationJob failure has no draft/retained-queue field. Clients can use @hiraia/tala-core/generation buildPrefilledDraft(input) and keep original GenerationInput queued locally. Server keeps failed job input persistently but has no resume route in current API.
-3. SourceArtifactVersionId has no Services interface to retrieve community content. Adapt currently requires an owned plan snapshot; community copy into an owned plan first. Add a community artifact snapshot service if direct adaptation is required.
-4. Register llmModule and generationModule in orchestrator-owned modules/index.ts; export generation helpers through existing generation subpath (already declared in core package exports).
-5. Weekgrid days contain only RichText, no structured duration. Add per-day minutes/steps if deterministic weekly time-budget scoring is required; current validators verify structured procedure/multigrade minutes and cannot prove timing written as prose.
-6. Budget reservations conservatively retain uncertain timeout costs. A reconciliation/admin adjustment mechanism is needed before operating at scale, otherwise unknown failed-call reservations can keep degraded mode active until the next month.
+Worker C status after the live-generation follow-up (2026-11-13)
+
+Resolved:
+- ProviderConfig.pricing is now the sole gateway pricing source. Worker A's loader owns PRIMARY/FALLBACK/LOCAL environment rate adapters; no provider-price environment reads remain in the gateway.
+- Weekly days now carry minutes; generation validates exact day count, unique weekdays and the per-session budget.
+- Both modules are registered on tala-v1.
+- Both modules implement onAccountDeleted. User jobs, quotas, usage and cache are removed; active/queued requests are cancelled. Only month-level anonymous spending survives so deleting an account cannot reset the budget ceiling.
+
+Compatibility adapter still needed on the current merged kernel:
+- kernel/server.ts registers only kernelExtension(module).onAccountDeleted. Both modules expose the direct contract hook AND mirror it under kernel.onAccountDeleted. Once Worker A reads the direct hook with extension fallback, the mirror can be removed. Do not invoke both locations twice.
+
+Deferred by the orchestrator, not blockers for this slice:
+- No resume route: clients retain the original GenerationInput queue and offer buildPrefilledDraft.
+- No community snapshot service: copy an artifact to an owned plan, then adapt.
+- Budget reconciliation tooling: timeout/network-uncertain reservations remain conservative until a later reconciliation feature.
+
+Release gates outside this implementation:
+- DeepSeek live comparison requires an authorized key; unavailable here, covered by fakes only.
+- Teacher quality review of saved fixture samples is still required. Structural success is not scientific or pedagogical alignment validation.
