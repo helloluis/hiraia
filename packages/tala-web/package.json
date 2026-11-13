@@ -1,0 +1,36 @@
+{
+  "name": "@hiraia/tala-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tala web app for tala.hiraia.org: Next.js 15 App Router, Hiraia branding, mounts @hiraia/tala-server at /api/v1.",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 3100",
+    "build": "next build",
+    "start": "next start -p 3100",
+    "type-check": "tsc --noEmit",
+    "test": "tsx --test \"src/**/*.test.ts\"",
+    "clean": "rm -rf .next"
+  },
+  "dependencies": {
+    "@hiraia/tala-core": "workspace:*",
+    "@hiraia/tala-server": "workspace:*",
+    "better-sqlite3": "^12.10.0",
+    "next": "^15.3.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.15.29",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.6",
+    "autoprefixer": "^10.4.21",
+    "fake-indexeddb": "^6.0.0",
+    "postcss": "^8.5.4",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.2",
+    "typescript": "^5.8.3"
+  }
+}
