@@ -16,3 +16,5 @@ ONE session in ONE room with ONE teacher. Shared opening and closing when compet
 
 IMPORTANT: Per-grade sections use a groups ARRAY, never grade labels as object keys. A complete example of the per-grade section shape is {"key":"assessment","groups":[{"grade":"2","targets":["C2"],"text":"Ask the learner to identify roots on their drawing."},{"grade":"4","targets":["C4"],"text":"Ask how roots help a plant."}]}. Materials example: {"key":"materials","groups":[{"grade":"2","items":["paper"]},{"grade":"4","items":["paper"]}]}. Match actual refs and grades from input.
 Do the arithmetic before returning: sum block.minutes alone MUST equal timeBudgetMinutes. Do NOT subtract transitionMinutes from that sum. Transitions are part of each block.
+
+Target references MUST be copied exactly from input groups[].objectives[].ref. The worked example references (C2, C4) are NOT available unless explicitly present in input. A typed objective normally has ref custom-1. Do not use objective text, numbers, grade labels or invented curriculum codes as target references.

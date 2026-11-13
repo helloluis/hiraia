@@ -72,12 +72,14 @@ export function multigradeSchedule(input:DraftInput) {
   return [{slot:1,minutes:edge,transitionMinutes:0,teacherWith:'all'},...input.gradeGroups.map((g,i)=>({slot:i+2,minutes:Math.floor(remaining/n)+(i<remaining%n?1:0),transitionMinutes:1,teacherWith:g.grade})),{slot:n+2,minutes:edge,transitionMinutes:0,teacherWith:'all'}];
 }
 export function compactTemplateSchema(template:Template,input?:DraftInput) {
+  const refs=input?targets(input).flatMap(g=>g.objectives.map(o=>o.ref)):['example'];
+  const targetRefs=z.array(z.enum((refs.length?refs:['__none__']) as [string,...string[]]));
   const shapes=template.sections.map(s=>{
     const key={key:z.literal(s.key)};
     switch(s.contentType){
-      case 'text':return z.object({...key,text,...(s.key==='assessment'?{targets:z.array(z.string())}:{})}).strict();
-      case 'list':return z.object({...key,items:z.array(text),...(s.key==='objectives'?{targets:z.array(z.string())}:{})}).strict();
-      case 'pergroup':return z.object({...key,groups:z.array(z.object({grade:z.string(),...(s.key==='materials'?{items:z.array(text)}:{text,targets:z.array(z.string())})}).strict())}).strict();
+      case 'text':return z.object({...key,text,...(s.key==='assessment'?{targets:targetRefs}:{})}).strict();
+      case 'list':return z.object({...key,items:z.array(text),...(s.key==='objectives'?{targets:targetRefs}:{})}).strict();
+      case 'pergroup':return z.object({...key,groups:z.array(z.object({grade:z.string(),...(s.key==='materials'?{items:z.array(text)}:{text,targets:targetRefs})}).strict())}).strict();
       case 'procedure':return z.object({...key,steps:z.array(z.object({slot:z.number().int().min(1).max(5),title:z.string().max(200),text}).strict()).length(5)}).strict();
       case 'multigrade':return z.object({...key,blocks:z.array(z.object({slot:z.number().int().min(1).max(input?input.gradeGroups.length+2:6),label:z.string().max(120),activities:z.array(z.object({grade:z.string(),text}).strict())}).strict()).length(input?input.gradeGroups.length+2:4)}).strict();
       case 'weekgrid':return z.object({...key,days:z.array(z.object({weekday:z.number().int().min(1).max(7),text}).strict()).length(input?.sessions??5)}).strict();

@@ -16,3 +16,5 @@ One single-grade detailed lesson with timed steps, differentiated support and a 
 
 
 Single-grade objectives use targets + items. Assessment uses targets + text. Do not use groups in a single-grade template. Follow every format in the supplied sections list.
+
+Target references MUST be copied exactly from input groups[].objectives[].ref. The worked example references (C2, C4) are NOT available unless explicitly present in input. A typed objective normally has ref custom-1. Do not use objective text, numbers, grade labels or invented curriculum codes as target references.
