@@ -9,7 +9,7 @@ const copy = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
 export function availableRealignments(input: PacingInput): RealignmentOption[] {
   const plan = computePacing(input);
   const options: RealignmentOption[] = plan.bufferSessions.length ? ['absorb', 'shift'] : ['shift'];
-  if (plan.items.some(i => !i.pinned && i.sessions.length > plan.effectiveParams.minSessionsPerCompetency)) options.push('compress');
+  if (plan.items.some(i => !i.pinned && !['before_tala', 'deferred', 'taught', 'assumed_taught'].includes(i.state) && i.sessions.length > plan.effectiveParams.minSessionsPerCompetency)) options.push('compress');
   if (plan.items.filter(i => !i.pinned && !['before_tala', 'deferred', 'taught', 'assumed_taught'].includes(i.state)).length > 1) options.push('merge');
   if (input.assignment.slots.length) options.push('add_time');
   if (plan.items.some(i => !['before_tala', 'deferred', 'taught', 'assumed_taught'].includes(i.state))) options.push('defer');
@@ -18,6 +18,7 @@ export function availableRealignments(input: PacingInput): RealignmentOption[] {
 export function previewRealignment(input: RealignmentInput, request: RealignmentRequest): RealignmentPreview {
   const before = copy(input.baseline ?? computePacing(input));
   const nextTrack = copy(input.track);
+  nextTrack.allocation = null;
   const newCalendarDays: CalendarDay[] = [];
   const sessions: Record<string, number> = { ...nextTrack.overrides.sessions };
   // Freeze previous allocation: a shift never silently compresses the old proposal.
@@ -27,7 +28,7 @@ export function previewRealignment(input: RealignmentInput, request: Realignment
   nextTrack.overrides.sessions = sessions;
   const ids = request.competencyIds ?? [];
   const active = before.items.filter(i => !['before_tala', 'deferred', 'taught', 'assumed_taught'].includes(i.state));
-  if (request.option === 'absorb') nextTrack.params.bufferRatio = 0;
+
   if (request.option === 'compress') {
     const capacity = enumerateSessions(input.schoolYear, input.term, input.assignment, input.calendarDays).filter(s => !nextTrack.startPosition || s.date >= nextTrack.startPosition.date).length;
     let deficit = Math.max(0, before.items.reduce((n, i) => n + i.sessions.length, 0) + before.bufferSessions.length + before.assessmentSessions.length - capacity, Math.ceil(before.sessionsBehind));
@@ -58,10 +59,20 @@ export function previewRealignment(input: RealignmentInput, request: Realignment
     for (const date of [...new Set(request.makeupDates)].sort()) {
       if (date < input.term.startDate || date > input.term.endDate) throw new Error('Make-up dates must be within this term.');
       if (input.calendarDays.some(d => d.date === date && d.kind === 'makeup' && d.schoolYearId === input.schoolYear.id && (d.classId === null || d.classId === nextTrack.classId))) continue;
-      newCalendarDays.push({ id: `makeup:${nextTrack.classId}:${date}`, schoolYearId: input.schoolYear.id, classId: nextTrack.classId, date, kind: 'makeup', label: 'Make-up class', source: 'teacher', minutesOverride: null, followsWeekday: [...input.assignment.slots].sort((a, b) => a.weekday - b.weekday)[0]?.weekday ?? null, assignmentIds: [input.assignment.id] });
+      newCalendarDays.push({ id: `makeup:${input.assignment.id.slice(0, 38)}:${date}`, schoolYearId: input.schoolYear.id, classId: nextTrack.classId, date, kind: 'makeup', label: 'Make-up class', source: 'teacher', minutesOverride: null, followsWeekday: [...input.assignment.slots].sort((a, b) => a.weekday - b.weekday)[0]?.weekday ?? null, assignmentIds: [input.assignment.id] });
     }
   }
-  const after = computePacing({ ...input, track: nextTrack, calendarDays: [...input.calendarDays, ...newCalendarDays] });
+  const actualSessions = enumerateSessions(input.schoolYear, input.term, input.assignment, [...input.calendarDays, ...newCalendarDays]);
+  const missed = new Set(input.marks.filter(m => m.classId === nextTrack.classId && m.assignmentId === nextTrack.assignmentId && m.gradeGroupId === nextTrack.gradeGroupId && m.date <= input.today && m.status !== 'taught')
+    .map(m => `${m.date}|${m.slotId ?? actualSessions.find(s => s.date === m.date)?.slotId ?? ''}`));
+  const actualRemaining = actualSessions.filter(s => !nextTrack.startPosition || s.date >= nextTrack.startPosition.date);
+  const originalCount = before.items.reduce((n, i) => n + i.sessions.length, 0) + before.bufferSessions.length + before.assessmentSessions.length;
+  const lostCount = Math.max(0, originalCount - actualRemaining.filter(s => !missed.has(`${s.date}|${s.slotId}`)).length);
+  const bufferCount = request.option === 'absorb' ? Math.max(0, before.bufferSessions.length - lostCount) : before.bufferSessions.length;
+  nextTrack.params.bufferRatio = actualRemaining.length ? Math.min(0.5, (bufferCount + 0.000001) / actualRemaining.length) : 0;
+  const after = computePacing({ ...input, track: nextTrack, calendarDays: [...input.calendarDays, ...newCalendarDays] }, { excludeSessions: missed, bufferCount });
+  nextTrack.allocation = allocationFromPlan(after);
+
   const moved: RealignmentPreview['moved'] = {};
   for (const item of before.items) for (const id of item.competencyIds) {
     const from = item.sessions[0]?.date ?? null;
@@ -71,9 +82,16 @@ export function previewRealignment(input: RealignmentInput, request: Realignment
   const planMoves: RealignmentPreview['planMoves'] = [];
   for (const plan of input.plans) {
     const competencyIds = plan.competencies[nextTrack.gradeGroupId] ?? [];
-    if (!competencyIds.some(id => moved[id])) continue;
+    if (!competencyIds.some(id => before.items.find(i => i.competencyIds.includes(id))?.sessions.map(s => `${s.date}|${s.slotId}`).join(',') !== after.items.find(i => i.competencyIds.includes(id))?.sessions.map(s => `${s.date}|${s.slotId}`).join(','))) continue;
     for (const placement of plan.placements.filter(p => p.classId === nextTrack.classId && (p.assignmentId === null || p.assignmentId === nextTrack.assignmentId))) {
-      const to = [...new Set(competencyIds.flatMap(id => after.items.find(i => i.competencyIds.includes(id))?.sessions.map(s => s.date) ?? []))].sort();
+      const to = [...new Set(placement.dates.flatMap(date => {
+        const oldItem = before.items.find(i => i.competencyIds.some(id => competencyIds.includes(id)) && i.sessions.some(s => s.date === date));
+        if (!oldItem) return [date];
+        const index = oldItem.sessions.findIndex(s => s.date === date);
+        const newItem = after.items.find(i => i.competencyIds.some(id => oldItem.competencyIds.includes(id)));
+        const replacement = newItem?.sessions[index]?.date;
+        return replacement ? [replacement] : [];
+      }))].sort();
       planMoves.push({ planId: plan.id, classId: placement.classId, from: [...placement.dates], to });
     }
   }
@@ -82,4 +100,46 @@ export function previewRealignment(input: RealignmentInput, request: Realignment
 /** Persist this snapshot in the same local transaction as applying the preview; undo restores it. */
 export function realignmentUndo(input: RealignmentInput): Pick<RealignmentInput, 'track' | 'calendarDays' | 'plans'> {
   return copy({ track: input.track, calendarDays: input.calendarDays, plans: input.plans });
+}
+/** Pure transaction payload. Callers persist these records together and retain realignmentUndo. */
+export function applyRealignment(input: RealignmentInput, preview: RealignmentPreview): Pick<RealignmentInput, 'track' | 'calendarDays' | 'plans'> {
+  const plans = input.plans.map(plan => ({ ...copy(plan), placements: plan.placements.map(placement => {
+    const move = preview.planMoves.find(m => m.planId === plan.id && m.classId === placement.classId && m.from.join('|') === placement.dates.join('|'));
+    return move ? { ...placement, dates: [...move.to] } : copy(placement);
+  }) }));
+  return { track: copy(preview.nextTrack), calendarDays: [...copy(input.calendarDays), ...copy(preview.newCalendarDays)], plans };
+}
+
+/** Store after setup or an explicitly confirmed recomputation, never automatically on a disruption. */
+export function allocationFromPlan(plan: PacingPlan): NonNullable<PacingInput['track']['allocation']> {
+  return plan.items.filter(i => !['before_tala', 'deferred'].includes(i.state)).map(i => ({ competencyIds: [...i.competencyIds], sessions: i.sessions.map(s => ({ date: s.date, slotId: s.slotId })) }));
+}
+
+/** One preview for an all-class disruption. Conflicting shared-plan dates require teacher resolution. */
+export function previewRealignments(inputs: RealignmentInput[], request: RealignmentRequest): {
+  previews: RealignmentPreview[];
+  newCalendarDays: CalendarDay[];
+  planMoves: RealignmentPreview['planMoves'];
+  conflictingPlanIds: string[];
+} {
+  const previews = inputs.map(input => previewRealignment(input, request));
+  const days = new Map<string, CalendarDay>();
+  const moves = new Map<string, RealignmentPreview['planMoves'][number]>();
+  const conflicts = new Set<string>();
+  for (const preview of previews) {
+    for (const day of preview.newCalendarDays) days.set(day.id, day);
+    for (const move of preview.planMoves) {
+      const key = `${move.planId}|${move.classId}|${move.from.join(',')}`;
+      const prior = moves.get(key);
+      if (prior && prior.to.join(',') !== move.to.join(',')) conflicts.add(move.planId);
+      else moves.set(key, move);
+    }
+  }
+  return { previews, newCalendarDays: [...days.values()], planMoves: [...moves.values()].filter(m => !conflicts.has(m.planId)), conflictingPlanIds: [...conflicts].sort() };
+}
+
+/** Include this receiving track in the same transaction when a teacher defers work. */
+export function carryDeferredToTrack(source: PacingInput['track'], target: PacingInput['track']): PacingInput['track'] {
+  if (source.termId === target.termId || source.classId !== target.classId || source.assignmentId !== target.assignmentId || source.gradeGroupId !== target.gradeGroupId || source.curriculumVersion !== target.curriculumVersion) throw new Error('Choose the next term of the same class and subject.');
+  return { ...copy(target), allocation: null, overrides: { ...copy(target.overrides), movedIn: [...new Set([...(target.overrides.movedIn ?? []), ...(source.overrides.deferred ?? [])])] } };
 }

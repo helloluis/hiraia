@@ -1,5 +1,5 @@
 import type { Competency, PacedItem, PacingInput, PacingPlan } from '../contracts/curriculum';
-import { applyChecks } from '../curriculum';
+import { applyChecks, compareText } from '../curriculum';
 import { enumerateSessions } from './sessions';
 
 /** Minimum-constrained proportional apportionment, then stable largest remainders. */
@@ -34,22 +34,24 @@ export function orderedCompetencies(input: PacingInput): Competency[] {
     .filter(c => c.termIndex === input.term.index || input.track.overrides.movedIn?.includes(c.id))
     .sort((a, b) => {
       const ai = order.indexOf(a.id), bi = order.indexOf(b.id);
-      return (ai < 0 ? Infinity : ai) - (bi < 0 ? Infinity : bi) || a.sequence - b.sequence || a.id.localeCompare(b.id);
+      return (ai < 0 ? Infinity : ai) - (bi < 0 ? Infinity : bi) || a.sequence - b.sequence || compareText(a.id, b.id);
     });
 }
 
-export function computePacing(input: PacingInput): PacingPlan {
+export function computePacing(input: PacingInput, options: { excludeSessions?: ReadonlySet<string>; bufferCount?: number } = {}): PacingPlan {
   const { track } = input, overrides = track.overrides;
   const params = { ...input.defaults, ...track.params };
   const competencies = orderedCompetencies(input);
   const startIndex = track.startPosition ? competencies.findIndex(c => c.id === track.startPosition!.competencyId) : 0;
   const beforeIds = new Set(competencies.slice(0, Math.max(0, startIndex)).map(c => c.id));
   const deferred = new Set(overrides.deferred ?? []);
-  const sessions = enumerateSessions(input.schoolYear, input.term, input.assignment, input.calendarDays).filter(s => !track.startPosition || s.date >= track.startPosition.date);
+  const allSessions = enumerateSessions(input.schoolYear, input.term, input.assignment, input.calendarDays);
+  const sessions = allSessions.filter(s => (!track.startPosition || s.date >= track.startPosition.date) && !options.excludeSessions?.has(`${s.date}|${s.slotId}`));
+  const validSessions = new Set(sessions.map(s => `${s.date}|${s.slotId}`));
   const assessmentCount = Math.min(sessions.length, params.assessmentSessionsPerTerm);
   const assessmentSessions = assessmentCount ? sessions.slice(-assessmentCount) : [];
   const available = sessions.slice(0, sessions.length - assessmentCount);
-  const bufferCount = Math.min(available.length, Math.floor(sessions.length * params.bufferRatio));
+  const bufferCount = Math.min(available.length, options.bufferCount ?? Math.floor(sessions.length * params.bufferRatio));
   const bufferSessions = bufferCount ? available.slice(-bufferCount) : [];
   const teach = available.slice(0, available.length - bufferCount);
   const used = new Set<string>();
@@ -64,7 +66,8 @@ export function computePacing(input: PacingInput): PacingPlan {
   const active = groups.filter(g => !beforeIds.has(g[0]!.id) && !deferred.has(g[0]!.id));
   const fixed = active.map(g => {
     const explicit = g.map(c => overrides.sessions?.[c.id]).filter((n): n is number => n !== undefined);
-    return explicit.length ? Math.max(...explicit) : g.length > 1 ? 1 : null;
+    const accepted = track.allocation?.find(a => a.competencyIds.length === g.length && g.every(c => a.competencyIds.includes(c.id)));
+    return explicit.length ? Math.max(...explicit) : accepted ? accepted.sessions.length : g.length > 1 ? 1 : null;
   });
   const weights = active.map(g => g.reduce((n, c) => n + (overrides.weights?.[c.id] ?? c.weight ?? 1), 0));
   const flexible = active.map((_, i) => i).filter(i => fixed[i] === null);
@@ -74,9 +77,24 @@ export function computePacing(input: PacingInput): PacingPlan {
   flexible.forEach((i, j) => { counts[i] = allocated[j]!; });
   const taken = new Set<number>();
   const placements = new Map<string, typeof teach>();
+  // An accepted allocation is authoritative until the teacher confirms a replacement.
+  // Keep cancelled placements visible; risk/behind flags report the disruption below.
+  for (const g of active) {
+    const accepted = track.allocation?.find(a => a.competencyIds.length === g.length && g.every(c => a.competencyIds.includes(c.id)));
+    if (!accepted) continue;
+    const assigned = accepted.sessions.flatMap(s => {
+      const slot = input.assignment.slots.find(x => x.id === s.slotId);
+      if (!slot) return [];
+      const current = allSessions.find(x => x.date === s.date && x.slotId === s.slotId);
+      return [{ ...s, assignmentId: input.assignment.id, termId: input.term.id, minutes: current?.minutes ?? slot.minutes }];
+    });
+    placements.set(g[0]!.id, assigned);
+    for (const s of assigned) { const index = teach.findIndex(x => x.date === s.date && x.slotId === s.slotId); if (index >= 0) taken.add(index); }
+  }
   // Pins reserve their periods before unpinned competencies; collisions never silently overwrite.
   for (let i = 0; i < active.length; i++) {
     const g = active[i]!;
+    if (placements.has(g[0]!.id)) continue;
     const pin = g.map(c => overrides.pins?.[c.id]).find(Boolean);
     if (!pin) continue;
     const at = teach.findIndex(s => s.date === pin);
@@ -106,24 +124,26 @@ export function computePacing(input: PacingInput): PacingPlan {
     else if (deferred.has(ids[0]!)) state = 'deferred';
     else {
       const index = active.findIndex(a => a[0]!.id === ids[0]);
-      if (assigned.length < (counts[index] || params.minSessionsPerCompetency)) atRisk.push(...ids);
-      const relevant = marks.filter(m => m.competencyIds.some(id => ids.includes(id)));
+      if (assigned.length < (counts[index] || params.minSessionsPerCompetency) || assigned.some(s => !validSessions.has(`${s.date}|${s.slotId}`))) atRisk.push(...ids);
+      const relevant = marks.filter(m => m.competencyIds.length ? m.competencyIds.some(id => ids.includes(id)) : assigned.some(s => s.date === m.date && (m.slotId === s.slotId || m.slotId === null && s.slotId === allSessions.find(x => x.date === s.date)?.slotId)));
       const past = assigned.filter(s => s.date < input.today);
       let credit = 0;
       for (const s of past) {
-        const mark = relevant.find(m => m.date === s.date);
-        credit += mark ? mark.status === 'taught' ? 1 : mark.status === 'partial' ? 0.5 : 0 : params.assumeTaught ? 1 : 0;
+        const firstSlot = allSessions.find(x => x.date === s.date)?.slotId ?? assigned.find(x => x.date === s.date)?.slotId;
+        const mark = relevant.find(m => m.date === s.date && (m.slotId === s.slotId || m.slotId === null && s.slotId === firstSlot));
+        credit += mark ? mark.status === 'taught' ? 1 : mark.status === 'partial' ? 0.5 : 0 : params.assumeTaught && validSessions.has(`${s.date}|${s.slotId}`) ? 1 : 0;
       }
       // Explicit early teaching earns credit; future-dated marks do not.
-      credit += relevant.filter(m => m.date <= input.today && !past.some(s => s.date === m.date)).reduce((n, m) => n + (m.status === 'taught' ? 1 : m.status === 'partial' ? 0.5 : 0), 0);
+      credit += relevant.filter(m => m.date <= input.today && !past.some(s => s.date === m.date && (m.slotId === s.slotId || m.slotId === null && s.slotId === (allSessions.find(x => x.date === s.date)?.slotId ?? assigned.find(x => x.date === s.date)?.slotId)))).reduce((n, m) => n + (m.status === 'taught' ? 1 : m.status === 'partial' ? 0.5 : 0), 0);
       sessionsBehind += past.length - Math.min(Math.max(assigned.length, past.length), credit);
       if (!assigned.length) state = 'unscheduled';
+      else if (credit >= assigned.length && relevant.some(m => m.status === 'taught')) state = 'taught';
       else if (relevant.some(m => m.date <= input.today && m.status === 'not_taught')) state = 'not_taught';
       else if (relevant.some(m => m.date <= input.today && m.status === 'partial')) state = 'partial';
-      else if (credit >= assigned.length && relevant.some(m => m.status === 'taught')) state = 'taught';
-      else if (past.length === assigned.length && params.assumeTaught) state = 'assumed_taught';
+      else if (past.length === assigned.length && params.assumeTaught && credit >= assigned.length) state = 'assumed_taught';
     }
     return { competencyIds: ids, sessions: assigned, state, pinned, weightSource };
   });
-  return { trackId: track.id, items, bufferSessions, assessmentSessions, atRisk, sessionsBehind, effectiveParams: params };
+  const occupied = new Set(items.flatMap(i => i.sessions.map(s => `${s.date}|${s.slotId}`)));
+  return { trackId: track.id, items, bufferSessions: bufferSessions.filter(s => !occupied.has(`${s.date}|${s.slotId}`)), assessmentSessions: assessmentSessions.filter(s => !occupied.has(`${s.date}|${s.slotId}`)), atRisk, sessionsBehind, effectiveParams: params };
 }
