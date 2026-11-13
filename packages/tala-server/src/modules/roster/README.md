@@ -74,11 +74,28 @@ Tests use invented names and fake LLM gateways. Class fixtures use the real Reco
 invokes the synchronous `onAccountDeleted` hook to purge all of that teacher’s drafts immediately. Authentication,
 route schema validation, response validation, expiry clock and logs use the real `createTestServer` kernel.
 
-## Bundled-build verification (2026-11-13 follow-up)
+## Bundled-build verification (2026-11-13)
 
-After merging integration commit `8a42ade65`, `pnpm --filter @hiraia/tala-web build` passed webpack
-compilation and TypeScript validation. It then failed during page-data collection with an unrelated
-React mismatch: react 19.1.0 versus react-dom 19.2.7. Per the orchestrator's instruction, work stopped
-at that unrelated failure. No React dependencies or web config were changed, and no Next server was
-started. A successful production build and the requested pasted-text/XLSX HTTP smoke tests remain
-required before claiming bundled-runtime acceptance. Source-runtime reader tests pass without loaders.
+Merged `tala-v1` through `7e93851bc`, which pins the matching React/ReactDOM versions.
+`pnpm --filter @hiraia/tala-web build` completed successfully.
+
+Run the repeatable smoke check after building:
+
+```sh
+node packages/tala-server/src/modules/roster/http-smoke.cjs
+```
+
+The script starts the actual built Next app on an ephemeral loopback port with `TALA_ENV=local`
+and a new temporary `TALA_DB_PATH`. It registers a throwaway account, creates its class through
+HTTP sync, checks that roster upload returns 403 before email verification, reads the verification
+token from that temporary database's development outbox without printing it, and verifies over HTTP.
+It posts invented pasted-text and XLSX rosters to `/api/v1/roster/imports` with no Origin header.
+Both returned HTTP 200 with `linesRead: 3`, `students: 2`, `needsReview: 0`, `notStudents: 1`.
+The returned names were `Peña, Miro A.` and `De los Santos, Lira B.`; the XLSX sheet was `Invented names`.
+This exercises the plain-JavaScript worker from the bundled API route, including library/file resolution.
+No AI service is called. The script deletes the account, stops the child server, and removes the temporary
+SQLite database (including sidecars) in its cleanup path. It never prints credentials or email tokens.
+
+Observed acceptance run: port 41767; server shutdown and temporary-directory removal both confirmed.
+No web config changes were needed. This validates `next start` with the workspace packages present;
+it does not claim a separately packaged Next standalone artifact has been assembled or tested.
