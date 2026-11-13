@@ -1,11 +1,82 @@
 /**
- * Module: core — auth, account, config, sync, plan revisions; provides services.records, mailer, rateLimit
- * OWNER: workstream A. Replace this stub; keep the export name. Everything under this folder is yours.
+ * Module: core — auth, account, config, sync, plan revisions; provides services.records, mailer, rateLimit.
+ * OWNER: workstream A.
  */
-import type { ServerModule } from '../../kernel/types';
+import type { ClientConfig } from '@hiraia/tala-core';
+import type { ExtendedModule } from '../../kernel/auth';
+import type { Handler } from '../../kernel/types';
+import * as auth from './auth-handlers';
+import { coreMigrations } from './migrations';
+import { coreState, initCoreState } from './state';
+import type { CoreOptions } from './state';
 
-export const coreModule: ServerModule = {
-  name: 'core',
-  migrations: [],
-  handlers: {},
+export type { CoreOptions } from './state';
+
+const HOUR_MS = 60 * 60 * 1000;
+
+const configGet: Handler<'config.get'> = (ctx): ClientConfig => {
+  const c = ctx.config;
+  return {
+    environment: c.environment,
+    features: { ...c.features },
+    // After environment rules: the gateway never reports "cloud" for roster names in production (§12.4.1).
+    rosterLlmRoute: ctx.services.llm.routeFor('roster.names'),
+    limits: { ...c.limits },
+    offline: { ...c.offline },
+    resilience: { ...c.resilience },
+    pacingDefaults: { ...c.pacingDefaults },
+    moderationGuidelineVersion: c.moderation.guidelineVersion,
+    minClientVersion: c.minClientVersion,
+  };
 };
+
+/** Build a core module. Tests pass options (cheap password hashing, a mail transport); the registry uses the defaults. */
+export function createCoreModule(options: CoreOptions = {}): ExtendedModule {
+  return {
+    name: 'core',
+    migrations: coreMigrations,
+    handlers: {
+      'config.get': configGet,
+      'auth.register': auth.register,
+      'auth.login': auth.login,
+      'auth.logout': auth.logout,
+      'auth.logoutAll': auth.logoutAll,
+      'auth.me': auth.me,
+      'auth.sessions': auth.sessions,
+      'auth.revokeSession': auth.revokeSession,
+      'auth.sendVerification': auth.sendVerification,
+      'auth.verifyEmail': auth.verifyEmail,
+      'auth.requestReset': auth.requestReset,
+      'auth.reset': auth.reset,
+      'auth.changePassword': auth.changePassword,
+      'auth.google': auth.google,
+    },
+    services(base) {
+      const state = initCoreState(base, options);
+      return { mailer: state.mailer, rateLimit: state.limiter };
+    },
+    start(deps) {
+      const state = coreState(deps.db);
+      const tidy = () => {
+        try {
+          state.accounts.prune();
+          state.limiter.prune();
+          state.throttle.prune();
+        } catch {
+          deps.log.error('core_prune_failed');
+        }
+      };
+      const timer = setInterval(tidy, HOUR_MS);
+      timer.unref();
+      return () => clearInterval(timer);
+    },
+    kernel: {
+      authenticator: (deps) => {
+        const { accounts } = coreState(deps.db);
+        return { authenticate: (token) => accounts.authenticate(token) };
+      },
+    },
+  };
+}
+
+export const coreModule = createCoreModule();
