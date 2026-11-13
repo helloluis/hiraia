@@ -1,0 +1,34 @@
+{
+  "name": "@hiraia/tala-core",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tala shared contracts, brand tokens and pure logic (pacing, sync, print, roster parsing). No I/O, no platform APIs.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./contracts": "./src/contracts/index.ts",
+    "./tokens": "./src/tokens.ts",
+    "./pacing": "./src/pacing/index.ts",
+    "./curriculum": "./src/curriculum/index.ts",
+    "./generation": "./src/generation/index.ts",
+    "./roster": "./src/roster/index.ts",
+    "./moderation": "./src/moderation/index.ts",
+    "./plan": "./src/plan/index.ts",
+    "./print": "./src/print/index.ts",
+    "./sync": "./src/sync/index.ts"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "test": "tsx --test \"src/**/*.test.ts\""
+  },
+  "dependencies": {
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.29",
+    "tsx": "^4.19.2",
+    "typescript": "^5.8.3"
+  }
+}
