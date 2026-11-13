@@ -23,5 +23,8 @@ export function lookupCompetencies(packs: readonly CurriculumPack[], version: st
 }
 export function searchCompetencies(competencies: readonly Competency[], query: { grade?: string; learningAreaId?: string; termIndex?: number; keyword?: string }): Competency[] {
   const keyword = query.keyword?.trim().toLowerCase();
-  return competencies.filter(c => (!query.grade || c.grade === query.grade) && (!query.learningAreaId || c.learningAreaId === query.learningAreaId) && (!query.termIndex || c.termIndex === query.termIndex) && (!keyword || `${c.text} ${c.code ?? ''} ${c.domain ?? ''}`.toLowerCase().includes(keyword))).sort((a, b) => a.termIndex - b.termIndex || a.sequence - b.sequence || a.id.localeCompare(b.id));
+  return competencies.filter(c => (!query.grade || c.grade === query.grade) && (!query.learningAreaId || c.learningAreaId === query.learningAreaId) && (!query.termIndex || c.termIndex === query.termIndex) && (!keyword || `${c.text} ${c.code ?? ''} ${c.domain ?? ''}`.toLowerCase().includes(keyword))).sort((a, b) => a.termIndex - b.termIndex || a.sequence - b.sequence || compareText(a.id, b.id));
 }
+
+/** Code-point ordering, independent of the device locale and ICU version. */
+export function compareText(a: string, b: string): number { return a < b ? -1 : a > b ? 1 : 0; }

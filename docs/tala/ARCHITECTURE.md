@@ -16,6 +16,31 @@ merges into it. Each worker has its own worktree and branch `tala-v1-<letter>` c
 | `packages/tala-mobile` | `@hiraia/tala-mobile` | Expo / React Native Android app, offline-first. |
 | `packages/tala` | — | The existing Kotlin Tala 0.4.x app. **Do not touch.** Its absorption (PRD §6.7) is a later wave. |
 
+## Tala 0.4.x stays independent and shippable (Luis, 13 Nov 2026)
+
+The 0.4.x release line keeps shipping fixes while V1.0 is demonstrated and improved. V1.0 work must never
+block or entangle it.
+
+- **0.4.x lives on `main`**: the Kotlin teacher app in `packages/tala/` (currently 0.4.4, version code 19,
+  `com.hiraia.tala`, pilot signing key) and its student-side counterpart `packages/mobile/modules/hiraia-tala`.
+  It is released from `main` with its existing process (`docs/RELEASE-*-TALA-*.md`, `packages/mobile/BUILD.md`).
+- **V1.0 lives only on `tala-v1`** (and worker branches `tala-v1-*`), only in new paths:
+  `packages/tala-core`, `packages/tala-server`, `packages/tala-web`, `packages/tala-mobile`, `docs/tala`.
+  Nothing else in the repository is edited. `tala-v1` is not merged to `main` until Luis says so.
+- **No V1.0 change to any file 0.4.x builds from**: not `packages/tala/**`, not `packages/mobile/**`, not
+  `packages/shared/**`, not root config, CI workflows or the lockfile. If V1.0 needs code that lives there
+  (e.g. the Nearby collection for PRD §6.7), **copy it into a V1-only package**; never modify the original.
+  A strictly additive, behaviour-preserving change to a live 0.4.x file needs the orchestrator to flag it to
+  Luis first.
+- **Separate identity until cutover.** V1.0 builds use Android application id **`com.hiraia.tala.next`**,
+  their own debug/demo signing key and no over-the-air update channel, so a V1.0 demo build installs beside
+  0.4.x and can never replace or collide with it. The 0.4.x pilot signing key, version-code sequence and
+  update manifest are not used by V1.0 builds. Switching to `com.hiraia.tala` with the pilot key and a higher
+  version code (PRD ACT-2, in-place upgrade) is a single deliberate cutover step at V1.0 release, decided by Luis.
+- **Hotfix path for 0.4.x while V1.0 is in flight:** branch from `main`, fix under `packages/tala/` (and the
+  student module if needed), release as today, merge to `main`. No coordination with `tala-v1` is needed.
+  The orchestrator periodically merges `main` into `tala-v1`; because the paths are disjoint this cannot conflict.
+
 ## Contracts come first
 
 Everything hangs off `packages/tala-core/src/contracts/`:
