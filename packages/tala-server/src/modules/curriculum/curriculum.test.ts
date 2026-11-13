@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { API, CalendarPreset, CurriculumIndex, CurriculumPack } from '@hiraia/tala-core';
+import { API, CalendarPreset, CurriculumIndex, CurriculumPack, LIMITS } from '@hiraia/tala-core';
 import { createCurriculumModule, loadCurriculumData } from './index';
 import type { BaseDeps, Ctx } from '../../kernel/types';
 
@@ -11,9 +11,12 @@ test('all source packs validate, carry pages and preserve distinct versions with
   const data = loadCurriculumData();
   CurriculumIndex.parse(data.index);
   assert.equal(data.packs.size, 8);
+  assert.equal(data.index.learningAreas.length, 1);
+  assert.deepEqual(data.index.learningAreas[0]!.stages, ['elementary', 'jhs']);
   assert.equal([...data.packs.values()].reduce((n, p) => n + p.competencyCount, 0), 322);
   for (const p of data.packs.values()) {
     CurriculumPack.parse(p);
+    assert.ok(Buffer.byteLength(JSON.stringify(p)) <= LIMITS.maxApiResponseBytes, `${p.packId} exceeds the API response budget`);
     for (const c of p.competencies) { assert.ok(c.source.page! > 0); assert.ok(c.source.url); assert.ok(c.contentStandard); assert.ok(c.performanceStandard); assert.equal(c.code, null); }
   }
   assert.equal(data.service.versionFor('2026-2027', '4', 'science'), 'science-bow-2026');
