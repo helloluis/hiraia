@@ -6,6 +6,8 @@ import { copy } from './memory-store';
 import { appendContent } from './merge-content';
 export { createMemoryStore } from './memory-store';
 export { CONFLICT_POLICY } from '../contracts/sync';
+type PurgeBatch = Parameters<import('../contracts/sync').LocalStore['commit']>[0];
+const tombstoneKey = (entity: EntityName, id: string) => `sync.deleted.${entity}.${id}`;
 const payloadKey = (id: string) => `sync.mutation.${id}`;
 interface SavedMutation {
     mutation: Mutation;
@@ -71,6 +73,21 @@ export const createSyncEngine: CreateSyncEngine = ({ store, transport, deviceId,
             catch { /* Observers cannot undo a durable save. */ }
         }
     };
+    const commit = (batch: PurgeBatch) => store.commit(batch);
+    async function purge(entity: EntityName, id: string, rev: number, pending: OutboxItem[]) {
+        await commit({ remove: [{ entity, id }], outboxRemove: pending.map(q => q.mutationId), meta: {
+                ...Object.fromEntries(pending.map(q => [payloadKey(q.mutationId), null])),
+                [tombstoneKey(entity, id)]: String(rev),
+                [`sync.rejected.${id}`]: null,
+            } });
+        conflictKeys.delete(recordKey({ entity, id }));
+        for (const listener of listeners) {
+            try {
+                listener([{ entity, id }]);
+            }
+            catch { }
+        }
+    }
     const queued = async (entity: EntityName, id: string) => (await store.outbox()).filter(q => q.entity === entity && q.id === id);
     function addition(r: LocalRecord): {
         item: OutboxItem;
@@ -100,7 +117,7 @@ export const createSyncEngine: CreateSyncEngine = ({ store, transport, deviceId,
         const data = parseRecordData(entity, input);
         return exclusive(async () => {
             const old = await store.get(entity, data.id);
-            const r = { entity, id: data.id, data, rev: old?.rev ?? 0, updatedAt: old?.updatedAt ?? now().toISOString(), deletedAt: null,
+            const r = { entity, id: data.id, data, rev: old?.rev ?? Number(await store.getMeta(tombstoneKey(entity, data.id)) ?? 0), updatedAt: old?.updatedAt ?? now().toISOString(), deletedAt: null,
                 dirty: true, base: old?.dirty ? old.base : old?.data ?? null, conflict: old?.conflict ?? null } as LocalRecord<E>;
             const removable = (await queued(entity, data.id)).filter(q => q.attempts === 0);
             if (r.conflict) {
@@ -167,7 +184,8 @@ export const createSyncEngine: CreateSyncEngine = ({ store, transport, deviceId,
         const originals = (await store.list('plan_section', { includeDeleted: true })).filter(s => (s.data as PlanSection).planId === section.planId);
         const copies: LocalRecord[] = [{ ...local({ ...parent, id, rev: 0, deletedAt: null, data: plan }), dirty: true }];
         for (const s of originals) {
-            if (s.deletedAt) continue;
+            if (s.deletedAt)
+                continue;
             const sid = newId();
             copies.push({ ...local({ ...s, id: sid, rev: 0, deletedAt: null, data: parseRecordData('plan_section', { ...s.data, id: sid, planId: id }) }), dirty: true });
         }
@@ -228,7 +246,24 @@ export const createSyncEngine: CreateSyncEngine = ({ store, transport, deviceId,
                         if (!r)
                             throw new Error('Missing local record');
                         const pending = await queued(sent.entity, sent.id);
-                        const server = result.record ? local(result.record) : null;
+                        const wire = result.record ? RecordEnvelopeSchema.parse(result.record) : null;
+                        // Deletion envelopes are authoritative; scrubbed data is never a live record.
+                        if (result.status === 'applied' && sent.op === 'delete' && (!wire || wire.deletedAt)) {
+                            report.pushed++;
+                            if (!r.deletedAt)
+                                await save({ ...r, rev: wire?.rev ?? 0, base: null, conflict: null }, pending);
+                            else
+                                await purge(sent.entity, sent.id, wire?.rev ?? 0, pending);
+                            return;
+                        }
+                        if (wire?.deletedAt && result.status === 'conflict') {
+                            if (r.deletedAt)
+                                await purge(sent.entity, sent.id, wire.rev, pending);
+                            else
+                                await save({ ...r, rev: wire.rev, base: null, conflict: null }, pending);
+                            return;
+                        }
+                        const server = wire && !wire.deletedAt ? local(wire) : null;
                         if (result.status === 'locked' && sent.entity === 'plan_section') {
                             await lockCopy(r, server, report);
                             return;
@@ -244,7 +279,12 @@ export const createSyncEngine: CreateSyncEngine = ({ store, transport, deviceId,
                             }
                         }
                         else if (result.status === 'conflict' && server) {
-                            if (CONFLICT_POLICY[sent.entity] === 'merge_fields' || server.deletedAt) {
+                            // Rule 6 also applies in reverse: a stale delete cannot erase a live edit.
+                            if (sent.op === 'delete' && r.deletedAt) {
+                                await store.commit({ put: [server], outboxRemove: pending.map(q => q.mutationId), meta: Object.fromEntries(pending.map(q => [payloadKey(q.mutationId), null])) });
+                                notify([server]);
+                            }
+                            else if (CONFLICT_POLICY[sent.entity] === 'merge_fields' || server.deletedAt) {
                                 // Rule 6: edits restore server-deleted records.
                                 const data = server.deletedAt ? r.data : parseRecordData(sent.entity, mergeChangedFields(saved.base, r.data, server.data));
                                 await save({ ...r, data, rev: server.rev, base: server.data, conflict: null }, pending);
@@ -279,16 +319,57 @@ export const createSyncEngine: CreateSyncEngine = ({ store, transport, deviceId,
                     throw new Error('Pull cursor did not advance');
                 await exclusive(async () => {
                     const updates: LocalRecord[] = [];
+                    const removes: Array<{
+                        entity: EntityName;
+                        id: string;
+                    }> = [];
+                    const meta: Record<string, string | null> = { 'sync.cursor': page.cursor };
+                    const outboxRemove: string[] = [];
                     for (const wire of page.records) {
-                        let server: LocalRecord;
+                        let envelope: ReturnType<typeof RecordEnvelopeSchema.parse>;
                         try {
-                            server = local(RecordEnvelopeSchema.parse(wire));
+                            envelope = RecordEnvelopeSchema.parse(wire);
                         }
                         catch {
                             report.skipped++;
                             continue;
                         }
-                        const r = await store.get(server.entity, server.id);
+                        const matches = (r: {
+                            entity: EntityName;
+                            id: string;
+                        }) => r.entity === envelope.entity && r.id === envelope.id;
+                        const existing = removes.some(matches) ? null : [...updates].reverse().find(matches) ?? await store.get(envelope.entity, envelope.id);
+                        const deletionRev = meta[tombstoneKey(envelope.entity, envelope.id)] ?? await store.getMeta(tombstoneKey(envelope.entity, envelope.id));
+                        const knownRev = Math.max(existing?.rev ?? 0, Number(deletionRev ?? 0));
+                        if (knownRev >= envelope.rev)
+                            continue;
+                        if (envelope.deletedAt) {
+                            if (existing?.dirty && !existing.deletedAt) {
+                                // Preserve an actual local edit, never resurrect the scrubbed placeholder.
+                                if (existing.conflict)
+                                    await save({ ...existing, rev: envelope.rev, base: null, conflict: null }, await queued(envelope.entity, envelope.id));
+                                continue;
+                            }
+                            for (let i = updates.length - 1; i >= 0; i--)
+                                if (matches(updates[i]!))
+                                    updates.splice(i, 1);
+                            removes.push({ entity: envelope.entity, id: envelope.id });
+                            meta[tombstoneKey(envelope.entity, envelope.id)] = String(envelope.rev);
+                            for (const item of await queued(envelope.entity, envelope.id)) {
+                                outboxRemove.push(item.mutationId);
+                                meta[payloadKey(item.mutationId)] = null;
+                            }
+                            continue;
+                        }
+                        let server: LocalRecord;
+                        try {
+                            server = local(envelope);
+                        }
+                        catch {
+                            report.skipped++;
+                            continue;
+                        }
+                        const r = existing;
                         if (r && r.rev >= server.rev)
                             continue;
                         if (r?.dirty) {
@@ -297,10 +378,22 @@ export const createSyncEngine: CreateSyncEngine = ({ store, transport, deviceId,
                             // Pending edits are reconciled through push, never overwritten by pull.
                             continue;
                         }
+                        for (let i = removes.length - 1; i >= 0; i--)
+                            if (matches(removes[i]!))
+                                removes.splice(i, 1);
                         updates.push(server);
                     }
-                    await store.commit({ put: updates, meta: { 'sync.cursor': page.cursor } });
+                    await commit({ put: updates, remove: removes, outboxRemove, meta });
                     notify(updates);
+                    for (const removed of removes) {
+                        conflictKeys.delete(recordKey(removed));
+                        for (const listener of listeners) {
+                            try {
+                                listener([removed]);
+                            }
+                            catch { }
+                        }
+                    }
                 });
                 report.pulled += page.records.length;
                 cursor = page.cursor;
@@ -323,11 +416,14 @@ export const createSyncEngine: CreateSyncEngine = ({ store, transport, deviceId,
         return report;
     }
     return {
-        get: async <E extends EntityName>(entity: E, id: string) => store.get(entity, id) as Promise<LocalRecord<E> | null>,
+        get: async <E extends EntityName>(entity: E, id: string) => { const r = await store.get(entity, id); return r?.deletedAt ? null : r as LocalRecord<E> | null; },
         list: async <E extends EntityName>(entity: E) => store.list(entity) as Promise<LocalRecord<E>[]>,
         put, remove, resolveConflict,
-        sync(opts) { if (!running)
-            running = cycle(opts).finally(() => { running = null; }); return running; },
+        sync(opts) {
+            if (!running)
+                running = cycle(opts).finally(() => { running = null; });
+            return running;
+        },
         async status() {
             await hydrated;
             const conflicts = conflictKeys.size;

@@ -17,6 +17,8 @@ export function createMemoryStore(): LocalStore {
             const nextRecords = new Map(records), nextQueue = new Map(queue), nextMeta = new Map(meta);
             for (const r of b.put ?? [])
                 nextRecords.set(key(r.entity, r.id), r);
+            for (const r of b.remove ?? [])
+                nextRecords.delete(key(r.entity, r.id));
             for (const id of b.outboxRemove ?? [])
                 nextQueue.delete(id);
             for (const item of b.outboxAdd ?? [])
