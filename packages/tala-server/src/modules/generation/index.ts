@@ -12,7 +12,8 @@ function resolveInput(ctx:Ctx,input:GenerationInput) {
   const template:Template|undefined=BUILTIN_TEMPLATES.find(t=>t.id===input.templateId) ?? ctx.services.records.get(requireUser(ctx).id,'template',input.templateId)?.data;
   if(!template)throw new HttpError('invalid_input','Choose a supported template.');
   if(input.gradeGroups.length>1 && template.kind!=='multigrade')throw new HttpError('invalid_input','Choose the multi-grade template.');
-  if(input.kind==='section'&&!input.sectionKey)throw new HttpError('invalid_input','Choose a section.');
+  if(input.kind==='section'&&(!input.sectionKey||!template.sections.some(s=>s.key===input.sectionKey)))throw new HttpError('invalid_input','Choose a section.');
+  if(input.kind==='translate'&&!input.targetLanguage)throw new HttpError('invalid_input','Choose Filipino or English for the translation.');
   if(input.kind!=='full'&&!input.planId)throw new HttpError('invalid_input','Choose a source plan.');
   const resolvedObjectives:Record<string,string[]>={};
   for(const g of input.gradeGroups) {const ids=input.competencies[g.id]??[]; const records=input.curriculumVersion?ctx.services.curriculum.getCompetencies(input.curriculumVersion,ids):[]; if(records.length!==new Set(ids).size)throw new HttpError('invalid_input','Download the curriculum or enter your own objectives.');resolvedObjectives[g.id]=records.map(c=>`${c.id}: ${c.text}`);}
@@ -20,18 +21,26 @@ function resolveInput(ctx:Ctx,input:GenerationInput) {
   const snapshot=input.planId?ctx.services.records.planSnapshot(requireUser(ctx).id,input.planId):null;
   if(input.planId&&!snapshot)throw new HttpError('not_found','Source plan not found.');
   const source=snapshot?.sections.map(s=>({key:s.data.key,content:s.data.content}))??[];
-  return {template,resolvedObjectives,source};
+  const prior=input.priorPlanId?ctx.services.records.planSnapshot(requireUser(ctx).id,input.priorPlanId):null;
+  if(input.priorPlanId&&!prior)throw new HttpError('not_found','Previous plan not found.');
+  return {template,resolvedObjectives,source,prior:prior?.sections.map(s=>({key:s.data.key,content:s.data.content}))??[]};
 }
 export async function runJob(ctx:Ctx,id:string):Promise<void> {
   const {job,input}=read(ctx,id); if(job.status!=='queued')return;
   const controller=new AbortController();controls(ctx.db).set(id,controller);
   job.status='running';save(ctx,job);
   try {
+    if(!ctx.config.features.generation){job.status='failed';job.failure={reason:'disabled',message:'Generation is disabled. Use the pre-filled draft.'};return;}
     const resolved=resolveInput(ctx,input);
     const promptId=`lesson/${input.kind==='full'?(input.gradeGroups.length>1?'multigrade':resolved.template.span==='week'?'week':'single'):input.kind}`;
     const requestedTemplate=input.kind==='section'?{...resolved.template,sections:resolved.template.sections.filter(s=>s.key===input.sectionKey)}:resolved.template;
     const result=await ctx.services.llm.complete({feature:input.kind==='section'?'lesson.regenerate':input.kind==='adapt'?'lesson.adapt':input.kind==='translate'?'lesson.translate':'lesson.generate',promptId,userId:requireUser(ctx).id,vars:{input:JSON.stringify({...input,...resolved,template:requestedTemplate}),schema:JSON.stringify({title:'string',sections:requestedTemplate.sections.map(s=>({key:s.key,contentType:s.contentType}))})},schema:outputSchema,signal:controller.signal,check:value=>{
       const errors=validateGeneratedSections({...input,template:requestedTemplate,resolvedObjectives:resolved.resolvedObjectives},value.sections);
+      if(input.kind==='translate') {
+        const source=resolved.source;
+        const skeleton=(value:unknown,key=''):unknown=> {if(Array.isArray(value))return value.map(v=>skeleton(v));if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).filter(([k])=>!['text','title','label'].includes(k)).map(([k,v])=>[k,skeleton(v,k)]));return typeof value==='string'&&!['id','type','t','mode','teacherWith'].includes(key)?'':value;};
+        if(JSON.stringify(skeleton(source))!==JSON.stringify(skeleton(value.sections)))errors.push('Translation must preserve source structure.');
+      }
       if(input.kind==='section')return errors.filter(e=>!e.startsWith('objectives must')&&!e.startsWith('assessment must'));
       return errors;
     }});
@@ -50,7 +59,7 @@ export const generationModule:ServerModule={name:'generation',migrations,handler
 },start:deps=>{
   deps.db.prepare("UPDATE generation_jobs SET status='queued',job=json_set(job,'$.status','queued') WHERE status='running'").run();
   let stopped=false,busy=false;
-  const tick=async()=>{if(stopped||busy)return;busy=true;try {const row=deps.db.prepare("SELECT id,owner_id FROM generation_jobs WHERE status='queued' LIMIT 1").get() as {id:string;owner_id:string}|undefined;if(row)await runJob({...deps,user:{id:row.owner_id,email:'',emailVerified:true,displayName:'',sessionId:'job'},requestId:row.id,ip:null},row.id);}finally{busy=false;}};
+  const tick=async()=>{if(stopped||busy)return;busy=true;try {const row=deps.db.prepare("SELECT id,owner_id FROM generation_jobs WHERE status='queued' LIMIT 1").get() as {id:string;owner_id:string}|undefined;if(row)await runJob({...deps,user:{id:row.owner_id,email:'',emailVerified:true,displayName:'',sessionId:'job'},requestId:row.id,ip:null},row.id);}catch{deps.log.error('generation.runner_failed');}finally{busy=false;}};
   const timer=setInterval(()=>{void tick();},100);timer.unref();return()=>{stopped=true;clearInterval(timer);for(const c of controls(deps.db).values())c.abort();};
 }};
 export default generationModule;
