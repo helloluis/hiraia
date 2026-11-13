@@ -201,12 +201,28 @@ function fromEnv(env: Env, warnings: string[]): TalaServerConfig {
 
   const timeoutMs = r.int('TALA_LLM_TIMEOUT_MS', 60_000, 1_000, 600_000);
 
+  // Price per million tokens, for the budget ceiling. Unknown stays null: the gateway will not make a cloud
+  // call it cannot price (PRD §9.7).
+  const pricing = (provider: 'PRIMARY' | 'FALLBACK' | 'LOCAL'): ProviderConfig['pricing'] => {
+    const inName = `TALA_LLM_${provider}_INPUT_USD_PER_MILLION`;
+    const outName = `TALA_LLM_${provider}_OUTPUT_USD_PER_MILLION`;
+    const hasIn = r.raw(inName) !== undefined;
+    const hasOut = r.raw(outName) !== undefined;
+    if (!hasIn && !hasOut) return null;
+    if (hasIn !== hasOut) {
+      warnings.push(`${inName} and ${outName} must both be set; this provider is treated as unpriced.`);
+      return null;
+    }
+    return { inputUsdPerMillion: r.num(inName, 0, 0, 100_000), outputUsdPerMillion: r.num(outName, 0, 0, 100_000) };
+  };
+
   // Model identifiers are configuration (PRD §9.1): there is deliberately no built-in guess at a model name.
   const primary: ProviderConfig = {
     apiKeyEnv: 'DEEPSEEK_API_KEY',
     baseUrl: r.str('TALA_LLM_PRIMARY_BASE_URL', 'https://api.deepseek.com'),
     model: r.str('TALA_LLM_PRIMARY_MODEL', ''),
     timeoutMs,
+    pricing: pricing('PRIMARY'),
   };
   const fallback: ProviderConfig = {
     // Only the presence of the variable is checked. Its value is read by the gateway at call time.
@@ -214,6 +230,7 @@ function fromEnv(env: Env, warnings: string[]): TalaServerConfig {
     baseUrl: r.str('TALA_LLM_FALLBACK_BASE_URL', 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1'),
     model: r.str('TALA_LLM_FALLBACK_MODEL', ''),
     timeoutMs,
+    pricing: pricing('FALLBACK'),
   };
   const localEndpoint = r.raw('TALA_LLM_LOCAL_ENDPOINT');
   const localModel = r.raw('TALA_LLM_LOCAL_MODEL');
@@ -221,7 +238,9 @@ function fromEnv(env: Env, warnings: string[]): TalaServerConfig {
     warnings.push('TALA_LLM_LOCAL_ENDPOINT and TALA_LLM_LOCAL_MODEL must both be set; the local model is treated as not configured.');
   }
   const local: ProviderConfig | null =
-    localEndpoint && localModel ? { apiKeyEnv: 'TALA_LLM_LOCAL_API_KEY', baseUrl: localEndpoint, model: localModel, timeoutMs } : null;
+    localEndpoint && localModel
+      ? { apiKeyEnv: 'TALA_LLM_LOCAL_API_KEY', baseUrl: localEndpoint, model: localModel, timeoutMs, pricing: pricing('LOCAL') }
+      : null;
 
   // Roster cleaning: flagged cloud route before production, local (or rules) in production (§12.4.1).
   const rosterRoute = r.oneOf('TALA_ROSTER_LLM_ROUTE', ROUTES, environment === 'production' ? (local ? 'local' : 'rules') : 'cloud');

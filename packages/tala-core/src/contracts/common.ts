@@ -4,8 +4,8 @@
  */
 import { z } from 'zod';
 
-/** Client-generated identifier (UUID v4 or ULID). Records are created offline, so ids never come from the server. */
-export const Id = z.string().min(8).max(64).regex(/^[A-Za-z0-9_.:-]+$/);
+/** Client-generated identifier (UUID v4 or ULID; fixed ids such as 'profile' are also valid). Records are created offline, so ids never come from the server. */
+export const Id = z.string().min(1).max(64).regex(/^[A-Za-z0-9_.:-]+$/);
 export type Id = z.infer<typeof Id>;
 
 /** Calendar date in the school's local time, `YYYY-MM-DD`. Never a timestamp. */

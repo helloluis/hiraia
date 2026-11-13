@@ -61,7 +61,15 @@ export const SectionContent = z.discriminatedUnion('type', [
   z.object({
     type: z.literal('weekgrid'),
     days: z
-      .array(z.object({ date: IsoDate.nullable(), weekday: z.number().int().min(1).max(7), body: RichText }))
+      .array(
+        z.object({
+          date: IsoDate.nullable(),
+          weekday: z.number().int().min(1).max(7),
+          /** Minutes planned for that day's session, when known; lets a week plan be checked against the time budget. */
+          minutes: z.number().int().min(0).max(600).nullable().optional(),
+          body: RichText,
+        }),
+      )
       .max(7),
   }),
   /** Per-grade-group content, e.g. assessment or materials for each group in a multi-grade plan. */

@@ -6,6 +6,7 @@ import { enumerateSessions } from './sessions';
 export function buildTimeline(input: TimelineInput): TimelineEntry[] {
   const entries = new Map<string, TimelineEntry>();
   const firstSlots = new Map<string, string>();
+  const validSlots = new Set<string>();
   const competencyMap = new Map(input.competencies.map(c => [c.id, c]));
   const key = (date: string, assignmentId: string, slotId: string) => `${date}|${assignmentId}|${slotId}`;
   for (const assignment of [...input.assignments].sort((a, b) => compareText(a.id, b.id))) {
@@ -14,7 +15,7 @@ export function buildTimeline(input: TimelineInput): TimelineEntry[] {
     for (const term of input.schoolYear.terms) {
       if (term.startDate > input.to || term.endDate < input.from) continue;
       const sessions = enumerateSessions(input.schoolYear, term, assignment, input.calendarDays);
-      for (const s of sessions) if (!firstSlots.has(`${s.date}|${assignment.id}`)) firstSlots.set(`${s.date}|${assignment.id}`, s.slotId);
+      for (const s of sessions) { validSlots.add(`${s.date}|${assignment.id}|${s.slotId}`); if (!firstSlots.has(`${s.date}|${assignment.id}`)) firstSlots.set(`${s.date}|${assignment.id}`, s.slotId); }
       const ensure = (s: typeof sessions[number]): TimelineEntry => {
         const id = key(s.date, assignment.id, s.slotId);
         let e = entries.get(id);
@@ -74,11 +75,12 @@ export function buildTimeline(input: TimelineInput): TimelineEntry[] {
     if (groups.length) e.kind = 'lesson';
     const plan = input.plans.filter(p => p.state !== 'archived').find(p => p.placements.some(x => x.classId === e.classId && (x.assignmentId === null || x.assignmentId === e.assignmentId) && x.dates.includes(e.date)));
     if (plan) { e.planId = plan.id; e.planState = plan.state === 'locked' ? 'locked' : 'draft'; }
-    const marks = input.marks.filter(m => m.classId === e.classId && m.assignmentId === e.assignmentId && m.date === e.date && (m.slotId === e.slotId || m.slotId === null && e.slotId === firstSlots.get(`${e.date}|${e.assignmentId}`)) && groups.includes(m.gradeGroupId));
+    const marks = input.marks.filter(m => m.classId === e.classId && m.assignmentId === e.assignmentId && m.date === e.date && (m.slotId === e.slotId || m.slotId === null && e.slotId === firstSlots.get(`${e.date}|${e.assignmentId}`)) && e.byGroupKind?.[m.gradeGroupId] !== undefined && e.byGroupKind[m.gradeGroupId] !== 'other_subject');
     const markGroups = Object.keys(e.byGroupKind ?? {}).filter(g => e.byGroupKind![g] !== 'other_subject');
     const states = markGroups.map(group => {
       const mark = marks.find(m => m.gradeGroupId === group && (!m.competencyIds.length || m.competencyIds.some(id => e.byGroup[group]?.includes(id))));
       if (mark) return mark.status;
+      if (!validSlots.has(`${e.date}|${e.assignmentId}|${e.slotId}`)) return 'not_taught';
       const track = input.tracks.find(t => t.assignmentId === e.assignmentId && t.gradeGroupId === group && input.schoolYear.terms.some(term => term.id === t.termId && term.startDate <= e.date && term.endDate >= e.date));
       return e.date < input.today && (track?.params.assumeTaught ?? input.defaults.assumeTaught) ? 'assumed_taught' : null;
     });
