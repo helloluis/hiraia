@@ -1,0 +1,6 @@
+{
+  "name": "@hiraia/tala-mobile", "version": "1.0.0", "private": true, "main": "index.ts",
+  "scripts": { "start": "expo start", "type-check": "tsc --noEmit", "test": "tsx --test src/**/*.test.ts", "export": "expo export --platform android --max-workers 1 && node scripts/check-budget.mjs", "budget": "node scripts/check-budget.mjs" },
+  "dependencies": { "@hiraia/tala-core": "workspace:*", "expo": "~54.0.0", "expo-font": "~14.0.12", "expo-sqlite": "~16.0.10", "expo-secure-store": "~15.0.8", "expo-crypto": "~15.0.8", "expo-print": "~15.0.8", "expo-sharing": "~14.0.8", "expo-file-system": "~19.0.0", "expo-network": "~8.0.7", "expo-background-task": "~1.0.10", "expo-task-manager": "~14.0.9", "react": "19.1.0", "react-native": "0.81.5" },
+  "devDependencies": { "@types/react": "~19.1.0", "@types/node": "^22.15.29", "typescript": "^5.8.3", "tsx": "^4.19.2" }
+}
