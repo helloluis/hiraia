@@ -12,23 +12,57 @@ export async function createSqliteStore(db: Database): Promise<LocalStore> {
     CREATE TABLE IF NOT EXISTS records(entity TEXT NOT NULL,id TEXT NOT NULL,json TEXT NOT NULL,PRIMARY KEY(entity,id));
     CREATE TABLE IF NOT EXISTS outbox(id TEXT NOT NULL PRIMARY KEY,json TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS meta(key TEXT NOT NULL PRIMARY KEY,value TEXT NOT NULL);`);
-  const decode = <T>(rows: { json: string }[]) => rows.map(r => JSON.parse(r.json) as T);
+  const decode = <T>(rows: { json: string }[]) => rows.map((r) => JSON.parse(r.json) as T);
   return {
-    async get(entity, id) { const r = await db.getFirstAsync<{ json: string }>('SELECT json FROM records WHERE entity=? AND id=?', entity, id); return r ? JSON.parse(r.json) : null; },
-    async list(entity: EntityName, opts) { return decode<LocalRecord>(await db.getAllAsync('SELECT json FROM records WHERE entity=? ORDER BY id', entity)).filter(r => opts?.includeDeleted || !r.deletedAt); },
+    async get(entity, id) {
+      const r = await db.getFirstAsync<{ json: string }>(
+        'SELECT json FROM records WHERE entity=? AND id=?',
+        entity,
+        id
+      );
+      return r ? JSON.parse(r.json) : null;
+    },
+    async list(entity: EntityName, opts) {
+      return decode<LocalRecord>(
+        await db.getAllAsync('SELECT json FROM records WHERE entity=? ORDER BY id', entity)
+      ).filter((r) => opts?.includeDeleted || !r.deletedAt);
+    },
     async commit(batch) {
-      await db.withExclusiveTransactionAsync(async tx => {
-        for (const r of batch.put ?? []) await tx.runAsync('INSERT OR REPLACE INTO records VALUES(?,?,?)', r.entity, r.id, JSON.stringify(r));
-        for (const o of batch.outboxAdd ?? []) await tx.runAsync('INSERT OR REPLACE INTO outbox VALUES(?,?)', o.mutationId, JSON.stringify(o));
-        for (const id of batch.outboxRemove ?? []) await tx.runAsync('DELETE FROM outbox WHERE id=?', id);
+      await db.withExclusiveTransactionAsync(async (tx) => {
+        for (const r of batch.put ?? [])
+          await tx.runAsync(
+            'INSERT OR REPLACE INTO records VALUES(?,?,?)',
+            r.entity,
+            r.id,
+            JSON.stringify(r)
+          );
+        for (const o of batch.outboxAdd ?? [])
+          await tx.runAsync(
+            'INSERT OR REPLACE INTO outbox VALUES(?,?)',
+            o.mutationId,
+            JSON.stringify(o)
+          );
+        for (const id of batch.outboxRemove ?? [])
+          await tx.runAsync('DELETE FROM outbox WHERE id=?', id);
         for (const [key, value] of Object.entries(batch.meta ?? {})) {
           if (value === null) await tx.runAsync('DELETE FROM meta WHERE key=?', key);
           else await tx.runAsync('INSERT OR REPLACE INTO meta VALUES(?,?)', key, value);
         }
       });
     },
-    async outbox() { return decode<OutboxItem>(await db.getAllAsync('SELECT json FROM outbox ORDER BY rowid')); },
-    async getMeta(key) { return (await db.getFirstAsync<{ value: string }>('SELECT value FROM meta WHERE key=?', key))?.value ?? null; },
-    async clear() { await db.withExclusiveTransactionAsync(async tx => { await tx.execAsync('DELETE FROM records; DELETE FROM outbox; DELETE FROM meta;'); }); },
+    async outbox() {
+      return decode<OutboxItem>(await db.getAllAsync('SELECT json FROM outbox ORDER BY rowid'));
+    },
+    async getMeta(key) {
+      return (
+        (await db.getFirstAsync<{ value: string }>('SELECT value FROM meta WHERE key=?', key))
+          ?.value ?? null
+      );
+    },
+    async clear() {
+      await db.withExclusiveTransactionAsync(async (tx) => {
+        await tx.execAsync('DELETE FROM records; DELETE FROM outbox; DELETE FROM meta;');
+      });
+    },
   };
 }
