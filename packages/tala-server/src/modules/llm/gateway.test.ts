@@ -1,0 +1,22 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import Database from 'better-sqlite3';
+import { z } from 'zod';
+import { createLlmGateway, migrations, type ProviderCall } from './index';
+import type { BaseDeps, TalaServerConfig } from '../../kernel/types';
+export function fixture(call?:ProviderCall) {
+  const db=new Database(':memory:');for(const m of migrations)db.exec(m.sql);
+  const logs:unknown[]=[];
+  const provider={apiKeyEnv:'TEST_NEVER_READ',baseUrl:'https://api.deepseek.com',model:'fake',timeoutMs:30};
+  const config={environment:'staging',features:{generation:true},llm:{primary:provider,fallback:provider,local:provider,routes:{'lesson.generate':'cloud','lesson.regenerate':'cloud','roster.names':'cloud'},promptVersions:{},quotas:{fullPerDay:20,sectionPerDay:20},budget:{monthlyUsd:10,alertAtUsd:9},cacheSeconds:30}} as TalaServerConfig;
+  const deps:BaseDeps={db,config,now:()=>new Date('2026-11-13T12:00:00Z'),newId:()=>crypto.randomUUID(),log:{info:(...a)=>{logs.push(a);},warn:(...a)=>{logs.push(a);},error:(...a)=>{logs.push(a);}}};
+  return {deps,db,logs,gateway:createLlmGateway(deps,{call:call??(async()=>({content:'{"value":"ok"}',inputTokens:1,outputTokens:2,costUsd:0.01}))})};
+}
+const request=()=>({feature:'lesson.generate' as const,promptId:'lesson/single',vars:{input:'PRIVATE_CONTENT',schema:'PRIVATE_CONTENT'},schema:z.object({value:z.literal('ok')}),userId:'teacher'});
+test('validates retry, fallback, caches and logs metadata only',async()=>{let calls=0;const f=fixture(async p=>{calls++;return {content:p==='deepseek'?'{}':'{"value":"ok"}',inputTokens:1,outputTokens:1,costUsd:.01};});try{const result=await f.gateway.complete(request());assert.equal(result.ok,true);if(result.ok)assert.equal(result.fellBack,true);assert.equal(calls,3);await f.gateway.complete(request());assert.equal(calls,3);assert.equal(JSON.stringify(f.logs).includes('PRIVATE_CONTENT'),false);assert.equal(f.db.prepare('SELECT COUNT(*) AS n FROM llm_usage').get() && (f.db.prepare('SELECT COUNT(*) AS n FROM llm_usage').get() as {n:number}).n,3);}finally{f.db.close();}});
+test('typed invalid output after four validation attempts',async()=>{let calls=0;const f=fixture(async()=>{calls++;return {content:'{}',inputTokens:1,outputTokens:1,costUsd:0};});try{const r=await f.gateway.complete(request());assert.equal(r.ok,false);if(!r.ok)assert.equal(r.reason,'invalid_output');assert.equal(calls,4);}finally{f.db.close();}});
+test('production roster cloud cannot be restored by caller',async()=>{let calls=0;const f=fixture(async()=>{calls++;throw Error('secret');});try{f.deps.config.environment='production';assert.equal(f.gateway.routeFor('roster.names'),'rules');const r=await f.gateway.complete({...request(),feature:'roster.names',route:'cloud'});assert.equal(r.ok,false);assert.equal(calls,0);}finally{f.db.close();}});
+test('local never falls back to cloud',async()=>{const seen:string[]=[];const f=fixture(async p=>{seen.push(p);throw Error('SECRET');});try{const r=await f.gateway.complete({...request(),route:'local'});assert.equal(r.ok,false);assert.deepEqual(seen,['local']);assert.equal(JSON.stringify(r).includes('SECRET'),false);}finally{f.db.close();}});
+test('quotas and monthly budget stop calls',async()=>{const f=fixture();try{f.deps.config.llm.quotas.fullPerDay=0;let r=await f.gateway.complete(request());if(!r.ok)assert.equal(r.reason,'quota_exceeded');else assert.fail();f.deps.config.llm.quotas.fullPerDay=10;f.deps.config.llm.budget.monthlyUsd=-1;r=await f.gateway.complete(request());if(!r.ok)assert.equal(r.reason,'budget_exceeded');else assert.fail();}finally{f.db.close();}});
+test('cancel interrupts provider and timeout falls back',async()=>{const f=fixture(async(p,_c,_t,signal)=>new Promise((resolve,reject)=>{signal.addEventListener('abort',()=>reject(Error('private')));if(p==='qwen')resolve({content:'{"value":"ok"}',inputTokens:0,outputTokens:0,costUsd:0});}));try{const c=new AbortController();const pending=f.gateway.complete({...request(),signal:c.signal});setTimeout(()=>c.abort(),5);const r=await pending;assert.equal(r.ok,false);if(!r.ok)assert.equal(r.reason,'cancelled');const retry=await f.gateway.complete(request());assert.equal(retry.ok,true);}finally{f.db.close();}});
+test('schema/check are re-run for cached data',async()=>{const f=fixture();try{assert.equal((await f.gateway.complete(request())).ok,true);const r=await f.gateway.complete({...request(),check:()=>['rejected']});assert.equal(r.ok,false);}finally{f.db.close();}});
