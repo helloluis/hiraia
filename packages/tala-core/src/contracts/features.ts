@@ -4,7 +4,7 @@
  */
 import { z } from 'zod';
 import { GradeLevel, Id, IsoDateTime, Lang, LIMITS, QueryBool } from './common';
-import { SectionContent, SectionKey, TemplateKind } from './content';
+import { SectionContent, SectionKey, Template, TemplateKind } from './content';
 import { ClassProfile, GradeGroup, Plan, PlanSection, SectionGenMeta } from './records';
 
 /* ============================ LLM routing ============================ */
@@ -161,7 +161,8 @@ export const RosterImportDraft = z.object({
   columns: z.array(z.object({ index: z.number().int(), header: z.string().max(200), field: RosterField })),
   /** Human-readable names of sensitive columns that were discarded before storage (PRIV-2). */
   droppedColumns: z.array(z.string()),
-  rows: z.array(RosterRow).max(LIMITS.maxRosterRows),
+  /** Up to maxRosterRows STUDENT rows plus the non-student lines found around them (headers, totals, notes). */
+  rows: z.array(RosterRow).max(LIMITS.maxRosterRows + 100),
   counts: z.object({
     linesRead: z.number().int(),
     students: z.number().int(),
@@ -199,6 +200,8 @@ export const RosterResolution = z.object({
 });
 
 export const RosterConfirmRequest = z.object({
+  /** Client-generated; a retried confirm with the same key returns the same result instead of failing (RES-5). */
+  idempotencyKey: Id.optional(),
   resolutions: z.array(RosterResolution),
   /** Bulk-accept all rows with status 'changed' (after the teacher viewed them). */
   acceptAllChanged: z.boolean().default(false),
@@ -252,6 +255,8 @@ export const ArtifactSummary = z.object({
   versionNumber: z.number().int(),
   status: z.enum(['visible', 'pending_check', 'returned', 'hidden', 'removed']),
   mine: z.boolean(),
+  /** Latest moderation outcome. Present only for the author's own artifacts (never shown to others). */
+  moderation: z.lazy(() => ModerationDecision).optional(),
   createdAt: IsoDateTime,
   updatedAt: IsoDateTime,
 });
@@ -267,6 +272,8 @@ export const ArtifactVersion = z.object({
   competencies: z.record(Id, z.array(z.string())),
   customObjectives: z.array(z.string()),
   sections: z.array(z.object({ key: SectionKey, content: SectionContent })),
+  /** The template itself when it is a custom one, so a copier can render and save it. Absent for built-in templates. */
+  template: Template.optional(),
   createdAt: IsoDateTime,
 });
 export type ArtifactVersion = z.infer<typeof ArtifactVersion>;
@@ -280,6 +287,8 @@ export const ModerationDecision = z.object({
   reasons: z.array(
     z.object({
       category: z.enum(['student_personal_data', 'unsuitable', 'not_a_lesson']),
+      /** Finer kind for client wording, e.g. 'phone', 'class_list', 'lrn', 'email', 'address'. */
+      kind: z.string().max(40).optional(),
       message: z.string(),
       /** Section key and a short excerpt so the author can fix it. */
       sectionKey: z.string().nullable(),

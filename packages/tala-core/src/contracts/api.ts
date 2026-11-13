@@ -192,10 +192,16 @@ export const API = {
 
   /* community — workstream G */
   'community.search': route({ method: 'GET', path: '/community/artifacts', auth: 'user', owner: 'community', query: ArtifactSearchQuery, response: Page(ArtifactSummary) }),
-  'community.get': route({ method: 'GET', path: '/community/artifacts/:artifactId', auth: 'user', owner: 'community', response: ArtifactDetail }),
+  /** `versionId` views an older version; default is the current one. */
+  'community.get': route({
+    method: 'GET', path: '/community/artifacts/:artifactId', auth: 'user', owner: 'community',
+    query: z.object({ versionId: Id.optional() }), response: ArtifactDetail,
+  }),
   'community.post': route({
     method: 'POST', path: '/community/artifacts', auth: 'user', owner: 'community',
-    body: PostArtifactRequest, response: z.object({ artifact: ArtifactSummary, moderation: ModerationDecision }),
+    body: PostArtifactRequest,
+    /** When `moderation.decision` is 'return', `artifact` is a preview that was NOT stored. */
+    response: z.object({ artifact: ArtifactSummary, moderation: ModerationDecision }),
   }),
   'community.copy': route({
     method: 'POST', path: '/community/artifacts/:artifactId/copy', auth: 'user', owner: 'community',

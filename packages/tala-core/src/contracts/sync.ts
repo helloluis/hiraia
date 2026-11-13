@@ -166,7 +166,7 @@ export interface LocalStore {
 /** The slice of the API client the engine needs; satisfied by createTalaClient(). */
 export interface SyncTransport {
   push(body: z.infer<typeof PushRequest>): Promise<z.infer<typeof PushResponse>>;
-  pull(query: { cursor?: string; limit?: number; windowFrom?: string; windowTo?: string }): Promise<z.infer<typeof PullResponse>>;
+  pull(query: { cursor?: string; limit?: number; windowFrom?: string; windowTo?: string; planIds?: string }): Promise<z.infer<typeof PullResponse>>;
 }
 
 export interface SyncReport {
@@ -201,6 +201,11 @@ export interface SyncEngine {
   resolveConflict(entity: EntityName, id: Id, choice: 'mine' | 'theirs' | 'both'): Promise<void>;
   /** One push+pull cycle. Never throws for network trouble; reports it. Retries/backoff are the caller's schedule. */
   sync(opts?: { windowFrom?: string; windowTo?: string }): Promise<SyncReport>;
+  /**
+   * Fetch specific older plans (with their sections and section revisions) that are outside the device's
+   * window, via `sync.pull` with `planIds`. Does not move the main cursor. Reports like sync().
+   */
+  fetchPlans?(planIds: Id[]): Promise<SyncReport>; // optional until worker H implements it; then required
   status(): Promise<SyncStatus>;
   /** Called after any local or remote change; returns an unsubscribe function. */
   subscribe(listener: (changed: Array<{ entity: EntityName; id: Id }>) => void): () => void;
