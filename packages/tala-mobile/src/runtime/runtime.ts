@@ -5,7 +5,17 @@ import * as SecureStore from 'expo-secure-store';
 import { meteredFetch } from './usage';
 import { createFeatures } from '../features';
 import { openStore } from '../storage/native';
-export async function createRuntime() {
+let cachedRuntime: Promise<Awaited<ReturnType<typeof initialiseRuntime>>> | null = null;
+export function resetRuntime() {
+  cachedRuntime = null;
+}
+export function createRuntime() {
+  return (cachedRuntime ??= initialiseRuntime().catch((error) => {
+    cachedRuntime = null;
+    throw error;
+  }));
+}
+async function initialiseRuntime() {
   const store = await openStore();
   let deviceId = await store.getMeta('deviceId');
   if (!deviceId) {
@@ -33,6 +43,7 @@ export async function createRuntime() {
     newId: Crypto.randomUUID,
     now: () => new Date(),
   });
+  await features.tasks.recover();
   return { store, client, engine, features };
 }
 export type Runtime = Awaited<ReturnType<typeof createRuntime>>;

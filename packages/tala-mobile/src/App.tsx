@@ -34,6 +34,7 @@ import type {
   LocalRecord,
   SyncStatus,
   TimelineEntry,
+  Template,
   TimelineInput,
   CalendarPreset,
   CurriculumPack,
@@ -43,7 +44,7 @@ import type {
 } from '@hiraia/tala-core/contracts';
 import { engine as pacing } from '@hiraia/tala-core/pacing';
 import { sizes, colors } from '@hiraia/tala-core/tokens';
-import { createRuntime, type Runtime } from './runtime/runtime';
+import { createRuntime, resetRuntime, type Runtime } from './runtime/runtime';
 import { initialConditions, transition, type Conditions } from './runtime/ladder';
 import { createScheduler } from './runtime/scheduler';
 import { registerBackground } from './runtime/background';
@@ -63,6 +64,7 @@ import { fil } from './i18n/fil';
 import { GenerationScreen } from './features/GenerationScreen';
 import { RosterScreen } from './features/RosterScreen';
 import { CommunityScreen, PostScreen } from './features/CommunityScreen';
+import { staged } from './features/atomic';
 import { applyPreviews } from './features/realignment';
 type Tab = 'week' | 'lessons' | 'community' | 'class';
 type Page =
@@ -113,6 +115,8 @@ export default function App() {
     [name, setName] = useState(''),
     [register, setRegister] = useState(false),
     [authenticated, setAuthenticated] = useState(false);
+  const [customTemplate, setCustomTemplate] = useState<Template | null>(null);
+  const [featurePending, setFeaturePending] = useState(0);
   const [pendingSlot, setPendingSlot] = useState<TimelineEntry | null>(null);
   const [featureClass, setFeatureClass] = useState<string | null>(null);
   const [communityQuery, setCommunityQuery] = useState<
@@ -196,13 +200,23 @@ export default function App() {
   }
   useEffect(() => {
     let alive = true;
-    let unsubscribe = () => {};
+    let unsubscribe = () => {},
+      unsubscribeTasks = () => {};
     void createRuntime()
       .then(async (runtime) => {
         if (!alive) return;
         setRt(runtime);
         featureRuntime.current = runtime;
         await runtime.features.start();
+        const refreshTasks = async () => {
+          const all = await runtime.features.tasks.list();
+          if (alive)
+            setFeaturePending(
+              all.filter((t) => ['queued', 'polling', 'sending'].includes(t.state)).length
+            );
+        };
+        await refreshTasks();
+        unsubscribeTasks = runtime.features.tasks.subscribe(() => void refreshTasks());
         history.current = sectionHistory(runtime.engine, newId, () => new Date());
         await refresh(runtime);
         const preference = await runtime.store.getMeta('language');
@@ -260,6 +274,7 @@ export default function App() {
     return () => {
       alive = false;
       unsubscribe();
+      unsubscribeTasks();
       scheduler.current?.stop();
       featureRuntime.current?.features.stop();
     };
@@ -316,9 +331,24 @@ export default function App() {
   useEffect(() => {
     if (rt)
       void rt.features
-        .tick(conditions.connected && !conditions.sessionExpired && ladder.canWrite)
+        .tick(
+          conditions.connected &&
+            !conditions.serverDown &&
+            !conditions.sessionExpired &&
+            ladder.canWrite
+        )
         .catch(error);
-  }, [rt, conditions.connected, conditions.sessionExpired, ladder.canWrite]);
+  }, [rt, conditions.connected, conditions.serverDown, conditions.sessionExpired, ladder.canWrite]);
+  useEffect(() => {
+    if (rt && selected) {
+      const template = BUILTIN_TEMPLATES.find((t) => t.id === selected.templateId);
+      if (template) setCustomTemplate(template);
+      else
+        void rt.engine
+          .get('template', selected.templateId)
+          .then((row) => setCustomTemplate(row?.data ?? null));
+    }
+  }, [rt, selected?.templateId]);
   if (!rt)
     return (
       <SafeAreaView style={styles.screen}>
@@ -417,6 +447,12 @@ export default function App() {
         Math.max(new Date(result.expiresAt).getTime(), Date.now() + 30 * 86400000)
       ).toISOString();
       await SecureStore.setItemAsync('tala.offline-until', until);
+      const localProfile = await rt!.engine.get('profile', 'profile');
+      if (localProfile)
+        await rt!.engine.put('profile', {
+          ...localProfile.data,
+          displayName: result.user.displayName,
+        });
       setAuthenticated(true);
       setName(result.user.displayName);
       await rt!.store.commit({ meta: { teacherName: result.user.displayName } });
@@ -451,89 +487,94 @@ export default function App() {
       await rt.store.commit({ meta });
       setupPacks = added;
     }
-    const cls = await setupClass(rt.engine, {
-      name: sample ? t('sampleLabel') : className || t('class'),
-      teacherName: name || t('sampleLabel'),
-      school,
-      subject,
-      grades: parsed,
-      preset,
-      sample,
-      packs: setupPacks,
-      starts,
-    });
-    if (sample) {
-      for (let offset = 0; offset < 3; offset++) {
-        const d = new Date();
-        d.setDate(d.getDate() + offset);
-        const plan = await createPlan(rt.engine, cls, d.toISOString().slice(0, 10));
-        await rt.engine.put('plan', {
-          ...plan,
-          title: `${t('sampleLesson')} ${offset + 1}`,
-          subjectName: subject,
-          competencies: Object.fromEntries(
-            cls.gradeGroups.map((g) => [
-              g.id,
-              [setupPacks.find((p) => p.grade === g.grade)!.competencies[offset]!.id],
-            ])
-          ),
-        });
-        for (const row of (await rt.engine.list('plan_section')).filter(
-          (s) => s.data.planId === plan.id
-        )) {
-          const rich = [{ t: 'p' as const, spans: [{ text: t('samplePrompt') }] }];
-          const old = row.data.content;
-          const content =
-            old.type === 'list'
-              ? { ...old, items: [t('sampleObjective')] }
-              : old.type === 'text'
-                ? { ...old, blocks: rich }
-                : old.type === 'pergroup'
-                  ? {
-                      ...old,
-                      groups: Object.fromEntries(Object.keys(old.groups).map((id) => [id, rich])),
-                    }
-                  : old.type === 'procedure'
-                    ? { ...old, steps: old.steps.map((step) => ({ ...step, body: rich })) }
-                    : old.type === 'multigrade'
-                      ? {
-                          ...old,
-                          blocks: old.blocks.map((block) => ({
-                            ...block,
-                            groups: Object.fromEntries(
-                              Object.entries(block.groups).map(([id, g]) => [
-                                id,
-                                { ...g, activity: rich },
-                              ])
-                            ),
-                          })),
-                        }
-                      : old;
-          await rt.engine.put('plan_section', { ...row.data, content });
-        }
-      }
-      await rt.engine.put('student', {
-        id: newId(),
-        classId: cls.id,
-        gradeGroupId: cls.gradeGroups[0]!.id,
-        displayName: 'Sample Learner',
-        familyName: '',
-        givenName: '',
-        middleName: '',
-        suffix: '',
-        sex: null,
-        localId: null,
-        order: 0,
-        importId: null,
+    await staged(rt.engine, async (engine) => {
+      const cls = await setupClass(engine, {
+        name: sample ? t('sampleLabel') : className || t('class'),
+        teacherName: name || t('sampleLabel'),
+        school,
+        subject,
+        grades: parsed,
+        preset,
+        sample,
+        packs: setupPacks,
+        starts,
       });
-    }
+      if (sample) {
+        for (let offset = 0; offset < 3; offset++) {
+          const d = new Date();
+          d.setDate(d.getDate() + offset);
+          const plan = await createPlan(engine, cls, d.toISOString().slice(0, 10));
+          await engine.put('plan', {
+            ...plan,
+            title: `${t('sampleLesson')} ${offset + 1}`,
+            subjectName: subject,
+            competencies: Object.fromEntries(
+              cls.gradeGroups.map((g) => [
+                g.id,
+                [setupPacks.find((p) => p.grade === g.grade)!.competencies[offset]!.id],
+              ])
+            ),
+          });
+          for (const row of (await engine.list('plan_section')).filter(
+            (s) => s.data.planId === plan.id
+          )) {
+            const rich = [{ t: 'p' as const, spans: [{ text: t('samplePrompt') }] }];
+            const old = row.data.content;
+            const content =
+              old.type === 'list'
+                ? { ...old, items: [t('sampleObjective')] }
+                : old.type === 'text'
+                  ? { ...old, blocks: rich }
+                  : old.type === 'pergroup'
+                    ? {
+                        ...old,
+                        groups: Object.fromEntries(Object.keys(old.groups).map((id) => [id, rich])),
+                      }
+                    : old.type === 'procedure'
+                      ? { ...old, steps: old.steps.map((step) => ({ ...step, body: rich })) }
+                      : old.type === 'multigrade'
+                        ? {
+                            ...old,
+                            blocks: old.blocks.map((block) => ({
+                              ...block,
+                              groups: Object.fromEntries(
+                                Object.entries(block.groups).map(([id, g]) => [
+                                  id,
+                                  { ...g, activity: rich },
+                                ])
+                              ),
+                            })),
+                          }
+                        : old;
+            await engine.put('plan_section', { ...row.data, content });
+          }
+        }
+        await engine.put('student', {
+          id: newId(),
+          classId: cls.id,
+          gradeGroupId: cls.gradeGroups[0]!.id,
+          displayName: 'Sample Learner',
+          familyName: '',
+          givenName: '',
+          middleName: '',
+          suffix: '',
+          sex: null,
+          localId: null,
+          order: 0,
+          importId: null,
+        });
+      }
+    });
     await refresh();
     setPage('main');
   }
   async function lock() {
     if (!selected || !transition(conditionRef.current, {}).canWrite) return;
     await queue.current;
-    const template = BUILTIN_TEMPLATES.find((t) => t.id === selected.templateId)!;
+    const template =
+      BUILTIN_TEMPLATES.find((t) => t.id === selected.templateId) ??
+      (await rt!.engine.get('template', selected.templateId))?.data;
+    if (!template) throw Error('Template missing');
     const cls = classes.find((c) => selected.placements.some((p) => p.classId === c.id))?.data;
     const allSections = (await rt!.engine.list('plan_section'))
       .filter((s) => s.data.planId === selected.id)
@@ -715,7 +756,7 @@ export default function App() {
           </View>
           {ladder.banner && <Body>{t(ladder.banner as StringKey)}</Body>}
           <Body>
-            {status?.pending ?? 0} {t('waiting')} · {t('lastSync')}:{' '}
+            {(status?.pending ?? 0) + featurePending} {t('waiting')} · {t('lastSync')}:{' '}
             {status?.lastSyncedAt ?? t('never')} · {status?.conflicts ?? 0} {t('conflicts')}
           </Body>
           {message && <Body>{t(message)}</Body>}
@@ -906,12 +947,24 @@ export default function App() {
                             p.data.placements.length &&
                             p.data.placements.every((pl) => pl.classId === c.id)
                         );
-                        await rt.engine.put('class', { ...c.data, archived: true });
-                        for (const p of samplePlans)
-                          await rt.engine.put('plan', { ...p.data, state: 'archived' });
+                        await rt.engine.batch([
+                          { op: 'put', entity: 'class', data: { ...c.data, archived: true } },
+                          ...samplePlans.map((p) => ({
+                            op: 'put' as const,
+                            entity: 'plan' as const,
+                            data: { ...p.data, state: 'archived' },
+                          })),
+                        ]);
+
                         setUndo(() => async () => {
-                          await rt.engine.put('class', c.data);
-                          for (const p of samplePlans) await rt.engine.put('plan', p.data);
+                          await rt.engine.batch([
+                            { op: 'put', entity: 'class', data: c.data },
+                            ...samplePlans.map((p) => ({
+                              op: 'put' as const,
+                              entity: 'plan' as const,
+                              data: p.data,
+                            })),
+                          ]);
                         });
                       })
                     }
@@ -1141,16 +1194,31 @@ export default function App() {
               onPress={() =>
                 void act(async () => {
                   await queue.current;
-                  if ((await rt.engine.status()).pending) {
+                  if (
+                    (await rt.engine.status()).pending ||
+                    (await rt.features.tasks.list()).some(
+                      (task) => !['done', 'cancelled'].includes(task.state)
+                    ) ||
+                    (await Promise.all(classes.map((c) => rt.features.roster.load(c.id)))).some(
+                      Boolean
+                    )
+                  ) {
                     setMessage('signOutNote');
                     return;
                   }
-                  await rt.client.call('auth.logout');
+                  await rt.features.stop();
+                  try {
+                    await rt.client.call('auth.logout');
+                  } catch (error) {
+                    await rt.features.start();
+                    throw error;
+                  }
                   await SecureStore.deleteItemAsync('tala.session');
                   await SecureStore.deleteItemAsync('tala.offline-until');
                   scheduler.current?.stop();
                   await rt.engine.sync();
                   await rt.store.clear();
+                  resetRuntime();
                   drafts.current = {};
                   setSelected(null);
                   setBootAttempt((n) => n + 1);
@@ -1217,7 +1285,13 @@ export default function App() {
             )}
             {currentSections.map((s) => (
               <View key={s.id}>
-                <Title>{t(s.data.key as StringKey) ?? s.data.key}</Title>
+                <Title>
+                  {customTemplate?.sections.find((spec) => spec.key === s.data.key)?.label[
+                    language
+                  ] ??
+                    t(s.data.key as StringKey) ??
+                    s.data.key}
+                </Title>
                 <ContentEditor
                   t={t}
                   labels={Object.fromEntries(
@@ -1229,7 +1303,10 @@ export default function App() {
                   editable={
                     editing &&
                     ladder.canWrite &&
-                    (selected.state !== 'locked' || s.data.key === 'reflection')
+                    (!(selected.lock && selected.state !== 'draft') ||
+                      s.data.key === 'reflection' ||
+                      !!customTemplate?.sections.find((spec) => spec.key === s.data.key)
+                        ?.outsideLock)
                   }
                   onChange={(content) => {
                     const next = { ...s.data, content, editedByTeacher: true };
@@ -1238,8 +1315,8 @@ export default function App() {
                       old.map((x) => (x.id === s.id ? { ...x, data: next } : x))
                     );
                     save(async () => {
-                      await history.current?.beforeEdit(s.data);
-                      await rt.engine.put('plan_section', next);
+                      if (history.current) await history.current.edit(s.data, next);
+                      else await rt.engine.put('plan_section', next);
                     });
                   }}
                 />
@@ -1280,12 +1357,15 @@ export default function App() {
                   }
                   const section = await rt.engine.get('plan_section', revision.data.sectionId);
                   if (section) {
-                    await history.current?.beforeEdit(section.data, 'restore');
-                    await rt.engine.put('plan_section', {
-                      ...section.data,
-                      content: revision.data.content,
-                      editedByTeacher: true,
-                    });
+                    await history.current?.edit(
+                      section.data,
+                      {
+                        ...section.data,
+                        content: revision.data.content,
+                        editedByTeacher: true,
+                      },
+                      'restore'
+                    );
                   }
                 })
               }

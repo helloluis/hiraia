@@ -16,12 +16,36 @@ import {
   hasBlockingFinding,
 } from '@hiraia/tala-core/moderation';
 import { atomic, type Operation } from './atomic';
+import type { SectionContent } from '@hiraia/tala-core/contracts';
 import type { taskStore, DurableTask } from './tasks';
 import { retryDelay } from '../runtime/ladder';
 export interface PostTask {
   body: z.infer<typeof PostArtifactRequest>;
   revisionCode: string;
+  snapshot: string;
   result?: unknown;
+}
+export function filterSaved(items: Detail[], query: z.input<typeof ArtifactSearchQuery>) {
+  const grades = (value: string) =>
+    value
+      .split(',')
+      .map((g) => g.trim())
+      .sort((a, b) => (a === 'K' ? 0 : Number(a)) - (b === 'K' ? 0 : Number(b)))
+      .join(',');
+  return items.filter(
+    (a) =>
+      (!query.q || `${a.title} ${a.summary}`.toLowerCase().includes(query.q.toLowerCase())) &&
+      (!query.grade || a.tags.grades.includes(query.grade)) &&
+      (!query.language || a.tags.language === query.language) &&
+      (!query.learningAreaId || a.tags.learningAreaId === query.learningAreaId) &&
+      (!query.competencyId || a.tags.competencyIds.includes(query.competencyId)) &&
+      (!query.termIndex || a.tags.termIndex === Number(query.termIndex)) &&
+      (!query.maxMinutes || a.tags.durationMinutes <= Number(query.maxMinutes)) &&
+      (!query.region || a.tags.region?.toLowerCase() === query.region.toLowerCase()) &&
+      (!query.multigrade ||
+        grades(a.tags.multigrade?.join(',') ?? '') === grades(query.multigrade)) &&
+      (!query.mine || a.mine)
+  );
 }
 export function createCommunity(deps: {
   engine: SyncEngine;
@@ -82,10 +106,26 @@ export function createCommunity(deps: {
       schoolNames: [profile?.schoolName ?? '', ...years.map((y) => y.data.schoolName)],
       classNames: classes.map((c) => c.data.name),
       dates: plan.placements.flatMap((p) => p.dates),
-      teacherName: profile?.displayName,
+      teacherName: profile?.displayName ?? plan.lock.lockedBy,
     };
-    const publicContent = stripForPublish(plan, sections, privacy);
+    const stripped = stripForPublish(plan, sections, privacy);
     const cleaner = createPublishCleaner(plan.language, privacy);
+    const cleanLabel = (value: { fil: string; en: string }) => ({
+      fil: cleaner.text(value.fil),
+      en: cleaner.text(value.en),
+    });
+    const publicContent = {
+      ...stripped,
+      ...(template && !template.builtIn
+        ? {
+            template: {
+              ...template,
+              name: cleanLabel(template.name),
+              sections: template.sections.map((s) => ({ ...s, label: cleanLabel(s.label) })),
+            },
+          }
+        : {}),
+    };
     const title = cleaner.text(body.title),
       summary = cleaner.text(body.summary);
     const names = (await engine.list('student')).flatMap((s) => knownNameVariants(s.data));
@@ -116,14 +156,25 @@ export function createCommunity(deps: {
       blocked: hasBlockingFinding(findings),
     };
   }
-  async function post(body: z.infer<typeof PostArtifactRequest>) {
+  const snapshot = (value: Awaited<ReturnType<typeof preview>>) =>
+    JSON.stringify({
+      title: value.title,
+      summary: value.summary,
+      authorDisplayName: value.authorDisplayName,
+      authorSchool: value.authorSchool,
+      publicContent: value.publicContent,
+      placements: value.plan.placements,
+    });
+  async function post(body: z.infer<typeof PostArtifactRequest>, reviewedSnapshot?: string) {
     const result = await preview(body);
     if (result.blocked) throw Error('Remove personal data');
+    if (reviewedSnapshot !== undefined && snapshot(result) !== reviewedSnapshot)
+      throw Object.assign(Error('Review changed'), { code: 'conflict' });
     const task: DurableTask<PostTask> = {
       id: newId(),
       kind: 'post',
       state: 'queued',
-      input: { body, revisionCode: result.plan.lock!.revisionCode },
+      input: { body, revisionCode: result.plan.lock!.revisionCode, snapshot: snapshot(result) },
       attempts: 0,
       nextAt: 0,
       createdAt: now().toISOString(),
@@ -138,16 +189,25 @@ export function createCommunity(deps: {
       const task = raw as DurableTask<PostTask>;
       try {
         const checked = await preview(task.input.body);
-        if (checked.blocked || checked.plan.lock?.revisionCode !== task.input.revisionCode) {
+        if (
+          checked.blocked ||
+          checked.plan.lock?.revisionCode !== task.input.revisionCode ||
+          snapshot(checked) !== task.input.snapshot
+        ) {
           await tasks.update(task.id, { state: 'failed', error: 'reviewPostAgain' });
           continue;
         }
         const sync = await engine.sync();
         if (!sync.ok || (await engine.get('plan', task.input.body.planId))?.dirty)
           throw Error('Not synced');
-        const latest = await engine.get('plan', task.input.body.planId);
-        if (latest?.data.lock?.revisionCode !== task.input.revisionCode) throw Error('Changed');
+        const synced = await preview(task.input.body);
+        if (synced.blocked || snapshot(synced) !== task.input.snapshot) {
+          await tasks.update(task.id, { state: 'failed', error: 'reviewPostAgain' });
+          continue;
+        }
         // Server deduplicates repeat posts of the same locked revision.
+        if ((await tasks.list()).find((t) => t.id === task.id)?.state === 'cancelled') continue;
+        await tasks.update(task.id, { state: 'sending' });
         const result = await client.call('community.post', { body: task.input.body });
         await tasks.update(task.id, {
           state: result.moderation.decision === 'return' ? 'failed' : 'done',
@@ -156,6 +216,7 @@ export function createCommunity(deps: {
         });
       } catch {
         await tasks.update(task.id, {
+          state: 'queued',
           attempts: task.attempts + 1,
           nextAt: now().getTime() + retryDelay(task.attempts),
           error: 'waiting',
@@ -165,26 +226,67 @@ export function createCommunity(deps: {
   }
   async function copy(artifact: Detail, online: boolean, classId: string | null) {
     const cls = classId ? (await engine.get('class', classId))?.data : null;
+    if (
+      cls &&
+      (cls.gradeGroups.length !== artifact.version.gradeGroups.length ||
+        cls.gradeGroups.some((g) => !artifact.version.gradeGroups.some((v) => v.grade === g.grade)))
+    )
+      throw Error('Choose matching grades');
     let plan: Plan, sections: PlanSection[];
-    const template = artifact.version.template;
+    const sourceTemplate = artifact.version.template;
+    const template =
+      sourceTemplate && !BUILTIN_TEMPLATES.some((t) => t.id === sourceTemplate.id)
+        ? { ...sourceTemplate, id: newId(), builtIn: false as const }
+        : undefined;
     if (online) {
       const result = await client.call('community.copy', {
         params: { artifactId: artifact.id },
-        body: { versionId: artifact.version.id, gradeGroupIds: cls?.gradeGroups.map((g) => g.id) },
+        body: {
+          versionId: artifact.version.id,
+          gradeGroupIds: cls
+            ? artifact.version.gradeGroups.map(
+                (g) => cls.gradeGroups.find((c) => c.grade === g.grade)!.id
+              )
+            : undefined,
+        },
       });
       plan = result.plan;
       sections = result.sections;
     } else {
       const ids = Object.fromEntries(
-        artifact.version.gradeGroups.map((g, i) => [g.id, cls?.gradeGroups[i]?.id ?? newId()])
+        artifact.version.gradeGroups.map((g, i) => [
+          g.id,
+          cls?.gradeGroups.find((c) => c.grade === g.grade)?.id ?? newId(),
+        ])
       );
       const id = newId();
-      const remap = (value: unknown): unknown => {
-        if (typeof value === 'string') return ids[value] ?? value;
-        if (Array.isArray(value)) return value.map(remap);
-        if (value && typeof value === 'object')
-          return Object.fromEntries(Object.entries(value).map(([k, v]) => [ids[k] ?? k, remap(v)]));
-        return value;
+      const remap = (content: SectionContent): SectionContent => {
+        switch (content.type) {
+          case 'pergroup':
+            return {
+              ...content,
+              groups: Object.fromEntries(
+                Object.entries(content.groups).map(([id, value]) => [ids[id] ?? id, value])
+              ),
+            };
+          case 'multigrade':
+            return {
+              ...content,
+              blocks: content.blocks.map((b) => ({
+                ...b,
+                id: newId(),
+                teacherWith: ids[b.teacherWith] ?? b.teacherWith,
+                pairedGroupIds: b.pairedGroupIds.map((id) => ids[id] ?? id),
+                groups: Object.fromEntries(
+                  Object.entries(b.groups).map(([id, value]) => [ids[id] ?? id, value])
+                ),
+              })),
+            };
+          case 'weekgrid':
+            return { ...content, days: content.days.map((d) => ({ ...d, date: null })) };
+          default:
+            return content;
+        }
       };
       plan = Plan.parse({
         id,
@@ -220,6 +322,7 @@ export function createCommunity(deps: {
         })
       );
     }
+    if (template) plan = { ...plan, templateId: template.id };
     if (cls) plan = { ...plan, placements: [{ classId: cls.id, assignmentId: null, dates: [] }] };
     const ops: Operation[] = [
       ...(template && !BUILTIN_TEMPLATES.some((t) => t.id === template.id)
@@ -240,6 +343,7 @@ export function createCommunity(deps: {
   }
   return {
     saved,
+    snapshot,
     detail,
     preview,
     post,

@@ -24,7 +24,12 @@ export async function applyPreviews(
     ops.push({ op: 'put', entity: 'pacing_track', data: p.nextTrack });
     for (const d of p.newCalendarDays) {
       ops.push({ op: 'put', entity: 'calendar_day', data: { ...d, realigned: true } });
-      undo.push({ op: 'remove', entity: 'calendar_day', id: d.id });
+      const original = await engine.get('calendar_day', d.id);
+      undo.push(
+        original
+          ? { op: 'put', entity: 'calendar_day', data: original.data }
+          : { op: 'remove', entity: 'calendar_day', id: d.id }
+      );
     }
     for (const m of p.planMoves) {
       if (!planDates.has(m.planId)) planDates.set(m.planId, new Map());

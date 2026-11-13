@@ -13,6 +13,9 @@ export async function staged<T>(
   const ops: Operation[] = [];
   const view: SyncEngine = {
     ...engine,
+    async batch(changes) {
+      ops.push(...changes);
+    },
     async put(entity, data) {
       ops.push({ op: 'put', entity, data });
       return {

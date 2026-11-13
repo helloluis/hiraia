@@ -1,5 +1,16 @@
 import type { wave2en } from './wave2.en';
 export const wave2fil: Record<keyof typeof wave2en, string> = {
+  allLanguages: 'Lahat ng wika',
+  usingRulesFallback:
+    'Hindi natapos ang tulong ng AI. Suriin ang listahan sa ibaba; walang pangalang na-save nang hindi mo sinusuri.',
+  cancelWaiting: 'Naghihintay ipadala ang pagkansela. Puwede kang magpatuloy sa pagsulat.',
+  competencyChoice: 'Pumili ng competency',
+  moreCompetencies: 'Iba pang competency',
+  currentSectionKept:
+    'Nananatili ang kasalukuyang bahagi. Kanselahin ang hiling o magpatuloy sa pagsulat.',
+  savedOnPhone: 'Naka-save sa teleponong ito para mabasa kahit walang koneksiyon.',
+  postQueue: 'Mga post na naghihintay o ibinalik',
+  openQueuedLesson: 'Buksan ang aralin para suriin',
   workingBackground: 'Ginagawa sa likod. Ligtas ang naka-save mong gawa.',
   generateLesson: 'Gumawa ng aralin gamit ang AI',
   generationPrivacy:
@@ -107,7 +118,7 @@ export const wave2fil: Record<keyof typeof wave2en, string> = {
   task_ready: 'Handa nang suriin ang burador',
   task_failed: 'Hindi natapos; ligtas ang gawa mo',
   task_uncertain: 'Naghihintay sa nawalang sagot',
-  task_cancelled: 'Kinansela',
+  task_cancelled: 'Isinara ang hiling sa teleponong ito',
   task_done: 'Naka-save',
   rosterField_fullName: 'Buong pangalan',
   rosterField_familyName: 'Apelyido',
@@ -133,9 +144,9 @@ export const wave2fil: Record<keyof typeof wave2en, string> = {
   flag_untraceable_output: 'Inalis ang mungkahi ng AI; suriin ang orihinal.',
   flag_unknown_grade: 'Piliin ang baitang ng mag-aaral.',
   filter_grade: 'Baitang, K o 1–12',
-  filter_learningAreaId: 'ID ng asignatura',
+  filter_learningAreaId: 'Asignatura',
   filter_termIndex: 'Bilang ng markahan',
-  filter_competencyId: 'ID ng competency',
+  filter_competencyId: 'Competency',
   filter_language: 'Wika, fil o en',
   filter_region: 'Rehiyon, opsyonal',
   filter_multigrade: 'Magkasamang baitang, hal. 2,4',
