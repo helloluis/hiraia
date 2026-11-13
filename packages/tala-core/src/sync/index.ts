@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import { ENTITY_NAMES, RecordEnvelopeSchema, parseRecordData } from '../contracts/records';
 import type { EntityName, RecordData, RecordEnvelope, PlanSection, Plan } from '../contracts/records';
 import { CONFLICT_POLICY, PullResponse, PushResponse } from '../contracts/sync';
@@ -7,11 +6,6 @@ import { copy } from './memory-store';
 import { appendContent } from './merge-content';
 export { createMemoryStore } from './memory-store';
 export { CONFLICT_POLICY } from '../contracts/sync';
-export interface DetailedSyncReport extends SyncReport {
-    rejected: number;
-    skipped: number;
-}
-const CompatiblePull = PullResponse.extend({ records: z.array(z.unknown()) });
 const payloadKey = (id: string) => `sync.mutation.${id}`;
 interface SavedMutation {
     mutation: Mutation;
@@ -88,13 +82,19 @@ export const createSyncEngine: CreateSyncEngine = ({ store, transport, deviceId,
             saved: { mutation: { mutationId, entity: r.entity, id: r.id, op: r.deletedAt ? 'delete' : 'upsert', baseRev: r.rev, ...(r.deletedAt ? {} : { data: r.data }) }, base: r.base },
         };
     }
-    async function save(r: LocalRecord, remove: OutboxItem[] = []) {
-        const { item, saved } = addition(r);
+    async function saveMany(records: LocalRecord[], remove: OutboxItem[] = []) {
         const meta: Record<string, string | null> = Object.fromEntries(remove.map(q => [payloadKey(q.mutationId), null]));
-        meta[payloadKey(item.mutationId)] = JSON.stringify(saved);
-        meta[`sync.rejected.${r.id}`] = null;
-        await store.commit({ put: [r], outboxAdd: [item], outboxRemove: remove.map(q => q.mutationId), meta });
-        notify([r]);
+        const additions = records.map(r => {
+            const { item, saved } = addition(r);
+            meta[payloadKey(item.mutationId)] = JSON.stringify(saved);
+            meta[`sync.rejected.${r.id}`] = null;
+            return item;
+        });
+        await store.commit({ put: records, outboxAdd: additions, outboxRemove: remove.map(q => q.mutationId), meta });
+        notify(records);
+    }
+    async function save(r: LocalRecord, remove: OutboxItem[] = []) {
+        await saveMany([r], remove);
     }
     async function put<E extends EntityName>(entity: E, input: RecordData<E>): Promise<LocalRecord<E>> {
         const data = parseRecordData(entity, input);
@@ -141,6 +141,7 @@ export const createSyncEngine: CreateSyncEngine = ({ store, transport, deviceId,
                 return;
             }
             let data = r.data;
+            const extra: LocalRecord[] = [];
             if (choice === 'both') {
                 if (entity === 'plan_section')
                     data = { ...(r.data as PlanSection), content: appendContent((r.data as PlanSection).content, (server.data as PlanSection).content) };
@@ -149,10 +150,10 @@ export const createSyncEngine: CreateSyncEngine = ({ store, transport, deviceId,
                     const second = local({ ...server, id: newId(), rev: 0, deletedAt: null, data: server.data });
                     second.data = parseRecordData(entity, { ...server.data, id: second.id });
                     second.dirty = true;
-                    await save(second);
+                    extra.push(second);
                 }
             }
-            await save({ ...r, data: parseRecordData(entity, data), rev: server.rev, base: server.data, deletedAt: null, conflict: null }, pending);
+            await saveMany([{ ...r, data: parseRecordData(entity, data), rev: server.rev, base: server.data, deletedAt: choice === 'mine' ? r.deletedAt : null, conflict: null }, ...extra], pending);
         });
     }
     // Rule 5: retain rejected locked-section work in a separate draft.
@@ -163,16 +164,17 @@ export const createSyncEngine: CreateSyncEngine = ({ store, transport, deviceId,
             throw new Error('Missing parent for locked section');
         const id = newId();
         const plan = parseRecordData('plan', { ...parent.data, id, state: 'draft', lock: null, submitted: null, conflictCopyOf: section.planId });
-        const originals = (await store.list('plan_section')).filter(s => (s.data as PlanSection).planId === section.planId);
+        const originals = (await store.list('plan_section', { includeDeleted: true })).filter(s => (s.data as PlanSection).planId === section.planId);
         const copies: LocalRecord[] = [{ ...local({ ...parent, id, rev: 0, deletedAt: null, data: plan }), dirty: true }];
         for (const s of originals) {
+            if (s.deletedAt) continue;
             const sid = newId();
             copies.push({ ...local({ ...s, id: sid, rev: 0, deletedAt: null, data: parseRecordData('plan_section', { ...s.data, id: sid, planId: id }) }), dirty: true });
         }
         const pending = (await store.outbox()).filter(q => originals.some(s => s.id === q.id && q.entity === 'plan_section'));
         const meta: Record<string, string | null> = Object.fromEntries(pending.map(q => [payloadKey(q.mutationId), null]));
         const adds = copies.map(c => { const a = addition(c); meta[payloadKey(a.item.mutationId)] = JSON.stringify(a.saved); return a.item; });
-        const restored = originals.map(s => s.id === r.id && server ? local(server) : { ...s, data: s.base ?? s.data, dirty: false, base: null, conflict: null });
+        const restored = originals.map(s => s.id === r.id && server ? local(server) : { ...s, data: s.base ?? s.data, deletedAt: s.rev === 0 ? now().toISOString() : (s.dirty ? null : s.deletedAt), dirty: false, base: null, conflict: null });
         await store.commit({ put: [...copies, ...restored], outboxAdd: adds, outboxRemove: pending.map(q => q.mutationId), meta });
         report.lockCopies.push(id);
         notify([...copies, ...restored]);
@@ -180,9 +182,9 @@ export const createSyncEngine: CreateSyncEngine = ({ store, transport, deviceId,
     async function cycle(opts?: {
         windowFrom?: string;
         windowTo?: string;
-    }): Promise<DetailedSyncReport> {
+    }): Promise<SyncReport> {
         state = 'syncing';
-        const report: DetailedSyncReport = { rejected: 0, skipped: 0, ok: true, pushed: 0, pulled: 0, conflicts: 0, lockCopies: [], error: null, at: now().toISOString() };
+        const report: SyncReport = { rejected: 0, skipped: 0, ok: true, pushed: 0, pulled: 0, conflicts: 0, lockCopies: [], error: null, at: now().toISOString() };
         try {
             // Rules 1–3: base revisions, explicit conflicts, immutable idempotent replay.
             // Bound contention: persistent queue carries any remainder into the next scheduled cycle.
@@ -272,7 +274,7 @@ export const createSyncEngine: CreateSyncEngine = ({ store, transport, deviceId,
             // Rule 4: only server revisions and cursors determine ordering.
             let cursor = await store.getMeta('sync.cursor');
             for (;;) {
-                const page = CompatiblePull.parse(await transport.pull({ ...opts, ...(cursor ? { cursor } : {}), limit: 100 }));
+                const page = PullResponse.parse(await transport.pull({ ...opts, ...(cursor ? { cursor } : {}), limit: 100 }));
                 if (page.hasMore && page.cursor === cursor)
                     throw new Error('Pull cursor did not advance');
                 await exclusive(async () => {
