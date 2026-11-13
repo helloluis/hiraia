@@ -47,7 +47,11 @@ export function NewLessonScreen() {
     try {
       const template = BUILTIN_TEMPLATES.find(x => x.id === templateId) ?? defaultTemplateFor(cls, assignment);
       const competencies = entry ? Object.fromEntries(Object.entries(entry.byGroup).map(([g, ids]) => [g, [...ids]])) : {};
-      const { plan, sections } = newPlan({ template, cls, assignment, dates: date ? [date] : [], language: lang, competencies, curriculumVersion: curriculumVersionFor(index, ws.activeYear?.label ?? null), newId });
+      // The curriculum version must be the one the slot's competencies belong to (the track's), not a year-wide guess.
+      const track = ws.tracks.find(tr => tr.classId === classId && tr.assignmentId === assignmentId && tr.curriculumVersion);
+      const firstId = Object.values(competencies).flat()[0];
+      const curriculumVersion = track?.curriculumVersion ?? (firstId ? (tl.competencyById.get(firstId)?.id.split('.')[0] ?? null) : null) ?? curriculumVersionFor(index, ws.activeYear?.label ?? null);
+      const { plan, sections } = newPlan({ template, cls, assignment, dates: date ? [date] : [], language: lang, competencies, curriculumVersion, newId });
       await engine.batch([{ op: 'put', entity: 'plan', data: plan }, ...sections.map(s => ({ op: 'put' as const, entity: 'plan_section' as const, data: s }))]);
       router.replace(ai ? `/generate?planId=${plan.id}` : `/lessons/${plan.id}`);
     } finally {

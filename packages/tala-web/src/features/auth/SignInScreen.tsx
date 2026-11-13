@@ -6,11 +6,17 @@ import { useT } from '@/i18n';
 import { useSession } from '@/data/session';
 import { Banner, Button, TextInput, Waiting } from '@/components/ui';
 import { useAuthForm, validEmail } from './useAuthForm';
+import { GoogleButton } from './GoogleButton';
+import { GoogleLinkStep } from './GoogleLinkStep';
+import { idTokenEmail } from './google';
+import { errorKey, errorReason } from '@/data/errors';
 
 export function SignInScreen() {
   const { t } = useT();
   const router = useRouter();
-  const { signIn, status, sessionLapsed } = useSession();
+  const { signIn, signInWithGoogle, status, sessionLapsed } = useSession();
+  const [link, setLink] = useState<{ idToken: string; email: string } | null>(null);
+  const [googleError, setGoogleError] = useState<string | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fieldError, setFieldError] = useState<string | null>(null);
@@ -29,10 +35,26 @@ export function SignInScreen() {
     if (ok) router.replace('/week');
   };
 
+  const onGoogle = async (idToken: string) => {
+    setGoogleError(null);
+    try {
+      await signInWithGoogle(idToken);
+      router.replace('/week');
+    } catch (err) {
+      const reason = errorReason(err);
+      if (reason === 'link_required') setLink({ idToken, email: idTokenEmail(idToken) });
+      else setGoogleError(t(errorKey(err)));
+    }
+  };
+
+  if (link) return <GoogleLinkStep idToken={link.idToken} email={link.email} onLinked={() => router.replace('/week')} onCancel={() => setLink(null)} />;
+
   return (
     <form onSubmit={submit} className="flex flex-col gap-4" noValidate>
       <h1 className="text-display">{t('auth.signIn')}</h1>
       <p className="text-forestMuted">{t('app.tagline')}</p>
+      <GoogleButton onCredential={id => void onGoogle(id)} text="signin_with" />
+      {googleError && <Banner kind="warn">{googleError}</Banner>}
       <TextInput label={t('auth.email')} type="email" autoComplete="email" inputMode="email" value={email} onChange={e => setEmail(e.target.value)} error={fieldError && !validEmail(email) ? fieldError : undefined} required />
       <TextInput label={t('auth.password')} type="password" autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} error={fieldError && validEmail(email) ? fieldError : undefined} required />
       {form.error && <Banner kind="error">{form.error}</Banner>}

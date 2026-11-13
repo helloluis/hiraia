@@ -26,6 +26,7 @@ export function ArtifactScreen({ artifactId }: { artifactId: string }) {
   const [error, setError] = useState<string | null>(null);
   const [sheet, setSheet] = useState<'none' | 'copy' | 'report' | 'remove'>('none');
   const [classId, setClassId] = useState('');
+  const [mapping, setMapping] = useState<string[]>([]);
   const [reason, setReason] = useState<Reason>('personal_data');
   const [note, setNote] = useState('');
   const [busy, setBusy] = useState(false);
@@ -54,6 +55,13 @@ export function ArtifactScreen({ artifactId }: { artifactId: string }) {
     return c ? `${c.code ? c.code + ' · ' : ''}${c.text}` : id;
   };
 
+  // Default mapping: the artifact's i-th grade group → the class's i-th group (or its last one).
+  const copyClass = ws.classes.find(c => c.id === classId) ?? null;
+  useEffect(() => {
+    if (!a || !copyClass) return;
+    setMapping(a.version.gradeGroups.map((_, i) => copyClass.gradeGroups[Math.min(i, copyClass.gradeGroups.length - 1)]!.id));
+  }, [a, copyClass]);
+
   if (!online) return <Banner kind="info">{t('com.offline')}</Banner>;
   if (error) {
     return (
@@ -73,7 +81,8 @@ export function ArtifactScreen({ artifactId }: { artifactId: string }) {
     if (!engine || !cls) return;
     setBusy(true);
     try {
-      const id = await copyArtifact(engine, getClient(), a.id, cls);
+      const distinct = new Set(mapping).size === mapping.length && mapping.length === a.version.gradeGroups.length;
+      const id = await copyArtifact(engine, getClient(), a.id, cls, distinct ? mapping : undefined);
       router.push(`/lessons/${id}`);
     } catch (err) {
       setToast(t(errorKey(err)));
@@ -217,6 +226,21 @@ export function ArtifactScreen({ artifactId }: { artifactId: string }) {
             </option>
           ))}
         </Select>
+        {copyClass && a.version.gradeGroups.length > 0 && (copyClass.gradeGroups.length > 1 || a.version.gradeGroups.length > 1) && (
+          <fieldset className="flex flex-col gap-2">
+            <legend className="font-medium mb-1">{t('com.mapGroups')}</legend>
+            {a.version.gradeGroups.map((g, i) => (
+              <Select key={g.id} label={t('common.grade', { g: g.grade })} value={mapping[i] ?? ''} onChange={e => setMapping(m => m.map((x, j) => (j === i ? e.target.value : x)))}>
+                {copyClass.gradeGroups.map(cg => (
+                  <option key={cg.id} value={cg.id}>
+                    {t('common.grade', { g: cg.grade })}
+                  </option>
+                ))}
+              </Select>
+            ))}
+            {new Set(mapping).size !== mapping.length && <p className="text-small text-brick">{t('com.mapDistinct')}</p>}
+          </fieldset>
+        )}
         <p className="text-small text-forestMuted">{t('com.license')}</p>
       </Sheet>
       <Sheet
