@@ -436,3 +436,23 @@ export function deleteAccountData(db: Database, userId: string): void {
   db.prepare(`DELETE FROM community_versions WHERE artifact_id IN (${own})`).run({ u: userId });
   db.prepare(`DELETE FROM community_artifacts WHERE author_id = @u`).run({ u: userId });
 }
+
+/* ---------------- account merge (PRD §13.3 case 4) ---------------- */
+
+/**
+ * Move everything the community stores for `fromUserId` to `toUserId` when two accounts of one teacher are
+ * merged: authorship of artifacts (with all their versions, lineage and copy counts untouched), reports the
+ * teacher made, their copy records, and decision-log rows. Nothing is dropped except a duplicate copy record
+ * when both accounts had copied the same artifact (one teacher, one copy record); copy counts are not changed.
+ * Synchronous, idempotent; runs inside the merge transaction.
+ */
+export function mergeAccountData(db: Database, fromUserId: string, toUserId: string): void {
+  if (fromUserId === toUserId) return;
+  const p = { from: fromUserId, to: toUserId };
+  db.prepare('UPDATE community_artifacts SET author_id = @to WHERE author_id = @from').run(p);
+  // (artifact_id, user_id) is the key: keep the surviving account's record when both copied the same lesson.
+  db.prepare('UPDATE OR IGNORE community_copies SET user_id = @to WHERE user_id = @from').run(p);
+  db.prepare('DELETE FROM community_copies WHERE user_id = @from').run(p);
+  db.prepare('UPDATE community_reports SET reporter_id = @to WHERE reporter_id = @from').run(p);
+  db.prepare('UPDATE community_moderation_log SET author_id = @to WHERE author_id = @from').run(p);
+}
