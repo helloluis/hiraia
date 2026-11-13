@@ -24,6 +24,8 @@ import { sha256, stableStringify } from './stable';
 export const MAX_RECORD_BYTES = 256 * 1024;
 /** A pull page stops growing past this many bytes of record data, whatever `limit` says (slow links, RES-7). */
 export const MAX_PULL_PAGE_BYTES = 400 * 1024;
+/** How long the answer to an applied mutation is remembered for replays. */
+export const REPLAY_DAYS = 30;
 /** How far in the future a device's lock time may be before the server's clock is used instead. */
 const CLOCK_SLACK_MS = 5 * 60 * 1000;
 
@@ -31,6 +33,7 @@ const MESSAGES = {
   conflict: 'This was changed on another device.',
   locked: 'This lesson is locked. Unlock it to change it.',
   lockedDelete: 'This lesson is locked. Unlock it before deleting it.',
+  changedElsewhere: 'This lesson was changed on another device, so it was not locked. Open it, check the changes, and lock it again.',
   invalid: 'Some details of this item were not right, so it was not saved.',
   tooLarge: 'This item is too large to save.',
   idMismatch: 'This item could not be saved because its details do not match.',
@@ -48,6 +51,7 @@ interface Row {
   updated_at: string;
   deleted_at: string | null;
   data: string;
+  device_id: string | null;
 }
 
 export interface WriteActor {
@@ -79,7 +83,12 @@ export interface PullInput {
   limit: number;
   windowFrom?: string;
   windowTo?: string;
+  /** Comma-separated plan ids: fetch just those plans with their sections and history. */
+  planIds?: string;
 }
+
+/** Most plans one on-demand request may name. */
+export const MAX_PLAN_IDS_PER_PULL = 50;
 
 export interface PullOutput {
   records: RecordEnvelope[];
@@ -176,8 +185,10 @@ export function createRecordEngine(deps: RecordEngineDeps) {
   const q = {
     get: db.prepare('SELECT * FROM core_records WHERE owner_id = ? AND entity = ? AND id = ?'),
     put: db.prepare(
-      `INSERT INTO core_records (owner_id, entity, id, rev, seq, updated_at, deleted_at, data) VALUES (@owner_id, @entity, @id, @rev, @seq, @updated_at, @deleted_at, @data)
-       ON CONFLICT (owner_id, entity, id) DO UPDATE SET rev = excluded.rev, seq = excluded.seq, updated_at = excluded.updated_at, deleted_at = excluded.deleted_at, data = excluded.data`,
+      `INSERT INTO core_records (owner_id, entity, id, rev, seq, updated_at, deleted_at, data, device_id)
+       VALUES (@owner_id, @entity, @id, @rev, @seq, @updated_at, @deleted_at, @data, @device_id)
+       ON CONFLICT (owner_id, entity, id) DO UPDATE SET rev = excluded.rev, seq = excluded.seq, updated_at = excluded.updated_at,
+         deleted_at = excluded.deleted_at, data = excluded.data, device_id = excluded.device_id`,
     ),
     nextSeq: db.prepare('UPDATE core_seq SET value = value + 1 WHERE id = 1 RETURNING value'),
     currentSeq: db.prepare('SELECT value FROM core_seq WHERE id = 1'),
@@ -187,6 +198,8 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     sectionsOfPlan: db.prepare(
       `SELECT * FROM core_records WHERE owner_id = ? AND entity = 'plan_section' AND json_extract(data, '$.planId') = ? AND deleted_at IS NULL ORDER BY seq`,
     ),
+    allSectionsOfPlan: db.prepare(`SELECT * FROM core_records WHERE owner_id = ? AND entity = 'plan_section' AND json_extract(data, '$.planId') = ?`),
+    historyOfPlan: db.prepare(`SELECT * FROM core_records WHERE owner_id = ? AND entity = 'section_revision' AND json_extract(data, '$.planId') = ?`),
     after: db.prepare('SELECT * FROM core_records WHERE owner_id = ? AND seq > ? ORDER BY seq LIMIT ?'),
     everything: db.prepare('SELECT * FROM core_records WHERE owner_id = ? AND deleted_at IS NULL ORDER BY entity, seq'),
     purge: db.prepare('DELETE FROM core_records WHERE owner_id = ?'),
@@ -216,10 +229,10 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     return row && row.deleted_at === null ? (JSON.parse(row.data) as RecordData<E>) : null;
   };
 
-  function store(ownerId: Id, entity: EntityName, id: Id, previous: Row | null, data: unknown, deleted: boolean): Row {
+  function store(actor: WriteActor, entity: EntityName, id: Id, previous: Row | null, data: unknown, deleted: boolean): Row {
     const at = now().toISOString();
     const row: Row = {
-      owner_id: ownerId,
+      owner_id: actor.ownerId,
       entity,
       id,
       rev: (previous?.rev ?? 0) + 1,
@@ -227,6 +240,7 @@ export function createRecordEngine(deps: RecordEngineDeps) {
       updated_at: at,
       deleted_at: deleted ? at : null,
       data: JSON.stringify(data),
+      device_id: actor.deviceId,
     };
     q.put.run(row);
     return row;
@@ -274,6 +288,32 @@ export function createRecordEngine(deps: RecordEngineDeps) {
       classRecord,
     );
     return result.ok ? null : `This lesson cannot be locked yet. ${result.errors.map((e) => e.message).join(' ')}`;
+  }
+
+  /**
+   * A lock is the teacher's word that the lesson is right as they saw it. When the device says which version
+   * of each part it saw, the lock is only taken if the server holds exactly those versions, or newer ones
+   * this same device wrote. Otherwise another device's edits would be locked in unseen.
+   * Parts outside the lock (reflection) may differ freely.
+   */
+  function sectionsChangedElsewhere(ownerId: Id, plan: Plan, seen: Record<string, number>, deviceId: string | null): boolean {
+    const template = templateOf(ownerId, plan.templateId);
+    const rows = q.allSectionsOfPlan.all(ownerId, plan.id) as Row[];
+    const known = new Set<string>();
+    for (const row of rows) {
+      known.add(row.id);
+      const section = JSON.parse(row.data) as PlanSection;
+      if (isOutsideLock(template, section.key)) continue;
+      const wroteItItself = deviceId !== null && row.device_id === deviceId;
+      if (row.deleted_at !== null) {
+        // Deleted here although the locking device still counted it as part of the lesson.
+        if (row.id in seen && !wroteItItself) return true;
+        continue;
+      }
+      if (seen[row.id] !== row.rev && !wroteItItself) return true;
+    }
+    // A part the device locked that never reached the server.
+    return Object.keys(seen).some((id) => !known.has(id));
   }
 
   function snapshot(ownerId: Id, planId: Id) {
@@ -337,6 +377,9 @@ export function createRecordEngine(deps: RecordEngineDeps) {
         const problem = whyNotLockable(ownerId, plan);
         if (problem) return refuse('invalid', live, problem);
         const lock = plan.lock!;
+        if (lock.sectionRevs && sectionsChangedElsewhere(ownerId, plan, lock.sectionRevs, scope.actor.deviceId)) {
+          return refuse('invalid', live, MESSAGES.changedElsewhere);
+        }
         const tooFarAhead = Date.parse(lock.lockedAt) > now().getTime() + CLOCK_SLACK_MS;
         lockRevision = revisions.nextNumber(ownerId, id);
         plan = {
@@ -355,7 +398,7 @@ export function createRecordEngine(deps: RecordEngineDeps) {
       data = plan;
     }
 
-    const written = store(ownerId, entity, id, current, data, false);
+    const written = store(scope.actor, entity, id, current, data, false);
 
     if (entity === 'plan') {
       if (event) {
@@ -378,10 +421,14 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     return { status: 'applied', record: envelope(written), wrote: true };
   }
 
-  /** `lock.revision` belongs to the server. A device that has not seen it yet still sends null. */
+  /**
+   * The same lock (same revision code) as the server holds: the server's copy of its details stands.
+   * `revision` is the server's own field, and it may also have filled in the name or corrected a lock time
+   * from a wrong device clock. A device that has not read those back yet must not be refused for it.
+   */
   function withServerLockFields(incoming: Plan, stored: Plan): Plan {
-    if (!incoming.lock || !stored.lock) return incoming;
-    return { ...incoming, lock: { ...incoming.lock, revision: stored.lock.revision } };
+    if (!incoming.lock || !stored.lock || incoming.lock.revisionCode !== stored.lock.revisionCode) return incoming;
+    return { ...incoming, lock: stored.lock };
   }
 
   function writeDelete(ownerId: Id, entity: EntityName, id: Id, baseRev: number | null, scope: Scope): Outcome {
@@ -399,15 +446,19 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     if (baseRev !== null && baseRev !== current.rev) return refuse('conflict', current, MESSAGES.conflict);
 
     const scrubbed = scrub(entity, JSON.parse(current.data));
-    const written = store(ownerId, entity, id, current, scrubbed, true);
+    const written = store(scope.actor, entity, id, current, scrubbed, true);
     // Earlier results kept for replays must not keep the words either.
     for (const entry of q.logOfRecord.all(ownerId, entity, id) as Array<{ mutation_id: string; result: string }>) {
-      const result = JSON.parse(entry.result) as RecordEnvelope;
+      const result = JSON.parse(entry.result) as RecordEnvelope | { c: 1 };
+      if ('c' in result) continue; // holds no content
       q.logRewrite.run(JSON.stringify({ ...result, data: scrub(entity, result.data) }), ownerId, entry.mutation_id);
     }
     if (entity === 'plan_section') {
       const planId = (JSON.parse(current.data) as PlanSection).planId;
       scope.touched.set(planId, scope.touched.get(planId) ?? 'save');
+    } else if (entity === 'plan') {
+      revisions.purgePlan(ownerId, id);
+      scope.touched.delete(id);
     }
     return { status: 'applied', record: envelope(written), wrote: true };
   }
@@ -424,6 +475,29 @@ export function createRecordEngine(deps: RecordEngineDeps) {
 
   /* ---- sync.push ---- */
 
+  /**
+   * What is kept so a replay can be answered. Usually the stored record is exactly what the device sent
+   * (after schema defaults), so only its rev and time are kept and the rest is rebuilt from the replay itself.
+   * The whole record is kept only when the server changed it on the way in (a lock, an unlock) or deleted it.
+   */
+  type Remembered = RecordEnvelope | { c: 1; rev: number; updatedAt: string };
+
+  function remember(mutation: Mutation, record: RecordEnvelope): Remembered {
+    if (mutation.op === 'upsert' && record.deletedAt === null) {
+      try {
+        if (stableStringify(parseRecordData(mutation.entity, mutation.data)) === stableStringify(record.data)) return { c: 1, rev: record.rev, updatedAt: record.updatedAt };
+      } catch {
+        /* keep it whole */
+      }
+    }
+    return record;
+  }
+
+  function recall(mutation: Mutation, kept: Remembered): RecordEnvelope {
+    if (!('c' in kept)) return kept;
+    return { entity: mutation.entity, id: mutation.id, rev: kept.rev, updatedAt: kept.updatedAt, deletedAt: null, data: parseRecordData(mutation.entity, mutation.data) };
+  }
+
   function applyOne(mutation: Mutation, scope: Scope): MutationResult {
     const ownerId = scope.actor.ownerId;
     const fingerprint = sha256(stableStringify({ entity: mutation.entity, id: mutation.id, op: mutation.op, baseRev: mutation.baseRev, data: mutation.data ?? null }));
@@ -432,7 +506,7 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     const earlier = q.logGet.get(ownerId, mutation.mutationId) as { payload_hash: string; result: string } | undefined;
     if (earlier) {
       if (earlier.payload_hash !== fingerprint) return { mutationId: mutation.mutationId, status: 'invalid', record: null, message: MESSAGES.reused };
-      return { mutationId: mutation.mutationId, status: 'applied', record: JSON.parse(earlier.result) as RecordEnvelope };
+      return { mutationId: mutation.mutationId, status: 'applied', record: recall(mutation, JSON.parse(earlier.result) as Remembered) };
     }
 
     let outcome: Outcome;
@@ -449,7 +523,7 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     }
 
     if (outcome.wrote && outcome.record) {
-      q.logPut.run(ownerId, mutation.mutationId, mutation.entity, mutation.id, mutation.op, fingerprint, JSON.stringify(outcome.record), now().toISOString());
+      q.logPut.run(ownerId, mutation.mutationId, mutation.entity, mutation.id, mutation.op, fingerprint, JSON.stringify(remember(mutation, outcome.record)), now().toISOString());
     }
     const result: MutationResult = { mutationId: mutation.mutationId, status: outcome.status, record: outcome.record };
     if (outcome.message) result.message = outcome.message;
@@ -474,7 +548,12 @@ export function createRecordEngine(deps: RecordEngineDeps) {
       }
       results.push(result);
     }
-    flushRevisions(scope);
+    try {
+      // History is secondary: a failure here must not undo the teacher's saved work.
+      db.transaction(() => flushRevisions(scope))();
+    } catch (err) {
+      log.error('revision_snapshot_failed', describeError(err));
+    }
     return results;
   });
 
@@ -517,7 +596,55 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     return excluded;
   }
 
+  /**
+   * On-demand fetch of named plans (an older lesson the first-sync window left out). Returns the plans, their
+   * sections and their section history, deleted ones included so the device can tell. It has its own paging
+   * token and never touches the device's main cursor.
+   */
+  function pullPlans(ownerId: Id, input: PullInput & { planIds: string }): PullOutput {
+    const ids = [...new Set(input.planIds.split(',').map((s) => s.trim()).filter(Boolean))];
+    if (ids.length === 0 || ids.length > MAX_PLAN_IDS_PER_PULL || ids.some((id) => !/^[A-Za-z0-9_.:-]{1,64}$/.test(id))) {
+      throw new HttpError('invalid_input', 'Some of the details sent were not right. Please try again.', {
+        issues: [{ path: 'query.planIds', message: `Expected 1 to ${MAX_PLAN_IDS_PER_PULL} plan ids separated by commas.` }],
+      });
+    }
+    let after = 0;
+    if (input.cursor !== undefined) {
+      try {
+        const raw = JSON.parse(Buffer.from(input.cursor, 'base64url').toString('utf8')) as { v?: unknown; p?: unknown };
+        if (raw.v === 1 && typeof raw.p === 'number' && Number.isSafeInteger(raw.p) && raw.p >= 0) after = raw.p;
+      } catch {
+        /* not one of ours: start this fetch from the beginning */
+      }
+    }
+    const rows: Row[] = [];
+    for (const planId of ids) {
+      const plan = rowOf(ownerId, 'plan', planId);
+      if (plan) rows.push(plan);
+      rows.push(...(q.allSectionsOfPlan.all(ownerId, planId) as Row[]), ...(q.historyOfPlan.all(ownerId, planId) as Row[]));
+    }
+    rows.sort((a, b) => a.seq - b.seq);
+    const records: RecordEnvelope[] = [];
+    let bytes = 0;
+    let hasMore = false;
+    let position = after;
+    for (const row of rows) {
+      if (row.seq <= after) continue;
+      if (records.length >= input.limit || (records.length > 0 && bytes + row.data.length > MAX_PULL_PAGE_BYTES)) {
+        hasMore = true;
+        break;
+      }
+      records.push(envelope(row));
+      bytes += row.data.length;
+      position = row.seq;
+    }
+    // The token only continues this same request. When there is nothing more it is empty.
+    const cursor = hasMore ? Buffer.from(JSON.stringify({ v: 1, p: position })).toString('base64url') : '';
+    return { records, cursor, hasMore, serverTime: now().toISOString() };
+  }
+
   function pull(ownerId: Id, input: PullInput): PullOutput {
+    if (input.planIds !== undefined) return pullPlans(ownerId, { ...input, planIds: input.planIds });
     let state = input.cursor === undefined ? null : decodeCursor(input.cursor);
     if (input.cursor !== undefined && state === null) {
       // A cursor we cannot read is treated as "start again" rather than an error the device cannot recover from.
@@ -592,10 +719,10 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     },
     put<E extends EntityName>(ownerId: Id, entity: E, data: RecordData<E>): RecordEnvelope<E> {
       const id = (data as { id: Id }).id;
-      return serverWrite(serverActor(ownerId), (scope) => writeUpsert(ownerId, entity, id, data, null, scope)) as RecordEnvelope<E>;
+      return serverWrite.immediate(serverActor(ownerId), (scope) => writeUpsert(ownerId, entity, id, data, null, scope)) as RecordEnvelope<E>;
     },
     remove(ownerId: Id, entity: EntityName, id: Id): void {
-      serverWrite(serverActor(ownerId), (scope) => writeDelete(ownerId, entity, id, null, scope));
+      serverWrite.immediate(serverActor(ownerId), (scope) => writeDelete(ownerId, entity, id, null, scope));
     },
     planSnapshot(ownerId: Id, planId: Id) {
       return snapshot(ownerId, planId);
@@ -629,7 +756,8 @@ export function createRecordEngine(deps: RecordEngineDeps) {
 
   return {
     service,
-    applyBatch: (actor: WriteActor, mutations: Mutation[]): MutationResult[] => applyBatch(actor, mutations),
+    // IMMEDIATE: take the write lock up front, so a second process cannot slip a write in between our read and our write.
+    applyBatch: (actor: WriteActor, mutations: Mutation[]): MutationResult[] => applyBatch.immediate(actor, mutations),
     pull,
     /** Every live record of one teacher, for the account export (AUTH-6). */
     exportAll(ownerId: Id): RecordEnvelope[] {
@@ -641,9 +769,12 @@ export function createRecordEngine(deps: RecordEngineDeps) {
       q.logPurge.run(ownerId);
       revisions.purgeOwner(ownerId);
     },
-    /** Replay answers are kept long enough for a device that was offline for a long while, then dropped. */
+    /**
+     * Replay answers are kept for REPLAY_DAYS. A replay that arrives later is simply judged afresh: it meets a
+     * newer rev, comes back as a conflict, and the device finds the server already holds what it sent.
+     */
     prune(): void {
-      q.logPrune.run(new Date(now().getTime() - 60 * 86_400_000).toISOString());
+      q.logPrune.run(new Date(now().getTime() - REPLAY_DAYS * 86_400_000).toISOString());
     },
   };
 }

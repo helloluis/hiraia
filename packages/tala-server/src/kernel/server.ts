@@ -94,6 +94,7 @@ export function createServer(options: KernelOptions): KernelServer {
   const sink = options.logSink ?? stdoutSink;
   const log = createLogger({ sink, now });
   const trustedProxyHops = options.trustedProxyHops ?? 0;
+  const useHsts = config.publicOrigin.startsWith('https://');
 
   const names = new Set<string>();
   for (const m of modules) {
@@ -159,7 +160,8 @@ export function createServer(options: KernelOptions): KernelServer {
   registerAccountHooks(
     db,
     modules.flatMap((m) => {
-      const hook = kernelExtension(m).onAccountDeleted;
+      // The contract field, or the older kernel-private spelling of the same thing.
+      const hook = m.onAccountDeleted ?? kernelExtension(m).onAccountDeleted;
       return hook ? [{ module: m.name, run: (userId: Id) => hook(base, userId) }] : [];
     }),
   );
@@ -327,6 +329,8 @@ export function createServer(options: KernelOptions): KernelServer {
         }
       }
     }
+    // TLS only, once a browser has seen the site over https (PRD §14.4).
+    if (useHsts) response.headers.set('strict-transport-security', 'max-age=15552000');
     log.info('http_request', {
       requestId,
       method: request.method,
@@ -374,8 +378,27 @@ function trustedHopsFromEnv(env: Record<string, string | undefined>, environment
   return Number(raw);
 }
 
+const LOG_LEVELS = ['info', 'warn', 'error', 'silent'] as const;
+
+/** TALA_LOG_LEVEL: info (default), warn, error, or silent. Lines below the level are not written. */
+function sinkFromEnv(env: Record<string, string | undefined>): LogSink {
+  const raw = env.TALA_LOG_LEVEL?.trim().toLowerCase() || 'info';
+  const level = LOG_LEVELS.indexOf(raw as (typeof LOG_LEVELS)[number]);
+  if (level === -1) throw new Error(`TALA_LOG_LEVEL must be one of: ${LOG_LEVELS.join(', ')}.`);
+  if (level === 0) return stdoutSink;
+  return (entry) => {
+    if (LOG_LEVELS.indexOf(entry.level) >= level) stdoutSink(entry);
+  };
+}
+
 /** Build a server from the environment and an explicit module list. `createTalaServer` in ../index.ts supplies the registry. */
 export function createServerFromEnv(modules: ServerModule[], overrides?: DeepPartial<TalaServerConfig>, env: Record<string, string | undefined> = process.env): KernelServer {
   const { config, warnings } = loadConfigWithWarnings(env, overrides);
-  return createServer({ config, modules, trustedProxyHops: trustedHopsFromEnv(env, config.environment), startupWarnings: warnings });
+  return createServer({
+    config,
+    modules,
+    logSink: sinkFromEnv(env),
+    trustedProxyHops: trustedHopsFromEnv(env, config.environment),
+    startupWarnings: warnings,
+  });
 }

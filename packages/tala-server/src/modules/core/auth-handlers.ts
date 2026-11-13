@@ -50,6 +50,19 @@ function limit(ctx: Ctx, key: string, max: number, windowSeconds: number): void 
   if (!ctx.services.rateLimit.take(key, max, windowSeconds)) tooMany();
 }
 
+/** How much larger the shared limit is when the client address is not known. */
+const UNKNOWN_ADDRESS_FACTOR = 50;
+
+/**
+ * A limit per client address. When the address is unknown (no trusted proxy configured, see the kernel
+ * README), every caller would share one bucket and a handful of people could lock out everyone. The shared
+ * bucket is therefore made much larger: abuse is still bounded, ordinary use is not blocked.
+ */
+function limitByAddress(ctx: Ctx, name: string, max: number, windowSeconds: number): void {
+  if (ctx.ip) limit(ctx, `${name}:ip:${ctx.ip}`, max, windowSeconds);
+  else limit(ctx, `${name}:ip:unknown`, max * UNKNOWN_ADDRESS_FACTOR, windowSeconds);
+}
+
 function authResult(ctx: Ctx, user: User, session: IssuedSession) {
   const maxAge = (session.expiresAt.getTime() - ctx.now().getTime()) / 1000;
   effectsOf(ctx).cookies.push(sessionCookie(ctx.config, session.token, maxAge));
@@ -69,7 +82,7 @@ function sendVerificationMail(ctx: Ctx, user: UserRow): Promise<void> {
 
 export const register: Handler<'auth.register'> = async (ctx, { body }) => {
   const { accounts, hasher } = coreState(ctx);
-  limit(ctx, `register:ip:${ctx.ip ?? 'unknown'}`, ctx.config.abuse.registerPerIpPerHour, HOUR);
+  limitByAddress(ctx, 'register', ctx.config.abuse.registerPerIpPerHour, HOUR);
 
   const displayName = cleanDisplayName(body.displayName);
   requirePolicy(body.password, { email: body.email, displayName });
@@ -98,7 +111,7 @@ export const register: Handler<'auth.register'> = async (ctx, { body }) => {
 export const login: Handler<'auth.login'> = async (ctx, { body }) => {
   const { accounts, hasher, throttle } = coreState(ctx);
   const emailNorm = normaliseEmail(body.email);
-  limit(ctx, `login:ip:${ctx.ip ?? 'unknown'}`, ctx.config.abuse.loginPerIpPerMinute, 60);
+  limitByAddress(ctx, 'login', ctx.config.abuse.loginPerIpPerMinute, 60);
   // A ceiling per email across all addresses, against guessing spread over many connections.
   limit(ctx, `login:email:${emailNorm}`, 100, HOUR);
   const wait = throttle.waitSeconds(emailNorm, ctx.ip);
@@ -180,7 +193,7 @@ export const sendVerification: Handler<'auth.sendVerification'> = async (ctx) =>
 };
 
 export const verifyEmail: Handler<'auth.verifyEmail'> = (ctx, { body }) => {
-  limit(ctx, `verify:ip:${ctx.ip ?? 'unknown'}`, 30, HOUR);
+  limitByAddress(ctx, 'verify', 30, HOUR);
   const { accounts } = coreState(ctx);
   const row = accounts.consumeEmailToken(body.token, 'verify_email');
   if (!row) throw new HttpError('invalid_input', BAD_LINK, { reason: 'link_invalid_or_expired' });
@@ -190,7 +203,7 @@ export const verifyEmail: Handler<'auth.verifyEmail'> = (ctx, { body }) => {
 };
 
 export const requestReset: Handler<'auth.requestReset'> = (ctx, { body }) => {
-  limit(ctx, `reset-request:ip:${ctx.ip ?? 'unknown'}`, 20, HOUR);
+  limitByAddress(ctx, 'reset-request', 20, HOUR);
   const emailNorm = normaliseEmail(body.email);
   // Everything that depends on whether the account exists happens after the answer has gone out,
   // so the answer and its timing are the same for every address.
@@ -212,7 +225,7 @@ export const requestReset: Handler<'auth.requestReset'> = (ctx, { body }) => {
 };
 
 export const reset: Handler<'auth.reset'> = async (ctx, { body }) => {
-  limit(ctx, `reset:ip:${ctx.ip ?? 'unknown'}`, 30, HOUR);
+  limitByAddress(ctx, 'reset', 30, HOUR);
   const { accounts, hasher } = coreState(ctx);
   // Look first, so a password that fails the policy does not burn the link.
   const candidate = accounts.peekEmailToken(body.token, 'password_reset');

@@ -13,6 +13,7 @@
  * web server, so the token cannot end up in an access log or a Referer header. The web page reads it
  * and posts it to the API.
  */
+import { MAIL_LINK_PATHS } from '@hiraia/tala-core';
 import type { Id, Lang } from '@hiraia/tala-core';
 import type { Db } from '../../kernel/db';
 import type { Logger, Mailer, TalaServerConfig } from '../../kernel/types';
@@ -30,14 +31,14 @@ export interface RenderedMail {
 /** Delivers one message. Must not log the body. */
 export type MailTransport = (mail: RenderedMail) => Promise<void>;
 
-/** Paths on the web app that receive emailed links. The token travels in the fragment. */
-export const MAIL_LINK_PATHS: Record<MailTemplate, string> = {
-  verify_email: '/verify-email',
-  password_reset: '/reset-password',
+/** Paths on the web app that receive emailed links (from the contract). The token travels in the fragment. */
+const LINK_PATH: Record<MailTemplate, string> = {
+  verify_email: MAIL_LINK_PATHS.verifyEmail,
+  password_reset: MAIL_LINK_PATHS.resetPassword,
 };
 
 export function mailLink(config: TalaServerConfig, template: MailTemplate, token: string): string {
-  return `${config.publicOrigin}${MAIL_LINK_PATHS[template]}#token=${encodeURIComponent(token)}`;
+  return `${config.publicOrigin}${LINK_PATH[template]}#token=${encodeURIComponent(token)}`;
 }
 
 type TemplateText = { subject: string; body: (v: Record<string, string>) => string };

@@ -7,7 +7,7 @@ captured logs. Nothing touches the network or the disk, so tests are fast and ca
 ```ts
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { createTestServer } from '../../testing';
+import { createTestServer } from '../../testing';        // from another package: '@hiraia/tala-server/testing'
 import { communityModule } from './index';
 
 test('a teacher can report a lesson', async () => {
@@ -40,6 +40,26 @@ test('a teacher can report a lesson', async () => {
 | `outbox()`, `mailToken(email, template)` | Mail the server "sent" (newest first), and the token from a link. |
 | `logs`, `errors` | Every log entry, and the original error behind any unexpected 500 (also printed to stderr unless `quiet: true`). |
 | `close()` | Stops module timers and closes the database. Call it at the end of each test. |
+
+## A fake model
+
+Modules that call `ctx.services.llm` can be tested without any provider:
+
+```ts
+import { createFakeLlm, createTestServer } from '../../testing';
+
+const llm = createFakeLlm({ answers: { 'roster.names': { rows: [] } } });       // or '*' for any feature
+const t = createTestServer({ modules: [rosterModule], services: { llm } });
+// …call your route…
+assert.equal(llm.calls.length, 1);
+assert.ok(!JSON.stringify(llm.calls[0].vars).includes('LRN'));                   // what went to the "model"
+```
+
+The answer is validated against the request's `schema` and `check`, like the real gateway does, so a wrong
+shape comes back as `{ ok: false, reason: 'invalid_output' }`. `routes: { 'roster.names': 'rules' }` makes it
+decline with `rules_only` (or `'off'` → `disabled`); a missing answer, or an answer function that throws, is
+`providers_unavailable`. Your module has to cope with every one of those. `llm.answer(feature, value)`
+changes an answer mid-test.
 
 ## Options
 
