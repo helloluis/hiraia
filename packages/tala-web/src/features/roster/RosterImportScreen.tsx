@@ -416,7 +416,7 @@ function EditRowSheet({ editing, onClose, onSave }: { editing: { row: RosterRow;
       {people.map((p, i) => (
         <fieldset key={i} className="rounded border border-hairline p-2 flex flex-col gap-2">
           {people.length > 1 && <legend className="font-medium px-1">{t('roster.splitName', { n: i + 1 })}</legend>}
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-2">
             <TextInput label={t('roster.familyName')} value={p.familyName} onChange={e => set(i, { familyName: e.target.value, displayName: '' })} />
             <TextInput label={t('roster.givenName')} value={p.givenName} onChange={e => set(i, { givenName: e.target.value, displayName: '' })} />
             <TextInput label={t('roster.middleName')} optional value={p.middleName} onChange={e => set(i, { middleName: e.target.value, displayName: '' })} />

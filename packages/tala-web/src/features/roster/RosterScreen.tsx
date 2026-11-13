@@ -174,7 +174,7 @@ function StudentSheet({ student, cls, onClose, onSave, nextOrder }: { student: S
         </>
       }
     >
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-2">
         <TextInput label={t('roster.familyName')} value={draft.familyName} onChange={e => set({ familyName: e.target.value, displayName: '' })} />
         <TextInput label={t('roster.givenName')} value={draft.givenName} onChange={e => set({ givenName: e.target.value, displayName: '' })} />
         <TextInput label={t('roster.middleName')} optional value={draft.middleName} onChange={e => set({ middleName: e.target.value, displayName: '' })} />
