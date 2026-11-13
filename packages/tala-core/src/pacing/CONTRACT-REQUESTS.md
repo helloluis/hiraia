@@ -10,11 +10,9 @@ Resolved by orchestrator and adopted, with tests:
 - `LearningArea.stages`: one index entry per learning area, primary stage retained.
 - API route path literals: temporary route-param casts have been removed.
 
-One remaining product-contract gap: §7.3 says parameters have teacher-level
-settings as well as Hiraia defaults and per-track overrides. Add
-`TeacherProfile.pacingParams: PacingParams.partial().default({})` (or an equivalent
-synced settings record). The engine already accepts resolved Hiraia+teacher values
-through `PacingInput.defaults`; no engine change is needed when this is persisted.
+Also resolved: `TeacherProfile.pacingParams` (partial, default {}). Clients pass
+`{ ...publishedDefaults, ...profile.pacingParams }` as `input.defaults`.
+There are no outstanding contract change requests.
 
 No other adapter is required. Extra pure helpers (allocationFromPlan,
 applyRealignment, realignmentUndo, previewRealignments, carryDeferredToTrack) are

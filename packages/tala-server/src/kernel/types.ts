@@ -241,6 +241,12 @@ export interface ProviderConfig {
   baseUrl: string;
   model: string;
   timeoutMs: number;
+  /**
+   * Price used for budget metering, USD per million tokens. From TALA_LLM_<PRIMARY|FALLBACK|LOCAL>_INPUT_USD_PER_MILLION
+   * and ..._OUTPUT_USD_PER_MILLION. null/absent = unknown: the gateway refuses cloud calls it cannot price, so an
+   * unknown cost can never bypass the monthly ceiling. A local model may be priced at 0.
+   */
+  pricing?: { inputUsdPerMillion: number; outputUsdPerMillion: number } | null;
 }
 
 export interface TalaServerConfig {
