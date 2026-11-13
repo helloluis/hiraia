@@ -1,9 +1,9 @@
 import type { DraftInput } from '@hiraia/tala-core/generation';
 import { BUILTIN_TEMPLATES } from '@hiraia/tala-core';
-import { compactSchema, multigradeSchedule, procedureSchedule, type CompactLesson } from '../src/modules/generation/compact';
+import { compactSchema, objectiveTargets, multigradeSchedule, procedureSchedule, type CompactLesson } from '../src/modules/generation/compact';
 export function fakeCompact(input:DraftInput):CompactLesson {
   const template=input.template??BUILTIN_TEMPLATES.find(t=>t.id===input.templateId)!;
-  const refs=(id:string)=>(input.competencies[id]??[]).concat(input.customObjectives.map((_,i)=>`custom-${i+1}`));
+  const refs=(id:string)=>objectiveTargets(input).find(g=>g.id===id)!.objectives.map(o=>o.ref);
   return compactSchema.parse({title:'Plants',sections:template.sections.map(s=>({key:s.key,text:'Describe plants and check understanding.',targets:['objectives','assessment'].includes(s.key)?input.gradeGroups.flatMap(g=>refs(g.id)):[],items:s.key==='materials'?input.classProfile.materials:[],groups:s.contentType==='pergroup'?input.gradeGroups.map(g=>({grade:g.grade,text:'Describe plants and check understanding.',targets:refs(g.id),items:s.key==='materials'?input.classProfile.materials:[]})):[],steps:s.contentType==='procedure'?procedureSchedule(input).map(slot=>({slot:slot.slot,title:slot.purpose!,text:'Observe and describe a familiar plant.'})):[],blocks:s.contentType==='multigrade'?multigradeSchedule(input).map(slot=>({slot:slot.slot,label:'Observe',activities:input.gradeGroups.map(g=>({grade:g.grade,text:'Observe a plant.'}))})):[],days:s.contentType==='weekgrid'?Array.from({length:input.sessions},(_,i)=>({weekday:i+1,minutes:input.timeBudgetMinutes,text:'Observe a plant and check understanding.'})):[]}))});
 }
 /** Sparse provider wire representation: omit fields that belong to other section formats. */

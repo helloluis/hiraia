@@ -1,6 +1,6 @@
 import { lessonRequest } from './compact';
 import { BUILTIN_TEMPLATES, type GenerationInput, type GenerationJob, type Template } from '@hiraia/tala-core';
-import { validateGeneratedSections } from '@hiraia/tala-core/generation';
+import { formatCompetencyObjective, validateGeneratedSections } from '@hiraia/tala-core/generation';
 import { HttpError, requireUser, type BaseDeps, type Ctx, type ServerModule } from '../../kernel/types';
 export const migrations = [{ id:'generation:001_jobs',sql:`CREATE TABLE generation_jobs (id TEXT PRIMARY KEY, owner_id TEXT NOT NULL, input TEXT NOT NULL, job TEXT NOT NULL, status TEXT NOT NULL); CREATE INDEX generation_pending ON generation_jobs(status);` },{id:'generation:002_idempotency',sql:'ALTER TABLE generation_jobs ADD COLUMN idempotency_key TEXT; CREATE UNIQUE INDEX generation_idempotency ON generation_jobs(owner_id,idempotency_key) WHERE idempotency_key IS NOT NULL;'}];
 const controllers = new WeakMap<object,Map<string,AbortController>>();
@@ -15,7 +15,7 @@ function resolveInput(ctx:Ctx,input:GenerationInput) {
   if(input.kind==='translate'&&!input.targetLanguage)throw new HttpError('invalid_input','Choose Filipino or English for the translation.');
   if(input.kind!=='full'&&!input.planId)throw new HttpError('invalid_input','Choose a source plan.');
   const resolvedObjectives:Record<string,string[]>={};
-  for(const g of input.gradeGroups) {const ids=input.competencies[g.id]??[]; const records=input.curriculumVersion?ctx.services.curriculum.getCompetencies(input.curriculumVersion,ids):[]; if(records.length!==new Set(ids).size)throw new HttpError('invalid_input','Download the curriculum or enter your own objectives.');resolvedObjectives[g.id]=records.map(c=>`${c.id}: ${c.text}`);}
+  for(const g of input.gradeGroups) {const ids=input.competencies[g.id]??[]; const records=input.curriculumVersion?ctx.services.curriculum.getCompetencies(input.curriculumVersion,ids):[]; if(records.length!==new Set(ids).size)throw new HttpError('invalid_input','Download the curriculum or enter your own objectives.');resolvedObjectives[g.id]=ids.map(id=>{const record=records.find(c=>c.id===id);if(!record)throw new HttpError('invalid_input','Download the curriculum or enter your own objectives.');return formatCompetencyObjective(record);});}
   if(!Object.values(resolvedObjectives).flat().length&&!input.customObjectives.length)throw new HttpError('invalid_input','Select competencies or enter your own objectives.');
   const snapshot=input.planId?ctx.services.records.planSnapshot(requireUser(ctx).id,input.planId):null;
   if(input.planId&&!snapshot)throw new HttpError('not_found','Source plan not found.');

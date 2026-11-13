@@ -1,6 +1,22 @@
-import { BUILTIN_TEMPLATES, type GenerationInput, type SectionContent, type Template } from '../contracts';
+import { BUILTIN_TEMPLATES, type GenerationInput, type SectionContent, type Template, type Competency } from '../contracts';
 export interface DraftSection { key: string; content: SectionContent }
-export interface DraftInput extends GenerationInput { template?: Template; resolvedObjectives?: Record<string, string[]> }
+export interface DraftInput extends GenerationInput { template?: Template; resolvedObjectives?: Record<string, string[]>; resolvedCompetencies?: Record<string, Pick<Competency,'code'|'text'>[]> }
+/** Teacher-facing curriculum label: internal IDs are deliberately not accepted. */
+export function formatCompetencyObjective(competency:Pick<Competency,'code'|'text'>):string {
+  const code=competency.code?.trim();
+  return code?`${code}: ${competency.text}`:competency.text;
+}
+export function resolvedObjectiveText(input:DraftInput):Record<string,string[]> {
+  return Object.fromEntries(input.gradeGroups.map(group=>{
+    const records=input.resolvedCompetencies?.[group.id];
+    const values=records?records.map(formatCompetencyObjective):(input.resolvedObjectives?.[group.id]??[]).filter(text=>!(input.competencies[group.id]??[]).includes(text)).map(text=>{
+      // Compatibility for saved client drafts assembled by the earlier ID-prefixed helper.
+      const id=(input.competencies[group.id]??[]).find(id=>text.startsWith(`${id}:`));
+      return id?text.slice(id.length+1).trimStart():text;
+    });
+    return [group.id,values];
+  }));
+}
 export function contentText(value: unknown): string {
   if (typeof value === 'string') return value;
   if (Array.isArray(value)) return value.map(contentText).join('\n');
@@ -11,11 +27,12 @@ const rich = (text: string) => [{ t: 'p' as const, spans: [{ text }] }];
 export function buildPrefilledDraft(input: DraftInput): { title: string; sections: DraftSection[]; notice: string; classDetails: { gradeGroups: GenerationInput['gradeGroups']; classProfile: GenerationInput['classProfile']; timeBudgetMinutes: number } } {
   const template = input.template ?? BUILTIN_TEMPLATES.find(t => t.id === input.templateId);
   if (!template) throw new Error('Choose a supported template.');
-  const groups = Object.fromEntries(input.gradeGroups.map(g => [g.id, rich((input.resolvedObjectives?.[g.id] ?? input.competencies[g.id] ?? input.customObjectives).join('\n'))]));
+  const objectives=resolvedObjectiveText(input);
+  const groups = Object.fromEntries(input.gradeGroups.map(g => [g.id, rich((objectives[g.id]??[]).concat(input.customObjectives).join('\n'))]));
   const sections = template.sections.map(s => {
     let content: SectionContent;
     switch(s.contentType) {
-      case 'list': content = { type: 'list', items: s.key === 'objectives' ? Object.values(input.resolvedObjectives ?? input.competencies).flat().concat(input.customObjectives) : s.key === 'materials' ? input.classProfile.materials : [] }; break;
+      case 'list': content = { type: 'list', items: s.key === 'objectives' ? Object.values(objectives).flat().concat(input.customObjectives) : s.key === 'materials' ? input.classProfile.materials : [] }; break;
       case 'pergroup': content = { type: 'pergroup', groups: s.key === 'objectives' ? groups : Object.fromEntries(input.gradeGroups.map(g => [g.id, []])) }; break;
       case 'multigrade': content = { type: 'multigrade', blocks: [{ id: 'draft-block', label: '', minutes: input.timeBudgetMinutes, transitionMinutes: 0, teacherWith: 'none', pairedGroupIds: [], groups: Object.fromEntries(input.gradeGroups.map(g => [g.id, { mode: 'independent' as const, activity: [] }])) }] }; break;
       case 'procedure': content = { type: 'procedure', steps: [{ id: 'draft-step', title: '', minutes: input.timeBudgetMinutes, body: [] }] }; break;
@@ -61,7 +78,9 @@ export function validateGeneratedSections(input: DraftInput, sections: DraftSect
       }
     }
   }
-  for (const [group, objectives] of Object.entries(input.resolvedObjectives ?? input.competencies)) for (const objective of objectives) for (const key of ['objectives','assessment']) {
+  const resolved=resolvedObjectiveText(input);
+  for(const group of input.gradeGroups)if((input.competencies[group.id]?.length??0)!==(resolved[group.id]?.length??0))errors.push('Stored competency text must be resolved before validation.');
+  for (const [group, objectives] of Object.entries(resolved)) for (const objective of objectives) for (const key of ['objectives','assessment']) {
     const content = sections.find(s => s.key === key)?.content;
     const text = contentText(content?.type === 'pergroup' ? content.groups[group] : content);
     if (!text?.includes(objective)) errors.push(`${key} must include ${objective} for ${group}.`);
