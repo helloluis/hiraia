@@ -39,7 +39,7 @@ def extract(path, grade, source):
             learningAreaId='science', grade=str(grade), termIndex=term, sequence=sequence,
             text=text, textLang='en', contentStandard=None, performanceStandard=None,
             domain=domain, weight=None, weightSource='estimated',
-            source=dict(document=f'DepEd Three-Term Budget of Work for Learning Competencies — Science Grade {grade}',
+            source=dict(document=f'DepEd Science G{grade}: 2026 Three-Term BOW',
                 edition=source['edition'], page=start_page, url=source['url'])))
         current = []
     reader = PdfReader(path)

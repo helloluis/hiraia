@@ -19,6 +19,10 @@
  *   class, school_year, profile, …    → field-level last-writer-wins: re-apply the device's changed fields
  *                                       onto the server record and push again ('merge_fields')
  *
+ * The server's exact behaviour for edge cases (tombstone data is blanked, applied-with-null for a delete of
+ * a never-synced record, what may change on a locked plan, replay memory, …) is tabulated in
+ * packages/tala-server/src/kernel/CONTRACT-REQUESTS.md §4 and is part of this contract.
+ *
  * OWNER: orchestrator.
  */
 import { z } from 'zod';
@@ -63,6 +67,11 @@ export const PullQuery = z.object({
    */
   windowFrom: z.string().optional(),
   windowTo: z.string().optional(),
+  /**
+   * Fetch specific older plans on demand (comma-separated plan ids): returns only those plans, their sections
+   * and section revisions, ignores the window, and does not move the device's main cursor.
+   */
+  planIds: z.string().max(2000).optional(),
 });
 /**
  * Records on the pull wire are deliberately lenient about `entity` and `data`: a newer server may send
@@ -139,6 +148,11 @@ export interface LocalStore {
   /** Atomically write records and outbox changes. */
   commit(batch: {
     put?: LocalRecord[];
+    /**
+     * Physically delete these rows in the same transaction (purging tombstones the server has acknowledged,
+     * so a deleted learner's name does not stay on the device — PRIV-6). Every adapter must implement it.
+     */
+    remove?: Array<{ entity: EntityName; id: Id }>;
     outboxAdd?: OutboxItem[];
     outboxRemove?: Id[];
     meta?: Record<string, string | null>;

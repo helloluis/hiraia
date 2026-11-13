@@ -42,6 +42,25 @@ export function kernelExtension(module: ServerModule): KernelExtension {
   return ext && typeof ext === 'object' ? ext : {};
 }
 
+/* ---------------- account deletion hooks ---------------- */
+
+const ACCOUNT_HOOKS = new WeakMap<object, Array<{ module: string; run: (userId: Id) => void }>>();
+
+/** Kernel: remember each module's `onAccountDeleted` for this database connection. */
+export function registerAccountHooks(db: object, hooks: Array<{ module: string; run: (userId: Id) => void }>): void {
+  ACCOUNT_HOOKS.set(db, hooks);
+}
+
+/** Core: run every other module's clean-up for a deleted account. Call inside the deletion transaction. */
+export function runAccountDeletedHooks(db: object, userId: Id): string[] {
+  const ran: string[] = [];
+  for (const hook of ACCOUNT_HOOKS.get(db) ?? []) {
+    hook.run(userId);
+    ran.push(hook.module);
+  }
+  return ran;
+}
+
 /* ---------------- credentials ---------------- */
 
 export type CredentialSource = 'bearer' | 'cookie';

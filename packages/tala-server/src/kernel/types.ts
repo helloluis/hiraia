@@ -121,6 +121,11 @@ export interface ServerModule {
   handlers: { [K in RouteName]?: Handler<K> };
   /** Services this module provides to others. Called once at startup, after all migrations ran. */
   services?: (base: BaseDeps) => Partial<Services>;
+  /**
+   * Remove everything this module stores for a deleted account (PRIV-6). Runs inside the deletion
+   * transaction; synchronous; must not throw for a user it has no rows for.
+   */
+  onAccountDeleted?: (deps: BaseDeps, userId: Id) => void;
   /** Optional background work (job runners, cleanup timers). Must return a stop function. */
   start?: (deps: BaseDeps & { services: Services }) => () => void;
 }
@@ -241,6 +246,12 @@ export interface ProviderConfig {
   baseUrl: string;
   model: string;
   timeoutMs: number;
+  /**
+   * Price used for budget metering, USD per million tokens. From TALA_LLM_<PRIMARY|FALLBACK|LOCAL>_INPUT_USD_PER_MILLION
+   * and ..._OUTPUT_USD_PER_MILLION. null/absent = unknown: the gateway refuses cloud calls it cannot price, so an
+   * unknown cost can never bypass the monthly ceiling. A local model may be priced at 0.
+   */
+  pricing?: { inputUsdPerMillion: number; outputUsdPerMillion: number } | null;
 }
 
 export interface TalaServerConfig {
@@ -249,6 +260,8 @@ export interface TalaServerConfig {
   dbPath: string;
   publicOrigin: string; // e.g. https://tala.hiraia.org
   session: { ttlDays: number; cookieName: string };
+  /** Reverse proxies in front of the server whose X-Forwarded-For entry is trusted (TALA_TRUSTED_PROXY_HOPS). */
+  network?: { trustedProxyHops: number };
   llm: {
     /** DeepSeek v4.1 Flash, direct API. Key env: DEEPSEEK_API_KEY. Model from TALA_LLM_PRIMARY_MODEL. */
     primary: ProviderConfig;
