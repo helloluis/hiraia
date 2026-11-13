@@ -33,6 +33,13 @@ import { RecordEnvelopeSchema } from './records';
 
 export const API_BASE = '/api/v1';
 
+/**
+ * Paths of the web pages that emailed links open. The token travels in the URL fragment
+ * (`<origin>/verify-email#token=…`) so it never reaches an access log; the page reads `location.hash`
+ * and posts it to `auth.verifyEmail` / `auth.reset`.
+ */
+export const MAIL_LINK_PATHS = { verifyEmail: '/verify-email', resetPassword: '/reset-password' } as const;
+
 export type Owner = 'core' | 'curriculum' | 'generation' | 'roster' | 'community' | 'print';
 
 export interface RouteSpec {
