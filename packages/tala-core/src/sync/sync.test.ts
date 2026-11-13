@@ -138,6 +138,54 @@ test('unknown entities and newer record shapes are skipped without pinning curso
     { entity: 'day_note', id: 'future02', rev: 1, updatedAt: at, deletedAt: null, data: {} },
     { entity: 'day_note', id: 'valid001', rev: 1, updatedAt: at, deletedAt: null, data: note('valid001') },
   ], cursor: '3', hasMore: false, serverTime: at }) } as unknown as SyncTransport);
-  const report = await e.sync(); assert.equal(report.ok, true); assert.equal((report as import('./index').DetailedSyncReport).skipped, 2);
+  const report = await e.sync(); assert.equal(report.ok, true); assert.equal(report.skipped, 2);
   assert.equal(await store.getMeta('sync.cursor'), '3'); assert.ok(await e.get('day_note', 'valid001'));
+});
+
+test('failed durable commit never acknowledges or partially saves a local edit', async () => {
+  const memory = createMemoryStore();
+  const failing: LocalStore = { ...memory, commit: async () => { throw new Error('storage full'); } };
+  const e = client(new Server(), failing).engine;
+  await assert.rejects(e.put('day_note', note()), /storage full/);
+  assert.equal(await memory.get('day_note', 'note0001'), null); assert.equal((await memory.outbox()).length, 0);
+});
+test('status hydrates once rather than scanning records on every poll', async () => {
+  const memory = createMemoryStore(); let scans = 0;
+  const store: LocalStore = { ...memory, list: async (...args) => { scans++; return memory.list(...args); } };
+  const e = client(new Server(), store).engine;
+  await e.status(); const initial = scans;
+  for (let i = 0; i < 20; i++) await e.status();
+  assert.ok(initial > 0); assert.equal(scans, initial);
+});
+test('different sections edited on two devices need no teacher conflict', async () => {
+  const s = new Server(), a = client(s).engine, b = client(s).engine;
+  await a.put('plan_section', section('section1')); await a.put('plan_section', section('section2')); await a.sync(); await b.sync();
+  await a.put('plan_section', section('section1', 'A')); await b.put('plan_section', section('section2', 'B'));
+  assert.equal((await a.sync()).conflicts, 0); assert.equal((await b.sync()).conflicts, 0); await a.sync();
+  assert.deepEqual((await a.list('plan_section')).map(r => r.data), (await b.list('plan_section')).map(r => r.data));
+});
+test('student keep-both is atomic, including when the store is full', async () => {
+  const s = new Server(), a = client(s).engine, memory = createMemoryStore(); let full = false;
+  const b = client(s, { ...memory, commit: async batch => { if (full) throw new Error('full'); return memory.commit(batch); } }).engine;
+  const student = parseRecordData('student', { id: 'student1', classId: 'class001', displayName: 'Original' });
+  await a.put('student', student); await a.sync(); await b.sync();
+  await a.put('student', { ...student, displayName: 'A' }); await b.put('student', { ...student, displayName: 'B' }); await a.sync(); await b.sync();
+  full = true; await assert.rejects(b.resolveConflict('student', student.id, 'both')); assert.equal((await b.list('student')).length, 1); assert.equal((await b.status()).conflicts, 1);
+  full = false; await b.resolveConflict('student', student.id, 'both'); await b.sync();
+  assert.deepEqual((await b.list('student')).map(r => r.data.displayName).sort(), ['A', 'B']); assert.equal((await b.status()).conflicts, 0);
+});
+test('new rejected section exists only in lock draft, not as an unsynced ghost in locked original', async () => {
+  const s = new Server(), a = client(s).engine, b = client(s).engine;
+  await a.put('plan', plan()); await a.sync(); await b.sync();
+  await a.put('plan', { ...plan(), state: 'locked', lock: { lockedBy: 'Guro Peña', lockedAt: at, revisionCode: 'ABC', revision: 1 } }); await a.sync();
+  await b.put('plan_section', section('newsect1', 'Keep new content'));
+  const report = await b.sync(); assert.equal(report.lockCopies.length, 1);
+  assert.ok(!(await b.list('plan_section')).some(r => r.data.planId === 'plan0001'));
+  assert.equal((await b.list('plan_section')).filter(r => r.data.planId === report.lockCopies[0]).length, 1);
+});
+for (const status of ['forbidden', 'locked'] as const) test(`terminal ${status} for non-section is retained without blocking next sync`, async () => {
+  const s = new Server(); let calls = 0;
+  const { engine: e, store } = client({ pull: q => s.pull(q), push: async q => { calls++; return { results: q.mutations.map(m => ({ mutationId: m.mutationId, status, record: null })) }; } });
+  await e.put('day_note', note()); const report = await e.sync(); assert.equal(report.rejected, 1); await e.sync(); assert.equal(calls, 1);
+  assert.equal((await e.get('day_note', 'note0001'))!.data.text, 'first'); assert.ok(await store.getMeta('sync.rejected.note0001'));
 });

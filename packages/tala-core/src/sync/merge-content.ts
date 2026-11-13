@@ -8,9 +8,9 @@ export function appendContent(first: SectionContent, second: SectionContent): Se
     else if (first.type === 'list' && second.type === 'list')
         value = { type: 'list', items: [...first.items, ...second.items] };
     else if (first.type === 'procedure' && second.type === 'procedure')
-        value = { type: 'procedure', steps: [...first.steps, ...second.steps.map((s, i) => ({ ...s, id: `both.${i}.${s.id}`.slice(0, 128) }))] };
+        value = { type: 'procedure', steps: [...first.steps, ...second.steps.map((s, i) => ({ ...s, id: `both.${i}.${s.id}`.slice(0, 64) }))] };
     else if (first.type === 'multigrade' && second.type === 'multigrade')
-        value = { type: 'multigrade', blocks: [...first.blocks, ...second.blocks.map((s, i) => ({ ...s, id: `both.${i}.${s.id}`.slice(0, 128) }))] };
+        value = { type: 'multigrade', blocks: [...first.blocks, ...second.blocks.map((s, i) => ({ ...s, id: `both.${i}.${s.id}`.slice(0, 64) }))] };
     else if (first.type === 'pergroup' && second.type === 'pergroup')
         value = { type: 'pergroup', groups: Object.fromEntries([...new Set([...Object.keys(first.groups), ...Object.keys(second.groups)])].map(k => [k, [...(first.groups[k] ?? []), ...(second.groups[k] ?? [])]])) };
     else if (first.type === 'weekgrid' && second.type === 'weekgrid') {
