@@ -152,4 +152,14 @@ export const coreMigrations: Migration[] = [
       ) STRICT;
     `,
   },
+  {
+    id: 'core:003_record_device_and_history_index',
+    sql: `
+      -- Which device last wrote a record (null for server-side writes). Lets a lock be checked against
+      -- the section versions the locking device saw: a version it wrote itself is one it saw.
+      ALTER TABLE core_records ADD COLUMN device_id TEXT;
+      -- On-demand fetch of an older plan brings its section history with it.
+      CREATE INDEX core_records_history_by_plan ON core_records (owner_id, json_extract(data, '$.planId')) WHERE entity = 'section_revision';
+    `,
+  },
 ];

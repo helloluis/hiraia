@@ -423,3 +423,53 @@ test('first-sync window (OFF-2): far-off plans wait, except locked ones in the r
   assert.ok(!older.records.some((r) => r.id === 'plan-this-week'));
   t.close();
 });
+
+test('older plans on demand: planIds returns just those plans with their parts and history, and leaves the main cursor alone', async () => {
+  const t = createTestServer();
+  const u = await t.registerUser();
+  const other = await t.registerUser();
+  const history = (id: string, planId: string, sectionId: string) =>
+    parseRecordData('section_revision', { id, planId, sectionId, key: 'content', content: { type: 'text', blocks: [] }, origin: 'manual', reason: 'edit', savedAt: '2026-06-22T00:00:00.000Z' });
+  await push(t, u.token, [
+    upsert('plan', plan('plan-old-0001')),
+    upsert('plan_section', section('sec-old-0001a', 'plan-old-0001', 'content', 'old lesson, part a')),
+    upsert('plan_section', section('sec-old-0001b', 'plan-old-0001', 'assessment', 'old lesson, part b')),
+    upsert('section_revision', history('hist-old-0001', 'plan-old-0001', 'sec-old-0001a')),
+    upsert('plan', plan('plan-old-0002')),
+    upsert('plan_section', section('sec-old-0002a', 'plan-old-0002', 'content', 'another old lesson')),
+    upsert('plan', plan('plan-other-01')),
+    upsert('plan_section', section('sec-other-01a', 'plan-other-01', 'content', 'not asked for')),
+    upsert('day_note', note('note-0001', 'not a plan')),
+  ]);
+  await push(t, other.token, [upsert('plan', plan('plan-old-0001')), upsert('plan_section', section('sec-theirs-01', 'plan-old-0001', 'content', 'someone else’s lesson with the same id'))]);
+  const main = await pullAll(t, u.token);
+
+  const one = await t.ok('sync.pull', { token: u.token, query: { planIds: 'plan-old-0001' } });
+  assert.deepEqual(one.records.map((r) => r.id).sort(), ['hist-old-0001', 'plan-old-0001', 'sec-old-0001a', 'sec-old-0001b']);
+  assert.equal(one.hasMore, false);
+  assert.equal(one.cursor, '', 'nothing to continue, and nothing a device could mistake for its main cursor');
+  assert.ok(!JSON.stringify(one).includes('someone else'));
+
+  // Several at once, paged with the request's own token.
+  const firstPage = await t.ok('sync.pull', { token: u.token, query: { planIds: 'plan-old-0001, plan-old-0002,plan-missing-1', limit: 4 } });
+  assert.equal(firstPage.records.length, 4);
+  assert.equal(firstPage.hasMore, true);
+  const secondPage = await t.ok('sync.pull', { token: u.token, query: { planIds: 'plan-old-0001, plan-old-0002,plan-missing-1', limit: 4, cursor: firstPage.cursor } });
+  assert.equal(secondPage.hasMore, false);
+  assert.deepEqual([...firstPage.records, ...secondPage.records].map((r) => r.id).sort(), ['hist-old-0001', 'plan-old-0001', 'plan-old-0002', 'sec-old-0001a', 'sec-old-0001b', 'sec-old-0002a']);
+
+  // A deleted part comes back marked deleted, so the device can tell.
+  await push(t, u.token, [del('plan_section', 'sec-old-0001b', 1)]);
+  const afterDelete = await t.ok('sync.pull', { token: u.token, query: { planIds: 'plan-old-0001' } });
+  assert.ok(afterDelete.records.find((r) => r.id === 'sec-old-0001b')!.deletedAt);
+
+  // The main cursor still works exactly as before and has not skipped anything.
+  const next = await t.ok('sync.pull', { token: u.token, query: { cursor: main.cursor } });
+  assert.deepEqual(next.records.map((r) => r.id), ['sec-old-0001b']);
+
+  for (const bad of ['', ' , ', 'has spaces in it', Array.from({ length: 51 }, (_, i) => `plan-${i}`).join(',')]) {
+    const res = await t.request('GET', `/sync/pull?planIds=${encodeURIComponent(bad)}`, { token: u.token });
+    assert.equal(res.status, 400, JSON.stringify(bad));
+  }
+  t.close();
+});

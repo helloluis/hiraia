@@ -288,3 +288,55 @@ test('sections that arrive before their plan are kept, and the first snapshot wa
   assert.equal(first.sections.length, 5);
   t.close();
 });
+
+test('a lock that says which versions it saw is refused if another device changed a part meanwhile', async () => {
+  const t = createTestServer();
+  const u = await t.registerUser();
+  const pushFrom = async (deviceId: string, mutations: Mutation[]) => (await t.ok('sync.push', { token: u.token, body: { deviceId, mutations } })).results as MutationResult[];
+  await pushFrom('device-phone', [upsert('plan', draft()), ...completeSections().map((s) => upsert('plan_section', s))]);
+  const seen = Object.fromEntries(completeSections().map((s) => [s.id, 1]));
+
+  // The laptop edits the assessment and the reflection; both sync before the phone's lock arrives.
+  await pushFrom('device-laptop', [
+    upsert('plan_section', text('sec-assessment', 'assessment', 'Binago sa laptop'), 1),
+    upsert('plan_section', text('sec-reflection', 'reflection', 'Tala pagkatapos ng klase'), 1),
+  ]);
+  const [refused] = await pushFrom('device-phone', [upsert('plan', draft({ state: 'locked', lock: { ...LOCK, sectionRevs: seen } }), 1)]);
+  assert.equal(refused!.status, 'invalid');
+  assert.match(refused!.message!, /changed on another device/);
+  assert.equal((refused!.record!.data as Plan).state, 'draft');
+  assert.equal((await t.ok('plans.revisions', { token: u.token, params: { planId: 'plan-0001' } })).revisions.some((r) => r.reason === 'lock'), false);
+
+  // Once the phone has seen the laptop's version, the lock is taken. The reflection is outside the lock and is not compared.
+  const [locked] = await pushFrom('device-phone', [upsert('plan', draft({ state: 'locked', lock: { ...LOCK, sectionRevs: { ...seen, 'sec-assessment': 2 } } }), 1)]);
+  assert.equal(locked!.status, 'applied');
+  assert.deepEqual((locked!.record!.data as Plan).lock!.sectionRevs, { ...seen, 'sec-assessment': 2 });
+  t.close();
+});
+
+test('a device’s own edits, sent just before its lock, do not count as changes from elsewhere', async () => {
+  const t = createTestServer();
+  const u = await t.registerUser();
+  const pushFrom = async (deviceId: string, mutations: Mutation[]) => (await t.ok('sync.push', { token: u.token, body: { deviceId, mutations } })).results as MutationResult[];
+  await pushFrom('device-phone', [upsert('plan', draft()), ...completeSections().map((s) => upsert('plan_section', s))]);
+
+  // Offline on the phone: edit a part (still rev 1 as far as the phone knows), add a new part, then lock.
+  const seen = { ...Object.fromEntries(completeSections().map((s) => [s.id, 1])), 'sec-content': 0 };
+  const results = await pushFrom('device-phone', [
+    upsert('plan_section', text('sec-assessment', 'assessment', 'Huling ayos bago i-lock'), 1),
+    upsert('plan_section', text('sec-content', 'content', 'Bagong bahagi')),
+    upsert('plan', draft({ state: 'locked', lock: { ...LOCK, sectionRevs: seen } }), 1),
+  ]);
+  assert.deepEqual(results.map((r) => r.status), ['applied', 'applied', 'applied']);
+  const snapshot = await t.ok('plans.revision', { token: u.token, params: { planId: 'plan-0001', revision: String((results[2]!.record!.data as Plan).lock!.revision) } });
+  assert.match(JSON.stringify(snapshot.sections), /Huling ayos bago i-lock/);
+
+  // A part the phone believes it locked but that never reached the server makes the lock incomplete.
+  await pushFrom('device-phone', [upsert('plan', draft({ id: 'plan-0002' })), ...completeSections().map((s) => upsert('plan_section', { ...s, id: `${s.id}-2`, planId: 'plan-0002' }))]);
+  const partial = { ...Object.fromEntries(completeSections().map((s) => [`${s.id}-2`, 1])), 'sec-never-arrived': 0 };
+  assert.equal((await pushFrom('device-phone', [upsert('plan', draft({ id: 'plan-0002', state: 'locked', lock: { ...LOCK, sectionRevs: partial } }), 1)]))[0]!.status, 'invalid');
+
+  // Without the list (an older app), locking works as before.
+  assert.equal((await pushFrom('device-phone', [upsert('plan', draft({ id: 'plan-0002', state: 'locked', lock: LOCK }), 1)]))[0]!.status, 'applied');
+  t.close();
+});

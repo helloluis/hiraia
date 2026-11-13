@@ -172,3 +172,52 @@ test('checkTallies counts teachers, not records, and only confirmed-email accoun
   assert.deepEqual(t.services.records.checkTallies('matatag-2024', [...many, 'sci.g4.t2.001']).confirmed, { 'sci.g4.t2.001': 2 });
   t.close();
 });
+
+test('sign-up creates the profile record, and a device can change it through sync', async () => {
+  const t = createTestServer();
+  const u = await t.registerUser({ displayName: 'Maria Santos', uiLanguage: 'en' });
+  const seeded = t.services.records.get(u.id, 'profile', 'profile')!;
+  assert.equal(seeded.rev, 1);
+  assert.deepEqual([seeded.data.displayName, seeded.data.uiLanguage, seeded.data.dataSaver], ['Maria Santos', 'en', false]);
+  // A new device receives it on its first pull, so two devices never invent two profiles.
+  const pulled = await t.ok('sync.pull', { token: u.token });
+  assert.ok(pulled.records.some((r) => r.entity === 'profile' && r.id === 'profile'));
+
+  const [changed] = await push(t, u.token, [upsert('profile', { ...seeded.data, displayName: 'Gng. Santos', schoolName: 'Mababang Paaralan ng San Roque', dataSaver: true }, 1)]);
+  assert.equal(changed!.status, 'applied');
+  assert.equal((await t.ok('auth.me', { token: u.token })).user.displayName, 'Gng. Santos');
+  // It is part of the export like any other record.
+  assert.ok((await t.ok('account.export', { token: u.token })).records.some((r) => r.entity === 'profile'));
+  t.close();
+});
+
+test('a module’s onAccountDeleted (the contract field) runs inside the deletion, and a failure there deletes nothing', async () => {
+  const seen: string[] = [];
+  let fail = false;
+  const jobs = {
+    name: 'jobs',
+    migrations: [{ id: 'jobs:001_init', sql: 'CREATE TABLE jobs_items (id TEXT PRIMARY KEY, user_id TEXT NOT NULL) STRICT;' }],
+    handlers: {},
+    onAccountDeleted: (deps: { db: { prepare(sql: string): { run(...args: unknown[]): unknown } } }, userId: string) => {
+      deps.db.prepare('DELETE FROM jobs_items WHERE user_id = ?').run(userId);
+      seen.push(userId);
+      if (fail) throw new Error('module clean-up failed');
+    },
+  };
+  const t = createTestServer({ modules: [jobs as never], quiet: true });
+  const u = await t.registerUser({ password: 'kalabaw-bituin-ilog-27' });
+  t.db.prepare('INSERT INTO jobs_items (id, user_id) VALUES (?, ?)').run('job-1', u.id);
+
+  fail = true;
+  const failed = await t.call('account.delete', { token: u.token, body: { confirm: 'DELETE', password: 'kalabaw-bituin-ilog-27' } });
+  assert.equal(failed.status, 500);
+  // All or nothing: the account, its records and the module's rows are all still there.
+  assert.equal((await t.call('auth.me', { token: u.token })).ok, true);
+  assert.equal((t.db.prepare('SELECT count(*) AS n FROM jobs_items').get() as { n: number }).n, 1);
+
+  fail = false;
+  assert.equal((await t.call('account.delete', { token: u.token, body: { confirm: 'DELETE', password: 'kalabaw-bituin-ilog-27' } })).ok, true);
+  assert.equal((t.db.prepare('SELECT count(*) AS n FROM jobs_items').get() as { n: number }).n, 0);
+  assert.deepEqual(seen, [u.id, u.id]);
+  t.close();
+});
