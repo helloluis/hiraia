@@ -3,17 +3,25 @@ import assert from 'node:assert/strict';
 import * as XLSX from 'xlsx';
 import { zipSync, strToU8 } from 'fflate';
 import { emptyName } from '@hiraia/tala-core/roster';
-import type { LlmGateway, LlmRequest, RecordStore } from '../../kernel/types';
-import { createTestServer } from '../../testing';
+import { ClassRecord } from '@hiraia/tala-core';
+import type { LlmGateway, LlmRequest } from '../../kernel/types';
+import { createTestServer, type TestServer } from '@hiraia/tala-server/testing';
 import { createRosterModule } from './index';
 import { readRoster } from './reader';
 const classId = 'class-roster-test', groupId = 'group-three';
-function harness(llm?: LlmGateway, production = false) {
-  const owners = new Set<string>();
-  const records = { get: (owner: string, entity: string, id: string) => owners.has(owner) && entity === 'class' && id === classId ? { data: { id: classId, gradeGroups: [{ id: groupId, grade: '3' }, { id: 'group-four', grade: '4' }] }, deletedAt: null } : null } as unknown as RecordStore;
-  const t = createTestServer({ modules: [createRosterModule()], services: { records, ...(llm ? { llm } : {}) }, config: { publicOrigin: 'https://tala.test', environment: production ? 'production' : 'local', features: { rosterAi: true } }, quiet: true });
-  return { t, owners };
+function harness(llm?: LlmGateway, production = false, onDeleted?: (id: string) => void) {
+  const module = createRosterModule();
+  if (onDeleted) {
+    const cleanup = module.onAccountDeleted!;
+    module.onAccountDeleted = module.kernel.onAccountDeleted = (deps, id) => { cleanup(deps, id); onDeleted(id); };
+  }
+  const t = createTestServer({ modules: [module], services: llm ? { llm } : {}, config: { publicOrigin: 'https://tala.test', environment: production ? 'production' : 'local', features: { rosterAi: true } }, quiet: true });
+  return { t, module };
 }
+function seedClass(t: TestServer, ownerId: string) {
+  t.services.records.put(ownerId, 'class', ClassRecord.parse({ id: classId, schoolYearId: 'year-test', name: 'Fictional roster class', gradeGroups: [{ id: groupId, grade: '3' }, { id: 'group-four', grade: '4' }] }));
+}
+
 function gateway(output: unknown | ((request: LlmRequest<unknown>) => unknown), route: 'cloud' | 'local' | 'rules' | 'off' = 'local', calls: LlmRequest<unknown>[] = []): LlmGateway {
   return { routeFor: () => route, async complete<T>(request: LlmRequest<T>) {
     calls.push(request as LlmRequest<unknown>);
@@ -31,9 +39,9 @@ for (const [label, output] of [
   ['duplicate indices', { rows: [{ rowIndex: 1, proposed: emptyName('Miro Peña') }, { rowIndex: 1, proposed: emptyName('Miro Peña') }] }],
 ] as const) test(`model ${label} cannot silently change stored students`, async () => {
   const calls: LlmRequest<unknown>[] = [];
-  const { t, owners } = harness(gateway(output, 'local', calls));
+  const { t } = harness(gateway(output, 'local', calls));
   try {
-    const user = await t.registerUser(); owners.add(user.id);
+    const user = await t.registerUser(); seedClass(t, user.id);
     const draft = await t.ok('roster.import', { token: user.token, body: { classId, filename: 'names.txt', text: pasted, useAi: true } });
     assert.equal(draft.rows.length, 3);
     assert.ok(draft.rows.some(r => r.flags.includes('untraceable_output')));
@@ -51,14 +59,14 @@ for (const [label, output] of [
   } finally { t.close(); }
 });
 test('gateway outage never fails an import', async () => {
-  const { t, owners } = harness({ routeFor: () => 'local', complete: async () => { throw new Error('provider response contains private data'); } });
-  try { const u = await t.registerUser(); owners.add(u.id); const draft = await t.ok('roster.import', { token: u.token, body: { classId, filename: 'names.txt', text: pasted, useAi: true } }); assert.equal(draft.rows.length, 3); assert.equal(t.errors.length, 0); } finally { t.close(); }
+  const { t } = harness({ routeFor: () => 'local', complete: async () => { throw new Error('provider response contains private data'); } });
+  try { const u = await t.registerUser(); seedClass(t, u.id); const draft = await t.ok('roster.import', { token: u.token, body: { classId, filename: 'names.txt', text: pasted, useAi: true } }); assert.equal(draft.rows.length, 3); assert.equal(t.errors.length, 0); } finally { t.close(); }
 });
 test('cloud flag required every import; production blocks cloud even with faulty gateway', async () => {
   for (const production of [false,true]) {
     const calls: LlmRequest<unknown>[] = [];
-    const { t, owners } = harness(gateway({}, 'cloud', calls), production);
-    try { const u = await t.registerUser({ verified: !production }); owners.add(u.id);
+    const { t } = harness(gateway({}, 'cloud', calls), production);
+    try { const u = await t.registerUser({ verified: !production }); seedClass(t, u.id);
       // Production intentionally has no development mail outbox; seed only this test account's verified bit.
       if (production) t.db.prepare('UPDATE core_users SET email_verified = 1 WHERE id = ?').run(u.id);
       const result = await t.call('roster.import', { token: u.token, body: { classId, filename: 'names.txt', text: pasted, useAi: true } });
@@ -69,9 +77,9 @@ test('cloud flag required every import; production blocks cloud even with faulty
   }
 });
 test('ownership, verified email, expiry, abandonment and deleted classes', async () => {
-  const { t, owners } = harness();
+  const { t } = harness();
   try {
-    const u = await t.registerUser(), other = await t.registerUser(), unverified = await t.registerUser({ verified: false }); owners.add(u.id); owners.add(other.id); owners.add(unverified.id);
+    const u = await t.registerUser(), other = await t.registerUser(), unverified = await t.registerUser({ verified: false }); seedClass(t, u.id); seedClass(t, other.id); seedClass(t, unverified.id);
     const body = { classId, filename: 'names.txt', text: 'Peña, Miro A.', useAi: false };
     assert.equal((await t.call('roster.import', { token: unverified.token, body })).status, 403);
     const draft = await t.ok('roster.import', { token: u.token, body });
@@ -83,14 +91,14 @@ test('ownership, verified email, expiry, abandonment and deleted classes', async
     const next = await t.ok('roster.import', { token: u.token, body });
     await t.ok('roster.abandon', { token: u.token, params: { importId: next.importId } });
     assert.equal((await t.call('roster.get', { token: u.token, params: { importId: next.importId } })).status, 404);
-    const deleted = await t.ok('roster.import', { token: u.token, body }); owners.delete(u.id);
+    const deleted = await t.ok('roster.import', { token: u.token, body }); t.services.records.remove(u.id, 'class', classId);
     assert.equal((await t.call('roster.get', { token: u.token, params: { importId: deleted.importId } })).status, 404);
   } finally { t.close(); }
 });
 test('remap is deterministic and cannot resurrect LRN or guardian cells', async () => {
-  const { t, owners } = harness();
+  const { t } = harness();
   try {
-    const u = await t.registerUser(); owners.add(u.id);
+    const u = await t.registerUser(); seedClass(t, u.id);
     const draft = await t.ok('roster.import', { token: u.token, body: { classId, filename: 'names.txt', text: 'First name\tLast name\tLRN\tGrade\nMiro\tPeña\t123456789012\t3', useAi: false } });
     const params = { importId: draft.importId };
     assert.ok(!JSON.stringify(draft).includes('123456789012'));
@@ -100,9 +108,9 @@ test('remap is deterministic and cannot resurrect LRN or guardian cells', async 
   } finally { t.close(); }
 });
 test('partial save returns resolved rows once and preserves pending rows', async () => {
-  const { t, owners } = harness();
+  const { t } = harness();
   try {
-    const u = await t.registerUser(); owners.add(u.id);
+    const u = await t.registerUser(); seedClass(t, u.id);
     const draft = await t.ok('roster.import', { token: u.token, body: { classId, filename: 'names.txt', text: 'Name\tGrade\nPeña, Miro A.\t3\nJona Lira\t3', useAi: false } });
     const params = { importId: draft.importId };
     const first = await t.ok('roster.confirm', { token: u.token, params, body: { resolutions: [] } });
@@ -113,8 +121,8 @@ test('partial save returns resolved rows once and preserves pending rows', async
   } finally { t.close(); }
 });
 test('exactly as written preserves lines, spacing and initials', async () => {
-  const calls: LlmRequest<unknown>[] = []; const { t, owners } = harness(gateway({}, 'cloud', calls));
-  try { const u = await t.registerUser(); owners.add(u.id);
+  const calls: LlmRequest<unknown>[] = []; const { t } = harness(gateway({}, 'cloud', calls));
+  try { const u = await t.registerUser(); seedClass(t, u.id);
     const draft = await t.ok('roster.import', { token: u.token, body: { classId, filename: 'names.txt', text: '  Ma. Miro Peña  \nJ. Reyes', useAi: true, exactlyAsWritten: true } });
     assert.equal(draft.rows[0]!.proposed.displayName, '  Ma. Miro Peña  '); assert.equal(draft.rows[0]!.proposed.givenName, ''); assert.equal(calls.length, 0);
   } finally { t.close(); }
@@ -136,9 +144,9 @@ test('docx paragraphs and tables are data only; entities and oversized files ref
   await assert.rejects(readRoster({ bytes: new Uint8Array(12), extension: 'txt', maxRows: 500 }, 10));
 });
 test('column requests mask all samples and never include sensitive context', async () => {
-  const calls: LlmRequest<unknown>[] = []; const { t, owners } = harness(gateway({ columns: [{ index: 1, field: 'givenName' }] }, 'local', calls));
+  const calls: LlmRequest<unknown>[] = []; const { t } = harness(gateway({ columns: [{ index: 1, field: 'givenName' }] }, 'local', calls));
   try {
-    const u = await t.registerUser(); owners.add(u.id);
+    const u = await t.registerUser(); seedClass(t, u.id);
     const draft = await t.ok('roster.import', { token: u.token, body: { classId, filename: 'private-class.xlsx', text: 'Name\tUnusual\tAddress\tGrade\nPeña, Miro A.\tPRIVATE_GUARDIAN\t99 Private Street\t3', useAi: true } });
     assert.equal(calls.length, 1); assert.equal(calls[0]!.feature, 'roster.columns');
     for (const value of ['Peña','PRIVATE_GUARDIAN','99 Private Street','private-class',classId]) assert.ok(!JSON.stringify(calls[0]!.vars).includes(value));
@@ -147,8 +155,8 @@ test('column requests mask all samples and never include sensitive context', asy
 });
 test('rules and off never call a model; teacher disabling AI overrides cloud', async () => {
   for (const route of ['rules','off','cloud'] as const) {
-    const calls: LlmRequest<unknown>[] = []; const { t, owners } = harness(gateway({}, route, calls));
-    try { const u = await t.registerUser(); owners.add(u.id);
+    const calls: LlmRequest<unknown>[] = []; const { t } = harness(gateway({}, route, calls));
+    try { const u = await t.registerUser(); seedClass(t, u.id);
       const draft = await t.ok('roster.import', { token: u.token, body: { classId, filename: 'names.txt', text: pasted, useAi: route !== 'cloud' } });
       assert.equal(calls.length, 0); assert.equal(draft.aiUsed, false);
     } finally { t.close(); }
@@ -156,8 +164,8 @@ test('rules and off never call a model; teacher disabling AI overrides cloud', a
 });
 test('model cannot infer sex, grade, local ID or silently remove a name', async () => {
   for (const value of [{ ...emptyName('Miro Peña'), sex: 'M' }, { ...emptyName('Miro Peña'), grade: '3' }, { ...emptyName('Miro Peña'), localId: 'L-1' }, emptyName('Miro')]) {
-    const { t, owners } = harness(gateway({ rows: [{ rowIndex: 0, proposed: value }] }));
-    try { const u = await t.registerUser(); owners.add(u.id);
+    const { t } = harness(gateway({ rows: [{ rowIndex: 0, proposed: value }] }));
+    try { const u = await t.registerUser(); seedClass(t, u.id);
       const draft = await t.ok('roster.import', { token: u.token, body: { classId, filename: 'names.txt', text: 'Miro Peña', useAi: true } });
       assert.ok(draft.rows[0]!.flags.includes('untraceable_output')); assert.equal(draft.rows[0]!.proposed.displayName, 'Miro Peña');
     } finally { t.close(); }
@@ -169,4 +177,20 @@ test('readers reject malformed archives, missing sheets, unsupported formats and
   await assert.rejects(readRoster({ bytes: strToU8('name'), extension: 'pdf', maxRows: 500 }));
   const book = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(book, XLSX.utils.aoa_to_sheet([['Name'],['Miro Peña']]), 'Only sheet');
   await assert.rejects(readRoster({ bytes: XLSX.write(book, { type: 'buffer', bookType: 'xlsx' }), extension: 'xlsx', maxRows: 500, sheet: 'missing' }));
+});
+test('account deletion invokes roster cleanup and preserves another teacher’s import', async () => {
+  const deletedOwners: string[] = [];
+  const { t } = harness(undefined, false, id => deletedOwners.push(id));
+  try {
+    const owner = await t.registerUser(), other = await t.registerUser();
+    seedClass(t, owner.id); seedClass(t, other.id);
+    const body = { classId, filename: 'names.txt', text: 'Miro Peña', useAi: false };
+    const ownDraft = await t.ok('roster.import', { token: owner.token, body });
+    const otherDraft = await t.ok('roster.import', { token: other.token, body });
+    await t.ok('account.delete', { token: owner.token, body: { confirm: 'DELETE', password: owner.password } });
+    assert.deepEqual(deletedOwners, [owner.id]);
+    assert.equal(t.services.records.get(owner.id, 'class', classId), null);
+    assert.equal((await t.call('roster.get', { token: owner.token, params: { importId: ownDraft.importId } })).status, 401);
+    assert.equal((await t.ok('roster.get', { token: other.token, params: { importId: otherDraft.importId } })).rows[0]!.original, 'Miro Peña');
+  } finally { t.close(); }
 });

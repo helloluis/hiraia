@@ -63,5 +63,6 @@ retention policy. This module blocks cloud in production but cannot certify thos
 PRIV-9/10 (plan publication and device activity data) belong to their respective modules. ROS-2 PDF,
 ROS-3 photo/scan and ROS-8 re-upload diffs are P1/P2 and are not implemented here.
 
-Tests use invented names, fake LLM gateways and a minimal owned-class RecordStore fake. Authentication,
+Tests use invented names and fake LLM gateways. Class fixtures use the real RecordStore. Account deletion
+invokes the synchronous `onAccountDeleted` hook to purge all of that teacher’s drafts immediately. Authentication,
 route schema validation, response validation, expiry clock and logs use the real `createTestServer` kernel.

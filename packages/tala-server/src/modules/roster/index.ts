@@ -15,7 +15,7 @@ function classFor(ctx: Ctx, classId: string) {
 function clone<T>(value: T): T { return structuredClone(value); }
 
 /** A fresh module instance isolates drafts between servers and tests. No roster content goes to SQLite. */
-export function createRosterModule(): ServerModule {
+export function createRosterModule(): ServerModule & { kernel: { onAccountDeleted: NonNullable<ServerModule['onAccountDeleted']> } } {
   const drafts = new Map<string, StoredDraft>();
   function purge(now: number) { for (const [id, stored] of drafts) if (Date.parse(stored.draft.expiresAt) <= now) drafts.delete(id); }
   function lookup(ctx: Ctx, id: string): StoredDraft {
@@ -25,8 +25,14 @@ export function createRosterModule(): ServerModule {
     try { classFor(ctx, stored.draft.classId); } catch (error) { drafts.delete(id); throw error; }
     return stored;
   }
+  const onAccountDeleted: NonNullable<ServerModule['onAccountDeleted']> = (_deps, userId) => {
+    for (const [id, stored] of drafts) if (stored.owner === userId) drafts.delete(id);
+  };
   return {
     name: 'roster', migrations: [],
+    onAccountDeleted,
+    // Compatibility until the kernel reads the public hook directly (worker A §3).
+    kernel: { onAccountDeleted },
     start(deps) {
       const timer = setInterval(() => {
         purge(deps.now().getTime());
