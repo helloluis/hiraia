@@ -214,3 +214,55 @@ test('confirmation keys replay partial and final responses, reject changed bodie
     assert.equal((await t.call('roster.confirm', { token: user.token, params, body: finalBody })).status, 404);
   } finally { t.close(); }
 });
+test('account merge moves drafts and colliding client retry keys without touching another account; hook is idempotent', async () => {
+  const module = createRosterModule();
+  const move = module.onAccountMerged!;
+  module.onAccountMerged = (deps, from, to) => { move(deps, from, to); move(deps, from, to); move(deps, to, to); };
+  const t = createTestServer({ modules: [module], quiet: true });
+  try {
+    const from = await t.registerUser(), to = await t.registerUser(), other = await t.registerUser();
+    for (const u of [from, to, other]) seedClass(t, u.id);
+    const imports = [];
+    const body = { idempotencyKey: 'same-client-retry-key', resolutions: [] };
+    for (const [i, u] of [from, to, other].entries()) {
+      const name = ['Peña, Miro A.', 'Reyes, Lira B.', 'Dela Cruz, Neri C.'][i]!;
+      const draft = await t.ok('roster.import', { token: u.token, body: { classId, filename: 'invented.txt', text: `Name\tGrade\n${name}\t3\nJona Lira\t3`, useAi: false } });
+      const confirmed = await t.ok('roster.confirm', { token: u.token, params: { importId: draft.importId }, body });
+      assert.equal(confirmed.students.length, 1);
+      imports.push({ draft, confirmed });
+    }
+    await t.ok('account.merge', { token: to.token, body: { confirm: 'MERGE', currentPassword: to.password, email: from.email, password: from.password } });
+    const movedOwners = t.db.prepare('SELECT owner_id, count(*) AS n FROM temp.roster_import_owners GROUP BY owner_id').all() as Array<{ owner_id: string; n: number }>;
+    assert.deepEqual(new Map(movedOwners.map(r => [r.owner_id, r.n])), new Map([[to.id, 2], [other.id, 1]]));
+    for (const [i, item] of imports.entries()) {
+      const token = i === 2 ? other.token : to.token;
+      const params = { importId: item.draft.importId };
+      assert.equal((await t.ok('roster.get', { token, params })).rows.length, 1);
+      assert.deepEqual(await t.ok('roster.confirm', { token, params, body }), item.confirmed);
+    }
+    assert.equal((await t.call('roster.get', { token: other.token, params: { importId: imports[0]!.draft.importId } })).status, 404);
+    assert.equal((await t.call('roster.confirm', { token: other.token, params: { importId: imports[0]!.draft.importId }, body })).status, 404);
+    assert.equal((await t.call('roster.get', { token: from.token, params: { importId: imports[0]!.draft.importId } })).status, 401);
+    await t.ok('account.delete', { token: to.token, body: { confirm: 'DELETE', password: to.password } });
+    assert.deepEqual(t.db.prepare('SELECT owner_id FROM temp.roster_import_owners').all(), [{ owner_id: other.id }]);
+    assert.deepEqual(await t.ok('roster.confirm', { token: other.token, params: { importId: imports[2]!.draft.importId }, body }), imports[2]!.confirmed);
+  } finally { t.close(); }
+});
+test('a later merge-hook failure rolls back roster draft and receipt ownership', async () => {
+  let fail = true;
+  const t = createTestServer({ modules: [createRosterModule(), { name: 'merge-test-failure', migrations: [], handlers: {}, onAccountDeleted() {}, onAccountMerged() { if (fail) throw new Error('simulated later hook failure'); } }], quiet: true });
+  try {
+    const from = await t.registerUser(), to = await t.registerUser(); seedClass(t, from.id); seedClass(t, to.id);
+    const draft = await t.ok('roster.import', { token: from.token, body: { classId, filename: 'invented.txt', text: 'Name\tGrade\nPeña, Miro A.\t3\nJona Lira\t3', useAi: false } });
+    const params = { importId: draft.importId }, body = { idempotencyKey: 'rollback-key', resolutions: [] };
+    const result = await t.ok('roster.confirm', { token: from.token, params, body });
+    const mergeBody = { confirm: 'MERGE' as const, currentPassword: to.password, email: from.email, password: from.password };
+    assert.equal((await t.call('account.merge', { token: to.token, body: mergeBody })).status, 500);
+    assert.equal((await t.call('roster.get', { token: to.token, params })).status, 404);
+    assert.equal((await t.ok('roster.get', { token: from.token, params })).rows.length, 1);
+    assert.deepEqual(await t.ok('roster.confirm', { token: from.token, params, body }), result);
+    fail = false;
+    await t.ok('account.merge', { token: to.token, body: mergeBody });
+    assert.deepEqual(await t.ok('roster.confirm', { token: to.token, params, body }), result);
+  } finally { t.close(); }
+});
