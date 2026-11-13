@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fraunces SemiBold, self-hosted (BRAND-4). Titles only. */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/fraunces-semibold.woff2') format('woff2');
+}
+
+@layer base {
+  html {
+    background: var(--c-cream);
+    color: var(--c-forest);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--lh-body);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    min-width: 320px;
+    min-height: 100dvh;
+  }
+  h1, h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
+  :focus-visible {
+    outline: 3px solid var(--c-talaTeal);
+    outline-offset: 2px;
+  }
+  /* Little motion (SIMPLE-12). */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+  @media print {
+    .no-print { display: none !important; }
+    html, body { background: var(--c-white); }
+  }
+}
+
+@layer components {
+  /* Grey placeholder rows (RES-2). */
+  .placeholder {
+    background: var(--c-placeholder);
+    border-radius: var(--radius-sm);
+    min-height: 1.25em;
+  }
+  .rich p { margin: 0 0 0.5em; }
+  .rich ul { list-style: disc; padding-left: 1.5em; margin: 0 0 0.5em; }
+  .rich ol { list-style: decimal; padding-left: 1.5em; margin: 0 0 0.5em; }
+  .rich li { margin: 0.125em 0; }
+  .rich:empty::before, .rich[data-empty='true']::before {
+    content: attr(data-placeholder);
+    color: var(--c-forestMuted);
+  }
+}
