@@ -4,8 +4,7 @@ import { PDFDocument } from 'pdf-lib';
 import { Plan, PlanSection, BUILTIN_TEMPLATES } from '@hiraia/tala-core';
 import type { RenderPlanOptions } from '@hiraia/tala-core/print';
 import { createPlanPdf, printModule } from './index';
-import type { RecordStore } from '../../kernel/types';
-import { createTestServer } from '../../testing';
+import { createTestServer } from '@hiraia/tala-server/testing';
 const plan = Plan.parse({ id: 'plan0001', title: 'Mga halaman — Peña, ñ á é í ó ú', templateId: 'tpl.dlp.v1', language: 'fil', grades: ['3'], durationMinutes: 50 });
 const section = PlanSection.parse({ id: 'section1', planId: plan.id, key: 'content', content: { type: 'text', blocks: [{ t: 'p', spans: [{ text: 'Obserbahan ang halaman. Ihambing ang mga dahon.' }] }] } });
 const fixture: RenderPlanOptions = { plan, sections: [section], template: BUILTIN_TEMPLATES[0]!, teacherName: 'Guro Peña', paper: 'a4', lang: 'fil', includeImages: false };
@@ -22,27 +21,18 @@ test('long bond landscape honors paper dimensions and wraps long content into pa
   assert.ok(pdf.getPageCount() > 1); assert.deepEqual(pdf.getPage(0).getSize(), { width: 936, height: 612 });
 });
 test('real kernel serves an owner-scoped PDF and rejects anonymous, other-owner and invalid queries', async (testContext) => {
-  let ownerId = '';
-  let reads = 0;
-  const records: RecordStore = {
-    get: () => null,
-    list: () => [],
-    put: () => { throw new Error('Unexpected write'); },
-    remove: () => { throw new Error('Unexpected delete'); },
-    checkTallies: () => ({ confirmed: {}, corrected: {} }),
-    planSnapshot(userId, id) {
-      reads++;
-      if (userId !== ownerId || id !== plan.id) return null;
-      return {
-        plan: { entity: 'plan', id: plan.id, rev: 1, updatedAt: '2026-11-13T00:00:00Z', deletedAt: null, data: plan },
-        sections: [{ entity: 'plan_section', id: section.id, rev: 1, updatedAt: '2026-11-13T00:00:00Z', deletedAt: null, data: section }],
-      };
-    },
-  };
-  const t = createTestServer({ modules: [printModule], services: { records } });
+  const t = createTestServer({ modules: [printModule] });
   testContext.after(() => t.close());
   const owner = await t.registerUser({ displayName: 'Guro Peña' });
-  ownerId = owner.id;
+  const pushed = await t.client(owner.token).syncTransport.push({
+    deviceId: 'print-test-device',
+    mutations: [
+      { mutationId: 'print-plan-create', entity: 'plan', id: plan.id, op: 'upsert', baseRev: 0, data: plan },
+      { mutationId: 'print-section-create', entity: 'plan_section', id: section.id, op: 'upsert', baseRev: 0, data: section },
+    ],
+  });
+  assert.deepEqual(pushed.results.map(result => result.status), ['applied', 'applied']);
+  assert.equal(t.services.records.planSnapshot(owner.id, plan.id)?.sections.length, 1);
   const other = await t.registerUser();
   const result = await t.call('print.planPdf', { params: { planId: plan.id }, query: { paper: 'long', images: false }, token: owner.token });
   assert.equal(result.status, 200);
@@ -50,12 +40,13 @@ test('real kernel serves an owner-scoped PDF and rejects anonymous, other-owner 
   assert.match(result.headers.get('content-disposition') ?? '', /tala-plan0001.pdf/);
   const pdf = await PDFDocument.load(result.data as ArrayBuffer);
   assert.equal(pdf.getPage(0).getHeight(), 936);
-  const before = reads;
   assert.equal((await t.call('print.planPdf', { params: { planId: plan.id } })).status, 401);
-  assert.equal(reads, before);
   assert.equal((await t.call('print.planPdf', { params: { planId: plan.id }, token: other.token })).status, 404);
   const invalid = await t.request('GET', `/api/v1/plans/${plan.id}/pdf?paper=invalid`, { headers: { Authorization: `Bearer ${owner.token}` } });
   assert.equal(invalid.status, 400);
+  t.services.records.remove(owner.id, 'plan', plan.id);
+  assert.equal(t.services.records.get(owner.id, 'plan', plan.id), null);
+  assert.equal((await t.call('print.planPdf', { params: { planId: plan.id }, token: owner.token })).status, 404);
   assert.deepEqual(t.errors, []);
 });
 
