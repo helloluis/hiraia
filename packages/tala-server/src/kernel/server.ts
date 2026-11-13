@@ -10,7 +10,7 @@
  */
 import { randomUUID } from 'node:crypto';
 import type { Id, RouteName } from '@hiraia/tala-core';
-import { attachEffects, extractCredentials, isCrossSite, kernelExtension } from './auth';
+import { attachEffects, extractCredentials, isCrossSite, kernelExtension, registerAccountHooks } from './auth';
 import type { AuthFailure, Authenticator, RequestEffects } from './auth';
 import { loadConfigWithWarnings } from './config';
 import type { DeepPartial } from './config';
@@ -155,6 +155,14 @@ export function createServer(options: KernelOptions): KernelServer {
     if (authenticator) throw new Error(`Two modules provide an authenticator; "${m.name}" is the second.`);
     authenticator = make({ ...base, services });
   }
+
+  registerAccountHooks(
+    db,
+    modules.flatMap((m) => {
+      const hook = kernelExtension(m).onAccountDeleted;
+      return hook ? [{ module: m.name, run: (userId: Id) => hook(base, userId) }] : [];
+    }),
+  );
 
   for (const warning of options.startupWarnings ?? []) log.warn('config_warning', { note: warning });
   log.info('server_started', { environment: config.environment, modules: modules.length, routes: handlers.size });
