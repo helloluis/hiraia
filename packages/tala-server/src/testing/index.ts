@@ -27,6 +27,9 @@ import { readOutbox } from '../modules/core/mailer';
 import type { MailTemplate, OutboxMail } from '../modules/core/mailer';
 import { TEST_ARGON2_COST } from '../modules/core/passwords';
 
+export { createFakeLlm } from './llm';
+export type { FakeLlm, FakeLlmAnswer, FakeLlmCall, FakeLlmOptions } from './llm';
+
 /* ---------------- clock ---------------- */
 
 export interface Duration {
