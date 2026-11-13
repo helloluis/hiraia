@@ -1,29 +1,40 @@
 import type { PlanSection, SyncEngine } from '@hiraia/tala-core/contracts';
-/** One snapshot per edit session, rather than one history/outbox record per keystroke. */
+import { sectionRevision } from '@hiraia/tala-core/plan';
+import { atomic, type Operation } from '../features/atomic';
+/** One original snapshot per typing session; every restore/conflict choice keeps its immediately prior text. */
 export function sectionHistory(engine: SyncEngine, newId: () => string, now: () => Date) {
   const captured = new Set<string>();
+  async function write(
+    section: PlanSection,
+    next: PlanSection | undefined,
+    reason: 'edit' | 'restore' | 'conflict'
+  ) {
+    const ops: Operation[] = [];
+    const capture = reason !== 'edit' || !captured.has(section.id);
+    if (capture)
+      ops.push({
+        op: 'put',
+        entity: 'section_revision',
+        data: sectionRevision(section, { id: newId(), savedAt: now().toISOString(), reason }),
+      });
+    const revisions = (await engine.list('section_revision'))
+      .filter((r) => r.data.sectionId === section.id && !r.dirty)
+      .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt) || b.rev - a.rev);
+    for (const old of revisions.slice(10))
+      ops.push({ op: 'remove', entity: 'section_revision', id: old.id });
+    if (next) ops.push({ op: 'put', entity: 'plan_section', data: next });
+    await atomic(engine, ops);
+    if (capture) captured.add(section.id);
+  }
   return {
     reset() {
       captured.clear();
     },
-    async beforeEdit(section: PlanSection, reason: 'edit' | 'restore' | 'conflict' = 'edit') {
-      if (captured.has(section.id)) return;
-      await engine.put('section_revision', {
-        id: newId(),
-        planId: section.planId,
-        sectionId: section.id,
-        key: section.key,
-        content: section.content,
-        origin: section.origin,
-        gen: section.gen,
-        reason,
-        savedAt: now().toISOString(),
-      });
-      captured.add(section.id);
-      const revisions = (await engine.list('section_revision'))
-        .filter((r) => r.data.sectionId === section.id && !r.dirty)
-        .sort((a, b) => b.rev - a.rev || b.updatedAt.localeCompare(a.updatedAt));
-      for (const old of revisions.slice(10)) await engine.remove('section_revision', old.id);
+    beforeEdit(section: PlanSection, reason: 'edit' | 'restore' | 'conflict' = 'edit') {
+      return write(section, undefined, reason);
+    },
+    edit(section: PlanSection, next: PlanSection, reason: 'edit' | 'restore' = 'edit') {
+      return write(section, next, reason);
     },
   };
 }

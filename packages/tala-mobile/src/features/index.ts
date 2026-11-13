@@ -16,6 +16,7 @@ export function createFeatures(deps: {
     online = false,
     timer: ReturnType<typeof setTimeout> | null = null,
     stopped = false;
+  const stoppedWaiters: Array<() => void> = [];
   async function tick(connected = online) {
     online = connected;
     if (running || stopped) return;
@@ -25,6 +26,7 @@ export function createFeatures(deps: {
       await community.tick(online);
     } finally {
       running = false;
+      for (const done of stoppedWaiters.splice(0)) done();
     }
   }
   return {
@@ -35,7 +37,7 @@ export function createFeatures(deps: {
     tick,
     async start() {
       stopped = false;
-      await generation.tasks.recover();
+
       async function loop() {
         if (stopped) return;
         await tick();
@@ -43,9 +45,10 @@ export function createFeatures(deps: {
       }
       void loop().catch(() => {});
     },
-    stop() {
+    async stop() {
       stopped = true;
       if (timer) clearTimeout(timer);
+      if (running) await new Promise<void>((resolve) => stoppedWaiters.push(resolve));
     },
   };
 }

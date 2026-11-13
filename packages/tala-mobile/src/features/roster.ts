@@ -15,6 +15,7 @@ import {
   structureRows,
   normalizeSource,
   rosterCounts,
+  safeNameCell,
   emptyName,
 } from '@hiraia/tala-core/roster';
 import type { SafeSource } from '@hiraia/tala-core/roster';
@@ -25,6 +26,8 @@ export interface Review {
   resolutions: z.infer<typeof RosterResolution>[];
   savedRows: number[];
   key: string | null;
+  studentIds?: Record<string, string>;
+  confirmDefaults?: { defaultGradeGroupId: string | null; acceptAllChanged: boolean };
   confirmPayload?: z.infer<typeof RosterResolution>[];
   response?: z.infer<typeof RosterConfirmResponse>;
 }
@@ -51,10 +54,17 @@ export function createRoster(deps: {
     await store.commit({ meta: { [key(review.draft.classId)]: JSON.stringify(review) } });
     return review;
   }
-  async function parse(classId: string, text: string, filename: string, exact = false) {
+  async function parse(
+    classId: string,
+    text: string,
+    filename: string,
+    exact = false,
+    encodingReview = false
+  ) {
     if (text.length > 5 * 1024 * 1024) throw Error('Too large');
     const data = structureRows(extractText(text, exact ? 'txt' : filename.split('.').pop()), {
       exactlyAsWritten: exact,
+      encodingReview,
     });
     return save({
       draft: RosterImportDraft.parse({
@@ -92,6 +102,17 @@ export function createRoster(deps: {
   ) {
     const review = await load(classId);
     if (!review || review.key) throw Error('Finish pending save first');
+    if (
+      students?.some(
+        (student) =>
+          !safeNameCell(student.displayName) ||
+          [student.familyName, student.givenName, student.middleName, student.suffix].some(
+            (name) => name && !safeNameCell(name)
+          ) ||
+          (student.localId && /\d{8,}/.test(student.localId))
+      )
+    )
+      throw Error('Use names and a short local ID only');
     review.resolutions = review.resolutions.filter((r) => r.rowIndex !== rowIndex);
     review.resolutions.push({ rowIndex, action, students });
     return save(review);
@@ -121,6 +142,7 @@ export function createRoster(deps: {
     if (!review.key) {
       review.key = newId();
       review.confirmPayload = review.resolutions;
+      review.confirmDefaults = { defaultGradeGroupId, acceptAllChanged };
       await save(review);
     }
     const cls = (await engine.get('class', classId))?.data;
@@ -133,8 +155,8 @@ export function createRoster(deps: {
         body: {
           idempotencyKey: review.key,
           resolutions: review.confirmPayload ?? [],
-          acceptAllChanged,
-          defaultGradeGroupId,
+          acceptAllChanged: review.confirmDefaults!.acceptAllChanged,
+          defaultGradeGroupId: review.confirmDefaults!.defaultGradeGroupId,
         },
       });
       review.response = response;
@@ -146,7 +168,7 @@ export function createRoster(deps: {
       for (const row of review.draft.rows) {
         if (review.savedRows.includes(row.rowIndex)) continue;
         const choice = review.confirmPayload?.find((r) => r.rowIndex === row.rowIndex);
-        if (choice?.action === 'not_student' || row.status === 'not_student') {
+        if (choice?.action === 'not_student' || (row.status === 'not_student' && !choice)) {
           continue;
         }
         let proposed: z.infer<typeof RosterProposed>[];
@@ -161,7 +183,7 @@ export function createRoster(deps: {
         else if (
           choice?.action === 'accept' ||
           row.status === 'clean' ||
-          (row.status === 'changed' && acceptAllChanged)
+          (row.status === 'changed' && review.confirmDefaults!.acceptAllChanged)
         )
           proposed = [row.proposed];
         else {
@@ -171,9 +193,19 @@ export function createRoster(deps: {
         const ready = proposed.map((p) => ({
           ...p,
           rowIndex: row.rowIndex,
-          gradeGroupId: cls.gradeGroups.find((g) => g.grade === p.grade)?.id ?? defaultGradeGroupId,
+          gradeGroupId:
+            cls.gradeGroups.find((g) => g.grade === p.grade)?.id ??
+            review.confirmDefaults!.defaultGradeGroupId,
         }));
-        if (ready.some((p) => !p.displayName.trim() || !p.gradeGroupId)) {
+        if (
+          ready.some(
+            (p) =>
+              !p.displayName.trim() ||
+              p.displayName === '[withheld]' ||
+              !safeNameCell(p.displayName) ||
+              !p.gradeGroupId
+          )
+        ) {
           pendingRows.push(row.rowIndex);
           continue;
         }
@@ -183,11 +215,15 @@ export function createRoster(deps: {
       review.response = response;
       await save(review);
     }
+    review.studentIds ??= {};
+    for (const [index, p] of response.students.entries())
+      review.studentIds[`${p.rowIndex}.${index}`] ??= newId();
+    await save(review);
     const ops: Operation[] = response.students.map((p, index) => ({
       op: 'put',
       entity: 'student',
       data: Student.parse({
-        id: `${review.draft.importId}.${p.rowIndex}.${index}`,
+        id: review.studentIds![`${p.rowIndex}.${index}`]!,
         classId,
         gradeGroupId: p.gradeGroupId,
         displayName: p.displayName,
@@ -220,6 +256,7 @@ export function createRoster(deps: {
     ];
     review.key = null;
     review.confirmPayload = undefined;
+    review.confirmDefaults = undefined;
     review.response = undefined;
     if (!response.pendingRows.length) {
       await store.commit({ meta: { [key(classId)]: null } });

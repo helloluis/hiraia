@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ScrollView, View, FlatList, Switch } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { File } from 'expo-file-system';
-import { decodeText, emptyName, rosterNotices } from '@hiraia/tala-core/roster';
+import { decodeText, emptyName, rosterNotices, safeNameCell } from '@hiraia/tala-core/roster';
 import { RosterProposed, RosterField } from '@hiraia/tala-core/contracts';
 import type { Student, RosterRow } from '@hiraia/tala-core/contracts';
 import type { z } from 'zod';
@@ -12,6 +12,8 @@ import { Feedback, useAction, type FeatureProps } from './ui';
 export function RosterScreen(props: FeatureProps & { classId: string }) {
   const { rt, t, online, classId, canWrite, language } = props,
     action = useAction(t);
+  const [encodingReview, setEncodingReview] = useState(false),
+    [editedProposal, setEditedProposal] = useState<z.infer<typeof RosterProposed> | null>(null);
   const [text, setText] = useState(''),
     [filename, setFilename] = useState('names.txt'),
     [binary, setBinary] = useState<string | null>(null),
@@ -20,12 +22,14 @@ export function RosterScreen(props: FeatureProps & { classId: string }) {
     [cloudAck, setCloudAck] = useState(false),
     [defaultGroup, setDefaultGroup] = useState<string | null>(null),
     [groups, setGroups] = useState<{ id: string; grade: string }[]>([]),
+    [rowMode, setRowMode] = useState<'edit' | 'split'>('edit'),
     [editRow, setEditRow] = useState<number | null>(null),
     [edited, setEdited] = useState(''),
     [split, setSplit] = useState(''),
     [students, setStudents] = useState<Student[]>([]),
     [manual, setManual] = useState<Student | null>(null),
     [viewedChanged, setViewedChanged] = useState(false),
+    [importNotice, setImportNotice] = useState(false),
     [sheet, setSheet] = useState('');
   async function refresh() {
     setReview(await rt.features.roster.load(classId));
@@ -48,6 +52,7 @@ export function RosterScreen(props: FeatureProps & { classId: string }) {
         .catch(() => {});
   }, [rt, classId, online]);
   async function pick() {
+    setCloudAck(false);
     const result = await DocumentPicker.getDocumentAsync({
       copyToCacheDirectory: true,
       multiple: false,
@@ -60,7 +65,9 @@ export function RosterScreen(props: FeatureProps & { classId: string }) {
       if (file.size > 5 * 1024 * 1024) throw Error('Too large');
       setFilename(picked.name);
       if (/\.(txt|csv|tsv)$/i.test(picked.name)) {
-        setText(decodeText(await file.bytes()).text);
+        const decoded = decodeText(await file.bytes());
+        setText(decoded.text);
+        setEncodingReview(decoded.needsReview);
         setBinary(null);
       } else {
         setBinary(await file.base64());
@@ -84,25 +91,33 @@ export function RosterScreen(props: FeatureProps & { classId: string }) {
           sheet: sheet || undefined,
         })
       );
-    } else setReview(await rt.features.roster.parse(classId, text, filename, exact));
+    } else
+      setReview(await rt.features.roster.parse(classId, text, filename, exact, encodingReview));
     setText('');
     setBinary(null);
     setViewedChanged(false);
   }
   async function ai() {
     if (!online) return;
-    const result = await rt.features.roster.online({
-      classId,
-      filename,
-      ...(binary ? { contentBase64: binary } : { text }),
-      sheet: sheet || undefined,
-      useAi: true,
-      cloudFlagAcknowledged: route === 'cloud' && cloudAck,
-      exactlyAsWritten: false,
-    });
-    setReview(result);
-    setText('');
-    setBinary(null);
+    try {
+      const result = await rt.features.roster.online({
+        classId,
+        filename,
+        ...(binary ? { contentBase64: binary } : { text }),
+        sheet: sheet || undefined,
+        useAi: true,
+        cloudFlagAcknowledged: route === 'cloud' && cloudAck,
+        exactlyAsWritten: false,
+      });
+      setReview(result);
+      setText('');
+      setBinary(null);
+    } catch (error) {
+      if (binary) throw error;
+      setReview(await rt.features.roster.parse(classId, text, filename, false, encodingReview));
+      setText('');
+      setImportNotice(true);
+    }
     setCloudAck(false);
   }
   async function resolve(
@@ -110,7 +125,7 @@ export function RosterScreen(props: FeatureProps & { classId: string }) {
     kind: 'accept' | 'keep_original' | 'not_student' | 'edit' | 'split'
   ) {
     let list: z.infer<typeof RosterProposed>[] | undefined;
-    if (kind === 'edit') list = [{ ...row.proposed, displayName: edited }];
+    if (kind === 'edit') list = [{ ...(editedProposal ?? row.proposed), displayName: edited }];
     if (kind === 'split')
       list = split
         .split('\n')
@@ -132,8 +147,8 @@ export function RosterScreen(props: FeatureProps & { classId: string }) {
     <FlatList
       keyboardShouldPersistTaps="handled"
       contentContainerStyle={styles.pad}
-      data={rows}
-      keyExtractor={(r) => String(r.rowIndex)}
+      data={(review ? rows : students) as Array<RosterRow | Student>}
+      keyExtractor={(r) => 'rowIndex' in r ? String(r.rowIndex) : r.id}
       initialNumToRender={10}
       maxToRenderPerBatch={10}
       windowSize={3}
@@ -145,7 +160,18 @@ export function RosterScreen(props: FeatureProps & { classId: string }) {
           {!review && (
             <>
               <Button label={t('pickFile')} onPress={() => void action.run(pick)} />
-              <Field label={t('pasteNames')} multiline value={text} onChange={setText} />
+              <Field
+                label={t('pasteNames')}
+                multiline
+                value={text}
+                onChange={(value) => {
+                  setText(value);
+                  setBinary(null);
+                  setFilename('names.txt');
+                  setEncodingReview(false);
+                  setCloudAck(false);
+                }}
+              />
               <Body>{filename}</Body>
               <Field label={t('sheetName')} value={sheet} onChange={setSheet} />
               <Button
@@ -155,7 +181,7 @@ export function RosterScreen(props: FeatureProps & { classId: string }) {
                 onPress={() => void action.run(() => parse(false))}
               />
               <Button
-                disabled={!canWrite || action.busy || !text}
+                disabled={!canWrite || action.busy || (!text && !binary) || (!!binary && !online)}
                 label={t('exactlyWritten')}
                 onPress={() => void action.run(() => parse(true))}
               />
@@ -268,16 +294,6 @@ export function RosterScreen(props: FeatureProps & { classId: string }) {
           {!review && (
             <>
               <Title>{t('students')}</Title>
-              {students.map((student) => (
-                <View style={styles.card} key={student.id}>
-                  <Body>{student.displayName}</Body>
-                  <Button
-                    label={t('edit')}
-                    disabled={!canWrite}
-                    onPress={() => setManual(student)}
-                  />
-                </View>
-              ))}
               <Button
                 label={t('addStudent')}
                 disabled={!canWrite}
@@ -334,7 +350,12 @@ export function RosterScreen(props: FeatureProps & { classId: string }) {
                   <Button
                     primary
                     label={t('save')}
-                    disabled={!canWrite || !manual.displayName.trim()}
+                    disabled={
+                      !canWrite ||
+                      !manual.displayName.trim() ||
+                      !safeNameCell(manual.displayName) ||
+                      !!manual.localId?.match(/\d{8,}/)
+                    }
                     onPress={() =>
                       void action.run(async () => {
                         await rt.engine.put('student', manual);
@@ -349,7 +370,15 @@ export function RosterScreen(props: FeatureProps & { classId: string }) {
           )}
         </>
       }
-      renderItem={({ item: row }) => (
+      renderItem={({ item }) => {
+        if (!('rowIndex' in item)) return (
+          <View style={styles.card}>
+            <Body>{item.displayName}</Body>
+            <Button label={t('edit')} disabled={!canWrite} onPress={() => setManual(item)} />
+          </View>
+        );
+        const row = item;
+        return (
         <View style={styles.card}>
           <Body>
             {row.rowIndex + 1} · {t(`roster_${row.status}` as never)}
@@ -390,26 +419,86 @@ export function RosterScreen(props: FeatureProps & { classId: string }) {
             disabled={!canWrite || !!review?.key}
             onPress={() => {
               setEditRow(row.rowIndex);
+              setRowMode('edit');
               setEdited(row.proposed.displayName);
+              setEditedProposal(row.proposed);
               setSplit(row.original);
+            }}
+          />
+          <Button
+            label={t('row_split')}
+            disabled={!canWrite || !!review?.key}
+            onPress={() => {
+              setEditRow(row.rowIndex);
+              setRowMode('split');
+              setSplit(row.original);
+              setEditedProposal(row.proposed);
             }}
           />
           {editRow === row.rowIndex && (
             <>
-              <Field label={t('name')} value={edited} onChange={setEdited} />
-              <Button
-                label={t('row_edit')}
-                onPress={() => void action.run(() => resolve(row, 'edit'))}
-              />
-              <Field label={t('splitNames')} multiline value={split} onChange={setSplit} />
-              <Button
-                label={t('row_split')}
-                onPress={() => void action.run(() => resolve(row, 'split'))}
-              />
+              {rowMode === 'edit' && (
+                <>
+                  <Field label={t('name')} value={edited} onChange={setEdited} />
+                  {editedProposal &&
+                    (['familyName', 'givenName', 'middleName', 'suffix', 'localId'] as const).map(
+                      (field) => (
+                        <Field
+                          key={field}
+                          label={t(`rosterField_${field}` as never)}
+                          value={editedProposal[field] ?? ''}
+                          onChange={(value) =>
+                            setEditedProposal({ ...editedProposal, [field]: value })
+                          }
+                        />
+                      )
+                    )}
+                  {editedProposal && (
+                    <Button
+                      label={`${t('rosterField_sex')}: ${editedProposal.sex ?? t('notProvided')}`}
+                      onPress={() =>
+                        setEditedProposal({
+                          ...editedProposal,
+                          sex:
+                            editedProposal.sex === null
+                              ? 'M'
+                              : editedProposal.sex === 'M'
+                                ? 'F'
+                                : null,
+                        })
+                      }
+                    />
+                  )}
+                  {editedProposal &&
+                    groups.map((g) => (
+                      <Button
+                        key={g.id}
+                        label={`${editedProposal.grade === g.grade ? '✓ ' : ''}${t('group')} ${g.grade}`}
+                        onPress={() =>
+                          setEditedProposal({ ...editedProposal, grade: g.grade as never })
+                        }
+                      />
+                    ))}
+                  <Button
+                    label={t('row_edit')}
+                    onPress={() => void action.run(() => resolve(row, 'edit'))}
+                  />
+                </>
+              )}
+              {rowMode === 'split' && (
+                <>
+                  {' '}
+                  <Field label={t('splitNames')} multiline value={split} onChange={setSplit} />
+                  <Button
+                    label={t('row_split')}
+                    onPress={() => void action.run(() => resolve(row, 'split'))}
+                  />
+                </>
+              )}
             </>
           )}
         </View>
-      )}
+      ); }}
     />
   );
 }

@@ -1,15 +1,13 @@
-# Wave 2 entry points
+# Wave 2 implementation and handoff
 
-This package owns the Expo phone client; do not modify `packages/mobile` or Kotlin `packages/tala`.
+- `src/features/generation.ts` and `GenerationScreen.tsx`: durable generation queue, per-request idempotency, progress/cancel/background resume, section regeneration, allowance, cached official objectives and multi-group inputs. Explicit Apply journals the atomic draft/revision operation; replay refuses newer teacher edits. Offline/error templates preserve requests and old text.
+- `roster.ts` / `RosterScreen.tsx`: offline deterministic text/CSV parsing and document picking; online import rechecks cloud consent. Review prioritises flagged rows, supports all five decisions, mapping/manual corrections, changed-row consent and partial saves. Confirm freezes its key/body and student IDs before one batch. Drafts expire after 24 hours; unsafe identifiers are withheld.
+- `community.ts` / `CommunityScreen.tsx` / `PostQueue.tsx`: typed search, cached details/filtering, structural copy with lineage/custom-template isolation, My posts/remove/report, exact public preview and personal-data checks. Reviewed preview must still match when queued and dispatched. Posts resume with server revision deduplication.
+- `tasks.ts` / `index.ts`: encrypted durable task metadata, retry/backoff, recovery and foreground/background coordination. Background work is opportunistic; no wake lock.
+- `atomic.ts` / `realignment.ts`: shared required `batch`, nested setup staging and atomic apply/Undo. Older plans use required `fetchPlans`, preserving the main cursor.
+- `runtime/history.ts`: edits/restores/revisions in the same atomic operation; unsynced history is retained.
+- `src/i18n/wave2.{fil,en}.ts`: paired Filipino/English strings. Human review requested for generation/retry, moderation, roster changed-row/encoding and licence terminology; existing README review list also applies. `before_tala`: “Naituro na bago gumamit ng Tala”.
 
-- `src/App.tsx`: labelled `generation` placeholder above Lessons, `roster` and `activity` placeholders inside Class, and the Community tab. Four bottom destinations are fixed. Plug generation into lesson creation, roster import into the chosen Class, and Community into its existing tab. Do not add a fifth tab.
-- `src/runtime/runtime.ts`: secure-token `createTalaClient`, durable SQLite store, real shared `createSyncEngine`. Every teacher record write goes through `engine.put/remove`, never REST CRUD or direct table writes. API generation/copy/import returns content which the client saves through the engine.
-- `src/runtime/ladder.ts`: central four-rung policy. Offline queued generation/post/import jobs need their own durable operation queue, cancellation and idempotency; do not treat disabled buttons as the offline fallback.
-- `src/runtime/reference.ts`: versioned curriculum/calendar cache. Future UI must select learning areas and cache all class grades/subjects (current setup has Science as its curriculum area; typed custom subjects need proper area selection).
-- `src/ui/ContentEditor.tsx`: shared structured section editor. No free-form table editor. Weekgrid → stacked days; multigrade → one block card with group activities. Consider extracting Lesson/Class/Setup into dedicated screens before adding more flows to App.
-- `src/runtime/print.ts`: typed adapter to Worker H's real shared renderer, including header/font/paper options. Preserve fallback order and explicit server offer after text sharing.
-- `src/runtime/history.ts`: bounded section snapshots, one per edit session. Use before regeneration/restore too.
-- `src/i18n/{fil,en}.ts`: paired keys, Filipino default. Add all user-visible strings to both files.
-- Native Class activity: reserved in Class; default package ID `com.hiraia.tala.next`. Nearby integration and Kotlin in-place migration are a later wave. No Kotlin source was changed.
+Only Class activity remains a placeholder in Class; copy a future Nearby port into this package. Do not edit Kotlin/student packages or reuse their Android ID/signing/OTA. Four tabs remain fixed; default ID is `com.hiraia.tala.next`.
 
-Run only package checks: `pnpm --filter @hiraia/tala-mobile type-check`, `test`, `export`. Never run Gradle on this shared machine. Export enforces real Hermes magic/size, one font, and image size. See README for release gates and incomplete flows.
+Known follow-ups: real-device accessibility/performance/native encryption gates; offline-copy count registration; account lifecycle UI and other wave-one release gaps listed in README. Network fixtures test adapters, not a live server/provider integration. No runtime engine/pacing/print fake remains.

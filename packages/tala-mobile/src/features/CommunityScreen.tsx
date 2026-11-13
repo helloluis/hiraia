@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, FlatList, ScrollView, Alert, Switch } from 'react-native';
 import type {
   ArtifactSummary,
+  LearningArea,
+  CurriculumPack,
   ArtifactDetail,
   ArtifactSearchQuery,
   ReportRequest,
@@ -12,12 +14,17 @@ import type { z } from 'zod';
 import { sectionPlainText } from '@hiraia/tala-core/plan';
 import { Body, Button, Field, Title, styles } from '../ui/components';
 import { ContentEditor } from '../ui/ContentEditor';
+import { filterSaved } from './community';
+import { PostQueue } from './PostQueue';
 import { Feedback, useAction, type FeatureProps } from './ui';
 export function CommunityScreen(
   props: FeatureProps & { initialQuery?: z.input<typeof ArtifactSearchQuery> }
 ) {
   const { rt, t, online, canWrite } = props,
     action = useAction(t);
+  const [areas, setAreas] = useState<LearningArea[]>([]),
+    [packs, setPacks] = useState<CurriculumPack[]>([]),
+    [competencySearch, setCompetencySearch] = useState('');
   const [query, setQuery] = useState<z.input<typeof ArtifactSearchQuery>>(props.initialQuery ?? {}),
     [items, setItems] = useState<ArtifactSummary[]>([]),
     [cursor, setCursor] = useState<string | null>(null),
@@ -31,14 +38,7 @@ export function CommunityScreen(
   async function search(more = false) {
     if (!online) {
       const saved = await rt.features.community.saved();
-      setItems(
-        saved.filter(
-          (a) =>
-            (!query.q || `${a.title} ${a.summary}`.toLowerCase().includes(query.q.toLowerCase())) &&
-            (!query.grade || a.tags.grades.includes(query.grade)) &&
-            (!query.language || a.tags.language === query.language)
-        )
-      );
+      setItems(filterSaved(saved, query));
       setCursor(null);
       return;
     }
@@ -50,7 +50,22 @@ export function CommunityScreen(
     setCursor(result.nextCursor);
   }
   useEffect(() => {
-    void action.run(() => search());
+    void action.run(async () => {
+      setItems(filterSaved(await rt.features.community.saved(), query));
+      await search();
+    });
+    void (async () => {
+      const ids = JSON.parse((await rt.store.getMeta('packs')) ?? '[]') as string[];
+      const data = await Promise.all(ids.map((id) => rt.store.getMeta(`pack.${id}`)));
+      setPacks(data.filter((v): v is string => !!v).map((v) => JSON.parse(v)));
+      const cached = await rt.store.getMeta('curriculum.index');
+      if (cached) setAreas(JSON.parse(cached).learningAreas);
+      if (online) {
+        const index = await rt.client.call('curriculum.index');
+        setAreas(index.learningAreas);
+        await rt.store.commit({ meta: { 'curriculum.index': JSON.stringify(index) } });
+      }
+    })().catch(() => {});
     void rt.engine
       .list('class')
       .then((rows) =>
@@ -73,6 +88,7 @@ export function CommunityScreen(
         </Body>
         {detail.authorSchool && <Body>{detail.authorSchool}</Body>}
         <Body>{detail.license}</Body>
+        <Body>{t('savedOnPhone')}</Body>
         <Body>{t('communityCheckNotice')}</Body>
         <Body>
           {detail.copyCount} {t('copies')}
@@ -206,6 +222,7 @@ export function CommunityScreen(
       ListHeaderComponent={
         <>
           <Title>{t('community')}</Title>
+          <PostQueue rt={rt} t={t} onOpen={props.onOpen} />
           <Body>{t('communityCheckNotice')}</Body>
           {!online && <Body>{t('savedCommunityOffline')}</Body>}
           <Feedback {...action} t={t} />
@@ -223,35 +240,83 @@ export function CommunityScreen(
           <Button label={t('filters')} onPress={() => setFilters(!filters)} />
           {filters && (
             <>
-              {(
-                [
-                  'grade',
-                  'learningAreaId',
-                  'termIndex',
-                  'competencyId',
-                  'language',
-                  'region',
-                  'multigrade',
-                  'maxMinutes',
-                ] as const
-              ).map((key) => (
-                <Field
-                  key={key}
-                  label={t(`filter_${key}` as never)}
-                  value={String(query[key] ?? '')}
-                  onChange={(value) =>
+              {(['grade', 'termIndex', 'region', 'multigrade', 'maxMinutes'] as const).map(
+                (key) => (
+                  <Field
+                    key={key}
+                    label={t(`filter_${key}` as never)}
+                    value={String(query[key] ?? '')}
+                    onChange={(value) =>
+                      setQuery({
+                        ...query,
+                        [key]:
+                          value === ''
+                            ? undefined
+                            : ['termIndex', 'maxMinutes'].includes(key)
+                              ? Number(value)
+                              : value,
+                      })
+                    }
+                  />
+                )
+              )}
+              <Title>{t('filter_learningAreaId')}</Title>
+              {areas.map((area) => (
+                <Button
+                  key={area.id}
+                  label={`${query.learningAreaId === area.id ? '✓ ' : ''}${area.name[props.language]}`}
+                  onPress={() =>
                     setQuery({
                       ...query,
-                      [key]:
-                        value === ''
-                          ? undefined
-                          : ['termIndex', 'maxMinutes'].includes(key)
-                            ? Number(value)
-                            : value,
+                      learningAreaId: query.learningAreaId === area.id ? undefined : area.id,
                     })
                   }
                 />
               ))}
+              <Button
+                label={`${t('language')}: ${query.language === 'fil' ? 'Filipino' : query.language === 'en' ? 'English' : t('allLanguages')}`}
+                onPress={() =>
+                  setQuery({
+                    ...query,
+                    language:
+                      query.language === undefined
+                        ? 'fil'
+                        : query.language === 'fil'
+                          ? 'en'
+                          : undefined,
+                  })
+                }
+              />
+              <Field
+                label={t('competencyChoice')}
+                value={competencySearch}
+                onChange={setCompetencySearch}
+              />
+              {packs
+                .flatMap((pack) => pack.competencies)
+                .filter(
+                  (c, index, all) =>
+                    all.findIndex((item) => item.id === c.id) === index &&
+                    (!query.grade || c.grade === query.grade) &&
+                    (!query.learningAreaId || c.learningAreaId === query.learningAreaId) &&
+                    (!competencySearch ||
+                      `${c.code ?? ''} ${c.text}`
+                        .toLowerCase()
+                        .includes(competencySearch.toLowerCase()))
+                )
+                .slice(0, 20)
+                .map((c) => (
+                  <Button
+                    key={c.id}
+                    label={`${query.competencyId === c.id ? '✓ ' : ''}${c.code ?? ''} ${c.text}`}
+                    onPress={() =>
+                      setQuery({
+                        ...query,
+                        competencyId: query.competencyId === c.id ? undefined : c.id,
+                      })
+                    }
+                  />
+                ))}
               <Button
                 label={`${query.mine ? '✓ ' : ''}${t('myPosts')}`}
                 onPress={() => setQuery({ ...query, mine: !query.mine })}
@@ -265,7 +330,8 @@ export function CommunityScreen(
         <View style={styles.card}>
           <Title>{item.title}</Title>
           <Body>
-            {item.authorDisplayName} · {item.tags.grades.join(', ')} · {item.tags.language}
+            {item.authorDisplayName} · {item.tags.grades.join(', ')} ·{' '}
+            {item.tags.language === 'fil' ? 'Filipino' : 'English'}
           </Body>
           <Body>{item.summary}</Body>
           <Body>{t(`post_${item.status}` as never)}</Body>
@@ -367,7 +433,15 @@ export function PostScreen(props: FeatureProps & { plan: Plan }) {
           {preview.publicContent.sections.map((section) => (
             <View style={styles.card} key={section.key}>
               <Title>{t(section.key as never) ?? section.key}</Title>
-              <Body>{sectionPlainText(section.content)}</Body>
+              <ContentEditor
+                labels={Object.fromEntries(
+                  preview.publicContent.gradeGroups.map((g) => [g.id, `${t('group')} ${g.grade}`])
+                )}
+                value={section.content}
+                editable={false}
+                onChange={() => {}}
+                t={t}
+              />
             </View>
           ))}
           {preview.findings.map((finding, i) => (
@@ -403,7 +477,7 @@ export function PostScreen(props: FeatureProps & { plan: Plan }) {
                     text: t('confirm'),
                     onPress: () =>
                       void action.run(async () => {
-                        await rt.features.community.post(body());
+                        await rt.features.community.post(body(), rt.features.community.snapshot(preview));
                         setQueued(true);
                         void rt.features.tick(online);
                       }),

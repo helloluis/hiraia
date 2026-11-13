@@ -9,7 +9,6 @@ TaskManager.defineTask(TASK, async () => {
     if (!sync) {
       const { createRuntime } = await import('./runtime');
       const runtime = await createRuntime();
-      await runtime.features.tasks.recover();
       await runtime.features.tick(true);
       return (await runtime.engine.sync()).ok
         ? BackgroundTask.BackgroundTaskResult.Success

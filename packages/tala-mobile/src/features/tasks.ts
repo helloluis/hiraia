@@ -1,3 +1,4 @@
+import type { Operation } from './atomic';
 import type { LocalStore } from '@hiraia/tala-core/contracts';
 export type TaskState =
   | 'queued'
@@ -15,10 +16,12 @@ export interface DurableTask<T = unknown> {
   input: T;
   remoteId?: string;
   result?: unknown;
+  prepared?: { mode: 'result' | 'fallback'; ops: Operation[]; base: Record<string, string | null> };
   attempts: number;
   nextAt: number;
   error?: string;
   cancelRequested?: boolean;
+  dispatched?: boolean;
   createdAt: string;
 }
 /** Metadata shares the encrypted SQLite transaction boundary. No plan/roster bodies are logged. */
@@ -62,7 +65,15 @@ export function taskStore(store: LocalStore) {
     async recover() {
       await change((tasks) => {
         for (const t of tasks)
-          if (t.state === 'sending') t.state = t.remoteId ? 'polling' : 'uncertain';
+          if (t.state === 'sending')
+            t.state =
+              t.kind === 'post'
+                ? 'queued'
+                : t.remoteId
+                  ? 'polling'
+                  : (t.input as { input?: { idempotencyKey?: string } }).input?.idempotencyKey
+                    ? 'queued'
+                    : 'uncertain';
       });
     },
   };
