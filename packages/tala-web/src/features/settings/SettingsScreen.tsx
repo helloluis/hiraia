@@ -41,7 +41,7 @@ export function SettingsScreen() {
       <PageHeader title={t('settings.title')} />
 
       {/* 1. Language */}
-      <section className="rounded border border-hairline bg-white p-3 flex items-center justify-between gap-3">
+      <section className="rounded border border-hairline bg-white p-3 flex flex-wrap items-center justify-between gap-3">
         <span className="font-medium">{t('settings.language')}</span>
         <LanguageSwitch />
       </section>

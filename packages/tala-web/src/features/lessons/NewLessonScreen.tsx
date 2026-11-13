@@ -20,6 +20,7 @@ export function NewLessonScreen() {
   const [assignmentId, setAssignmentId] = useState(params.get('assignmentId') ?? '');
   const [date, setDate] = useState(params.get('date') ?? isoDate());
   const [templateId, setTemplateId] = useState('');
+  const [templateTouched, setTemplateTouched] = useState(false);
   const [busy, setBusy] = useState(false);
   const tl = useTimeline(date, date);
   const { ws, index } = tl;
@@ -34,8 +35,8 @@ export function NewLessonScreen() {
   }, [assignments, assignmentId]);
   const assignment = assignments.find(a => a.id === assignmentId) ?? null;
   useEffect(() => {
-    if (!templateId) setTemplateId(defaultTemplateFor(cls, assignment).id);
-  }, [cls, assignment, templateId]);
+    if (!templateTouched) setTemplateId(defaultTemplateFor(cls, assignment).id);
+  }, [cls, assignment, templateTouched]);
 
   const entry = tl.entries.find(e => e.classId === classId && e.assignmentId === assignmentId && e.date === date && (!params.get('slotId') || e.slotId === params.get('slotId')));
 
@@ -91,7 +92,14 @@ export function NewLessonScreen() {
         </Select>
       )}
       <TextInput label={t('lessons.date')} type="date" value={date} onChange={e => setDate(e.target.value)} />
-      <Select label={t('lessons.template')} value={templateId} onChange={e => setTemplateId(e.target.value)}>
+      <Select
+        label={t('lessons.template')}
+        value={templateId}
+        onChange={e => {
+          setTemplateTouched(true);
+          setTemplateId(e.target.value);
+        }}
+      >
         {BUILTIN_TEMPLATES.map(tp => (
           <option key={tp.id} value={tp.id}>
             {tp.name[lang]}
@@ -100,7 +108,7 @@ export function NewLessonScreen() {
       </Select>
       {entry && Object.values(entry.byGroup).flat().length > 0 && (
         <p className="text-small text-forestMuted">
-          {t('editor.competencies')}: {Object.values(entry.byGroup).flat().map(id => tl.competencyById.get(id)?.code ?? id).join(', ')}
+          {t('editor.competencies')}: {Object.values(entry.byGroup).flat().map(id => { const c = tl.competencyById.get(id); return c ? c.code ?? c.text.slice(0, 60) : id; }).join('; ')}
         </p>
       )}
       <h2 className="text-title">{t('lessons.howToStart')}</h2>

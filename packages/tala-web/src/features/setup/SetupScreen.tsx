@@ -94,7 +94,6 @@ export function SetupScreen() {
     return (index?.learningAreas ?? []).filter(a => a.grades.some(g => grades.has(g)));
   }, [index, groups]);
 
-  const yearLabelForPacks = existingYear?.label ?? (yearMode === 'preset' ? presets?.find(p => p.id === presetId)?.label.replace(/^DepEd SY\s*/i, '').replace('–', '-') ?? null : yearLabel);
 
   /* ---------- step 4 data ---------- */
   const prepareStarts = async (year: SchoolYear) => {

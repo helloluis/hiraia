@@ -217,7 +217,10 @@ function SessionRow({ entry, tl, onMark }: { entry: TimelineEntry; tl: ReturnTyp
     const text = comp ? (comp.code ? `${comp.code} · ` : '') + comp.text : '';
     return { grade, text };
   });
-  const slot = tl.ws.assignments.find(a => a.id === entry.assignmentId)?.slots.find(s => s.id === entry.slotId);
+  const assignment = tl.ws.assignments.find(a => a.id === entry.assignmentId);
+  const slot = assignment?.slots.find(s => s.id === entry.slotId);
+  // No curriculum data for this subject (typed objectives, CUR-10): no per-group competency lines to show.
+  const hasCurriculum = !!assignment?.learningAreaId && topics.some(tp => tp.text);
   const state = entry.mark === 'taught' ? 'taught' : entry.mark === 'partial' ? 'partial' : entry.mark === 'not_taught' ? 'notTaught' : entry.planState === 'locked' ? 'locked' : entry.planState === 'draft' ? 'draft' : entry.mark === 'assumed_taught' ? 'assumed' : 'none';
   const tone: Tone = state === 'taught' ? 'sage' : state === 'locked' ? 'teal' : state === 'notTaught' ? 'brick' : 'neutral';
   const stateLabel = t(`week.state.${state}` as never);
@@ -232,17 +235,21 @@ function SessionRow({ entry, tl, onMark }: { entry: TimelineEntry; tl: ReturnTyp
           {entry.subjectName}
           {tl.ws.classes.length > 1 && cls ? ` · ${cls.name}` : ''}
         </span>
-        <span className="flex items-center gap-2">
+        <span className="flex flex-wrap items-center gap-2">
           {multi && <Badge>{t('week.multigrade')}</Badge>}
           {kindLabel ? <Badge>{kindLabel}</Badge> : <Badge tone={tone}>{stateLabel}</Badge>}
         </span>
       </div>
-      {topics.map((tp, i) => (
-        <p key={i} className="text-small text-forestMuted break-words">
-          {multi && tp.grade ? <strong className="text-forest">{t('common.grade', { g: tp.grade })}: </strong> : null}
-          {tp.text || (entry.kind === 'lesson' ? t('editor.noCompetency') : '')}
-        </p>
-      ))}
+      {hasCurriculum
+        ? topics.map((tp, i) => (
+            <p key={i} className="text-small text-forestMuted break-words">
+              {multi && tp.grade ? <strong className="text-forest">{t('common.grade', { g: tp.grade })}: </strong> : null}
+              {tp.text || (entry.kind === 'lesson' ? t('editor.noCompetency') : '')}
+            </p>
+          ))
+        : multi && (
+            <p className="text-small text-forestMuted">{topics.map(tp => (tp.grade ? t('common.grade', { g: tp.grade }) : '')).filter(Boolean).join(' + ')}</p>
+          )}
       <div className="flex flex-wrap gap-2">
         {entry.kind === 'lesson' && (
           <Link href={href} className={`inline-flex items-center justify-center min-h-touch px-4 rounded border font-medium ${entry.planId ? 'bg-white border-forest' : 'bg-talaTeal text-white border-talaTeal'}`}>

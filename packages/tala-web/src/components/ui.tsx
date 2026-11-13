@@ -134,7 +134,7 @@ export function Checkbox({ label, checked, onChange, disabled }: { label: string
 export function Switch({ label, hint, checked, onChange }: { label: string; hint?: string; checked: boolean; onChange: (v: boolean) => void }) {
   return (
     <button type="button" role="switch" aria-checked={checked} onClick={() => onChange(!checked)} className="flex w-full items-center justify-between gap-4 min-h-touch py-2 text-left">
-      <span>
+      <span className="min-w-0 flex-1 break-words">
         <span className="block font-medium">{label}</span>
         {hint && <span className="block text-small text-forestMuted">{hint}</span>}
       </span>
@@ -225,7 +225,7 @@ export function Banner({ kind = 'info', children, action }: { kind?: keyof typeo
   return (
     <div role={kind === 'error' ? 'alert' : 'status'} className={cx('flex flex-wrap items-center gap-3 rounded border-l-4 border px-3 py-2', BANNER[kind])}>
       <span aria-hidden="true">{BANNER_ICON[kind]}</span>
-      <span className="flex-1 min-w-[12rem]">{children}</span>
+      <span className="flex-1 basis-48 min-w-0 break-words">{children}</span>
       {action}
     </div>
   );
@@ -290,6 +290,7 @@ export function EmptyState({ children, action }: { children: ReactNode; action?:
 export function Sheet({ open, onClose, title, children, actions }: { open: boolean; onClose: () => void; title: string; children: ReactNode; actions?: ReactNode }) {
   const ref = useRef<HTMLDialogElement>(null);
   const { t } = useT();
+  const titleId = useId();
   useEffect(() => {
     const d = ref.current;
     if (!d) return;
@@ -304,13 +305,13 @@ export function Sheet({ open, onClose, title, children, actions }: { open: boole
         e.preventDefault();
         onClose();
       }}
-      aria-labelledby="sheet-title"
+      aria-labelledby={open ? titleId : undefined}
       className="m-0 w-full max-w-full bg-white text-forest rounded-t p-0 fixed bottom-0 top-auto translate-x-0 wide:bottom-auto wide:top-1/2 wide:left-1/2 wide:-translate-x-1/2 wide:-translate-y-1/2 wide:max-w-[36rem] wide:rounded backdrop:bg-forest/50 max-h-[90dvh] overflow-y-auto"
     >
       {open && (
         <div className="p-4 flex flex-col gap-4">
           <div className="flex items-start justify-between gap-3">
-            <h2 id="sheet-title" className="text-title">
+            <h2 id={titleId} className="text-title">
               {title}
             </h2>
             <Button variant="quiet" onClick={onClose} aria-label={t('common.close')}>

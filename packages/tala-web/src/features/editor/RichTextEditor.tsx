@@ -60,9 +60,10 @@ export function RichTextEditor({ value, onChange, label, placeholder, readOnly, 
   };
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="group flex flex-col gap-1">
+      {/* The toolbar shows for the box being edited (focus-within), so a long plan is not a wall of buttons. */}
       {!readOnly && (
-        <div role="toolbar" aria-label={t('editor.formatting')} aria-controls={id} className="flex flex-wrap gap-1">
+        <div role="toolbar" aria-label={t('editor.formatting')} aria-controls={id} className="hidden group-focus-within:flex flex-wrap gap-1">
           <ToolButton onClick={() => exec('bold')} label={t('editor.bold')} glyph={<strong>B</strong>} />
           <ToolButton onClick={() => exec('italic')} label={t('editor.italic')} glyph={<em>I</em>} />
           <ToolButton onClick={() => exec('insertUnorderedList')} label={t('editor.bullets')} glyph="•" />

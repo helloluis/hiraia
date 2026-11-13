@@ -98,7 +98,7 @@ export function ClassScreen() {
       <SectionTitle>{t('class.gradeGroups')}</SectionTitle>
       <List>
         {cls.gradeGroups.map(g => (
-          <div key={g.id} className="flex items-center gap-3 px-3 py-2 border-b border-hairline last:border-b-0">
+          <div key={g.id} className="flex flex-wrap items-center gap-3 px-3 py-2 border-b border-hairline last:border-b-0">
             <span className="flex-1 font-medium">{g.grade === 'K' ? t('common.kinder') : t('common.grade', { g: g.grade })}</span>
             <label className="flex items-center gap-2 text-small">
               {t('setup.learners')}
