@@ -1,0 +1,115 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createSyncEngine, createMemoryStore } from './index';
+import { parseRecordData } from '../contracts/records';
+import type { RecordEnvelope } from '../contracts/records';
+import type { SyncTransport, MutationResult, Mutation, LocalStore } from '../contracts/sync';
+const at = '2026-11-13T12:00:00.000Z';
+class Server implements SyncTransport {
+  records = new Map<string, RecordEnvelope>();
+  results = new Map<string, MutationResult>();
+  log: RecordEnvelope[] = [];
+  offline = false; loseResponse = false; pullFailureAt = -1; pulls = 0;
+  requests: Mutation[][] = [];
+  async push({ mutations }: { mutations: Mutation[] }) {
+    if (this.offline) throw new TypeError('Network unavailable');
+    this.requests.push(JSON.parse(JSON.stringify(mutations)));
+    const results = mutations.map(m => {
+      const previous = this.results.get(m.mutationId); if (previous) return previous;
+      const key = `${m.entity}:${m.id}`, old = this.records.get(key);
+      let result: MutationResult;
+      const section = m.data as { planId?: string; key?: string } | undefined;
+      const parent = section?.planId ? this.records.get(`plan:${section.planId}`) : null;
+      if (m.entity === 'plan_section' && (parent?.data as { state?: string })?.state === 'locked' && section?.key !== 'reflection') result = { mutationId: m.mutationId, status: 'locked', record: old ?? null };
+      else if (old && m.baseRev !== old.rev && !(old.deletedAt && m.op === 'upsert')) result = { mutationId: m.mutationId, status: 'conflict', record: old };
+      else {
+        const r: RecordEnvelope = { entity: m.entity, id: m.id, rev: (old?.rev ?? 0) + 1, updatedAt: at, deletedAt: m.op === 'delete' ? at : null, data: parseRecordData(m.entity, m.op === 'delete' ? old?.data : m.data) };
+        this.records.set(key, r); this.log.push(r); result = { mutationId: m.mutationId, status: 'applied', record: r };
+      }
+      this.results.set(m.mutationId, result); return result;
+    });
+    if (this.loseResponse) { this.loseResponse = false; throw new TypeError('Lost response'); }
+    return { results };
+  }
+  async pull(query: { cursor?: string }) {
+    if (this.offline || this.pulls++ === this.pullFailureAt) throw new TypeError('Network unavailable');
+    const start = Number(query.cursor ?? 0), end = Math.min(start + 2, this.log.length);
+    return { records: this.log.slice(start, end), cursor: String(end), hasMore: end < this.log.length, serverTime: at };
+  }
+}
+let device = 0;
+function client(server: SyncTransport, store: LocalStore = createMemoryStore()) {
+  const prefix = `device${++device}`; let n = 0;
+  return { store, engine: createSyncEngine({ store, transport: server, deviceId: prefix, newId: () => `${prefix}.${++n}`, now: () => new Date(at) }) };
+}
+const note = (id = 'note0001', text = 'first') => parseRecordData('day_note', { id, classId: 'class001', date: '2026-11-13', text });
+const plan = () => parseRecordData('plan', { id: 'plan0001', templateId: 'tpl.dlp.v1', language: 'fil', grades: ['3'], durationMinutes: 50 });
+const section = (id = 'section1', text = 'first') => parseRecordData('plan_section', { id, planId: 'plan0001', key: 'content', content: { type: 'text', blocks: [{ t: 'p', spans: [{ text }] }] } });
+test('local validation, durable outbox, detached reads, notification and unsubscribe', async () => {
+  const s = new Server(), { engine: e, store } = client(s); let count = 0;
+  const stop = e.subscribe(() => count++); e.subscribe(() => { throw new Error('observer'); });
+  await e.put('day_note', note()); assert.equal((await store.outbox()).length, 1);
+  const r = await e.get('day_note', 'note0001'); r!.data.text = 'mutated'; assert.equal((await e.get('day_note', 'note0001'))!.data.text, 'first');
+  await assert.rejects(e.put('day_note', { ...note(), text: 'x'.repeat(4001) }));
+  stop(); await e.remove('day_note', 'note0001'); assert.equal(count, 1); assert.equal((await e.list('day_note')).length, 0);
+});
+test('offline report keeps work; lost response replays identical payload after new edit and engine restart', async () => {
+  const s = new Server(), { engine: e, store } = client(s); await e.put('day_note', note());
+  s.offline = true; assert.equal((await e.sync()).error, 'offline'); s.offline = false;
+  s.loseResponse = true; assert.equal((await e.sync()).ok, false);
+  await e.put('day_note', note('note0001', 'second'));
+  const restarted = client(s, store).engine; assert.equal((await restarted.sync()).ok, true);
+  assert.deepEqual(s.requests[0], s.requests[1]); assert.equal(s.records.get('day_note:note0001')!.rev, 2);
+  assert.equal((await restarted.get('day_note', 'note0001'))!.data.text, 'second'); assert.equal((await restarted.status()).pending, 0);
+});
+test('two devices merge changed fields without discarding unrelated remote edits', async () => {
+  const s = new Server(), a = client(s).engine, b = client(s).engine;
+  await a.put('day_note', note()); await a.sync(); await b.sync();
+  await a.put('day_note', { ...note(), text: 'A' }); await b.put('day_note', { ...note(), date: '2026-11-14' });
+  await a.sync(); await b.sync(); await a.sync();
+  assert.deepEqual((await a.get('day_note', 'note0001'))!.data, { ...note(), text: 'A', date: '2026-11-14' });
+});
+for (const choice of ['mine', 'theirs', 'both'] as const) test(`section conflicts retain versions and resolve ${choice}`, async () => {
+  const s = new Server(), a = client(s).engine, b = client(s).engine;
+  await a.put('plan_section', section()); await a.sync(); await b.sync();
+  await a.put('plan_section', section('section1', 'A')); await b.put('plan_section', section('section1', 'B'));
+  await a.sync(); assert.equal((await b.sync()).conflicts, 1); assert.equal((await b.status()).conflicts, 1);
+  await b.resolveConflict('plan_section', 'section1', choice); await b.sync();
+  const content = (await b.get('plan_section', 'section1'))!.data.content;
+  assert.equal(content.type, 'text'); if (content.type === 'text') assert.deepEqual(content.blocks.map(x => x.t === 'p' ? x.spans[0]!.text : ''), choice === 'both' ? ['B', 'A'] : [choice === 'mine' ? 'B' : 'A']);
+});
+test('edit wins against deletion', async () => {
+  const s = new Server(), a = client(s).engine, b = client(s).engine;
+  await a.put('day_note', note()); await a.sync(); await b.sync();
+  await a.remove('day_note', 'note0001'); await a.sync(); await b.put('day_note', note('note0001', 'restored')); await b.sync();
+  assert.equal(s.records.get('day_note:note0001')!.deletedAt, null);
+});
+test('pull page cursor and records survive interruption atomically', async () => {
+  const s = new Server(), a = client(s).engine, b = client(s);
+  for (let i = 0; i < 5; i++) await a.put('day_note', note(`note000${i}`)); await a.sync();
+  s.pulls = 0; s.pullFailureAt = 1; assert.equal((await b.engine.sync()).ok, false);
+  assert.equal(await b.store.getMeta('sync.cursor'), '2'); assert.equal((await b.engine.list('day_note')).length, 2);
+  s.pullFailureAt = -1; await client(s, b.store).engine.sync(); assert.equal((await b.engine.list('day_note')).length, 5);
+});
+test('lock creates a single full draft preserving all rejected section edits', async () => {
+  const s = new Server(), a = client(s).engine, b = client(s).engine;
+  await a.put('plan', plan()); await a.put('plan_section', section()); await a.put('plan_section', section('section2')); await a.sync(); await b.sync();
+  await a.put('plan', { ...plan(), state: 'locked', lock: { lockedAt: at, revisionCode: 'ABC', revision: 1 } }); await a.sync();
+  await b.put('plan_section', section('section1', 'B')); await b.put('plan_section', section('section2', 'C'));
+  const report = await b.sync(); assert.equal(report.ok, true); assert.equal(report.lockCopies.length, 1);
+  const draft = (await b.get('plan', report.lockCopies[0]!))!; assert.equal(draft.data.conflictCopyOf, 'plan0001'); assert.equal(draft.data.state, 'draft');
+  assert.equal((await b.list('plan_section')).filter(x => x.data.planId === draft.id).length, 2);
+});
+test('edits during a suspended push are saved immediately and not lost on acknowledgement', async () => {
+  const s = new Server(); let release!: () => void, entered!: () => void;
+  const gate = new Promise<void>(r => release = r), started = new Promise<void>(r => entered = r); let first = true;
+  const e = client({ pull: q => s.pull(q), push: async q => { if (first) { first = false; entered(); await gate; } return s.push(q); } }).engine;
+  await e.put('day_note', note()); const syncing = e.sync(); await started;
+  await e.put('day_note', note('note0001', 'while sending')); assert.equal((await e.get('day_note', 'note0001'))!.data.text, 'while sending'); release(); await syncing;
+  assert.equal((s.records.get('day_note:note0001')!.data as { text: string }).text, 'while sending');
+});
+test('batches never exceed 100; repeated sync does not add revisions', async () => {
+  const s = new Server(), e = client(s).engine;
+  for (let i = 0; i < 205; i++) await e.put('day_note', note(`note000${i}`));
+  assert.equal((await e.sync()).pushed, 205); await e.sync(); assert.ok(s.requests.every(r => r.length <= 100)); assert.equal(s.log.length, 205);
+});
