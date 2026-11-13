@@ -26,13 +26,17 @@ export function prePostReview(args: { plan: Plan; sections: PlanSection[]; templ
   return { snapshot, findings, blocking: hasBlockingFinding(findings) };
 }
 
-/** Copy a community version into a class as a private draft with lineage (COM-4), as one durable operation. */
-export async function copyArtifact(engine: SyncEngine, client: TalaClient, artifactId: string, cls: ClassRecord, versionId?: string): Promise<string> {
-  const res = await client.call('community.copy', { params: { artifactId }, body: { versionId, gradeGroupIds: cls.gradeGroups.map(g => g.id) } });
+/**
+ * Copy a community version into a class as a private draft with lineage (COM-4), as one durable operation.
+ * `gradeGroupIds` maps the artifact's grade groups (in order) onto the class's own groups; the server needs exactly
+ * one per artifact group. Omit it to let the server create placeholder groups.
+ */
+export async function copyArtifact(engine: SyncEngine, client: TalaClient, artifactId: string, cls: ClassRecord, gradeGroupIds?: string[], versionId?: string): Promise<string> {
+  const res = await client.call('community.copy', { params: { artifactId }, body: { versionId, gradeGroupIds } });
   const plan: Plan = {
     ...res.plan,
     placements: res.plan.placements.length ? res.plan.placements : [{ classId: cls.id, assignmentId: null, dates: [] }],
-    gradeGroupIds: res.plan.gradeGroupIds.length ? res.plan.gradeGroupIds : cls.gradeGroups.map(g => g.id),
+    gradeGroupIds: res.plan.gradeGroupIds.length ? res.plan.gradeGroupIds : (gradeGroupIds ?? cls.gradeGroups.map(g => g.id)),
     grades: res.plan.grades.length ? res.plan.grades : cls.gradeGroups.map(g => g.grade),
     state: 'draft',
     lock: null,

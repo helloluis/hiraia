@@ -4,7 +4,7 @@
  * plus debounced saves that snapshot a section_revision before the first edit of a session (PLAN-10).
  * Saves go to the device immediately (IndexedDB) — a connection loss never loses an edit (OFF-7).
  */
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { boundSectionHistory, lockPlan, restoreSectionRevision, sectionRevision } from '@hiraia/tala-core/plan';
 import type { Plan, PlanSection, SectionContent, SectionRevision, Template } from '@hiraia/tala-core/contracts';
 import { useRecord, useRecords, useWorkspace } from '@/data/records';
@@ -12,6 +12,7 @@ import { useSession } from '@/data/session';
 import { packIdFor, useCurriculumIndex, usePacks } from '@/data/curriculum';
 import { newId, nowIso } from '@/data/ids';
 import { lockProblems, templateById, type LockProblem } from '@/data/plans';
+import { sampleCompetenciesFor } from '@/data/sample';
 
 const SECTION_DEBOUNCE_MS = 700;
 const PLAN_DEBOUNCE_MS = 500;
@@ -28,7 +29,28 @@ export function usePlanEditor(planId: string) {
   const { index } = useCurriculumIndex();
 
   const plan = planRecord && !planRecord.deletedAt ? planRecord.data : null;
-  const sections = useMemo(() => sectionRecords.items.filter(s => s.data.planId === planId), [sectionRecords.items, planId]);
+  /**
+   * Unsaved edits per section, applied synchronously so a structured editor (per-group, time blocks, steps)
+   * always rebuilds from the latest content — never from a prop that is still waiting on the save debounce.
+   */
+  const [drafts, setDrafts] = useState<Record<string, SectionContent>>({});
+  const storedSections = useMemo(() => sectionRecords.items.filter(s => s.data.planId === planId), [sectionRecords.items, planId]);
+  const sections = useMemo(() => storedSections.map(s => (drafts[s.id] ? { ...s, data: { ...s.data, content: drafts[s.id]!, editedByTeacher: true } } : s)), [storedSections, drafts]);
+  // Drop a draft once the stored record carries the same content.
+  useEffect(() => {
+    setDrafts(d => {
+      let changed = false;
+      const next = { ...d };
+      for (const [id, content] of Object.entries(d)) {
+        const rec = storedSections.find(s => s.id === id);
+        if (rec && JSON.stringify(rec.data.content) === JSON.stringify(content)) {
+          delete next[id];
+          changed = true;
+        }
+      }
+      return changed ? next : d;
+    });
+  }, [storedSections]);
   const revisions = useMemo(() => revisionRecords.items.filter(r => r.data.planId === planId).sort((a, b) => b.data.savedAt.localeCompare(a.data.savedAt)), [revisionRecords.items, planId]);
   const template: Template | null = plan ? templateById(plan.templateId, customTemplates.items.map(t => t.data)) : null;
   const placement = plan?.placements[0] ?? null;
@@ -44,7 +66,8 @@ export function usePlanEditor(planId: string) {
     const year = ws.years.find(y => y.id === cls?.schoolYearId) ?? ws.activeYear;
     return [...new Set(groups.map(g => packIdFor(index, year?.label ?? null, g.grade, plan.learningAreaId)).filter((x): x is string => !!x))];
   }, [plan, groups, index, ws.years, ws.activeYear, cls]);
-  const { competencies } = usePacks(packIds);
+  const { competencies: packCompetencies } = usePacks(packIds);
+  const competencies = useMemo(() => (cls?.isSample && ws.activeYear ? [...packCompetencies, ...sampleCompetenciesFor([cls], ws.activeYear.terms.map(t => t.index)).filter(c => !packCompetencies.some(p => p.id === c.id))] : packCompetencies), [packCompetencies, cls, ws.activeYear]);
 
   /* ---------- debounced saves ---------- */
   const sectionTimers = useRef(new Map<string, ReturnType<typeof setTimeout>>());
@@ -74,7 +97,7 @@ export function usePlanEditor(planId: string) {
           if (rec && !rec.dirty && rec.rev > 0) await engine.remove('section_revision', r.id);
         }
       }
-      await engine.put('plan_section', next);
+      await engine.put('plan_section', current ? { ...current.data, content: next.content, editedByTeacher: true } : next);
       const p = latestPlan.current;
       if (p && p.aiDraft && next.origin === 'ai') await engine.put('plan', { ...p, aiDraft: false });
     },
@@ -83,6 +106,7 @@ export function usePlanEditor(planId: string) {
 
   const saveSection = useCallback(
     (section: PlanSection, content: SectionContent) => {
+      setDrafts(d => ({ ...d, [section.id]: content }));
       pendingSections.current.set(section.id, { ...section, content, editedByTeacher: true });
       const t = sectionTimers.current.get(section.id);
       if (t) clearTimeout(t);

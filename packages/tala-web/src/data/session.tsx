@@ -24,7 +24,13 @@ export interface SessionValue {
   network: NetworkState;
   /** The server no longer accepts this session; saved data stays readable (rung 4). */
   sessionLapsed: boolean;
+  /** This account was joined into another one (`account_merged`): sign in to the other account; unsent work is kept. */
+  mergedAway: boolean;
   signIn(email: string, password: string): Promise<void>;
+  /** Google ID-token sign-in (PRD §13.3). Throws TalaApiError; `link_required` / `verify_email_first` are handled by the caller. */
+  signInWithGoogle(idToken: string): Promise<void>;
+  /** Case 1, password path: prove the existing Tala account once and attach the Google identity. */
+  googleLink(idToken: string, password: string): Promise<void>;
   register(email: string, password: string, displayName: string, uiLanguage: Lang): Promise<void>;
   signOut(): Promise<void>;
   refreshUser(): Promise<User | null>;
@@ -68,6 +74,7 @@ export function SessionProvider({ children, cacheImpl }: { children: ReactNode; 
   // First client render must match the server (no banner); the real rung arrives in an effect.
   const [network, setNetwork] = useState<NetworkState>({ rung: 'full', online: true, slow: false, dataSaver: false, serverTrouble: false, readOnlyReason: null, bytesThisWeek: 0 });
   const [sessionLapsed, setSessionLapsed] = useState(false);
+  const [mergedAway, setMergedAway] = useState(false);
   const engineRef = useRef<SyncEngine | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const failures = useRef(0);
@@ -153,6 +160,7 @@ export function SessionProvider({ children, cacheImpl }: { children: ReactNode; 
             if (cancelled) return;
             if (err instanceof TalaApiError && err.code === 'unauthenticated') {
               setSessionLapsed(true);
+              if ((err.details as { reason?: string } | undefined)?.reason === 'account_merged') setMergedAway(true);
               networkMonitor.setReadOnly('session_lapsed');
             }
           });
@@ -188,6 +196,7 @@ export function SessionProvider({ children, cacheImpl }: { children: ReactNode; 
       if (previous && previous.id !== u.id) await deleteDatabase(dbName(previous.id)).catch(() => {});
       await cache.set(USER_KEY, u);
       setSessionLapsed(false);
+      setMergedAway(false);
       networkMonitor.setReadOnly(null);
       attach(u);
     },
@@ -197,6 +206,22 @@ export function SessionProvider({ children, cacheImpl }: { children: ReactNode; 
   const signIn = useCallback(
     async (email: string, password: string) => {
       const r = await client.call('auth.login', { body: { email, password, deviceLabel: deviceLabel() } });
+      await finishAuth(r.user);
+    },
+    [client, finishAuth],
+  );
+
+  const signInWithGoogle = useCallback(
+    async (idToken: string) => {
+      const r = await client.call('auth.google', { body: { idToken, deviceLabel: deviceLabel() } });
+      await finishAuth(r.user);
+    },
+    [client, finishAuth],
+  );
+
+  const googleLink = useCallback(
+    async (idToken: string, password: string) => {
+      const r = await client.call('auth.googleLink', { body: { idToken, password, deviceLabel: deviceLabel() } });
       await finishAuth(r.user);
     },
     [client, finishAuth],
@@ -242,7 +267,12 @@ export function SessionProvider({ children, cacheImpl }: { children: ReactNode; 
       setUser(r.user);
       await cache.set(USER_KEY, r.user);
       return r.user;
-    } catch {
+    } catch (err) {
+      if (err instanceof TalaApiError && err.code === 'unauthenticated') {
+        setSessionLapsed(true);
+        if ((err.details as { reason?: string } | undefined)?.reason === 'account_merged') setMergedAway(true);
+        networkMonitor.setReadOnly('session_lapsed');
+      }
       return null;
     }
   }, [cache, client]);
@@ -254,8 +284,8 @@ export function SessionProvider({ children, cacheImpl }: { children: ReactNode; 
   const setDataSaver = useCallback((on: boolean) => networkMonitor.setDataSaver(on), []);
 
   const value = useMemo<SessionValue>(
-    () => ({ status, user, engine, cache, config, sync, network, sessionLapsed, signIn, register, signOut, refreshUser, syncNow, setDataSaver }),
-    [status, user, engine, cache, config, sync, network, sessionLapsed, signIn, register, signOut, refreshUser, syncNow, setDataSaver],
+    () => ({ status, user, engine, cache, config, sync, network, sessionLapsed, mergedAway, signIn, signInWithGoogle, googleLink, register, signOut, refreshUser, syncNow, setDataSaver }),
+    [status, user, engine, cache, config, sync, network, sessionLapsed, mergedAway, signIn, signInWithGoogle, googleLink, register, signOut, refreshUser, syncNow, setDataSaver],
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

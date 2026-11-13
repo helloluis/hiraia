@@ -35,3 +35,17 @@ magkaklase"), `editor.teacherNone`, `network.readOnlyTitle`, `settings.dataSaver
 Wave 2 additions to review: `gen.*` (especially `gen.intro`, `gen.notice`, `gen.regenEdited`, `gen.allowance`),
 `roster.flag.*`, `roster.act.keep_original`, `roster.counts`, `com.license`, `com.checkNotice`, `com.removeBody`,
 `com.affirm`, `com.status.*`, `com.adapted` / `com.adaptedFrom` ("hinango").
+
+## Google sign-in (PRD §13.3)
+
+Shown only when the server's `config.features.googleSignIn` is true. The Google Identity Services script is loaded
+lazily, only where a Google button is rendered, and the client id is the public `NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID`
+(build/runtime value, never a secret). Flows: "Continue with Google" on sign-in and register; `link_required` →
+password once (`auth.googleLink`) or "email me a link" (`auth.googleLinkRequest`) → `/link-google` reads `#token=` and
+posts to `auth.googleLinkConfirm`; `verify_email_first`; Settings → Account: connect / disconnect Google, remove the
+password, join another account (`account.merge`, both proofs). Every server reason code is localised in
+`src/data/errors.ts`.
+
+## Journey check
+
+`docs/journey/` holds the scripted full-stack walk against the production build (fallback and live runs).

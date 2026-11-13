@@ -19,6 +19,7 @@ import { useCurriculumIndex, packIdsFor, usePacks } from './curriculum';
 import { isoDate } from './ids';
 import { useSession } from './session';
 import { useWorkspace, type Workspace } from './records';
+import { sampleCompetenciesFor } from './sample';
 
 export function pacingDefaults(config: { pacingDefaults: PacingParams } | null): PacingParams {
   return config?.pacingDefaults ?? DEFAULT_PACING_PARAMS;
@@ -78,7 +79,13 @@ export function useTimeline(from: string, to: string) {
   const { config } = useSession();
   const { index, loading: indexLoading } = useCurriculumIndex();
   const packIds = useMemo(() => packIdsFor(index, ws.activeYear?.label ?? null, ws.classes, ws.assignments), [index, ws.activeYear, ws.classes, ws.assignments]);
-  const { competencies, loading: packsLoading, missing } = usePacks(packIds);
+  const { competencies: packCompetencies, loading: packsLoading, missing } = usePacks(packIds);
+  // The sample class paces on the bundled fixture competencies (same ids as the server fixtures).
+  const competencies = useMemo(() => {
+    if (!ws.classes.some(c => c.isSample) || !ws.activeYear) return packCompetencies;
+    const extra = sampleCompetenciesFor(ws.classes, ws.activeYear.terms.map(t => t.index)).filter(c => !packCompetencies.some(p => p.id === c.id));
+    return extra.length ? [...packCompetencies, ...extra] : packCompetencies;
+  }, [packCompetencies, ws.classes, ws.activeYear]);
   const today = isoDate();
   const defaults = pacingDefaults(config);
   const entries = useMemo<TimelineEntry[]>(() => {

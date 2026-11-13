@@ -246,7 +246,7 @@ export function SetupScreen() {
     try {
       await ensureProfile(engine, user, lang);
       const preset = presets?.length ? await loadPreset(presets[0]!.id) : null;
-      await createSampleClass({ engine, today, lang, index, loadPack: id => loadPack(getClient(), cache, id), preset, existingYear });
+      await createSampleClass({ engine, today, lang, preset, existingYear });
       router.replace('/week');
     } catch {
       setError(t('error.generic'));

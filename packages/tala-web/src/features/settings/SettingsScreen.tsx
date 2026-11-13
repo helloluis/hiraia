@@ -11,11 +11,14 @@ import { ensureProfile } from '@/data/profile';
 import { errorKey } from '@/data/errors';
 import { Banner, Button, List, ListRow, PageHeader, Select, Sheet, Switch, TextInput, Toast } from '@/components/ui';
 import { LanguageSwitch } from '@/features/auth/LanguageSwitch';
+import { GoogleAccountSheets, type AccountSheet } from './GoogleAccountSheets';
 
 export function SettingsScreen() {
   const { t, lang } = useT();
   const router = useRouter();
-  const { user, engine, signOut, network, setDataSaver } = useSession();
+  const { user, engine, signOut, network, setDataSaver, config } = useSession();
+  const [accountSheet, setAccountSheet] = useState<AccountSheet>('none');
+  const googleOn = config?.features.googleSignIn === true;
   const ws = useWorkspace();
   const [sheet, setSheet] = useState<'none' | 'password' | 'devices' | 'delete' | 'signout'>('none');
   const [toast, setToast] = useState<string | null>(null);
@@ -56,7 +59,11 @@ export function SettingsScreen() {
               <Banner kind="warn">{t('settings.emailUnverified')}</Banner>
             </div>
           )}
-          <ListRow title={t('settings.changePassword')} onClick={() => setSheet('password')} />
+          {user?.hasPassword && <ListRow title={t('settings.changePassword')} onClick={() => setSheet('password')} />}
+          {googleOn && !user?.hasGoogle && <ListRow title={t('google.notConnected')} subtitle={t('google.connect')} onClick={() => setAccountSheet('connect')} />}
+          {user?.hasGoogle && <ListRow title={t('google.connected')} subtitle={t('google.disconnect')} onClick={() => setAccountSheet('disconnect')} />}
+          {googleOn && user?.hasGoogle && user.hasPassword && <ListRow title={t('google.removePassword')} onClick={() => setAccountSheet('removePassword')} />}
+          <ListRow title={t('merge.title')} onClick={() => setAccountSheet('merge')} />
           <ListRow title={t('settings.sessions')} onClick={() => setSheet('devices')} />
           <ListRow
             title={t('settings.export')}
@@ -138,6 +145,7 @@ export function SettingsScreen() {
       </Button>
 
       <PasswordSheet open={sheet === 'password'} onClose={() => setSheet('none')} onDone={() => setToast(t('settings.passwordChanged'))} />
+      <GoogleAccountSheets sheet={accountSheet} onClose={() => setAccountSheet('none')} onDone={m => m && setToast(m)} />
       <DevicesSheet open={sheet === 'devices'} onClose={() => setSheet('none')} onSignedOutEverywhere={() => router.replace('/sign-in')} />
       <Sheet
         open={sheet === 'signout'}
