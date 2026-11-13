@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { BUILTIN_TEMPLATES, SectionContent as SectionContentSchema, type SectionContent, type Template, type GenerationInput } from '@hiraia/tala-core';
-import { validateGeneratedSections, type DraftInput } from '@hiraia/tala-core/generation';
+import { validateGeneratedSections, resolvedObjectiveText, type DraftInput } from '@hiraia/tala-core/generation';
 import type { LlmRequest } from '../../kernel/types';
 
 const text = z.string().max(3000);
@@ -20,13 +20,14 @@ export type CompactLesson=z.infer<typeof compactSchema>;
 export interface LessonOutput {title:string;warnings?:string[];sections:{key:string;content:SectionContent}[]}
 const rich=(value:string)=>value.split('\n').filter(s=>s.trim()).map(line=>({t:'p' as const,spans:[{text:line}]}));
 /** Resolve model target references against authoritative objectives; never invent missing references. */
-function targets(input:DraftInput) {
-  return input.gradeGroups.map(g=>({grade:g.grade,id:g.id,objectives:(input.resolvedObjectives?.[g.id]??[]).map((value,i)=>({ref:input.competencies[g.id]?.[i]??`objective-${i+1}`,text:value})).concat(input.customObjectives.map((value,i)=>({ref:`custom-${i+1}`,text:value})))}));
+export function objectiveTargets(input:DraftInput) {
+  const objectives=resolvedObjectiveText(input);let ordinal=0;
+  return input.gradeGroups.map(g=>({grade:g.grade,id:g.id,objectives:(objectives[g.id]??[]).map(value=>({ref:`objective-${++ordinal}`,text:value})).concat(input.customObjectives.map((value,i)=>({ref:`custom-${i+1}`,text:value})))}));
 }
 export function convertCompact(input:DraftInput,raw:CompactLesson,newId:()=>string):LessonOutput {
   const template=input.template??BUILTIN_TEMPLATES.find(t=>t.id===input.templateId);
   if(!template)throw Error('template');
-  const groups=targets(input);
+  const groups=objectiveTargets(input);
   const groupId=(grade:string)=>{const g=groups.find(g=>g.grade===grade);if(!g)throw Error('group_reference');return g.id;};
   const bound=(part:{text:string;targets:string[]},grade?:string)=>{
     const candidates=groups.filter(g=>!grade||g.grade===grade).flatMap(g=>g.objectives);
@@ -72,7 +73,7 @@ export function multigradeSchedule(input:DraftInput) {
   return [{slot:1,minutes:edge,transitionMinutes:0,teacherWith:'all'},...input.gradeGroups.map((g,i)=>({slot:i+2,minutes:Math.floor(remaining/n)+(i<remaining%n?1:0),transitionMinutes:1,teacherWith:g.grade})),{slot:n+2,minutes:edge,transitionMinutes:0,teacherWith:'all'}];
 }
 export function compactTemplateSchema(template:Template,input?:DraftInput) {
-  const refs=input?targets(input).flatMap(g=>g.objectives.map(o=>o.ref)):['example'];
+  const refs=input?objectiveTargets(input).flatMap(g=>g.objectives.map(o=>o.ref)):['example'];
   const targetRefs=z.array(z.enum((refs.length?refs:['__none__']) as [string,...string[]]));
   const shapes=template.sections.map(s=>{
     const key={key:z.literal(s.key)};
@@ -116,7 +117,7 @@ export function lessonRequest(input:DraftInput,opts:{userId:string;newId:()=>str
   if(input.kind==='translate')return translationRequest(input,(opts.source??[]) as LessonOutput['sections'],opts);
   const schema=compactTemplateSchema(requestedTemplate,input).transform((raw,ctx)=>{try{const value=compactSchema.parse(raw);return convertCompact({...input,template:requestedTemplate},value,opts.newId);}catch(error){ctx.addIssue({code:'custom',message:error instanceof Error?error.message:'conversion'});return z.NEVER;}});
   return {feature:input.kind==='section'?'lesson.regenerate':input.kind==='adapt'?'lesson.adapt':'lesson.generate',promptId,version:opts.version??2,userId:opts.userId,signal:opts.signal,maxOutputTokens:input.kind==='section'?4096:template.span==='week'||input.gradeGroups.length>=3?12288:8192,
-    vars:{input:JSON.stringify({language:input.targetLanguage??input.language,subject:input.subjectName,groups:targets(input),timeBudgetMinutes:input.timeBudgetMinutes,sessions:input.sessions,profile:input.classProfile,schedule:template.span==='week'?Array.from({length:input.sessions},(_,i)=>({weekday:i+1,minutes:input.timeBudgetMinutes})):input.gradeGroups.length>1?multigradeSchedule(input):procedureSchedule(input),guidance:input.guidance,instruction:input.instruction,sections:requestedTemplate.sections.map(s=>({key:s.key,format:s.contentType})),source:opts.source,prior:opts.prior})},schema,
+    vars:{input:JSON.stringify({language:input.targetLanguage??input.language,subject:input.subjectName,groups:objectiveTargets(input),timeBudgetMinutes:input.timeBudgetMinutes,sessions:input.sessions,profile:input.classProfile,schedule:template.span==='week'?Array.from({length:input.sessions},(_,i)=>({weekday:i+1,minutes:input.timeBudgetMinutes})):input.gradeGroups.length>1?multigradeSchedule(input):procedureSchedule(input),guidance:input.guidance,instruction:input.instruction,sections:requestedTemplate.sections.map(s=>({key:s.key,format:s.contentType})),source:opts.source,prior:opts.prior})},schema,
     check:value=>validateGeneratedSections({...input,template:requestedTemplate},value.sections).filter(e=>input.kind!=='section'||(!e.startsWith('objectives must')&&!e.startsWith('assessment must'))),
   };
 }

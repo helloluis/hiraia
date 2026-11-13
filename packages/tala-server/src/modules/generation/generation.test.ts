@@ -51,3 +51,17 @@ test('merge requeues running work without letting the old runner overwrite the m
   }finally{t.close();}
 });
 test('cancelled and failed idempotent jobs keep their replay identity',async()=>{const t=server();try{const teacher=await t.registerUser();const cancelledBody={...input(),idempotencyKey:'cancel-key'};const cancelled=await t.ok('generation.create',{body:cancelledBody,token:teacher.token});await t.ok('generation.cancel',{params:{jobId:cancelled.id},token:teacher.token});assert.equal((await t.ok('generation.create',{body:cancelledBody,token:teacher.token})).status,'cancelled');const failedBody={...input(),idempotencyKey:'failure-key'};const failed=await t.ok('generation.create',{body:failedBody,token:teacher.token});await waitFor(t,teacher.token,failed.id,'failed');assert.equal((await t.ok('generation.create',{body:failedBody,token:teacher.token})).id,failed.id);assert.deepEqual(t.errors,[]);}finally{t.close();}});
+test('generated sections show official codes or stored text while internal competency IDs stay in metadata',async()=>{
+  const ids=['fixture-demo-v1.mathematics.g2.t2.3','fixture-demo-v1.mathematics.g4.t2.7'];
+  const records=[{id:ids[0],code:'M2NS-IIa-1',text:'Describe and compare numbers.'},{id:ids[1],code:null,text:'Compare fractions.'}];
+  const fake:LlmGateway={routeFor:()=> 'cloud',complete:async req=>{
+    const payload=JSON.parse(req.vars.input!) as {groups:{grade:string;objectives:{ref:string;text:string}[]}[];schedule:{slot:number}[]};
+    for(const id of ids)assert.equal(req.vars.input!.includes(id),false);
+    const groups=payload.groups.map(g=>({grade:g.grade,targets:g.objectives.map(o=>o.ref),text:'Ask learners to explain their comparison.'}));
+    const raw={title:'Comparisons',sections:[{key:'objectives',groups},{key:'materials',groups:groups.map(g=>({grade:g.grade,items:[]}))},{key:'multigrade',blocks:payload.schedule.map(s=>({slot:s.slot,label:'Compare',activities:groups.map(g=>({grade:g.grade,text:'Draw and compare the numbers independently when the teacher is with the other grade.'}))}))},{key:'assessment',groups},{key:'reflection',text:'Check answers before use.'}]};
+    const data=req.schema.parse(raw);assert.deepEqual(req.check?.(data),[]);
+    return {ok:true,data,provider:'qwen',model:'fake',promptId:req.promptId,promptVersion:2,usage:{inputTokens:0,outputTokens:0,costUsd:0},fellBack:true};
+  }};
+  const t=createTestServer({modules:[llmModule,generationModule],services:{llm:fake,curriculum:{getCompetencies:(_version,requested)=>records.filter(record=>requested.includes(record.id!)).reverse() as never,versionFor:()=>null}},quiet:true});
+  try{const teacher=await t.registerUser();const body=GenerationInput.parse({...input(),templateId:'tpl.multigrade.v1',gradeGroups:[{id:'group-002',grade:'2'},{id:'group-004',grade:'4'}],competencies:{'group-002':[ids[0]],'group-004':[ids[1]]},curriculumVersion:'fixture-demo-v1',customObjectives:[]});const job=await t.ok('generation.create',{body,token:teacher.token});const done=await waitFor(t,teacher.token,job.id,'done');const content=JSON.stringify(done.result!.sections.map(s=>s.content));for(const id of ids)assert.equal(content.includes(id),false);assert.ok(content.includes('M2NS-IIa-1: Describe and compare numbers.'));assert.ok(content.includes('Compare fractions.'));const stored=JSON.parse((t.db.prepare('SELECT input FROM generation_jobs WHERE id=?').get(job.id) as {input:string}).input) as GenerationInput;assert.deepEqual(stored.competencies,body.competencies);assert.deepEqual(t.errors,[]);}finally{t.close();}
+});
