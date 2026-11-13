@@ -1,2 +1,5 @@
 .next/
 tsconfig.tsbuildinfo
+
+# The repository root ignores every `data/` folder; this app's data layer lives in src/data and must be tracked.
+!src/data/
