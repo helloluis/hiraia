@@ -244,7 +244,12 @@ export interface PacingEngine {
   /** Any-day onboarding (§7.5): the competency default pacing would have reached on `today`. */
   proposeStartPosition(input: Omit<PacingInput, 'marks' | 'checks'>): { competencyId: string; date: IsoDate; estimated: true } | null;
   buildTimeline(input: TimelineInput): TimelineEntry[];
-  previewRealignment(input: PacingInput & { plans: Plan[] }, request: RealignmentRequest): RealignmentPreview;
+  /**
+   * `baseline` is the pacing plan as it stood before the disruption (the last plan the teacher saw), so that
+   * `before`, `moved` and `planMoves` are measured against what was actually scheduled. Omit it to use
+   * computePacing(input) with the disrupting calendar days / marks ignored where derivable.
+   */
+  previewRealignment(input: PacingInput & { plans: Plan[]; baseline?: PacingPlan }, request: RealignmentRequest): RealignmentPreview;
   /** Which realignment options are applicable right now, with the default first (§7.6). */
   availableRealignments(input: PacingInput): RealignmentOption[];
   /** Term containing `date`, or null between terms. */

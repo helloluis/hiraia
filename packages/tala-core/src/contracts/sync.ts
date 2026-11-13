@@ -63,8 +63,23 @@ export const PullQuery = z.object({
   windowFrom: z.string().optional(),
   windowTo: z.string().optional(),
 });
+/**
+ * Records on the pull wire are deliberately lenient about `entity` and `data`: a newer server may send
+ * entity kinds or shapes an older client does not know. The sync engine skips what it cannot parse and
+ * still advances the cursor (forward compatibility), instead of the transport rejecting the whole page.
+ */
+export const WireRecord = z.object({
+  entity: z.string(),
+  id: z.string(),
+  rev: z.number().int().min(0),
+  updatedAt: z.string(),
+  deletedAt: z.string().nullable(),
+  data: z.unknown(),
+});
+export type WireRecord = z.infer<typeof WireRecord>;
+
 export const PullResponse = z.object({
-  records: z.array(RecordEnvelopeSchema),
+  records: z.array(WireRecord),
   cursor: z.string(),
   hasMore: z.boolean(),
   serverTime: IsoDateTime,
@@ -145,6 +160,10 @@ export interface SyncReport {
   conflicts: number;
   /** Plans duplicated as draft copies because the original was locked elsewhere. */
   lockCopies: Id[];
+  /** Writes the server refused for good (invalid/forbidden). Taken out of the queue; the local text is kept and marked. */
+  rejected: number;
+  /** Pulled records this client version could not read and skipped. */
+  skipped: number;
   error: 'offline' | 'unauthenticated' | 'server' | null;
   at: IsoDateTime;
 }

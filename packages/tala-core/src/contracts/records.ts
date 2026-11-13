@@ -62,6 +62,13 @@ export const CalendarDay = z.object({
   /** For `shortened`: minutes available per session that day. */
   minutesOverride: z.number().int().min(0).max(600).nullable().default(null),
   source: z.enum(['preset', 'teacher']).default('teacher'),
+  /**
+   * For `makeup`: which weekday's timetable the make-up day follows (a Saturday class that "follows Monday").
+   * null = use the date's own weekday (only slots that already fall on it).
+   */
+  followsWeekday: Weekday.nullable().default(null),
+  /** For `makeup` / `shortened`: limit to these teaching assignments. null = every assignment of the class(es). */
+  assignmentIds: z.array(Id).max(40).nullable().default(null),
 });
 export type CalendarDay = z.infer<typeof CalendarDay>;
 
@@ -191,6 +198,8 @@ export const PairingOverride = z.object({
   classId: Id,
   assignmentId: Id,
   date: IsoDate,
+  /** Timetable slot the override applies to. null = every session of this assignment on that date. */
+  slotId: Id.nullable().default(null),
   /** gradeGroupId → competencyIds for that date. */
   byGroup: z.record(Id, z.array(z.string())),
 });
