@@ -15,6 +15,10 @@ import { DEFAULT_ARGON2_COST, createPasswordHasher } from './passwords';
 import type { Argon2Cost, PasswordHasher } from './passwords';
 import { createLoginThrottle, createSqliteRateLimiter } from './rate-limit';
 import type { LoginThrottle } from './rate-limit';
+import { createRecordEngine } from './records';
+import type { RecordEngine } from './records';
+import { createRevisions } from './revisions';
+import type { Revisions } from './revisions';
 import type { Mailer, RateLimiter } from '../../kernel/types';
 
 export interface CoreOptions {
@@ -30,6 +34,8 @@ export interface CoreState {
   throttle: LoginThrottle;
   limiter: RateLimiter & { prune(): void };
   mailer: Mailer;
+  revisions: Revisions;
+  records: RecordEngine;
 }
 
 const STATES = new WeakMap<Db, CoreState>();
@@ -37,8 +43,19 @@ const STATES = new WeakMap<Db, CoreState>();
 export function initCoreState(base: BaseDeps, options: CoreOptions): CoreState {
   const existing = STATES.get(base.db);
   if (existing) return existing;
+  const accounts = createAccounts(base.db, base.config, base.now, base.newId);
+  const revisions = createRevisions(base.db, base.now);
   const state: CoreState = {
-    accounts: createAccounts(base.db, base.config, base.now, base.newId),
+    accounts,
+    revisions,
+    records: createRecordEngine({
+      db: base.db,
+      now: base.now,
+      log: base.log,
+      revisions,
+      // The profile record is where a teacher edits their name; emails and sessions read it from the account.
+      onProfile: (ownerId, profile) => accounts.updateProfile(ownerId, profile.displayName, profile.uiLanguage),
+    }),
     hasher: createPasswordHasher(options.argon2 ?? DEFAULT_ARGON2_COST),
     throttle: createLoginThrottle(base.db, base.now),
     limiter: createSqliteRateLimiter(base.db, base.now),

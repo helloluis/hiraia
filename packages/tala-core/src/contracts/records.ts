@@ -268,6 +268,8 @@ export const Plan = z.object({
       revisionCode: z.string().max(16),
       /** Server plan revision number the lock applies to; null while the lock is still only on the device. */
       revision: z.number().int().nullable(),
+      /** sectionId → rev of each section as the locking device saw it, so the server can snapshot exactly that (optional). */
+      sectionRevs: z.record(Id, z.number().int().min(0)).optional(),
     })
     .nullable()
     .default(null),

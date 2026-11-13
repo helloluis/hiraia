@@ -104,7 +104,7 @@ export function realignmentUndo(input: RealignmentInput): Pick<RealignmentInput,
 /** Pure transaction payload. Callers persist these records together and retain realignmentUndo. */
 export function applyRealignment(input: RealignmentInput, preview: RealignmentPreview): Pick<RealignmentInput, 'track' | 'calendarDays' | 'plans'> {
   const plans = input.plans.map(plan => ({ ...copy(plan), placements: plan.placements.map(placement => {
-    const move = preview.planMoves.find(m => m.planId === plan.id && m.classId === placement.classId && m.from.join('|') === placement.dates.join('|'));
+    const move = preview.planMoves.find(m => (placement.assignmentId === null || placement.assignmentId === input.assignment.id) && m.planId === plan.id && m.classId === placement.classId && m.from.join('|') === placement.dates.join('|'));
     return move ? { ...placement, dates: [...move.to] } : copy(placement);
   }) }));
   return { track: copy(preview.nextTrack), calendarDays: [...copy(input.calendarDays), ...copy(preview.newCalendarDays)], plans };

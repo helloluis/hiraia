@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { Competency, DEFAULT_PACING_PARAMS } from '../contracts/curriculum';
 import type { PacingInput, TimelineInput, RealignmentOption } from '../contracts/curriculum';
 import { ClassRecord, PacingTrack, SchoolYear, TeachingAssignment, CalendarDay, Plan, SessionMark } from '../contracts/records';
-import { engine, previewRealignment, realignmentUndo, applyRealignment, allocationFromPlan } from './index';
+import { engine, previewRealignment, realignmentUndo, applyRealignment, allocationFromPlan, previewRealignments, carryDeferredToTrack } from './index';
 import { allocate } from './compute';
 import { civil, ordinal, weekday } from './dates';
 
@@ -75,9 +75,13 @@ test('typhoon-week shift retains allocation and moves locked plan dates without 
   const input = fixture(), baseline = engine.computePacing(input);
   input.calendarDays = ['02', '03', '04', '05', '06'].map(d => CalendarDay.parse({ id: `event0${d}`, schoolYearId: 'year0001', date: `2026-11-${d}`, kind: 'suspension' }));
   const plan = Plan.parse({ id: 'locked01', templateId: 'template', language: 'en', grades: ['4'], durationMinutes: 50, state: 'locked', lock: { lockedAt: '2026-11-01T00:00:00Z', revisionCode: 'R1', revision: 1 }, competencies: { group001: [input.competencies[0]!.id] }, placements: [{ classId: 'class001', assignmentId: 'assignment', dates: ['2026-11-02'] }] });
+  plan.placements.push({ classId: input.track.classId, assignmentId: 'otherassign', dates: ['2026-11-02'] });
   const saved = JSON.stringify(plan);
   const preview = previewRealignment({ ...input, plans: [plan], baseline: baseline }, { option: 'shift' });
   assert.ok(preview.dropped.length); assert.equal(preview.planMoves[0]!.to[0], '2026-11-09'); assert.equal(JSON.stringify(plan), saved);
+  const applied = applyRealignment({ ...input, plans: [plan] }, preview);
+  assert.deepEqual(applied.plans[0]!.lock, plan.lock);
+  assert.deepEqual(applied.plans[0]!.placements[1], plan.placements[1]);
 });
 test('all six realignment options are pure and their full snapshot restores the original state', () => {
   for (const option of ['shift', 'absorb', 'compress', 'merge', 'add_time', 'defer'] as RealignmentOption[]) {
@@ -176,4 +180,25 @@ test('theme pairing reorders a second group, slot overrides and per-group kinds 
   input.pairingOverrides = [{ id: 'override1', classId: cls.id, assignmentId: assignment.id, date: timeline[0]!.date, slotId: timeline[0]!.slotId, byGroup: { group002: [second[0]!.id] } }];
   const changed = engine.buildTimeline(input)[0]!;
   assert.equal(changed.byGroup.group002![0], second[0]!.id); assert.equal(changed.pairing!.overridden, true); assert.equal(changed.pairing!.shared, false);
+});
+
+
+test('all-class preview combines tracks and defer carries into the receiving term', () => {
+  const input = fixture(), baseline = engine.computePacing(input);
+  const other = fixture(); other.track = { ...other.track, id: 'track002', classId: 'class002' }; other.assignment = { ...other.assignment, classId: 'class002' };
+  const cancellation = CalendarDay.parse({ id: 'allclass', schoolYearId: input.schoolYear.id, date: '2026-11-02', kind: 'suspension' });
+  input.calendarDays = [cancellation]; other.calendarDays = [cancellation];
+  const batch = previewRealignments([{ ...input, plans: [], baseline }, { ...other, plans: [], baseline: { ...baseline, trackId: other.track.id } }], { option: 'shift' });
+  assert.equal(batch.previews.length, 2); assert.deepEqual(batch.conflictingPlanIds, []);
+  const defer = previewRealignment({ ...input, plans: [], baseline }, { option: 'defer', competencyIds: [input.competencies[0]!.id] });
+  const target = { ...input.track, id: 'nextterm', termId: 'term0002' };
+  assert.deepEqual(carryDeferredToTrack(defer.nextTrack, target).overrides.movedIn, [input.competencies[0]!.id]);
+  assert.throws(() => carryDeferredToTrack(defer.nextTrack, input.track));
+});
+test('cancelled accepted timeline period is not falsely labelled assumed taught', () => {
+  const input = fixture(); input.track.allocation = allocationFromPlan(engine.computePacing(input)); input.today = '2026-11-03';
+  input.calendarDays = [CalendarDay.parse({ id: 'cancel01', schoolYearId: input.schoolYear.id, date: '2026-11-02', kind: 'suspension' })];
+  const cls = ClassRecord.parse({ id: input.track.classId, schoolYearId: input.schoolYear.id, name: 'Class', gradeGroups: [{ id: input.track.gradeGroupId, grade: '4' }] });
+  const timeline = engine.buildTimeline({ ...input, from: input.term.startDate, to: input.term.endDate, classes: [cls], assignments: [input.assignment], tracks: [input.track], plans: [], pairingOverrides: [] });
+  assert.equal(timeline[0]!.mark, 'not_taught');
 });

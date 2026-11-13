@@ -94,6 +94,9 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
     ),
     setPassword: db.prepare('UPDATE core_users SET password_hash = ?, password_changed_at = ?, updated_at = ? WHERE id = ?'),
     setVerified: db.prepare('UPDATE core_users SET email_verified = 1, updated_at = ? WHERE id = ?'),
+    setProfile: db.prepare('UPDATE core_users SET display_name = ?, ui_language = ?, updated_at = ? WHERE id = ?'),
+    deleteUser: db.prepare('DELETE FROM core_users WHERE id = ?'),
+    deleteMailTo: db.prepare('DELETE FROM core_mail_outbox WHERE lower(to_email) = ?'),
     hasGoogle: db.prepare(`SELECT 1 FROM core_identities WHERE user_id = ? AND provider = 'google' LIMIT 1`),
 
     insertSession: db.prepare(
@@ -178,6 +181,21 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
 
     markEmailVerified(userId: Id): void {
       q.setVerified.run(now().toISOString(), userId);
+    },
+
+    /** Keep the account's name and language in step with the teacher's synced profile record. */
+    updateProfile(userId: Id, displayName: string, uiLanguage: string): void {
+      q.setProfile.run(displayName, uiLanguage, now().toISOString(), userId);
+    },
+
+    /**
+     * Remove the account. Its sessions are remembered (as hashes) as ended by deletion, so its other devices
+     * learn why they were signed out. Rows in tables that reference the user go with it.
+     */
+    deleteUser(user: UserRow): void {
+      for (const row of q.allSessionsOfUser.all(user.id) as SessionRow[]) endSessionRow(row, 'account_deleted');
+      q.deleteMailTo.run(user.email_norm);
+      q.deleteUser.run(user.id);
     },
 
     /* ---------------- sessions ---------------- */
