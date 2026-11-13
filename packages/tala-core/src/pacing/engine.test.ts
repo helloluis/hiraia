@@ -75,9 +75,13 @@ test('typhoon-week shift retains allocation and moves locked plan dates without 
   const input = fixture(), baseline = engine.computePacing(input);
   input.calendarDays = ['02', '03', '04', '05', '06'].map(d => CalendarDay.parse({ id: `event0${d}`, schoolYearId: 'year0001', date: `2026-11-${d}`, kind: 'suspension' }));
   const plan = Plan.parse({ id: 'locked01', templateId: 'template', language: 'en', grades: ['4'], durationMinutes: 50, state: 'locked', lock: { lockedAt: '2026-11-01T00:00:00Z', revisionCode: 'R1', revision: 1 }, competencies: { group001: [input.competencies[0]!.id] }, placements: [{ classId: 'class001', assignmentId: 'assignment', dates: ['2026-11-02'] }] });
+  plan.placements.push({ classId: input.track.classId, assignmentId: 'otherassign', dates: ['2026-11-02'] });
   const saved = JSON.stringify(plan);
   const preview = previewRealignment({ ...input, plans: [plan], baseline: baseline }, { option: 'shift' });
   assert.ok(preview.dropped.length); assert.equal(preview.planMoves[0]!.to[0], '2026-11-09'); assert.equal(JSON.stringify(plan), saved);
+  const applied = applyRealignment({ ...input, plans: [plan] }, preview);
+  assert.deepEqual(applied.plans[0]!.lock, plan.lock);
+  assert.deepEqual(applied.plans[0]!.placements[1], plan.placements[1]);
 });
 test('all six realignment options are pure and their full snapshot restores the original state', () => {
   for (const option of ['shift', 'absorb', 'compress', 'merge', 'add_time', 'defer'] as RealignmentOption[]) {
