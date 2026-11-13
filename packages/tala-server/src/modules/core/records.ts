@@ -763,6 +763,32 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     exportAll(ownerId: Id): RecordEnvelope[] {
       return (q.everything.all(ownerId) as Row[]).map((r) => envelope(r));
     },
+    /**
+     * Two accounts of one teacher are merged: every live record of `fromOwner` becomes `toOwner`'s.
+     * Ids are made on devices and do not collide, except records with a fixed id (the profile): there the
+     * surviving account's own record stays. Moved records get a new place in the sequence, so the
+     * surviving account's devices receive them on their next pull. Tombstones and replay answers of the
+     * old account are dropped: no device of the surviving account ever saw them.
+     */
+    reassignOwner(fromOwner: Id, toOwner: Id): { moved: number; kept: number } {
+      let moved = 0;
+      let kept = 0;
+      const move = db.prepare('UPDATE core_records SET owner_id = ?, seq = ?, device_id = NULL WHERE owner_id = ? AND entity = ? AND id = ?');
+      const drop = db.prepare('DELETE FROM core_records WHERE owner_id = ? AND entity = ? AND id = ?');
+      for (const row of db.prepare('SELECT entity, id, deleted_at FROM core_records WHERE owner_id = ? ORDER BY seq').all(fromOwner) as Array<{ entity: string; id: string; deleted_at: string | null }>) {
+        if (row.deleted_at !== null || q.get.get(toOwner, row.entity, row.id) !== undefined) {
+          drop.run(fromOwner, row.entity, row.id);
+          if (row.deleted_at === null) kept++;
+          continue;
+        }
+        move.run(toOwner, (q.nextSeq.get() as { value: number }).value, fromOwner, row.entity, row.id);
+        moved++;
+      }
+      q.logPurge.run(fromOwner);
+      revisions.reassignOwner(fromOwner, toOwner);
+      return { moved, kept };
+    },
+
     /** Remove everything one teacher stored. Called inside the account-deletion transaction. */
     purgeOwner(ownerId: Id): void {
       q.purge.run(ownerId);

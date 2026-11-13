@@ -31,10 +31,10 @@ const PROFILE_ID = RECORD_SCHEMAS.profile.shape.id.value;
 /** Whether that id passes the contract's own `Id` rule, without which the record cannot travel in a sync envelope. */
 const PROFILE_ID_SYNCS = Id.safeParse(PROFILE_ID).success;
 
-const BAD_CREDENTIALS = 'That email or password is not right. Please check and try again.';
-const BAD_LINK = 'This link does not work any more. Please ask for a new one.';
+export const BAD_CREDENTIALS = 'That email or password is not right. Please check and try again.';
+export const BAD_LINK = 'This link does not work any more. Please ask for a new one.';
 
-function cleanDisplayName(name: string): string {
+export function cleanDisplayName(name: string): string {
   // eslint-disable-next-line no-control-regex
   const cleaned = name.replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim();
   if (!cleaned) throw new HttpError('invalid_input', 'Please type your name.', { reason: 'display_name_empty' });
@@ -46,7 +46,7 @@ function requirePolicy(password: string, account: { email?: string; displayName?
   if (problem) throw new HttpError('invalid_input', PASSWORD_PROBLEM_MESSAGE[problem], { reason: `password_${problem}` });
 }
 
-function limit(ctx: Ctx, key: string, max: number, windowSeconds: number): void {
+export function limit(ctx: Ctx, key: string, max: number, windowSeconds: number): void {
   if (!ctx.services.rateLimit.take(key, max, windowSeconds)) tooMany();
 }
 
@@ -58,12 +58,37 @@ const UNKNOWN_ADDRESS_FACTOR = 50;
  * README), every caller would share one bucket and a handful of people could lock out everyone. The shared
  * bucket is therefore made much larger: abuse is still bounded, ordinary use is not blocked.
  */
-function limitByAddress(ctx: Ctx, name: string, max: number, windowSeconds: number): void {
+export function limitByAddress(ctx: Ctx, name: string, max: number, windowSeconds: number): void {
   if (ctx.ip) limit(ctx, `${name}:ip:${ctx.ip}`, max, windowSeconds);
   else limit(ctx, `${name}:ip:unknown`, max * UNKNOWN_ADDRESS_FACTOR, windowSeconds);
 }
 
-function authResult(ctx: Ctx, user: User, session: IssuedSession) {
+/**
+ * Check a password with the same protections as sign-in: a ceiling per account, and a growing wait per
+ * (email, address) after repeated wrong tries. Used wherever a password is asked for again.
+ */
+export async function passwordMatches(ctx: Ctx, row: UserRow | null, emailNorm: string, password: string): Promise<boolean> {
+  const { hasher, throttle } = coreState(ctx);
+  limit(ctx, `login:email:${emailNorm}`, 100, HOUR);
+  const wait = throttle.waitSeconds(emailNorm, ctx.ip);
+  if (wait > 0) tooMany(wait);
+  let ok = false;
+  if (row?.password_hash) ok = await hasher.verify(row.password_hash, password);
+  else await hasher.verifyDummy(password);
+  if (ok) throttle.clear(emailNorm, ctx.ip);
+  else throttle.recordFailure(emailNorm, ctx.ip);
+  return ok;
+}
+
+/** Every account starts with its profile record, so two devices signing in fresh agree on it from the first sync. */
+export function seedProfile(ctx: Ctx, userId: string, displayName: string, uiLanguage: 'fil' | 'en'): void {
+  // Schema defaults fill in the rest. (Core's own store, not ctx.services.records: a test may have swapped that
+  // service for a fake.) Skipped while the profile's fixed id is not a valid record id.
+  if (!PROFILE_ID_SYNCS) return;
+  coreState(ctx).records.service.put(userId, 'profile', parseRecordData('profile', { id: PROFILE_ID, displayName, uiLanguage }));
+}
+
+export function authResult(ctx: Ctx, user: User, session: IssuedSession) {
   const maxAge = (session.expiresAt.getTime() - ctx.now().getTime()) / 1000;
   effectsOf(ctx).cookies.push(sessionCookie(ctx.config, session.token, maxAge));
   return { user, token: session.token, expiresAt: session.expiresAt.toISOString() };
@@ -95,12 +120,7 @@ export const register: Handler<'auth.register'> = async (ctx, { body }) => {
       reason: 'email_taken',
     });
   }
-  // Every account starts with its profile record, so two devices signing in fresh agree on it from the first sync.
-  // Schema defaults fill in the rest. (Core's own store, not ctx.services.records: a test may have swapped that
-  // service for a fake.) Skipped while the profile's fixed id is not a valid record id: see CONTRACT-REQUESTS.md.
-  if (PROFILE_ID_SYNCS) {
-    coreState(ctx).records.service.put(row.id, 'profile', parseRecordData('profile', { id: PROFILE_ID, displayName, uiLanguage: body.uiLanguage }));
-  }
+  seedProfile(ctx, row.id, displayName, body.uiLanguage);
   const session = accounts.issueSession(row.id, deviceLabelFrom(body.deviceLabel, effectsOf(ctx).userAgent));
   ctx.log.info('account_created', { userId: row.id });
   // The account exists whether or not the mail goes out; the teacher can ask for it again.
@@ -109,24 +129,13 @@ export const register: Handler<'auth.register'> = async (ctx, { body }) => {
 };
 
 export const login: Handler<'auth.login'> = async (ctx, { body }) => {
-  const { accounts, hasher, throttle } = coreState(ctx);
+  const { accounts, hasher } = coreState(ctx);
   const emailNorm = normaliseEmail(body.email);
   limitByAddress(ctx, 'login', ctx.config.abuse.loginPerIpPerMinute, 60);
-  // A ceiling per email across all addresses, against guessing spread over many connections.
-  limit(ctx, `login:email:${emailNorm}`, 100, HOUR);
-  const wait = throttle.waitSeconds(emailNorm, ctx.ip);
-  if (wait > 0) tooMany(wait);
-
   const row = accounts.userByEmail(emailNorm);
-  let ok = false;
-  if (row?.password_hash) ok = await hasher.verify(row.password_hash, body.password);
-  else await hasher.verifyDummy(body.password);
-
-  if (!row || !ok) {
-    throttle.recordFailure(emailNorm, ctx.ip);
+  if (!(await passwordMatches(ctx, row, emailNorm, body.password)) || !row) {
     throw new HttpError('unauthenticated', BAD_CREDENTIALS, { reason: 'invalid_credentials' });
   }
-  throttle.clear(emailNorm, ctx.ip);
   if (row.password_hash && hasher.needsRehash(row.password_hash)) accounts.setPassword(row.id, await hasher.hash(body.password));
 
   // Signing in again on a browser that already has this account's session replaces it.
@@ -262,9 +271,4 @@ export const changePassword: Handler<'auth.changePassword'> = async (ctx, { body
   const ended = accounts.revokeAllSessions(row.id, { except: user.sessionId });
   ctx.log.info('password_changed', { userId: row.id, sessions: ended });
   return { ok: true as const };
-};
-
-export const google: Handler<'auth.google'> = () => {
-  // Pre-production gate (PRD §13.3, Phase 4). The account model already has room for it (core_identities).
-  throw new HttpError('not_implemented', 'Signing in with Google is not available yet. Please use your email and password.', { reason: 'google_sign_in_not_available' });
 };

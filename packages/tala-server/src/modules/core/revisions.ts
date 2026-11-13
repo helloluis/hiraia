@@ -145,6 +145,12 @@ export function createRevisions(db: Db, now: () => Date) {
       q.purgeOwner.run(ownerId);
     },
 
+    /** Account merge: plan history follows its plans. History of a plan id the other account also has is dropped. */
+    reassignOwner(fromOwner: Id, toOwner: Id): void {
+      db.prepare('DELETE FROM core_plan_revisions WHERE owner_id = ? AND plan_id IN (SELECT plan_id FROM core_plan_revisions WHERE owner_id = ?)').run(fromOwner, toOwner);
+      db.prepare('UPDATE core_plan_revisions SET owner_id = ? WHERE owner_id = ?').run(toOwner, fromOwner);
+    },
+
     /** A deleted plan's history goes with it: the words of a deleted lesson are not kept. */
     purgePlan(ownerId: Id, planId: Id): void {
       q.purgePlan.run(ownerId, planId);
