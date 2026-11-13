@@ -24,7 +24,10 @@ export const LearningArea = z.object({
   id: z.string().max(64),
   name: Localized,
   grades: z.array(GradeLevel),
+  /** Primary stage. Prefer `stages` (a learning area such as Science spans elementary and JHS). */
   stage: z.enum(['kinder', 'elementary', 'jhs', 'shs_core']),
+  /** All stages this learning area spans. One entry per learning area id — do not duplicate the area per stage. */
+  stages: z.array(z.enum(['kinder', 'elementary', 'jhs', 'shs_core'])).min(1).optional(),
 });
 export type LearningArea = z.infer<typeof LearningArea>;
 
@@ -184,7 +187,11 @@ export interface TimelineEntry {
   kind: 'lesson' | 'buffer' | 'assessment';
   planId: Id | null;
   planState: 'none' | 'draft' | 'locked';
+  /** Summary across groups: the least-complete status of any group in the session. */
   mark: 'taught' | 'assumed_taught' | 'partial' | 'not_taught' | null;
+  /** Per grade group, for multi-grade sessions where groups differ. Absent = same as `kind` / `mark` for all groups. */
+  byGroupKind?: Record<Id, 'lesson' | 'buffer' | 'assessment' | 'other_subject'>;
+  byGroupMark?: Record<Id, 'taught' | 'assumed_taught' | 'partial' | 'not_taught' | null>;
   /** Whether the multi-grade pairing shares a theme, and across which groups (§7.4). */
   pairing: { shared: boolean; groupIds: Id[]; overridden: boolean } | null;
 }
