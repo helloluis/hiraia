@@ -16,7 +16,15 @@ import type { z } from 'zod';
 import { HttpError } from '../../kernel/types';
 import type { RecordStore } from '../../kernel/types';
 
-export type VersionContent = Pick<ArtifactVersion, 'templateId' | 'gradeGroups' | 'competencies' | 'customObjectives' | 'sections'>;
+export type VersionContent = Pick<ArtifactVersion, 'templateId' | 'gradeGroups' | 'competencies' | 'customObjectives' | 'sections' | 'template'>;
+
+/** The public text a moderation check reads for a version: its sections, plus a custom template's labels. */
+export function moderationSections(content: VersionContent): Array<{ key: string; content: SectionContent }> {
+  if (!content.template) return content.sections;
+  const t = content.template;
+  const items = [t.name.fil, t.name.en, ...t.sections.flatMap((s) => [s.label.fil, s.label.en])].filter((x) => x.trim());
+  return [...content.sections, { key: 'template', content: { type: 'list', items } }];
+}
 
 export interface VersionMeta {
   title: string;
@@ -83,6 +91,8 @@ export function preparePost(records: RecordStore, userId: string, body: PostBody
     competencies: stripped.competencies,
     customObjectives: stripped.customObjectives.map(clean),
     sections: stripped.sections.map((s) => ({ key: s.key, content: cleanContent(s.content, clean) })),
+    // A custom template travels with the version so a copier can render and save it (built-ins are known everywhere).
+    ...(template && !template.builtIn ? { template: cleanTemplate(template, clean) } : {}),
   };
 
   const revisions = records
@@ -116,6 +126,11 @@ function findTemplate(records: RecordStore, userId: string, templateId: string):
   if (builtIn) return builtIn;
   const custom = records.get(userId, 'template', templateId);
   return custom && !custom.deletedAt ? custom.data : null;
+}
+
+function cleanTemplate(t: Template, clean: (s: string) => string): Template {
+  const L = (l: { fil: string; en: string }) => ({ fil: clean(l.fil), en: clean(l.en) });
+  return { ...t, name: L(t.name), sections: t.sections.map((s) => ({ ...s, label: L(s.label) })) };
 }
 
 /* ---------------- tags (§11.4) ---------------- */

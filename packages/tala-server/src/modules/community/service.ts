@@ -2,6 +2,7 @@
  * Community operations: post, background recheck, report, remove, staff takedown/restore (PRD §11.2–11.6).
  * Handlers in index.ts are thin wrappers around these.
  */
+import { LIMITS } from '@hiraia/tala-core';
 import type { ArtifactSummary, ModerationDecision, PostArtifactRequest, ReportRequest } from '@hiraia/tala-core';
 import type { Database } from 'better-sqlite3';
 import type { z } from 'zod';
@@ -9,7 +10,7 @@ import { HttpError } from '../../kernel/types';
 import type { Logger, RecordStore, Services, SessionUser, TalaServerConfig } from '../../kernel/types';
 import { runModeration } from './moderate';
 import type { ModerationOutcome } from './moderate';
-import { preparePost } from './publish';
+import { moderationSections, preparePost } from './publish';
 import type { VersionContent, VersionMeta } from './publish';
 import {
   artifactForPlan,
@@ -116,13 +117,24 @@ export async function postArtifact(deps: CommunityDeps, user: SessionUser, body:
     };
   }
 
+  const now0 = deps.now().toISOString();
+  const bytes = detailBytes(prepared.meta, prepared.content, now0);
+  const limit = maxPostBytes();
+  if (bytes > limit) {
+    throw new HttpError(
+      'invalid_input',
+      `This lesson is too long to share in the community (about ${Math.ceil(bytes / 1024)} KB; the limit is ${Math.floor(limit / 1024)} KB). Shorten it or split it into two lessons, then post again.`,
+      { reason: 'too_large', bytes, limit },
+    );
+  }
+
   if (!deps.services.rateLimit.take(`community.post:${user.id}`, deps.config.abuse.postPerUserPerDay, DAY_SECONDS)) {
     throw new HttpError('rate_limited', 'You have posted many lessons today. Please try again tomorrow.', { reason: 'rate_limited' });
   }
 
   const outcome = await runModeration(
     { llm: deps.services.llm, config: deps.config },
-    { title: prepared.meta.title, summary: prepared.meta.summary, displayName: prepared.meta.authorDisplayName, sections: prepared.content.sections, knownNames: prepared.knownNames, userId: user.id },
+    { title: prepared.meta.title, summary: prepared.meta.summary, displayName: prepared.meta.authorDisplayName, sections: moderationSections(prepared.content), knownNames: prepared.knownNames, userId: user.id },
   );
   const decision = outcome.decision;
   const now = deps.now().toISOString();
@@ -133,7 +145,7 @@ export async function postArtifact(deps: CommunityDeps, user: SessionUser, body:
   if (decision.decision === 'return') {
     // Nothing is stored: the post may hold a learner's personal data. The author fixes the plan and posts again.
     log(deps, { ...outcomeLog(outcome), trigger: 'post', artifactId: existing?.id ?? null, versionId: null, authorId: user.id });
-    return { artifact: previewSummary({ id: artifactId, versionId, number, meta: prepared.meta, now }), moderation: decision };
+    return { artifact: previewSummary({ id: artifactId, versionId, number, meta: prepared.meta, now, decision }), moderation: decision };
   }
 
   const versionStatus = decision.decision === 'allow' ? 'allowed' : 'pending';
@@ -176,12 +188,31 @@ export async function postArtifact(deps: CommunityDeps, user: SessionUser, body:
   return { artifact: toSummary(db, getArtifact(db, artifactId)!, user.id), moderation: decision };
 }
 
+/* ---------------- response budget (§14.1) ---------------- */
+
+/**
+ * Room kept in the 100 KB response budget for the author-only moderation decision (≤ 30 reasons with
+ * excerpts) and for fields that grow after posting (copy count, lineage). The rest is for the lesson.
+ */
+export const RESPONSE_HEADROOM_BYTES = 16 * 1024;
+
+export function maxPostBytes(): number {
+  return LIMITS.maxApiResponseBytes - RESPONSE_HEADROOM_BYTES;
+}
+
+/** Size of the `community.get` body this post would produce, as uncompressed JSON (stricter than the compressed budget). */
+function detailBytes(meta: VersionMeta, content: VersionContent, now: string): number {
+  const summary = previewSummary({ id: 'x'.repeat(64), versionId: 'x'.repeat(64), number: 9999, meta, now });
+  const detail = { ...summary, version: { id: 'x'.repeat(64), artifactId: 'x'.repeat(64), number: 9999, ...content, createdAt: now } };
+  return Buffer.byteLength(JSON.stringify(detail), 'utf8');
+}
+
 /* ---------------- background recheck (§11.6 step 6) ---------------- */
 
 function versionInput(v: VersionRow) {
   const content = JSON.parse(v.content_json) as VersionContent;
   const meta = JSON.parse(v.meta_json) as VersionMeta;
-  return { title: meta.title, summary: meta.summary, displayName: meta.authorDisplayName, sections: content.sections };
+  return { title: meta.title, summary: meta.summary, displayName: meta.authorDisplayName, sections: moderationSections(content) };
 }
 
 /** Decide pending versions and pending report checks. Safe to call at any time; returns what it decided. */
