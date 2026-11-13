@@ -113,3 +113,31 @@ test('batches never exceed 100; repeated sync does not add revisions', async () 
   for (let i = 0; i < 205; i++) await e.put('day_note', note(`note000${i}`));
   assert.equal((await e.sync()).pushed, 205); await e.sync(); assert.ok(s.requests.every(r => r.length <= 100)); assert.equal(s.log.length, 205);
 });
+
+test('real TalaApiError network and timeout are offline; authentication is distinct', async () => {
+  const { TalaApiError } = await import('../contracts/client');
+  for (const code of ['network', 'timeout', 'unauthenticated', 'unavailable'] as const) {
+    const fail = async (): Promise<never> => { throw new TalaApiError(code, 'test'); };
+    const e = client({ push: fail, pull: fail }).engine;
+    const report = await e.sync();
+    assert.equal(report.error, code === 'unauthenticated' ? 'unauthenticated' : code === 'unavailable' ? 'server' : 'offline');
+  }
+});
+test('terminal rejection preserves text and does not poison later outbox work', async () => {
+  const s = new Server();
+  const { engine: e, store } = client({ pull: q => s.pull(q), push: async q => ({ results: await Promise.all(q.mutations.map(async m => m.id === 'rejected' ? { mutationId: m.mutationId, status: 'invalid' as const, record: null } : (await s.push({ mutations: [m] })).results[0]!)) }) });
+  await e.put('day_note', note('rejected', 'keep this text')); await e.put('day_note', note('accepted'));
+  const report = await e.sync(); assert.equal(report.ok, true); assert.equal(report.conflicts, 1);
+  assert.equal((await e.status()).pending, 0); assert.equal((await e.get('day_note', 'rejected'))!.data.text, 'keep this text');
+  assert.ok(await store.getMeta('sync.rejected.rejected')); assert.ok(s.records.has('day_note:accepted'));
+  assert.equal((await e.sync()).pushed, 0);
+});
+test('unknown entities and newer record shapes are skipped without pinning cursor', async () => {
+  const { engine: e, store } = client({ push: async () => ({ results: [] }), pull: async () => ({ records: [
+    { entity: 'future_entity', id: 'future01', rev: 1, updatedAt: at, deletedAt: null, data: {} },
+    { entity: 'day_note', id: 'future02', rev: 1, updatedAt: at, deletedAt: null, data: {} },
+    { entity: 'day_note', id: 'valid001', rev: 1, updatedAt: at, deletedAt: null, data: note('valid001') },
+  ], cursor: '3', hasMore: false, serverTime: at }) } as unknown as SyncTransport);
+  const report = await e.sync(); assert.equal(report.ok, true); assert.equal((report as import('./index').DetailedSyncReport).skipped, 2);
+  assert.equal(await store.getMeta('sync.cursor'), '3'); assert.ok(await e.get('day_note', 'valid001'));
+});
