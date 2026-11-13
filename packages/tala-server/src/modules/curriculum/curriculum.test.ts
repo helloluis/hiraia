@@ -3,10 +3,9 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { CalendarPreset, CurriculumIndex, CurriculumPack, LIMITS } from '@hiraia/tala-core';
+import { CalendarPreset, CurriculumIndex, CurriculumPack, CompetencyCheck, LIMITS } from '@hiraia/tala-core';
 import { createCurriculumModule, loadCurriculumData } from './index';
-import type { RecordStore } from '../../kernel/types';
-import { createTestServer } from '../../testing';
+import { createTestServer } from '@hiraia/tala-server/testing';
 
 test('all source packs validate, carry pages and preserve distinct versions without fixture leakage', () => {
   const data = loadCurriculumData();
@@ -59,30 +58,38 @@ test('public curriculum and calendar routes run through the real kernel', async 
     assert.deepEqual(t.errors, []);
   } finally { t.close(); }
 });
-test('check summaries require real authentication and call only aggregate checkTallies', async () => {
-  let calls = 0;
-  const unexpected = (): never => { throw new Error('Curriculum must not access individual teacher records.'); };
-  const records: RecordStore = {
-    get: unexpected, list: unexpected, put: unexpected, remove: unexpected, planSnapshot: unexpected,
-    checkTallies(version, ids) {
-      calls++;
-      assert.equal(version, 'science-bow-2026'); assert.equal(ids.length, 33);
-      return { confirmed: { [ids[0]!]: 3 }, corrected: { [ids[1]!]: 2 } };
-    },
-  };
-  const t = createTestServer({ modules: [createCurriculumModule()], services: { records } });
+test('check summaries aggregate real synced checks by verified teacher and exclude withdrawals', async () => {
+  const t = createTestServer({ modules: [createCurriculumModule()] });
   try {
     const params = { packId: 'science-bow-2026:4:science' };
     const anonymous = await t.call('curriculum.checkSummary', { params });
-    assert.equal(anonymous.status, 401); assert.equal(calls, 0);
-    const teacher = await t.registerUser();
-    const summary = await t.ok('curriculum.checkSummary', { params, token: teacher.token });
-    assert.equal(summary.packId, params.packId);
-    assert.deepEqual(Object.values(summary.confirmedBy), [3]);
-    assert.deepEqual(Object.values(summary.correctedBy), [2]);
-    assert.equal(calls, 1);
-    const missing = await t.call('curriculum.checkSummary', { params: { packId: 'missing' }, token: teacher.token });
-    assert.equal(missing.status, 404); assert.equal(calls, 1);
+    assert.equal(anonymous.status, 401);
+    const first = await t.registerUser();
+    const second = await t.registerUser();
+    const unverified = await t.registerUser({ verified: false });
+    const pack = await t.ok('curriculum.pack', { params });
+    const confirmedId = pack.competencies[0]!.id, correctedId = pack.competencies[1]!.id;
+    const check = (id: string, competencyId: string, status: 'confirmed' | 'corrected', curriculumVersion = pack.curriculumVersion) => CompetencyCheck.parse({
+      id, competencyId, status, curriculumVersion,
+      correction: status === 'corrected' ? { text: 'Private teacher correction fixture' } : null,
+      note: 'Private teacher note fixture',
+    });
+    async function push(token: string, checks: CompetencyCheck[]) {
+      const result = await t.ok('sync.push', { token, body: { deviceId: 'curriculum-test', mutations: checks.map(data => ({ mutationId: `create-${data.id}`, entity: 'competency_check' as const, id: data.id, op: 'upsert' as const, baseRev: 0, data })) } });
+      assert.ok(result.results.every(r => r.status === 'applied'));
+    }
+    await push(first.token, [check('confirm-a', confirmedId, 'confirmed'), check('duplicate-a', confirmedId, 'confirmed'), check('correct-a', correctedId, 'corrected'), check('wrong-version', correctedId, 'confirmed', 'another-version'), check('outside-pack', 'unknown-competency', 'confirmed')]);
+    await push(second.token, [check('confirm-b', confirmedId, 'confirmed'), check('correct-b', correctedId, 'corrected')]);
+    await push(unverified.token, [check('unverified', confirmedId, 'confirmed')]);
+    const summary = await t.ok('curriculum.checkSummary', { params, token: first.token });
+    assert.deepEqual(summary, { packId: params.packId, confirmedBy: { [confirmedId]: 2 }, correctedBy: { [correctedId]: 2 } });
+    assert.deepEqual(await t.ok('curriculum.checkSummary', { params, token: second.token }), summary);
+    const deleted = await t.ok('sync.push', { token: second.token, body: { deviceId: 'curriculum-test', mutations: [{ mutationId: 'withdraw-b', entity: 'competency_check', id: 'confirm-b', op: 'delete', baseRev: 1 }] } });
+    assert.equal(deleted.results[0]!.status, 'applied');
+    assert.equal(t.services.records.get(second.id, 'competency_check', 'confirm-b'), null);
+    assert.deepEqual(await t.ok('curriculum.checkSummary', { params, token: first.token }), { packId: params.packId, confirmedBy: { [confirmedId]: 1 }, correctedBy: { [correctedId]: 2 } });
+    const missing = await t.call('curriculum.checkSummary', { params: { packId: 'missing' }, token: first.token });
+    assert.equal(missing.status, 404);
     assert.deepEqual(t.errors, []);
   } finally { t.close(); }
 });
