@@ -114,7 +114,7 @@ export function computePacing(input: PacingInput, options: { excludeSessions?: R
   }
   let sessionsBehind = 0;
   const atRisk: string[] = [];
-  const marks = input.marks.filter(m => m.classId === track.classId && m.assignmentId === track.assignmentId && m.gradeGroupId === track.gradeGroupId);
+  const marks = input.marks.filter(m => m.classId === track.classId && m.assignmentId === track.assignmentId && m.gradeGroupId === track.gradeGroupId && (!track.startPosition || m.date >= track.startPosition.date));
   const items: PacedItem[] = groups.map(g => {
     const ids = g.map(c => c.id), assigned = placements.get(ids[0]!) ?? [];
     const pinned = ids.some(id => overrides.pins?.[id] !== undefined);

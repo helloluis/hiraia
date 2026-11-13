@@ -3,8 +3,9 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { CalendarPreset, CurriculumIndex, CurriculumPack, CompetencyCheck, LIMITS } from '@hiraia/tala-core';
+import { CalendarPreset, CurriculumIndex, CurriculumPack, CompetencyCheck, SchoolYear, LIMITS } from '@hiraia/tala-core';
 import { createCurriculumModule, loadCurriculumData } from './index';
+import { buildSampleClass } from '@hiraia/tala-core/sample';
 import { createTestServer } from '@hiraia/tala-server/testing';
 
 test('all source packs validate, carry pages and preserve distinct versions without fixture leakage', () => {
@@ -41,7 +42,7 @@ test('public curriculum and calendar routes run through the real kernel', async 
   const t = createTestServer({ modules: [createCurriculumModule()] });
   try {
     const index = await t.ok('curriculum.index');
-    assert.equal(index.packs.length, 8);
+    assert.equal(index.packs.length, 12);
     for (const meta of index.packs) {
       const pack = await t.ok('curriculum.pack', { params: { packId: meta.packId } });
       assert.equal(pack.competencies.length, meta.competencyCount);
@@ -93,9 +94,11 @@ test('check summaries aggregate real synced checks by verified teacher and exclu
     assert.deepEqual(t.errors, []);
   } finally { t.close(); }
 });
-test('missing and fixture-only packs return real HTTP 404 responses by default', async () => {
-  const t = createTestServer({ modules: [createCurriculumModule()] });
+test('production excludes fixtures even with the legacy opt-in, while local includes them by default', async () => {
+  const t = createTestServer({ modules: [createCurriculumModule({ includeFixtures: true })], config: { environment: 'production', publicOrigin: 'https://tala.test' } });
   try {
+    assert.equal((await t.ok('curriculum.index')).packs.length, 8);
+    assert.equal(t.services.curriculum.versionFor('2026-2027', '2', 'mathematics'), null);
     for (const packId of ['missing', 'fixture-demo-v1:2:mathematics']) {
       const result = await t.call('curriculum.pack', { params: { packId } });
       assert.equal(result.status, 404);
@@ -104,7 +107,7 @@ test('missing and fixture-only packs return real HTTP 404 responses by default',
     assert.equal(missingCalendar.status, 404);
     assert.deepEqual(t.errors, []);
   } finally { t.close(); }
-  const demo = createTestServer({ modules: [createCurriculumModule({ includeFixtures: true })] });
+  const demo = createTestServer({ modules: [createCurriculumModule()] });
   try {
     const pack = await demo.ok('curriculum.pack', { params: { packId: 'fixture-demo-v1:2:mathematics' } });
     assert.ok(pack.competencies.every(c => c.text.startsWith('SAMPLE DATA')));
@@ -115,4 +118,47 @@ test('malformed pack fails startup validation', () => {
   const directory = mkdtempSync(join(tmpdir(), 'tala-curriculum-'));
   try { mkdirSync(join(directory, 'packs')); mkdirSync(join(directory, 'calendars')); writeFileSync(join(directory, 'packs', 'bad.json'), '{}'); assert.throws(() => loadCurriculumData(directory)); }
   finally { rmSync(directory, { recursive: true, force: true }); }
+});
+
+
+test('one module instance keeps staging and production catalogues isolated', async () => {
+  const module = createCurriculumModule({ includeFixtures: false });
+  const staging = createTestServer({ modules: [module], config: { environment: 'staging', publicOrigin: 'https://tala.test' } });
+  const production = createTestServer({ modules: [module], config: { environment: 'production', publicOrigin: 'https://tala.test' } });
+  try {
+    assert.equal((await staging.ok('curriculum.index')).packs.filter(p => p.curriculumVersion.startsWith('fixture-')).length, 4);
+    assert.equal(staging.services.curriculum.versionFor('2026-2027', '2', 'mathematics'), 'fixture-demo-v1');
+    assert.equal((await production.ok('curriculum.index')).packs.some(p => p.curriculumVersion.startsWith('fixture-')), false);
+    assert.deepEqual(production.services.curriculum.getCompetencies('fixture-demo-v1', ['fixture-demo-v1.mathematics.g2.t1.1']), []);
+    assert.equal((await staging.ok('curriculum.index')).packs.length, 12);
+    assert.deepEqual(staging.errors, []); assert.deepEqual(production.errors, []);
+  } finally { staging.close(); production.close(); }
+});
+
+
+test('shared offline sample syncs as real records with complete locked-plan sections', async () => {
+  const t = createTestServer({ modules: [createCurriculumModule()] });
+  try {
+    const teacher = await t.registerUser();
+    const schoolYear = SchoolYear.parse({ id: 'sample-test-year', label: '2026-2027', startDate: '2026-09-01', endDate: '2026-12-18', terms: [{ id: 'sample-test-term', index: 2, name: 'Second term', startDate: '2026-09-01', endDate: '2026-12-18' }] });
+    t.services.records.put(teacher.id, 'school_year', schoolYear);
+    let next = 0;
+    const sample = buildSampleClass({ schoolYear, today: '2026-11-18', lang: 'en', newId: () => `integration-${++next}` });
+    const result = await t.ok('sync.push', { token: teacher.token, body: { deviceId: 'sample-test-device', mutations: sample.records.map(({ entity, data }) => ({ mutationId: `create-${data.id}`, entity, id: data.id, data, op: 'upsert' as const, baseRev: 0 })) } });
+    assert.equal(result.results.length, sample.records.length);
+    assert.ok(result.results.every(r => r.status === 'applied'));
+    assert.equal(t.services.records.get(teacher.id, 'class', sample.classRecord.id)!.data.isSample, true);
+    const locked = sample.plans.find(p => p.state === 'locked')!;
+    const stored = t.services.records.planSnapshot(teacher.id, locked.id)!;
+    assert.equal(stored.plan.data.state, 'locked');
+    assert.equal(stored.sections.length, sample.sections.filter(s => s.planId === locked.id).length);
+    assert.ok(stored.plan.data.lock!.revision);
+    const pulled = await t.ok('sync.pull', { token: teacher.token });
+    assert.ok(pulled.records.some(r => r.entity === 'class' && r.id === sample.classRecord.id));
+    for (const grade of ['2', '4']) {
+      const pack = await t.ok('curriculum.pack', { params: { packId: `fixture-demo-v1:${grade}:mathematics` } });
+      assert.deepEqual(pack.competencies.filter(c => c.termIndex === 2), sample.competencies.filter(c => c.grade === grade));
+    }
+    assert.deepEqual(t.errors, []);
+  } finally { t.close(); }
 });

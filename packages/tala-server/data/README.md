@@ -62,9 +62,11 @@ bytes, source fields and all contract schemas.
 
 `fixtures/` has synthetic Mathematics packs for Grades **2, 3, 4, 5**, supporting
 both the G2+G4 demo and four-group tests. Every competency begins `SAMPLE DATA ONLY`,
-and every version begins `fixture-`. They are excluded by default. Test/demo
-servers opt in with `createCurriculumModule({ includeFixtures: true })`; apps must
-also mark the associated class `isSample: true`. These are not a curriculum claim.
+and every version begins `fixture-`. The curriculum module includes them automatically in local and staging environments.
+Production excludes them from the index, pack routes and curriculum service, even
+if the old `includeFixtures` option is supplied. Direct `loadCurriculumData()`
+still defaults to real packs only. Apps must mark the associated class
+`isSample: true`; the shared `buildSampleClass` factory does this. These are not a curriculum claim.
 
 `calendars/deped-2026-2027.json` and `deped-2027-2028.json` are both
 `provisional: true`. Dates are editable **sample defaults**, not dates copied from
