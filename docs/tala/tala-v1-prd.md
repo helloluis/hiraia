@@ -3,7 +3,7 @@
 **Product:** Tala, a free lesson-planning app for teachers, built around the Philippine DepEd curriculum (web + mobile)
 **Production target:** `https://tala.hiraia.org`
 **Launch target:** school year 2027–2028, usable and demonstrable from any day before then
-**Status:** Draft 4, Luis's decisions, design direction and the Tala teal accent folded in · 13 November 2026. This is the working product spec.
+**Status:** Draft 5, Luis's decisions, design direction and the final Tala teal (`#2F6360`) folded in · 13 November 2026. This is the working product spec.
 **Owner:** Luis Buenaventura · **Author:** Claude Fable 5.2
 **Release name:** "Tala V1.0" is applied only when every V1.0 gate in §16 has passed.
 
@@ -121,23 +121,22 @@ Tala reuses the existing Hiraia brand. It does not get a new palette.
 | Plate white | `#FFFFFF` | `--plate` in `packages/web/src/app/globals.css` | Cards, editor surface, PDF page |
 | Wordmark gold | `#BD8928` | `packages/brand/README.md` | Wordmark and decoration only |
 | Glyph yellow ("family gold") | `#E9B949` | `packages/brand/README.md`; `packages/tala/brand/README.md` | Glyph, highlights, accents on forest |
-| Deep teal (text-safe teal) | `#2F6360` | `--teal` in `packages/web/src/app/globals.css` | The darker companion to Tala teal, for teal **text** on cream: links and secondary text actions |
 | Brick | `#7A2E22` | `--accent` in `packages/web/src/app/globals.css` | Errors, conflicts, destructive actions |
 | Sage | `#8C9E6E` | `--sage` in `packages/web/src/app/globals.css` | "Taught" and success states, with an icon |
-| **Tala teal — the Tala accent** | `#087A78` | `packages/tala/brand/README.md` | The one accent colour that says "this is Tala": launcher icon, the active item in the navigation bar, selected and "today" states, the fill of the primary button, progress and pacing indicators, focus rings |
+| **Tala teal — the Tala accent** | `#2F6360` | `--teal` in `packages/web/src/app/globals.css` | The one accent colour that says "this is Tala": launcher icon, the active item in the navigation bar, selected and "today" states, the fill of the primary button, progress and pacing indicators, focus rings, links. Final per Luis. |
 
 **Typography:** display type is **Fraunces SemiBold**, the approved Hiraia display face (`packages/brand/README.md`; bundled file `packages/brand/fonts/Fraunces-SemiBold.ttf`, 73 KB, covering Filipino accents). Body and interface text use the **device's system font**: it costs nothing to download, renders fastest, and is the most readable at small sizes for long lesson text. The hand-drawn faces in the student app (`packages/mobile/src/theme.ts`) belong to the student experience and are not used in Tala.
 
 **Logo and name:** the Hiraia glyph and wordmark from `packages/brand/assets/`, and the Tala wordmark and launcher icon from `packages/tala/brand/assets/`. The product is presented as "Tala" with the Hiraia glyph visible, as the 0.4.x dashboard already does.
 
-**Contrast, measured from the values above:** forest on cream is 10.4:1 and forest on white 12.3:1, so body text is forest. Glyph yellow on forest is 6.7:1. Wordmark gold on cream is 2.6:1, so gold is never used for text. Tala teal is 5.2:1 on white and 5.2:1 under white text, so it is used as a fill with white labels and for text on white. On cream it is 4.4:1, just under the 4.5:1 needed for body-size text, so teal text on cream uses deep teal (5.8:1) instead.
+**Contrast, measured from the values above:** forest on cream is 10.4:1 and forest on white 12.3:1, so body text is forest. Glyph yellow on forest is 6.7:1. Wordmark gold on cream is 2.6:1, so gold is never used for text. Tala teal is 6.8:1 on white (and under white text) and 5.8:1 on cream, so it is safe both as a fill with white labels and as text on either background. Yellow on teal is 3.7:1, so yellow is not used for text on teal.
 
 **How the colours are layered.** Base: cream background, white surfaces, forest text. Accent: Tala teal, used sparingly, for the one primary action on a screen (SIMPLE-2) and for "where am I" and "what is selected". Gold and yellow are brand decoration (glyph, wordmark, small highlights). Brick and sage carry error and success states. If a screen has more than one teal element competing for attention, it has too much.
 
 | ID | Requirement | Pri |
 |---|---|---|
 | BRAND-1 | Tala's colours, display font, glyph and wordmark come from the existing Hiraia brand assets listed above. No new palette is invented. | P0 |
-| BRAND-1a | Tala teal (`#087A78`) is a named token (`talaTeal`) and the app's single accent colour, with deep teal (`#2F6360`) as its text-safe companion (`talaTealText`). The Hiraia base colours are never replaced by teal: backgrounds stay cream and white, text stays forest. | P0 |
+| BRAND-1a | Tala teal (`#2F6360`) is a named token (`talaTeal`) and the app's single accent colour; `talaTealText` is an alias with the same value. The Hiraia base colours are never replaced by teal: backgrounds stay cream and white, text stays forest. The older 0.4.x app teal (`#087A78`) is not used anywhere in V1.0. | P0 |
 | BRAND-2 | The values live in **one shared token file** used by the web app, the mobile app and the PDF template. No colour or font is hard-coded in a component. | P0 |
 | BRAND-3 | One light theme. No dark mode and no user theming in V1.0. | P0 |
 | BRAND-4 | Fonts are bundled or system; nothing is fetched from a font service at runtime. Only Fraunces SemiBold is bundled. | P0 |
@@ -147,7 +146,7 @@ Tala reuses the existing Hiraia brand. It does not get a new palette.
 **Follow-up needed (the brand is not yet a single set of tokens).** The repository holds three slightly different sets of values: the brand package (cream `#F5ECD6`, golds `#BD8928` and `#E9B949`), the website's CSS variables (cream `#F4EAD5`, gold `#D8A03A`), and the student app's older notebook theme (paper `#fdfdf6`, ink `#0c343d`, teal `#165a6a`). Concrete follow-ups:
 
 1. Create the shared token file (BRAND-2), taking `packages/brand/README.md` as canonical for forest, cream and gold, and the website variables for the supporting colours. Luis confirms the canonical cream and gold.
-2. Add `talaTeal` and `talaTealText` to that file as the Tala accent pair (decided, BRAND-1a).
+2. `talaTeal` is `#2F6360` in that file (decided by Luis, BRAND-1a).
 3. Record the final tokens in the brand README so the three sources stop drifting.
 
 #### 4.3.2 Simplicity over sophistication
@@ -1185,7 +1184,7 @@ Not in Tala V1.0:
 | 11 | Community: post, copy, modify; **no comments or discussion** | §11 |
 | 12 | **LLM moderation, very loose guidelines** to start | §11.6 |
 | 13 | **Up to four grades** in a class | §7.4, §8, §9.3, PDF-2 |
-| 15 | **Keep Tala teal** in the design language: Hiraia colours are the base, Tala teal is the accent | §4.3.1, BRAND-1a |
+| 15 | **Keep Tala teal** in the design language: Hiraia colours are the base, Tala teal **`#2F6360`** is the accent (final) | §4.3.1, BRAND-1a |
 | 14 | **Hiraia branding and colours; simplicity over sophistication; lightweight and resilient with strong fallbacks** for non-technical teachers in last-mile schools on entry-level and midrange phones | §1, §4.3, §13.5, §14.1, §14.2, §16, §18.3 |
 
 ### 18.2 Decisions I made where the brief was silent
@@ -1248,7 +1247,7 @@ Each is built into the document above. Say so if any is wrong.
 11. **Non-DepEd teachers.** With open sign-up, teachers outside DepEd get the no-preloaded-curriculum path in V1.0. Is that enough, or is a custom competency list (currently P2) wanted sooner?
 12. **React Native on the reference phone.** If the Phase 1 spike misses cold start or editor latency on a 2 GB device, do you want to relax the target or revisit the stack?
 13. **Abuse with open sign-up.** Open registration plus free generation invites non-teacher use of the model budget. The per-account quota and budget ceiling cover cost; do you want anything stricter?
-14. **Which teal is "Tala teal".** You said to keep Tala teal. In the repository, Tala's own teal is `#087A78` (`packages/tala/brand/README.md`, the 0.4.x launcher and app colour), and that is what I made the accent. The note passed along with your message named `#2F6360`, which is the website's `--teal`; I kept that one as the darker text-safe companion. If you meant the website teal to be the accent itself, it is a one-line change in the token file.
+14. *(Resolved.)* Tala teal is `#2F6360`, the website's `--teal`. The 0.4.x app's `#087A78` stays with the 0.4.x app only.
 15. **Canonical cream and gold.** The brand package, the website and the student app each hold slightly different values (§4.3.1). I took `packages/brand/README.md` as canonical. Confirm, so the shared token file can be created.
 
 ---

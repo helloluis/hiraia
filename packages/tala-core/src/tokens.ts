@@ -3,7 +3,7 @@
  * Web, mobile and the PDF print template all read this file; no colour or font is hard-coded in a component.
  *
  * Sources (13 Nov 2026): packages/brand/README.md (forest, cream, golds, Fraunces),
- * packages/web/src/app/globals.css (--plate, --teal, --accent, --sage), packages/tala/brand/README.md (Tala teal).
+ * packages/web/src/app/globals.css (--plate, --teal = Tala teal, --accent, --sage).
  * OWNER: orchestrator.
  */
 export const colors = {
@@ -13,9 +13,13 @@ export const colors = {
   cream: '#F5ECD6',
   /** Cards, editor surface, PDF page. */
   white: '#FFFFFF',
-  /** THE Tala accent: primary button fill (white label, 5.2:1), active nav item, selected/today, progress, focus ring. */
-  talaTeal: '#087A78',
-  /** Text-safe companion for teal TEXT on cream (5.8:1): links, secondary text actions. */
+  /**
+   * THE Tala accent — Tala teal, final per Luis (13 Nov 2026). Source: `--teal` in packages/web/src/app/globals.css.
+   * Primary button fill (white label, 6.9:1), active nav item, selected/today, progress, focus ring.
+   * Safe for text on white (6.9:1) and on cream (5.8:1).
+   */
+  talaTeal: '#2F6360',
+  /** Alias of talaTeal, kept so existing code keeps working: teal TEXT (links, secondary text actions). Same value. */
   talaTealText: '#2F6360',
   /** Wordmark and decoration only. Never text (2.6:1 on cream). */
   gold: '#BD8928',
@@ -41,7 +45,14 @@ export const fonts = {
   display: 'FrauncesSemiBold',
   displayWebStack: "'Fraunces', Georgia, 'Times New Roman', serif",
   /** Body and UI: the device's system font. Nothing is downloaded at runtime (BRAND-4). */
-  bodyWebStack: "system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', Arial, sans-serif",
+  /**
+   * Named platform sans fonts first, generic `sans-serif` last. `system-ui` is deliberately NOT used: on Linux
+   * machines with a sparse font setup it can resolve to a monospace face (seen in the first journey screenshots),
+   * and once it resolves nothing after it is tried. Android → Roboto, ChromeOS → Roboto/Noto Sans,
+   * Windows → Segoe UI, Apple → -apple-system, desktop Linux → Noto/DejaVu/Liberation/Adwaita.
+   */
+  bodyWebStack:
+    "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'Adwaita Sans', 'DejaVu Sans', 'Liberation Sans', sans-serif",
   /** In React Native leave fontFamily undefined for body text to get the system font. */
   bodyNative: undefined as string | undefined,
 } as const;
