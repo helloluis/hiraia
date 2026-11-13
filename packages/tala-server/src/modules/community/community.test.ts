@@ -722,3 +722,57 @@ test('title and summary go through the shared publish cleaner', async () => {
   assert.equal(res.artifact.summary, 'Taught in [section] on [date].');
   w.t.close();
 });
+
+/* ---------------- account merge (PRD §13.3 case 4) ---------------- */
+
+test('merging accounts moves authorship, reports, copies and log rows; others untouched; idempotent', async () => {
+  const w = world();
+  const from = await teacherWithPlan(w);
+  const to = await teacherWithPlan(w);
+  const other = await teacherWithPlan(w);
+  const fromArt = await w.t.ok('community.post', { body: postBody(from.planId, { displayName: 'Ana (old account)' }), token: from.user.token });
+  const otherArt = await w.t.ok('community.post', { body: postBody(other.planId), token: other.user.token });
+  const toArt = await w.t.ok('community.post', { body: postBody(to.planId), token: to.user.token });
+  // Both accounts copied the other teacher's lesson; the old one also copied the new one's lesson.
+  await w.t.ok('community.copy', { params: { artifactId: otherArt.artifact.id }, body: {}, token: from.user.token });
+  await w.t.ok('community.copy', { params: { artifactId: otherArt.artifact.id }, body: {}, token: to.user.token });
+  await w.t.ok('community.copy', { params: { artifactId: toArt.artifact.id }, body: {}, token: from.user.token });
+  await w.t.ok('community.report', { params: { artifactId: otherArt.artifact.id }, body: { reason: 'spam' }, token: from.user.token });
+  const otherCopiesFrom = await w.t.ok('community.copy', { params: { artifactId: fromArt.artifact.id }, body: {}, token: other.user.token });
+
+  const count = (sql: string, ...p: unknown[]) => (w.t.db.prepare(sql).get(...p) as { n: number }).n;
+  const before = {
+    copyCounts: w.t.db.prepare('SELECT id, copy_count FROM community_artifacts ORDER BY id').all(),
+    otherRows: count('SELECT COUNT(*) n FROM community_artifacts WHERE author_id = ?', other.user.id),
+  };
+
+  const mod = createCommunityModule({ recheckIntervalMs: 0 });
+  const base = { db: w.t.db, config: w.t.config, now: w.t.clock.now, newId: () => fid('id'), log: { info() {}, warn() {}, error() {} } };
+  w.t.db.transaction(() => mod.onAccountMerged!(base, from.user.id, to.user.id))();
+  w.t.db.transaction(() => mod.onAccountMerged!(base, from.user.id, to.user.id))(); // idempotent
+
+  for (const table of [
+    ['community_artifacts', 'author_id'],
+    ['community_copies', 'user_id'],
+    ['community_reports', 'reporter_id'],
+    ['community_moderation_log', 'author_id'],
+  ] as const) {
+    assert.equal(count(`SELECT COUNT(*) n FROM ${table[0]} WHERE ${table[1]} = ?`, from.user.id), 0, table[0]);
+  }
+  assert.equal(count('SELECT COUNT(*) n FROM community_artifacts WHERE author_id = ?', to.user.id), 2);
+  assert.equal(count('SELECT COUNT(*) n FROM community_copies WHERE user_id = ? AND artifact_id = ?', to.user.id, otherArt.artifact.id), 1, 'duplicate copy record collapsed');
+  assert.equal(count('SELECT COUNT(*) n FROM community_reports WHERE reporter_id = ?', to.user.id), 1);
+  assert.deepEqual(w.t.db.prepare('SELECT id, copy_count FROM community_artifacts ORDER BY id').all(), before.copyCounts, 'copy counts unchanged');
+  assert.equal(count('SELECT COUNT(*) n FROM community_artifacts WHERE author_id = ?', other.user.id), before.otherRows, "another teacher's rows untouched");
+  assert.equal(count('SELECT COUNT(*) n FROM community_copies WHERE user_id = ?', other.user.id), 1);
+
+  // Authorship and attribution follow the merged account: it is "mine" now, the surviving account can manage it,
+  // and the credit line on other teachers' copies is unchanged.
+  const mine = await w.t.ok('community.get', { params: { artifactId: fromArt.artifact.id }, token: to.user.token });
+  assert.equal(mine.mine, true);
+  assert.equal(mine.authorDisplayName, 'Ana (old account)');
+  assert.ok((await w.t.ok('community.search', { query: { mine: true }, token: to.user.token })).items.some((i) => i.id === fromArt.artifact.id));
+  assert.equal(otherCopiesFrom.plan.lineage?.artifactId, fromArt.artifact.id);
+  await w.t.ok('community.remove', { params: { artifactId: fromArt.artifact.id }, token: to.user.token });
+  w.t.close();
+});

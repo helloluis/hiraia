@@ -1,8 +1,8 @@
 # Worker G (community) — contract requests
 
-Status (orchestrator waves 2–3): **1, 2, 4, 5, 7 applied and implemented; 6 done** (the module uses
+Status (orchestrator waves 2–4): **1, 2, 4, 5, 7 applied and implemented; 6 and 9 done** (the module uses
 worker H's shared `stripForPublish` / `createPublishCleaner`; the local stripper is deleted). 8 and 10 are
-not in V1.0. 3 and 9 remain open.
+not in V1.0. 3 remains open. 9: the kernel reads the module hooks; the `kernel` copy is gone.
 
 1. **`ArtifactSummary.moderation?: ModerationDecision | null`** (`contracts/features.ts`), filled only when
    `mine` is true. After a report check or a background recheck returns a post, the author currently sees

@@ -7,7 +7,7 @@ import { HttpError, requireUser } from '../../kernel/types';
 import { copyArtifact } from './copy';
 import { communityMigrations } from './migrations';
 import { searchArtifacts } from './search';
-import { deleteAccountData, postArtifact, recheckPending, removeArtifact, reportArtifact, requireCommunity } from './service';
+import { deleteAccountData, mergeAccountData, postArtifact, recheckPending, removeArtifact, reportArtifact, requireCommunity } from './service';
 import type { CommunityDeps } from './service';
 import { getArtifact, getVersion, toDetail } from './store';
 
@@ -25,14 +25,11 @@ function deps(ctx: Ctx): CommunityDeps {
 
 export function createCommunityModule(options: CommunityModuleOptions = {}): ServerModule {
   const interval = options.recheckIntervalMs ?? DEFAULT_RECHECK_INTERVAL_MS;
-  const onAccountDeleted = (base: BaseDeps, userId: string) => deleteAccountData(base.db, userId);
-  const module: ServerModule & { kernel: { onAccountDeleted: typeof onAccountDeleted } } = {
+  const module: ServerModule = {
     name: 'community',
     migrations: communityMigrations,
-    onAccountDeleted,
-    // The kernel currently reads the hook from `kernel` (worker A); the contract puts it on the module.
-    // Both are set; the clean-up is idempotent, so running it twice is harmless.
-    kernel: { onAccountDeleted },
+    onAccountDeleted: (base: BaseDeps, userId: string) => deleteAccountData(base.db, userId),
+    onAccountMerged: (base: BaseDeps, fromUserId: string, toUserId: string) => mergeAccountData(base.db, fromUserId, toUserId),
     handlers: {
       'community.search': (ctx, { query }) => searchArtifacts(deps(ctx), requireUser(ctx).id, query),
 
@@ -85,5 +82,5 @@ export function createCommunityModule(options: CommunityModuleOptions = {}): Ser
 
 export const communityModule: ServerModule = createCommunityModule();
 
-export { deleteAccountData, recheckPending, staffRestore, staffTakedown } from './service';
+export { deleteAccountData, mergeAccountData, recheckPending, staffRestore, staffTakedown } from './service';
 export { runModeration } from './moderate';
