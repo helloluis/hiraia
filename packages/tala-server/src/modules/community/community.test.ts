@@ -710,3 +710,15 @@ test('a deleted author: artifacts leave search; copies others made keep the cred
   assert.deepEqual(d.lineage, { artifactId: src.artifact.id, versionId: src.artifact.currentVersionId, title: 'Parts of a Plant', authorDisplayName: 'Teacher A', available: false });
   w.t.close();
 });
+
+test('title and summary go through the shared publish cleaner', async () => {
+  const w = world();
+  const { user, planId } = await teacherWithPlan(w);
+  const res = await w.t.ok('community.post', {
+    body: postBody(planId, { title: 'Malinao Elementary School: plants', summary: 'Taught in Grade 4 - Sampaguita on 2026-11-16.' }),
+    token: user.token,
+  });
+  assert.equal(res.artifact.title, '[school]: plants');
+  assert.equal(res.artifact.summary, 'Taught in [section] on [date].');
+  w.t.close();
+});

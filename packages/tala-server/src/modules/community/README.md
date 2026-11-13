@@ -21,10 +21,11 @@ or messages. Code: this folder; pure detectors in `packages/tala-core/src/modera
 - Email confirmed (AUTH-1); per-teacher daily limit `abuse.postPerUserPerDay`.
 - The plan is read from the **server's own copy** (`records.planSnapshot`): must be the caller's, `locked`,
   and not placed in a sample class.
-- Public content = worker H's `stripForPublish` + a text pass here: school name replaced unless `showSchool`,
-  the class (section) name, the plan's own session dates, signature blocks ("Prepared by:", "Inihanda ni:"
-  and the name/role lines under them). Reflection and other outside-lock sections, week-grid dates and local
-  grade-group ids are removed by H's helper. Learner names typed into the body are **not** silently edited:
+- Public content = worker H's shared `stripForPublish` (tala-core/plan, the same code as the device preview),
+  given the template, the teacher's school names, class names, display name and `includeSchoolName:
+  showSchool`: reflection and outside-lock sections, week-grid dates, local grade-group ids, signature
+  blocks, school name, distinctive class/section names, the plan's own dates. Title, summary and custom
+  template labels go through `createPublishCleaner(...).text()` with the placement dates. Learner names typed into the body are **not** silently edited:
   they are a moderation finding the author fixes (PRIV-9).
 - Tags from the plan; quarter from the placement date when not given; multigrade combination from grades.
 - Provenance from H's `planProvenance` over the server's `section_revision` history (AI-drafted unless
@@ -110,5 +111,3 @@ TALA_DB_PATH=/path/to/tala.db pnpm --filter @hiraia/tala-server exec tsx src/mod
 
 - Model step for search query understanding (orchestrator: not in V1.0).
 - No image moderation (orchestrator: not in V1.0); no private share links (COM-10, not in V1.0).
-- Text-level stripping still lives in `publish.ts`; it switches to worker H's `stripForPublish` in
-  `tala-core/src/plan` once the orchestrator says H's version has landed.
