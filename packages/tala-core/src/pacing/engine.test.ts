@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { Competency, DEFAULT_PACING_PARAMS } from '../contracts/curriculum';
 import type { PacingInput, TimelineInput, RealignmentOption } from '../contracts/curriculum';
 import { ClassRecord, PacingTrack, SchoolYear, TeachingAssignment, CalendarDay, Plan, SessionMark } from '../contracts/records';
-import { engine, previewRealignment, realignmentUndo } from './index';
+import { engine, previewRealignment, realignmentUndo, applyRealignment, allocationFromPlan } from './index';
 import { allocate } from './compute';
 import { civil, ordinal, weekday } from './dates';
 
@@ -98,4 +98,82 @@ test('four grade groups pair shared themes, including a theme shared by only som
   assert.equal(Object.keys(timeline[0]!.byGroup).length, 4); assert.equal(timeline[0]!.pairing!.groupIds.length, 3);
   assignment.gradeGroupIds = ['group003', 'group004'];
   assert.deepEqual(Object.keys(engine.buildTimeline(input)[0]!.byGroup), ['group003', 'group004']);
+});
+
+test('Sunday uses ISO weekday 7, and a make-up day only affects selected assignments', () => {
+  const input = fixture(); assert.equal(weekday('2026-11-08'), 7);
+  input.calendarDays = [CalendarDay.parse({ id: 'makeup02', schoolYearId: 'year0001', date: '2026-11-08', kind: 'makeup', followsWeekday: 1, assignmentIds: ['different'] })];
+  assert.equal(engine.enumerateSessions(input.schoolYear, input.term, input.assignment, input.calendarDays).length, 20);
+  input.calendarDays[0]!.assignmentIds = [input.assignment.id];
+  assert.equal(engine.enumerateSessions(input.schoolYear, input.term, input.assignment, input.calendarDays).length, 21);
+});
+test('re-teaching closes a formerly not-taught competency', () => {
+  const input = fixture(); input.today = '2026-11-10'; input.track.overrides.sessions = { [input.competencies[0]!.id]: 1 };
+  const common = { classId: 'class001', assignmentId: 'assignment', gradeGroupId: 'group001', competencyIds: [input.competencies[0]!.id] };
+  input.marks = [SessionMark.parse({ ...common, id: 'missed01', date: '2026-11-02', status: 'not_taught' }), SessionMark.parse({ ...common, id: 'retaught', date: '2026-11-09', status: 'taught' })];
+  assert.equal(engine.computePacing(input).items[0]!.state, 'taught');
+});
+test('not-taught mark shifts the affected lesson after the missed date and can be persisted', () => {
+  const input = fixture(); input.today = '2026-11-03';
+  input.marks = [SessionMark.parse({ id: 'missed01', classId: 'class001', assignmentId: 'assignment', gradeGroupId: 'group001', date: '2026-11-02', competencyIds: [input.competencies[0]!.id], status: 'not_taught' })];
+  const preview = engine.previewRealignment({ ...input, plans: [] }, { option: 'shift' });
+  assert.equal(preview.after.items[0]!.sessions[0]!.date, '2026-11-03');
+  const persisted = engine.computePacing({ ...input, track: preview.nextTrack, calendarDays: [...input.calendarDays, ...preview.newCalendarDays] });
+  assert.equal(persisted.items[0]!.sessions[0]!.date, '2026-11-03');
+});
+
+
+test('accepted allocation survives cancellation until a confirmed realignment, including two slots a day', () => {
+  const input = fixture();
+  input.assignment.slots.push({ ...input.assignment.slots[0]!, id: 'monday02', startTime: '15:00' });
+  const baseline = engine.computePacing(input);
+  input.track.allocation = allocationFromPlan(baseline);
+  input.calendarDays = [CalendarDay.parse({ id: 'typhoon1', schoolYearId: input.schoolYear.id, date: '2026-11-02', kind: 'suspension' })];
+  const disrupted = engine.computePacing(input);
+  assert.deepEqual(disrupted.items.map(i => i.sessions), baseline.items.map(i => i.sessions));
+  assert.ok(disrupted.atRisk.length);
+  for (const option of ['shift', 'absorb', 'compress', 'merge', 'add_time', 'defer'] as RealignmentOption[]) {
+    const state = { ...input, plans: [], baseline }, undo = realignmentUndo(state);
+    const preview = previewRealignment(state, { option, competencyIds: input.competencies.slice(0, 2).map(c => c.id), makeupDates: ['2026-11-07'] });
+    const applied = applyRealignment(state, preview);
+    const recomputed = engine.computePacing({ ...input, ...applied });
+    assert.deepEqual(recomputed.items.map(i => i.sessions), preview.after.items.map(i => i.sessions), option);
+    assert.deepEqual(engine.computePacing({ ...input, ...undo }), disrupted, option);
+    assert.equal(JSON.stringify(input.track), JSON.stringify(undo.track));
+  }
+});
+test('one missed slot shifts by one period, not the entire day', () => {
+  const input = fixture(); input.today = '2026-11-03';
+  input.assignment.slots.push({ ...input.assignment.slots[0]!, id: 'monday02', startTime: '15:00' });
+  const baseline = engine.computePacing(input);
+  input.track.allocation = allocationFromPlan(baseline);
+  input.marks = [SessionMark.parse({ id: 'missed01', classId: input.track.classId, assignmentId: input.assignment.id, gradeGroupId: input.track.gradeGroupId, date: '2026-11-02', slotId: input.assignment.slots[0]!.id, competencyIds: [input.competencies[0]!.id], status: 'not_taught' })];
+  assert.equal(engine.computePacing(input).sessionsBehind, 1);
+  const preview = previewRealignment({ ...input, plans: [], baseline }, { option: 'shift' });
+  assert.equal(preview.after.items[0]!.sessions[0]!.date, '2026-11-02');
+  assert.equal(preview.after.items[0]!.sessions[0]!.slotId, 'monday02');
+});
+test('absorb uses only needed buffer sessions and compress protects the minimum', () => {
+  const input = fixture(), baseline = engine.computePacing(input);
+  input.calendarDays = [CalendarDay.parse({ id: 'typhoon1', schoolYearId: input.schoolYear.id, date: '2026-11-02', kind: 'suspension' })];
+  const absorb = previewRealignment({ ...input, plans: [], baseline }, { option: 'absorb' });
+  assert.equal(absorb.after.bufferSessions.length, 1);
+  const compress = previewRealignment({ ...input, plans: [], baseline }, { option: 'compress' });
+  assert.equal(compress.after.atRisk.length, 0);
+  assert.ok(compress.after.items.every(i => i.sessions.length >= input.defaults.minSessionsPerCompetency));
+});
+
+test('theme pairing reorders a second group, slot overrides and per-group kinds are visible', () => {
+  const base = fixture();
+  const cls = ClassRecord.parse({ id: base.track.classId, schoolYearId: base.schoolYear.id, name: 'Mixed grades', gradeGroups: [{ id: 'group001', grade: '4' }, { id: 'group002', grade: '5' }, { id: 'group003', grade: '2' }] });
+  const assignment = { ...base.assignment, gradeGroupIds: ['group001', 'group002'] };
+  const second = base.competencies.map((c, i) => ({ ...c, id: c.id.replace('.g4.', '.g5.'), grade: '5' as const, domain: i % 2 ? 'Matter' : 'Life' }));
+  const input: TimelineInput = { ...base, from: base.term.startDate, to: base.term.endDate, classes: [cls], assignments: [assignment], tracks: [base.track, { ...base.track, id: 'track002', gradeGroupId: 'group002' }], competencies: [...base.competencies, ...second], plans: [], pairingOverrides: [] };
+  const timeline = engine.buildTimeline(input);
+  assert.equal(timeline[0]!.byGroup.group002![0], second[1]!.id);
+  assert.equal(timeline[0]!.pairing!.shared, true);
+  assert.equal(timeline[0]!.byGroupKind!.group003, 'other_subject');
+  input.pairingOverrides = [{ id: 'override1', classId: cls.id, assignmentId: assignment.id, date: timeline[0]!.date, slotId: timeline[0]!.slotId, byGroup: { group002: [second[0]!.id] } }];
+  const changed = engine.buildTimeline(input)[0]!;
+  assert.equal(changed.byGroup.group002![0], second[0]!.id); assert.equal(changed.pairing!.overridden, true); assert.equal(changed.pairing!.shared, false);
 });
