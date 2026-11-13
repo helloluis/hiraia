@@ -36,14 +36,19 @@ export function createCommunityModule(options: CommunityModuleOptions = {}): Ser
     handlers: {
       'community.search': (ctx, { query }) => searchArtifacts(deps(ctx), requireUser(ctx).id, query),
 
-      'community.get': (ctx, { params }) => {
+      'community.get': (ctx, { params, query }) => {
         const d = deps(ctx);
         const user = requireUser(ctx);
         const a = getArtifact(d.db, params.artifactId);
         const mine = a?.author_id === user.id;
-        if (!a || a.status === 'removed' || (a.status !== 'visible' && !mine)) throw new HttpError('not_found', 'This community lesson is no longer available.', { reason: 'artifact_unavailable' });
-        const v = getVersion(d.db, a.current_version_id);
-        if (!v) throw new HttpError('not_found', 'This community lesson is no longer available.', { reason: 'artifact_unavailable' });
+        if (!a || a.status === 'removed' || (a.status !== 'visible' && !mine)) {
+          throw new HttpError('not_found', 'This community lesson is no longer available.', { reason: 'artifact_unavailable' });
+        }
+        // Older versions stay reachable (§11.2): others see allowed versions only; the author sees all.
+        const v = getVersion(d.db, query.versionId ?? a.current_version_id);
+        if (!v || v.artifact_id !== a.id || (v.status !== 'allowed' && !mine)) {
+          throw new HttpError('not_found', 'That version of the lesson is not available.', { reason: 'version_unavailable' });
+        }
         return toDetail(d.db, a, v, user.id);
       },
 

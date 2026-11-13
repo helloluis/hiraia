@@ -232,6 +232,9 @@ function lineageOf(db: Database, row: ArtifactRow): ArtifactSummary['lineage'] {
 
 export function toSummary(db: Database, row: ArtifactRow, viewerId: string, overrides: Partial<ArtifactSummary> = {}): ArtifactSummary {
   const version = getVersion(db, row.current_version_id);
+  const mine = row.author_id === viewerId;
+  // The latest decision (reasons and excerpts of the author's own text) goes to the author only.
+  const moderation = mine && row.last_decision_json ? { moderation: JSON.parse(row.last_decision_json) as ModerationDecision } : {};
   return {
     id: row.id,
     title: row.title,
@@ -246,7 +249,8 @@ export function toSummary(db: Database, row: ArtifactRow, viewerId: string, over
     currentVersionId: row.current_version_id,
     versionNumber: version?.number ?? 1,
     status: row.status,
-    mine: row.author_id === viewerId,
+    mine,
+    ...moderation,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     ...overrides,
@@ -264,7 +268,7 @@ export function toDetail(db: Database, row: ArtifactRow, version: VersionRow, vi
 
 /** A summary for a post that was returned at posting time and therefore never stored. */
 export function previewSummary(
-  input: { id: string; versionId: string; number: number; meta: VersionMeta; now: string },
+  input: { id: string; versionId: string; number: number; meta: VersionMeta; now: string; decision?: ModerationDecision },
 ): ArtifactSummary {
   const m = input.meta;
   return {
@@ -282,6 +286,7 @@ export function previewSummary(
     versionNumber: input.number,
     status: 'returned',
     mine: true,
+    ...(input.decision ? { moderation: input.decision } : {}),
     createdAt: input.now,
     updatedAt: input.now,
   };

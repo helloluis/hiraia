@@ -148,8 +148,18 @@ export async function runModeration(deps: { llm: LlmGateway; config: TalaServerC
   };
 }
 
+/** Detector kind → the contract's `kind` wording ('class_list', 'phone', 'lrn', 'email', 'address', 'roster_name'). */
+const KIND: Record<PersonalDataFinding['kind'], string> = {
+  name_list: 'class_list',
+  roster_name: 'roster_name',
+  lrn: 'lrn',
+  phone: 'phone',
+  email: 'email',
+  address: 'address',
+};
+
 function toReason(f: PersonalDataFinding): ModerationDecision['reasons'][number] {
-  return { category: 'student_personal_data', message: f.message, sectionKey: f.sectionKey, excerpt: f.excerpt.slice(0, 300) };
+  return { category: 'student_personal_data', kind: KIND[f.kind], message: f.message, sectionKey: f.sectionKey, excerpt: f.excerpt.slice(0, 300) };
 }
 
 /**

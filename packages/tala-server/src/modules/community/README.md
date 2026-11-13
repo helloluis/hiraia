@@ -30,6 +30,11 @@ or messages. Code: this folder; pure detectors in `packages/tala-core/src/modera
 - Provenance from H's `planProvenance` over the server's `section_revision` history (AI-drafted unless
   substantially rewritten; missing history keeps the AI label). `adapted` = plan has lineage.
 - Licence is always CC BY-NC 4.0.
+- A custom template is published with the version (`version.template`, labels stripped and moderated);
+  copiers save it under the same id. Built-in templates are never included.
+- Size: the `community.get` body a post would produce (uncompressed JSON, stricter than the compressed
+  budget) must fit `LIMITS.maxApiResponseBytes` minus 16 KB of headroom for the author-only decision;
+  otherwise `invalid_input` with `details { reason: 'too_large', bytes, limit }`, before any model call.
 - Posting again from the same plan adds a version (a newer locked revision); the same revision again is an
   idempotent no-op (offline-queued retries).
 
@@ -50,6 +55,8 @@ model (prompt moderation/moderate.v<guidelineVersion>, feature community.moderat
 - `moderate.v1.md` embeds `guidelines.v1.md` verbatim (a test checks it). The guideline version in config
   selects the prompt version. Model excerpts are kept only if they are really in the lesson.
 - The author's display name (or pseudonym) is checked with the lesson, as section key `displayName`.
+- Rule reasons carry `kind` (`class_list`, `roster_name`, `lrn`, `phone`, `email`, `address`) for client
+  wording. The latest decision is on `ArtifactSummary.moderation` for the author only.
 - Every decision → `community_moderation_log` with trigger, decision, categories, rule kinds, guideline
   version, provider, model, prompt version. Never content; structured logs carry ids only.
 
@@ -73,6 +80,18 @@ artifact and reason; daily limit `abuse.reportPerUserPerDay`.
 
 Versions are `allowed`, `pending` or `returned`; only `allowed` versions are served to others.
 
+## Viewing older versions
+
+`community.get?versionId=` serves any `allowed` version of a visible artifact; the author can see all their
+versions (pending and returned included).
+
+## Account deletion (PRIV-6)
+
+The deleted author's artifacts, versions, tags, lineage rows, reports and copy records are removed, so they
+leave search and `get`. Copies other teachers made are their own records and keep `plan.lineage` (the
+credit line). Derived artifacts keep the credit in their own version metadata and show the source with
+`available: false`. Decision-log rows keep the decision and lose the author id.
+
 ## Search (COM-2, COM-3, COM-7, §14.1)
 
 Visible artifacts plus the caller's own. All contract filters; free text lifts grade, quarter and
@@ -89,6 +108,7 @@ TALA_DB_PATH=/path/to/tala.db pnpm --filter @hiraia/tala-server exec tsx src/mod
 
 ## Not done in V1.0 here
 
-- Model step for search query understanding (needs a `prompts/community/` folder; see CONTRACT-REQUESTS 8).
-- No image moderation (no attachments in the contracts yet).
-- `ArtifactDetail` size is not capped at the 100 KB response budget; a very long plan could exceed it.
+- Model step for search query understanding (orchestrator: not in V1.0).
+- No image moderation (orchestrator: not in V1.0); no private share links (COM-10, not in V1.0).
+- Text-level stripping still lives in `publish.ts`; it switches to worker H's `stripForPublish` in
+  `tala-core/src/plan` once the orchestrator says H's version has landed.
