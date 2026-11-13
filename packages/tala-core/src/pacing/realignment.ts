@@ -61,7 +61,16 @@ export function previewRealignment(input: RealignmentInput, request: Realignment
       newCalendarDays.push({ id: `makeup:${nextTrack.classId}:${date}`, schoolYearId: input.schoolYear.id, classId: nextTrack.classId, date, kind: 'makeup', label: 'Make-up class', source: 'teacher', minutesOverride: null, followsWeekday: [...input.assignment.slots].sort((a, b) => a.weekday - b.weekday)[0]?.weekday ?? null, assignmentIds: [input.assignment.id] });
     }
   }
-  const after = computePacing({ ...input, track: nextTrack, calendarDays: [...input.calendarDays, ...newCalendarDays] });
+  // A marked missed period is a gap for this preview only. Persisted pins below retain
+  // the confirmed proposal without changing the teacher's actual calendar record.
+  const missedDates = [...new Set(input.marks.filter(m => m.classId === nextTrack.classId && m.assignmentId === nextTrack.assignmentId && m.gradeGroupId === nextTrack.gradeGroupId && m.date <= input.today && m.status !== 'taught').map(m => m.date))];
+  const previewDays: CalendarDay[] = missedDates.map(date => ({ id: `missed:${date}`, schoolYearId: input.schoolYear.id, classId: nextTrack.classId, date, kind: 'suspension', label: 'Missed session preview', source: 'teacher', minutesOverride: null, followsWeekday: null, assignmentIds: null }));
+  const after = computePacing({ ...input, track: nextTrack, calendarDays: [...input.calendarDays, ...newCalendarDays, ...previewDays] });
+  nextTrack.overrides.pins = { ...nextTrack.overrides.pins };
+  for (const item of after.items) if (item.sessions.length) for (const id of item.competencyIds) {
+    nextTrack.overrides.pins[id] ??= item.sessions[0]!.date;
+  }
+
   const moved: RealignmentPreview['moved'] = {};
   for (const item of before.items) for (const id of item.competencyIds) {
     const from = item.sessions[0]?.date ?? null;
@@ -73,7 +82,14 @@ export function previewRealignment(input: RealignmentInput, request: Realignment
     const competencyIds = plan.competencies[nextTrack.gradeGroupId] ?? [];
     if (!competencyIds.some(id => moved[id])) continue;
     for (const placement of plan.placements.filter(p => p.classId === nextTrack.classId && (p.assignmentId === null || p.assignmentId === nextTrack.assignmentId))) {
-      const to = [...new Set(competencyIds.flatMap(id => after.items.find(i => i.competencyIds.includes(id))?.sessions.map(s => s.date) ?? []))].sort();
+      const to = [...new Set(placement.dates.flatMap(date => {
+        const oldItem = before.items.find(i => i.competencyIds.some(id => competencyIds.includes(id)) && i.sessions.some(s => s.date === date));
+        if (!oldItem) return [date];
+        const index = oldItem.sessions.findIndex(s => s.date === date);
+        const newItem = after.items.find(i => i.competencyIds.some(id => oldItem.competencyIds.includes(id)));
+        const replacement = newItem?.sessions[index]?.date;
+        return replacement ? [replacement] : [];
+      }))].sort();
       planMoves.push({ planId: plan.id, classId: placement.classId, from: [...placement.dates], to });
     }
   }
@@ -82,4 +98,12 @@ export function previewRealignment(input: RealignmentInput, request: Realignment
 /** Persist this snapshot in the same local transaction as applying the preview; undo restores it. */
 export function realignmentUndo(input: RealignmentInput): Pick<RealignmentInput, 'track' | 'calendarDays' | 'plans'> {
   return copy({ track: input.track, calendarDays: input.calendarDays, plans: input.plans });
+}
+/** Pure transaction payload. Callers persist these records together and retain realignmentUndo. */
+export function applyRealignment(input: RealignmentInput, preview: RealignmentPreview): Pick<RealignmentInput, 'track' | 'calendarDays' | 'plans'> {
+  const plans = input.plans.map(plan => ({ ...copy(plan), placements: plan.placements.map(placement => {
+    const move = preview.planMoves.find(m => m.planId === plan.id && m.classId === placement.classId && m.from.join('|') === placement.dates.join('|'));
+    return move ? { ...placement, dates: [...move.to] } : copy(placement);
+  }) }));
+  return { track: copy(preview.nextTrack), calendarDays: [...copy(input.calendarDays), ...copy(preview.newCalendarDays)], plans };
 }

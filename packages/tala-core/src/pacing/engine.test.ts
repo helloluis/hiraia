@@ -99,3 +99,25 @@ test('four grade groups pair shared themes, including a theme shared by only som
   assignment.gradeGroupIds = ['group003', 'group004'];
   assert.deepEqual(Object.keys(engine.buildTimeline(input)[0]!.byGroup), ['group003', 'group004']);
 });
+
+test('Sunday uses ISO weekday 7, and a make-up day only affects selected assignments', () => {
+  const input = fixture(); assert.equal(weekday('2026-11-08'), 7);
+  input.calendarDays = [CalendarDay.parse({ id: 'makeup02', schoolYearId: 'year0001', date: '2026-11-08', kind: 'makeup', followsWeekday: 1, assignmentIds: ['different'] })];
+  assert.equal(engine.enumerateSessions(input.schoolYear, input.term, input.assignment, input.calendarDays).length, 20);
+  input.calendarDays[0]!.assignmentIds = [input.assignment.id];
+  assert.equal(engine.enumerateSessions(input.schoolYear, input.term, input.assignment, input.calendarDays).length, 21);
+});
+test('re-teaching closes a formerly not-taught competency', () => {
+  const input = fixture(); input.today = '2026-11-10'; input.track.overrides.sessions = { [input.competencies[0]!.id]: 1 };
+  const common = { classId: 'class001', assignmentId: 'assignment', gradeGroupId: 'group001', competencyIds: [input.competencies[0]!.id] };
+  input.marks = [SessionMark.parse({ ...common, id: 'missed01', date: '2026-11-02', status: 'not_taught' }), SessionMark.parse({ ...common, id: 'retaught', date: '2026-11-09', status: 'taught' })];
+  assert.equal(engine.computePacing(input).items[0]!.state, 'taught');
+});
+test('not-taught mark shifts the affected lesson after the missed date and can be persisted', () => {
+  const input = fixture(); input.today = '2026-11-03';
+  input.marks = [SessionMark.parse({ id: 'missed01', classId: 'class001', assignmentId: 'assignment', gradeGroupId: 'group001', date: '2026-11-02', competencyIds: [input.competencies[0]!.id], status: 'not_taught' })];
+  const preview = engine.previewRealignment({ ...input, plans: [] }, { option: 'shift' });
+  assert.equal(preview.after.items[0]!.sessions[0]!.date, '2026-11-03');
+  const persisted = engine.computePacing({ ...input, track: preview.nextTrack, calendarDays: [...input.calendarDays, ...preview.newCalendarDays] });
+  assert.equal(persisted.items[0]!.sessions[0]!.date, '2026-11-03');
+});

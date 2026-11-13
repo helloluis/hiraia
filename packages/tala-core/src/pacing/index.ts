@@ -4,7 +4,7 @@ import { enumerateSessions } from './sessions';
 import { buildTimeline } from './timeline';
 import { availableRealignments, previewRealignment } from './realignment';
 export { computePacing, enumerateSessions, buildTimeline, availableRealignments, previewRealignment };
-export { realignmentUndo } from './realignment';
+export { realignmentUndo, applyRealignment } from './realignment';
 export type { RealignmentInput } from './realignment';
 export const termForDate: PacingEngine['termForDate'] = (year, date) => year.terms.find(t => t.startDate <= date && t.endDate >= date) ?? null;
 export const proposeStartPosition: PacingEngine['proposeStartPosition'] = input => {

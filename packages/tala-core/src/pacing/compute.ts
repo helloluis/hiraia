@@ -118,9 +118,9 @@ export function computePacing(input: PacingInput): PacingPlan {
       credit += relevant.filter(m => m.date <= input.today && !past.some(s => s.date === m.date)).reduce((n, m) => n + (m.status === 'taught' ? 1 : m.status === 'partial' ? 0.5 : 0), 0);
       sessionsBehind += past.length - Math.min(Math.max(assigned.length, past.length), credit);
       if (!assigned.length) state = 'unscheduled';
+      else if (credit >= assigned.length && relevant.some(m => m.status === 'taught')) state = 'taught';
       else if (relevant.some(m => m.date <= input.today && m.status === 'not_taught')) state = 'not_taught';
       else if (relevant.some(m => m.date <= input.today && m.status === 'partial')) state = 'partial';
-      else if (credit >= assigned.length && relevant.some(m => m.status === 'taught')) state = 'taught';
       else if (past.length === assigned.length && params.assumeTaught) state = 'assumed_taught';
     }
     return { competencyIds: ids, sessions: assigned, state, pinned, weightSource };
