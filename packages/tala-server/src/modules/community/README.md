@@ -93,6 +93,12 @@ leave search and `get`. Copies other teachers made are their own records and kee
 credit line). Derived artifacts keep the credit in their own version metadata and show the source with
 `available: false`. Decision-log rows keep the decision and lose the author id.
 
+## Account merge (PRD §13.3 case 4)
+
+`onAccountMerged(from, to)` moves artifact authorship, reports, copy records and decision-log rows to the
+surviving account. Display names on posts stay as posted (self-declared per post); lineage and copy counts
+are unchanged. When both accounts copied the same lesson, one copy record is kept. Idempotent.
+
 ## Search (COM-2, COM-3, COM-7, §14.1)
 
 Visible artifacts plus the caller's own. All contract filters; free text lifts grade, quarter and

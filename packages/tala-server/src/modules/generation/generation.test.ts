@@ -2,10 +2,11 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { GenerationInput, Plan, PlanSection, type GenerationJob } from '@hiraia/tala-core';
 import { buildPrefilledDraft } from '@hiraia/tala-core/generation';
-import { generationModule } from './index';
-import { llmModule } from '../llm';
+import { generationModule, runJob } from './index';
+import { fakeCompactRaw } from '../../../eval/fixtures';
+import { createLlmGateway, llmModule } from '../llm';
 import { createTestServer } from '../../testing';
-import type { LlmGateway, LlmResult } from '../../kernel/types';
+import type { BaseDeps, Ctx, Services, LlmGateway, LlmResult } from '../../kernel/types';
 const input=()=>GenerationInput.parse({kind:'full',templateId:'tpl.dlp.v1',language:'en',subjectName:'Science',learningAreaId:null,timeBudgetMinutes:30,gradeGroups:[{id:'group-002',grade:'2'}],competencies:{},curriculumVersion:null,customObjectives:['Describe plants.'],classProfile:{}});
 const unavailable:LlmGateway={routeFor:()=> 'cloud',complete:async()=>({ok:false,reason:'providers_unavailable',message:'Use the pre-filled draft.'})};
 function server(llm=unavailable){return createTestServer({modules:[llmModule,generationModule],services:{llm},quiet:true});}
@@ -22,3 +23,31 @@ test('section generation reads the real owned source and leaves every existing s
   const fake:LlmGateway={routeFor:()=> 'cloud',complete:async req=>{const payload=JSON.parse(req.vars.input!) as {source:{key:string}[]};sourceSeen=payload.source.some(s=>s.key==='content');return {ok:true,data:{title:'Plants',sections:[{key:'materials',content:{type:'list',items:[]}}]},provider:'qwen',model:'fake',promptId:'lesson/section',promptVersion:2,usage:{inputTokens:0,outputTokens:0,costUsd:0},fellBack:true} as never;}};
   const t=server(fake);try{const teacher=await t.registerUser();const plan=Plan.parse({id:'source-plan',title:'Plants',templateId:'tpl.dlp.v1',language:'en',subjectName:'Science',grades:['2'],gradeGroupIds:['group-002'],durationMinutes:30,competencies:{},placements:[]});t.services.records.put(teacher.id,'plan',plan);const section=PlanSection.parse({id:'source-content',planId:plan.id,key:'content',content:{type:'text',blocks:[{t:'p',spans:[{text:'Original teacher text.'}]}]}});t.services.records.put(teacher.id,'plan_section',section);const before=t.services.records.planSnapshot(teacher.id,plan.id);const job=await t.ok('generation.create',{body:{...input(),kind:'section',planId:plan.id,sectionKey:'materials'},token:teacher.token});const done=await waitFor(t,teacher.token,job.id,'done');assert.equal(done.result?.sections.length,1);assert.equal(sourceSeen,true);assert.deepEqual(t.services.records.planSnapshot(teacher.id,plan.id),before);assert.deepEqual(t.errors,[]);}finally{t.close();}
 });
+test('lost create reply and finished-job replay reuse one job and consume quota once',async()=>{
+  let calls=0;const instrumented={...llmModule,services:(deps:Parameters<NonNullable<typeof llmModule.services>>[0])=>({llm:createLlmGateway(deps,{call:async()=>{calls++;return {content:JSON.stringify(fakeCompactRaw({...input(),resolvedObjectives:{}})),inputTokens:100,outputTokens:200,costUsd:0};}})})};
+  const t=createTestServer({modules:[instrumented,generationModule],quiet:true});try{const teacher=await t.registerUser(),other=await t.registerUser();const body={...input(),idempotencyKey:'lost-reply'};
+    const first=await t.ok('generation.create',{body,token:teacher.token});const replay=await t.ok('generation.create',{body,token:teacher.token});assert.equal(replay.id,first.id);
+    await waitFor(t,teacher.token,first.id,'done');const finished=await t.ok('generation.create',{body:{...body,customObjectives:[]},token:teacher.token});assert.equal(finished.id,first.id);assert.equal(finished.status,'done');assert.equal(calls,1);
+    const used=t.db.prepare("SELECT used FROM llm_quota WHERE user_id=? AND bucket='full'").get(teacher.id) as {used:number};assert.equal(used.used,1);const unrelated=await t.ok('generation.create',{body,token:other.token});assert.notEqual(unrelated.id,first.id);assert.deepEqual(t.errors,[]);
+  }finally{t.close();}
+});
+test('real account merge retains every job, isolates others, and preserves colliding replay anchors',async()=>{
+  const t=server();try{const from=await t.registerUser(),to=await t.registerUser(),other=await t.registerUser();const body={...input(),idempotencyKey:'shared-key'};
+    const source=await t.ok('generation.create',{body,token:from.token}),destination=await t.ok('generation.create',{body,token:to.token});await t.ok('generation.create',{body,token:other.token});
+    const untouched=t.db.prepare('SELECT * FROM generation_jobs WHERE owner_id=?').all(other.id);
+    await t.ok('account.merge',{body:{confirm:'MERGE',currentPassword:to.password,email:from.email,password:from.password},token:to.token});
+    assert.equal((t.db.prepare('SELECT count(*) AS n FROM generation_jobs WHERE owner_id=?').get(to.id) as {n:number}).n,2);assert.deepEqual(t.db.prepare('SELECT * FROM generation_jobs WHERE owner_id=?').all(other.id),untouched);
+    assert.equal((await t.ok('generation.get',{params:{jobId:source.id},token:to.token})).id,source.id);assert.equal((await t.ok('generation.create',{body,token:to.token})).id,destination.id);
+    const deps={db:t.db} as Parameters<NonNullable<typeof generationModule.onAccountMerged>>[0];const before=t.db.prepare('SELECT * FROM generation_jobs ORDER BY id').all();generationModule.onAccountMerged!(deps,from.id,to.id);generationModule.onAccountMerged!(deps,to.id,to.id);assert.deepEqual(t.db.prepare('SELECT * FROM generation_jobs ORDER BY id').all(),before);assert.deepEqual(t.errors,[]);
+  }finally{t.close();}
+});
+test('merge requeues running work without letting the old runner overwrite the moved job',async()=>{
+  let finish!:(result:LlmResult<never>)=>void;const fake:LlmGateway={routeFor:()=> 'cloud',complete:()=>new Promise(resolve=>{finish=resolve;})};let deps!:(BaseDeps&{services:Services});
+  const t=createTestServer({modules:[llmModule,{...generationModule,start:base=>{deps=base;return()=>{};}}],services:{llm:fake},quiet:true});try{
+    const from=await t.registerUser(),to=await t.registerUser();const job=await t.ok('generation.create',{body:{...input(),idempotencyKey:'running-key'},token:from.token});const context={...deps,user:{id:from.id,email:from.email,emailVerified:true,displayName:'Teacher',sessionId:'session'},requestId:'test',ip:null} as Ctx;
+    const running=runJob(context,job.id);assert.equal((await t.ok('generation.get',{params:{jobId:job.id},token:from.token})).status,'running');
+    await t.ok('account.merge',{body:{confirm:'MERGE',currentPassword:to.password,email:from.email,password:from.password},token:to.token});finish({ok:false,reason:'cancelled',message:'Cancelled.'});await running;
+    const moved=await t.ok('generation.get',{params:{jobId:job.id},token:to.token});assert.equal(moved.status,'queued');assert.equal(moved.id,job.id);assert.equal((await t.ok('generation.create',{body:{...input(),idempotencyKey:'running-key'},token:to.token})).id,job.id);assert.deepEqual(t.errors,[]);
+  }finally{t.close();}
+});
+test('cancelled and failed idempotent jobs keep their replay identity',async()=>{const t=server();try{const teacher=await t.registerUser();const cancelledBody={...input(),idempotencyKey:'cancel-key'};const cancelled=await t.ok('generation.create',{body:cancelledBody,token:teacher.token});await t.ok('generation.cancel',{params:{jobId:cancelled.id},token:teacher.token});assert.equal((await t.ok('generation.create',{body:cancelledBody,token:teacher.token})).status,'cancelled');const failedBody={...input(),idempotencyKey:'failure-key'};const failed=await t.ok('generation.create',{body:failedBody,token:teacher.token});await waitFor(t,teacher.token,failed.id,'failed');assert.equal((await t.ok('generation.create',{body:failedBody,token:teacher.token})).id,failed.id);assert.deepEqual(t.errors,[]);}finally{t.close();}});

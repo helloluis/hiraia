@@ -17,3 +17,5 @@ Deferred by the orchestrator, not blockers for this slice:
 Release gates outside this implementation:
 - DeepSeek live comparison requires an authorized key; unavailable here, covered by fakes only.
 - Teacher quality review of saved fixture samples is still required. Structural success is not scientific or pedagogical alignment validation.
+
+Account-merge follow-up: both modules implement the direct onAccountMerged contract. Quota collisions sum; every usage/job row moves; caches are rekeyed. Running generation jobs requeue, and the old runner cannot overwrite a job after its owner changes. generation.create now persists an account-scoped idempotency key and returns the original job in every state before validating potentially changed source inputs. If two merged accounts used the same key, both jobs survive; the destination's existing replay anchor wins, and the source job relinquishes only its duplicate anchor (its input/result remain intact). No further contract change is required.
