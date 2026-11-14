@@ -389,6 +389,11 @@ export const ClientConfig = z.object({
     community: z.boolean(),
     rosterAi: z.boolean(),
     googleSignIn: z.boolean(),
+    /**
+     * False while the server has no way to send mail: clients then hide "verify your email" and say plainly
+     * that password reset by email is not available yet. Absent = assume true.
+     */
+    emailDelivery: z.boolean().optional(),
   }),
   /** Route for roster name cleaning. 'cloud' means the flagged early-access path must be shown (§12.4.1). */
   rosterLlmRoute: LlmRoute,
