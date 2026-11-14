@@ -1,0 +1,247 @@
+{
+  "input": {
+    "kind": "full",
+    "templateId": "tpl.dll.v1",
+    "language": "fil",
+    "subjectName": "Science",
+    "learningAreaId": "science",
+    "timeBudgetMinutes": 40,
+    "sessions": 5,
+    "gradeGroups": [
+      {
+        "id": "group-004",
+        "grade": "4",
+        "learnerCount": 10
+      }
+    ],
+    "competencies": {
+      "group-004": ["C4"]
+    },
+    "curriculumVersion": "eval.v1",
+    "customObjectives": [],
+    "classProfile": {
+      "materials": ["paper", "pencils"],
+      "textbooks": [],
+      "electricity": true,
+      "projector": null,
+      "printing": false,
+      "outdoorSpace": null,
+      "notes": ""
+    },
+    "guidance": ""
+  },
+  "plan": {
+    "title": "Pagkilala at Paglalarawan sa mga Halaman",
+    "sections": [
+      {
+        "key": "objectives",
+        "content": {
+          "type": "list",
+          "items": [
+            "Ilarawan ang mga halaman.",
+            "Ilarawan ang mga halaman.",
+            "Makilala ang mga pangunahing bahagi ng halaman (ugat, tangkay, dahon) sa pamamagitan ng pagmamasid at pagguhit."
+          ]
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/week",
+          "promptVersion": 3,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "content",
+        "content": {
+          "type": "text",
+          "blocks": [
+            {
+              "t": "p",
+              "spans": [
+                {
+                  "text": "Ang mga halaman ay may iba't ibang hugis, laki, kulay, at bahagi. Sa pamamagitan ng pagmamasid, pagguhit, at paglalarawan, natutukoy natin ang pagkakaiba at pagkakatulad ng mga halaman at ang mga bahagi nito tulad ng ugat, tangkay, at dahon."
+                }
+              ]
+            }
+          ]
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/week",
+          "promptVersion": 3,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "materials",
+        "content": {
+          "type": "list",
+          "items": ["paper", "pencils"]
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/week",
+          "promptVersion": 3,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "weekgrid",
+        "content": {
+          "type": "weekgrid",
+          "days": [
+            {
+              "date": null,
+              "weekday": 1,
+              "minutes": 40,
+              "body": [
+                {
+                  "t": "p",
+                  "spans": [
+                    {
+                      "text": "Pagmamasid sa mga halaman sa paligid ng silid-aralan. Sa mga pares, maglarawan ng isang halaman gamit ang pandama (hugis, kulay, laki) at ibahagi sa klase ang isang obserbasyon."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "date": null,
+              "weekday": 2,
+              "minutes": 40,
+              "body": [
+                {
+                  "t": "p",
+                  "spans": [
+                    {
+                      "text": "Pag-aaral ng mga bahagi ng halaman (ugat, tangkay, dahon). Sa mga pares, gumuhit ng isang halaman at lagyan ng tsek ang mga bahaging nakikita; magbahagi ng isang bahagi at ang hitsura nito."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "date": null,
+              "weekday": 3,
+              "minutes": 40,
+              "body": [
+                {
+                  "t": "p",
+                  "spans": [
+                    {
+                      "text": "Paglalarawan ng hugis at tekstura ng ugat, tangkay, at dahon. Sa mga pares, gumawa ng tsart ng obserbasyon sa isang papel (hati-hatiin) at itala ang kulay at hugis ng bawat bahagi."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "date": null,
+              "weekday": 4,
+              "minutes": 40,
+              "body": [
+                {
+                  "t": "p",
+                  "spans": [
+                    {
+                      "text": "Paghahambing ng dalawang halaman na napagmasdan. Sa mga pares, gumuhit ng dalawang halaman at maglagay ng dalawang pagkakatulad at dalawang pagkakaiba sa ilalim ng guhit."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "date": null,
+              "weekday": 5,
+              "minutes": 40,
+              "body": [
+                {
+                  "t": "p",
+                  "spans": [
+                    {
+                      "text": "Pagtatasa: bawat pares ay gaguhit ng isang halaman, lalagyan ng pangalan ang ugat, tangkay, at dahon, at lalarawan ang bawat bahagi nang pasalita sa guro."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/week",
+          "promptVersion": 3,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "assessment",
+        "content": {
+          "type": "text",
+          "blocks": [
+            {
+              "t": "p",
+              "spans": [
+                {
+                  "text": "Ilarawan ang mga halaman."
+                }
+              ]
+            },
+            {
+              "t": "p",
+              "spans": [
+                {
+                  "text": "Sa pagtatasa sa araw 5, ang bawat pares (5 pares mula sa 10 mag-aaral) ay gaguhit ng isang halaman at lalagyan ng pangalan ang ugat, tangkay, at dahon. Lalagyan din nila ng maikling paglalarawan ang bawat bahagi. Susuriin ng guro kung wasto ang pagkakalagay ng pangalan at kung ang paglalarawan ay tumutugma sa naobserbahang halaman, bilang ebidensya para sa objective-1."
+                }
+              ]
+            }
+          ]
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/week",
+          "promptVersion": 3,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "reflection",
+        "content": {
+          "type": "text",
+          "blocks": [
+            {
+              "t": "p",
+              "spans": [
+                {
+                  "text": "Pagninilay ng guro pagkatapos ng linggo: aling mga mag-aaral ang nahirapan sa paglalarawan ng mga bahagi, at anong karagdagang pagsasanay ang kailangan? Kailangang suriin ng guro ang katumpakan ng mga konseptong ginamit bago ito gamitin sa klase."
+                }
+              ]
+            }
+          ]
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/week",
+          "promptVersion": 3,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      }
+    ],
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "warnings": []
+  },
+  "review": "Teacher quality review pending; structural checks do not establish scientific or pedagogical quality."
+}

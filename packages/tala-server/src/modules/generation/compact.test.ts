@@ -56,7 +56,7 @@ test('missing/duplicate slots and hallucinated objective refs are refused, never
 test('request validation checks missing groups and is shared by all providers', () => {
   const input = fixture(),
     req = lessonRequest(input, { userId: 'teacher-001', newId });
-  assert.equal(req.version, 2);
+  assert.equal(req.version, 3);
   assert.equal(req.maxOutputTokens, 8192);
   const raw = fakeCompact(input);
   raw.sections.find((s) => s.key === 'multigrade')!.blocks[0]!.activities.pop();
@@ -97,4 +97,85 @@ test('translation changes only allowlisted text leaves and preserves IDs and tim
     }
   }
   assert.equal(req.schema.safeParse({ translations: [] }).success, false);
+});
+
+test('every lesson prompt receives per-grade counts and the 15-learner total, never roster fields', () => {
+  const input = {
+    ...fixture(),
+    gradeGroups: [
+      {
+        id: 'grade-3',
+        grade: '3' as const,
+        learnerCount: 6,
+        students: [{ name: 'Roster Canary Never Send' }],
+      },
+      { id: 'grade-4', grade: '4' as const, learnerCount: 5 },
+      { id: 'grade-5', grade: '5' as const, learnerCount: 4 },
+    ],
+    roster: [{ name: 'Roster Canary Never Send' }],
+  };
+  for (const kind of ['full', 'section', 'adapt', 'translate'] as const) {
+    const request = lessonRequest(
+      { ...input, kind, sectionKey: 'materials', targetLanguage: 'fil' },
+      { userId: 'teacher', newId, version: 3, source: [] }
+    );
+    const data = JSON.parse(request.vars.input!) as {
+      groups: { grade: string; learnerCount?: number }[];
+      totalLearnerCount: number;
+    };
+    assert.deepEqual(
+      data.groups.map((g) => [g.grade, g.learnerCount]),
+      [
+        ['3', 6],
+        ['4', 5],
+        ['5', 4],
+      ]
+    );
+    assert.equal(data.totalLearnerCount, 15);
+    assert.equal(request.version, 3);
+    assert.equal(request.vars.input!.includes('Roster Canary Never Send'), false);
+    assert.equal(request.vars.input!.includes('students'), false);
+    assert.equal(request.vars.input!.includes('roster'), false);
+  }
+  for (const templateId of ['tpl.dlp.v1', 'tpl.dll.v1']) {
+    const request = lessonRequest(
+      { ...input, templateId, gradeGroups: [input.gradeGroups[0]!] },
+      { userId: 'teacher', newId, version: 3 }
+    );
+    const data = JSON.parse(request.vars.input!);
+    assert.equal(data.totalLearnerCount, 6);
+    assert.equal(data.groups[0].learnerCount, 6);
+    assert.equal(request.vars.input!.includes('Roster Canary Never Send'), false);
+  }
+});
+
+test('unknown learner counts and unknown class totals are omitted rather than guessed', () => {
+  const input = {
+    ...fixture(),
+    gradeGroups: [
+      { id: 'grade-3', grade: '3' as const, learnerCount: 6 },
+      { id: 'grade-4', grade: '4' as const, learnerCount: null },
+      { id: 'grade-5', grade: '5' as const, learnerCount: 0 },
+    ],
+  };
+  for (const kind of ['full', 'translate'] as const) {
+    const request = lessonRequest(
+      { ...input, kind },
+      { userId: 'teacher', newId, version: 3, source: [] }
+    );
+    const data = JSON.parse(request.vars.input!);
+    assert.equal(data.groups[0].learnerCount, 6);
+    assert.equal(Object.hasOwn(data.groups[1], 'learnerCount'), false);
+    assert.equal(data.groups[2].learnerCount, 0);
+    assert.equal(Object.hasOwn(data, 'totalLearnerCount'), false);
+  }
+});
+
+test('v3 is the default while explicit v2 remains available for rollback', () => {
+  const input = fixture();
+  for (const kind of ['full', 'translate'] as const) {
+    const options = { userId: 'teacher', newId, source: [] };
+    assert.equal(lessonRequest({ ...input, kind }, options).version, 3);
+    assert.equal(lessonRequest({ ...input, kind }, { ...options, version: 2 }).version, 2);
+  }
 });

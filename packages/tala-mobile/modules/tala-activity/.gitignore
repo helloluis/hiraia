@@ -1,0 +1,12 @@
+# packages/tala-mobile/.gitignore ignores every `android/` (the Expo prebuild output). This module's
+# android/ holds SOURCE (Kotlin/Java, manifest, gradle) and must be tracked; a deeper .gitignore
+# takes precedence, so re-include it here and re-exclude only generated things.
+!android/
+!android/**
+android/build/
+android/.gradle/
+android/jvm/build/
+android/jvm/.gradle/
+# Generated at build time from the tala-0.4.x branch by scripts/sync-card-catalog.mjs (1.9 MB, append-only).
+android/src/main/assets/card-catalog.tsv
+android/src/main/assets/.card-catalog.blob

@@ -7,6 +7,7 @@ import { buildPrefilledDraft, validateGeneratedSections } from '@hiraia/tala-cor
 import { createTestServer } from '../src/testing';
 import type { LlmResult, ProviderConfig } from '../src/kernel/types';
 import { generationModule } from '../src/modules/generation';
+import { DEFAULT_LESSON_PROMPT_VERSION } from '../src/modules/generation/compact';
 import {
   createLlmGateway,
   llmModule,
@@ -27,6 +28,7 @@ export interface EvalOptions {
   onAttempt?: (event: AttemptDiagnostic) => void;
   call?: ProviderCall;
   sample?: boolean;
+  promptVersion?: number;
 }
 function rate(name: string): number {
   const value = Number(process.env[name]);
@@ -93,7 +95,16 @@ export async function runEvaluationCase(
           ? {
               beforeCall: (provider: 'deepseek' | 'qwen' | 'local') => {
                 if (provider === 'local') throw Error('No local model in live provider eval.');
-                if (liveDispatches[provider] >= (provider === 'deepseek' ? 40 : 5))
+                if (
+                  liveDispatches[provider] >=
+                  Number(
+                    process.env[
+                      provider === 'deepseek'
+                        ? 'TALA_EVAL_DEEPSEEK_CALL_LIMIT'
+                        : 'TALA_EVAL_QWEN_CALL_LIMIT'
+                    ] ?? (provider === 'deepseek' ? 40 : 5)
+                  )
+                )
                   throw new ProviderHttpError(0, 'eval_call_limit');
                 liveDispatches[provider]++;
               },
@@ -105,7 +116,10 @@ export async function runEvaluationCase(
           options.onAttempt?.(event);
           if (options.live)
             appendFileSync(
-              resolve(evalRoot, `${options.provider}-attempts.jsonl`),
+              resolve(
+                evalRoot,
+                `${options.provider}${options.promptVersion ? `-v${options.promptVersion}` : ''}-attempts.jsonl`
+              ),
               JSON.stringify({ run: options.runId, case: fixture.id, ...event }) + '\n'
             );
           console.log(JSON.stringify({ case: fixture.id, ...event }));
@@ -131,6 +145,16 @@ export async function runEvaluationCase(
       features: { generation: true },
       llm: {
         ...configs,
+        ...(options.promptVersion
+          ? {
+              promptVersions: Object.fromEntries(
+                ['single', 'multigrade', 'week', 'section', 'adapt', 'translate'].map((name) => [
+                  `lesson/${name}`,
+                  options.promptVersion!,
+                ])
+              ),
+            }
+          : {}),
         budget: { monthlyUsd: 3, alertAtUsd: 2.5 },
         quotas: { fullPerDay: 50, sectionPerDay: 50 },
         cacheSeconds: 0,
@@ -168,6 +192,10 @@ export async function runEvaluationCase(
     const valid = (pattern: RegExp) => schema && !errors.some((e) => pattern.test(e));
     const result = {
       provider: options.provider,
+      promptVersion:
+        job.result?.sections[0]?.gen.promptVersion ??
+        options.promptVersion ??
+        DEFAULT_LESSON_PROMPT_VERSION,
       servedBy: job.result?.provider ?? null,
       model: job.result?.model ?? null,
       fellBack: attribution?.ok ? attribution.fellBack : null,
@@ -212,6 +240,7 @@ export async function runEvaluationCase(
       ['g2-g4-en', 'three-group-fil', 'weekly-dll-fil'].includes(fixture.id)
     ) {
       mkdirSync(resolve(evalRoot, 'samples'), { recursive: true });
+      const versionSuffix = options.promptVersion ? `-v${options.promptVersion}` : '';
       const suffix =
         options.provider === 'deepseek'
           ? '-deepseek'
@@ -219,7 +248,7 @@ export async function runEvaluationCase(
             ? '-chain'
             : '';
       writeFileSync(
-        resolve(evalRoot, 'samples', `${fixture.id}${suffix}.json`),
+        resolve(evalRoot, 'samples', `${fixture.id}${suffix}${versionSuffix}.json`),
         JSON.stringify(
           {
             input: fixture.input,

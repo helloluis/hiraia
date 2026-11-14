@@ -105,6 +105,19 @@ export const PlanRevisionMeta = z.object({
 
 export const API = {
   /* core — workstream A */
+  /** Liveness for the process supervisor and uptime checks. No auth, no database write, nothing sensitive. */
+  'system.health': route({
+    method: 'GET',
+    path: '/health',
+    auth: 'none',
+    owner: 'core',
+    response: z.object({
+      ok: z.literal(true),
+      version: z.string(),
+      environment: z.string(),
+      time: IsoDateTime,
+    }),
+  }),
   'config.get': route({
     method: 'GET',
     path: '/config',

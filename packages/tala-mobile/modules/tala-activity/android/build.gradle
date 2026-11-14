@@ -1,0 +1,38 @@
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+android {
+  namespace "expo.modules.talaactivity"
+  defaultConfig {
+    versionCode 1
+    versionName "1.0.0"
+  }
+  compileOptions {
+    coreLibraryDesugaringEnabled true
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
+}
+
+// The card catalog is NOT committed on tala-v1: it is the 0.4.x asset, read from the
+// tala-0.4.x branch at build time so the two stay identical (append-only ids, see
+// packages/tala/scripts/build-card-catalog.py on that branch). scripts/sync-card-catalog.mjs
+// does the copy and records the git blob id; preBuild refuses to continue without it.
+def syncCardCatalog = tasks.register('syncCardCatalog', Exec) {
+  description = 'Copies card-catalog.tsv from the tala-0.4.x branch into src/main/assets.'
+  workingDir projectDir
+  commandLine 'node', new File(projectDir, '../scripts/sync-card-catalog.mjs').absolutePath
+  outputs.upToDateWhen { false }
+}
+tasks.named('preBuild') { dependsOn syncCardCatalog }
+
+dependencies {
+  coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
+  // Same versions as the student module (packages/mobile/modules/hiraia-tala) and Tala 0.4.4.
+  implementation 'com.google.android.gms:play-services-nearby:19.4.0'
+  implementation 'com.google.android.gms:play-services-base:18.5.0'
+  testImplementation 'junit:junit:4.13.2'
+  testImplementation 'org.json:json:20180813'
+}
