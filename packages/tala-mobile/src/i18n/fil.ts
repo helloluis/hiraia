@@ -1,6 +1,7 @@
 import { wave2fil } from './wave2.fil';
 import type { StringKey } from './en';
 export const fil: Record<StringKey, string> = {
+  localAiNotices: 'Lisensiya at paunawa ng ibang gumawa',
   onDeviceAi: 'AI sa telepono',
   localAiExperimental:
     'Pagsubok pa lamang: Android 12+, ARM64. Magagamit pa rin ang karaniwang pagpaplano at pagsusuri ng listahan. Ikaw ang magpapasimula ng engine.',

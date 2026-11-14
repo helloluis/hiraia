@@ -183,3 +183,37 @@ test('native flags keep standard free of QVAC plugins and Bare autolinking; QVAC
   assert.equal(qvac.app.name, 'Tala (on-device AI)');
   assert.ok(JSON.stringify(qvac.app.plugins).includes('@qvac/sdk/expo-plugin'));
 });
+test('CPU inference never makes OpenCL an installation requirement', async () => {
+  const { createRequire } = await import('node:module');
+  const require = createRequire(import.meta.url);
+  const { optionalOpenCl } = require('../../../plugins/with-local-ai-support.cjs');
+  const manifest = { application: [{}] };
+  optionalOpenCl(manifest);
+  optionalOpenCl(manifest);
+  assert.deepEqual((manifest.application[0] as Record<string, unknown>)['uses-native-library'], [
+    { $: { 'android:name': 'libOpenCL.so', 'android:required': 'false' } },
+  ]);
+});
+test('pausing an active transfer preserves partial bytes and never installs unverified data', async () => {
+  const f = files();
+  let finish!: (result: { status: number }) => void;
+  let paused = false;
+  f.port.transfer = () => ({
+    run: () =>
+      new Promise((resolve) => {
+        finish = resolve;
+      }),
+    pause: async () => {
+      paused = true;
+      finish({ status: 200 });
+    },
+  });
+  const manager = modelLifecycle(f.port);
+  const operation = manager.download({ optIn: true, allowMobile: false });
+  while (!finish) await new Promise((resolve) => setImmediate(resolve));
+  await manager.pause();
+  await operation;
+  assert.equal(paused, true);
+  assert.equal(manager.snapshot().state, 'paused');
+  assert.equal(f.stats().installs, 0);
+});

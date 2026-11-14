@@ -8,7 +8,7 @@ export interface ModelFiles {
   remove(partial: boolean): Promise<void>;
   free(): Promise<number>;
   wifi(): Promise<boolean>;
-  transfer(offset: number, progress: (bytes: number) => void): Transfer;
+  transfer(offset: number, progress: (bytes: number) => void, allowMobile: boolean): Transfer;
   path(): string;
 }
 export function modelLifecycle(files: ModelFiles) {
@@ -64,10 +64,14 @@ export function modelLifecycle(files: ModelFiles) {
           state = 'downloading';
           bytes = offset;
           publish();
-          active = files.transfer(offset, (n) => {
-            bytes = n;
-            publish();
-          });
+          active = files.transfer(
+            offset,
+            (n) => {
+              bytes = n;
+              publish();
+            },
+            consent.allowMobile
+          );
           const response = await active.run();
           if (interrupted) return;
           if (response.status !== (offset ? 206 : 200)) {

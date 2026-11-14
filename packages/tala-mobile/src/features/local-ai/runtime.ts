@@ -43,7 +43,7 @@ function createLocalAi() {
     async wifi() {
       return (await Network.getNetworkStateAsync()).type === Network.NetworkStateType.WIFI;
     },
-    transfer(offset, progress) {
+    transfer(offset, progress, allowMobile) {
       const download = FS.createDownloadResumable(
         MODEL.url,
         partial,
@@ -54,9 +54,17 @@ function createLocalAi() {
       return {
         async run() {
           await FS.makeDirectoryAsync(dir, { intermediates: true });
-          const result = offset ? await download.resumeAsync() : await download.downloadAsync();
-          if (!result) throw Error('localAiCancelled');
-          return { status: result.status };
+          const listener = Network.addNetworkStateListener((state) => {
+            if (!allowMobile && state.type !== Network.NetworkStateType.WIFI)
+              void download.pauseAsync().catch(() => {});
+          });
+          try {
+            const result = offset ? await download.resumeAsync() : await download.downloadAsync();
+            if (!result) throw Error('localAiWifi');
+            return { status: result.status };
+          } finally {
+            listener.remove();
+          }
         },
         async pause() {
           await download.pauseAsync();
@@ -78,7 +86,12 @@ function createLocalAi() {
       void engine.close().catch(() => {});
     }
   });
-  return { model, engine, memory };
+  return {
+    model,
+    engine,
+    memory,
+    notices: async (): Promise<string> => NativeModules.TalaAiSupport.notices(),
+  };
 }
 export function localAi() {
   return (singleton ??= createLocalAi());

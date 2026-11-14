@@ -32,6 +32,12 @@ class TalaAiSupport(private val context: ReactApplicationContext) : ReactContext
       } catch (_: Exception) { promise.reject("HASH_FAILED", "Model verification failed") }
     }
   }
+  @ReactMethod fun notices(promise: Promise) {
+    executor.execute {
+      try { promise.resolve(context.assets.open("qvac-licenses/NOTICES.txt").bufferedReader().use { it.readText() }) }
+      catch (_: Exception) { promise.reject("NOTICES_FAILED", "Notices unavailable") }
+    }
+  }
   @ReactMethod fun memory(promise: Promise) {
     try {
       val manager = context.getSystemService(android.content.Context.ACTIVITY_SERVICE) as ActivityManager

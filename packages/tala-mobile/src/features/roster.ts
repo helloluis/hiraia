@@ -17,6 +17,7 @@ import {
   rosterCounts,
   safeNameCell,
   emptyName,
+  groupDuplicates,
 } from '@hiraia/tala-core/roster';
 import type { SafeSource } from '@hiraia/tala-core/roster';
 import { atomic, type Operation } from './atomic';
@@ -123,6 +124,7 @@ export function createRoster(deps: {
     if (review.draft.importId.startsWith('local-')) {
       review.draft.columns = columns;
       review.draft.rows = normalizeSource(review.source, columns);
+      groupDuplicates(review.draft.rows);
       review.draft.counts = rosterCounts(review.draft.rows);
     } else
       review.draft = await client.call('roster.remap', {
@@ -287,6 +289,7 @@ export function createRoster(deps: {
         throw Error('localAiReviewChanged');
       const { rosterSuggestion } = await import('./local-ai/roster');
       review.draft.rows[index] = rosterSuggestion(review.draft.rows[index]!, output);
+      groupDuplicates(review.draft.rows);
       review.draft.counts = rosterCounts(review.draft.rows);
       // Local draft only: never send the model request or names to roster.import.
       return save(review);

@@ -20,6 +20,7 @@ export function engineAdapter(deps: {
       if (mem.lowRam || mem.lowMemory || mem.availableBytes < 1500 * 1048576)
         throw Error('localAiMemory');
       const path = await deps.verifiedPath();
+      if (current !== epoch) throw Error('localAiCancelled');
       const candidate = deps.create();
       try {
         await candidate.start(path);

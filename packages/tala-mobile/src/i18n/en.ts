@@ -1,5 +1,6 @@
 import { wave2en } from './wave2.en';
 export const en = {
+  localAiNotices: 'Third-party licences and notices',
   onDeviceAi: 'On-device AI',
   localAiExperimental:
     'Experimental: Android 12+, ARM64; keep the usual planning and rules-only roster path available. No engine starts until you ask.',

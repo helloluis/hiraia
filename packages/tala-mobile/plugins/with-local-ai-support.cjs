@@ -1,8 +1,23 @@
-const { withDangerousMod } = require('expo/config-plugins');
+const { withDangerousMod, withAndroidManifest } = require('expo/config-plugins');
 const fs = require('node:fs');
 const path = require('node:path');
-module.exports = (config) =>
-  withDangerousMod(config, [
+function optionalOpenCl(manifest) {
+  const app = manifest.application[0];
+  const libs = (app['uses-native-library'] ??= []);
+  let opencl = libs.find((lib) => lib.$['android:name'] === 'libOpenCL.so');
+  if (!opencl) {
+    opencl = { $: { 'android:name': 'libOpenCL.so' } };
+    libs.push(opencl);
+  }
+  opencl.$['android:required'] = 'false';
+  return manifest;
+}
+module.exports = (config) => {
+  config = withAndroidManifest(config, (mod) => {
+    optionalOpenCl(mod.modResults.manifest);
+    return mod;
+  });
+  return withDangerousMod(config, [
     'android',
     async (mod) => {
       if (process.env.TALA_QVAC !== '1')
@@ -27,3 +42,5 @@ module.exports = (config) =>
       return mod;
     },
   ]);
+};
+module.exports.optionalOpenCl = optionalOpenCl;

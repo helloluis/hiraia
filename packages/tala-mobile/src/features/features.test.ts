@@ -779,3 +779,33 @@ test('realignment and Undo use atomic batches, preserve later submitted metadata
   assert.deepEqual((await f.engine.get('plan', 'plan'))!.data.placements[0]!.dates, ['2026-11-13']);
   assert.equal((await f.engine.get('plan', 'plan'))!.data.submitted?.note, 'Kept after Undo');
 });
+test('on-device roster suggestions stay local, unresolved, and refuse stale teacher reviews', async () => {
+  let calls = 0;
+  const f = await fixture(async () => {
+    calls++;
+    throw Error('No network allowed');
+  });
+  const roster = createRoster(f);
+  const review = await roster.parse('class', 'Mira J. Peña', 'names.txt');
+  const row = review.draft.rows.find((r) => r.status === 'needs_review')!;
+  assert.ok(row);
+  const output = JSON.stringify({
+    displayName: 'Mira J. Peña',
+    givenName: 'Mira',
+    middleName: 'J.',
+    familyName: 'Peña',
+    suffix: '',
+    sex: null,
+    grade: null,
+    localId: null,
+  });
+  const saved = await roster.localSuggestion('class', row.rowIndex, JSON.stringify(row), output);
+  assert.equal(saved.draft.rows.find((r) => r.rowIndex === row.rowIndex)?.status, 'needs_review');
+  assert.equal(saved.resolutions.length, 0);
+  assert.equal((await f.engine.list('student')).length, 0);
+  assert.equal(calls, 0);
+  await assert.rejects(
+    roster.localSuggestion('class', row.rowIndex, JSON.stringify(row), output),
+    /localAiReviewChanged/
+  );
+});

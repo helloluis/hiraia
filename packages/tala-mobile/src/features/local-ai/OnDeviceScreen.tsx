@@ -12,6 +12,7 @@ export function OnDeviceScreen({ t, onBack }: Pick<FeatureProps, 't' | 'onBack'>
     [mobile, setMobile] = useState(false),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(''),
+    [notices, setNotices] = useState(''),
     [output, setOutput] = useState(''),
     [prompt, setPrompt] = useState('Reply with one short sentence about why plants need sunlight.'),
     [result, setResult] = useState<Completion | null>(null),
@@ -19,7 +20,11 @@ export function OnDeviceScreen({ t, onBack }: Pick<FeatureProps, 't' | 'onBack'>
   useEffect(() => {
     const unsub = rt.model.subscribe(() => setModel(rt.model.snapshot()));
     void rt.model.init();
-    return unsub;
+    return () => {
+      unsub();
+      void rt.model.pause().catch(() => {});
+      void rt.engine.close().catch(() => {});
+    };
   }, []);
   async function run(action: () => Promise<unknown>) {
     setError('');
@@ -113,6 +118,11 @@ export function OnDeviceScreen({ t, onBack }: Pick<FeatureProps, 't' | 'onBack'>
           })
         }
       />
+      <Button
+        label={t('localAiNotices')}
+        onPress={() => void run(async () => setNotices(await rt.notices()))}
+      />
+      {!!notices && <Body>{notices}</Body>}
       <Button label={t('back')} onPress={onBack} />
     </ScrollView>
   );

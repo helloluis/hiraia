@@ -14,7 +14,7 @@ module.exports = {
           '@qvac/sdk/expo-plugin',
           './plugins/with-local-ai-support.cjs',
         ]
-      : []),
+      : ['./plugins/with-standard-isolation.cjs']),
   ],
   android: {
     ...base.android,
