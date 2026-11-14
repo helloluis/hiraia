@@ -2,7 +2,7 @@ import { createPublishCleaner, type PublishPrivacyOptions } from './publish';
 export { createPublishCleaner, cleanContent, type PublishPrivacyOptions } from './publish';
 import { Plan, PlanSection, SectionRevision } from '../contracts/records';
 import type { GradeGroup, ClassRecord, SectionGenMeta } from '../contracts/records';
-import type { SectionContent, Template } from '../contracts/content';
+import { BUILTIN_TEMPLATES, type SectionContent, type Template } from '../contracts/content';
 import type { ArtifactVersion } from '../contracts/features';
 import { sectionPlainText } from './text';
 export { sectionPlainText, richTextPlainText } from './text';
@@ -43,6 +43,24 @@ export function blankSections(
         gradeGroups.map((g) => g.id)
       ),
     })
+  );
+}
+/** Additive migration: existing text and IDs are untouched; safe for locked plans too.
+ * Persist the returned records atomically with the caller's normal local batch.
+ */
+export function missingSections(
+  template: Template,
+  planId: string,
+  existing: PlanSection[],
+  gradeGroups: ReadonlyArray<Pick<GradeGroup, 'id'>>,
+  newId: () => string
+): PlanSection[] {
+  const keys = new Set(existing.filter((s) => s.planId === planId).map((s) => s.key));
+  return blankSections(
+    { ...template, sections: template.sections.filter((s) => !keys.has(s.key)) },
+    planId,
+    gradeGroups,
+    newId
   );
 }
 /** Labels, dates and time allocations alone do not make a required section complete. */
@@ -102,7 +120,7 @@ export function validatePlanForLock(
     errors.push({ code: 'already_locked', message: 'Open a draft before locking this lesson.' });
   if (plan.templateId !== template.id)
     errors.push({ code: 'template_mismatch', message: 'Choose the lesson’s template.' });
-  for (const spec of template.sections.filter((s) => s.required)) {
+  for (const spec of template.sections.filter((s) => s.required && !s.outsideLock)) {
     const section = sections.find((s) => s.planId === plan.id && s.key === spec.key);
     if (
       !section ||
@@ -163,6 +181,7 @@ export function stripForPublish(
   const remap = (id: string): string => groups.find((g) => g.source === id)?.id ?? 'public.unknown';
   const outside = new Set([
     'reflection',
+    'results',
     ...(options.template?.sections.filter((s) => s.outsideLock).map((s) => s.key) ?? []),
   ]);
   const clean = (c: SectionContent): SectionContent => {
@@ -246,13 +265,21 @@ export function applyGeneratedSections(input: {
   gen: SectionGenMeta;
   newId: () => string;
   confirmedSectionIds?: string[];
+  template?: Template;
 }): { plan: Plan; sections: PlanSection[]; revisions: SectionRevision[] } {
   if (input.plan.state !== 'draft')
     throw new Error('Unlock the lesson before generating sections.');
   const sections = clone(input.sections),
     revisions: SectionRevision[] = [];
   const keys = new Set<string>();
+  const template = input.template ?? BUILTIN_TEMPLATES.find((t) => t.id === input.plan.templateId);
   for (const generated of input.generated) {
+    if (
+      generated.key === 'results' ||
+      generated.key === 'reflection' ||
+      template?.sections.find((s) => s.key === generated.key)?.outsideLock
+    )
+      continue; // Older providers may return these; never overwrite the teacher's post-class notes.
     if (keys.has(generated.key)) throw new Error('A generated section appears twice.');
     keys.add(generated.key);
     const i = sections.findIndex((s) => s.planId === input.plan.id && s.key === generated.key),

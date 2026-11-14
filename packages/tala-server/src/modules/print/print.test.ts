@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { PDFDocument } from 'pdf-lib';
+import { PDFDocument, PDFPage } from 'pdf-lib';
 import { Plan, PlanSection, BUILTIN_TEMPLATES } from '@hiraia/tala-core';
 import type { RenderPlanOptions } from '@hiraia/tala-core/print';
 import { createPlanPdf, printModule } from './index';
@@ -131,4 +131,25 @@ test('bundled fallback font explicitly covers Filipino orthography', async () =>
   const set = new Set(font.getCharacterSet());
   for (const char of 'ñÑáÁéÉíÍóÓúÚàÀèÈìÌòÒùÙâÂêÊîÎôÔûÛ')
     assert.ok(set.has(char.codePointAt(0)!), char);
+});
+
+test('PDF draws the shared session note and post-class ruled lines without transition time', async (t) => {
+  const { printFixture } = await import('../../../../tala-core/src/print/fixtures');
+  const options = printFixture('multigrade');
+  const lines: string[] = [];
+  const draw = PDFPage.prototype.drawText;
+  t.mock.method(
+    PDFPage.prototype,
+    'drawText',
+    function (this: PDFPage, text: string, options: Parameters<PDFPage['drawText']>[1]) {
+      lines.push(text);
+      return draw.call(this, text, options);
+    }
+  );
+  await createPlanPdf(options);
+  const output = lines.join('\n');
+  assert.ok(output.includes('Maghanda ng gawain para sa bawat pangkat.'));
+  assert.ok(output.includes('Pagkatapos ng klase'));
+  assert.ok(output.includes('______________________________'));
+  assert.doesNotMatch(output, /transition|paglipat|group001/);
 });
