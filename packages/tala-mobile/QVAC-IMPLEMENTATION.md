@@ -49,3 +49,11 @@ Added package-local SDK 0.23.0, Bare kit 0.16.0, Fabric Android ARM64/iOS 0.25.0
 Physical-phone inference, quality, thermal stability and battery drain require this test before recommending the feature to teachers. Device support is experimental; SDK inclusion alone does not close the local-model privacy/quality gate.
 
 Filipino strings needing human wording review: `onDeviceAi`, `localAiExperimental`, `localAiDownloadConsent`, `localAiMemory`, `localAiReviewNotice`, `localAiSampledPeak`, and `localAiNotices`. Technical model/version/licence names are intentionally preserved.
+
+## Worker resolver isolation correction
+
+The earlier `process: npm:bare-process` dependency was unsafe under this monorepo's `shamefully-hoist=true`: it polluted other packages' browser bundles. It has been removed. Only `bare-process@4.4.1` under its real name is declared now; no dependency/devDependency has a Node builtin name.
+
+`plugins/with-qvac-worker.cjs` composes the pinned SDK's native Expo plugins but replaces its worker step. A disposable SDK view under ignored `qvac/sdk-worker-view/` preserves upstream files via links and copies its package metadata/import map. Only that worker map adds `process`/`node:process` → an absolute `bare-process` module URL under the Bare condition. Both bare-pack and native addon discovery through bare-link receive the scoped map. Installed SDK import maps are never changed. The upstream SDK's generated worker output is still copied to its normal mobile bundle location, verified, and its ARM64 addons linked. This replaces the earlier alias workaround; no Metro-wide or root alias is used.
+
+After moving away all generated root/package node_modules directories and installing mobile plus web together, root `require.resolve('process/package.json')` returns MODULE_NOT_FOUND. The mobile regression test checks builtin dependency names, correct worker maps and unchanged installed SDK maps. Native standard isolation remains the existing standard-only autolinking exclusion.

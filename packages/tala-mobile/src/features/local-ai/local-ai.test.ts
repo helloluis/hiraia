@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
+import { createRequire } from 'node:module';
 import { modelLifecycle, type ModelFiles } from './lifecycle';
 import { engineAdapter } from './adapter';
 import { rosterPrompt, rosterSuggestion } from './roster';
@@ -185,7 +186,7 @@ test('native flags keep standard free of QVAC plugins and Bare autolinking; QVAC
   assert.equal(standard.rn.dependencies['react-native-bare-kit'].platforms.android, null);
   assert.equal(qvac.app.android.package, 'com.hiraia.tala.next.qvac');
   assert.equal(qvac.app.name, 'Tala (on-device AI)');
-  assert.ok(JSON.stringify(qvac.app.plugins).includes('@qvac/sdk/expo-plugin'));
+  assert.ok(JSON.stringify(qvac.app.plugins).includes('./plugins/with-qvac-worker.cjs'));
 });
 test('CPU inference never makes OpenCL an installation requirement', async () => {
   const { createRequire } = await import('node:module');
@@ -220,4 +221,45 @@ test('pausing an active transfer preserves partial bytes and never installs unve
   assert.equal(paused, true);
   assert.equal(manager.snapshot().state, 'paused');
   assert.equal(f.stats().installs, 0);
+});
+
+test('worker process override never installs a Node builtin alias or modifies the SDK map', () => {
+  const require = createRequire(import.meta.url);
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const { builtinModules } = require('node:module');
+  const root = path.resolve(import.meta.dirname, '../../..');
+  const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
+  for (const name of Object.keys({ ...pkg.dependencies, ...pkg.devDependencies }))
+    assert.ok(!builtinModules.includes(name), `hoistable builtin dependency: ${name}`);
+  assert.equal(pkg.devDependencies['bare-process'], '4.4.1');
+  // Node runs Expo's ESM plugins natively; tsx's CJS transform changes their interop.
+  const proof = JSON.parse(
+    execFileSync(
+      process.execPath,
+      [
+        '-e',
+        `
+    const fs = require('node:fs'), path = require('node:path');
+    const root = ${JSON.stringify(root)};
+    const localRequire = require('node:module').createRequire(path.join(root, 'package.json'));
+    const sdkPlugins = localRequire('@qvac/sdk/expo-plugin');
+    const { workerSdkView } = require(root + '/plugins/with-qvac-worker.cjs');
+    const original = path.join(sdkPlugins.resolveSDKPackageDir(root).dir, 'bare-imports.json');
+    const before = fs.readFileSync(original, 'utf8');
+    const { stage } = workerSdkView(root);
+    const map = JSON.parse(fs.readFileSync(path.join(stage, 'bare-imports.json'), 'utf8'));
+    console.log(JSON.stringify({ map, unchanged: fs.readFileSync(original, 'utf8') === before }));
+  `,
+      ],
+      { encoding: 'utf8' }
+    )
+      .trim()
+      .split('\n')
+      .at(-1)!
+  );
+  assert.match(proof.map.process.bare, /bare-process/);
+  assert.equal(proof.map.process.default, 'process');
+  assert.equal(proof.map['node:process'].bare, proof.map.process.bare);
+  assert.equal(proof.unchanged, true);
 });
