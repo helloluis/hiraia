@@ -116,7 +116,6 @@ for (const withClass of [true, false])
         'Sama-sama',
         'Kasama ang guro',
         'Mag-isa',
-        'paglipat',
         'min',
       ])
         assert.ok(output.includes(label), label);
@@ -138,4 +137,42 @@ test('class grade mapping takes precedence over plan order and unknown groups ne
   });
   assert.ok(!renderPlanText(o).includes('private-unknown-id'));
   assert.ok(!renderPlanHtml(o).includes('private-unknown-id'));
+});
+
+for (const kind of ['dlp', 'dll', 'multigrade'] as const) {
+  test(`${kind} prints missing and empty post-class sections with writing space`, () => {
+    const o = printFixture(kind);
+    o.plan.state = 'locked';
+    const html = renderPlanHtml(o),
+      text = renderPlanText(o);
+    assert.equal((text.match(/Pagkatapos ng klase/g) ?? []).length, 1);
+    assert.ok(html.includes('class="writing-space"'));
+    assert.ok(text.includes('______________________________'));
+    assert.ok(text.indexOf('Resulta ng Pagtataya') < text.indexOf('Pagninilay'));
+    assert.ok(renderPlanText({ ...o, lang: 'en' }).includes('After class'));
+    o.sections.push({
+      ...o.sections[0]!,
+      id: 'results',
+      key: 'results',
+      content: { type: 'text', blocks: [{ t: 'p', spans: [{ text: 'Natutuhan ng mga bata.' }] }] },
+    });
+    assert.ok(renderPlanHtml(o).includes('Natutuhan ng mga bata.'));
+    assert.ok(renderPlanText(o).includes('Natutuhan ng mga bata.'));
+  });
+}
+test('multi-grade flow is stacked, includes the session note, and never prints transition time', () => {
+  const o = printFixture('multigrade');
+  const c = o.sections[0]!.content;
+  if (c.type !== 'multigrade') throw new Error('fixture');
+  c.note = 'Maghanda ng magkakahiwalay na gawain. <paalala>';
+  const html = renderPlanHtml(o),
+    text = renderPlanText(o);
+  assert.ok(html.includes('Maghanda ng magkakahiwalay na gawain. &lt;paalala&gt;'));
+  assert.ok(text.indexOf(c.note) < text.indexOf('Pagmamasid'));
+  assert.ok(!html.includes('<table'));
+  for (const output of [html, text]) {
+    assert.doesNotMatch(output, /transition|paglipat/i);
+    for (const grade of o.plan.grades) assert.ok(output.includes(`Baitang ${grade}`));
+  }
+  assert.equal(c.blocks[0]!.transitionMinutes, 2);
 });

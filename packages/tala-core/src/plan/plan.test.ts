@@ -168,6 +168,16 @@ test('generation requires confirmation and returns restorable previous revision 
     },
     newId: () => 'section9',
   };
+  for (const key of ['results', 'reflection']) {
+    const saved = { ...section, key };
+    const result = applyGeneratedSections({
+      ...input,
+      sections: [saved],
+      generated: [{ key, content: text('AI notes') }],
+    });
+    assert.deepEqual(result.sections, [saved]);
+    assert.deepEqual(result.revisions, []);
+  }
   assert.throws(() => applyGeneratedSections(input), /Confirm/);
   const result = applyGeneratedSections({ ...input, confirmedSectionIds: [section.id] });
   assert.equal(result.plan.aiAssisted, true);
@@ -244,4 +254,60 @@ test('lock records actor, time and exact content revision code', async () => {
     lockPlan({ ...args, sections: [{ ...section, content: text('Changed lesson') }] }).lock
       ?.revisionCode
   );
+});
+
+test('post-class migration is additive and lock validation and codes ignore outsideLock', async () => {
+  const { missingSections, lockPlan } = await import('./index');
+  let n = 0;
+  const newId = () => `new-${++n}`;
+  for (const builtin of BUILTIN_TEMPLATES) {
+    const template = {
+      ...builtin,
+      sections: builtin.sections.map((s) => ({ ...s, required: s.outsideLock })),
+    };
+    const p = { ...plan, templateId: template.id };
+    const all = blankSections(template, p.id, [{ id: 'group001' }], newId);
+    assert.ok(all.some((s) => s.key === 'results'));
+    const older = all.filter((s) => s.key !== 'results');
+    const missing = missingSections(template, p.id, older, [{ id: 'group001' }], newId);
+    assert.deepEqual(
+      missing.map((s) => s.key),
+      ['results']
+    );
+    assert.deepEqual(missingSections(template, p.id, [...older, ...missing], [], newId), []);
+    assert.equal(validatePlanForLock(p, [], template).ok, true);
+    const args = {
+      plan: p,
+      sections: all,
+      template,
+      teacherName: 'Teacher',
+      at: '2026-11-13T00:00:00Z',
+      revision: null,
+    };
+    const before = lockPlan(args);
+    const changed = all.map((s) =>
+      template.sections.find((t) => t.key === s.key)?.outsideLock
+        ? { ...s, content: text('After class notes') }
+        : s
+    );
+    assert.equal(
+      before.lock?.revisionCode,
+      lockPlan({ ...args, sections: changed }).lock?.revisionCode
+    );
+    assert.equal(
+      before.lock?.revisionCode,
+      lockPlan({
+        ...args,
+        sections: all.filter((s) => !template.sections.find((t) => t.key === s.key)?.outsideLock),
+      }).lock?.revisionCode
+    );
+    assert.ok(
+      missingSections(template, before.id, older, [{ id: 'group001' }], newId).some(
+        (s) => s.key === 'results'
+      )
+    );
+    assert.ok(
+      !stripForPublish(p, changed).sections.some((s) => ['results', 'reflection'].includes(s.key))
+    );
+  }
 });

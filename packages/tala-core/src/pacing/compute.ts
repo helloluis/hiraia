@@ -1,6 +1,13 @@
 import type { Competency, PacedItem, PacingInput, PacingPlan } from '../contracts/curriculum';
 import { applyChecks, compareText } from '../curriculum';
 import { enumerateSessions } from './sessions';
+import { ordinal } from './dates';
+
+function weekRange(c: Competency): [number, number] | null {
+  const from = c.weekFrom,
+    to = c.weekTo ?? from;
+  return from !== undefined && to !== undefined && to >= from ? [from, to] : null;
+}
 
 /** Minimum-constrained proportional apportionment, then stable largest remainders. */
 export function allocate(weights: number[], total: number, minimum: number): number[] {
@@ -47,6 +54,7 @@ export function orderedCompetencies(input: PacingInput): Competency[] {
         bi = order.indexOf(b.id);
       return (
         (ai < 0 ? Infinity : ai) - (bi < 0 ? Infinity : bi) ||
+        (order.length ? 0 : (a.weekFrom ?? Infinity) - (b.weekFrom ?? Infinity)) ||
         a.sequence - b.sequence ||
         compareText(a.id, b.id)
       );
@@ -118,8 +126,20 @@ export function computePacing(
           ? 1
           : null;
   });
+  // A merged week cell is shared by its competencies, not multiplied per bullet.
+  const weekWeight = (c: Competency): number | null => {
+    const range = weekRange(c);
+    if (!range) return null;
+    const peers = competencies.filter(
+      (x) =>
+        x.termIndex === c.termIndex &&
+        x.weekFrom === range[0] &&
+        (x.weekTo ?? x.weekFrom) === range[1]
+    ).length;
+    return (range[1] - range[0] + 1) / Math.max(1, peers);
+  };
   const weights = active.map((g) =>
-    g.reduce((n, c) => n + (overrides.weights?.[c.id] ?? c.weight ?? 1), 0)
+    g.reduce((n, c) => n + (overrides.weights?.[c.id] ?? c.weight ?? weekWeight(c) ?? 1), 0)
   );
   const flexible = active.map((_, i) => i).filter((i) => fixed[i] === null);
   const budget = Math.max(0, teach.length - fixed.reduce<number>((n, x) => n + (x ?? 0), 0));
@@ -176,15 +196,35 @@ export function computePacing(
       }
     placements.set(g[0]!.id, assigned);
   }
+  // Reserve hinted windows before filling spillover. Weeks are seven-day bins
+  // from term.startDate; suspensions do not renumber the published BOW weeks.
+  const hinted = new Map<string, typeof teach>();
+  if (!overrides.order?.length)
+    for (let i = 0; i < active.length; i++) {
+      const g = active[i]!;
+      if (placements.has(g[0]!.id)) continue;
+      const ranges = g.flatMap((c) => (weekRange(c) ? [weekRange(c)!] : []));
+      if (!ranges.length) continue;
+      const assigned: typeof teach = [];
+      for (let k = 0; k < teach.length && assigned.length < counts[i]!; k++) {
+        const week = Math.floor((ordinal(teach[k]!.date) - ordinal(input.term.startDate)) / 7) + 1;
+        if (!taken.has(k) && ranges.some(([from, to]) => week >= from && week <= to)) {
+          taken.add(k);
+          assigned.push(teach[k]!);
+        }
+      }
+      hinted.set(g[0]!.id, assigned);
+    }
   for (let i = 0; i < active.length; i++) {
     const g = active[i]!;
     if (placements.has(g[0]!.id)) continue;
-    const assigned: typeof teach = [];
+    const assigned: typeof teach = [...(hinted.get(g[0]!.id) ?? [])];
     for (let k = 0; k < teach.length && assigned.length < counts[i]!; k++)
       if (!taken.has(k)) {
         taken.add(k);
         assigned.push(teach[k]!);
       }
+    assigned.sort((a, b) => compareText(a.date, b.date) || compareText(a.slotId, b.slotId));
     placements.set(g[0]!.id, assigned);
   }
   let sessionsBehind = 0;
@@ -202,7 +242,7 @@ export function computePacing(
     const pinned = ids.some((id) => overrides.pins?.[id] !== undefined);
     const weightSource = ids.some((id) => overrides.weights?.[id] !== undefined)
       ? 'teacher'
-      : g.every((c) => c.weight !== null && c.weightSource === 'official')
+      : g.every((c) => (c.weight !== null ? c.weightSource === 'official' : weekWeight(c) !== null))
         ? 'official'
         : 'estimated';
     let state: PacedItem['state'] = 'scheduled';

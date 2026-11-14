@@ -13,9 +13,10 @@ for grade in [2, 3, 4, 5]:
                 code=None, learningAreaId='mathematics', grade=str(grade), termIndex=term, sequence=sequence,
                 text=f'SAMPLE DATA ONLY — Grade {grade}: describe and compare a small collection of {domain.lower()}.',
                 textLang='en', contentStandard=None, performanceStandard=None, domain=domain, weight=None,
+                shortTitle=f'Sample {domain.lower()}', shortTitleSource='derived',
                 weightSource='estimated', source=dict(document='Synthetic Tala demo fixture; NOT a DepEd competency', edition='fixture-v1', page=None, url=None)))
     pack = sized(dict(packId=f'{version}:{grade}:mathematics', curriculumVersion=version, grade=str(grade),
-        learningAreaId='mathematics', schoolYears=['2026-2027', '2027-2028'], competencyCount=len(competencies), dataRevision=1, bytes=0, competencies=competencies))
+        learningAreaId='mathematics', schoolYears=['2026-2027', '2027-2028'], competencyCount=len(competencies), dataRevision=2, bytes=0, competencies=competencies))
     (DATA/'fixtures'/f'demo-g{grade}.json').write_text(encode(pack))
 for start in [2026, 2027]:
     # These are sample editable dates, deliberately not attributed to an official order.

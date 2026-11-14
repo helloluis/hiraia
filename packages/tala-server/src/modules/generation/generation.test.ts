@@ -527,7 +527,6 @@ test('generated sections show official codes or stored text while internal compe
             })),
           },
           { key: 'assessment', groups },
-          { key: 'reflection', text: 'Check answers before use.' },
         ],
       };
       const data = req.schema.parse(raw);

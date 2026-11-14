@@ -56,7 +56,7 @@ test('missing/duplicate slots and hallucinated objective refs are refused, never
 test('request validation checks missing groups and is shared by all providers', () => {
   const input = fixture(),
     req = lessonRequest(input, { userId: 'teacher-001', newId });
-  assert.equal(req.version, 3);
+  assert.equal(req.version, 4);
   assert.equal(req.maxOutputTokens, 8192);
   const raw = fakeCompact(input);
   raw.sections.find((s) => s.key === 'multigrade')!.blocks[0]!.activities.pop();
@@ -171,11 +171,11 @@ test('unknown learner counts and unknown class totals are omitted rather than gu
   }
 });
 
-test('v3 is the default while explicit v2 remains available for rollback', () => {
+test('v4 is the default while explicit v2 remains available for rollback', () => {
   const input = fixture();
   for (const kind of ['full', 'translate'] as const) {
     const options = { userId: 'teacher', newId, source: [] };
-    assert.equal(lessonRequest({ ...input, kind }, options).version, 3);
+    assert.equal(lessonRequest({ ...input, kind }, options).version, 4);
     assert.equal(lessonRequest({ ...input, kind }, { ...options, version: 2 }).version, 2);
   }
 });
@@ -205,4 +205,52 @@ test('authoritative objectives and assessment discard exact and partial repeats 
       assert.equal((actual[0] as { spans: { text: string }[] }).spans[0]!.text, stored);
     }
   }
+});
+
+test('post-class sections never reach the model or generated output; pre-class notes use their own field', () => {
+  const input = fixture();
+  const source = [
+    {
+      key: 'reflection',
+      content: {
+        type: 'text',
+        blocks: [{ t: 'p', spans: [{ text: 'Private after-class observation' }] }],
+      },
+    },
+  ];
+  for (const kind of ['full', 'adapt', 'translate'] as const) {
+    const req = lessonRequest(
+      { ...input, kind },
+      { userId: 'teacher', newId, source, prior: source }
+    );
+    assert.equal(req.vars.input!.includes('Private after-class observation'), false);
+    if (kind === 'translate') continue;
+    const raw = fakeCompactRaw(input);
+    const flow = raw.sections.find((s) => s.key === 'multigrade')!;
+    Object.assign(flow, { note: 'Each grade has one focused turn today.' });
+    const result = req.schema.parse(raw);
+    assert.ok(result.sections.every((s) => !['results', 'reflection'].includes(s.key)));
+    const content = result.sections.find((s) => s.key === 'multigrade')!.content;
+    assert.equal(
+      content.type === 'multigrade' && content.note,
+      'Each grade has one focused turn today.'
+    );
+    assert.equal(
+      req.schema.safeParse({
+        ...raw,
+        sections: [...raw.sections, { key: 'reflection', text: 'Invented after class.' }],
+      }).success,
+      false
+    );
+    Object.assign(flow, { note: 'x'.repeat(601) });
+    assert.equal(req.schema.safeParse(raw).success, false);
+  }
+  assert.throws(
+    () =>
+      lessonRequest(
+        { ...input, kind: 'section', sectionKey: 'reflection' },
+        { userId: 'teacher', newId }
+      ),
+    /post_class_section/
+  );
 });

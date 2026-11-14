@@ -59,3 +59,5 @@ Filipino is the default; every interface key is paired in `src/i18n/fil.ts` / `e
 - No resumable attachment transport, image resizer, Wi-Fi OTA mechanism, account export/delete/reset/verification UI, or end-to-end server sync/real-phone test is claimed.
 
 Generation uses durable idempotency keys, resumable polling/cancellation, prefilled offline/failure templates and explicit reviewed application. Roster parsing is local for TXT/CSV, with cloud-route consent, five review actions, partial atomic saves and frozen confirm retries. Community uses cached offline details, exact shared publish cleaning, local detectors and a durable post queue. All use the real typed client and shared helpers; test network transports are isolated fixtures.
+
+For the optional, side-by-side on-device AI build, see [QVAC-IMPLEMENTATION.md](QVAC-IMPLEMENTATION.md). `TALA_QVAC=1` is a native build choice; changing an environment value in an installed standard APK cannot enable QVAC. Always use the variant build script with a clean prebuild. The existing public standard APK is not overwritten by that script.

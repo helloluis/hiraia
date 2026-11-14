@@ -56,7 +56,8 @@ function resolveInput(ctx: Ctx, input: GenerationInput) {
     throw new HttpError('invalid_input', 'Choose the multi-grade template.');
   if (
     input.kind === 'section' &&
-    (!input.sectionKey || !template.sections.some((s) => s.key === input.sectionKey))
+    (!input.sectionKey ||
+      !template.sections.some((s) => s.key === input.sectionKey && !s.outsideLock))
   )
     throw new HttpError('invalid_input', 'Choose a section.');
   if (input.kind === 'translate' && !input.targetLanguage)

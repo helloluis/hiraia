@@ -32,3 +32,11 @@ Names spanning rich-text formatting boundaries are redacted too (the replacement
 uses the first span's formatting when it crosses spans). Original input is never
 mutated. The school opt-in only retains school names; sections, dates and
 signatures are still stripped.
+
+`missingSections(template, planId, existingSections, gradeGroups, newId)` returns only
+missing template section records, preserving every existing record. Clients can use
+it to add post-class results to older plans, including locked plans, then save the
+returned records in a local batch. Repeating it with the saved records returns none.
+Post-class (`outsideLock`) sections are never required for locking and never affect
+the lock revision code. Generated post-class sections are ignored, preserving teacher text; custom templates can
+be passed through `applyGeneratedSections({ template, ... })`.

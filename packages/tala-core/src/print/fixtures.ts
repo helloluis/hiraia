@@ -40,6 +40,7 @@ export function printFixture(kind: 'dlp' | 'dll' | 'multigrade'): RenderPlanOpti
     key = 'multigrade';
     content = {
       type: 'multigrade',
+      note: 'Maghanda ng gawain para sa bawat pangkat.',
       blocks: [
         {
           id: 'block001',

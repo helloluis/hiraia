@@ -1,0 +1,219 @@
+{
+  "input": {
+    "kind": "full",
+    "templateId": "tpl.dll.v1",
+    "language": "fil",
+    "subjectName": "Science",
+    "learningAreaId": "science",
+    "timeBudgetMinutes": 40,
+    "sessions": 5,
+    "gradeGroups": [
+      {
+        "id": "group-004",
+        "grade": "4",
+        "learnerCount": 10
+      }
+    ],
+    "competencies": {
+      "group-004": ["C4"]
+    },
+    "curriculumVersion": "eval.v1",
+    "customObjectives": [],
+    "classProfile": {
+      "materials": ["paper", "pencils"],
+      "textbooks": [],
+      "electricity": true,
+      "projector": null,
+      "printing": false,
+      "outdoorSpace": null,
+      "notes": ""
+    },
+    "guidance": ""
+  },
+  "plan": {
+    "title": "Mga Halaman sa Paligid Natin",
+    "sections": [
+      {
+        "key": "objectives",
+        "content": {
+          "type": "list",
+          "items": ["Ilarawan ang mga halaman."]
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/week",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "content",
+        "content": {
+          "type": "text",
+          "blocks": [
+            {
+              "t": "p",
+              "spans": [
+                {
+                  "text": "Mga bahagi ng halaman (ugat, tangkay, dahon, bulaklak) at ang kanilang mga tungkulin; paghahambing ng mga halaman sa paligid."
+                }
+              ]
+            }
+          ]
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/week",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "materials",
+        "content": {
+          "type": "list",
+          "items": ["paper", "pencils"]
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/week",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "weekgrid",
+        "content": {
+          "type": "weekgrid",
+          "days": [
+            {
+              "date": null,
+              "weekday": 1,
+              "minutes": 40,
+              "body": [
+                {
+                  "t": "p",
+                  "spans": [
+                    {
+                      "text": "Maglakbay-tanaw sa mga halaman sa labas; gumuhit ng isang halaman sa papel at pangalanan ang mga bahaging nakikita. Pag-uusap tungkol sa mga bahagi ng halaman."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "date": null,
+              "weekday": 2,
+              "minutes": 40,
+              "body": [
+                {
+                  "t": "p",
+                  "spans": [
+                    {
+                      "text": "Sa pares, ilarawan ang hugis at kulay ng dahon at ugat ng halamang iginuhit kahapon; idagdag ang mga bahaging nakalimutan."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "date": null,
+              "weekday": 3,
+              "minutes": 40,
+              "body": [
+                {
+                  "t": "p",
+                  "spans": [
+                    {
+                      "text": "Ihambing ang dalawang halaman gamit ang tsart ng pagkakaiba (laki, hugis ng dahon, kulay) na iginuhit sa papel."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "date": null,
+              "weekday": 4,
+              "minutes": 40,
+              "body": [
+                {
+                  "t": "p",
+                  "spans": [
+                    {
+                      "text": "Pangkatang laro: ilarawan ang isang halaman nang hindi pinapangalanan ito; hulaan ng kaklase batay sa mga bahagi at katangiang inilarawan."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "date": null,
+              "weekday": 5,
+              "minutes": 40,
+              "body": [
+                {
+                  "t": "p",
+                  "spans": [
+                    {
+                      "text": "Indibidwal na gawain: gumuhit ng halaman at isulat ang isang pangungusap na naglalarawan dito gamit ang papel at lapis."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/week",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "assessment",
+        "content": {
+          "type": "text",
+          "blocks": [
+            {
+              "t": "p",
+              "spans": [
+                {
+                  "text": "Ilarawan ang mga halaman."
+                }
+              ]
+            },
+            {
+              "t": "p",
+              "spans": [
+                {
+                  "text": "Hilingin sa bawat mag-aaral na gumuhit ng isang halaman sa papel at magbigay ng dalawang pangungusap na naglalarawan dito (bahagi at katangian) gamit ang lapis. Suriin kung naipakita ang paglalarawan ng halaman batay sa pamantayan ng guro."
+                }
+              ]
+            }
+          ]
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/week",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      }
+    ],
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "warnings": []
+  },
+  "review": "Teacher quality review pending; structural checks do not establish scientific or pedagogical quality."
+}

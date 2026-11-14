@@ -1,5 +1,54 @@
 import { wave2en } from './wave2.en';
 export const en = {
+  localAiNotices: 'Third-party licences and notices',
+  onDeviceAi: 'On-device AI',
+  localAiExperimental:
+    'Experimental: Android 12+, ARM64; keep the usual planning and rules-only roster path available. No engine starts until you ask.',
+  localAiUnsupported:
+    'This build or phone cannot run on-device AI. Planning and rules-only roster review still work.',
+  localAiNoNamesSent:
+    'Local suggestions send no learner names to the server. Models download from the publisher; once verified, inference uses the file on this phone.',
+  localAiDownloadConsent:
+    'I agree to download this 639.4 MB model and use the required phone storage.',
+  localAiMobileConsent: 'Allow mobile data for this download (Wi-Fi is the default).',
+  localAiDownload: 'Download / resume model',
+  localAiPause: 'Pause download',
+  localAiStart: 'Start local engine',
+  localAiPrompt: 'Self-test prompt (use sample text only)',
+  localAiSelfTest: 'Run local self-test',
+  localAiStats: 'Tokens / time / speed / memory',
+  localAiSampledPeak: 'sampled process peak; not a device benchmark',
+  localAiUnload: 'Unload engine',
+  localAiDelete: 'Delete model and partial download',
+  localAiLoaded: 'Engine loaded on this phone',
+  localAiUnloaded: 'Engine not loaded',
+  localAiFailed:
+    'The local engine could not finish. Your work is safe. Use the usual rules-only review, or try again on a supported physical phone.',
+  localAiBusy: 'Finish or cancel the current local operation first.',
+  localAiMemory:
+    'Not enough available memory to load safely. Close other apps or keep using rules-only review.',
+  localAiChecksum: 'Model verification failed. Delete and download again; your lessons are safe.',
+  localAiConsent: 'Agree to the model download before continuing.',
+  localAiWifi: 'Waiting for Wi-Fi. You can explicitly allow mobile data above.',
+  localAiStorage: 'Not enough free storage for the model. No unsent work was removed.',
+  localAiResume: 'The server did not resume correctly. Try a fresh download.',
+  localAiDownloadFailed: 'Download stopped. Your partial file is kept; tap resume when connected.',
+  localAiCancelled: 'Local operation cancelled. Your original text is unchanged.',
+  localAiTooLong: 'Use a shorter prompt for this small local model.',
+  localAiNotReady: 'Download and verify the model in Settings first.',
+  localAiUntraceable:
+    'Suggestion refused: it changed or invented source name text. Review the original without AI.',
+  localAiReviewChanged: 'This review changed while AI was running. Nothing was overwritten.',
+  localAiReviewNotice:
+    'Optional local suggestion only. Download the model in Settings first. You must still review and choose a row action; rules-only review remains available.',
+  localAiSuggest: 'Suggest name parts on this phone',
+  localAi_absent: 'Model not downloaded',
+  localAi_paused: 'Download paused',
+  localAi_downloading: 'Downloading',
+  localAi_verifying: 'Verifying checksum',
+  localAi_ready: 'Model file ready (verified again before load)',
+  localAi_failed: 'Local operation needs attention',
+
   aboutDiagnostics: 'About / diagnostics',
   diagnosticVersion: 'Version',
   diagnosticBuild: 'Build date',

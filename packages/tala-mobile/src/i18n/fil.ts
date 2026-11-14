@@ -1,6 +1,58 @@
 import { wave2fil } from './wave2.fil';
 import type { StringKey } from './en';
 export const fil: Record<StringKey, string> = {
+  localAiNotices: 'Lisensiya at paunawa ng ibang gumawa',
+  onDeviceAi: 'AI sa telepono',
+  localAiExperimental:
+    'Pagsubok pa lamang: Android 12+, ARM64. Magagamit pa rin ang karaniwang pagpaplano at pagsusuri ng listahan. Ikaw ang magpapasimula ng engine.',
+  localAiUnsupported:
+    'Hindi kayang patakbuhin ng build o teleponong ito ang AI sa telepono. Magagamit pa rin ang pagpaplano at pagsusuri ng listahan nang walang AI.',
+  localAiNoNamesSent:
+    'Walang pangalan ng mag-aaral na ipinapadala sa server para sa lokal na mungkahi. Mula sa publisher ang modelo; matapos masuri, sa teleponong ito gagawin ang pagproseso.',
+  localAiDownloadConsent:
+    'Pumapayag akong i-download ang 639.4 MB na modelo at gamitin ang kailangan nitong imbakan.',
+  localAiMobileConsent: 'Payagan ang mobile data para sa download na ito (Wi-Fi ang karaniwan).',
+  localAiDownload: 'I-download / ituloy ang modelo',
+  localAiPause: 'Ihinto muna ang download',
+  localAiStart: 'Simulan ang lokal na engine',
+  localAiPrompt: 'Prompt para sa pagsubok (halimbawang teksto lamang)',
+  localAiSelfTest: 'Subukan ang lokal na AI',
+  localAiStats: 'Token / oras / bilis / memorya',
+  localAiSampledPeak: 'sinukat na peak ng proseso; hindi pagsusuri ng buong telepono',
+  localAiUnload: 'Alisin sa memorya ang engine',
+  localAiDelete: 'Burahin ang modelo at hindi tapos na download',
+  localAiLoaded: 'Naka-load ang engine sa teleponong ito',
+  localAiUnloaded: 'Hindi naka-load ang engine',
+  localAiFailed:
+    'Hindi natapos ng lokal na engine. Ligtas ang gawa mo. Gamitin ang karaniwang pagsusuri nang walang AI, o subukan sa angkop na telepono.',
+  localAiBusy: 'Tapusin o kanselahin muna ang kasalukuyang gawain.',
+  localAiMemory:
+    'Kulang ang malayang memorya. Isara ang ibang app o gamitin ang pagsusuri nang walang AI.',
+  localAiChecksum:
+    'Hindi pumasa sa pagsusuri ang modelo. Burahin at i-download muli; ligtas ang iyong mga aralin.',
+  localAiConsent: 'Pumayag muna sa pag-download ng modelo.',
+  localAiWifi: 'Naghihintay ng Wi-Fi. Maaari mong payagan ang mobile data sa itaas.',
+  localAiStorage:
+    'Kulang ang imbakan para sa modelo. Walang hindi pa naipapadalang gawa na binura.',
+  localAiResume: 'Hindi naituloy nang tama ng server ang download. Subukang mag-download muli.',
+  localAiDownloadFailed:
+    'Nahinto ang download. Naka-save ang bahaging nakuha; ituloy kapag may koneksiyon.',
+  localAiCancelled: 'Kinansela ang lokal na gawain. Nananatili ang orihinal mong teksto.',
+  localAiTooLong: 'Gumamit ng mas maikling prompt para sa maliit na modelong ito.',
+  localAiNotReady: 'I-download at suriin muna ang modelo sa Mga Setting.',
+  localAiUntraceable:
+    'Tinanggihan ang mungkahi: binago o dinagdagan nito ang pangalan. Suriin ang orihinal nang walang AI.',
+  localAiReviewChanged: 'Nagbago ang sinusuri habang tumatakbo ang AI. Walang pinalitan.',
+  localAiReviewNotice:
+    'Opsiyonal na lokal na mungkahi lamang. I-download muna ang modelo sa Mga Setting. Kailangan mo pa ring suriin at piliin ang gagawin sa hanay; magagamit pa rin ang pagsusuri nang walang AI.',
+  localAiSuggest: 'Magmungkahi ng bahagi ng pangalan sa teleponong ito',
+  localAi_absent: 'Wala pang modelo',
+  localAi_paused: 'Nakahiinto ang download',
+  localAi_downloading: 'Dina-download',
+  localAi_verifying: 'Sinusuri ang checksum',
+  localAi_ready: 'Handa ang file (susuriing muli bago gamitin)',
+  localAi_failed: 'Kailangang tingnan ang lokal na gawain',
+
   aboutDiagnostics: 'Tungkol sa app / pagsusuri',
   diagnosticVersion: 'Bersiyon',
   diagnosticBuild: 'Petsa ng build',

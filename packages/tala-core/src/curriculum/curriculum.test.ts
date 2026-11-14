@@ -44,3 +44,32 @@ test('pack identity roundtrip and domain normalization', () => {
   assert.equal(domainKey('  Life   Science  '), 'life science');
   assert.equal(domainKey(' '), null);
 });
+
+test('topic labels localise time and preserve English titles and unknown-week fallback', async () => {
+  const { topicLabel } = await import('./index');
+  const c = {
+    ...competency,
+    termIndex: 2,
+    shortTitle: 'Exploring Motion',
+    shortTitleSource: 'derived' as const,
+  };
+  assert.equal(searchCompetencies([c], { keyword: 'Exploring Motion' }).length, 1);
+  assert.equal(topicLabel(c, { lang: 'en' }), 'Term 2: Exploring Motion');
+  assert.equal(
+    topicLabel({ ...c, weekFrom: 1 }, { lang: 'en' }),
+    'Term 2, Week 1: Exploring Motion'
+  );
+  assert.equal(
+    topicLabel({ ...c, weekFrom: 3, weekTo: 4 }, { lang: 'fil' }),
+    'Term 2, Linggo 3–4: Exploring Motion'
+  );
+  assert.equal(
+    topicLabel({ ...c, weekFrom: 3, weekTo: 4 }, { lang: 'en' }),
+    'Term 2, Week 3–4: Exploring Motion'
+  );
+  assert.equal(topicLabel(competency, { lang: 'en' }), 'Term 1: Matter');
+  assert.equal(
+    topicLabel({ ...c, weekFrom: 4, weekTo: 3 }, { lang: 'en' }),
+    'Term 2: Exploring Motion'
+  );
+});

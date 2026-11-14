@@ -24,12 +24,14 @@ export function cx(...parts: Array<string | false | null | undefined>): string {
 
 /* ---------- Button ---------- */
 
-type Variant = 'primary' | 'secondary' | 'quiet' | 'danger';
+type Variant = 'primary' | 'secondary' | 'quiet' | 'danger' | 'ai';
 const VARIANT: Record<Variant, string> = {
   primary: 'bg-talaTeal text-white border-talaTeal hover:brightness-95',
   secondary: 'bg-white text-forest border-forest hover:bg-cream',
   quiet: 'bg-transparent text-talaTealText border-transparent underline-offset-2 hover:underline',
   danger: 'bg-white text-brick border-brick hover:bg-cream',
+  /** AI actions (draft, rewrite): one obvious style everywhere — strong teal outline, sparkle, white fill. */
+  ai: 'bg-white text-talaTealText border-2 border-talaTeal font-semibold hover:bg-talaTeal/10',
 };
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -216,7 +218,7 @@ export function Checkbox({
   onChange,
   disabled,
 }: {
-  label: string;
+  label: ReactNode;
   checked: boolean;
   onChange: (v: boolean) => void;
   disabled?: boolean;
@@ -553,6 +555,10 @@ export function Sheet({
         e.preventDefault();
         onClose();
       }}
+      onClick={(e) => {
+        // A click on the backdrop (the dialog element itself, outside its content) cancels.
+        if (e.target === e.currentTarget) onClose();
+      }}
       aria-labelledby={open ? titleId : undefined}
       className="m-0 w-full max-w-full bg-white text-forest rounded-t p-0 fixed bottom-0 top-auto translate-x-0 wide:bottom-auto wide:top-1/2 wide:left-1/2 wide:-translate-x-1/2 wide:-translate-y-1/2 wide:max-w-[36rem] wide:rounded backdrop:bg-forest/50 max-h-[90dvh] overflow-y-auto"
     >
@@ -632,5 +638,59 @@ export function Waiting({ label, onCancel }: { label: string; onCancel?: () => v
         </Button>
       )}
     </div>
+  );
+}
+
+/** Sparkle mark for AI actions. */
+export function Sparkle({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="20"
+      height="20"
+      aria-hidden="true"
+      className={className}
+      fill="currentColor"
+    >
+      <path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6L12 2zm7 11l.9 2.6 2.6.9-2.6.9L19 20l-.9-2.6-2.6-.9 2.6-.9L19 13zM5 14l.7 2 2 .7-2 .7L5 19.5l-.7-2.1-2-.7 2-.7L5 14z" />
+    </svg>
+  );
+}
+
+/** Bold reorder arrow: 44 px target, thick chevron, clear hover / active / focus / disabled states. */
+export function ArrowButton({
+  direction,
+  label,
+  disabled,
+  onClick,
+}: {
+  direction: 'up' | 'down';
+  label: string;
+  disabled?: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      title={label}
+      disabled={disabled}
+      onClick={onClick}
+      className="inline-flex h-11 w-11 items-center justify-center rounded border-2 border-forest bg-white text-forest hover:bg-cream active:bg-hairline focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-talaTeal disabled:border-hairline disabled:text-forestMuted/50 disabled:bg-white disabled:cursor-not-allowed"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        width="22"
+        height="22"
+        aria-hidden="true"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        {direction === 'up' ? <path d="M6 15l6-6 6 6" /> : <path d="M6 9l6 6 6-6" />}
+      </svg>
+    </button>
   );
 }
