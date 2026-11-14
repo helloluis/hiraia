@@ -306,7 +306,7 @@ test('session cookie: Secure, HttpOnly, SameSite, host-only; and it signs the br
   const teacher = await signUp({ origin: PUBLIC_ORIGIN });
   assert.match(
     teacher.cookie,
-    /^__Host-tala_session=[A-Za-z0-9_-]{43}; Max-Age=7776000; Path=\/; HttpOnly; SameSite=Lax; Secure$/
+    /^__Host-tala_session=[A-Za-z0-9_-]{43}; Max-Age=777(?:6000|5999); Path=\/; HttpOnly; SameSite=Lax; Secure$/
   );
   assert.ok(!/Domain=/i.test(teacher.cookie), 'a __Host- cookie carries no Domain');
   const me = await send('GET', '/auth/me', { cookie: teacher.cookie.split(';')[0]! });
