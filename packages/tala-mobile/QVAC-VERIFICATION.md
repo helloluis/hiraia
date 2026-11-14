@@ -1,4 +1,6 @@
-# QVAC verification — 14 November 2026
+# QVAC verification — initial integration, 14 November 2026
+
+The later worker-resolver correction and replacement APK measurements are recorded in [QVAC-ISOLATION.md](QVAC-ISOLATION.md). The artifact measurements below describe the initial integration.
 
 Implementation commits start at `6978e73b9`; native isolation/notices hardening is `d2ae55f5b`. See QVAC-IMPLEMENTATION.md for architecture, dependencies, support limits and the Find N6 acceptance procedure.
 

@@ -183,6 +183,7 @@ test('native flags keep standard free of QVAC plugins and Bare autolinking; QVAC
   assert.equal(standard.app.android.package, 'com.hiraia.tala.next');
   assert.equal(standard.app.extra.qvac, false);
   assert.ok(!JSON.stringify(standard.app.plugins).includes('@qvac/sdk'));
+  assert.ok(!JSON.stringify(standard.app.plugins).includes('with-qvac-worker'));
   assert.equal(standard.rn.dependencies['react-native-bare-kit'].platforms.android, null);
   assert.equal(qvac.app.android.package, 'com.hiraia.tala.next.qvac');
   assert.equal(qvac.app.name, 'Tala (on-device AI)');
@@ -230,7 +231,12 @@ test('worker process override never installs a Node builtin alias or modifies th
   const { builtinModules } = require('node:module');
   const root = path.resolve(import.meta.dirname, '../../..');
   const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
-  for (const name of Object.keys({ ...pkg.dependencies, ...pkg.devDependencies }))
+  for (const name of Object.keys({
+    ...pkg.dependencies,
+    ...pkg.devDependencies,
+    ...pkg.optionalDependencies,
+    ...pkg.peerDependencies,
+  }))
     assert.ok(!builtinModules.includes(name), `hoistable builtin dependency: ${name}`);
   assert.equal(pkg.devDependencies['bare-process'], '4.4.1');
   // Node runs Expo's ESM plugins natively; tsx's CJS transform changes their interop.
