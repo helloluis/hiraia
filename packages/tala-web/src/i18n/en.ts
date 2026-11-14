@@ -749,7 +749,7 @@ export const en = {
   'landing.openWeek': 'Open my week',
   'landing.download': 'Download the Android app',
   'landing.heroAlt':
-    'A teacher mid-lesson in a small classroom with corrugated-metal walls, surrounded by children of different grades seated at wooden desks, writing in their notebooks.',
+    'A smiling teacher at the chalkboard, holding a phone and her lesson papers, facing children of different grades in a simple classroom. The picture looks like an old film still.',
   'landing.earlyEyebrow': 'An early version',
   'landing.earlyTitle': 'Free, honest, and still growing',
   'landing.earlyBody':

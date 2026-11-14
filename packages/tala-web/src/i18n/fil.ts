@@ -780,7 +780,7 @@ export const fil = {
   'landing.openWeek': 'Buksan ang linggo ko',
   'landing.download': 'I-download ang Android app',
   'landing.heroAlt':
-    'Isang guro na nagtuturo sa gitna ng maliit na silid-aralan na yero ang dingding, napapaligiran ng mga batang iba-iba ang baitang na nakaupo sa mga kahoy na mesa at nagsusulat sa kuwaderno.',
+    'Isang gurong nakangiti sa harap ng pisara, may hawak na cellphone at mga papel ng aralin, nakaharap sa mga batang iba-iba ang baitang sa isang payak na silid-aralan. Larawang parang lumang kuha sa pelikula.',
   'landing.earlyEyebrow': 'Maagang bersyon',
   'landing.earlyTitle': 'Libre, tapat, at patuloy na lumalaki',
   'landing.earlyBody':

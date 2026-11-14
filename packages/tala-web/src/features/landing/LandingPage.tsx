@@ -67,8 +67,8 @@ export function LandingPage() {
               <img
                 src="/brand/tala-hero-teacher.jpg"
                 alt={t('landing.heroAlt')}
-                width={1600}
-                height={914}
+                width={1344}
+                height={768}
                 className="block w-full h-auto"
                 fetchPriority="high"
                 decoding="async"
