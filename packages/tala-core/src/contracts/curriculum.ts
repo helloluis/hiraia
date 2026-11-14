@@ -51,6 +51,17 @@ export const Competency = z.object({
   performanceStandard: z.string().max(2000).nullable(),
   /** Strand / domain / theme, used to pair competencies across grades in multi-grade classes. */
   domain: z.string().max(200).nullable(),
+  /**
+   * Short display title for pickers and timelines: one to four words ("Exploring Motion", "Friction and Heat").
+   * A label, not curriculum text — the competency `text` above stays the only authoritative wording.
+   * 'official' = taken from a heading in the source document; 'derived' = shortened from the domain/competency
+   * by Hiraia tooling and open to teacher correction.
+   */
+  shortTitle: z.string().max(60).optional(),
+  shortTitleSource: z.enum(['official', 'derived']).optional(),
+  /** Week(s) of the term the source document allots to this competency (1-based), when it says. */
+  weekFrom: z.number().int().min(1).max(20).optional(),
+  weekTo: z.number().int().min(1).max(20).optional(),
   /** Relative share of teaching time; null = equal weight. */
   weight: z.number().positive().nullable(),
   weightSource: z.enum(['official', 'estimated']),

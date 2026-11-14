@@ -64,7 +64,15 @@ export const SectionContent = z.discriminatedUnion('type', [
       )
       .max(40),
   }),
-  z.object({ type: z.literal('multigrade'), blocks: z.array(MultigradeBlock).max(24) }),
+  z.object({
+    type: z.literal('multigrade'),
+    blocks: z.array(MultigradeBlock).max(24),
+    /**
+     * A short pre-class note to the teacher about the session as a whole (e.g. that with three or four groups
+     * each gets a short turn with her, or which group gets its turn next session). Shown above the time blocks.
+     */
+    note: z.string().max(600).optional(),
+  }),
   z.object({
     type: z.literal('weekgrid'),
     days: z
@@ -96,6 +104,7 @@ export const SECTION_KEYS = [
   'assessment',
   'differentiation',
   'assignment',
+  'results',
   'reflection',
 ] as const;
 export const SectionKey = z.string().regex(/^([a-z]+|custom\.[a-z0-9_-]{1,32})$/);
@@ -106,7 +115,12 @@ export const TemplateSection = z.object({
   label: Localized,
   contentType: z.enum(['text', 'list', 'procedure', 'multigrade', 'weekgrid', 'pergroup']),
   required: z.boolean(),
-  /** `reflection` is outside the lock (DOC-2): it stays editable after locking. */
+  /**
+   * POST-CLASS section: written after the lesson has been taught (assessment results, reflection). It is
+   * outside the lock (DOC-2) — it stays editable on a locked plan, is never required for locking, is not part
+   * of the lock's revision code, and is never drafted by a model. Everything else is pre-class content and
+   * freezes when the plan is locked.
+   */
   outsideLock: z.boolean().default(false),
 });
 export type TemplateSection = z.infer<typeof TemplateSection>;
@@ -188,6 +202,13 @@ export const BUILTIN_TEMPLATES: Template[] = [
         outsideLock: false,
       },
       {
+        key: 'results',
+        label: L('Resulta ng Pagtataya (pagkatapos ng klase)', 'Assessment results (after class)'),
+        contentType: 'text',
+        required: false,
+        outsideLock: true,
+      },
+      {
         key: 'reflection',
         label: L('Pagninilay', 'Reflection'),
         contentType: 'text',
@@ -240,6 +261,13 @@ export const BUILTIN_TEMPLATES: Template[] = [
         outsideLock: false,
       },
       {
+        key: 'results',
+        label: L('Resulta ng Pagtataya (pagkatapos ng klase)', 'Assessment results (after class)'),
+        contentType: 'text',
+        required: false,
+        outsideLock: true,
+      },
+      {
         key: 'reflection',
         label: L('Pagninilay', 'Reflection'),
         contentType: 'text',
@@ -283,6 +311,13 @@ export const BUILTIN_TEMPLATES: Template[] = [
         contentType: 'pergroup',
         required: true,
         outsideLock: false,
+      },
+      {
+        key: 'results',
+        label: L('Resulta ng Pagtataya (pagkatapos ng klase)', 'Assessment results (after class)'),
+        contentType: 'pergroup',
+        required: false,
+        outsideLock: true,
       },
       {
         key: 'reflection',
