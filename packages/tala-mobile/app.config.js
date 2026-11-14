@@ -1,12 +1,24 @@
 const base = require('./app.json').expo;
 const { applicationId } = require('./config.cjs');
+const qvac = process.env.TALA_QVAC === '1';
 module.exports = {
   ...base,
   version: '1.0.0-demo.1',
-  plugins: [...base.plugins, './plugins/with-demo-manifest.cjs'],
+  name: qvac ? 'Tala (on-device AI)' : base.name,
+  plugins: [
+    ...base.plugins,
+    './plugins/with-demo-manifest.cjs',
+    ...(qvac
+      ? [
+          ['expo-build-properties', { android: { minSdkVersion: 31 } }],
+          '@qvac/sdk/expo-plugin',
+          './plugins/with-local-ai-support.cjs',
+        ]
+      : []),
+  ],
   android: {
     ...base.android,
-    package: applicationId(process.env),
+    package: qvac ? 'com.hiraia.tala.next.qvac' : applicationId(process.env),
     versionCode: 1,
     usesCleartextTraffic: false,
     blockedPermissions: [
@@ -17,6 +29,7 @@ module.exports = {
     ],
   },
   extra: {
+    qvac,
     buildDate: process.env.TALA_BUILD_DATE || 'development',
     apiBase: 'https://tala.hiraia.org',
     bundleBytes: Number(process.env.TALA_BUNDLE_BYTES || 0),

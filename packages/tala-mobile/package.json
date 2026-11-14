@@ -29,14 +29,19 @@
     "react-native": "0.81.5",
     "expo-document-picker": "~14.0.8",
     "expo-device": "~8.0.0",
-    "expo-constants": "~18.0.0"
+    "expo-constants": "~18.0.0",
+    "@qvac/sdk": "0.23.0",
+    "react-native-bare-kit": "0.16.0",
+    "expo-build-properties": "~1.0.0"
   },
   "devDependencies": {
     "@types/react": "~19.1.0",
     "@types/node": "^22.15.29",
     "typescript": "^5.8.3",
     "tsx": "^4.19.2",
-    "zod": "^3.24.1"
+    "zod": "^3.24.1",
+    "process": "npm:bare-process@4.4.1",
+    "bare-pack": "3.1.0"
   },
   "expo": {
     "autolinking": {
