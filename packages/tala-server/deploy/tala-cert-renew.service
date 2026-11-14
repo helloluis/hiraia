@@ -1,0 +1,8 @@
+[Unit]
+Description=Renew only the tala.hiraia.org HTTPS certificate
+After=network-online.target nginx.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/flock -n /run/lock/ovh-apps-certbot.lock /usr/bin/certbot renew --non-interactive --no-random-sleep-on-renew --config-dir /etc/letsencrypt-tala --work-dir /var/lib/letsencrypt-tala --logs-dir /var/log/letsencrypt-tala --deploy-hook "/usr/bin/systemctl reload nginx"
