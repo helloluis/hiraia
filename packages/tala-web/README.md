@@ -49,3 +49,13 @@ password, join another account (`account.merge`, both proofs). Every server reas
 ## Journey check
 
 `docs/journey/` holds the scripted full-stack walk against the production build (fallback and live runs).
+
+## Public pages
+
+- `/` — public homepage in the hiraia.org pattern (eyebrow, serif headline, benefit blocks, promises band, get-started
+  card). Server-rendered; the only client state is the "Open my week" swap for a signed-in visitor. Hero art in
+  `public/brand/tala-hero-teacher*.{webp,jpg}` (desktop 1600 px, mobile 720 px variants).
+- `/download` — reads `${TALA_DOWNLOAD_DIR}/tala-apk.json` at request time (schema in `src/app/download/page.tsx`);
+  the APK is served by nginx. Without a manifest it says the app is not published yet.
+- `config.features.emailDelivery === false` hides every "verify your email" prompt and says plainly on the
+  reset-password screen that reset by email is not available yet.

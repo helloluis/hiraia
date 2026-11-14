@@ -2,7 +2,8 @@
 export const en = {
   'app.name': 'Tala',
   'app.byHiraia': 'by Hiraia',
-  'app.tagline': 'Plan your lessons. Tala knows the DepEd curriculum and your school calendar.',
+  'app.tagline':
+    'Your week’s lessons, planned with you. Tala knows the DepEd curriculum and your school calendar.',
   'app.skipToContent': 'Skip to content',
 
   'nav.week': 'This Week',
@@ -44,8 +45,9 @@ export const en = {
   'common.grade': 'Grade {g}',
   'common.kinder': 'Kindergarten',
 
-  'network.offline': 'No connection. Your work is saved on this device and will be sent later.',
-  'network.slow': 'Slow connection. Pictures are off to save data.',
+  'network.offline':
+    'No signal right now. Your work is safe on this device and will be sent when the connection is back.',
+  'network.slow': 'Slow connection. Pictures are off to save your data.',
   'network.readOnlyTitle': 'Editing is paused',
   'network.readOnly': 'Connect to the internet once to sign in again.',
   'network.storageFull':
@@ -59,15 +61,15 @@ export const en = {
   'sync.sendNow': 'Send now',
   'sync.upToDate': 'Everything sent',
 
-  'auth.signIn': 'Sign in',
-  'auth.register': 'Create account',
+  'auth.signIn': 'Log in',
+  'auth.register': 'Create a free account',
   'auth.email': 'Email',
   'auth.password': 'Password',
   'auth.displayName': 'Your name',
   'auth.displayNameHint': 'As you want it printed on your lesson plans.',
   'auth.passwordHint': 'At least 10 characters. Any words you will remember.',
   'auth.forgot': 'Forgot your password?',
-  'auth.noAccount': 'New to Tala?',
+  'auth.noAccount': 'New here? Tala is free for every teacher.',
   'auth.haveAccount': 'Already have an account?',
   'auth.resetTitle': 'Reset password',
   'auth.resetBody':
@@ -107,7 +109,8 @@ export const en = {
   'lang.en': 'English',
 
   'setup.title': 'Set up your class',
-  'setup.intro': 'Four short steps. You can accept every suggestion and change things later.',
+  'setup.intro':
+    'Four short steps, one sitting. Accept every suggestion if you like; everything can be changed later.',
   'setup.sample': 'Try a sample class',
   'setup.sampleBody':
     'Adds a class with made-up learners and a few example lessons. Remove it any time.',
@@ -157,8 +160,9 @@ export const en = {
 
   'week.title': 'This Week',
   'week.month': 'This Month',
-  'week.empty': 'No sessions this week.',
-  'week.noClass': 'You have no class yet.',
+  'week.empty': 'No classes this week. Enjoy the quiet, or look at the next one.',
+  'week.noClass':
+    'Your week is empty until you add a class. It takes one sitting, or one tap for a sample class.',
   'week.setupAction': 'Set up a class',
   'week.state.none': 'No plan yet',
   'week.state.draft': 'Draft',
@@ -239,7 +243,8 @@ export const en = {
 
   'lessons.title': 'Lessons',
   'lessons.new': 'New lesson',
-  'lessons.empty': 'No lessons yet. Your first one is one tap away.',
+  'lessons.empty':
+    'No lessons yet. Your first one is one tap away, and Tala can draft it with you.',
   'lessons.search': 'Find a lesson',
   'lessons.all': 'All',
   'lessons.untitled': 'Untitled lesson',
@@ -395,7 +400,7 @@ export const en = {
     'This is a sample class with made-up learners. It cannot be posted to the community.',
   'class.roster': 'Learners',
   'class.rosterImport': 'Import a list of learners',
-  'class.none': 'No class yet.',
+  'class.none': 'No class yet. Add the one you teach and Tala lays out your week.',
   'class.addClass': 'Add a class',
   'class.switch': 'Switch class',
   'class.name': 'Class name',
@@ -579,7 +584,7 @@ export const en = {
   'roster.sexF': 'Female',
   'roster.localId': 'Local ID',
   'roster.localIdHint': 'Your own number for this learner. Never the LRN.',
-  'roster.empty': 'No learners yet. Add them one by one, or import a list.',
+  'roster.empty': 'No learners yet. Add them one by one, or hand Tala the list you already have.',
   'roster.removeConfirm': 'Remove this learner from the class?',
   'roster.moveUp': 'Move up',
   'roster.moveDown': 'Move down',
@@ -602,7 +607,7 @@ export const en = {
   'com.region': 'Region',
   'com.any': 'Any',
   'com.results': '{n} lessons',
-  'com.noResults': 'No lessons match. Try fewer filters.',
+  'com.noResults': 'No shared lessons match yet. Try fewer filters, or be the first to post one.',
   'com.offline': 'Search needs a connection. Lessons you have copied are in your Lessons.',
   'com.mine': 'My posts',
   'com.browse': 'Browse',
@@ -735,7 +740,89 @@ export const en = {
   'merge.proofMissing':
     'Give the other account’s email and password, or sign in to it with Google.',
 
-  'error.generic': 'Something went wrong. Your work is safe on this device. Try again in a moment.',
+  'landing.eyebrow': 'Lesson planning for teachers',
+  'landing.h1': 'Your week’s lessons, planned with you.',
+  'landing.sub':
+    'Tala knows the DepEd curriculum and your school calendar. It opens on what you teach this week, drafts a plan with you, and works on an ordinary Android phone, even without signal.',
+  'landing.register': 'Register',
+  'landing.login': 'Log in',
+  'landing.openWeek': 'Open my week',
+  'landing.download': 'Download the Android app',
+  'landing.heroAlt':
+    'A Filipina public-school teacher in front of a chalkboard, smiling, holding a phone in one hand and a lesson sheet in the other.',
+  'landing.earlyEyebrow': 'An early version',
+  'landing.earlyTitle': 'Free, honest, and still growing',
+  'landing.earlyBody':
+    'Tala is free for every teacher and will stay free. This is an early version: some parts are still being built, and we say so where it matters. A draft Tala writes is a draft. You read it, fix it, and lock it when it is right.',
+  'landing.todayEyebrow': 'What Tala does today',
+  'landing.todayTitle': 'Everything a planning week needs, in plain steps',
+  'landing.f.account.k': 'Your own teacher account',
+  'landing.f.account.b':
+    'Sign up with an email and a password. Your classes and lessons are yours, on the web and on your phone.',
+  'landing.f.roster.k': 'Class lists from what you already have',
+  'landing.f.roster.b':
+    'Paste names or hand Tala the file you already keep. It cleans the list, shows you every row it is unsure about, and keeps only names, grade groups and your own numbers. Never LRNs, birthdays or addresses.',
+  'landing.f.pacing.k': 'Weekly and monthly pacing from the curriculum',
+  'landing.f.pacing.b':
+    'Pick your school year and timetable; Tala lays the competencies over your real teaching days and shows what is due this week and this month. Science, Grades 3 to 10 today. More subjects are coming.',
+  'landing.f.ai.k': 'Lesson drafts with AI',
+  'landing.f.ai.b':
+    'From the competencies on your timeline, Tala drafts a lesson in Filipino or English. Multi-grade classes of up to four grade levels get one plan for one room. The drafting model is DeepSeek, with Qwen as backup.',
+  'landing.f.edit.k': 'Edit, lock, print',
+  'landing.f.edit.b':
+    'Plain text sections you can type in anywhere. Lock a lesson when it is final, and download it as a PDF in A4 or long bond.',
+  'landing.f.offline.k': 'An Android app that keeps working offline',
+  'landing.f.offline.b':
+    'Your week, your lessons and your PDFs stay on the phone. When signal comes back, everything is sent quietly.',
+  'landing.f.community.k': 'Share lessons with other teachers',
+  'landing.f.community.b':
+    'Post a locked lesson, copy one from another teacher, and make it your own. Credit stays with the author.',
+  'landing.beta': 'Beta',
+  'landing.promiseEyebrow': 'What we promise',
+  'landing.p.free.k': 'Free forever',
+  'landing.p.free.b': 'No payments, no plans, no premium tier. Hiraia is not-for-profit.',
+  'landing.p.offline.k': 'Works offline',
+  'landing.p.offline.b': 'Bad signal is the normal case here, so the phone app is built for it.',
+  'landing.p.simple.k': 'No technical skill needed',
+  'landing.p.simple.b':
+    'If you can send a text message, you can use Tala. Every screen says what to do next.',
+  'landing.p.check.k': 'A draft is a draft',
+  'landing.p.check.b':
+    'Tala checks the shape of an AI draft, not its facts. You do, before you lock it.',
+  'landing.getEyebrow': 'Get started',
+  'landing.getTitle': 'Use it in the browser today, or put it on your phone',
+  'landing.getBody':
+    'The web version works on any phone or computer. The Android app adds offline use. Both are free.',
+  'landing.footerHiraia': 'A project of Hiraia',
+  'landing.footerDeped':
+    'Tala is not an official DepEd product. Curriculum text is DepEd’s own and is shown as published.',
+
+  'download.title': 'Download the Android app',
+  'download.intro':
+    'The Tala app for Android keeps your week, your lessons and your PDFs on the phone, with or without signal.',
+  'download.button': 'Download the app ({size})',
+  'download.version': 'Version',
+  'download.buildDate': 'Built on',
+  'download.size': 'Size',
+  'download.minAndroid': 'Needs Android',
+  'download.sha': 'SHA-256 checksum',
+  'download.installTitle': 'Before you install',
+  'download.installBody':
+    'This is an early test build and it does not come from the Play Store. When you open the file, Android will ask you to allow installing from this source. Allow it once for your browser or file manager, then open the file again.',
+  'download.notYet':
+    'The Android app is not published here yet. Tala already works in this browser on your phone.',
+  'download.useWeb': 'Use Tala in the browser',
+  'download.verify':
+    'If someone sends you the file, compare its checksum with the one above before installing.',
+
+  'empty.heading': 'Nothing here yet',
+
+  'auth.noEmailYet':
+    'Email delivery is not switched on yet, so there is nothing to verify today. Your account works as it is.',
+  'auth.resetNotAvailable':
+    'Password reset by email is not available yet. Keep your password safe; if you lose it, write to Hiraia.',
+  'error.generic':
+    'Something went wrong on our side. Your work is safe on this device. Try again in a moment.',
   'error.rateLimited': 'Too many tries. Wait a minute and try again.',
   'error.notFound': 'That page does not exist.',
   'error.goHome': 'Go to This Week',

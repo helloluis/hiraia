@@ -14,7 +14,7 @@ import { errorKey, errorReason } from '@/data/errors';
 export function RegisterScreen() {
   const { t, lang } = useT();
   const router = useRouter();
-  const { register, signInWithGoogle } = useSession();
+  const { register, signInWithGoogle, config } = useSession();
   const [link, setLink] = useState<{ idToken: string; email: string } | null>(null);
   const [googleError, setGoogleError] = useState<string | null>(null);
   const [name, setName] = useState('');
@@ -34,7 +34,7 @@ export function RegisterScreen() {
     const ok = await form.run(() => register(email.trim(), password, name.trim(), lang), {
       conflict: 'auth.emailTaken',
     });
-    if (ok) router.replace('/verify-email');
+    if (ok) router.replace(config?.features.emailDelivery === false ? '/week' : '/verify-email');
   };
 
   const onGoogle = async (idToken: string) => {
