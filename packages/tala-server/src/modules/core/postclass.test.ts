@@ -1119,6 +1119,239 @@ test('(6) locking never requires a post-class part, even when a template marks o
   t.close();
 });
 
+/* ---------------- joining two accounts ---------------- */
+
+const MAIN = { email: 'main@example.test', password: 'Tala-test-main-kalabaw-bituin' };
+const OLD = { email: 'old@example.test', password: 'Tala-test-luma-kalabaw-bituin' };
+
+/** Join the account `OLD` into the signed-in account `MAIN`. Returns how many records came over. */
+async function join(t: TestServer, main: TestUser) {
+  const merged = await t.ok('account.merge', {
+    token: main.token,
+    body: {
+      confirm: 'MERGE',
+      currentPassword: MAIN.password,
+      email: OLD.email,
+      password: OLD.password,
+    },
+  });
+  return merged.movedRecords;
+}
+/** What the server logged about the join: [parts a lock froze out, locked plans that arrived open]. */
+const mergeCounts = (t: TestServer) =>
+  t.logs
+    .filter((l) => l.event === 'accounts_merged')
+    .map((l) => [l.fields.partsFrozenOut, l.fields.plansReopened]);
+const partsOf = (t: TestServer, ownerId: string, planId = 'plan-0001') =>
+  (t.services.records.planSnapshot(ownerId, planId)?.sections ?? [])
+    .map((s) => `${s.id}:${s.data.key}`)
+    .sort();
+
+test('joining accounts cannot add a pre-class part to a plan that is locked in the account that stays', async () => {
+  const t = createTestServer();
+  const main = await t.registerUser(MAIN);
+  const old = await t.registerUser(OLD);
+  const before = await lockedPlan(t, main);
+  const partsBefore = partsOf(t, main.id);
+
+  // The other account holds parts that name the locked plan's id, and a lesson of its own.
+  const stray = await push(t, old.token, [
+    upsert('plan_section', text('foreign-assessment', 'assessment', 'ISININGIT')),
+    upsert('plan_section', text('foreign-content', 'content', 'ISININGIT')),
+    upsert('plan_section', text('foreign-results', 'results', 'Resulta mula sa kabilang account.')),
+    upsert('plan', planData({ id: 'plan-old-0001' })),
+    upsert(
+      'plan_section',
+      text('old-objectives', 'objectives', 'Sariling aralin', 'plan-old-0001')
+    ),
+  ]);
+  assert.deepEqual(
+    stray.map((r) => r.status),
+    Array(5).fill('applied')
+  );
+
+  assert.equal(
+    await join(t, main),
+    3,
+    'its own lesson and that lesson’s part, and the post-class part'
+  );
+  // What a sync would have refused as `locked` did not come over; a post-class part did, as a sync would allow.
+  assert.deepEqual(partsOf(t, main.id), [...partsBefore, 'foreign-results:results'].sort());
+  assert.ok(
+    !JSON.stringify(
+      t.db.prepare("SELECT data FROM core_records WHERE entity = 'plan_section'").all()
+    ).includes('ISININGIT')
+  );
+  assert.deepEqual(
+    t.services.records.get(main.id, 'plan', 'plan-0001'),
+    before,
+    'the locked plan itself is untouched'
+  );
+  assert.deepEqual(partsOf(t, main.id, 'plan-old-0001'), ['old-objectives:objectives']);
+  assert.deepEqual(mergeCounts(t), [[2, 0]]);
+  t.close();
+});
+
+test('joining accounts: a locked plan arrives exactly as it was locked, with its lock still deciding what is frozen', async () => {
+  const t = createTestServer();
+  const main = await t.registerUser(MAIN);
+  const old = await t.registerUser(OLD);
+  await lockedCustomPlan(t, old);
+  const before = t.services.records.get(old.id, 'plan', 'plan-0001')!;
+
+  assert.equal(await join(t, main), 4, 'the template, the plan and its two parts');
+  const after = t.services.records.get(main.id, 'plan', 'plan-0001')!;
+  assert.deepEqual(after.data, before.data, 'same state, same lock, same revision');
+  assert.deepEqual(lockKeys(t), {
+    outside: ['custom.tala'],
+    inside: ['objectives', 'custom.gawain'],
+  });
+  // In its new account the lock works as before, also against a later change of the template.
+  assert.equal(
+    (
+      await one(
+        t,
+        main.token,
+        upsert('plan_section', text('c-tala', 'custom.tala', 'Tala pagkatapos ng klase.'))
+      )
+    ).status,
+    'applied'
+  );
+  const loosened = customTemplate({
+    sections: customTemplate().sections.map((s) => ({ ...s, required: false, outsideLock: true })),
+  });
+  assert.equal((await one(t, main.token, upsert('template', loosened, 1))).status, 'applied');
+  assert.equal(
+    (
+      await one(
+        t,
+        main.token,
+        upsert('plan_section', text('c-gawain', 'custom.gawain', 'pinalitan'), 1)
+      )
+    ).status,
+    'locked'
+  );
+  assert.deepEqual(mergeCounts(t), [[0, 0]]);
+  t.close();
+});
+
+test('joining accounts: a locked plan that cannot arrive as it was locked arrives open, with its locked revision kept', async () => {
+  // (a) The account that stays already holds a part under a frozen key for that plan id.
+  {
+    const t = createTestServer();
+    const main = await t.registerUser(MAIN);
+    const old = await t.registerUser(OLD);
+    await lockedPlan(t, old, { submitted: null });
+    assert.equal(
+      (
+        await one(
+          t,
+          main.token,
+          upsert('plan_section', text('stray-assessment', 'assessment', 'ISININGIT'))
+        )
+      ).status,
+      'applied'
+    );
+
+    await join(t, main);
+    const plan = t.services.records.get(main.id, 'plan', 'plan-0001')!.data;
+    assert.deepEqual(
+      [plan.state, plan.lock, plan.submitted],
+      ['draft', null, null],
+      'it does not claim a lock its content no longer matches'
+    );
+    assert.deepEqual(storedReasons(t), ['3:unlock:open', '2:lock:locked', '1:save:open']);
+    const lockRevision = await t.ok('plans.revision', {
+      token: main.token,
+      params: { planId: 'plan-0001', revision: '2' },
+    });
+    assert.ok(
+      !JSON.stringify(lockRevision).includes('ISININGIT'),
+      'what was locked can still be shown as it was'
+    );
+    assert.equal(lockRevision.sections.length, 5);
+    assert.ok(
+      partsOf(t, main.id).includes('stray-assessment:assessment'),
+      'the teacher sees the extra part in the draft'
+    );
+    assert.deepEqual(mergeCounts(t), [[0, 1]]);
+    t.close();
+  }
+  // (b) One of its frozen parts cannot come along, because the account that stays has a record with that id.
+  {
+    const t = createTestServer();
+    const main = await t.registerUser(MAIN);
+    const old = await t.registerUser(OLD);
+    await lockedPlan(t, old);
+    await push(t, main.token, [
+      upsert('plan', planData({ id: 'plan-main-0001' })),
+      upsert(
+        'plan_section',
+        text('plan-0001-assessment', 'content', 'ibang aralin', 'plan-main-0001')
+      ),
+    ]);
+
+    await join(t, main);
+    const plan = t.services.records.get(main.id, 'plan', 'plan-0001')!.data;
+    assert.deepEqual([plan.state, plan.lock], ['draft', null]);
+    assert.ok(
+      !partsOf(t, main.id).some((p) => p.endsWith(':assessment')),
+      'the plan lost a part it was locked with'
+    );
+    assert.equal(storedReasons(t)[0], '3:unlock:open');
+    t.close();
+  }
+  // (c) An archived plan that kept its lock stays archived, without the lock.
+  {
+    const t = createTestServer();
+    const main = await t.registerUser(MAIN);
+    const old = await t.registerUser(OLD);
+    const locked = await lockedPlan(t, old);
+    assert.equal(
+      (await one(t, old.token, upsert('plan', { ...locked.data, state: 'archived' }, locked.rev)))
+        .status,
+      'applied'
+    );
+    assert.equal(
+      (
+        await one(
+          t,
+          main.token,
+          upsert('plan_section', text('stray-content', 'content', 'ISININGIT'))
+        )
+      ).status,
+      'applied'
+    );
+
+    await join(t, main);
+    const plan = t.services.records.get(main.id, 'plan', 'plan-0001')!.data;
+    assert.deepEqual([plan.state, plan.lock], ['archived', null]);
+    t.close();
+  }
+  // (d) A part already there under a POST-CLASS key changes nothing: the plan arrives locked.
+  {
+    const t = createTestServer();
+    const main = await t.registerUser(MAIN);
+    const old = await t.registerUser(OLD);
+    const locked = await lockedPlan(t, old);
+    assert.equal(
+      (
+        await one(
+          t,
+          main.token,
+          upsert('plan_section', text('early-results', 'results', 'Resulta'))
+        )
+      ).status,
+      'applied'
+    );
+
+    await join(t, main);
+    assert.deepEqual(t.services.records.get(main.id, 'plan', 'plan-0001')!.data, locked.data);
+    assert.equal(storedReasons(t)[0], '2:lock:locked');
+    t.close();
+  }
+});
+
 test('(7) an archived plan that keeps its lock behaves exactly the same', async () => {
   const t = createTestServer();
   const teacher = await t.registerUser();
