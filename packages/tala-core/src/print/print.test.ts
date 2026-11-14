@@ -71,3 +71,71 @@ test('print query parses images=false as false', async () => {
   const { API } = await import('../contracts/api');
   assert.equal(API['print.planPdf'].query.parse({ images: 'false' }).images, false);
 });
+
+for (const withClass of [true, false])
+  test(`Filipino exports use grade names and localized activity labels (class=${withClass})`, () => {
+    const o = printFixture('multigrade');
+    if (!withClass) o.class = undefined;
+    const flow = o.sections[0]!;
+    assert.equal(flow.content.type, 'multigrade');
+    if (flow.content.type !== 'multigrade') return;
+    const base = flow.content.blocks[0]!;
+    base.groups[o.plan.gradeGroupIds[0]!]!.mode = 'shared';
+    base.groups[o.plan.gradeGroupIds[1]!]!.mode = 'direct';
+    base.groups[o.plan.gradeGroupIds[2]!]!.mode = 'independent';
+    flow.content.blocks = ['all', o.plan.gradeGroupIds[0]!, 'none'].map((teacherWith, i) => ({
+      ...base,
+      id: `block-${i}`,
+      teacherWith,
+      pairedGroupIds: o.plan.gradeGroupIds.slice(0, 2),
+    }));
+    o.sections.push({
+      ...flow,
+      id: 'pergroup-section',
+      key: 'assessment',
+      content: {
+        type: 'pergroup',
+        groups: Object.fromEntries(
+          o.plan.gradeGroupIds.map((id) => [id, [{ t: 'p', spans: [{ text: 'Gawain' }] }]])
+        ),
+      },
+    });
+    for (const output of [renderPlanText(o), renderPlanHtml(o)]) {
+      for (const id of o.plan.gradeGroupIds) assert.ok(!output.includes(id), id);
+      const visibleText = output.replace(/<style>[\s\S]*?<\/style>/g, '').replace(/<[^>]*>/g, ' ');
+      assert.doesNotMatch(
+        visibleText,
+        /\b(shared|direct|independent|transition|Teacher|all|none)\b/
+      );
+      for (const label of [
+        'Baitang 3',
+        'Baitang 4',
+        'Baitang 5',
+        'Guro',
+        'Lahat ng pangkat',
+        'Sama-sama',
+        'Kasama ang guro',
+        'Mag-isa',
+        'paglipat',
+        'min',
+      ])
+        assert.ok(output.includes(label), label);
+    }
+    assert.ok(renderPlanText(o).includes('Guro: Baitang 3'));
+  });
+
+test('class grade mapping takes precedence over plan order and unknown groups never expose IDs', () => {
+  const o = printFixture('multigrade');
+  o.class!.gradeGroups[0]!.grade = '6';
+  assert.ok(renderPlanText(o).includes('Guro: Baitang 6'));
+  o.lang = 'en';
+  assert.ok(renderPlanText(o).includes('Teacher: Grade 6'));
+  o.sections.push({
+    ...o.sections[0]!,
+    id: 'unknown-section',
+    key: 'assessment',
+    content: { type: 'pergroup', groups: { 'private-unknown-id': [] } },
+  });
+  assert.ok(!renderPlanText(o).includes('private-unknown-id'));
+  assert.ok(!renderPlanHtml(o).includes('private-unknown-id'));
+});
