@@ -110,7 +110,7 @@ function ProcedureEditor({ content, onChange, readOnly, label }: Props<Of<'proce
       {steps.map((s, k) => (
         <div
           key={s.id}
-          className="rounded border border-hairline bg-cream/50 p-3 flex flex-col gap-2"
+          className="rounded border border-hairline bg-cream/50 p-4 flex flex-col gap-3"
         >
           <div className="flex items-center justify-between gap-2">
             <strong>{t('editor.step', { n: k + 1 })}</strong>
@@ -210,7 +210,7 @@ function WeekGridEditor({ content, onChange, readOnly, label }: Props<Of<'weekgr
         return (
           <div
             key={k}
-            className="rounded border border-hairline bg-cream/50 p-3 flex flex-col gap-2"
+            className="rounded border border-hairline bg-cream/50 p-4 flex flex-col gap-3"
           >
             <strong>{heading}</strong>
             {readOnly ? (
@@ -244,7 +244,7 @@ function PerGroupEditor({ content, onChange, readOnly, groups, label }: Props<Of
         return (
           <div
             key={gid}
-            className="rounded border border-hairline bg-cream/50 p-3 flex flex-col gap-2"
+            className="rounded border border-hairline bg-cream/50 p-4 flex flex-col gap-3"
           >
             <strong>{heading}</strong>
             {readOnly ? (
@@ -286,7 +286,7 @@ function MultigradeEditor({ content, onChange, readOnly, groups, label }: Props<
       {blocks.map((b, k) => (
         <div
           key={b.id}
-          className="rounded border border-hairline bg-cream/50 p-3 flex flex-col gap-3"
+          className="rounded border border-hairline bg-cream/50 p-4 flex flex-col gap-3"
         >
           <div className="flex items-center justify-between gap-2">
             <strong>{t('editor.block', { n: k + 1 })}</strong>

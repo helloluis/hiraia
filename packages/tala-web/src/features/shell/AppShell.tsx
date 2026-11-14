@@ -92,7 +92,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <NetworkBanner />
         <main
           id="main"
-          className="flex-1 w-full max-w-[64rem] mx-auto px-3 py-4 wide:px-8 pb-24 wide:pb-8"
+          className="flex-1 w-full max-w-[64rem] mx-auto px-4 py-5 wide:px-8 pb-24 wide:pb-8"
         >
           {children}
         </main>

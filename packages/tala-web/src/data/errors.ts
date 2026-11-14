@@ -38,7 +38,8 @@ const REASONS: Record<string, StringKey> = {
 
 /** The stable `details.reason` of an API error, if any. */
 export function errorReason(err: unknown): string | null {
-  if (err instanceof TalaApiError) return (err.details as { reason?: string } | undefined)?.reason ?? null;
+  if (err instanceof TalaApiError)
+    return (err.details as { reason?: string } | undefined)?.reason ?? null;
   return null;
 }
 

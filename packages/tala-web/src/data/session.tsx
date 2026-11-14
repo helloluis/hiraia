@@ -3,9 +3,25 @@
  * Session: the signed-in user, the per-account sync engine on IndexedDB, the background sync loop and the
  * degradation rung. Saved data first (RES-1): a cached user and local records render before any network call.
  */
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
 import { createSyncEngine } from '@hiraia/tala-core/sync';
-import { TalaApiError, type ClientConfig, type Lang, type SyncEngine, type SyncStatus, type User } from '@hiraia/tala-core/contracts';
+import {
+  TalaApiError,
+  type ClientConfig,
+  type Lang,
+  type SyncEngine,
+  type SyncStatus,
+  type User,
+} from '@hiraia/tala-core/contracts';
 import { createIdbCache, createMemoryCache, type KvCache } from './cache';
 import { getClient } from './client';
 import { createIdbStore, deleteDatabase } from './idb-store';
@@ -62,17 +78,39 @@ function dbName(userId: string) {
   return `tala-${userId}`;
 }
 
-export function SessionProvider({ children, cacheImpl }: { children: ReactNode; cacheImpl?: KvCache }) {
+export function SessionProvider({
+  children,
+  cacheImpl,
+}: {
+  children: ReactNode;
+  cacheImpl?: KvCache;
+}) {
   // Server render has no IndexedDB; nothing reads the cache there (effects do not run), so a throwaway memory cache is fine.
-  const cache = useMemo(() => cacheImpl ?? (typeof indexedDB === 'undefined' ? createMemoryCache() : createIdbCache()), [cacheImpl]);
+  const cache = useMemo(
+    () => cacheImpl ?? (typeof indexedDB === 'undefined' ? createMemoryCache() : createIdbCache()),
+    [cacheImpl]
+  );
   const client = getClient();
   const [status, setStatus] = useState<SessionStatus>('loading');
   const [user, setUser] = useState<User | null>(null);
   const [engine, setEngine] = useState<SyncEngine | null>(null);
   const [config, setConfig] = useState<ClientConfig | null>(null);
-  const [sync, setSync] = useState<SyncStatus>({ state: 'idle', pending: 0, conflicts: 0, lastSyncedAt: null });
+  const [sync, setSync] = useState<SyncStatus>({
+    state: 'idle',
+    pending: 0,
+    conflicts: 0,
+    lastSyncedAt: null,
+  });
   // First client render must match the server (no banner); the real rung arrives in an effect.
-  const [network, setNetwork] = useState<NetworkState>({ rung: 'full', online: true, slow: false, dataSaver: false, serverTrouble: false, readOnlyReason: null, bytesThisWeek: 0 });
+  const [network, setNetwork] = useState<NetworkState>({
+    rung: 'full',
+    online: true,
+    slow: false,
+    dataSaver: false,
+    serverTrouble: false,
+    readOnlyReason: null,
+    bytesThisWeek: 0,
+  });
   const [sessionLapsed, setSessionLapsed] = useState(false);
   const [mergedAway, setMergedAway] = useState(false);
   const engineRef = useRef<SyncEngine | null>(null);
@@ -84,15 +122,24 @@ export function SessionProvider({ children, cacheImpl }: { children: ReactNode; 
     return networkMonitor.subscribe(setNetwork);
   }, []);
 
-  const attach = useCallback((u: User) => {
-    const store = createIdbStore({ name: dbName(u.id) });
-    const eng = createSyncEngine({ store, transport: client.syncTransport, deviceId: deviceId(), now: () => new Date(), newId });
-    engineRef.current = eng;
-    setEngine(eng);
-    setUser(u);
-    setStatus('signedIn');
-    return eng;
-  }, [client]);
+  const attach = useCallback(
+    (u: User) => {
+      const store = createIdbStore({ name: dbName(u.id) });
+      const eng = createSyncEngine({
+        store,
+        transport: client.syncTransport,
+        deviceId: deviceId(),
+        now: () => new Date(),
+        newId,
+      });
+      engineRef.current = eng;
+      setEngine(eng);
+      setUser(u);
+      setStatus('signedIn');
+      return eng;
+    },
+    [client]
+  );
 
   const refreshStatus = useCallback(async () => {
     const eng = engineRef.current;
@@ -105,7 +152,7 @@ export function SessionProvider({ children, cacheImpl }: { children: ReactNode; 
     if (!eng) return;
     if (timer.current) clearTimeout(timer.current);
     timer.current = null;
-    setSync(s => ({ ...s, state: 'syncing' }));
+    setSync((s) => ({ ...s, state: 'syncing' }));
     const weeksBack = config?.offline.windowWeeksBack ?? 4;
     const weeksAhead = config?.offline.windowWeeksAhead ?? 8;
     const today = new Date();
@@ -126,7 +173,9 @@ export function SessionProvider({ children, cacheImpl }: { children: ReactNode; 
     }
     await refreshStatus();
     // Next attempt: idle interval when healthy, exponential backoff (capped at 60 s) after trouble (RES-4).
-    const delay = report.ok ? IDLE_SYNC_MS : Math.min(60_000, 1000 * 2 ** failures.current) * (0.5 + Math.random() / 2);
+    const delay = report.ok
+      ? IDLE_SYNC_MS
+      : Math.min(60_000, 1000 * 2 ** failures.current) * (0.5 + Math.random() / 2);
     timer.current = setTimeout(() => void runSync(), delay);
   }, [config, refreshStatus, sessionLapsed]);
 
@@ -142,7 +191,7 @@ export function SessionProvider({ children, cacheImpl }: { children: ReactNode; 
       else setStatus('signedOut');
       client
         .call('config.get')
-        .then(c => {
+        .then((c) => {
           if (cancelled) return;
           setConfig(c);
           void cache.set(CONFIG_KEY, c);
@@ -151,7 +200,7 @@ export function SessionProvider({ children, cacheImpl }: { children: ReactNode; 
       if (cached) {
         client
           .call('auth.me')
-          .then(r => {
+          .then((r) => {
             if (cancelled) return;
             setUser(r.user);
             void cache.set(USER_KEY, r.user);
@@ -160,7 +209,8 @@ export function SessionProvider({ children, cacheImpl }: { children: ReactNode; 
             if (cancelled) return;
             if (err instanceof TalaApiError && err.code === 'unauthenticated') {
               setSessionLapsed(true);
-              if ((err.details as { reason?: string } | undefined)?.reason === 'account_merged') setMergedAway(true);
+              if ((err.details as { reason?: string } | undefined)?.reason === 'account_merged')
+                setMergedAway(true);
               networkMonitor.setReadOnly('session_lapsed');
             }
           });
@@ -193,22 +243,25 @@ export function SessionProvider({ children, cacheImpl }: { children: ReactNode; 
   const finishAuth = useCallback(
     async (u: User) => {
       const previous = await cache.get<User>(USER_KEY);
-      if (previous && previous.id !== u.id) await deleteDatabase(dbName(previous.id)).catch(() => {});
+      if (previous && previous.id !== u.id)
+        await deleteDatabase(dbName(previous.id)).catch(() => {});
       await cache.set(USER_KEY, u);
       setSessionLapsed(false);
       setMergedAway(false);
       networkMonitor.setReadOnly(null);
       attach(u);
     },
-    [attach, cache],
+    [attach, cache]
   );
 
   const signIn = useCallback(
     async (email: string, password: string) => {
-      const r = await client.call('auth.login', { body: { email, password, deviceLabel: deviceLabel() } });
+      const r = await client.call('auth.login', {
+        body: { email, password, deviceLabel: deviceLabel() },
+      });
       await finishAuth(r.user);
     },
-    [client, finishAuth],
+    [client, finishAuth]
   );
 
   const signInWithGoogle = useCallback(
@@ -216,23 +269,27 @@ export function SessionProvider({ children, cacheImpl }: { children: ReactNode; 
       const r = await client.call('auth.google', { body: { idToken, deviceLabel: deviceLabel() } });
       await finishAuth(r.user);
     },
-    [client, finishAuth],
+    [client, finishAuth]
   );
 
   const googleLink = useCallback(
     async (idToken: string, password: string) => {
-      const r = await client.call('auth.googleLink', { body: { idToken, password, deviceLabel: deviceLabel() } });
+      const r = await client.call('auth.googleLink', {
+        body: { idToken, password, deviceLabel: deviceLabel() },
+      });
       await finishAuth(r.user);
     },
-    [client, finishAuth],
+    [client, finishAuth]
   );
 
   const register = useCallback(
     async (email: string, password: string, displayName: string, uiLanguage: Lang) => {
-      const r = await client.call('auth.register', { body: { email, password, displayName, uiLanguage, deviceLabel: deviceLabel() } });
+      const r = await client.call('auth.register', {
+        body: { email, password, displayName, uiLanguage, deviceLabel: deviceLabel() },
+      });
       await finishAuth(r.user);
     },
-    [client, finishAuth],
+    [client, finishAuth]
   );
 
   const signOut = useCallback(async () => {
@@ -270,7 +327,8 @@ export function SessionProvider({ children, cacheImpl }: { children: ReactNode; 
     } catch (err) {
       if (err instanceof TalaApiError && err.code === 'unauthenticated') {
         setSessionLapsed(true);
-        if ((err.details as { reason?: string } | undefined)?.reason === 'account_merged') setMergedAway(true);
+        if ((err.details as { reason?: string } | undefined)?.reason === 'account_merged')
+          setMergedAway(true);
         networkMonitor.setReadOnly('session_lapsed');
       }
       return null;
@@ -284,8 +342,44 @@ export function SessionProvider({ children, cacheImpl }: { children: ReactNode; 
   const setDataSaver = useCallback((on: boolean) => networkMonitor.setDataSaver(on), []);
 
   const value = useMemo<SessionValue>(
-    () => ({ status, user, engine, cache, config, sync, network, sessionLapsed, mergedAway, signIn, signInWithGoogle, googleLink, register, signOut, refreshUser, syncNow, setDataSaver }),
-    [status, user, engine, cache, config, sync, network, sessionLapsed, mergedAway, signIn, signInWithGoogle, googleLink, register, signOut, refreshUser, syncNow, setDataSaver],
+    () => ({
+      status,
+      user,
+      engine,
+      cache,
+      config,
+      sync,
+      network,
+      sessionLapsed,
+      mergedAway,
+      signIn,
+      signInWithGoogle,
+      googleLink,
+      register,
+      signOut,
+      refreshUser,
+      syncNow,
+      setDataSaver,
+    }),
+    [
+      status,
+      user,
+      engine,
+      cache,
+      config,
+      sync,
+      network,
+      sessionLapsed,
+      mergedAway,
+      signIn,
+      signInWithGoogle,
+      googleLink,
+      register,
+      signOut,
+      refreshUser,
+      syncNow,
+      setDataSaver,
+    ]
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
@@ -293,8 +387,26 @@ export function SessionProvider({ children, cacheImpl }: { children: ReactNode; 
 function deviceLabel(): string {
   if (typeof navigator === 'undefined') return 'Web';
   const ua = navigator.userAgent;
-  const os = /Android/i.test(ua) ? 'Android' : /iPhone|iPad/i.test(ua) ? 'iOS' : /Windows/i.test(ua) ? 'Windows' : /Mac/i.test(ua) ? 'Mac' : /CrOS/i.test(ua) ? 'ChromeOS' : 'Web';
-  const browser = /Edg\//.test(ua) ? 'Edge' : /Firefox\//.test(ua) ? 'Firefox' : /Chrome\//.test(ua) ? 'Chrome' : /Safari\//.test(ua) ? 'Safari' : 'Browser';
+  const os = /Android/i.test(ua)
+    ? 'Android'
+    : /iPhone|iPad/i.test(ua)
+      ? 'iOS'
+      : /Windows/i.test(ua)
+        ? 'Windows'
+        : /Mac/i.test(ua)
+          ? 'Mac'
+          : /CrOS/i.test(ua)
+            ? 'ChromeOS'
+            : 'Web';
+  const browser = /Edg\//.test(ua)
+    ? 'Edge'
+    : /Firefox\//.test(ua)
+      ? 'Firefox'
+      : /Chrome\//.test(ua)
+        ? 'Chrome'
+        : /Safari\//.test(ua)
+          ? 'Safari'
+          : 'Browser';
   return `${browser} on ${os}`.slice(0, 80);
 }
 

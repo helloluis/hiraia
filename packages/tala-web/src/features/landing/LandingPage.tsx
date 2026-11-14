@@ -14,11 +14,12 @@ import { Feature, PublicShell } from './PublicShell';
 const FEATURES = ['pacing', 'ai', 'roster', 'edit', 'offline', 'community'] as const;
 const PROMISES = ['free', 'offline', 'simple', 'check'] as const;
 export const SCREENS: Screen[] = [
-  { name: 'week-phone', w: 640, h: 1316, captionKey: 'landing.c.week', kind: 'phone' },
-  { name: 'editor-phone', w: 640, h: 1316, captionKey: 'landing.c.editor', kind: 'phone' },
-  { name: 'draft-phone', w: 640, h: 1316, captionKey: 'landing.c.draft', kind: 'phone' },
-  { name: 'roster-phone', w: 640, h: 1316, captionKey: 'landing.c.roster', kind: 'phone' },
-  { name: 'print-phone', w: 640, h: 1316, captionKey: 'landing.c.print', kind: 'phone' },
+  { name: 'week-phone', w: 786, h: 1704, captionKey: 'landing.c.week', kind: 'phone' },
+  { name: 'editor-phone', w: 786, h: 1704, captionKey: 'landing.c.editor', kind: 'phone' },
+  { name: 'draft-phone', w: 786, h: 1704, captionKey: 'landing.c.draft', kind: 'phone' },
+  { name: 'roster-phone', w: 786, h: 1704, captionKey: 'landing.c.roster', kind: 'phone' },
+  { name: 'print-phone', w: 786, h: 1704, captionKey: 'landing.c.print', kind: 'phone' },
+  { name: 'community-phone', w: 786, h: 1704, captionKey: 'landing.c.community', kind: 'phone' },
   { name: 'week-desktop', w: 1200, h: 750, captionKey: 'landing.c.desktop', kind: 'desktop' },
 ];
 
@@ -30,7 +31,7 @@ export function LandingPage() {
     <PublicShell overlayHeader>
       {/* HERO — the photograph is the hero, as on hiraia.org: full width, near full viewport, card laid over it. */}
       <section
-        className="relative min-h-[100svh] flex items-end wide:items-center overflow-hidden bg-forest"
+        className="relative h-[80svh] min-h-[520px] flex items-end wide:items-center overflow-hidden bg-forest"
         aria-label="Tala"
       >
         <picture className="absolute inset-0" aria-hidden="true">
@@ -59,7 +60,7 @@ export function LandingPage() {
             height={883}
             fetchPriority="high"
             decoding="async"
-            className="h-full w-full object-cover object-[45%_30%] wide:object-[40%_center]"
+            className="h-full w-full object-cover object-[45%_25%] wide:object-[42%_35%]"
           />
         </picture>
         {/* soft fade so the card and the page below read cleanly on phones */}
@@ -67,7 +68,7 @@ export function LandingPage() {
           className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-forest/70 to-transparent wide:hidden"
           aria-hidden="true"
         />
-        <div className="relative z-10 w-full px-4 pb-6 pt-[52svh] wide:pt-0 wide:pb-0 wide:px-8 wide:flex wide:justify-end">
+        <div className="relative z-10 w-full px-4 pb-10 wide:pb-0 wide:px-8 wide:flex wide:justify-end">
           <div className="mx-auto wide:mx-0 w-full max-w-[26rem] rounded-[1.125rem] border-[3px] border-forest bg-cream p-5 shadow-[0_8px_0_rgba(28,59,46,0.55)] flex flex-col gap-4">
             <h1 className="font-display text-[2rem] leading-[1.1] wide:text-[2.5rem] break-words [overflow-wrap:anywhere] text-balance">
               {t('landing.h1')}
@@ -97,10 +98,19 @@ export function LandingPage() {
             </div>
           </div>
         </div>
+        <a
+          href="#screens"
+          aria-label={t('landing.scrollCue')}
+          className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full bg-cream/90 text-forest shadow-[0_2px_8px_rgba(28,59,46,0.25)]"
+        >
+          <span aria-hidden="true" className="text-[1.25rem] leading-none">
+            ⌄
+          </span>
+        </a>
       </section>
 
       {/* SCREENS */}
-      <section className="px-4 py-12 wide:px-8 wide:py-16">
+      <section id="screens" className="px-4 py-12 wide:px-8 wide:py-16 scroll-mt-4">
         <div className="mx-auto max-w-6xl flex flex-col gap-6">
           <h2 className="font-display text-[1.75rem] leading-tight wide:text-[2.25rem] break-words [overflow-wrap:anywhere]">
             {t('landing.todayTitle')}

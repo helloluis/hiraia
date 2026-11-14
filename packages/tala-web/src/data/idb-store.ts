@@ -4,7 +4,13 @@
  * `commit` writes all three in ONE readwrite transaction, so a batch (records + outbox + meta such as the
  * `sync.mutation.*` payloads the engine relies on) is durable atomically or not at all (OFF-4, README of src/sync).
  */
-import type { EntityName, Id, LocalRecord, LocalStore, OutboxItem } from '@hiraia/tala-core/contracts';
+import type {
+  EntityName,
+  Id,
+  LocalRecord,
+  LocalStore,
+  OutboxItem,
+} from '@hiraia/tala-core/contracts';
 
 const VERSION = 1;
 const RECORDS = 'records';
@@ -35,7 +41,8 @@ export function openDatabase(name: string, factory: IDBFactory = indexedDB): Pro
         const s = db.createObjectStore(RECORDS, { keyPath: ['entity', 'id'] });
         s.createIndex('entity', 'entity', { unique: false });
       }
-      if (!db.objectStoreNames.contains(OUTBOX)) db.createObjectStore(OUTBOX, { keyPath: 'mutationId' });
+      if (!db.objectStoreNames.contains(OUTBOX))
+        db.createObjectStore(OUTBOX, { keyPath: 'mutationId' });
       if (!db.objectStoreNames.contains(META)) db.createObjectStore(META);
     };
     r.onsuccess = () => resolve(r.result);
@@ -63,8 +70,10 @@ export function createIdbStore(opts: IdbStoreOptions = {}): LocalStore {
     },
     async list(entity: EntityName, o?: { includeDeleted?: boolean }) {
       const tx = (await db()).transaction(RECORDS, 'readonly');
-      const all = (await req(tx.objectStore(RECORDS).index('entity').getAll(entity))) as LocalRecord[];
-      return o?.includeDeleted ? all : all.filter(r => !r.deletedAt);
+      const all = (await req(
+        tx.objectStore(RECORDS).index('entity').getAll(entity)
+      )) as LocalRecord[];
+      return o?.includeDeleted ? all : all.filter((r) => !r.deletedAt);
     },
     async commit(batch) {
       const tx = (await db()).transaction([RECORDS, OUTBOX, META], 'readwrite');

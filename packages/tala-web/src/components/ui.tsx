@@ -348,7 +348,7 @@ export function ListRow({
     </>
   );
   const cls = cx(
-    'flex w-full items-center gap-3 min-h-touch px-3 py-2 text-left bg-white border-b border-hairline last:border-b-0',
+    'flex w-full items-center gap-3 min-h-touch px-4 py-3 text-left bg-white border-b border-hairline last:border-b-0',
     (href || onClick) && 'hover:bg-cream',
     current && 'border-l-4 border-l-talaTeal'
   );

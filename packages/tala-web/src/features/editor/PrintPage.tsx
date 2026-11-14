@@ -16,7 +16,7 @@ export function PrintPage({ planId }: { planId: string }) {
     if (!ed.plan || !ed.template) return null;
     const year =
       ed.ws.years.find((y) => y.id === ed.cls?.schoolYearId) ?? ed.ws.activeYear ?? undefined;
-    return renderPlanHtml({
+    const html = renderPlanHtml({
       plan: ed.plan,
       sections: ed.sections.map((s) => s.data),
       template: ed.template,
@@ -27,6 +27,11 @@ export function PrintPage({ planId }: { planId: string }) {
       lang,
       competencies: ed.competencies,
     });
+    // On screen (not print) give the page the same 16 px gutters as the app; print CSS keeps its own margins.
+    return html.replace(
+      '</head>',
+      '<style>@media screen{body{padding:16px 16px 32px}}</style></head>'
+    );
   }, [ed.plan, ed.template, ed.sections, ed.cls, ed.ws, paper, lang, ed.competencies]);
   if (!html) return <Placeholder rows={6} />;
   return (

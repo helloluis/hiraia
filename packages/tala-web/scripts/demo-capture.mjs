@@ -25,11 +25,15 @@ async function capture(name, viewport, scale, go) {
   await page.addStyleTag({ content: 'nextjs-portal{display:none!important}' });
   const png = path.join(outDir, `${name}.png`);
   await page.screenshot({ path: png, fullPage: false });
+  // Phone frames show at ≤ 300 CSS px, desktop ones at ≤ 640: 786 / 1200 px wide is plenty on a weak connection.
+  const width = viewport.width <= 500 ? 786 : 1200;
   await sharp(png)
-    .webp({ quality: 78 })
+    .resize({ width })
+    .webp({ quality: 70 })
     .toFile(path.join(outDir, `${name}.webp`));
   await sharp(png)
-    .jpeg({ quality: 78, mozjpeg: true })
+    .resize({ width })
+    .jpeg({ quality: 72, mozjpeg: true })
     .toFile(path.join(outDir, `${name}.jpg`));
   fs.unlinkSync(png);
   const m = await sharp(path.join(outDir, `${name}.webp`)).metadata();
@@ -42,7 +46,7 @@ async function capture(name, viewport, scale, go) {
   });
   await ctx.close();
 }
-const phone = { width: 360, height: 740 };
+const phone = { width: 393, height: 852 }; // 393 px phone proportions, captured at 2×
 await capture('week-phone', phone, 2, async (page) => {
   await page.goto(base + '/week');
   await page.waitForTimeout(3000);
@@ -102,6 +106,10 @@ await capture('roster-phone', phone, 2, async (page) => {
 });
 await capture('print-phone', phone, 2, async (page) => {
   await page.goto(base + `/lessons/${lockedPlanId}/print?paper=a4`);
+  await page.waitForTimeout(3000);
+});
+await capture('community-phone', phone, 2, async (page) => {
+  await page.goto(base + '/community');
   await page.waitForTimeout(3000);
 });
 await capture('week-desktop', { width: 1280, height: 800 }, 1, async (page) => {
