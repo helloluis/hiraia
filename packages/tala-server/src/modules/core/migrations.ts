@@ -192,4 +192,13 @@ export const coreMigrations: Migration[] = [
       ALTER TABLE core_email_tokens ADD COLUMN payload TEXT;
     `,
   },
+  {
+    id: 'core:006_email_verified_how',
+    sql: `
+      -- HOW an email came to count as confirmed: 'link', 'reset', 'google', or 'auto' (the stop-gap that
+      -- confirms at sign-up while the server cannot send mail). Accounts marked 'auto' never proved the
+      -- address; this column is what lets them be asked to, once mail works.
+      ALTER TABLE core_users ADD COLUMN email_verified_how TEXT;
+    `,
+  },
 ];

@@ -21,6 +21,7 @@ import { createRecordEngine } from './records';
 import type { RecordEngine } from './records';
 import { createRevisions } from './revisions';
 import type { Revisions } from './revisions';
+import { serverVersion } from './version';
 import type { Mailer, RateLimiter } from '../../kernel/types';
 
 export interface CoreOptions {
@@ -33,6 +34,35 @@ export interface CoreOptions {
    * `fetchKeys` defaults to Google's published keys. Tests pass their own of both.
    */
   google?: { clientIds?: string[]; fetchKeys?: GoogleKeyFetcher };
+  /**
+   * STOP-GAP until a mail provider is chosen (default: TALA_AUTH_AUTO_VERIFY). With no mail transport, new
+   * accounts count as email-confirmed at sign-up and nothing is ever mailed. Ignored when a transport exists.
+   */
+  autoVerifyEmail?: boolean;
+  /** Label of the running build for `system.health` (default: TALA_BUILD_ID). */
+  buildId?: string;
+}
+
+/**
+ * What happens to mail on this server:
+ *  - 'transport'   a real transport delivers it;
+ *  - 'outbox'      local and staging: written to the dev outbox table for the developer to read;
+ *  - 'unavailable' production with no transport: sending fails closed (nothing is stored);
+ *  - 'off'         the auto-verify stop-gap: nothing is sent and nothing fails; sign-up confirms the email.
+ */
+export type MailMode = 'transport' | 'outbox' | 'unavailable' | 'off';
+
+function envFlag(name: string): boolean {
+  return ['1', 'true', 'yes', 'on'].includes((process.env[name] ?? '').trim().toLowerCase());
+}
+
+export function mailModeFor(
+  environment: BaseDeps['config']['environment'],
+  options: CoreOptions
+): MailMode {
+  if (options.mailTransport) return 'transport';
+  if (options.autoVerifyEmail ?? envFlag('TALA_AUTH_AUTO_VERIFY')) return 'off';
+  return environment === 'production' ? 'unavailable' : 'outbox';
 }
 
 export interface CoreState {
@@ -41,6 +71,9 @@ export interface CoreState {
   throttle: LoginThrottle;
   limiter: RateLimiter & { prune(): void };
   mailer: Mailer;
+  mailMode: MailMode;
+  /** Reported by `system.health`. */
+  version: string;
   /** Client ids a Google ID token may be issued for. Empty = Google sign-in is not configured. */
   googleClientIds: string[];
   google: GoogleVerifier;
@@ -56,8 +89,11 @@ export function initCoreState(base: BaseDeps, options: CoreOptions): CoreState {
   const accounts = createAccounts(base.db, base.config, base.now, base.newId);
   const revisions = createRevisions(base.db, base.now);
   const googleClientIds = options.google?.clientIds ?? googleClientIdsFromEnv();
+  const mailMode = mailModeFor(base.config.environment, options);
   const state: CoreState = {
     accounts,
+    mailMode,
+    version: serverVersion(options.buildId ?? process.env.TALA_BUILD_ID),
     googleClientIds,
     google: createGoogleVerifier({
       clientIds: googleClientIds,
@@ -84,6 +120,7 @@ export function initCoreState(base: BaseDeps, options: CoreOptions): CoreState {
       newId: base.newId,
       log: base.log,
       transport: options.mailTransport,
+      mode: mailMode,
     }),
   };
   STATES.set(base.db, state);

@@ -176,7 +176,7 @@ export const googleSignIn: Handler<'auth.google'> = async (ctx, { body }) => {
           displayName,
           uiLanguage: 'fil',
           passwordHash: null,
-          emailVerified: true,
+          verified: 'google',
         });
         if (!row) return null;
         if (!accounts.attachIdentity(row.id, GOOGLE, identity.subject, identity.email))
@@ -231,6 +231,8 @@ export const googleLinkRequest: Handler<'auth.googleLinkRequest'> = async (ctx, 
   requireGoogle(ctx);
   limitByAddress(ctx, 'google-link-request', 20, HOUR);
   const identity = await verifiedIdentity(ctx, body.idToken);
+  // No way to send mail: the same answer as always, and nothing is issued or sent.
+  if (coreState(ctx).mailMode === 'off') return { ok: true as const };
   effectsOf(ctx).after.push(async () => {
     const { accounts, mailer } = coreState(ctx);
     const account = accounts.userByEmail(identity.email);
