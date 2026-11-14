@@ -8,7 +8,9 @@
     "type-check": "tsc --noEmit",
     "test": "tsx --test \"src/**/*.test.ts\"",
     "export": "expo export --platform android --max-workers 1 && node scripts/check-budget.mjs",
-    "budget": "node scripts/check-budget.mjs"
+    "budget": "node scripts/check-budget.mjs",
+    "android": "expo run:android",
+    "ios": "expo run:ios"
   },
   "dependencies": {
     "@hiraia/tala-core": "workspace:*",
@@ -25,7 +27,9 @@
     "expo-task-manager": "~14.0.9",
     "react": "19.1.0",
     "react-native": "0.81.5",
-    "expo-document-picker": "~14.0.8"
+    "expo-document-picker": "~14.0.8",
+    "expo-device": "~8.0.0",
+    "expo-constants": "~18.0.0"
   },
   "devDependencies": {
     "@types/react": "~19.1.0",
@@ -33,5 +37,12 @@
     "typescript": "^5.8.3",
     "tsx": "^4.19.2",
     "zod": "^3.24.1"
+  },
+  "expo": {
+    "autolinking": {
+      "exclude": [
+        "tala-activity"
+      ]
+    }
   }
 }

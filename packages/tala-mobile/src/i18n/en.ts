@@ -1,5 +1,26 @@
 import { wave2en } from './wave2.en';
 export const en = {
+  aboutDiagnostics: 'About / diagnostics',
+  diagnosticVersion: 'Version',
+  diagnosticBuild: 'Build date',
+  diagnosticId: 'Application ID',
+  diagnosticServer: 'Server',
+  diagnosticDatabase: 'Encrypted database',
+  diagnosticKey: '256-bit key in Android SecureStore',
+  diagnosticUnknown: 'Not available',
+  diagnosticFonts: 'Fonts loaded',
+  diagnosticFontMissing: 'Title font not loaded',
+  diagnosticSystemFont: 'Android system body font',
+  diagnosticRam: 'Device RAM',
+  diagnosticAndroid: 'Android version',
+  diagnosticStartup: 'Cold-start to ready',
+  diagnosticNativeStart: 'RN native start marker',
+  diagnosticJsStart: 'JS entry; native marker unavailable',
+  diagnosticBundle: 'Hermes JS bundle',
+  diagnosticExport: 'measured Android export',
+  diagnosticStartupNote:
+    'Measured for this process, through encrypted storage and font readiness. Force-stop and reopen for a cold sample. This is not a reference-phone performance certification.',
+
   ...wave2en,
   emailTaken: 'This email already has an account. Sign in instead.',
   invalidCredentials: 'Check your email and password, then try again.',
