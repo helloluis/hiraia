@@ -1,0 +1,388 @@
+{
+  "input": {
+    "kind": "full",
+    "templateId": "tpl.multigrade.v1",
+    "language": "en",
+    "subjectName": "Science",
+    "learningAreaId": "science",
+    "timeBudgetMinutes": 50,
+    "sessions": 1,
+    "gradeGroups": [
+      {
+        "id": "group-002",
+        "grade": "2",
+        "learnerCount": 10
+      },
+      {
+        "id": "group-004",
+        "grade": "4",
+        "learnerCount": 10
+      }
+    ],
+    "competencies": {
+      "group-002": ["C2"],
+      "group-004": ["C4"]
+    },
+    "curriculumVersion": "eval.v1",
+    "customObjectives": [],
+    "classProfile": {
+      "materials": ["paper", "pencils"],
+      "textbooks": [],
+      "electricity": true,
+      "projector": null,
+      "printing": false,
+      "outdoorSpace": null,
+      "notes": ""
+    },
+    "guidance": ""
+  },
+  "plan": {
+    "title": "Plants All Around Us: One-Room Multigrade Science (Grades 2 and 4)",
+    "sections": [
+      {
+        "key": "objectives",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants by naming and pointing to their observable parts."
+                  }
+                ]
+              }
+            ],
+            "group-004": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants by explaining the parts and how each part helps the plant."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 3,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "materials",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ],
+            "group-004": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 3,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "multigrade",
+        "content": {
+          "type": "multigrade",
+          "blocks": [
+            {
+              "id": "9d3bf728-e523-4884-9a60-305cacba2d72",
+              "label": "Shared Opening",
+              "minutes": 5,
+              "transitionMinutes": 0,
+              "teacherWith": "all",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-002": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Look at a plant drawing on the board and name one part you see."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-004": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Look at the same drawing and say one way that part may help the plant."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "3ce59e18-735f-4ac9-b8fb-4b7f0481f7bd",
+              "label": "Direct Teaching: Grade 2",
+              "minutes": 20,
+              "transitionMinutes": 1,
+              "teacherWith": "group-002",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-002": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "With the teacher, point to and name each plant part on a simple drawing; then draw your own plant and label its parts with help."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-004": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Work unaided: on one paper, draw a plant and write two sentences describing its parts and what each part does; you may whisper-share with a partner only if you choose."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "34850eb6-e033-4b97-9196-609c558c3c29",
+              "label": "Direct Teaching: Grade 4",
+              "minutes": 20,
+              "transitionMinutes": 1,
+              "teacherWith": "group-004",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-002": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Work unaided: draw a plant on paper and label the parts you learned; then write one describing sentence about your plant."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-004": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "With the teacher, explain each plant part and its job, then write a short description of your plant using the parts and their functions."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "b41ed064-df46-464a-a366-dbad96ff73b8",
+              "label": "Shared Closing",
+              "minutes": 5,
+              "transitionMinutes": 0,
+              "teacherWith": "all",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-002": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Show your drawing and say one describing sentence about your plant."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-004": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Show your drawing and read the sentence that explains how one part helps the plant."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 3,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "assessment",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ask the learner to point to and name three plant parts on their drawing to check the describing objective."
+                  }
+                ]
+              }
+            ],
+            "group-004": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ask the learner to explain what two plant parts do and check their written description sentence."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 3,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "reflection",
+        "content": {
+          "type": "text",
+          "blocks": [
+            {
+              "t": "p",
+              "spans": [
+                {
+                  "text": "Teacher review is required before use: check that the activities truly match the listed objectives and that the plant facts are accurate, since alignment was not verified. After teaching, note which grade needed more direct time and which materials to prepare next session."
+                }
+              ]
+            }
+          ]
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 3,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      }
+    ],
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "warnings": []
+  },
+  "review": "Teacher quality review pending; structural checks do not establish scientific or pedagogical quality."
+}

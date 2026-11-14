@@ -1,0 +1,549 @@
+{
+  "input": {
+    "kind": "full",
+    "templateId": "tpl.multigrade.v1",
+    "language": "fil",
+    "subjectName": "Science",
+    "learningAreaId": "science",
+    "timeBudgetMinutes": 50,
+    "sessions": 1,
+    "gradeGroups": [
+      {
+        "id": "group-001",
+        "grade": "1",
+        "learnerCount": 10
+      },
+      {
+        "id": "group-002",
+        "grade": "2",
+        "learnerCount": 10
+      },
+      {
+        "id": "group-003",
+        "grade": "3",
+        "learnerCount": 10
+      }
+    ],
+    "competencies": {
+      "group-001": ["C1"],
+      "group-002": ["C2"],
+      "group-003": ["C3"]
+    },
+    "curriculumVersion": "eval.v1",
+    "customObjectives": [],
+    "classProfile": {
+      "materials": ["paper", "pencils"],
+      "textbooks": [],
+      "electricity": true,
+      "projector": null,
+      "printing": false,
+      "outdoorSpace": null,
+      "notes": ""
+    },
+    "guidance": ""
+  },
+  "plan": {
+    "title": "Pag-ilarawan ng mga Halaman",
+    "sections": [
+      {
+        "key": "objectives",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-001": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              }
+            ],
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              }
+            ],
+            "group-003": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 3,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "materials",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-001": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ],
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ],
+            "group-003": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 3,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "multigrade",
+        "content": {
+          "type": "multigrade",
+          "blocks": [
+            {
+              "id": "54430370-f0b1-477d-a117-03ce672c08bc",
+              "label": "Buksan",
+              "minutes": 5,
+              "transitionMinutes": 0,
+              "teacherWith": "all",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Magbigay ng isang halimbawa ng halaman."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Sabiin kung ano ang pangalan ng isang halaman at kung ano ang kulay nito."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Iguhit ang isang halaman at sabihin ang dalawang katangian nito, tulad ng hugis ng dahon o anyo ng stalk."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "a01230fd-33c8-48d1-8ec4-e8f87d0a99d8",
+              "label": "Turo sa Grade 1",
+              "minutes": 14,
+              "transitionMinutes": 1,
+              "teacherWith": "group-001",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Gumuhit ng isang halaman gamit ang papel at lapis. Iguhit ang ugat, tangkay, dahon, at bulaklak."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Punan ang chart na may mga larawan ng halaman na inilagay sa table. Isulat ang pangalan ng bawat isa."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Basahin ang isang maikling talata tungkol sa isang halaman at tukuyin ang mga bahagi nito."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "b2dc74c6-0730-4762-8480-cd089ac543a1",
+              "label": "Turo sa Grade 2",
+              "minutes": 13,
+              "transitionMinutes": 1,
+              "teacherWith": "group-002",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Iguhit ang isang halaman sa papel gamit ang lapis. I-highlight ang mga pangunahing bahagi."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Iguhit at ipaliwanag ang sariling halaman. Isulat ang pangalan at ilalarawan ang itsura at kulay."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Ipaliwanag sa kapwa ang kahalagahan ng mga bahagi ng halaman sa pagtubo."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "272dc790-200c-4085-ae5e-833c29fe01a3",
+              "label": "Turo sa Grade 3",
+              "minutes": 13,
+              "transitionMinutes": 1,
+              "teacherWith": "group-003",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Iguhit ang isang halaman at tukuyin ang tatlong bahagi nito."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Iguhit ang isang halaman at isulat ang pangalan ng bawat bahagi."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Sumulat ng isang paragrafo kung paano nakakatulong ang halaman sa kalikasan."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "189d61a1-d964-4791-9b5b-9a1f8d3552cc",
+              "label": "Tapusin",
+              "minutes": 5,
+              "transitionMinutes": 0,
+              "teacherWith": "all",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Sabihin ang pangalan ng isang halaman at iugnay ito sa isang bahagi nito."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Iulat ang isang halaman na inilagay sa papel at ipaliwanag ang kanyang mga bahagi."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Ipaliwanag kung paano ang mga halaman ay nagbabago habang lumalaki."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 3,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "assessment",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-001": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Tukuyin ang tatlong bahagi ng halaman sa kanilang guhit."
+                  }
+                ]
+              }
+            ],
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Iulat ang isang halaman at tukuyin ang lahat ng kanyang bahagi nang may wastong pangalan."
+                  }
+                ]
+              }
+            ],
+            "group-003": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Iulat ang isang halaman at ipaliwanag ang kahalagahan ng bawat bahagi sa buhay ng halaman."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 3,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "reflection",
+        "content": {
+          "type": "text",
+          "blocks": [
+            {
+              "t": "p",
+              "spans": [
+                {
+                  "text": "Suriin ang bawat gawain kung ang mga layunin ay napakahusay na natupad. Tiyakin na ang bawat mag-aaral ay nakapaglarawan ng isang halaman sa pamamagitan ng guhit at pagsasalita. Bawat grado ay may sapat na oras para magawa ang gawain nang may pangkalahatang pag-unawa."
+                }
+              ]
+            }
+          ]
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 3,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      }
+    ],
+    "provider": "qwen",
+    "model": "qwen-flash",
+    "warnings": []
+  },
+  "review": "Teacher quality review pending; structural checks do not establish scientific or pedagogical quality."
+}
