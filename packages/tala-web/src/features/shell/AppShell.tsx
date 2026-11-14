@@ -1,7 +1,7 @@
 'use client';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useEffect, type ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { useT } from '@/i18n';
 import { useSession } from '@/data/session';
 import { HiraiaGlyph, TalaWordmark } from '@/components/Brand';
@@ -28,6 +28,25 @@ export function AppShell({ children }: { children: ReactNode }) {
     if (status === 'signedOut') router.replace('/sign-in');
   }, [status, router]);
 
+  // The sticky Session Flow bar sits below the phone header: measure it, never hard-code it.
+  const headerRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const el = headerRef.current;
+    const apply = () =>
+      document.documentElement.style.setProperty(
+        '--header-h',
+        `${el && getComputedStyle(el).display !== 'none' ? el.getBoundingClientRect().height : 0}px`
+      );
+    apply();
+    if (!el || typeof ResizeObserver === 'undefined') return;
+    const ro = new ResizeObserver(apply);
+    ro.observe(el);
+    window.addEventListener('resize', apply);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', apply);
+    };
+  });
   const isPrint = pathname?.endsWith('/print');
   if (isPrint) return <>{children}</>;
 
@@ -69,7 +88,10 @@ export function AppShell({ children }: { children: ReactNode }) {
       </aside>
 
       <div className="flex-1 min-w-0 flex flex-col">
-        <header className="no-print wide:hidden flex items-center justify-between gap-2 px-3 py-2 bg-white border-b border-hairline sticky top-0 z-30">
+        <header
+          ref={headerRef}
+          className="no-print wide:hidden flex items-center justify-between gap-2 px-3 py-2 bg-white border-b border-hairline sticky top-0 z-30"
+        >
           <Link href="/week" className="flex items-center gap-2 min-h-touch">
             <HiraiaGlyph size={24} />
             <TalaWordmark height={20} />

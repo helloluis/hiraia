@@ -7,6 +7,7 @@ import { formatDate, formatLongDate, useT } from '@/i18n';
 import { addDays, isoDate, mondayOf, monthEnd, monthStart } from '@/data/ids';
 import { useSession } from '@/data/session';
 import { groupByDate, useTimeline } from '@/data/timeline';
+import { topicLabel } from '@/data/topics';
 import { pendingDisruptionIds } from '@/data/realign';
 import {
   Badge,
@@ -272,7 +273,7 @@ function SessionRow({
   tl: ReturnType<typeof useTimeline>;
   onMark: () => void;
 }) {
-  const { t } = useT();
+  const { t, lang } = useT();
   const cls = tl.ws.classes.find((c) => c.id === entry.classId);
   const groups = Object.keys(entry.byGroup);
   const multi = groups.length > 1;
@@ -280,8 +281,9 @@ function SessionRow({
     const grade = cls?.gradeGroups.find((g) => g.id === gid)?.grade;
     const first = entry.byGroup[gid]?.[0];
     const comp = first ? tl.competencyById.get(first) : null;
-    const text = comp ? (comp.code ? `${comp.code} · ` : '') + comp.text : '';
-    return { grade, text };
+    const tl2 = comp ? topicLabel(comp, lang) : null;
+    const text = tl2 ? tl2.text : '';
+    return { grade, text, heading: tl2?.heading ?? '' };
   });
   const assignment = tl.ws.assignments.find((a) => a.id === entry.assignmentId);
   const slot = assignment?.slots.find((s) => s.id === entry.slotId);
@@ -359,6 +361,8 @@ function SessionRow({
               {multi && tp.grade ? (
                 <strong className="text-forest">{t('common.grade', { g: tp.grade })}: </strong>
               ) : null}
+              {tp.heading ? <span className="text-forest font-medium">{tp.heading}</span> : null}
+              {tp.heading ? <br /> : null}
               {tp.text || (entry.kind === 'lesson' ? t('editor.noCompetency') : '')}
             </p>
           ))

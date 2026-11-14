@@ -22,6 +22,7 @@ import {
   switchTemplate,
 } from '@/data/generation';
 import { errorKey } from '@/data/errors';
+import { topicLabel } from '@/data/topics';
 import { usePlanEditor } from '@/features/editor/usePlanEditor';
 import {
   Banner,
@@ -237,7 +238,10 @@ export function GenerateScreen() {
                       )}
                       {ids.length
                         ? ids
-                            .map((id) => ed.competencies.find((c) => c.id === id)?.text ?? id)
+                            .map((id) => {
+                              const c = ed.competencies.find((x) => x.id === id);
+                              return c ? topicLabel(c, lang).heading : id;
+                            })
                             .join('; ')
                         : t('editor.noCompetency')}
                     </span>

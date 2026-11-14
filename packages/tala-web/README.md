@@ -71,3 +71,16 @@ password, join another account (`account.merge`, both proofs). Every server reas
   the APK is served by nginx. Without a manifest it says the app is not published yet.
 - `config.features.emailDelivery === false` hides every "verify your email" prompt and says plainly on the
   reset-password screen that reset by email is not available yet.
+
+## Lesson planner (editor) notes
+
+- Topic labels come from `src/data/topics.ts` (`shortTitle` + `weekFrom/weekTo` when a pack has them, else the
+  domain trimmed to four words / "Term N"); the full competency text always stays underneath.
+- Multi-grade content is one tinted row per grade (`groupTint` in `src/features/editor/blocks.ts`); the same tint
+  for the same grade across objectives, materials, time blocks and assessment. Text is always forest.
+- `transitionMinutes` is kept in the data but is not a teacher-facing field; new blocks take the engine default.
+- Post-class sections (`outsideLock`: Assessment results, Reflection) stay writable on a locked plan under an
+  "After class" heading; a missing `results` record is created on first edit through the sync engine.
+- Session Flow timeline bar: `src/features/editor/flow-timeline.ts` (pure model) + `FlowTimeline.tsx` (sticky inside
+  its section; `--header-h` is measured from the phone header by the app shell).
+- Review evidence: `docs/editor-review/`.
