@@ -1,3 +1,5 @@
+import { AboutScreen } from './features/AboutScreen';
+import { markReady } from './runtime/diagnostics';
 import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
@@ -71,6 +73,7 @@ type Page =
   | 'main'
   | 'setup'
   | 'settings'
+  | 'about'
   | 'lesson'
   | 'conflict'
   | 'preview'
@@ -349,6 +352,9 @@ export default function App() {
           .then((row) => setCustomTemplate(row?.data ?? null));
     }
   }, [rt, selected?.templateId]);
+  useEffect(() => {
+    if (rt && fontLoaded) markReady();
+  }, [rt, fontLoaded]);
   if (!rt)
     return (
       <SafeAreaView style={styles.screen}>
@@ -1142,9 +1148,11 @@ export default function App() {
             />
           </ScrollView>
         )}
+        {page === 'about' && <AboutScreen t={t} onBack={() => setPage('settings')} />}
         {page === 'settings' && (
           <ScrollView contentContainerStyle={styles.pad}>
             <Title>{t('settings')}</Title>
+            <Button label={t('aboutDiagnostics')} onPress={() => setPage('about')} />
             <Button
               label={`${t('language')}: ${language === 'fil' ? 'Filipino' : 'English'}`}
               onPress={() => {

@@ -3,12 +3,14 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useT } from '@/i18n';
 import { getClient } from '@/data/client';
+import { useSession } from '@/data/session';
 import { Banner, Button, TextInput, Waiting } from '@/components/ui';
 import { useAuthForm, validEmail } from './useAuthForm';
 
 /** Request a link, or — when opened from `<origin>/reset-password#token=…` — set the new password. */
 export function ResetPasswordScreen() {
   const { t } = useT();
+  const { config } = useSession();
   const [token, setToken] = useState<string | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -94,8 +96,12 @@ export function ResetPasswordScreen() {
   return (
     <form onSubmit={request} className="flex flex-col gap-4" noValidate>
       <h1 className="text-display">{t('auth.resetTitle')}</h1>
-      <p>{t('auth.resetBody')}</p>
-      {sent ? (
+      {config?.features.emailDelivery === false ? (
+        <Banner kind="warn">{t('auth.resetNotAvailable')}</Banner>
+      ) : (
+        <p>{t('auth.resetBody')}</p>
+      )}
+      {config?.features.emailDelivery === false ? null : sent ? (
         <Banner kind="success">{t('auth.resetSent')}</Banner>
       ) : (
         <>

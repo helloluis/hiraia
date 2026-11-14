@@ -1,6 +1,27 @@
 import { wave2fil } from './wave2.fil';
 import type { StringKey } from './en';
 export const fil: Record<StringKey, string> = {
+  aboutDiagnostics: 'Tungkol sa app / pagsusuri',
+  diagnosticVersion: 'Bersiyon',
+  diagnosticBuild: 'Petsa ng build',
+  diagnosticId: 'Application ID',
+  diagnosticServer: 'Server',
+  diagnosticDatabase: 'Naka-encrypt na database',
+  diagnosticKey: '256-bit key sa Android SecureStore',
+  diagnosticUnknown: 'Hindi makuha',
+  diagnosticFonts: 'Mga font na naka-load',
+  diagnosticFontMissing: 'Hindi naka-load ang font ng pamagat',
+  diagnosticSystemFont: 'System font ng Android para sa teksto',
+  diagnosticRam: 'RAM ng telepono',
+  diagnosticAndroid: 'Bersiyon ng Android',
+  diagnosticStartup: 'Mula pagbukas hanggang handa',
+  diagnosticNativeStart: 'RN native start marker',
+  diagnosticJsStart: 'JS entry; walang native marker',
+  diagnosticBundle: 'Hermes JS bundle',
+  diagnosticExport: 'sinukat na Android export',
+  diagnosticStartupNote:
+    'Sinukat sa prosesong ito hanggang handa ang naka-encrypt na storage at font. Gamitin ang Force stop at buksan muli para sa cold start. Kailangan pa ring subukan sa reference phone.',
+
   ...wave2fil,
   emailTaken: 'May account na ang email na ito. Mag-sign in na lang.',
   invalidCredentials: 'Tingnan ang email at password, saka subukan muli.',

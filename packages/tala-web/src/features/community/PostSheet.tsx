@@ -33,7 +33,7 @@ export function PostSheet({
   onPosted: (message: string) => void;
 }) {
   const { t, lang } = useT();
-  const { user, network } = useSession();
+  const { user, network, config } = useSession();
   const students = useRecords('student');
   const [title, setTitle] = useState('');
   const [summary, setSummary] = useState('');
@@ -85,7 +85,7 @@ export function PostSheet({
   const canPost =
     locked &&
     !sample &&
-    user?.emailVerified &&
+    (user?.emailVerified || config?.features.emailDelivery === false) &&
     affirmed &&
     license &&
     title.trim().length >= 3 &&
@@ -153,7 +153,9 @@ export function PostSheet({
     >
       {!locked && <Banner kind="warn">{t('com.postNeedsLock')}</Banner>}
       {sample && <Banner kind="warn">{t('com.postSample')}</Banner>}
-      {!user?.emailVerified && <Banner kind="warn">{t('com.postNeedsVerified')}</Banner>}
+      {!user?.emailVerified && config?.features.emailDelivery !== false && (
+        <Banner kind="warn">{t('com.postNeedsVerified')}</Banner>
+      )}
       {!online && <Banner kind="info">{t('network.offline')}</Banner>}
       <TextInput
         label={t('editor.title')}

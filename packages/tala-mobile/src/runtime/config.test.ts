@@ -16,3 +16,13 @@ test('ordinary V1 builds cannot use the live Tala 0.4 application id', () => {
   assert.equal(config.slug, 'tala-next');
   assert.ok(!config.updates);
 });
+test('public demo identity, HTTPS policy and optional activity exclusion stay explicit', () => {
+  const config = require('../../app.config.js');
+  const pkg = require('../../package.json');
+  assert.equal(config.version, '1.0.0-demo.1');
+  assert.equal(config.android.versionCode, 1);
+  assert.equal(config.android.usesCleartextTraffic, false);
+  assert.equal(config.extra.apiBase, 'https://tala.hiraia.org');
+  assert.ok(pkg.expo.autolinking.exclude.includes('tala-activity'));
+  assert.ok(config.plugins.includes('./plugins/with-demo-manifest.cjs'));
+});

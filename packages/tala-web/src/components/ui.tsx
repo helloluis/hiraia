@@ -16,6 +16,7 @@ import {
 } from 'react';
 import Link from 'next/link';
 import { useT } from '@/i18n';
+import { HiraiaGlyph } from './Brand';
 
 export function cx(...parts: Array<string | false | null | undefined>): string {
   return parts.filter(Boolean).join(' ');
@@ -338,7 +339,7 @@ export function ListRow({
     <>
       {leading}
       <span className="min-w-0 flex-1">
-        <span className="block break-words">{title}</span>
+        <span className="block break-words [overflow-wrap:anywhere]">{title}</span>
         {subtitle && (
           <span className="block text-small text-forestMuted break-words">{subtitle}</span>
         )}
@@ -475,7 +476,7 @@ export function PageHeader({
       )}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <h1 className="text-display break-words">{title}</h1>
+          <h1 className="text-display break-words [overflow-wrap:anywhere] min-w-0">{title}</h1>
           {subtitle && <p className="text-forestMuted">{subtitle}</p>}
         </div>
         {action}
@@ -502,9 +503,19 @@ export function SectionTitle({
 /* ---------- Empty state: one sentence, one action (SIMPLE-10) ---------- */
 
 export function EmptyState({ children, action }: { children: ReactNode; action?: ReactNode }) {
+  const { t } = useT();
   return (
-    <div className="rounded border border-hairline bg-white px-4 py-6 text-center flex flex-col items-center gap-3">
-      <p>{children}</p>
+    <div className="rounded-[1.25rem] border border-hairline bg-white px-5 py-8 text-center flex flex-col items-center gap-4">
+      <span
+        aria-hidden="true"
+        className="relative inline-flex h-20 w-20 items-center justify-center rounded-full bg-cream"
+      >
+        <span className="absolute -left-2 top-3 h-3 w-3 rounded-full bg-yellow" />
+        <span className="absolute right-0 -bottom-1 h-4 w-4 rounded-sm rotate-12 bg-sage" />
+        <HiraiaGlyph size={40} title="" />
+      </span>
+      <p className="font-display text-title">{t('empty.heading')}</p>
+      <p className="max-w-[28rem] text-forestMuted">{children}</p>
       {action}
     </div>
   );

@@ -1,3 +1,24 @@
 const base = require('./app.json').expo;
 const { applicationId } = require('./config.cjs');
-module.exports = { ...base, android: { ...base.android, package: applicationId(process.env) } };
+module.exports = {
+  ...base,
+  version: '1.0.0-demo.1',
+  plugins: [...base.plugins, './plugins/with-demo-manifest.cjs'],
+  android: {
+    ...base.android,
+    package: applicationId(process.env),
+    versionCode: 1,
+    usesCleartextTraffic: false,
+    blockedPermissions: [
+      'android.permission.READ_EXTERNAL_STORAGE',
+      'android.permission.WRITE_EXTERNAL_STORAGE',
+      'android.permission.SYSTEM_ALERT_WINDOW',
+      'android.permission.VIBRATE',
+    ],
+  },
+  extra: {
+    buildDate: process.env.TALA_BUILD_DATE || 'development',
+    apiBase: 'https://tala.hiraia.org',
+    bundleBytes: Number(process.env.TALA_BUNDLE_BYTES || 0),
+  },
+};

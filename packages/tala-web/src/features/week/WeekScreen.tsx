@@ -134,7 +134,7 @@ export function WeekScreen() {
       )}
 
       {/* Week navigation */}
-      <div className="flex items-center justify-between gap-2 mb-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
         <Button
           variant="quiet"
           onClick={() => setWeekStart((w) => addDays(w, -7))}
@@ -320,6 +320,9 @@ function SessionRow({
     ? `/lessons/${entry.planId}`
     : `/lessons/new?classId=${entry.classId}&assignmentId=${entry.assignmentId}&date=${entry.date}&slotId=${entry.slotId}`;
   const past = entry.date <= tl.today;
+  const planTitle = entry.planId
+    ? tl.ws.plans.find((p) => p.id === entry.planId)?.title?.trim()
+    : '';
   const beforeTala =
     (entry.kind as string) === 'before_tala' || (entry.mark as string | null) === 'before_tala';
   if (beforeTala) {
@@ -337,7 +340,7 @@ function SessionRow({
   return (
     <div className="flex flex-col gap-2 px-3 py-3 bg-white border-b border-hairline last:border-b-0">
       <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-        <span className="font-medium">
+        <span className="font-medium min-w-0 break-words [overflow-wrap:anywhere] line-clamp-3">
           {slot?.startTime ? `${slot.startTime} · ` : ''}
           {entry.subjectName}
           {tl.ws.classes.length > 1 && cls ? ` · ${cls.name}` : ''}
@@ -347,6 +350,9 @@ function SessionRow({
           {kindLabel ? <Badge>{kindLabel}</Badge> : <Badge tone={tone}>{stateLabel}</Badge>}
         </span>
       </div>
+      {planTitle ? (
+        <p className="line-clamp-3 break-words [overflow-wrap:anywhere]">{planTitle}</p>
+      ) : null}
       {hasCurriculum
         ? topics.map((tp, i) => (
             <p key={i} className="text-small text-forestMuted break-words">

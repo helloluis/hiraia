@@ -30,6 +30,7 @@ export function SettingsScreen() {
   const { user, engine, signOut, network, setDataSaver, config } = useSession();
   const [accountSheet, setAccountSheet] = useState<AccountSheet>('none');
   const googleOn = config?.features.googleSignIn === true;
+  const mailOn = config?.features.emailDelivery !== false;
   const ws = useWorkspace();
   const [sheet, setSheet] = useState<'none' | 'password' | 'devices' | 'delete' | 'signout'>(
     'none'
@@ -71,14 +72,14 @@ export function SettingsScreen() {
             title={user?.displayName ?? ''}
             subtitle={user?.email ?? ''}
             trailing={
-              user && !user.emailVerified ? (
+              user && !user.emailVerified && mailOn ? (
                 <Link href="/verify-email" className="text-talaTealText underline">
                   {t('settings.verifyNow')}
                 </Link>
               ) : undefined
             }
           />
-          {user && !user.emailVerified && (
+          {user && !user.emailVerified && mailOn && (
             <div className="px-3 pb-2">
               <Banner kind="warn">{t('settings.emailUnverified')}</Banner>
             </div>

@@ -179,3 +179,30 @@ test('v3 is the default while explicit v2 remains available for rollback', () =>
     assert.equal(lessonRequest({ ...input, kind }, { ...options, version: 2 }).version, 2);
   }
 });
+
+test('authoritative objectives and assessment discard exact and partial repeats but retain genuine additions', () => {
+  const input = fixture();
+  for (const key of ['objectives', 'assessment']) {
+    for (const mode of ['exact', 'partial', 'addition']) {
+      const raw = fakeCompact(input);
+      const group = raw.sections.find((s) => s.key === key)!.groups[0]!;
+      const baseline = convertCompact(input, raw, newId).sections.find((s) => s.key === key)!;
+      assert.equal(baseline.content.type, 'pergroup');
+      if (baseline.content.type !== 'pergroup') throw Error('fixture');
+      const blocks = Object.values(baseline.content.groups)[0]!;
+      const stored = (blocks[0] as { spans: { text: string }[] }).spans[0]!.text;
+      group.text =
+        mode === 'exact'
+          ? stored.toUpperCase() + '!!!'
+          : mode === 'partial'
+            ? stored.split(/\s+/).slice(-4).join(' ')
+            : 'Ipaliwanag gamit ang sariling halimbawa.';
+      const result = convertCompact(input, raw, newId).sections.find((s) => s.key === key)!;
+      assert.equal(result.content.type, 'pergroup');
+      if (result.content.type !== 'pergroup') throw Error('fixture');
+      const actual = Object.values(result.content.groups)[0]!;
+      assert.equal(actual.length, group.targets.length + (mode === 'addition' ? 1 : 0));
+      assert.equal((actual[0] as { spans: { text: string }[] }).spans[0]!.text, stored);
+    }
+  }
+});

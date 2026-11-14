@@ -1,3 +1,35 @@
+V3 duplicate-text / teacher-note follow-up — 2026-11-14
+
+Authoritative competency wording is retained unchanged. Objective and assessment model lines are removed when their Unicode/case/whitespace/punctuation-normalized text repeats or is contained in an authoritative competency, including partial restatements. Genuine additions (including Filipino explanations) remain. This applies to per-group, text and list section storage formats. Unit cases cover exact duplicates, partial duplicates and genuine additions for objectives and assessment.
+
+The v3 generation prompts now put teacher-facing comments about limited direct-instruction time or next-session turns in reflection only, never learner activities. The contradictory instruction to acknowledge limits in block text was removed. V1/v2 stay unchanged; v3 remains active. No critic or semantic detector was introduced; teacher review of pedagogical quality remains pending.
+
+Post-fix validation: server type-check PASS and 217/217 tests; core type-check PASS and 231/231 tests; standalone strict eval type-check PASS; offline fixed set on both fake providers 18/18 PASS. The first test run exposed a test-only rich-text accessor error; corrected before the final passing checks. One clean live sweep per provider follows, without retries or repairs. All reported schema, teacher-focus, every-group-active, competency-presence, time-budget/transition and materials checks passed for every case. Samples and metadata artifacts were refreshed.
+
+DeepSeek run `2026-11-14T02:37:01.976Z`: exactly 9 DeepSeek calls, no Qwen calls. Qwen run `2026-11-14T02:37:50.271Z`: exactly 6 Qwen calls, no DeepSeek calls (primary deliberately disabled in Qwen-only mode).
+
+| Case                  | Provider | Checks   | Input/output tokens | Latency ms | Estimated USD | Retry/repair |
+| --------------------- | -------- | -------- | ------------------- | ---------- | ------------- | ------------ |
+| g2-g4-en              | deepseek | all pass | 2538/626            | 3790       | 0.00151260    | none         |
+| g2-g4-fil             | deepseek | all pass | 2548/849            | 5276       | 0.00178320    | none         |
+| three-group-fil       | deepseek | all pass | 2632/1304           | 7854       | 0.00235440    | none         |
+| four-group-en         | deepseek | all pass | 2696/1151           | 6258       | 0.00219000    | none         |
+| no-electricity-fil    | deepseek | all pass | 2548/968            | 6760       | 0.00192600    | none         |
+| short-period-en       | deepseek | all pass | 2538/590            | 4030       | 0.00146940    | none         |
+| custom-objectives-fil | deepseek | all pass | 2118/817            | 5649       | 0.00161580    | none         |
+| single-dlp-en         | deepseek | all pass | 2113/491            | 3430       | 0.00122310    | none         |
+| weekly-dll-fil        | deepseek | all pass | 1966/554            | 4635       | 0.00125460    | none         |
+| g2-g4-en              | qwen     | all pass | 2366/715            | 3981       | 0.00040430    | none         |
+| g2-g4-fil             | qwen     | all pass | 2376/889            | 4947       | 0.00047440    | none         |
+| three-group-fil       | qwen     | all pass | 2447/1404           | 7568       | 0.00068395    | none         |
+| four-group-en         | qwen     | all pass | 2498/1359           | 7760       | 0.00066850    | none         |
+| no-electricity-fil    | qwen     | all pass | 2376/872            | 4839       | 0.00046760    | none         |
+| short-period-en       | qwen     | all pass | 2366/702            | 3930       | 0.00039910    | none         |
+
+Credentials were sourced only into the runtime environment from the authorized ignored integration server `.env`; no credential files were copied. Costs use the previously documented conservative rates. No extra live calls were made for the 15-learner acceptance class; its count projection remains covered by unit tests.
+
+---
+
 Learner-count update — 2026-11-14 (v3 active default)
 
 The generator now projects known per-grade learnerCount and, only when all grade counts are known, totalLearnerCount into every lesson prompt (single, multi-grade, week, section, adapt, translate). Unknown counts and totals are omitted, not guessed. Only counts are projected, never roster fields or learner names. Unit coverage includes the acceptance class: Grade 3 = 6, Grade 4 = 5, Grade 5 = 4, total 15, plus unknown counts and explicit zero.
