@@ -1,0 +1,502 @@
+{
+  "input": {
+    "kind": "full",
+    "templateId": "tpl.multigrade.v1",
+    "language": "fil",
+    "subjectName": "Science",
+    "learningAreaId": "science",
+    "timeBudgetMinutes": 50,
+    "sessions": 1,
+    "gradeGroups": [
+      {
+        "id": "group-001",
+        "grade": "1",
+        "learnerCount": 10
+      },
+      {
+        "id": "group-002",
+        "grade": "2",
+        "learnerCount": 10
+      },
+      {
+        "id": "group-003",
+        "grade": "3",
+        "learnerCount": 10
+      }
+    ],
+    "competencies": {
+      "group-001": ["C1"],
+      "group-002": ["C2"],
+      "group-003": ["C3"]
+    },
+    "curriculumVersion": "eval.v1",
+    "customObjectives": [],
+    "classProfile": {
+      "materials": ["paper", "pencils"],
+      "textbooks": [],
+      "electricity": true,
+      "projector": null,
+      "printing": false,
+      "outdoorSpace": null,
+      "notes": ""
+    },
+    "guidance": ""
+  },
+  "plan": {
+    "title": "Paglalarawan ng mga Halaman",
+    "sections": [
+      {
+        "key": "objectives",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-001": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              }
+            ],
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              }
+            ],
+            "group-003": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "materials",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-001": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ],
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ],
+            "group-003": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "multigrade",
+        "content": {
+          "type": "multigrade",
+          "blocks": [
+            {
+              "id": "5fe5fb17-e75a-4931-a0a9-fb1b2ffc9e25",
+              "label": "Buksan",
+              "minutes": 5,
+              "transitionMinutes": 0,
+              "teacherWith": "all",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Sabiin ang pangalan ng isang halaman."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Tukuyin ang bahagi ng halaman tulad ng ugat, stem, dahon."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Iguhit ang isang halaman at tukuyin ang dalawa o tatlong bahagi nito."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "fa14d1f5-0001-4bb2-ba46-7b8da74ce0ae",
+              "label": "Tuturin ang Baitang 1",
+              "minutes": 14,
+              "transitionMinutes": 1,
+              "teacherWith": "group-001",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Gumuhit ng isang halaman gamit ang papel at lapis. Iguhit ang mga pangunahing bahagi tulad ng dahon at ugat."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Tulungan ang mga bata na gumuhit ng halaman sa kanilang papel. Magbigay ng halimbawa ng isang halaman at ituro ang mga bahagi nito."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Basahin ang sariling guhit ng halaman at ipaliwanag kung ano ang bawat bahagi."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "1b35cc60-ae1e-4d06-9f9f-9f0fa81a4b55",
+              "label": "Tuturin ang Baitang 2",
+              "minutes": 13,
+              "transitionMinutes": 1,
+              "teacherWith": "group-002",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Magpatuloy sa pagguhit ng halaman. Isulat ang pangalan ng bawat bahagi sa ilalim ng bawat larawan."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Gumuhit ng halaman at maglagay ng label sa bawat bahagi: ugat, tangkay, dahon."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Ipaliwanag kung paano ang bawat bahagi ng halaman ay tumutulong sa buhay ng halaman."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "d5fb0e4b-f632-4260-bd7b-433519f6522c",
+              "label": "Tuturin ang Baitang 3",
+              "minutes": 13,
+              "transitionMinutes": 1,
+              "teacherWith": "group-003",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Pakitaan ang iyong guhit ng halaman at sabihin kung anong bahagi ang gusto mo."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Iguhit muli ang halaman at idagdag ang mga detalye tulad ng mga ugat na nasa ilalim ng lupa."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Sumulat ng isang pangungusap tungkol sa kahalagahan ng ugat sa halaman."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "696dcd8d-e65e-485b-8ef5-744039430afa",
+              "label": "Tapos",
+              "minutes": 5,
+              "transitionMinutes": 0,
+              "teacherWith": "all",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Sabihin ang pangalan ng isa sa mga bahagi ng halaman."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Sabiin kung ano ang layunin ng ugat sa halaman."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Ibahagi ang isang bagay na natutunan tungkol sa mga halaman."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "note": "Ang bawat baitang ay may isang direktang pagtuturo; ang natitirang oras ay para sa pangkalahatang gawain. Ang mga gawain ng bawat baitang ay nakabase sa kanilang antas."
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "assessment",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-001": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ituro ang isang bahagi ng halaman sa kanilang guhit."
+                  }
+                ]
+              }
+            ],
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Tukuyin ang mga bahagi ng halaman sa kanilang guhit at sabihin ang kanilang gamit."
+                  }
+                ]
+              }
+            ],
+            "group-003": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ipagpalagay ang layunin ng bawat bahagi ng halaman sa isang pangungusap."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      }
+    ],
+    "provider": "qwen",
+    "model": "qwen-flash",
+    "warnings": []
+  },
+  "review": "Teacher quality review pending; structural checks do not establish scientific or pedagogical quality."
+}

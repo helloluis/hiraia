@@ -13,7 +13,7 @@ import {
 } from '@hiraia/tala-core/generation';
 import type { LlmRequest } from '../../kernel/types';
 
-export const DEFAULT_LESSON_PROMPT_VERSION = 3;
+export const DEFAULT_LESSON_PROMPT_VERSION = 4;
 
 const text = z.string().max(3000);
 const targetFields = {
@@ -28,6 +28,7 @@ export const compactSchema = z.object({
     .array(
       z.object({
         key: z.string(),
+        note: z.string().max(600).optional(),
         ...targetFields,
         groups: z.array(group).default([]),
         steps: z
@@ -162,6 +163,7 @@ export function convertCompact(
   const sections = raw.sections.map((s, index) => {
     const spec = template.sections.find((t) => t.key === s.key);
     if (!spec) throw Error('section_key');
+    if (spec.outsideLock) throw Error('post_class_section');
     let content: SectionContent;
     const isTarget = s.key === 'objectives' || s.key === 'assessment';
     switch (spec.contentType) {
@@ -224,6 +226,7 @@ export function convertCompact(
           throw Error('schedule_slots');
         content = {
           type: 'multigrade',
+          ...(s.note ? { note: s.note } : {}),
           blocks: schedule.map((slot) => {
             const b = s.blocks.find((b) => b.slot === slot.slot);
             if (!b) throw Error('schedule_slots');
@@ -299,7 +302,8 @@ export function compactTemplateSchema(template: Template, input?: DraftInput) {
     ? objectiveTargets(input).flatMap((g) => g.objectives.map((o) => o.ref))
     : ['example'];
   const targetRefs = z.array(z.enum((refs.length ? refs : ['__none__']) as [string, ...string[]]));
-  const shapes = template.sections.map((s) => {
+  const preClass = template.sections.filter((s) => !s.outsideLock);
+  const shapes = preClass.map((s) => {
     const key = { key: z.literal(s.key) };
     switch (s.contentType) {
       case 'text':
@@ -351,6 +355,7 @@ export function compactTemplateSchema(template: Template, input?: DraftInput) {
         return z
           .object({
             ...key,
+            note: z.string().max(600).optional(),
             blocks: z
               .array(
                 z
@@ -393,8 +398,8 @@ export function compactTemplateSchema(template: Template, input?: DraftInput) {
             ]
           )
         )
-        .min(template.sections.filter((s) => s.required).length)
-        .max(template.sections.length),
+        .min(preClass.filter((s) => s.required).length)
+        .max(preClass.length),
     })
     .strict();
 }
@@ -410,7 +415,7 @@ function translationRequest(
   const walk = (value: unknown, path: string[], parentKey = '') => {
     if (
       typeof value === 'string' &&
-      ['text', 'title', 'label', 'items'].includes(parentKey) &&
+      ['text', 'title', 'label', 'items', 'note'].includes(parentKey) &&
       value.trim() &&
       !trusted.includes(value)
     )
@@ -420,6 +425,8 @@ function translationRequest(
     else if (value && typeof value === 'object')
       for (const [key, v] of Object.entries(value)) walk(v, [...path, key], key);
   };
+  const template = input.template ?? BUILTIN_TEMPLATES.find((t) => t.id === input.templateId)!;
+  source = source.filter((s) => !template.sections.find((spec) => spec.key === s.key)?.outsideLock);
   walk(source, []);
   const rawSchema = z
     .object({
@@ -435,6 +442,14 @@ function translationRequest(
       paths.some((p) => !leaves.some((l) => l.path === p))
     ) {
       ctx.addIssue({ code: 'custom', message: 'translation_paths' });
+      return z.NEVER;
+    }
+    if (
+      raw.translations.some(
+        (replacement) => replacement.path.endsWith('/note') && replacement.text.length > 600
+      )
+    ) {
+      ctx.addIssue({ code: 'custom', message: 'note_length' });
       return z.NEVER;
     }
     const sections = structuredClone(source);
@@ -475,13 +490,25 @@ export function lessonRequest(
   const requestedTemplate =
     input.kind === 'section'
       ? { ...template, sections: template.sections.filter((s) => s.key === input.sectionKey) }
-      : template;
+      : { ...template, sections: template.sections.filter((s) => !s.outsideLock) };
+  if (!requestedTemplate.sections.length || requestedTemplate.sections.some((s) => s.outsideLock))
+    throw Error('post_class_section');
+  const preClassOnly = (value: unknown) =>
+    Array.isArray(value)
+      ? value.filter((s) => !template.sections.find((spec) => spec.key === s.key)?.outsideLock)
+      : value;
   const promptId = `lesson/${input.kind === 'full' ? (input.gradeGroups.length > 1 ? 'multigrade' : template.span === 'week' ? 'week' : 'single') : input.kind}`;
   // The storage representation is generated locally, including all IDs and trusted objective text.
   if (opts.version === 1) {
     const storageSchema = z.object({
       title: z.string().max(200),
-      sections: z.array(z.object({ key: z.string(), content: SectionContentSchema })),
+      sections: z
+        .array(z.object({ key: z.string(), content: SectionContentSchema }))
+        .refine(
+          (sections) =>
+            sections.every((s) => requestedTemplate.sections.some((spec) => spec.key === s.key)),
+          'post_class_or_unknown_section'
+        ),
     });
     return {
       feature:
@@ -507,8 +534,8 @@ export function lessonRequest(
           })),
           ...classSize(input),
           template: requestedTemplate,
-          source: opts.source,
-          prior: opts.prior,
+          source: preClassOnly(opts.source),
+          prior: preClassOnly(opts.prior),
         }),
         schema: JSON.stringify(requestedTemplate.sections),
       },
@@ -589,8 +616,8 @@ export function lessonRequest(
         guidance: input.guidance,
         instruction: input.instruction,
         sections: requestedTemplate.sections.map((s) => ({ key: s.key, format: s.contentType })),
-        source: opts.source,
-        prior: opts.prior,
+        source: preClassOnly(opts.source),
+        prior: preClassOnly(opts.prior),
       }),
     },
     schema,
