@@ -137,11 +137,15 @@ export const register: Handler<'auth.register'> = async (ctx, { body }) => {
 
   // Hash before looking at whether the address is taken, so both outcomes cost the same.
   const passwordHash = await hasher.hash(body.password);
+  // Stop-gap (TALA_AUTH_AUTO_VERIFY, no mail transport): the address counts as confirmed at once, marked
+  // 'auto' so these accounts can be asked to confirm properly when mail exists.
+  const autoVerified = coreState(ctx).mailMode === 'off';
   const row = accounts.createUser({
     email: body.email,
     displayName,
     uiLanguage: body.uiLanguage,
     passwordHash,
+    ...(autoVerified ? { verified: 'auto' as const } : {}),
   });
   if (!row) {
     throw new HttpError(
@@ -159,7 +163,7 @@ export const register: Handler<'auth.register'> = async (ctx, { body }) => {
   );
   ctx.log.info('account_created', { userId: row.id });
   // The account exists whether or not the mail goes out; the teacher can ask for it again.
-  effectsOf(ctx).after.push(() => sendVerificationMail(ctx, row));
+  if (!autoVerified) effectsOf(ctx).after.push(() => sendVerificationMail(ctx, row));
   return authResult(ctx, accounts.toUser(row), session);
 };
 
@@ -239,6 +243,8 @@ export const sendVerification: Handler<'auth.sendVerification'> = async (ctx) =>
   if (!row) throw new HttpError('unauthenticated', 'Please sign in again.');
   if (row.email_verified === 1) return { ok: true as const };
   limit(ctx, `verify-mail:user:${user.id}`, 5, HOUR);
+  // No way to send mail and the stop-gap is on: answer as usual, send nothing.
+  if (coreState(ctx).mailMode === 'off') return { ok: true as const };
   try {
     await sendVerificationMail(ctx, row);
   } catch {
@@ -256,7 +262,7 @@ export const verifyEmail: Handler<'auth.verifyEmail'> = (ctx, { body }) => {
   const { accounts } = coreState(ctx);
   const row = accounts.consumeEmailToken(body.token, 'verify_email');
   if (!row) throw new HttpError('invalid_input', BAD_LINK, { reason: 'link_invalid_or_expired' });
-  accounts.markEmailVerified(row.id);
+  accounts.markEmailVerified(row.id, 'link');
   ctx.log.info('email_verified', { userId: row.id });
   return { ok: true as const };
 };
@@ -264,6 +270,8 @@ export const verifyEmail: Handler<'auth.verifyEmail'> = (ctx, { body }) => {
 export const requestReset: Handler<'auth.requestReset'> = (ctx, { body }) => {
   limitByAddress(ctx, 'reset-request', 20, HOUR);
   const emailNorm = normaliseEmail(body.email);
+  // No way to send mail and the stop-gap is on: the same answer as always, and nothing is issued or sent.
+  if (coreState(ctx).mailMode === 'off') return { ok: true as const };
   // Everything that depends on whether the account exists happens after the answer has gone out,
   // so the answer and its timing are the same for every address.
   effectsOf(ctx).after.push(async () => {
@@ -297,7 +305,7 @@ export const reset: Handler<'auth.reset'> = async (ctx, { body }) => {
   if (!row) throw new HttpError('invalid_input', BAD_LINK, { reason: 'link_invalid_or_expired' });
   accounts.setPassword(row.id, passwordHash);
   // The link proved who holds the mailbox.
-  if (row.email_verified !== 1) accounts.markEmailVerified(row.id);
+  if (row.email_verified !== 1) accounts.markEmailVerified(row.id, 'reset');
   // Whoever knew the old password is signed out everywhere.
   const ended = accounts.revokeAllSessions(row.id);
   ctx.log.info('password_reset', { userId: row.id, sessions: ended });

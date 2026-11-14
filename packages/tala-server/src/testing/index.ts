@@ -226,7 +226,16 @@ export function createTestServer(options: TestServerOptions = {}): TestServer {
   const modules: ServerModule[] =
     options.withoutCore || extra.some((m) => m.name === 'core')
       ? [...extra]
-      : [createCoreModule({ argon2: TEST_ARGON2_COST, ...options.core }), ...extra];
+      : [
+          // Explicit, so a variable in the developer's shell cannot change what a test sees.
+          createCoreModule({
+            argon2: TEST_ARGON2_COST,
+            autoVerifyEmail: false,
+            buildId: '',
+            ...options.core,
+          }),
+          ...extra,
+        ];
 
   const server = createServer({
     config,
@@ -369,7 +378,8 @@ export function createTestServer(options: TestServerOptions = {}): TestServer {
       ip: `10.${(n >> 16) & 255}.${(n >> 8) & 255}.${n & 255}`,
     });
     let user = registered.user;
-    if (opts.verified !== false) {
+    // Already confirmed when the server runs the auto-verify stop-gap: there is no mail to follow then.
+    if (opts.verified !== false && !user.emailVerified) {
       const token = mailToken(email, 'verify_email');
       if (!token) throw new Error('registerUser: no verification mail found in the outbox.');
       await ok('auth.verifyEmail', { body: { token } });

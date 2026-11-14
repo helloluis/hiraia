@@ -279,7 +279,8 @@ export function createServer(options: KernelOptions): KernelServer {
     const credentials = extractCredentials(request, config.session.cookieName);
     let user: SessionUser | null = null;
     let failure: AuthFailure = 'unknown';
-    if (credentials && authenticator) {
+    // The liveness route never looks a session up: looking one up can write (it extends the session).
+    if (credentials && authenticator && route.name !== 'system.health') {
       const outcome = authenticator.authenticate(credentials.token, credentials.via);
       if (outcome.user) user = outcome.user;
       else failure = outcome.reason;

@@ -136,20 +136,27 @@ export function createMailer(deps: {
   newId: () => Id;
   log: Logger;
   transport?: MailTransport;
+  /** See MailMode in state.ts. */
+  mode: 'transport' | 'outbox' | 'unavailable' | 'off';
 }): Mailer {
-  const { db, config, now, newId, log, transport } = deps;
+  const { db, now, newId, log, transport, mode } = deps;
   const insert = db.prepare(
     'INSERT INTO core_mail_outbox (id, to_email, template, lang, subject, body, vars, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
   );
   return {
     async send(msg) {
+      if (mode === 'off') {
+        // The auto-verify stop-gap: there is nowhere to send mail, and callers must not fail because of it.
+        log.info('mail_not_sent_delivery_off', { template: msg.template, lang: msg.lang });
+        return;
+      }
       const mail = renderMail(msg);
       if (transport) {
         await transport(mail);
         log.info('mail_sent', { template: mail.template, lang: mail.lang });
         return;
       }
-      if (config.environment === 'production') {
+      if (mode === 'unavailable') {
         log.error('mail_not_sent_no_transport', { template: mail.template, lang: mail.lang });
         throw new Error('No mail transport is configured.');
       }

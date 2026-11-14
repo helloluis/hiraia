@@ -34,11 +34,16 @@ export interface IdentityRow {
   email: string;
 }
 
+/** How an account's email came to count as confirmed. 'auto' proves nothing about who holds the mailbox. */
+export type VerifiedHow = 'link' | 'reset' | 'google' | 'auto';
+
 export interface UserRow {
   id: string;
   email: string;
   email_norm: string;
   email_verified: number;
+  /** 'link' | 'reset' | 'google' | 'auto' (confirmed at sign-up because no mail could be sent), or null. */
+  email_verified_how: string | null;
   display_name: string;
   ui_language: string;
   password_hash: string | null;
@@ -97,14 +102,14 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
     userById: db.prepare('SELECT * FROM core_users WHERE id = ?'),
     userByEmail: db.prepare('SELECT * FROM core_users WHERE email_norm = ?'),
     insertUser: db.prepare(
-      `INSERT INTO core_users (id, email, email_norm, email_verified, display_name, ui_language, password_hash, password_changed_at, created_at, updated_at)
-       VALUES (@id, @email, @email_norm, @email_verified, @display_name, @ui_language, @password_hash, @password_changed_at, @created_at, @updated_at)`
+      `INSERT INTO core_users (id, email, email_norm, email_verified, email_verified_how, display_name, ui_language, password_hash, password_changed_at, created_at, updated_at)
+       VALUES (@id, @email, @email_norm, @email_verified, @email_verified_how, @display_name, @ui_language, @password_hash, @password_changed_at, @created_at, @updated_at)`
     ),
     setPassword: db.prepare(
       'UPDATE core_users SET password_hash = ?, password_changed_at = ?, updated_at = ? WHERE id = ?'
     ),
     setVerified: db.prepare(
-      'UPDATE core_users SET email_verified = 1, updated_at = ? WHERE id = ?'
+      'UPDATE core_users SET email_verified = 1, email_verified_how = ?, updated_at = ? WHERE id = ?'
     ),
     setProfile: db.prepare(
       'UPDATE core_users SET display_name = ?, ui_language = ?, updated_at = ? WHERE id = ?'
@@ -204,14 +209,16 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
       displayName: string;
       uiLanguage: string;
       passwordHash: string | null;
-      emailVerified?: boolean;
+      /** Set when the email already counts as confirmed, with how it came to. */
+      verified?: VerifiedHow;
     }): UserRow | null {
       const at = now().toISOString();
       const row: UserRow = {
         id: newId(),
         email: input.email.trim(),
         email_norm: normaliseEmail(input.email),
-        email_verified: input.emailVerified ? 1 : 0,
+        email_verified: input.verified ? 1 : 0,
+        email_verified_how: input.verified ?? null,
         display_name: input.displayName.trim(),
         ui_language: input.uiLanguage,
         password_hash: input.passwordHash,
@@ -233,8 +240,8 @@ export function createAccounts(db: Db, config: TalaServerConfig, now: () => Date
       q.setPassword.run(passwordHash, at, at, userId);
     },
 
-    markEmailVerified(userId: Id): void {
-      q.setVerified.run(now().toISOString(), userId);
+    markEmailVerified(userId: Id, how: VerifiedHow): void {
+      q.setVerified.run(how, now().toISOString(), userId);
     },
 
     /** Keep the account's name and language in step with the teacher's synced profile record. */

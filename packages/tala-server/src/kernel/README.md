@@ -95,6 +95,8 @@ Names only are ever printed in errors; values are not. Everything has a safe loc
 | `TALA_PORT`, `TALA_HOST` | `8787`, `127.0.0.1` | Dev server only. |
 | `TALA_TRUSTED_PROXY_HOPS` | `0` (local), `1` (staging, production) | How many reverse proxies in front of the server are ours. With 0, `X-Forwarded-For` is ignored. With n, the n-th entry from the right is the client address used for abuse limits. Set it to match the real chain (for example 2 behind a CDN and nginx). If it is too low every client looks like one address; limits then use a much wider shared bucket instead of locking everyone out. |
 | `TALA_LOG_LEVEL` | `info` | `info`, `warn`, `error` or `silent`. Logs are JSON lines on stdout. |
+| `TALA_BUILD_ID` | — | A label for the running build (for example the commit id). `system.health` reports the version as `0.1.0+<label>`. Letters, digits, `.`, `_`, `-`; at most 40 characters. |
+| `TALA_AUTH_AUTO_VERIFY` | off | **Stop-gap, see "Mail".** `1` = while no mail transport is configured, new accounts count as email-confirmed at sign-up and no mail is attempted. Ignored once a transport exists. |
 | `TALA_SESSION_TTL_DAYS` | `90` | Sliding session lifetime. At least 31 outside local, so a phone stays signed in through 30 days offline (OFF-5). |
 | `TALA_SESSION_COOKIE` | `__Host-tala_session` on https, `tala_session` on http | Cookie name. |
 | `GOOGLE_OAUTH_CLIENT_ID` | — | Client id(s) a Google ID token must be issued for; several (web, Android) separated by commas. Needed when `TALA_FEATURE_GOOGLE_SIGNIN` is on; without it Google sign-in answers "not set up". |
@@ -145,6 +147,30 @@ Local and staging do not send mail. Messages go to the `core_mail_outbox` table,
 you get a verification or reset link while testing). Production needs a real transport, which is not chosen
 yet: until one is passed to `createCoreModule({ mailTransport })`, production refuses to send rather than
 store working sign-in links.
+
+`config.get` tells clients whether mail works: `features.emailDelivery` is true with a transport or the dev
+outbox, false otherwise.
+
+### Stop-gap: `TALA_AUTH_AUTO_VERIFY=1` (remove when a mail provider is chosen)
+
+With no transport, production cannot confirm anyone's email, and an unconfirmed account cannot import a class
+list or post to the community. For the first public demo there is an explicit, opt-in way round that:
+
+- **What it does.** While no transport is configured, a new account counts as email-confirmed at sign-up and no
+  mail is attempted. Requests to resend a verification mail or to reset a password answer as usual and send
+  nothing. `features.emailDelivery` is false, so clients say plainly that reset by email is not available yet.
+  The server logs one warning at start, `auth_auto_verify_on`, naming the setting.
+- **What it costs.** Nobody has proved they hold the address they signed up with. A person can register
+  someone else's address; the real owner then cannot register it, and cannot recover it, because there is no
+  reset mail. A forgotten password cannot be recovered by anyone while this is on.
+- **How it ends.** Every account confirmed this way is marked (`core_users.email_verified_how = 'auto'`). Once
+  a transport is configured the setting is ignored and new sign-ups are mailed a link as designed. Accounts
+  from the stop-gap period stay marked confirmed until someone runs
+  `UPDATE core_users SET email_verified = 0, email_verified_how = NULL WHERE email_verified_how = 'auto';`
+  after which those teachers are asked to confirm by link like everyone else. Do that before Google sign-in
+  is switched on: linking by email trusts a confirmed address.
+- Default off. Without it, and without a transport, production keeps refusing to send and logs
+  `mail_transport_missing` at start.
 
 ## Files
 
