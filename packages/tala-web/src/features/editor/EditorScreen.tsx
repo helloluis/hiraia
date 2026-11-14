@@ -122,18 +122,36 @@ export function EditorScreen({ planId }: { planId: string }) {
       <PageHeader
         title={
           locked ? (
-            <span>{plan.title || t('lessons.untitled')}</span>
+            <span className="line-clamp-3 break-words [overflow-wrap:anywhere]">
+              {plan.title || t('lessons.untitled')}
+            </span>
           ) : (
             <label className="block">
               <span className="sr-only">{t('editor.title')}</span>
-              <input
-                className="w-full bg-transparent border-b border-hairline focus:border-talaTeal text-display font-display py-1 placeholder:text-forestMuted"
+              {/* A wrapping, auto-growing one-field title (an <input> cannot wrap, so long titles were cut off). */}
+              <textarea
+                rows={1}
+                className="w-full resize-none overflow-hidden bg-transparent border-b border-hairline focus:border-talaTeal text-display font-display leading-tight py-1 placeholder:text-forestMuted break-words [overflow-wrap:anywhere]"
                 placeholder={t('editor.titlePlaceholder')}
                 value={title ?? ''}
                 maxLength={200}
+                ref={(el) => {
+                  if (el) {
+                    // Grow with the text up to three lines; beyond that the field scrolls instead of pushing the page.
+                    const lineHeight = parseFloat(getComputedStyle(el).lineHeight) || 34;
+                    const max = Math.round(lineHeight * 3 + 8);
+                    el.style.height = '0px';
+                    el.style.height = `${Math.min(el.scrollHeight, max)}px`;
+                    el.style.overflowY = el.scrollHeight > max ? 'auto' : 'hidden';
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') e.preventDefault();
+                }}
                 onChange={(e) => {
-                  setTitle(e.target.value);
-                  ed.savePlan({ title: e.target.value });
+                  const v = e.target.value.replace(/[\r\n]+/g, ' ');
+                  setTitle(v);
+                  ed.savePlan({ title: v });
                 }}
               />
             </label>
