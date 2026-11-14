@@ -749,7 +749,7 @@ export const en = {
   'landing.openWeek': 'Open my week',
   'landing.download': 'Download the Android app',
   'landing.heroAlt':
-    'A Filipina public-school teacher in front of a chalkboard, smiling, holding a phone in one hand and a lesson sheet in the other.',
+    'A teacher mid-lesson in a small classroom with corrugated-metal walls, surrounded by children of different grades seated at wooden desks, writing in their notebooks.',
   'landing.earlyEyebrow': 'An early version',
   'landing.earlyTitle': 'Free, honest, and still growing',
   'landing.earlyBody':

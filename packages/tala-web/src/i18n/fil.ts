@@ -780,7 +780,7 @@ export const fil = {
   'landing.openWeek': 'Buksan ang linggo ko',
   'landing.download': 'I-download ang Android app',
   'landing.heroAlt':
-    'Isang gurong Pilipina ng pampublikong paaralan sa harap ng pisara, nakangiti, may hawak na cellphone sa isang kamay at banghay-aralin sa kabila.',
+    'Isang guro na nagtuturo sa gitna ng maliit na silid-aralan na yero ang dingding, napapaligiran ng mga batang iba-iba ang baitang na nakaupo sa mga kahoy na mesa at nagsusulat sa kuwaderno.',
   'landing.earlyEyebrow': 'Maagang bersyon',
   'landing.earlyTitle': 'Libre, tapat, at patuloy na lumalaki',
   'landing.earlyBody':
