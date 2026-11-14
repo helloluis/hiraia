@@ -30,9 +30,12 @@ import type { Logger, RecordStore } from '../../kernel/types';
 import {
   effectivelyLocked,
   emptiedContent,
+  frozenByLock,
   isOutsideLock,
+  lockKeysOf,
   lockedPlanViolations,
   normalisePlan,
+  withoutPostClassRequirements,
 } from './plan-rules';
 import type { Revisions } from './revisions';
 import { sha256, stableStringify } from './stable';
@@ -90,10 +93,24 @@ interface Outcome {
   wrote: boolean;
 }
 
+/** Why a plan needs a revision snapshot. `post_class`: a post-class part of a locked plan was written. */
+type TouchReason = 'save' | 'post_class' | 'regenerate';
+/**
+ * One batch gives a plan one snapshot, labelled with the strongest thing that happened to it: an AI rewrite
+ * (always its own revision), else post-class writing on a locked plan, else an ordinary save.
+ */
+const TOUCH_WEIGHT: Record<TouchReason, number> = { save: 0, post_class: 1, regenerate: 2 };
+
 interface Scope {
   actor: WriteActor;
   /** Plans whose content changed in this batch and still need a revision snapshot. */
-  touched: Map<Id, 'save' | 'regenerate'>;
+  touched: Map<Id, TouchReason>;
+}
+
+function touch(scope: Scope, planId: Id, reason: TouchReason): void {
+  const had = scope.touched.get(planId);
+  if (had === undefined || TOUCH_WEIGHT[reason] > TOUCH_WEIGHT[had])
+    scope.touched.set(planId, reason);
 }
 
 export interface PullInput {
@@ -329,11 +346,22 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     return (q.sectionsOfPlan.all(ownerId, planId) as Row[]).map((r) => envelope<'plan_section'>(r));
   }
 
-  /** Rule 5: is this section, as it stands, inside the lock of a locked plan? */
+  const isLocked = (ownerId: Id, planId: Id): boolean => {
+    const plan = liveData(ownerId, 'plan', planId);
+    return plan !== null && effectivelyLocked(plan);
+  };
+
+  /**
+   * Rule 5: is this section, as it stands, frozen by the lock of a locked plan? Decided from the server's own
+   * records only: the plan, what its lock froze when it was taken, and its template (a built-in one, or the
+   * owner's own). See `frozenByLock`.
+   */
   function insideLock(ownerId: Id, section: { planId: Id; key: string }): boolean {
     const plan = liveData(ownerId, 'plan', section.planId);
     if (!plan || !effectivelyLocked(plan)) return false;
-    return !isOutsideLock(templateOf(ownerId, plan.templateId), section.key);
+    const revision = plan.lock?.revision ?? null;
+    const atLock = revision === null ? null : revisions.lockKeys(ownerId, plan.id, revision);
+    return frozenByLock(atLock, templateOf(ownerId, plan.templateId), section.key);
   }
 
   /** DOC-1, with the same shared check the apps run before they let a teacher lock. */
@@ -354,10 +382,11 @@ export function createRecordEngine(deps: RecordEngineDeps) {
         ? 'This lesson cannot be locked yet. Add at least one curriculum competency.'
         : null;
     }
+    // Post-class parts (results, reflection) are written after the lesson: never needed for locking.
     const result = planHelpers.validatePlanForLock(
       draft,
       sectionsOf(ownerId, plan.id).map((s) => s.data),
-      template,
+      withoutPostClassRequirements(template),
       classRecord
     );
     return result.ok
@@ -369,7 +398,7 @@ export function createRecordEngine(deps: RecordEngineDeps) {
    * A lock is the teacher's word that the lesson is right as they saw it. When the device says which version
    * of each part it saw, the lock is only taken if the server holds exactly those versions, or newer ones
    * this same device wrote. Otherwise another device's edits would be locked in unseen.
-   * Parts outside the lock (reflection) may differ freely.
+   * Post-class parts (results, reflection) are outside the lock and may differ freely.
    */
   function sectionsChangedElsewhere(
     ownerId: Id,
@@ -516,11 +545,18 @@ export function createRecordEngine(deps: RecordEngineDeps) {
           event,
           event === 'lock',
           snap,
-          scope.actor
+          scope.actor,
+          // Written down now, so that a later change to the template cannot reopen what this lock froze.
+          event === 'lock'
+            ? lockKeysOf(
+                templateOf(ownerId, (data as Plan).templateId),
+                snap.sections.map((s) => s.data.key)
+              )
+            : null
         );
         scope.touched.delete(id);
       } else {
-        scope.touched.set(id, scope.touched.get(id) ?? 'save');
+        touch(scope, id, 'save');
       }
     } else if (entity === 'plan_section') {
       const incoming = data as PlanSection;
@@ -528,10 +564,13 @@ export function createRecordEngine(deps: RecordEngineDeps) {
       const regenerated =
         incoming.origin === 'ai' && incoming.gen !== null && incoming.gen.at !== stored?.gen?.at;
       for (const planId of new Set([incoming.planId, stored?.planId ?? incoming.planId])) {
-        scope.touched.set(
-          planId,
-          regenerated || scope.touched.get(planId) === 'regenerate' ? 'regenerate' : 'save'
-        );
+        // Rule 5 refused everything else above, so a part written on a locked plan is a post-class one.
+        const reason = regenerated
+          ? 'regenerate'
+          : isLocked(ownerId, planId)
+            ? 'post_class'
+            : 'save';
+        touch(scope, planId, reason);
       }
     } else if (entity === 'profile') {
       deps.onProfile?.(ownerId, data as RecordData<'profile'>);
@@ -591,7 +630,7 @@ export function createRecordEngine(deps: RecordEngineDeps) {
     }
     if (entity === 'plan_section') {
       const planId = (JSON.parse(current.data) as PlanSection).planId;
-      scope.touched.set(planId, scope.touched.get(planId) ?? 'save');
+      touch(scope, planId, isLocked(ownerId, planId) ? 'post_class' : 'save');
     } else if (entity === 'plan') {
       revisions.purgePlan(ownerId, id);
       scope.touched.delete(id);

@@ -9,16 +9,47 @@
  *  - `regenerate` taken after AI rewrote a section; the revision before it holds the previous text (LLM-4).
  *  - `save`       ordinary edits. Saves that arrive within COALESCE_MS of each other share one revision,
  *                 so typing does not produce hundreds of them.
+ *  - `post_class` writing in a post-class part (results, reflection) of a LOCKED plan. Kept apart from
+ *                 `save` so the history shows that nothing the teacher locked was touched. Coalesced the
+ *                 same way. The lock revision itself is never altered by it.
+ *
+ * A lock revision also carries `lock_keys`: which section keys that lock froze (see LockKeys in plan-rules.ts).
  *
  * Per-section history for one-step restore on the device is the `section_revision` synced record
  * (workstream H). These snapshots are the server's own, reachable through `plans.revisions`.
  */
 import { deflateSync, inflateSync } from 'node:zlib';
+import { PlanRevisionMeta } from '@hiraia/tala-core';
 import type { Id, RecordEnvelope } from '@hiraia/tala-core';
+import type { z } from 'zod';
 import type { Db } from '../../kernel/db';
+import type { LockKeys } from './plan-rules';
 import { sha256 } from './stable';
 
-export type RevisionReason = 'save' | 'lock' | 'unlock' | 'regenerate' | 'restore' | 'conflict';
+/**
+ * What the server stores. `post_class` is writing in a post-class part (results, reflection) of a locked
+ * plan: it is told apart from an ordinary save because nothing the teacher locked has changed.
+ */
+export type RevisionReason =
+  | 'save'
+  | 'lock'
+  | 'unlock'
+  | 'regenerate'
+  | 'restore'
+  | 'conflict'
+  | 'post_class';
+
+type ContractReason = z.infer<typeof PlanRevisionMeta>['reason'];
+const CONTRACT_REASONS = PlanRevisionMeta.shape.reason.options as readonly string[];
+
+/**
+ * The reason as a client may be told it. A stored reason the contract's list does not have yet is shown as
+ * `save`; with `locked: true` beside it, a `save` can then only be a post-class edit or a change to the
+ * plan's dates, "submitted" note or unit. The day the contract lists `post_class`, it is shown as itself.
+ */
+export function shownReason(stored: RevisionReason): ContractReason {
+  return (CONTRACT_REASONS.includes(stored) ? stored : 'save') as ContractReason;
+}
 
 export interface PlanSnapshotEnvelopes {
   plan: RecordEnvelope<'plan'>;
@@ -28,7 +59,7 @@ export interface PlanSnapshotEnvelopes {
 export interface RevisionMeta {
   revision: number;
   createdAt: string;
-  reason: RevisionReason;
+  reason: ContractReason;
   locked: boolean;
 }
 
@@ -39,7 +70,7 @@ export interface RevisionActor {
 
 /** Saves closer together than this are one revision. */
 export const COALESCE_MS = 10 * 60 * 1000;
-/** Ordinary save revisions kept per plan. Lock and unlock revisions are never pruned. */
+/** Ordinary save revisions kept per plan, and separately post-class ones. Lock and unlock revisions are never pruned. */
 export const MAX_SAVE_REVISIONS = 20;
 
 interface RevisionRow {
@@ -63,6 +94,19 @@ function unpack(packed: Buffer): PlanSnapshotEnvelopes {
   return JSON.parse(inflateSync(packed).toString('utf8')) as PlanSnapshotEnvelopes;
 }
 
+function readLockKeys(json: string): LockKeys | null {
+  const strings = (value: unknown): string[] | null =>
+    Array.isArray(value) && value.every((k) => typeof k === 'string') ? (value as string[]) : null;
+  try {
+    const raw = JSON.parse(json) as { outside?: unknown; inside?: unknown } | null;
+    const outside = strings(raw?.outside);
+    const inside = strings(raw?.inside);
+    return outside && inside ? { outside, inside } : null;
+  } catch {
+    return null;
+  }
+}
+
 export function createRevisions(db: Db, now: () => Date) {
   const q = {
     latest: db.prepare(
@@ -72,8 +116,8 @@ export function createRevisions(db: Db, now: () => Date) {
       'SELECT COALESCE(MAX(revision), 0) AS n FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ?'
     ),
     insert: db.prepare(
-      `INSERT INTO core_plan_revisions (owner_id, plan_id, revision, reason, locked, created_at, updated_at, session_id, device_id, digest, snapshot)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO core_plan_revisions (owner_id, plan_id, revision, reason, locked, created_at, updated_at, session_id, device_id, digest, snapshot, lock_keys)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     ),
     overwrite: db.prepare(
       'UPDATE core_plan_revisions SET digest = ?, snapshot = ?, updated_at = ? WHERE owner_id = ? AND plan_id = ? AND revision = ?'
@@ -86,9 +130,12 @@ export function createRevisions(db: Db, now: () => Date) {
     ),
     prune: db.prepare(
       `DELETE FROM core_plan_revisions
-        WHERE owner_id = ? AND plan_id = ? AND reason = 'save' AND revision IN (
-          SELECT revision FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ? AND reason = 'save'
+        WHERE owner_id = ? AND plan_id = ? AND reason = ? AND revision IN (
+          SELECT revision FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ? AND reason = ?
            ORDER BY revision DESC LIMIT -1 OFFSET ?)`
+    ),
+    lockKeys: db.prepare(
+      `SELECT lock_keys FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ? AND revision = ? AND reason = 'lock'`
     ),
     purgeOwner: db.prepare('DELETE FROM core_plan_revisions WHERE owner_id = ?'),
     purgePlan: db.prepare('DELETE FROM core_plan_revisions WHERE owner_id = ? AND plan_id = ?'),
@@ -99,7 +146,7 @@ export function createRevisions(db: Db, now: () => Date) {
   ): RevisionMeta => ({
     revision: row.revision,
     createdAt: row.created_at,
-    reason: row.reason,
+    reason: shownReason(row.reason),
     locked: row.locked === 1,
   });
 
@@ -110,7 +157,8 @@ export function createRevisions(db: Db, now: () => Date) {
     reason: RevisionReason,
     locked: boolean,
     snapshot: PlanSnapshotEnvelopes,
-    actor: RevisionActor
+    actor: RevisionActor,
+    lockKeys: LockKeys | null = null
   ): void {
     const at = now().toISOString();
     const { digest, packed } = pack(snapshot);
@@ -125,7 +173,8 @@ export function createRevisions(db: Db, now: () => Date) {
       actor.sessionId,
       actor.deviceId,
       digest,
-      packed
+      packed,
+      lockKeys === null ? null : JSON.stringify(lockKeys)
     );
   }
 
@@ -135,7 +184,10 @@ export function createRevisions(db: Db, now: () => Date) {
       return (q.max.get(ownerId, planId) as { n: number }).n + 1;
     },
 
-    /** A lock or unlock: always its own revision, with the number the caller reserved. */
+    /**
+     * A lock or unlock: always its own revision, with the number the caller reserved. A lock also records
+     * which section keys it froze and which it left open for post-class writing.
+     */
     recordEvent(
       ownerId: Id,
       planId: Id,
@@ -143,16 +195,28 @@ export function createRevisions(db: Db, now: () => Date) {
       reason: 'lock' | 'unlock',
       locked: boolean,
       snapshot: PlanSnapshotEnvelopes,
-      actor: RevisionActor
+      actor: RevisionActor,
+      lockKeys: LockKeys | null = null
     ): void {
-      append(ownerId, planId, revision, reason, locked, snapshot, actor);
+      append(ownerId, planId, revision, reason, locked, snapshot, actor, lockKeys);
     },
 
-    /** Ordinary edits: fold into the newest revision when it is a recent save of the same kind, else add one. */
+    /** What the lock with this revision number froze, or null if that lock has no such record (an older lock). */
+    lockKeys(ownerId: Id, planId: Id, revision: number): LockKeys | null {
+      const row = q.lockKeys.get(ownerId, planId, revision) as
+        | { lock_keys: string | null }
+        | undefined;
+      return row && row.lock_keys !== null ? readLockKeys(row.lock_keys) : null;
+    },
+
+    /**
+     * Ordinary edits and post-class writing: fold into the newest revision when it is a recent one of the
+     * same kind, else add one. An AI rewrite always gets its own. Nothing ever folds into a lock revision.
+     */
     recordSave(
       ownerId: Id,
       planId: Id,
-      reason: 'save' | 'regenerate',
+      reason: 'save' | 'regenerate' | 'post_class',
       locked: boolean,
       snapshot: PlanSnapshotEnvelopes,
       actor: RevisionActor
@@ -162,9 +226,9 @@ export function createRevisions(db: Db, now: () => Date) {
       if (latest && latest.digest === digest) return latest.revision;
       const at = now();
       if (
-        reason === 'save' &&
+        reason !== 'regenerate' &&
         latest &&
-        latest.reason === 'save' &&
+        latest.reason === reason &&
         (latest.locked === 1) === locked &&
         at.getTime() - Date.parse(latest.created_at) < COALESCE_MS
       ) {
@@ -173,7 +237,8 @@ export function createRevisions(db: Db, now: () => Date) {
       }
       const revision = (latest?.revision ?? 0) + 1;
       append(ownerId, planId, revision, reason, locked, snapshot, actor);
-      if (reason === 'save') q.prune.run(ownerId, planId, ownerId, planId, MAX_SAVE_REVISIONS);
+      if (reason !== 'regenerate')
+        q.prune.run(ownerId, planId, reason, ownerId, planId, reason, MAX_SAVE_REVISIONS);
       return revision;
     },
 
