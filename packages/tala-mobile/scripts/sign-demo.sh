@@ -24,3 +24,5 @@ mkdir -p /tmp/tala-apk
   --ks-pass env:TALA_DEMO_KEYSTORE_PASSWORD --key-pass env:TALA_DEMO_KEYSTORE_PASSWORD \
   --out /tmp/tala-apk/tala.apk "${1:-android/app/build/outputs/apk/release/app-release.apk}"
 "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose /tmp/tala-apk/tala.apk
+
+chmod 644 /tmp/tala-apk/tala.apk
