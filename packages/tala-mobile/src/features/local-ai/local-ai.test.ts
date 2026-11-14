@@ -68,6 +68,10 @@ test('interrupted files resume by byte offset, verify before install and again b
   assert.equal(f.stats().hashes, 1);
   assert.equal(await manager.verifiedPath(), 'file:///verified.gguf');
   assert.equal(f.stats().hashes, 2);
+  const reopened = modelLifecycle(f.port);
+  await reopened.init();
+  assert.equal(reopened.snapshot().state, 'ready');
+  assert.equal(reopened.snapshot().bytes, MODEL.bytes);
   await manager.remove();
   assert.equal(f.stats().final, 0);
   assert.equal(manager.snapshot().state, 'absent');

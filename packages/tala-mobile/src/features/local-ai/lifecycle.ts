@@ -41,8 +41,9 @@ export function modelLifecycle(files: ModelFiles) {
     },
     async init() {
       if (busy) return;
-      bytes = await files.size(true);
-      state = (await files.size(false)) === MODEL.bytes ? 'ready' : bytes ? 'paused' : 'absent';
+      const installed = (await files.size(false)) === MODEL.bytes;
+      bytes = installed ? MODEL.bytes : await files.size(true);
+      state = installed ? 'ready' : bytes ? 'paused' : 'absent';
       publish();
     },
     async download(consent: { optIn: boolean; allowMobile: boolean }) {
