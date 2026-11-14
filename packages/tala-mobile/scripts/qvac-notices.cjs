@@ -4,7 +4,7 @@ const { createRequire } = require('node:module');
 if (process.env.TALA_QVAC !== '1') throw Error('Notices are QVAC-variant only');
 const root = path.resolve(__dirname, '..');
 const names = JSON.parse(
-  fs.readFileSync(path.join(root, 'qvac/addons.manifest.json'), 'utf8')
+  fs.readFileSync(path.join(root, 'qvac-build/qvac/addons.manifest.json'), 'utf8')
 ).addons;
 const rootRequire = require('../qvac-build/resolve.cjs');
 const sdkFile = rootRequire.resolve('@qvac/sdk/expo-plugin');

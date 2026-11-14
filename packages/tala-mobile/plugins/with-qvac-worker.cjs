@@ -9,7 +9,7 @@ const sdkPlugins = qvacRequire('@qvac/sdk/expo-plugin');
 /** A build-local SDK view supplies the worker import map without mutating installed packages. */
 function workerSdkView(projectRoot) {
   const sdk = sdkPlugins.resolveSDKPackageDir(path.join(projectRoot, 'qvac-build'));
-  const stage = path.join(projectRoot, 'qvac', 'sdk-worker-view');
+  const stage = path.join(projectRoot, 'qvac-build', 'qvac', 'sdk-worker-view');
   fs.rmSync(stage, { recursive: true, force: true });
   fs.mkdirSync(stage, { recursive: true });
   for (const name of fs.readdirSync(sdk.dir)) {
@@ -32,12 +32,13 @@ function withWorker(config) {
     async (mod) => {
       const root = sdkPlugins.getProjectRootFromMod(mod);
       const { sdk, stage } = workerSdkView(root);
+      const island = path.join(root, 'qvac-build');
       const { bundleSdk, verifyBundle, hasErrors, formatVerifyBundleResult } = await import(
         pathToFileURL(path.join(sdk.dir, 'dist/src/commands/index.js')).href
       );
       const hosts = ['android-arm64', 'ios-arm64', 'ios-arm64-simulator', 'ios-x64-simulator'];
       const result = await bundleSdk({
-        projectRoot: root,
+        projectRoot: island,
         sdkPath: stage,
         configPath: path.join(root, 'qvac.config.json'),
         hosts,
@@ -51,7 +52,7 @@ function withWorker(config) {
         checkEngines: false,
       });
       const verified = await verifyBundle({
-        projectRoot: root,
+        projectRoot: island,
         addonsSource: result.bundlePath,
         configPath: path.join(root, 'qvac.config.json'),
         hosts: ['android-arm64'],
@@ -64,8 +65,7 @@ function withWorker(config) {
       const out = path.join(kit, 'android/src/main/addons');
       fs.rmSync(out, { recursive: true, force: true });
       const imports = JSON.parse(fs.readFileSync(path.join(stage, 'bare-imports.json'), 'utf8'));
-      const nativeEntry = path.join(root, 'qvac-build/worker.native.entry.mjs');
-      fs.copyFileSync(result.entryPaths.worker, nativeEntry);
+      const nativeEntry = result.entryPaths.worker;
       let linked = 0;
       for await (const resource of link(nativeEntry, {
         hosts: ['android-arm64'],

@@ -63,3 +63,5 @@ Generation uses durable idempotency keys, resumable polling/cancellation, prefil
 For the optional, side-by-side on-device AI build, see [QVAC-IMPLEMENTATION.md](QVAC-IMPLEMENTATION.md). `TALA_QVAC=1` is a native build choice; changing an environment value in an installed standard APK cannot enable QVAC. Always use the variant build script with a clean prebuild. The existing public standard APK is not overwritten by that script.
 
 The current worker dependency isolation fix, combined mobile/web clean-install proof and replacement QVAC APK measurements are in [QVAC-ISOLATION.md](QVAC-ISOLATION.md).
+
+QVAC dependencies now live in a standalone build island to preserve every other workspace importer. See [QVAC-LOCK-ISOLATION.md](QVAC-LOCK-ISOLATION.md) and [qvac-build/README.md](qvac-build/README.md); install its frozen lockfile separately before experimental builds.

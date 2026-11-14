@@ -18,6 +18,12 @@ config.resolver.resolveRequest = (context, name, platform) => {
     process.env.TALA_QVAC === '1' &&
     (name === '@qvac/sdk' || name.startsWith('@qvac/sdk/') || name === 'react-native-bare-kit')
   ) {
+    const isolated = require('./qvac-build/resolve.cjs');
+    isolated.resolve(
+      name === 'react-native-bare-kit'
+        ? 'react-native-bare-kit/package.json'
+        : '@qvac/sdk/expo-plugin'
+    );
     return context.resolveRequest(
       { ...context, originModulePath: path.join(__dirname, 'qvac-build/package.json') },
       name,

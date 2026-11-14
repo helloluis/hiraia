@@ -5,7 +5,7 @@ module.exports = {
       ? {
           'react-native-bare-kit': {
             root: require('node:path').dirname(
-              require('./qvac-build/resolve.cjs').resolve('react-native-bare-kit/package.json')
+              require('./qvac-build/resolve.cjs').forConfig('react-native-bare-kit/package.json')
             ),
           },
         }

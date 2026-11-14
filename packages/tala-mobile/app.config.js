@@ -11,7 +11,7 @@ module.exports = {
     ...(qvac
       ? [
           [
-            require('./qvac-build/resolve.cjs').resolve('expo-build-properties'),
+            require('./qvac-build/resolve.cjs').forConfig('expo-build-properties'),
             { android: { minSdkVersion: 31 } },
           ],
           './plugins/with-qvac-worker.cjs',

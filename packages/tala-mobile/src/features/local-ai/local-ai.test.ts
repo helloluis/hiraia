@@ -224,7 +224,7 @@ test('pausing an active transfer preserves partial bytes and never installs unve
   assert.equal(f.stats().installs, 0);
 });
 
-test('worker process override never installs a Node builtin alias or modifies the SDK map', () => {
+test('standalone QVAC manifest never exposes builtin aliases or SDK peers to the workspace', () => {
   const require = createRequire(import.meta.url);
   const fs = require('node:fs');
   const path = require('node:path');
@@ -244,7 +244,19 @@ test('worker process override never installs a Node builtin alias or modifies th
   const island = JSON.parse(fs.readFileSync(path.join(root, 'qvac-build/package.json'), 'utf8'));
   assert.equal(island.devDependencies['bare-process'], '4.4.1');
   assert.ok(fs.existsSync(path.join(root, 'qvac-build/pnpm-workspace.yaml')));
-  if (!fs.existsSync(path.join(root, 'qvac-build/node_modules/@qvac/sdk'))) return;
+  const isolated = require(path.join(root, 'qvac-build/resolve.cjs'));
+  assert.throws(() => isolated.resolve('node:process'), { code: 'MODULE_NOT_FOUND' });
+});
+
+test('installed standalone worker map preserves the SDK import map', (t) => {
+  const require = createRequire(import.meta.url);
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const root = path.resolve(import.meta.dirname, '../../..');
+  if (!fs.existsSync(path.join(root, 'qvac-build/node_modules/@qvac/sdk'))) {
+    t.skip('QVAC island is optional for standard tests');
+    return;
+  }
   // Node runs Expo's ESM plugins natively; tsx's CJS transform changes their interop.
   const proof = JSON.parse(
     execFileSync(
