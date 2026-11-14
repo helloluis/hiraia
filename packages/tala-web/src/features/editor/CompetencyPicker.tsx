@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useT } from '@/i18n';
 import { Button, Checkbox, Sheet, TextInput } from '@/components/ui';
+import { topicLabel } from '@/data/topics';
 import type { PlanEditor } from './usePlanEditor';
 
 /** Choose competencies per grade group for the plan's learning area (CUR-2: tagging is the default, not a chore). */
@@ -14,7 +15,7 @@ export function CompetencyPicker({
   onClose: () => void;
   ed: PlanEditor;
 }) {
-  const { t } = useT();
+  const { t, lang } = useT();
   const [chosen, setChosen] = useState<Record<string, string[]>>({});
   const [query, setQuery] = useState('');
   const [allTerms, setAllTerms] = useState(false);
@@ -93,7 +94,15 @@ export function CompetencyPicker({
           {list.map((c) => (
             <Checkbox
               key={c.id}
-              label={`${c.code ? c.code + ' · ' : ''}${c.text}`}
+              label={
+                <span className="flex flex-col">
+                  <span className="font-medium">{topicLabel(c, lang).heading}</span>
+                  <span className="text-small text-forestMuted">
+                    {c.code ? `${c.code} · ` : ''}
+                    {c.text}
+                  </span>
+                </span>
+              }
               checked={(chosen[g.id] ?? []).includes(c.id)}
               onChange={(on) => toggle(g.id, c.id, on)}
             />

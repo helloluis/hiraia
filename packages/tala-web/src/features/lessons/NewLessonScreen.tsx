@@ -8,6 +8,7 @@ import { isoDate, newId } from '@/data/ids';
 import { useTimeline } from '@/data/timeline';
 import { curriculumVersionFor } from '@/data/curriculum';
 import { defaultTemplateFor, newPlan } from '@/data/plans';
+import { topicLabel } from '@/data/topics';
 import {
   Banner,
   Button,
@@ -15,6 +16,7 @@ import {
   PageHeader,
   Placeholder,
   Select,
+  Sparkle,
   TextInput,
 } from '@/components/ui';
 import { MatchingLessons } from '@/features/community/MatchingLessons';
@@ -167,7 +169,7 @@ export function NewLessonScreen() {
             .flat()
             .map((id) => {
               const c = tl.competencyById.get(id);
-              return c ? (c.code ?? c.text.slice(0, 60)) : id;
+              return c ? topicLabel(c, lang).heading : id;
             })
             .join('; ')}
         </p>
@@ -182,8 +184,13 @@ export function NewLessonScreen() {
       >
         {t('lessons.write')}
       </Button>
-      <Button full onClick={() => void create(true)} disabled={busy || tl.loading || !cls}>
-        {t('lessons.generate')}
+      <Button
+        variant="ai"
+        full
+        onClick={() => void create(true)}
+        disabled={busy || tl.loading || !cls}
+      >
+        <Sparkle /> {t('lessons.generate')}
       </Button>
       <LinkButton
         href={`/community${entry ? `?competencyId=${encodeURIComponent(Object.values(entry.byGroup).flat()[0] ?? '')}&grade=${cls?.gradeGroups[0]?.grade ?? ''}` : ''}`}

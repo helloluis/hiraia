@@ -364,6 +364,84 @@ for (const { plan, sections } of [en, fil]) {
   await put('plan', plan);
 }
 
+// Session Flow timeline demo: a 50-minute multigrade plan with two blocks (20 + 15 = 35 minutes).
+const flowId = newId();
+const flowBlocks = [
+  {
+    id: newId(),
+    label: 'Opening',
+    minutes: 20,
+    transitionMinutes: 0,
+    teacherWith: 'all',
+    pairedGroupIds: multi.groups.map((g) => g.id),
+    groups: Object.fromEntries(
+      multi.groups.map((g) => [
+        g.id,
+        {
+          mode: 'shared',
+          activity: [{ t: 'p', spans: [{ text: 'Balik-aral tungkol sa pwersa at galaw.' }] }],
+        },
+      ])
+    ),
+  },
+  {
+    id: newId(),
+    label: 'Ramp test',
+    minutes: 15,
+    transitionMinutes: 1,
+    teacherWith: multi.groups[0].id,
+    pairedGroupIds: [],
+    groups: Object.fromEntries(
+      multi.groups.map((g, i) => [
+        g.id,
+        {
+          mode: i === 0 ? 'direct' : 'independent',
+          activity: [
+            {
+              t: 'p',
+              spans: [
+                {
+                  text:
+                    i === 0
+                      ? 'Gabay ng teacher sa pagsukat ng distansya.'
+                      : 'Itala ang resulta sa worksheet.',
+                },
+              ],
+            },
+          ],
+        },
+      ])
+    ),
+  },
+];
+const flowPlan = {
+  ...en.plan,
+  id: flowId,
+  title: 'Session Flow demo: Friction (50 min)',
+  durationMinutes: 50,
+  state: 'draft',
+  lock: null,
+  aiDraft: false,
+  placements: [
+    {
+      classId: multi.cls.id,
+      assignmentId: multi.sci.id,
+      dates: [
+        sciDates.find((d) => d > (fil.plan.placements[0]?.dates[0] ?? today)) ?? addDays(today, 7),
+      ],
+    },
+  ],
+};
+for (const s of en.sections)
+  await put('plan_section', {
+    ...s,
+    id: newId(),
+    planId: flowId,
+    content:
+      s.content.type === 'multigrade' ? { type: 'multigrade', blocks: flowBlocks } : s.content,
+  });
+await put('plan', flowPlan);
+
 const report = await engine.sync();
 if (!report.ok) throw new Error('sync failed: ' + report.error);
 console.log(
@@ -374,6 +452,7 @@ console.log(
       classId: multi.cls.id,
       draftPlanId: en.plan.id,
       lockedPlanId: fil.plan.id,
+      flowPlanId: flowId,
       pushed: report.pushed,
       week: monday,
     },

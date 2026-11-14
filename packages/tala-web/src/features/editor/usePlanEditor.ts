@@ -6,6 +6,7 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
+  blankContent,
   boundSectionHistory,
   lockPlan,
   restoreSectionRevision,
@@ -216,6 +217,29 @@ export function usePlanEditor(planId: string) {
     [flushPlan]
   );
 
+  /** A section the template has but the plan record set lacks (e.g. post-class `results` on an older plan): create it on first edit. */
+  const ensureSection = useCallback(
+    async (key: string, contentType: SectionContent['type']): Promise<PlanSection | null> => {
+      if (!engine || !plan) return null;
+      const existing = (await engine.list('plan_section')).find(
+        (s) => s.data.planId === plan.id && s.data.key === key
+      );
+      if (existing) return existing.data;
+      const section: PlanSection = {
+        id: newId(),
+        planId: plan.id,
+        key,
+        content: blankContent(contentType, plan.gradeGroupIds),
+        origin: 'manual',
+        editedByTeacher: false,
+        gen: null,
+      };
+      await engine.put('plan_section', section);
+      return section;
+    },
+    [engine, plan]
+  );
+
   const flushAll = useCallback(async () => {
     for (const id of [...sectionTimers.current.keys()]) {
       clearTimeout(sectionTimers.current.get(id));
@@ -318,6 +342,7 @@ export function usePlanEditor(planId: string) {
     problems,
     pendingCount,
     saveSection,
+    ensureSection,
     savePlan,
     flushAll,
     lock,

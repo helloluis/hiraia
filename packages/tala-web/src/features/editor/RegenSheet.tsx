@@ -106,7 +106,7 @@ export function RegenSheet({
             <Button variant="quiet" onClick={onClose}>
               {t('common.cancel')}
             </Button>
-            <Button variant="primary" onClick={() => void run()}>
+            <Button variant="ai" onClick={() => void run()}>
               {edited ? t('gen.regenConfirm') : online ? t('gen.regen') : t('gen.keepWaiting')}
             </Button>
           </>

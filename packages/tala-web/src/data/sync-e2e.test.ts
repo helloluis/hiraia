@@ -189,3 +189,108 @@ test('offline sync reports offline and keeps the outbox; nothing is lost', async
     t.close();
   }
 });
+
+test('post-class sections stay writable on a locked plan; a new `results` record created after the lock is accepted; pre-class edits are refused', async () => {
+  const t = createTestServer({ quiet: true });
+  try {
+    const teacher = await t.registerUser();
+    const a = device(t, teacher.token, 'phone');
+    const b = device(t, teacher.token, 'laptop');
+    const template = BUILTIN_TEMPLATES[0]!;
+    const { plan, sections } = newPlan({
+      template,
+      cls: cls('c1'),
+      assignment: null,
+      dates: ['2026-11-17'],
+      language: 'fil',
+      newId,
+    });
+    // Simulate an older plan: no `results` record yet.
+    const older = sections.filter((s) => s.key !== 'results');
+    const filled = older.map((s) => ({
+      ...s,
+      content:
+        s.content.type === 'list'
+          ? { type: 'list' as const, items: ['x'] }
+          : s.content.type === 'text'
+            ? { type: 'text' as const, blocks: [{ t: 'p' as const, spans: [{ text: 'y' }] }] }
+            : s.content.type === 'procedure'
+              ? {
+                  type: 'procedure' as const,
+                  steps: [
+                    {
+                      id: newId(),
+                      title: 's',
+                      minutes: 5,
+                      body: [{ t: 'p' as const, spans: [{ text: 'z' }] }],
+                    },
+                  ],
+                }
+              : s.content,
+    }));
+    await a.batch([
+      { op: 'put', entity: 'class', data: cls('c1') },
+      {
+        op: 'put',
+        entity: 'plan',
+        data: { ...plan, competencies: { g3: ['dev.science.g3.t1.1'] } },
+      },
+      ...filled.map((s) => ({ op: 'put' as const, entity: 'plan_section' as const, data: s })),
+    ]);
+    const planA = (await a.get('plan', plan.id))!.data;
+    const locked = lockPlan({
+      plan: planA,
+      sections: filled,
+      template,
+      class: cls('c1'),
+      teacherName: 'T',
+      at: new Date().toISOString(),
+      revision: null,
+    });
+    await a.put('plan', locked);
+    assert.equal((await a.sync()).ok, true);
+    await b.sync();
+    // Post-class: reflection edit (existing outsideLock section) and a brand-new `results` section.
+    const reflection = (await b.list('plan_section')).find(
+      (s) => s.data.planId === plan.id && s.data.key === 'reflection'
+    )!;
+    await b.put('plan_section', {
+      ...reflection.data,
+      content: {
+        type: 'text',
+        blocks: [{ t: 'p', spans: [{ text: 'Nagustuhan ng klase ang ramp.' }] }],
+      },
+      editedByTeacher: true,
+    });
+    await b.put('plan_section', {
+      id: newId(),
+      planId: plan.id,
+      key: 'results',
+      content: { type: 'text', blocks: [{ t: 'p', spans: [{ text: '18 of 25 scored 7+' }] }] },
+      origin: 'manual',
+      editedByTeacher: true,
+      gen: null,
+    });
+    const rb = await b.sync();
+    assert.equal(rb.ok, true);
+    assert.equal(rb.lockCopies.length, 0, 'post-class writes must not fork a draft copy');
+    assert.equal(rb.rejected, 0, 'post-class writes are accepted on a locked plan');
+    await a.sync();
+    const onA = (await a.list('plan_section')).filter((s) => s.data.planId === plan.id);
+    assert.ok(
+      onA.some((s) => s.data.key === 'results'),
+      'the new results section reached the other device'
+    );
+    assert.equal((await a.get('plan', plan.id))!.data.state, 'locked');
+    // Pre-class: an assessment edit on the locked plan is refused and kept as a draft copy (DOC-4).
+    const assessment = onA.find((s) => s.data.key === 'assessment')!;
+    await a.put('plan_section', {
+      ...assessment.data,
+      content: { type: 'text', blocks: [{ t: 'p', spans: [{ text: 'changed after lock' }] }] },
+    });
+    const ra = await a.sync();
+    assert.equal(ra.lockCopies.length, 1);
+  } finally {
+    t.close();
+  }
+});

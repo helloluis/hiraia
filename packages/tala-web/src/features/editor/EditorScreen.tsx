@@ -5,6 +5,9 @@ import type { LocalRecord, PlanSection, SectionContent } from '@hiraia/tala-core
 import { formatDate, formatTime, useT } from '@/i18n';
 import { useSession } from '@/data/session';
 import { planDates } from '@/data/plans';
+import { topicLabel } from '@/data/topics';
+import { blankContent } from '@hiraia/tala-core/plan';
+import { Sparkle } from '@/components/ui';
 import {
   Badge,
   Banner,
@@ -248,12 +251,24 @@ export function EditorScreen({ planId }: { planId: string }) {
               ids.map((id) => {
                 const c = ed.competencies.find((x) => x.id === id);
                 const g = ed.groups.find((x) => x.id === gid);
+                const tl = c ? topicLabel(c, lang) : null;
                 return (
-                  <li key={gid + id} className="text-small">
-                    {ed.groups.length > 1 && g && (
-                      <Badge>{t('common.grade', { g: g.grade })}</Badge>
-                    )}{' '}
-                    {c ? `${c.code ? c.code + ' · ' : ''}${c.text}` : id}
+                  <li
+                    key={gid + id}
+                    className="flex flex-col gap-0.5 py-1 border-b border-hairline last:border-b-0"
+                  >
+                    <span className="flex flex-wrap items-center gap-2">
+                      {ed.groups.length > 1 && g && (
+                        <Badge>{t('common.grade', { g: g.grade })}</Badge>
+                      )}
+                      <span className="font-medium">{tl ? tl.heading : id}</span>
+                    </span>
+                    {tl && (
+                      <span className="text-small text-forestMuted">
+                        {tl.code ? `${tl.code} · ` : ''}
+                        {tl.text}
+                      </span>
+                    )}
                   </li>
                 );
               })
@@ -276,52 +291,78 @@ export function EditorScreen({ planId }: { planId: string }) {
         </div>
       </section>
 
-      {/* Sections in template order */}
-      {template.sections.map((ts) => {
-        const rec = ed.sections.find((s) => s.data.key === ts.key);
-        if (!rec) return null;
-        const readOnly = locked && !ts.outsideLock;
-        const missing = ed.problems.some((p) => p.kind === 'empty' && p.key === ts.key);
+      {/* Pre-class sections in template order; post-class ones under their own heading */}
+      {(['pre', 'post'] as const).map((phase) => {
+        const list = template.sections.filter((ts) => (phase === 'post') === !!ts.outsideLock);
+        if (!list.length) return null;
         return (
-          <section
-            key={ts.key}
-            aria-labelledby={`s-${ts.key}`}
-            className={cx(
-              'rounded border bg-white p-4 flex flex-col gap-3',
-              missing && !locked ? 'border-yellow' : 'border-hairline'
-            )}
-          >
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <h2 id={`s-${ts.key}`} className="text-title">
-                {ts.label[lang]}
-              </h2>
-              <span className="flex gap-2">
-                {ts.required && <Badge>{t('editor.required')}</Badge>}
-                {rec.conflict && (
-                  <Button variant="quiet" onClick={() => setConflict(rec)}>
-                    ⚠ {t('lessons.conflictBadge')}
-                  </Button>
-                )}
-              </span>
-            </div>
-            {locked && ts.outsideLock && (
-              <p className="text-small text-forestMuted">{t('editor.reflectionEditable')}</p>
-            )}
-            {!readOnly && canGenerate && ed.cls && (
-              <div>
-                <Button variant="quiet" onClick={() => setRegen(rec)}>
-                  ✦ {t('gen.regen')}
-                </Button>
+          <div key={phase} className="flex flex-col gap-4">
+            {phase === 'post' && (
+              <div className="pt-2">
+                <h2 className="text-title">{t('editor.afterClass')}</h2>
+                <p className="text-small text-forestMuted">{t('editor.afterClassHint')}</p>
               </div>
             )}
-            <SectionEditor
-              content={rec.data.content}
-              readOnly={readOnly}
-              groups={ed.groups}
-              label={ts.label[lang]}
-              onChange={(c: SectionContent) => ed.saveSection(rec.data, c)}
-            />
-          </section>
+            {list.map((ts) => {
+              const rec = ed.sections.find((sec) => sec.data.key === ts.key);
+              const readOnly = locked && !ts.outsideLock;
+              const missing = ed.problems.some((p) => p.kind === 'empty' && p.key === ts.key);
+              // Older plans have no record for a newer post-class section: edit a blank one and create it on first change.
+              const data = rec?.data ?? {
+                id: '',
+                planId: plan.id,
+                key: ts.key,
+                content: blankContent(ts.contentType, plan.gradeGroupIds),
+                origin: 'manual' as const,
+                editedByTeacher: false,
+                gen: null,
+              };
+              const onChange = async (c: SectionContent) => {
+                if (rec) return ed.saveSection(rec.data, c);
+                const created = await ed.ensureSection(ts.key, ts.contentType);
+                if (created) ed.saveSection(created, c);
+              };
+              return (
+                <section
+                  key={ts.key}
+                  aria-labelledby={`s-${ts.key}`}
+                  className={cx(
+                    'rounded border bg-white p-4 flex flex-col gap-3',
+                    missing && !locked ? 'border-yellow' : 'border-hairline'
+                  )}
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h2 id={`s-${ts.key}`} className="text-title">
+                      {ts.label[lang]}
+                    </h2>
+                    <span className="flex gap-2">
+                      {ts.required && <Badge>{t('editor.required')}</Badge>}
+                      {rec?.conflict && (
+                        <Button variant="quiet" onClick={() => setConflict(rec)}>
+                          ⚠ {t('lessons.conflictBadge')}
+                        </Button>
+                      )}
+                    </span>
+                  </div>
+                  {!readOnly && !ts.outsideLock && canGenerate && ed.cls && rec && (
+                    <div>
+                      <Button variant="ai" onClick={() => setRegen(rec)}>
+                        <Sparkle /> {t('gen.regen')}
+                      </Button>
+                    </div>
+                  )}
+                  <SectionEditor
+                    content={data.content}
+                    readOnly={readOnly}
+                    groups={ed.groups}
+                    label={ts.label[lang]}
+                    durationMinutes={plan.durationMinutes}
+                    onChange={(c: SectionContent) => void onChange(c)}
+                  />
+                </section>
+              );
+            })}
+          </div>
         );
       })}
 
