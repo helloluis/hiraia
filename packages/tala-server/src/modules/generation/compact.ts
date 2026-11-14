@@ -113,6 +113,27 @@ function classSize(input: DraftInput) {
       : {}),
   };
 }
+// Compare only presentation text; authoritative curriculum wording remains unchanged.
+function withAuthoritativeText(authoritative: string[], additions: string[]): string[] {
+  const stored = [...new Set(authoritative)];
+  const normalize = (value: string) =>
+    value
+      .normalize('NFKC')
+      .toLocaleLowerCase()
+      .replace(/[\p{P}\p{S}]/gu, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  const canonical = stored.map(normalize);
+  return [
+    ...stored,
+    ...additions
+      .flatMap((value) => value.split('\n'))
+      .filter((line) => {
+        const normalized = normalize(line);
+        return normalized && !canonical.some((text) => ` ${text} `.includes(` ${normalized} `));
+      }),
+  ];
+}
 export function convertCompact(
   input: DraftInput,
   raw: CompactLesson,
@@ -132,12 +153,10 @@ export function convertCompact(
       .flatMap((g) => g.objectives);
     if (part.targets.some((ref) => !candidates.some((t) => t.ref === ref)))
       throw Error('objective_reference');
-    return [
-      ...new Set(part.targets.map((ref) => candidates.find((t) => t.ref === ref)!.text)),
-      part.text,
-    ]
-      .filter(Boolean)
-      .join('\n');
+    return withAuthoritativeText(
+      part.targets.map((ref) => candidates.find((t) => t.ref === ref)!.text),
+      [part.text]
+    ).join('\n');
   };
   const warnings: string[] = [];
   const sections = raw.sections.map((s, index) => {
@@ -153,16 +172,14 @@ export function convertCompact(
         content = {
           type: 'list',
           items: isTarget
-            ? [
-                ...new Set(
-                  s.targets.map((ref) => {
-                    const obj = groups.flatMap((g) => g.objectives).find((o) => o.ref === ref);
-                    if (!obj) throw Error('objective_reference');
-                    return obj.text;
-                  })
-                ),
-                ...s.items,
-              ]
+            ? withAuthoritativeText(
+                s.targets.map((ref) => {
+                  const obj = groups.flatMap((g) => g.objectives).find((o) => o.ref === ref);
+                  if (!obj) throw Error('objective_reference');
+                  return obj.text;
+                }),
+                s.items
+              )
             : s.items,
         };
         break;
