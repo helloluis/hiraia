@@ -3,7 +3,7 @@ import type { Template, RichText, SectionContent, Span } from '../contracts/cont
 import type { Competency } from '../contracts/curriculum';
 import type { Lang } from '../contracts/common';
 import { colors, fonts } from '../tokens';
-import { sectionPlainText } from '../plan/text';
+import { sectionPlainText, richTextPlainText } from '../plan/text';
 import { frauncesBase64 } from './font';
 import { hiraiaGlyphSvg } from './glyph';
 export { frauncesBase64 } from './font';
@@ -69,7 +69,7 @@ const labels = {
     prepared: 'Prepared by',
     checked: 'Checked by',
     time: 'Bahagi ng oras',
-    transition: 'Paglipat',
+    transition: 'paglipat',
     locked: 'Naka-lock',
     revision: 'Rebisyon',
     adapted: 'Hango sa',
@@ -77,7 +77,7 @@ const labels = {
     all: 'Lahat ng pangkat',
     none: 'Pagbabantay',
     direct: 'Kasama ang guro',
-    independent: 'Sariling gawain',
+    independent: 'Mag-isa',
     peer: 'Tulungan',
     shared: 'Sama-sama',
     notice: 'Banghay-aralin sa Tala · Hiraia',
@@ -95,10 +95,65 @@ export function printPageSize(options: RenderPlanOptions): [number, number] {
   return printOrientation(options) === 'landscape' ? [size[1], size[0]] : size;
 }
 function groups(options: RenderPlanOptions): Array<{ id: string; label: string }> {
-  return options.plan.gradeGroupIds.map((id, i) => ({
-    id,
-    label: `${labels[options.lang].grade} ${options.class?.gradeGroups.find((g) => g.id === id)?.grade ?? options.plan.grades[i] ?? id}`,
-  }));
+  const contentIds = options.sections
+    .filter((s) => s.planId === options.plan.id)
+    .flatMap((s) =>
+      s.content.type === 'pergroup'
+        ? Object.keys(s.content.groups)
+        : s.content.type === 'multigrade'
+          ? s.content.blocks.flatMap((b) => Object.keys(b.groups))
+          : []
+    );
+  const ids = [
+    ...new Set([
+      ...options.plan.gradeGroupIds,
+      ...(options.class?.gradeGroups.map((g) => g.id) ?? []),
+      ...contentIds,
+    ]),
+  ];
+  return ids.map((id, i) => {
+    const grade =
+      options.class?.gradeGroups.find((g) => g.id === id)?.grade ?? options.plan.grades[i];
+    return {
+      id,
+      label: grade
+        ? `${labels[options.lang].grade} ${grade}`
+        : options.lang === 'fil'
+          ? 'Pangkat'
+          : 'Group',
+    };
+  });
+}
+function groupName(o: RenderPlanOptions, id: string): string {
+  return groups(o).find((g) => g.id === id)?.label ?? (o.lang === 'fil' ? 'Pangkat' : 'Group');
+}
+function contentText(c: SectionContent, o: RenderPlanOptions): string {
+  const l = labels[o.lang];
+  if (c.type === 'pergroup')
+    return Object.entries(c.groups)
+      .map(([id, body]) => `${groupName(o, id)}\n${richTextPlainText(body)}`)
+      .join('\n\n');
+  if (c.type === 'multigrade')
+    return c.blocks
+      .map((b) => {
+        const teacher =
+          b.teacherWith === 'all'
+            ? l.all
+            : b.teacherWith === 'none'
+              ? l.none
+              : groupName(o, b.teacherWith);
+        return `${b.label} (${b.minutes} ${l.minutes}; ${l.transition} ${b.transitionMinutes} ${l.minutes})\n${l.teacher}: ${teacher}${b.pairedGroupIds.length ? `\n${b.pairedGroupIds.map((id) => groupName(o, id)).join(' + ')}` : ''}\n${Object.entries(
+          b.groups
+        )
+          .map(([id, g]) => `${groupName(o, id)} (${l[g.mode]}): ${richTextPlainText(g.activity)}`)
+          .join('\n')}`;
+      })
+      .join('\n\n');
+  if (c.type === 'weekgrid')
+    return c.days
+      .map((d) => `${d.date ?? l.days[d.weekday - 1]}\n${richTextPlainText(d.body)}`)
+      .join('\n\n');
+  return sectionPlainText(c);
 }
 function headerFields(o: RenderPlanOptions): Array<[string, string]> {
   const l = labels[o.lang];
@@ -168,7 +223,7 @@ function rich(blocks: RichText): string {
 function contentHtml(c: SectionContent, o: RenderPlanOptions): string {
   const l = labels[o.lang];
   const gradeGroups = groups(o);
-  const groupLabel = (id: string) => gradeGroups.find((g) => g.id === id)?.label ?? id;
+  const groupLabel = (id: string) => groupName(o, id);
   switch (c.type) {
     case 'text':
       return rich(c.blocks);
@@ -259,7 +314,7 @@ export function renderPlanText(o: RenderPlanOptions): string {
     '',
     ...orderedSections(o).flatMap(({ label, section }) => [
       label,
-      sectionPlainText(section.content),
+      contentText(section.content, o),
       '',
     ]),
     `${l.prepared}: ____________________`,
