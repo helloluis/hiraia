@@ -1,3 +1,5 @@
+import { OnDeviceScreen } from './features/local-ai/OnDeviceScreen';
+import { localAiBuild } from './features/local-ai/runtime';
 import { AboutScreen } from './features/AboutScreen';
 import { markReady } from './runtime/diagnostics';
 import React, { useEffect, useState, useRef } from 'react';
@@ -74,6 +76,7 @@ type Page =
   | 'setup'
   | 'settings'
   | 'about'
+  | 'local-ai'
   | 'lesson'
   | 'conflict'
   | 'preview'
@@ -1148,10 +1151,12 @@ export default function App() {
             />
           </ScrollView>
         )}
+        {page === 'local-ai' && <OnDeviceScreen t={t} onBack={() => setPage('settings')} />}
         {page === 'about' && <AboutScreen t={t} onBack={() => setPage('settings')} />}
         {page === 'settings' && (
           <ScrollView contentContainerStyle={styles.pad}>
             <Title>{t('settings')}</Title>
+            {localAiBuild && <Button label={t('onDeviceAi')} onPress={() => setPage('local-ai')} />}
             <Button label={t('aboutDiagnostics')} onPress={() => setPage('about')} />
             <Button
               label={`${t('language')}: ${language === 'fil' ? 'Filipino' : 'English'}`}

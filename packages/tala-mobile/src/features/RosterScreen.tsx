@@ -1,3 +1,5 @@
+import { localAi, localAiBuild, localAiSupported } from './local-ai/runtime';
+import { rosterPrompt } from './local-ai/roster';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, View, FlatList, Switch } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
@@ -400,6 +402,30 @@ export function RosterScreen(props: FeatureProps & { classId: string }) {
                 .filter(Boolean)
                 .join(' · ')}
             </Body>
+            {localAiBuild &&
+              review?.draft.importId.startsWith('local-') &&
+              row.status === 'needs_review' && (
+                <>
+                  <Body>{t('localAiReviewNotice')}</Body>
+                  <Button
+                    label={t('localAiSuggest')}
+                    disabled={!canWrite || action.busy || !!review.key || !localAiSupported()}
+                    onPress={() =>
+                      void action.run(async () => {
+                        const expected = JSON.stringify(row);
+                        const answer = await localAi().engine.complete(rosterPrompt(row), () => {});
+                        await rt.features.roster.localSuggestion(
+                          classId,
+                          row.rowIndex,
+                          expected,
+                          answer.text
+                        );
+                        await refresh();
+                      })
+                    }
+                  />
+                </>
+              )}
             {row.flags.map((flag) => (
               <Body key={flag}>{t(`flag_${flag}` as never)}</Body>
             ))}

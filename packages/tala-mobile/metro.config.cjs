@@ -6,4 +6,25 @@ config.resolver.nodeModulesPaths = [
   path.resolve(__dirname, 'node_modules'),
   path.resolve(__dirname, '../../node_modules'),
 ];
+config.resolver.resolveRequest = (context, name, platform) => {
+  if (name === './native-engine' && context.originModulePath.includes('/local-ai/')) {
+    return {
+      type: 'sourceFile',
+      filePath: path.join(
+        __dirname,
+        'src/features/local-ai',
+        process.env.TALA_QVAC === '1' ? 'engine.qvac.ts' : 'engine.stub.ts'
+      ),
+    };
+  }
+  if (
+    name === 'react' ||
+    name.startsWith('react/') ||
+    name === 'react-dom' ||
+    name.startsWith('react-dom/')
+  ) {
+    return { type: 'sourceFile', filePath: require.resolve(name, { paths: [__dirname] }) };
+  }
+  return context.resolveRequest(context, name, platform);
+};
 module.exports = config;

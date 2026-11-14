@@ -20,9 +20,10 @@ if [[ ! -f "$keystore" ]]; then
   chmod 600 "$keystore"
 fi
 mkdir -p /tmp/tala-apk
+output="${2:-/tmp/tala-apk/tala.apk}"
 "$ANDROID_HOME/build-tools/36.0.0/apksigner" sign --ks "$keystore" --ks-key-alias tala-next-demo \
   --ks-pass env:TALA_DEMO_KEYSTORE_PASSWORD --key-pass env:TALA_DEMO_KEYSTORE_PASSWORD \
-  --out /tmp/tala-apk/tala.apk "${1:-android/app/build/outputs/apk/release/app-release.apk}"
-"$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose /tmp/tala-apk/tala.apk
+  --out "$output" "${1:-android/app/build/outputs/apk/release/app-release.apk}"
+"$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose "$output"
 
-chmod 644 /tmp/tala-apk/tala.apk
+chmod 644 "$output"
