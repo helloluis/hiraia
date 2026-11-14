@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { gzipSync } from 'node:zlib';
 import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -10,6 +11,7 @@ import {
   CompetencyCheck,
   SchoolYear,
   LIMITS,
+  API,
 } from '@hiraia/tala-core';
 import { createCurriculumModule, loadCurriculumData } from './index';
 import { buildSampleClass } from '@hiraia/tala-core/sample';
@@ -27,13 +29,16 @@ test('all source packs validate, carry pages and preserve distinct versions with
   );
   for (const p of data.packs.values()) {
     CurriculumPack.parse(p);
+    assert.ok(Buffer.byteLength(JSON.stringify(p)) <= 512 * 1024);
     assert.ok(
-      Buffer.byteLength(JSON.stringify(p)) <= LIMITS.maxApiResponseBytes,
+      gzipSync(JSON.stringify(p)).byteLength <= LIMITS.maxApiResponseBytes,
       `${p.packId} exceeds the API response budget`
     );
     for (const c of p.competencies) {
       assert.ok(c.source.page! > 0);
       assert.ok(c.source.url);
+      assert.ok(c.source.document);
+      assert.ok(c.source.edition);
       assert.ok(c.contentStandard);
       assert.ok(c.performanceStandard);
       assert.equal(c.code, null);
@@ -73,9 +78,16 @@ test('public curriculum and calendar routes run through the real kernel', async 
     const index = await t.ok('curriculum.index');
     assert.equal(index.packs.length, 12);
     for (const meta of index.packs) {
-      const pack = await t.ok('curriculum.pack', { params: { packId: meta.packId } });
+      const response = await t.request(
+        'GET',
+        API['curriculum.pack'].path.replace(':packId', encodeURIComponent(meta.packId))
+      );
+      assert.equal(response.status, 200);
+      const payload = await response.text();
+      const pack = CurriculumPack.parse(JSON.parse(payload));
       assert.equal(pack.competencies.length, meta.competencyCount);
-      assert.ok(Buffer.byteLength(JSON.stringify(pack)) <= LIMITS.maxApiResponseBytes);
+      assert.ok(Buffer.byteLength(payload) <= 512 * 1024);
+      assert.ok(gzipSync(payload).byteLength <= LIMITS.maxApiResponseBytes);
     }
     const calendarIndex = await t.ok('calendar.presets');
     assert.equal(calendarIndex.presets.length, 2);
@@ -339,5 +351,40 @@ test('shared offline sample syncs as real records with complete locked-plan sect
     assert.deepEqual(t.errors, []);
   } finally {
     t.close();
+  }
+});
+
+test('revision two carries short labels and source week ranges without inventing fixture weeks', () => {
+  const data = loadCurriculumData(undefined, true);
+  for (const pack of data.packs.values()) {
+    assert.equal(pack.dataRevision, 2);
+    for (const c of pack.competencies) {
+      assert.ok(c.shortTitle!.split(/\s+/).length <= 4);
+      assert.ok(c.shortTitle!.length > 0);
+      if (pack.curriculumVersion.startsWith('fixture-')) {
+        assert.equal(c.shortTitleSource, 'derived');
+        assert.ok(c.shortTitle!.startsWith('Sample '));
+        assert.equal(c.weekFrom, undefined);
+      } else {
+        assert.ok(c.weekFrom! >= 1 && c.weekTo! >= c.weekFrom! && c.weekTo! <= 11);
+        if (c.shortTitleSource === 'official') assert.ok(c.domain!.includes(c.shortTitle!));
+      }
+    }
+  }
+  const science = [...data.packs.values()]
+    .filter((p) => p.learningAreaId === 'science')
+    .flatMap((p) => p.competencies);
+  for (const [grade, term, domain, from, to] of [
+    ['3', 1, 'Science in our Daily Life', 1, 3],
+    ['5', 3, 'Conductors, Insulators, and Simple Circuits', 1, 2],
+    ['5', 3, 'Weathering and Erosion', 3, 5],
+    ['10', 1, 'Acids, Bases, and Salts', 1, 1],
+    ['10', 3, 'Renewable and non-renewable energy', 10, 11],
+  ] as const) {
+    const matching = science.filter(
+      (c) => c.grade === grade && c.termIndex === term && c.domain === domain
+    );
+    assert.ok(matching.length);
+    assert.ok(matching.every((c) => c.weekFrom === from && c.weekTo === to));
   }
 });
