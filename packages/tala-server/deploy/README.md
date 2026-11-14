@@ -15,7 +15,7 @@ Release = a tag on the `tala-v1` branch (`tala-v1-demo.N`). Deploy: `/opt/tala/d
 beside the running release, switches, restarts, checks `/api/v1/health`, rolls back if unhealthy.
 Roll back by hand: `/opt/tala/deploy.sh <previous tag>`.
 
-Publishing an APK: copy `tala.apk` and `tala-apk.json` into `/var/lib/tala/download/` (the `/download`
+Publishing an APK: copy `tala.apk` and `tala-apk.json` into `/var/www/tala-download/` (outside the service state directory, whose mode systemd resets to 0750 on every start, which nginx cannot traverse) (the `/download`
 page reads the manifest at request time; nginx serves the file).
 
 Backups (not automated yet): `sqlite3 /var/lib/tala/tala.db ".backup '/path/tala-$(date +%F).db'"`.
