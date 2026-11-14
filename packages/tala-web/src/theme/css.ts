@@ -6,7 +6,15 @@ import { colors, fonts, sizes } from '@hiraia/tala-core/tokens';
 
 export function themeCss(): string {
   const lines: string[] = [];
-  for (const [k, v] of Object.entries(colors)) lines.push(`--c-${k}:${v};`);
+  for (const [k, v] of Object.entries(colors)) {
+    lines.push(`--c-${k}:${v};`);
+    // Channel triplet for Tailwind opacity modifiers (see tailwind.config.ts).
+    const hex = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(v);
+    if (hex)
+      lines.push(
+        `--c-${k}-rgb:${parseInt(hex[1]!, 16)} ${parseInt(hex[2]!, 16)} ${parseInt(hex[3]!, 16)};`
+      );
+  }
   lines.push(`--font-display:${fonts.displayWebStack};`);
   lines.push(`--font-body:${fonts.bodyWebStack};`);
   lines.push(`--text-body:${sizes.textBody}px;`);

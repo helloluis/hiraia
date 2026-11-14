@@ -68,7 +68,7 @@ export function LandingPage() {
           className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-forest/70 to-transparent wide:hidden"
           aria-hidden="true"
         />
-        <div className="relative z-10 w-full px-4 pb-10 wide:pb-0 wide:px-8 wide:flex wide:justify-end">
+        <div className="relative z-10 w-full px-4 pb-12 wide:pb-0 wide:px-8 wide:flex wide:justify-end">
           <div className="mx-auto wide:mx-0 w-full max-w-[26rem] rounded-[1.125rem] border-[3px] border-forest bg-cream p-5 shadow-[0_8px_0_rgba(28,59,46,0.55)] flex flex-col gap-4">
             <h1 className="font-display text-[2rem] leading-[1.1] wide:text-[2.5rem] break-words [overflow-wrap:anywhere] text-balance">
               {t('landing.h1')}
@@ -101,7 +101,7 @@ export function LandingPage() {
         <a
           href="#screens"
           aria-label={t('landing.scrollCue')}
-          className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full bg-cream/90 text-forest shadow-[0_2px_8px_rgba(28,59,46,0.25)]"
+          className="absolute bottom-0.5 right-3 wide:bottom-2 wide:right-auto wide:left-1/2 wide:-translate-x-1/2 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full bg-cream text-forest shadow-[0_2px_8px_rgba(28,59,46,0.25)]"
         >
           <span aria-hidden="true" className="text-[1.25rem] leading-none">
             ⌄

@@ -5,7 +5,16 @@ import { colors, sizes } from '../tala-core/src/tokens';
  * Every colour is a CSS variable written by src/theme/css.ts from @hiraia/tala-core/tokens (BRAND-2).
  * Nothing here is a literal colour.
  */
-const colorVars = Object.fromEntries(Object.keys(colors).map((k) => [k, `var(--c-${k})`]));
+// Solid (#RRGGBB) tokens are exposed as `rgb(var(--c-x-rgb) / <alpha-value>)` so Tailwind's opacity modifiers
+// (`bg-cream/95`, `bg-forest/50`) actually produce a colour. With a bare `var(--c-x)` those classes compile to
+// nothing, which silently dropped the header background and the sheet backdrop. Tokens that already carry
+// their own alpha (rgba) stay plain variables.
+const colorVars = Object.fromEntries(
+  Object.entries(colors).map(([k, v]) => [
+    k,
+    /^#[0-9a-f]{6}$/i.test(v) ? `rgb(var(--c-${k}-rgb) / <alpha-value>)` : `var(--c-${k})`,
+  ])
+);
 
 export default {
   content: ['./src/**/*.{ts,tsx}'],
