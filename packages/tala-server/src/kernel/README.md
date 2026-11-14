@@ -120,12 +120,68 @@ Names only are ever printed in errors; values are not. Everything has a safe loc
 | `TALA_SLOW_RESPONSE_MS`, `TALA_RETRY_MAX`, `TALA_RETRY_BASE_MS`, `TALA_RETRY_CAP_MS` | `3000`, `5`, `1000`, `60000` | Client resilience settings, served by `config.get`. |
 | `TALA_ABUSE_REGISTER_PER_IP_PER_HOUR`, `TALA_ABUSE_LOGIN_PER_IP_PER_MINUTE` | `60`, `30` | Per-address limits. Generous because a whole school often shares one connection. |
 | `TALA_ABUSE_POST_PER_USER_PER_DAY`, `TALA_ABUSE_REPORT_PER_USER_PER_DAY` | `20`, `20` | Community limits. |
+| `TALA_ABUSE_REQUESTS_PER_MINUTE` | `600` | Ceiling on requests per signed-in teacher, or per address when signed out, across all routes except `system.health`. Held in memory. `0` switches it off. |
 | `TALA_CURRICULUM_CONFIRMATIONS_TO_MARK_CHECKED`, `TALA_CURRICULUM_CORRECTIONS_TO_REVIEW` | `1`, `2` | Curriculum self-check thresholds. |
 | `TALA_PACING_BUFFER_RATIO`, `TALA_PACING_ASSESSMENT_SESSIONS_PER_TERM`, `TALA_PACING_MIN_SESSIONS_PER_COMPETENCY`, `TALA_PACING_ASSUME_TAUGHT`, `TALA_PACING_PAIRING_RULE` | the contract's `DEFAULT_PACING_PARAMS` | Hiraia-published pacing defaults. |
 | `TALA_FEATURE_GENERATION`, `TALA_FEATURE_COMMUNITY`, `TALA_FEATURE_ROSTER_AI`, `TALA_FEATURE_GOOGLE_SIGNIN` | `true`, `true`, `true`, `false` | Feature switches, served by `config.get`. |
 | `TALA_MIN_CLIENT_VERSION` | `0.0.0` | Oldest app version the server accepts. |
 
 A change takes effect when the server restarts. No client release is needed.
+
+## Production
+
+The server is mounted by the web app (`packages/tala-web`) and runs as **one process**; it keeps its data in
+one SQLite file. This is the smallest environment that works behind Cloudflare and nginx. Names only: values
+live in the host's service configuration, never in the repository.
+
+**Required**
+
+| Variable | Set to |
+|---|---|
+| `TALA_ENV` | `production` |
+| `TALA_PUBLIC_ORIGIN` | The site's `https://` origin. Emailed links, the `Secure` `__Host-` session cookie, the cross-site check and HSTS all follow from it. |
+| `TALA_DB_PATH` | A file **outside the repository**, in a directory only the service user can read. The server creates it (mode 600) and applies migrations at start. |
+| `TALA_TRUSTED_PROXY_HOPS` | The number of proxies in front: `2` for Cloudflare then nginx. See the two conditions below. |
+| `DEEPSEEK_API_KEY`, `DASHSCOPE_API_KEY` | The model providers' keys (the second may instead be `ALIBABACLOUD_API_KEY`). |
+| `TALA_LLM_PRIMARY_MODEL`, `TALA_LLM_FALLBACK_MODEL` | The providers' model identifiers. There is no built-in default. |
+| `TALA_LLM_PRIMARY_INPUT_USD_PER_MILLION`, `TALA_LLM_PRIMARY_OUTPUT_USD_PER_MILLION`, and the same two for `FALLBACK` | Prices. A cloud call that cannot be priced is refused. |
+| `TALA_QUOTA_FULL_PER_DAY`, `TALA_QUOTA_SECTION_PER_DAY` | Each teacher's daily generation allowance. |
+| `TALA_BUDGET_MONTHLY_USD`, `TALA_BUDGET_ALERT_USD` | The monthly spending ceiling for everyone, and the alert below it. |
+
+**For now**
+
+| Variable | Why |
+|---|---|
+| `TALA_AUTH_AUTO_VERIFY` | `1` while there is no mail provider: see "Mail". Without it nobody can confirm an email, so nobody can import a class list or post to the community. |
+
+**Optional**: `TALA_BUILD_ID` (shown by `system.health`), `TALA_LOG_LEVEL`, the `TALA_ABUSE_*` limits, and
+anything else in the table above.
+
+**Leave unset**: `TALA_FEATURE_GOOGLE_SIGNIN` and `GOOGLE_OAUTH_CLIENT_ID` (Google sign-in stays off),
+`TALA_LLM_LOCAL_ENDPOINT` / `TALA_LLM_LOCAL_MODEL` (no local model yet), and `TALA_ROSTER_LLM_ROUTE` (in
+production roster cleaning then runs on rules; `cloud` is refused there whatever is set).
+
+**Two conditions for `TALA_TRUSTED_PROXY_HOPS=2` to mean what it says**
+
+1. nginx must *append* to `X-Forwarded-For` (`proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;`),
+   so the app receives `…, <visitor>, <Cloudflare>` and takes the second entry from the right. If nginx
+   overwrites the header instead, the app cannot tell visitors apart: it logs `client_address_unknown` once
+   and per-address limits fall back to one wide shared bucket.
+2. The origin must not be reachable except through Cloudflare. Someone who can reach nginx directly can put
+   anything in the second-from-right position and so choose the address they are counted under.
+
+**After starting, check**
+
+- `GET /api/v1/health` answers `{ "ok": true, "environment": "production", … }` with the build label you set.
+- `GET /api/v1/config` shows `googleSignIn: false`, `emailDelivery: false` and `rosterLlmRoute: "rules"`.
+- The start-up log has `server_started` and `auth_auto_verify_on`, and none of `config_warning`,
+  `mail_transport_missing`, `client_address_unknown` (after the first request) or any `error` line.
+
+**Not handled by the server**: backups of the database file, TLS, compression, and mail. Run a second copy of
+the process against the same file only if you accept that the request ceiling and the roster import drafts
+are per process.
+
+`src/testing/production.test.ts` starts the server exactly this way and checks each point above.
 
 ## Google sign-in
 

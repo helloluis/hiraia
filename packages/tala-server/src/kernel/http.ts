@@ -15,6 +15,7 @@ export const MESSAGES = {
   notImplemented: 'This feature is not available yet.',
   unauthenticated: 'Please sign in again.',
   crossSite: 'This request came from another site, so it was not accepted.',
+  tooManyRequests: 'Too many requests at once. Please wait a moment and try again.',
   tooLarge: 'That is too much to send at once. Try a smaller amount.',
   unreadable: 'We could not read what was sent. Please try again.',
   needJson: 'We could not read what was sent. Please try again.',

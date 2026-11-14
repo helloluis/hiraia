@@ -37,7 +37,7 @@ import {
 import { createLogger, describeError, stdoutSink } from './logger';
 import type { LogSink } from './logger';
 import { compileRoutes, matchRoute } from './router';
-import { createDefaultServices } from './services';
+import { createDefaultServices, createMemoryRateLimiter } from './services';
 import { HttpError } from './types';
 import type {
   BaseDeps,
@@ -87,7 +87,16 @@ export interface KernelOptions {
   onInternalError?: (error: unknown, info: { route: RouteName | null; requestId: string }) => void;
   /** Messages for the operator from config loading, logged once at startup. */
   startupWarnings?: string[];
+  /**
+   * Most requests one signed-in teacher (or one address, when signed out) may make in a minute, across all
+   * routes except the liveness route. 0 or unset = no ceiling. `createTalaServer` sets it from
+   * TALA_ABUSE_REQUESTS_PER_MINUTE; test servers leave it off.
+   */
+  requestsPerMinute?: number;
 }
+
+/** How much wider the shared bucket is when the client address is not known. */
+const UNKNOWN_ADDRESS_FACTOR = 50;
 
 type AnyHandler = (
   ctx: Ctx,
@@ -119,6 +128,11 @@ export function createServer(options: KernelOptions): KernelServer {
   const log = createLogger({ sink, now });
   const trustedProxyHops = options.trustedProxyHops ?? 0;
   const useHsts = config.publicOrigin.startsWith('https://');
+  // A ceiling on requests per signed-in teacher, or per address when signed out. Held in memory: it is a
+  // safety net against one client hammering the server, not a quota, and must not cost a write per request.
+  const requestsPerMinute = options.requestsPerMinute ?? 0;
+  const requestLimiter = createMemoryRateLimiter(now);
+  let warnedUnknownAddress = false;
 
   const names = new Set<string>();
   for (const m of modules) {
@@ -292,6 +306,28 @@ export function createServer(options: KernelOptions): KernelServer {
     }
     seen.userId = user?.id ?? null;
 
+    /* who is asking, for abuse limits */
+    const ip = clientAddress(request, trustedProxyHops, info?.ip);
+    if (ip === null && trustedProxyHops > 0 && !warnedUnknownAddress) {
+      // Said once: the proxies in front are not sending what TALA_TRUSTED_PROXY_HOPS expects, so every
+      // visitor looks the same and per-address limits fall back to one wide shared bucket.
+      warnedUnknownAddress = true;
+      const forwarded = request.headers.get('x-forwarded-for');
+      log.warn('client_address_unknown', {
+        trustedProxyHops,
+        forwardedEntries: forwarded ? forwarded.split(',').filter((p) => p.trim()).length : 0,
+      });
+    }
+    if (requestsPerMinute > 0 && route.name !== 'system.health') {
+      const key = user ? `user:${user.id}` : `address:${ip ?? 'unknown'}`;
+      const ceiling = user || ip ? requestsPerMinute : requestsPerMinute * UNKNOWN_ADDRESS_FACTOR;
+      if (!requestLimiter.take(key, ceiling, 60)) {
+        return errorResponse('rate_limited', MESSAGES.tooManyRequests, requestId, {
+          details: { reason: 'rate_limited', retryAfterSeconds: 30 },
+        });
+      }
+    }
+
     /* input */
     let query: unknown = undefined;
     if (spec.query) {
@@ -331,7 +367,7 @@ export function createServer(options: KernelOptions): KernelServer {
       now,
       newId,
       requestId,
-      ip: clientAddress(request, trustedProxyHops, info?.ip),
+      ip,
       log: createLogger({ sink, now, base: { requestId, route: route.name } }),
     };
     attachEffects(ctx, effects);
@@ -454,6 +490,15 @@ function trustedHopsFromEnv(
   return Number(raw);
 }
 
+/** TALA_ABUSE_REQUESTS_PER_MINUTE: the per-client request ceiling. Default 600; 0 switches it off. */
+function requestsPerMinuteFromEnv(env: Record<string, string | undefined>): number {
+  const raw = env.TALA_ABUSE_REQUESTS_PER_MINUTE?.trim();
+  if (raw === undefined || raw === '') return 600;
+  if (!/^\d{1,6}$/.test(raw))
+    throw new Error('TALA_ABUSE_REQUESTS_PER_MINUTE must be a whole number from 0 to 999999.');
+  return Number(raw);
+}
+
 const LOG_LEVELS = ['info', 'warn', 'error', 'silent'] as const;
 
 /** TALA_LOG_LEVEL: info (default), warn, error, or silent. Lines below the level are not written. */
@@ -479,6 +524,7 @@ export function createServerFromEnv(
     modules,
     logSink: sinkFromEnv(env),
     trustedProxyHops: trustedHopsFromEnv(env, config.environment),
+    requestsPerMinute: requestsPerMinuteFromEnv(env),
     startupWarnings: warnings,
   });
 }

@@ -613,3 +613,70 @@ test('https sites send Strict-Transport-Security; plain-http development does no
   secure.close();
   plain.close();
 });
+
+test('request ceiling: one client cannot hammer the server; the liveness route is never throttled', async () => {
+  let at = new Date('2026-11-16T00:00:00.000Z');
+  const health: ServerModule = {
+    name: 'health',
+    migrations: [],
+    handlers: {
+      'calendar.presets': () => ({ presets: [] }),
+      'system.health': () => ({
+        ok: true as const,
+        version: 'test',
+        environment: 'local',
+        time: at.toISOString(),
+      }),
+    },
+  };
+  const entries: LogEntry[] = [];
+  const server = createServer({
+    config: loadConfig({}, { dbPath: ':memory:' }),
+    modules: [health],
+    logSink: (e) => entries.push(e),
+    now: () => at,
+    requestsPerMinute: 3,
+    trustedProxyHops: 1,
+  });
+  const get = (path: string, forwardedFor?: string) =>
+    server.handle(
+      new Request(`http://tala.test/api/v1${path}`, {
+        headers: forwardedFor ? { 'x-forwarded-for': forwardedFor } : {},
+      })
+    );
+
+  for (let i = 0; i < 3; i++)
+    assert.equal((await get('/calendar/presets', '203.0.113.5')).status, 200);
+  const over = await get('/calendar/presets', '203.0.113.5');
+  assert.equal(over.status, 429);
+  assert.equal(over.headers.get('retry-after'), '30');
+  assert.deepEqual((await over.json()).error.details, {
+    reason: 'rate_limited',
+    retryAfterSeconds: 30,
+  });
+  assert.equal(
+    (await get('/calendar/presets', '203.0.113.6')).status,
+    200,
+    'another visitor is unaffected'
+  );
+  for (let i = 0; i < 20; i++)
+    assert.equal((await get('/health', '203.0.113.5')).status, 200, 'health is exempt');
+  at = new Date(at.getTime() + 61_000);
+  assert.equal((await get('/calendar/presets', '203.0.113.5')).status, 200, 'the minute passes');
+
+  // No forwarding header although a proxy is expected: said once, with counts only, and such visitors
+  // share one much wider bucket instead of being locked out together.
+  assert.ok(!entries.some((e) => e.event === 'client_address_unknown'));
+  for (let i = 0; i < 100; i++) assert.equal((await get('/calendar/presets')).status, 200);
+  const warnings = entries.filter((e) => e.event === 'client_address_unknown');
+  assert.equal(warnings.length, 1);
+  assert.deepEqual(warnings[0]!.fields, { trustedProxyHops: 1, forwardedEntries: 0 });
+  assert.ok(!JSON.stringify(entries).includes('203.0.113'), 'addresses are never logged');
+  server.close();
+
+  // Off unless asked for: a test server has no ceiling.
+  const t = createTestServer({ withoutCore: true, modules: [health] });
+  for (let i = 0; i < 50; i++)
+    assert.equal((await t.call('calendar.presets', { ip: '203.0.113.5' })).status, 200);
+  t.close();
+});
