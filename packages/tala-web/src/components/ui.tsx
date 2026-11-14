@@ -338,7 +338,7 @@ export function ListRow({
     <>
       {leading}
       <span className="min-w-0 flex-1">
-        <span className="block break-words">{title}</span>
+        <span className="block break-words [overflow-wrap:anywhere]">{title}</span>
         {subtitle && (
           <span className="block text-small text-forestMuted break-words">{subtitle}</span>
         )}
@@ -475,7 +475,7 @@ export function PageHeader({
       )}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <h1 className="text-display break-words">{title}</h1>
+          <h1 className="text-display break-words [overflow-wrap:anywhere] min-w-0">{title}</h1>
           {subtitle && <p className="text-forestMuted">{subtitle}</p>}
         </div>
         {action}

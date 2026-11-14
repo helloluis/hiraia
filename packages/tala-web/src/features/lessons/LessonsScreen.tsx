@@ -140,7 +140,9 @@ function LessonRow({
       href={`/lessons/${plan.id}`}
       title={
         <span className="flex flex-wrap items-center gap-2">
-          {displayTitle(plan, t('lessons.untitled'))}
+          <span className="line-clamp-3 break-words [overflow-wrap:anywhere]">
+            {displayTitle(plan, t('lessons.untitled'))}
+          </span>
           {cls?.isSample && <Badge tone="gold">{t('lessons.sampleTag')}</Badge>}
           {plan.aiDraft && <Badge>{t('lessons.aiDraft')}</Badge>}
           {conflict && <Badge tone="brick">{t('lessons.conflictBadge')}</Badge>}
