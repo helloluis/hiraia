@@ -1091,8 +1091,21 @@ export function createRecordEngine(deps: RecordEngineDeps) {
      * surviving account's own record stays. Moved records get a new place in the sequence, so the
      * surviving account's devices receive them on their next pull. Tombstones and replay answers of the
      * old account are dropped: no device of the surviving account ever saw them.
+     *
+     * Joining accounts must not do to a locked plan what a sync could not. So, decided from the two accounts
+     * as they stand before anything moves:
+     *  - a part of the old account that points at a plan LOCKED in the surviving account, under a key that
+     *    lock froze, is not brought over (`frozenOut`), as a sync of it would have been refused;
+     *  - a locked plan of the old account that could not arrive exactly as it was locked (one of its frozen
+     *    parts cannot come along because its id is taken, or the surviving account already holds a part for
+     *    it under a frozen key) arrives OPEN (`reopened`): it is unlocked with an `unlock` revision of its
+     *    own. Its lock revision stays in the history, so the locked text is not lost.
+     * Must run inside the caller's transaction.
      */
-    reassignOwner(fromOwner: Id, toOwner: Id): { moved: number; kept: number } {
+    reassignOwner(
+      fromOwner: Id,
+      toOwner: Id
+    ): { moved: number; kept: number; frozenOut: number; reopened: number } {
       let moved = 0;
       let kept = 0;
       const move = db.prepare(
@@ -1101,12 +1114,36 @@ export function createRecordEngine(deps: RecordEngineDeps) {
       const drop = db.prepare(
         'DELETE FROM core_records WHERE owner_id = ? AND entity = ? AND id = ?'
       );
-      for (const row of db
-        .prepare('SELECT entity, id, deleted_at FROM core_records WHERE owner_id = ? ORDER BY seq')
-        .all(fromOwner) as Array<{ entity: string; id: string; deleted_at: string | null }>) {
-        if (row.deleted_at !== null || q.get.get(toOwner, row.entity, row.id) !== undefined) {
+      const rows = db
+        .prepare(
+          'SELECT entity, id, deleted_at, data FROM core_records WHERE owner_id = ? ORDER BY seq'
+        )
+        .all(fromOwner) as Array<Pick<Row, 'entity' | 'id' | 'deleted_at' | 'data'>>;
+      const taken = (entity: string, id: Id): boolean =>
+        q.get.get(toOwner, entity, id) !== undefined;
+
+      const frozenOut = new Set<Id>();
+      const reopen: Id[] = [];
+      for (const row of rows) {
+        if (row.deleted_at !== null) continue;
+        if (row.entity === 'plan_section') {
+          if (insideLock(toOwner, JSON.parse(row.data) as PlanSection)) frozenOut.add(row.id);
+        } else if (row.entity === 'plan' && !taken('plan', row.id)) {
+          if (!effectivelyLocked(JSON.parse(row.data) as Plan)) continue;
+          const frozen = (key: string) => insideLock(fromOwner, { planId: row.id, key });
+          const partLeftBehind = sectionsOf(fromOwner, row.id).some(
+            (s) => frozen(s.data.key) && taken('plan_section', s.id)
+          );
+          const partAlreadyThere = sectionsOf(toOwner, row.id).some((s) => frozen(s.data.key));
+          if (partLeftBehind || partAlreadyThere) reopen.push(row.id);
+        }
+      }
+
+      for (const row of rows) {
+        const refused = row.entity === 'plan_section' && frozenOut.has(row.id);
+        if (row.deleted_at !== null || refused || taken(row.entity, row.id)) {
           drop.run(fromOwner, row.entity, row.id);
-          if (row.deleted_at === null) kept++;
+          if (row.deleted_at === null && !refused) kept++;
           continue;
         }
         move.run(
@@ -1120,7 +1157,28 @@ export function createRecordEngine(deps: RecordEngineDeps) {
       }
       q.logPurge.run(fromOwner);
       revisions.reassignOwner(fromOwner, toOwner);
-      return { moved, kept };
+
+      // After the history has followed its plans, so the unlock revision takes the next number.
+      const scope: Scope = { actor: serverActor(toOwner), touched: new Map() };
+      let reopened = 0;
+      for (const planId of reopen) {
+        const plan = liveData(toOwner, 'plan', planId);
+        if (!plan || !effectivelyLocked(plan)) continue;
+        const outcome = writeUpsert(
+          toOwner,
+          'plan',
+          planId,
+          { ...plan, state: plan.state === 'locked' ? 'draft' : plan.state, lock: null },
+          null,
+          scope
+        );
+        // Leaving it locked would be a false lock: better that the accounts are not joined at all.
+        if (outcome.status !== 'applied')
+          throw new Error('A locked plan could not be reopened while joining accounts.');
+        reopened++;
+      }
+      flushRevisions(scope);
+      return { moved, kept, frozenOut: frozenOut.size, reopened };
     },
 
     /** Remove everything one teacher stored. Called inside the account-deletion transaction. */

@@ -408,6 +408,9 @@ export const accountMerge: Handler<'account.merge'> = async (ctx, { body }) => {
     userId: survivor.id,
     records: outcome.moved.moved,
     modules: outcome.modules.length,
+    // Both are zero unless ids were the same in the two accounts: see reassignOwner in records.ts.
+    partsFrozenOut: outcome.moved.frozenOut,
+    plansReopened: outcome.moved.reopened,
   });
   return { ...userOut(ctx, survivor.id), movedRecords: outcome.moved.moved };
 };
