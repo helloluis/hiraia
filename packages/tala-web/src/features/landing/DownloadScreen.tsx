@@ -13,13 +13,22 @@ export interface ApkManifest {
   bytes: number;
   minAndroid: string;
   applicationId: string;
+  /** Experimental build only: what it is and what it needs, in the deployer's words. */
+  note?: string;
+  requires?: string;
 }
 
 function mb(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-export function DownloadScreen({ manifest }: { manifest: ApkManifest | null }) {
+export function DownloadScreen({
+  manifest,
+  experimental,
+}: {
+  manifest: ApkManifest | null;
+  experimental?: ApkManifest | null;
+}) {
   const { t, lang } = useT();
   return (
     <PublicShell>

@@ -5,12 +5,12 @@ import { DownloadScreen, type ApkManifest } from '@/features/landing/DownloadScr
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Download the Android app · Tala' };
 
-/** Reads `${TALA_DOWNLOAD_DIR}/tala-apk.json` at request time; the APK itself is served by nginx, not Next. */
-async function readManifest(): Promise<ApkManifest | null> {
+/** Reads a manifest from `${TALA_DOWNLOAD_DIR}` at request time; the APK itself is served by nginx, not Next. */
+async function readManifest(name: string): Promise<ApkManifest | null> {
   const dir = process.env.TALA_DOWNLOAD_DIR;
   if (!dir) return null;
   try {
-    const raw = await fs.readFile(path.join(dir, 'tala-apk.json'), 'utf8');
+    const raw = await fs.readFile(path.join(dir, name), 'utf8');
     const m = JSON.parse(raw) as Partial<ApkManifest>;
     if (
       typeof m.file !== 'string' ||
@@ -28,6 +28,8 @@ async function readManifest(): Promise<ApkManifest | null> {
       bytes: m.bytes,
       minAndroid: typeof m.minAndroid === 'string' ? m.minAndroid : '',
       applicationId: typeof m.applicationId === 'string' ? m.applicationId : '',
+      note: typeof m.note === 'string' ? m.note : undefined,
+      requires: typeof m.requires === 'string' ? m.requires : undefined,
     };
   } catch {
     return null;
@@ -35,6 +37,9 @@ async function readManifest(): Promise<ApkManifest | null> {
 }
 
 export default async function Page() {
-  const manifest = await readManifest();
-  return <DownloadScreen manifest={manifest} />;
+  const [manifest, experimental] = await Promise.all([
+    readManifest('tala-apk.json'),
+    readManifest('tala-with-qvac-apk.json'),
+  ]);
+  return <DownloadScreen manifest={manifest} experimental={experimental} />;
 }

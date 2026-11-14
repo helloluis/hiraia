@@ -432,7 +432,7 @@ export function RosterImportScreen() {
               <div
                 key={row.rowIndex}
                 className={cx(
-                  'rounded border bg-white p-3 flex flex-col gap-2',
+                  'rounded border bg-white p-4 flex flex-col gap-3',
                   res ? 'border-sage' : 'border-yellow'
                 )}
               >
@@ -496,7 +496,7 @@ export function RosterImportScreen() {
           {groups.changed.map((row) => (
             <div
               key={row.rowIndex}
-              className="rounded border border-hairline bg-white p-3 flex flex-col gap-1"
+              className="rounded border border-hairline bg-white p-4 flex flex-col gap-1"
             >
               <RowCompare row={row} beforeAfter />
               {resolutions.get(row.rowIndex) ? (

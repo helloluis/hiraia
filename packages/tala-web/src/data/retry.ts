@@ -35,18 +35,34 @@ export function defaultSleep(ms: number, signal?: AbortSignal): Promise<void> {
   });
 }
 
-export function backoffDelay(attempt: number, baseMs: number, capMs: number, random: () => number = Math.random): number {
+export function backoffDelay(
+  attempt: number,
+  baseMs: number,
+  capMs: number,
+  random: () => number = Math.random
+): number {
   const exp = Math.min(capMs, baseMs * 2 ** attempt);
   // Full jitter: anything between half and the full exponential step, so devices do not retry in lockstep.
   return Math.round(exp / 2 + random() * (exp / 2));
 }
 
-export async function withRetry<T>(fn: (attempt: number) => Promise<T>, opts: RetryOptions = {}): Promise<T> {
+export async function withRetry<T>(
+  fn: (attempt: number) => Promise<T>,
+  opts: RetryOptions = {}
+): Promise<T> {
   const max = opts.max ?? 5;
   const baseMs = opts.baseMs ?? 1000;
   const capMs = opts.capMs ?? 60_000;
   const sleep = opts.sleep ?? defaultSleep;
-  const isRetryable = opts.isRetryable ?? ((e: unknown) => !!(e && typeof e === 'object' && 'retryable' in e && (e as { retryable: boolean }).retryable));
+  const isRetryable =
+    opts.isRetryable ??
+    ((e: unknown) =>
+      !!(
+        e &&
+        typeof e === 'object' &&
+        'retryable' in e &&
+        (e as { retryable: boolean }).retryable
+      ));
   let attempt = 0;
   for (;;) {
     if (opts.signal?.aborted) throw new AbortedError();

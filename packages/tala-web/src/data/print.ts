@@ -4,15 +4,22 @@
  * The web "device" path is the browser's print window (Save as PDF); fallbacks are a plain page, copy as text,
  * and the server PDF when online.
  */
-import { renderPlanHtml as sharedHtml, renderPlanText as sharedText, printOrientation, type RenderPlanOptions } from '@hiraia/tala-core/print';
+import {
+  renderPlanHtml as sharedHtml,
+  renderPlanText as sharedText,
+  printOrientation,
+  type RenderPlanOptions,
+} from '@hiraia/tala-core/print';
 import type { Competency } from '@hiraia/tala-core/contracts';
 
-export type PrintInput = Omit<RenderPlanOptions, 'competencyLookup'> & { competencies?: Competency[] };
+export type PrintInput = Omit<RenderPlanOptions, 'competencyLookup'> & {
+  competencies?: Competency[];
+};
 
 function withLookup(input: PrintInput): RenderPlanOptions {
   const { competencies, ...rest } = input;
-  const map = new Map((competencies ?? []).map(c => [c.id, c]));
-  return { ...rest, competencyLookup: id => map.get(id) ?? null };
+  const map = new Map((competencies ?? []).map((c) => [c.id, c]));
+  return { ...rest, competencyLookup: (id) => map.get(id) ?? null };
 }
 
 export function renderPlanHtml(input: PrintInput): string {

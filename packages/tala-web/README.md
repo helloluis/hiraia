@@ -61,8 +61,12 @@ password, join another account (`account.merge`, both proofs). Every server reas
     3:4 phone crop around the teacher).
   - Carousel screenshots: `scripts/demo-seed.mjs` seeds a fictional teacher through the real API and sync engine
     (two classes incl. a Grade 3/4/5 multigrade room, invented rosters, the saved DeepSeek Friction plans), then
-    `scripts/demo-capture.mjs` captures `public/screens/*.{webp,jpg}` at 360 px @2× and 1280 px. Run both against a
-    local production server (`TALA_ENV=local`, temp `TALA_DB_PATH`); see the headers of each script.
+    `scripts/demo-capture.mjs` captures `public/screens/*.{webp,jpg}` at 393 px @2× (encoded 786 px wide) and
+    1280 px, each scrolled to its most informative part. Run both against a local production server
+    (`TALA_ENV=local`, temp `TALA_DB_PATH`); see the headers of each script.
+  - Hero is capped at 80 svh (min 520 px) with a quiet scroll cue; the footer is dark forest like hiraia.org's.
+- `/download` also shows an **experimental** "Tala with on-device AI (QVAC)" card when
+  `${TALA_DOWNLOAD_DIR}/tala-with-qvac-apk.json` exists (same schema plus optional `note` and `requires`).
 - `/download` — reads `${TALA_DOWNLOAD_DIR}/tala-apk.json` at request time (schema in `src/app/download/page.tsx`);
   the APK is served by nginx. Without a manifest it says the app is not published yet.
 - `config.features.emailDelivery === false` hides every "verify your email" prompt and says plainly on the

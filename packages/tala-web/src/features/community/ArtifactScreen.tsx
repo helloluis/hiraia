@@ -237,7 +237,7 @@ export function ArtifactScreen({ artifactId }: { artifactId: string }) {
         const s = a.version.sections.find((x) => x.key === ts.key);
         if (!s) return null;
         return (
-          <section key={ts.key} className="rounded border border-hairline bg-white p-3">
+          <section key={ts.key} className="rounded border border-hairline bg-white p-4">
             <h3 className="font-medium mb-2">{ts.label[lang]}</h3>
             <SectionEditor
               content={s.content}

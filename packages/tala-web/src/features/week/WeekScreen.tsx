@@ -328,7 +328,7 @@ function SessionRow({
   if (beforeTala) {
     // Covered before the teacher started using Tala: no plan needed, never behind (PACE-5). A quiet completed row.
     return (
-      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 px-3 py-2 bg-white border-b border-hairline last:border-b-0 text-forestMuted">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 px-4 py-3 bg-white border-b border-hairline last:border-b-0 text-forestMuted">
         <span>
           {slot?.startTime ? `${slot.startTime} · ` : ''}
           {entry.subjectName}
@@ -338,7 +338,7 @@ function SessionRow({
     );
   }
   return (
-    <div className="flex flex-col gap-2 px-3 py-3 bg-white border-b border-hairline last:border-b-0">
+    <div className="flex flex-col gap-2 p-4 bg-white border-b border-hairline last:border-b-0">
       <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
         <span className="font-medium min-w-0 break-words [overflow-wrap:anywhere] line-clamp-3">
           {slot?.startTime ? `${slot.startTime} · ` : ''}

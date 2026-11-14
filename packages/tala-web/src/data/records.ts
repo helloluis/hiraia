@@ -31,8 +31,8 @@ export function useRecords<E extends EntityName>(entity: E): RecordList<E> {
       return;
     }
     void reload();
-    const unsub = engine.subscribe(changed => {
-      if (changed.some(c => c.entity === entity)) void reload();
+    const unsub = engine.subscribe((changed) => {
+      if (changed.some((c) => c.entity === entity)) void reload();
     });
     return () => {
       alive.current = false;
@@ -42,7 +42,10 @@ export function useRecords<E extends EntityName>(entity: E): RecordList<E> {
   return { items, loading, reload };
 }
 
-export function useRecord<E extends EntityName>(entity: E, id: string | null): { record: LocalRecord<E> | null; loading: boolean } {
+export function useRecord<E extends EntityName>(
+  entity: E,
+  id: string | null
+): { record: LocalRecord<E> | null; loading: boolean } {
   const { engine } = useSession();
   const [record, setRecord] = useState<LocalRecord<E> | null>(null);
   const [loading, setLoading] = useState(true);
@@ -60,8 +63,8 @@ export function useRecord<E extends EntityName>(entity: E, id: string | null): {
       }
     };
     void load();
-    const unsub = engine.subscribe(changed => {
-      if (changed.some(c => c.entity === entity && c.id === id)) void load();
+    const unsub = engine.subscribe((changed) => {
+      if (changed.some((c) => c.entity === entity && c.id === id)) void load();
     });
     return () => {
       alive = false;
@@ -71,7 +74,8 @@ export function useRecord<E extends EntityName>(entity: E, id: string | null): {
   return { record, loading };
 }
 
-export const dataOf = <E extends EntityName>(list: LocalRecord<E>[]): RecordData<E>[] => list.map(r => r.data);
+export const dataOf = <E extends EntityName>(list: LocalRecord<E>[]): RecordData<E>[] =>
+  list.map((r) => r.data);
 
 /** Everything the timeline and the class screens need, read once from the device. */
 export function useWorkspace() {
@@ -85,17 +89,33 @@ export function useWorkspace() {
   const marks = useRecords('session_mark');
   const overrides = useRecords('pairing_override');
   const checks = useRecords('competency_check');
-  const loading = [profile, years, classes, assignments, tracks, days, plans, marks, overrides, checks].some(x => x.loading);
+  const loading = [
+    profile,
+    years,
+    classes,
+    assignments,
+    tracks,
+    days,
+    plans,
+    marks,
+    overrides,
+    checks,
+  ].some((x) => x.loading);
   return useMemo(() => {
     const prof = profile.items[0]?.data ?? null;
     const allYears = dataOf(years.items);
-    const activeYear = allYears.find(y => y.id === prof?.activeSchoolYearId) ?? allYears.sort((a, b) => b.startDate.localeCompare(a.startDate))[0] ?? null;
+    const activeYear =
+      allYears.find((y) => y.id === prof?.activeSchoolYearId) ??
+      allYears.sort((a, b) => b.startDate.localeCompare(a.startDate))[0] ??
+      null;
     return {
       loading,
       profile: prof,
       years: allYears,
       activeYear,
-      classes: dataOf(classes.items).filter(c => !c.archived && (!activeYear || c.schoolYearId === activeYear.id)),
+      classes: dataOf(classes.items).filter(
+        (c) => !c.archived && (!activeYear || c.schoolYearId === activeYear.id)
+      ),
       allClasses: dataOf(classes.items),
       assignments: dataOf(assignments.items),
       tracks: dataOf(tracks.items),
@@ -106,12 +126,27 @@ export function useWorkspace() {
       pairingOverrides: dataOf(overrides.items),
       checks: dataOf(checks.items),
     };
-  }, [loading, profile.items, years.items, classes.items, assignments.items, tracks.items, days.items, plans.items, marks.items, overrides.items, checks.items]);
+  }, [
+    loading,
+    profile.items,
+    years.items,
+    classes.items,
+    assignments.items,
+    tracks.items,
+    days.items,
+    plans.items,
+    marks.items,
+    overrides.items,
+    checks.items,
+  ]);
 }
 
 export type Workspace = ReturnType<typeof useWorkspace>;
 
 /** Put several records as one logical change (sequential; the engine serialises writes). */
-export async function putAll(engine: SyncEngine, writes: Array<{ entity: EntityName; data: unknown }>): Promise<void> {
+export async function putAll(
+  engine: SyncEngine,
+  writes: Array<{ entity: EntityName; data: unknown }>
+): Promise<void> {
   for (const w of writes) await engine.put(w.entity, w.data as never);
 }

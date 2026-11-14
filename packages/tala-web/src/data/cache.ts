@@ -22,7 +22,7 @@ function open(name: string, factory: IDBFactory): Promise<IDBDatabase> {
     r.onerror = () => reject(r.error ?? new Error('Could not open cache'));
   });
 }
-const wait = <T,>(r: IDBRequest<T>) =>
+const wait = <T>(r: IDBRequest<T>) =>
   new Promise<T>((resolve, reject) => {
     r.onsuccess = () => resolve(r.result);
     r.onerror = () => reject(r.error);
@@ -33,7 +33,9 @@ export function createIdbCache(name = 'tala-cache', factory: IDBFactory = indexe
   const db = () => (dbp ??= open(name, factory));
   return {
     async get<T>(key: string) {
-      const v = (await wait((await db()).transaction(STORE).objectStore(STORE).get(key))) as T | undefined;
+      const v = (await wait((await db()).transaction(STORE).objectStore(STORE).get(key))) as
+        | T
+        | undefined;
       return v ?? null;
     },
     async set(key, value) {
@@ -47,16 +49,18 @@ export function createIdbCache(name = 'tala-cache', factory: IDBFactory = indexe
     async remove(key) {
       const tx = (await db()).transaction(STORE, 'readwrite');
       tx.objectStore(STORE).delete(key);
-      await new Promise<void>(res => (tx.oncomplete = () => res()));
+      await new Promise<void>((res) => (tx.oncomplete = () => res()));
     },
     async keys(prefix) {
-      const all = (await wait((await db()).transaction(STORE).objectStore(STORE).getAllKeys())) as IDBValidKey[];
-      return all.map(String).filter(k => k.startsWith(prefix));
+      const all = (await wait(
+        (await db()).transaction(STORE).objectStore(STORE).getAllKeys()
+      )) as IDBValidKey[];
+      return all.map(String).filter((k) => k.startsWith(prefix));
     },
     async clear() {
       const tx = (await db()).transaction(STORE, 'readwrite');
       tx.objectStore(STORE).clear();
-      await new Promise<void>(res => (tx.oncomplete = () => res()));
+      await new Promise<void>((res) => (tx.oncomplete = () => res()));
     },
   };
 }
@@ -74,7 +78,7 @@ export function createMemoryCache(): KvCache {
       m.delete(k);
     },
     async keys(prefix) {
-      return [...m.keys()].filter(k => k.startsWith(prefix));
+      return [...m.keys()].filter((k) => k.startsWith(prefix));
     },
     async clear() {
       m.clear();

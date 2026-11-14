@@ -212,7 +212,7 @@ export function EditorScreen({ planId }: { planId: string }) {
       )}
 
       {/* Competencies / objectives */}
-      <section className="rounded border border-hairline bg-white p-3 flex flex-col gap-2">
+      <section className="rounded border border-hairline bg-white p-4 flex flex-col gap-3">
         <div className="flex items-center justify-between gap-2">
           <h2 className="text-title">
             {ed.cls?.curriculum === 'none'
@@ -287,7 +287,7 @@ export function EditorScreen({ planId }: { planId: string }) {
             key={ts.key}
             aria-labelledby={`s-${ts.key}`}
             className={cx(
-              'rounded border bg-white p-3 flex flex-col gap-2',
+              'rounded border bg-white p-4 flex flex-col gap-3',
               missing && !locked ? 'border-yellow' : 'border-hairline'
             )}
           >

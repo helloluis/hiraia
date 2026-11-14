@@ -25,7 +25,14 @@ export function pacingDefaults(config: { pacingDefaults: PacingParams } | null):
   return config?.pacingDefaults ?? DEFAULT_PACING_PARAMS;
 }
 
-export function timelineInput(ws: Workspace, competencies: Competency[], from: string, to: string, today: string, defaults: PacingParams): TimelineInput | null {
+export function timelineInput(
+  ws: Workspace,
+  competencies: Competency[],
+  from: string,
+  to: string,
+  today: string,
+  defaults: PacingParams
+): TimelineInput | null {
   if (!ws.activeYear) return null;
   return {
     from,
@@ -33,9 +40,9 @@ export function timelineInput(ws: Workspace, competencies: Competency[], from: s
     today,
     schoolYear: ws.activeYear,
     classes: ws.classes,
-    assignments: ws.assignments.filter(a => ws.classes.some(c => c.id === a.classId)),
+    assignments: ws.assignments.filter((a) => ws.classes.some((c) => c.id === a.classId)),
     tracks: ws.tracks,
-    calendarDays: ws.calendarDays.filter(d => d.schoolYearId === ws.activeYear!.id),
+    calendarDays: ws.calendarDays.filter((d) => d.schoolYearId === ws.activeYear!.id),
     competencies,
     checks: ws.checks,
     marks: ws.marks,
@@ -45,20 +52,31 @@ export function timelineInput(ws: Workspace, competencies: Competency[], from: s
   };
 }
 
-export function pacingInputFor(ws: Workspace, competencies: Competency[], track: PacingTrack, today: string, defaults: PacingParams): PacingInput | null {
+export function pacingInputFor(
+  ws: Workspace,
+  competencies: Competency[],
+  track: PacingTrack,
+  today: string,
+  defaults: PacingParams
+): PacingInput | null {
   const year = ws.activeYear;
-  const term = year?.terms.find(t => t.id === track.termId);
-  const assignment = ws.assignments.find(a => a.id === track.assignmentId);
-  const cls = ws.classes.find(c => c.id === track.classId);
-  const group = cls?.gradeGroups.find(g => g.id === track.gradeGroupId);
+  const term = year?.terms.find((t) => t.id === track.termId);
+  const assignment = ws.assignments.find((a) => a.id === track.assignmentId);
+  const cls = ws.classes.find((c) => c.id === track.classId);
+  const group = cls?.gradeGroups.find((g) => g.id === track.gradeGroupId);
   if (!year || !term || !assignment || !cls || !group) return null;
   return {
     track,
     schoolYear: year,
     term,
     assignment,
-    calendarDays: ws.calendarDays.filter(d => d.schoolYearId === year.id),
-    competencies: competencies.filter(c => c.grade === group.grade && c.learningAreaId === assignment.learningAreaId && (track.curriculumVersion === null || c.id.startsWith(`${track.curriculumVersion}.`))),
+    calendarDays: ws.calendarDays.filter((d) => d.schoolYearId === year.id),
+    competencies: competencies.filter(
+      (c) =>
+        c.grade === group.grade &&
+        c.learningAreaId === assignment.learningAreaId &&
+        (track.curriculumVersion === null || c.id.startsWith(`${track.curriculumVersion}.`))
+    ),
     checks: ws.checks,
     marks: ws.marks,
     today,
@@ -78,12 +96,18 @@ export function useTimeline(from: string, to: string) {
   const ws = useWorkspace();
   const { config } = useSession();
   const { index, loading: indexLoading } = useCurriculumIndex();
-  const packIds = useMemo(() => packIdsFor(index, ws.activeYear?.label ?? null, ws.classes, ws.assignments), [index, ws.activeYear, ws.classes, ws.assignments]);
+  const packIds = useMemo(
+    () => packIdsFor(index, ws.activeYear?.label ?? null, ws.classes, ws.assignments),
+    [index, ws.activeYear, ws.classes, ws.assignments]
+  );
   const { competencies: packCompetencies, loading: packsLoading, missing } = usePacks(packIds);
   // The sample class paces on the bundled fixture competencies (same ids as the server fixtures).
   const competencies = useMemo(() => {
-    if (!ws.classes.some(c => c.isSample) || !ws.activeYear) return packCompetencies;
-    const extra = sampleCompetenciesFor(ws.classes, ws.activeYear.terms.map(t => t.index)).filter(c => !packCompetencies.some(p => p.id === c.id));
+    if (!ws.classes.some((c) => c.isSample) || !ws.activeYear) return packCompetencies;
+    const extra = sampleCompetenciesFor(
+      ws.classes,
+      ws.activeYear.terms.map((t) => t.index)
+    ).filter((c) => !packCompetencies.some((p) => p.id === c.id));
     return extra.length ? [...packCompetencies, ...extra] : packCompetencies;
   }, [packCompetencies, ws.classes, ws.activeYear]);
   const today = isoDate();
@@ -101,20 +125,25 @@ export function useTimeline(from: string, to: string) {
   const summaries = useMemo<TrackSummary[]>(() => {
     if (!currentTerm) return [];
     const out: TrackSummary[] = [];
-    for (const track of ws.tracks.filter(t => t.termId === currentTerm.id)) {
+    for (const track of ws.tracks.filter((t) => t.termId === currentTerm.id)) {
       const input = pacingInputFor(ws, competencies, track, today, defaults);
       if (!input || !input.competencies.length) continue;
-      const cls = ws.classes.find(c => c.id === track.classId);
-      const grade = cls?.gradeGroups.find(g => g.id === track.gradeGroupId)?.grade ?? '';
+      const cls = ws.classes.find((c) => c.id === track.classId);
+      const grade = cls?.gradeGroups.find((g) => g.id === track.gradeGroupId)?.grade ?? '';
       try {
-        out.push({ track, subjectName: input.assignment.subjectName, grade, plan: engine.computePacing(input) });
+        out.push({
+          track,
+          subjectName: input.assignment.subjectName,
+          grade,
+          plan: engine.computePacing(input),
+        });
       } catch {
         /* a broken track must not blank the week */
       }
     }
     return out;
   }, [ws, competencies, currentTerm, today, defaults]);
-  const competencyById = useMemo(() => new Map(competencies.map(c => [c.id, c])), [competencies]);
+  const competencyById = useMemo(() => new Map(competencies.map((c) => [c.id, c])), [competencies]);
   return {
     ws,
     index,
@@ -130,12 +159,16 @@ export function useTimeline(from: string, to: string) {
   };
 }
 
-export function groupByDate(entries: TimelineEntry[]): Array<{ date: string; entries: TimelineEntry[] }> {
+export function groupByDate(
+  entries: TimelineEntry[]
+): Array<{ date: string; entries: TimelineEntry[] }> {
   const map = new Map<string, TimelineEntry[]>();
   for (const e of entries) {
     const list = map.get(e.date) ?? [];
     list.push(e);
     map.set(e.date, list);
   }
-  return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0])).map(([date, list]) => ({ date, entries: list }));
+  return [...map.entries()]
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([date, list]) => ({ date, entries: list }));
 }

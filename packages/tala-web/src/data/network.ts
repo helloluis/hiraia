@@ -62,10 +62,24 @@ class NetworkMonitor {
     const now = Date.now();
     const serverTrouble = this.troubleUntil > now;
     const slow = this.slowUntil > now || this.dataSaver;
-    const rung: Rung = this.readOnlyReason ? 'readonly' : !online || serverTrouble ? 'offline' : slow ? 'low' : 'full';
+    const rung: Rung = this.readOnlyReason
+      ? 'readonly'
+      : !online || serverTrouble
+        ? 'offline'
+        : slow
+          ? 'low'
+          : 'full';
     const week = weekKey();
     const bytesThisWeek = this.usage.week === week ? this.usage.bytes : 0;
-    return { rung, online, slow, dataSaver: this.dataSaver, serverTrouble, readOnlyReason: this.readOnlyReason, bytesThisWeek };
+    return {
+      rung,
+      online,
+      slow,
+      dataSaver: this.dataSaver,
+      serverTrouble,
+      readOnlyReason: this.readOnlyReason,
+      bytesThisWeek,
+    };
   }
 
   subscribe(l: Listener): () => void {
@@ -125,7 +139,7 @@ class NetworkMonitor {
       this.emit();
       return res;
     } catch (err) {
-      if (!(init?.signal?.aborted)) this.noteTrouble();
+      if (!init?.signal?.aborted) this.noteTrouble();
       throw err;
     }
   };
