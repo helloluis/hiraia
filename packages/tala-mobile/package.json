@@ -6,7 +6,7 @@
   "scripts": {
     "start": "expo start",
     "type-check": "tsc --noEmit",
-    "test": "tsx --test src/**/*.test.ts",
+    "test": "tsx --test \"src/**/*.test.ts\"",
     "export": "expo export --platform android --max-workers 1 && node scripts/check-budget.mjs",
     "budget": "node scripts/check-budget.mjs"
   },
