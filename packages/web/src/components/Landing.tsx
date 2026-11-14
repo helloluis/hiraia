@@ -9,6 +9,7 @@ import { DevDiary } from '@/components/DevDiary';
 import { FeedbackBreaker } from '@/components/FeedbackBreaker';
 import { SiteFooter } from '@/components/SiteFooter';
 import { YouTubeEmbed } from '@/components/YouTubeEmbed';
+import { VoiceShowcase } from '@/components/VoiceShowcase';
 import { DemoLightbox } from '@/components/demo/DemoLightbox';
 import { useDemoStore } from '@/store/useDemoStore';
 
@@ -210,6 +211,9 @@ export function Landing({ afterDownload }: { afterDownload?: ReactNode }) {
           </ul>
         </div>
       </section>
+
+      {/* VOICES — custom TTS models, sepia photo full-bleed with capsules on top */}
+      <VoiceShowcase />
 
       {/* DOWNLOAD */}
       <section

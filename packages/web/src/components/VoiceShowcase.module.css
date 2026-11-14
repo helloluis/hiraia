@@ -1,0 +1,297 @@
+/*
+ * Hiraia Voices — full-bleed sepia photograph with stock-card capsules on top.
+ * Phones/tablets: the photo sits at the top at its natural aspect (face fully visible) and the
+ * capsules start below the chin. Desktop: the capsules sit in a left column and the photo is
+ * placed so the face starts just right of that column, whatever the section height
+ * (translateX percentages refer to the image's own width, so the face edge is fixed).
+ * A blurred copy of the same photograph fills any area the sharp copy does not reach.
+ */
+.section {
+  --vs-dark: 24, 17, 10;
+  --vs-gutter: 1.25rem;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: rgb(var(--vs-dark));
+  scroll-margin-top: 1rem;
+}
+
+.backdrop {
+  position: absolute;
+  inset: -48px;
+  z-index: 0;
+}
+.backdrop img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  filter: blur(26px) brightness(0.42);
+}
+
+.photo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.photo img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(var(--vs-dark), 0) 0,
+    rgba(var(--vs-dark), 0) 70vw,
+    rgba(var(--vs-dark), 0.45) 105vw,
+    rgba(var(--vs-dark), 0.6) 100%
+  );
+}
+
+.inner {
+  position: relative;
+  z-index: 3;
+  /* Portrait crop is 4:5 (125vw tall); the chin sits near 90vw. */
+  padding: 100vw var(--vs-gutter) 4rem;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 34rem;
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  .section { --vs-gutter: 3rem; }
+  /* Wide photo is 1920x1097 (57vw tall); the chin sits near 42vw. */
+  .inner { padding-top: 47vw; padding-bottom: 5rem; }
+  .scrim {
+    background: linear-gradient(
+      to bottom,
+      rgba(var(--vs-dark), 0) 0,
+      rgba(var(--vs-dark), 0) 36vw,
+      rgba(var(--vs-dark), 0.45) 57vw,
+      rgba(var(--vs-dark), 0.6) 100%
+    );
+  }
+}
+@media (min-width: 768px) {
+  .section { --vs-gutter: 4rem; }
+}
+
+@media (min-width: 1280px) {
+  .section {
+    --vs-gutter: 4rem;
+    --vs-col: 30rem;
+    /* Right edge of the capsule column, matching the max-w-6xl container used elsewhere. */
+    --vs-col-right: calc(max(0px, (100% - 72rem) / 2) + var(--vs-gutter) + var(--vs-col));
+  }
+  .photo img {
+    width: auto;
+    height: 100%;
+    left: calc(var(--vs-col-right) + 2.5rem);
+    /* The left cheek is at ~41% of the frame: put it just right of the column. */
+    transform: translateX(-40%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 14%, #000 88%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, #000 14%, #000 88%, transparent 100%);
+  }
+  .scrim {
+    background:
+      linear-gradient(
+        to right,
+        rgba(var(--vs-dark), 0.8) 0,
+        rgba(var(--vs-dark), 0.55) calc(var(--vs-col-right) - 4rem),
+        rgba(var(--vs-dark), 0) calc(var(--vs-col-right) + 6rem)
+      ),
+      linear-gradient(to bottom, rgba(var(--vs-dark), 0.25) 0, transparent 20%, transparent 80%, rgba(var(--vs-dark), 0.35) 100%);
+  }
+  .inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 4.5rem var(--vs-gutter);
+  }
+  .column {
+    width: var(--vs-col);
+    max-width: none;
+    margin: 0;
+    gap: 1.25rem;
+  }
+  .sample { padding-top: 0.55rem; padding-bottom: 0.6rem; }
+  .sampleText { font-size: 0.95rem; line-height: 1.35; margin-top: 0.2rem; }
+  .input { min-height: 4.4rem; }
+}
+
+.chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--stock);
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.chip b { color: var(--gold); }
+
+.sample {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.65rem 0.75rem 0.7rem 0.6rem;
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  background: var(--plate);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+.sample:hover { background: #fffaf0; }
+.sample:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+.sample[aria-pressed='true'] { background: #fff6e2; }
+
+.play {
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: var(--ink);
+  display: grid;
+  place-items: center;
+  margin-top: 2px;
+}
+.playIcon {
+  width: 0;
+  height: 0;
+  margin-left: 3px;
+  border-style: solid;
+  border-width: 7px 0 7px 11px;
+  border-color: transparent transparent transparent var(--gold);
+}
+.pauseIcon {
+  width: 12px;
+  height: 14px;
+  border-left: 4px solid var(--gold);
+  border-right: 4px solid var(--gold);
+}
+
+.sampleMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(28, 59, 46, 0.7);
+}
+.tag {
+  padding: 0.05rem 0.5rem;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--ink);
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.sampleText {
+  display: block;
+  margin-top: 0.3rem;
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.track {
+  display: block;
+  height: 3px;
+  margin-top: 0.5rem;
+  border-radius: 3px;
+  background: rgba(140, 158, 110, 0.35);
+  overflow: hidden;
+}
+.track span {
+  display: block;
+  height: 100%;
+  background: var(--teal);
+  transform-origin: left center;
+  transition: transform 200ms linear;
+}
+.error {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.soon {
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: var(--olive);
+  color: var(--stock);
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.input {
+  display: block;
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.7rem 0.85rem;
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  background: var(--plate);
+  color: var(--ink);
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.4;
+  resize: vertical;
+  min-height: 5.5rem;
+}
+.input::placeholder { color: rgba(28, 59, 46, 0.45); }
+.input:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+.speak {
+  display: block;
+  width: 100%;
+  margin-top: 0.85rem;
+  min-height: 48px;
+  border: 3px solid rgba(28, 59, 46, 0.35);
+  border-radius: 13px;
+  background: rgba(216, 160, 58, 0.35);
+  color: rgba(28, 59, 46, 0.6);
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track span { transition: none; }
+}
