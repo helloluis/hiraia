@@ -10,7 +10,10 @@ module.exports = {
     './plugins/with-demo-manifest.cjs',
     ...(qvac
       ? [
-          ['expo-build-properties', { android: { minSdkVersion: 31 } }],
+          [
+            require('./qvac-build/resolve.cjs').resolve('expo-build-properties'),
+            { android: { minSdkVersion: 31 } },
+          ],
           './plugins/with-qvac-worker.cjs',
           './plugins/with-local-ai-support.cjs',
         ]

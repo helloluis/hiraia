@@ -7,6 +7,23 @@ config.resolver.nodeModulesPaths = [
   path.resolve(__dirname, '../../node_modules'),
 ];
 config.resolver.resolveRequest = (context, name, platform) => {
+  if (name === '@hiraia/tala-core' || name.startsWith('@hiraia/tala-core/')) {
+    const core = path.resolve(__dirname, '../tala-core');
+    const key = '.' + name.slice('@hiraia/tala-core'.length);
+    const target = require(path.join(core, 'package.json')).exports[key];
+    if (typeof target === 'string')
+      return { type: 'sourceFile', filePath: path.resolve(core, target) };
+  }
+  if (
+    process.env.TALA_QVAC === '1' &&
+    (name === '@qvac/sdk' || name.startsWith('@qvac/sdk/') || name === 'react-native-bare-kit')
+  ) {
+    return context.resolveRequest(
+      { ...context, originModulePath: path.join(__dirname, 'qvac-build/package.json') },
+      name,
+      platform
+    );
+  }
   if (name === './native-engine' && context.originModulePath.includes('/local-ai/')) {
     return {
       type: 'sourceFile',

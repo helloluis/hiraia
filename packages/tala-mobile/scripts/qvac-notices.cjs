@@ -6,8 +6,9 @@ const root = path.resolve(__dirname, '..');
 const names = JSON.parse(
   fs.readFileSync(path.join(root, 'qvac/addons.manifest.json'), 'utf8')
 ).addons;
-const sdkRequire = createRequire(path.join(root, 'node_modules/@qvac/sdk/package.json'));
-const rootRequire = createRequire(path.join(root, 'package.json'));
+const rootRequire = require('../qvac-build/resolve.cjs');
+const sdkFile = rootRequire.resolve('@qvac/sdk/expo-plugin');
+const sdkRequire = createRequire(path.resolve(path.dirname(sdkFile), '../../../../package.json'));
 const seen = new Set(),
   inventory = [],
   texts = [];

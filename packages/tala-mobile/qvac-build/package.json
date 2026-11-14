@@ -1,0 +1,42 @@
+{
+  "name": "@hiraia/tala-qvac-build",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Standalone QVAC build toolchain; deliberately outside the parent pnpm workspace",
+  "packageManager": "pnpm@9.15.9",
+  "dependencies": {
+    "expo": "~54.0.0",
+    "expo-font": "~14.0.12",
+    "expo-sqlite": "~16.0.10",
+    "expo-secure-store": "~15.0.8",
+    "expo-crypto": "~15.0.8",
+    "expo-print": "~15.0.8",
+    "expo-sharing": "~14.0.8",
+    "expo-file-system": "~19.0.0",
+    "expo-network": "~8.0.7",
+    "expo-background-task": "~1.0.10",
+    "expo-task-manager": "~14.0.9",
+    "react": "19.1.0",
+    "react-native": "0.81.5",
+    "expo-document-picker": "~14.0.8",
+    "expo-device": "~8.0.0",
+    "expo-constants": "~18.0.0",
+    "@qvac/sdk": "0.23.0",
+    "@qvac/fabric-android-arm64": "0.25.0",
+    "@qvac/fabric-ios": "0.25.0",
+    "react-native-bare-kit": "0.16.0",
+    "expo-build-properties": "~1.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "~19.1.0",
+    "@types/node": "^22.15.29",
+    "typescript": "^5.8.3",
+    "tsx": "^4.19.2",
+    "zod": "^3.24.1",
+    "bare-pack": "3.1.0",
+    "bare-process": "4.4.1"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit --project tsconfig.json"
+  }
+}

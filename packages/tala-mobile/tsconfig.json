@@ -4,7 +4,14 @@
     "strict": true,
     "moduleResolution": "bundler",
     "noEmit": true,
-    "types": ["node"]
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "@hiraia/tala-core": ["../tala-core/src/index.ts"],
+      "@hiraia/tala-core/*": ["../tala-core/src/*"],
+      "zod": ["node_modules/zod"]
+    }
   },
-  "include": ["**/*.ts", "**/*.tsx"]
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "qvac-build", "src/features/local-ai/engine.qvac.ts", "qvac"]
 }
