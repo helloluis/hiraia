@@ -11,7 +11,7 @@ module.exports = {
     ...(qvac
       ? [
           ['expo-build-properties', { android: { minSdkVersion: 31 } }],
-          '@qvac/sdk/expo-plugin',
+          './plugins/with-qvac-worker.cjs',
           './plugins/with-local-ai-support.cjs',
         ]
       : ['./plugins/with-standard-isolation.cjs']),
