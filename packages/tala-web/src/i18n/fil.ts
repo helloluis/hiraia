@@ -191,8 +191,8 @@ export const fil = {
   'week.ahead': '{n} sesyong nauuna',
   'week.needsAttention': 'Kailangan ng pansin',
   'week.atRisk': '{subject}: {n} kompetensi ang maaaring hindi magkasya ngayong quarter',
-  'week.prev': 'Naunang linggo',
-  'week.next': 'Susunod na linggo',
+  'week.prev': 'Nakaraan',
+  'week.next': 'Susunod',
   'week.thisWeek': 'Balik sa linggong ito',
   'week.multigrade': 'Multigrade na sesyon',
   'week.mark': 'Markahan',
@@ -771,67 +771,65 @@ export const fil = {
   'merge.proofMissing':
     'Ibigay ang email at password ng isa pang account, o mag-sign in dito gamit ang Google.',
 
-  'landing.eyebrow': 'Pagpaplano ng aralin para sa mga guro',
-  'landing.h1': 'Ang mga aralin mo ngayong linggo, plinano kasama mo.',
+  'landing.h1': 'I-plan ang lessons mo this week, kasama ang Tala.',
   'landing.sub':
-    'Alam ng Tala ang kurikulum ng DepEd at ang kalendaryo ng paaralan mo. Bubukas ito sa ituturo mo ngayong linggo, magbuburador ng plano kasama mo, at gumagana sa karaniwang Android phone, kahit walang signal.',
-  'landing.register': 'Magrehistro',
+    'Libre para sa mga teacher. Alam ang DepEd curriculum at ang calendar mo. Tutulong mag-draft, at gumagana offline ang Android app.',
+  'landing.register': 'Mag-register',
   'landing.login': 'Mag-log in',
-  'landing.openWeek': 'Buksan ang linggo ko',
+  'landing.openWeek': 'Buksan ang week ko',
   'landing.download': 'I-download ang Android app',
   'landing.heroAlt':
-    'Isang gurong nakangiti sa harap ng pisara, may hawak na cellphone at mga papel ng aralin, nakaharap sa mga batang iba-iba ang baitang sa isang payak na silid-aralan. Larawang parang lumang kuha sa pelikula.',
-  'landing.earlyEyebrow': 'Maagang bersyon',
-  'landing.earlyTitle': 'Libre, tapat, at patuloy na lumalaki',
-  'landing.earlyBody':
-    'Libre ang Tala para sa bawat guro at mananatiling libre. Maagang bersyon pa ito: may mga bahaging ginagawa pa, at sinasabi namin iyon kung saan mahalaga. Burador ang isinusulat ng Tala. Ikaw ang babasa, mag-aayos, at magla-lock kapag tama na.',
-  'landing.todayEyebrow': 'Ano ang kaya ng Tala ngayon',
-  'landing.todayTitle': 'Lahat ng kailangan ng isang linggo ng pagpaplano, sa simpleng hakbang',
-  'landing.f.account.k': 'Sarili mong account bilang guro',
-  'landing.f.account.b':
-    'Mag-sign up gamit ang email at password. Sa iyo ang mga klase at aralin mo, sa web at sa cellphone mo.',
-  'landing.f.roster.k': 'Listahan ng klase mula sa mayroon ka na',
+    'Isang public-school teacher na nakangiti sa klase niya sa classroom na may dingding na kawayan, may hawak na phone at lesson papers sa harap ng blankong pisara, habang nakatingin ang mga estudyante mula sa kanilang mga upuan.',
+  'landing.todayTitle': 'Tingnan kung ano ang kaya ng Tala',
+  'landing.f.roster.k': 'Class list mula sa kahit anong file',
   'landing.f.roster.b':
-    'I-paste ang mga pangalan o ibigay sa Tala ang file na ginagamit mo na. Lilinisin nito ang listahan, ipapakita ang bawat hanay na hindi nito tiyak, at pangalan, baitang at sarili mong numero lang ang itatago. Hindi kailanman ang LRN, kaarawan o tirahan.',
-  'landing.f.pacing.k': 'Lingguhan at buwanang takbo mula sa kurikulum',
-  'landing.f.pacing.b':
-    'Piliin ang taong panuruan at iskedyul mo; ilalatag ng Tala ang mga kompetensi sa tunay mong mga araw ng pagtuturo at ipapakita kung ano ang dapat ngayong linggo at ngayong buwan. Agham, Grade 3 hanggang 10 ngayon. Darating pa ang ibang asignatura.',
-  'landing.f.ai.k': 'Burador ng aralin gamit ang AI',
+    'I-paste ang mga pangalan o i-upload ang file na gamit mo na. Ikaw ang magche-check ng bawat row na hindi sigurado. Pangalan lang, never LRN.',
+  'landing.f.pacing.k': 'This week, galing sa curriculum',
+  'landing.f.pacing.b': 'Science, Grade 3 hanggang 10 ngayon. May darating pang ibang subjects.',
+  'landing.f.ai.k': 'Lesson draft gamit ang AI',
   'landing.f.ai.b':
-    'Mula sa mga kompetensi sa timeline mo, magbuburador ang Tala ng aralin sa Filipino o English. Ang multi-grade na klase na hanggang apat na baitang ay makakakuha ng isang plano para sa isang silid. DeepSeek ang modelong nagbuburador, at Qwen ang pamalit.',
-  'landing.f.edit.k': 'Baguhin, i-lock, i-print',
+    'Isang plan para sa multi-grade room na hanggang apat na grade levels. DeepSeek, at Qwen bilang backup.',
+  'landing.f.edit.k': 'I-edit, i-lock, i-PDF',
   'landing.f.edit.b':
-    'Simpleng tekstong bahagi na matitipa mo kahit saan. I-lock ang aralin kapag pinal na, at i-download bilang PDF sa A4 o long bond.',
-  'landing.f.offline.k': 'Android app na gumagana kahit offline',
+    'Simpleng text sections. I-lock kapag final na, at i-print sa A4 o long bond.',
+  'landing.f.offline.k': 'Gumagana offline sa Android',
   'landing.f.offline.b':
-    'Nananatili sa cellphone ang linggo mo, mga aralin mo at mga PDF mo. Pagbalik ng signal, tahimik na ipapadala ang lahat.',
-  'landing.f.community.k': 'Magbahagi ng aralin sa ibang guro',
+    'Nasa phone mo ang week mo at mga lesson mo. Kusang nagse-send pagbalik ng signal.',
+  'landing.f.community.k': 'Mag-share sa ibang teachers',
   'landing.f.community.b':
-    'Mag-post ng naka-lock na aralin, kumopya mula sa ibang guro, at gawin itong sa iyo. Mananatili sa may-akda ang pagkilala.',
+    'I-post ang naka-lock na lesson, kumopya ng isa, gawing sa iyo. Nananatili sa author ang credit.',
   'landing.beta': 'Beta',
-  'landing.promiseEyebrow': 'Ang pangako namin',
-  'landing.p.free.k': 'Libre magpakailanman',
-  'landing.p.free.b': 'Walang bayad, walang plano, walang premium. Hindi pangkita ang Hiraia.',
-  'landing.p.offline.k': 'Gumagana kahit offline',
-  'landing.p.offline.b':
-    'Karaniwan dito ang mahinang signal, kaya para doon ginawa ang app sa cellphone.',
-  'landing.p.simple.k': 'Hindi kailangan ng teknikal na kaalaman',
-  'landing.p.simple.b':
-    'Kung marunong kang mag-text, kaya mong gamitin ang Tala. Sinasabi ng bawat screen ang susunod na gagawin.',
-  'landing.p.check.k': 'Burador ang burador',
+  'landing.p.free.k': 'Libre forever',
+  'landing.p.free.b': 'Walang bayad, walang premium. Non-profit ang Hiraia.',
+  'landing.p.offline.k': 'Gumagana offline',
+  'landing.p.offline.b': 'Normal dito ang mahinang signal, kaya para doon ginawa ang phone app.',
+  'landing.p.simple.k': 'Hindi kailangan ng technical skills',
+  'landing.p.simple.b': 'Kung marunong kang mag-text, kaya mo ang Tala.',
+  'landing.p.check.k': 'Draft pa rin ang draft',
   'landing.p.check.b':
-    'Hugis ng burador ng AI ang sinusuri ng Tala, hindi ang mga katotohanan nito. Ikaw ang susuri, bago mo i-lock.',
-  'landing.getEyebrow': 'Magsimula',
-  'landing.getTitle': 'Gamitin sa browser ngayon, o ilagay sa cellphone mo',
-  'landing.getBody':
-    'Gumagana ang web na bersyon sa kahit anong cellphone o computer. Nagdaragdag ang Android app ng paggamit kahit offline. Pareho itong libre.',
-  'landing.footerHiraia': 'Proyekto ng Hiraia',
+    'Hugis lang ng AI draft ang chine-check ng Tala, hindi ang facts. Ikaw ang magche-check bago mo i-lock.',
+  'landing.getTitle': 'Mag-start sa browser, o kunin ang Android app',
+  'landing.footerHiraia': 'Isang project ng Hiraia',
   'landing.footerDeped':
-    'Hindi opisyal na produkto ng DepEd ang Tala. Sa DepEd ang teksto ng kurikulum at ipinapakita ito kung paano inilathala.',
+    'Hiraia is not affiliated with or endorsed by the Philippine Department of Education. Its alignment with the Revised K-12 Curriculum is based on information and content in the public domain, and is not guaranteed to be accurate, and has not been reviewed by the Department of Education or other public academic institutions. Although its originator has endeavoured to provide the most accurate synthesis possible of the current public school science curriculum, usage of Hiraia should be carried out at your own risk.',
 
+  'landing.promiseTitle': 'Our Promise',
+  'landing.early': 'Early version pa ito. Libre, tapat, at lumalaki pa.',
+  'landing.carouselLabel': 'Mga screen ng Tala',
+  'landing.c.week':
+    'Ang week mo, naka-pace mula sa Science curriculum. Tatlong grade levels sa isang room.',
+  'landing.c.editor':
+    'Isang lesson para sa multi-grade room: time blocks bawat grade, at kung nasaan ang teacher.',
+  'landing.c.draft': 'Dumarating ang AI draft na naka-mark bilang draft. Basahin, ayusin, i-lock.',
+  'landing.c.roster':
+    'I-paste ang class list. Lilinisin ng Tala at tatanungin ka sa bawat row na hindi sigurado.',
+  'landing.c.print': 'I-lock ang lesson at i-print. A4 o long bond, may signature lines.',
+  'landing.c.desktop': 'Ang parehong week sa laptop.',
+  'landing.builtWithQvac': 'Built with QVAC SDK',
+  'landing.prev': 'Nakaraang screen',
+  'landing.next': 'Susunod na screen',
   'download.title': 'I-download ang Android app',
-  'download.intro':
-    'Itinatago ng Tala app para sa Android ang linggo mo, mga aralin mo at mga PDF mo sa cellphone, may signal man o wala.',
+  'download.intro': 'Nasa phone mo ang week mo, mga lesson at PDF, may signal man o wala.',
   'download.button': 'I-download ang app ({size})',
   'download.version': 'Bersyon',
   'download.buildDate': 'Ginawa noong',
@@ -840,12 +838,12 @@ export const fil = {
   'download.sha': 'SHA-256 checksum',
   'download.installTitle': 'Bago mag-install',
   'download.installBody':
-    'Maagang test build ito at hindi galing sa Play Store. Kapag binuksan mo ang file, hihingin ng Android na payagan ang pag-install mula sa source na ito. Payagan ito nang isang beses para sa browser o file manager mo, saka buksan muli ang file.',
+    'Early test build ito at hindi galing sa Play Store. Pagbukas mo ng file, magtatanong ang Android kung papayagan ang install mula sa source na ito. Payagan mo nang isang beses para sa browser o file manager mo, tapos buksan ulit ang file.',
   'download.notYet':
-    'Hindi pa nailalathala rito ang Android app. Gumagana na ang Tala sa browser na ito sa cellphone mo.',
+    'Hindi pa naka-publish dito ang Android app. Gumagana na ang Tala sa browser ng phone mo.',
   'download.useWeb': 'Gamitin ang Tala sa browser',
   'download.verify':
-    'Kung may nagpadala sa iyo ng file, ikumpara ang checksum nito sa nasa itaas bago mag-install.',
+    'Kung may nag-send sa iyo ng file, i-compare ang checksum nito sa nasa itaas bago mag-install.',
 
   'empty.heading': 'Wala pa rito',
   'auth.noEmailYet':

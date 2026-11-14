@@ -2,7 +2,7 @@
 /** `/download`: facts from the deploy's manifest (never a hard-coded version) and the plain-words install note. */
 import { formatDate, useT } from '@/i18n';
 import { Banner, LinkButton } from '@/components/ui';
-import { Eyebrow, PublicShell } from './PublicShell';
+import { PublicShell } from './PublicShell';
 
 export interface ApkManifest {
   file: string;
@@ -25,7 +25,6 @@ export function DownloadScreen({ manifest }: { manifest: ApkManifest | null }) {
     <PublicShell>
       <section className="px-4 py-10 wide:px-8 wide:py-16">
         <div className="mx-auto max-w-3xl flex flex-col gap-6">
-          <Eyebrow>{t('landing.download')}</Eyebrow>
           <h1 className="font-display text-[2rem] leading-tight wide:text-[2.75rem] break-words [overflow-wrap:anywhere]">
             {t('download.title')}
           </h1>
