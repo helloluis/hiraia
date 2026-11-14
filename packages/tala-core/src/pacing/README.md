@@ -85,3 +85,15 @@ They fill the onboarding week without inventing historical competency mappings.
 Do not offer create-plan or missed-session actions for those groups. In a mixed
 entry, active groups determine the entry summary and still need their normal plans.
 Covered history never contributes to sessionsBehind, even with assumeTaught off.
+
+### Published week hints
+
+`weekFrom`/`weekTo` guide new allocations. Week 1 starts at the term's start date;
+subsequent weeks are seven-day bins, even across suspensions. A shared range's
+inclusive week count is divided among its competencies for proportional weighting
+(`official` source, equal division is an engine heuristic). Explicit published
+weights, teacher weights/session counts, pins and accepted allocations take
+precedence. Teacher ordering disables date hints. Hints reserve available periods
+inside their windows first; remaining sessions fill available space, so a short or
+disrupted term may spill outside the published window. No accepted dates move
+without a realignment being accepted. Fixture packs have no invented week data.

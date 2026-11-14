@@ -23,6 +23,8 @@ export function buildSampleCompetencies(
           contentStandard: null,
           performanceStandard: null,
           domain,
+          shortTitle: `Sample ${domain.toLowerCase()}`,
+          shortTitleSource: 'derived',
           weight: null,
           weightSource: 'estimated',
           source: {

@@ -701,3 +701,94 @@ test('covered history remains group-specific when a second grade starts later', 
   assert.equal(timeline[2]!.kind, 'lesson');
   assert.ok(timeline[2]!.pairing);
 });
+
+test('published weeks guide placement and share an official range weight across bullets', () => {
+  const input = fixture();
+  input.track.params = { bufferRatio: 0, assessmentSessionsPerTerm: 0 };
+  input.competencies = input.competencies
+    .slice(0, 3)
+    .map((c, i) => ({ ...c, weekFrom: i < 2 ? 1 : 2, weekTo: i < 2 ? 1 : 4 }));
+  const plan = engine.computePacing(input);
+  assert.deepEqual(
+    plan.items.map((i) => i.sessions.length),
+    [3, 2, 15]
+  );
+  assert.ok(plan.items.every((i) => i.weightSource === 'official'));
+  assert.ok(plan.items[2]!.sessions.every((s) => s.date >= '2026-11-09'));
+  const slots = plan.items.flatMap((i) => i.sessions.map((s) => `${s.date}|${s.slotId}`));
+  assert.equal(new Set(slots).size, slots.length);
+});
+
+test('week hints preserve teacher order, pins, weights, session overrides and accepted placements', () => {
+  const input = fixture();
+  input.track.params = { bufferRatio: 0, assessmentSessionsPerTerm: 0 };
+  input.competencies = input.competencies.map((c, i) => ({ ...c, weekFrom: 4 - i, weekTo: 4 - i }));
+  const original = input.competencies.map((c) => c.id);
+  assert.deepEqual(
+    engine.computePacing(input).items.map((i) => i.competencyIds[0]),
+    [...original].reverse()
+  );
+  input.track.overrides = {
+    order: original,
+    weights: { [original[0]!]: 3 },
+    sessions: { [original[0]!]: 2 },
+    pins: { [original[1]!]: '2026-11-23' },
+  };
+  const plan = engine.computePacing(input);
+  assert.deepEqual(
+    plan.items.map((i) => i.competencyIds[0]),
+    original
+  );
+  assert.equal(plan.items[0]!.sessions.length, 2);
+  assert.equal(plan.items[0]!.weightSource, 'teacher');
+  assert.equal(plan.items[1]!.sessions[0]!.date, '2026-11-23');
+  input.track.allocation = allocationFromPlan(plan);
+  input.competencies = input.competencies.map((c) => ({ ...c, weekFrom: 1, weekTo: 1 }));
+  assert.deepEqual(
+    engine.computePacing(input).items.map((i) => i.sessions),
+    plan.items.map((i) => i.sessions)
+  );
+});
+
+test('midyear starts do not renumber published week hints', () => {
+  const input = fixture();
+  input.track.params = { bufferRatio: 0, assessmentSessionsPerTerm: 0 };
+  input.competencies = input.competencies.map((c, i) => ({ ...c, weekFrom: i + 1, weekTo: i + 1 }));
+  input.track.startPosition = {
+    competencyId: input.competencies[2]!.id,
+    date: '2026-11-16',
+    estimated: false,
+  };
+  const plan = engine.computePacing(input);
+  assert.ok(plan.items[2]!.sessions.every((s) => s.date >= '2026-11-16' && s.date <= '2026-11-20'));
+  assert.ok(plan.items[3]!.sessions.every((s) => s.date >= '2026-11-23'));
+  assert.equal(plan.sessionsBehind, 0);
+});
+
+test('week hints keep their original dates across a suspended week and accepted plans stay put', () => {
+  const input = fixture();
+  input.track.params = { bufferRatio: 0, assessmentSessionsPerTerm: 0 };
+  input.competencies = input.competencies.map((c, i) => ({ ...c, weekFrom: i + 1, weekTo: i + 1 }));
+  const baseline = engine.computePacing(input);
+  input.calendarDays = [9, 10, 11, 12, 13].map((day) =>
+    CalendarDay.parse({
+      id: `suspension${day}`,
+      schoolYearId: input.schoolYear.id,
+      date: `2026-11-${day.toString().padStart(2, '0')}`,
+      kind: 'suspension',
+      label: 'Fixture suspension',
+    })
+  );
+  const fresh = engine.computePacing(input);
+  assert.ok(
+    fresh.items[2]!.sessions.every((s) => s.date >= '2026-11-16' && s.date <= '2026-11-20')
+  );
+  assert.ok(fresh.items[3]!.sessions.every((s) => s.date >= '2026-11-23'));
+  input.track.allocation = allocationFromPlan(baseline);
+  const accepted = engine.computePacing(input);
+  assert.deepEqual(
+    accepted.items.map((i) => i.sessions),
+    baseline.items.map((i) => i.sessions)
+  );
+  assert.ok(accepted.atRisk.includes(input.competencies[1]!.id));
+});

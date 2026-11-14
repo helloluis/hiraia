@@ -60,7 +60,10 @@ export function searchCompetencies(
         (!query.grade || c.grade === query.grade) &&
         (!query.learningAreaId || c.learningAreaId === query.learningAreaId) &&
         (!query.termIndex || c.termIndex === query.termIndex) &&
-        (!keyword || `${c.text} ${c.code ?? ''} ${c.domain ?? ''}`.toLowerCase().includes(keyword))
+        (!keyword ||
+          `${c.shortTitle ?? ''} ${c.text} ${c.code ?? ''} ${c.domain ?? ''}`
+            .toLowerCase()
+            .includes(keyword))
     )
     .sort(
       (a, b) => a.termIndex - b.termIndex || a.sequence - b.sequence || compareText(a.id, b.id)
@@ -70,4 +73,15 @@ export function searchCompetencies(
 /** Code-point ordering, independent of the device locale and ICU version. */
 export function compareText(a: string, b: string): number {
   return a < b ? -1 : a > b ? 1 : 0;
+}
+
+/** English guide titles stay English; only the time label is localised. */
+export function topicLabel(competency: Competency, { lang }: { lang: 'en' | 'fil' }): string {
+  const from = competency.weekFrom;
+  const to = competency.weekTo ?? from;
+  const weeks =
+    from !== undefined && to !== undefined && to >= from
+      ? `, ${lang === 'fil' ? 'Linggo' : 'Week'} ${from}${to > from ? `–${to}` : ''}`
+      : '';
+  return `Term ${competency.termIndex}${weeks}: ${competency.shortTitle?.trim() || competency.domain?.trim() || competency.text}`;
 }
