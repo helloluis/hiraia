@@ -2,6 +2,10 @@ import * as SQLite from 'expo-sqlite';
 import * as SecureStore from 'expo-secure-store';
 import * as Crypto from 'expo-crypto';
 import { createSqliteStore, type Database } from './store';
+let cipherVersion: string | null = null;
+export function storageDiagnostics() {
+  return cipherVersion;
+}
 export async function openStore() {
   let key = await SecureStore.getItemAsync('tala.database-key');
   if (!key) {
@@ -18,5 +22,6 @@ export async function openStore() {
     await db.closeAsync();
     throw new Error('Encrypted storage requires a Tala development or release build');
   }
+  cipherVersion = Object.values(cipher)[0];
   return createSqliteStore(db as unknown as Database);
 }
