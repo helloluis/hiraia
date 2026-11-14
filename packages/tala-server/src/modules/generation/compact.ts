@@ -13,6 +13,8 @@ import {
 } from '@hiraia/tala-core/generation';
 import type { LlmRequest } from '../../kernel/types';
 
+export const DEFAULT_LESSON_PROMPT_VERSION = 3;
+
 const text = z.string().max(3000);
 const targetFields = {
   text: text.default(''),
@@ -90,10 +92,26 @@ export function objectiveTargets(input: DraftInput) {
   return input.gradeGroups.map((g) => ({
     grade: g.grade,
     id: g.id,
+    ...(g.learnerCount != null ? { learnerCount: g.learnerCount } : {}),
     objectives: (objectives[g.id] ?? [])
       .map((value) => ({ ref: `objective-${++ordinal}`, text: value }))
       .concat(input.customObjectives.map((value, i) => ({ ref: `custom-${i + 1}`, text: value }))),
   }));
+}
+/** Counts are the only learner information projected into a lesson request. */
+function classSize(input: DraftInput) {
+  const complete = input.gradeGroups.every((group) => group.learnerCount != null);
+  return {
+    groups: objectiveTargets(input),
+    ...(complete
+      ? {
+          totalLearnerCount: input.gradeGroups.reduce(
+            (total, group) => total + group.learnerCount!,
+            0
+          ),
+        }
+      : {}),
+  };
 }
 export function convertCompact(
   input: DraftInput,
@@ -366,7 +384,7 @@ export function compactTemplateSchema(template: Template, input?: DraftInput) {
 function translationRequest(
   input: DraftInput,
   source: LessonOutput['sections'],
-  opts: { userId: string; signal?: AbortSignal }
+  opts: { userId: string; signal?: AbortSignal; version?: number }
 ): LlmRequest<LessonOutput> {
   const leaves: { path: string; text: string }[] = [];
   const trusted = Object.values(input.resolvedObjectives ?? {})
@@ -414,11 +432,13 @@ function translationRequest(
   return {
     feature: 'lesson.translate',
     promptId: 'lesson/translate',
-    version: 2,
+    version: opts.version ?? DEFAULT_LESSON_PROMPT_VERSION,
     userId: opts.userId,
     signal: opts.signal,
     maxOutputTokens: 12288,
-    vars: { input: JSON.stringify({ language: input.targetLanguage, leaves }) },
+    vars: {
+      input: JSON.stringify({ language: input.targetLanguage, ...classSize(input), leaves }),
+    },
     schema,
     check: (value) => validateGeneratedSections(input, value.sections),
   };
@@ -463,6 +483,12 @@ export function lessonRequest(
       vars: {
         input: JSON.stringify({
           ...input,
+          gradeGroups: input.gradeGroups.map((g) => ({
+            id: g.id,
+            grade: g.grade,
+            ...(g.learnerCount != null ? { learnerCount: g.learnerCount } : {}),
+          })),
+          ...classSize(input),
           template: requestedTemplate,
           source: opts.source,
           prior: opts.prior,
@@ -517,7 +543,7 @@ export function lessonRequest(
           ? 'lesson.adapt'
           : 'lesson.generate',
     promptId,
-    version: opts.version ?? 2,
+    version: opts.version ?? DEFAULT_LESSON_PROMPT_VERSION,
     userId: opts.userId,
     signal: opts.signal,
     maxOutputTokens:
@@ -530,7 +556,7 @@ export function lessonRequest(
       input: JSON.stringify({
         language: input.targetLanguage ?? input.language,
         subject: input.subjectName,
-        groups: objectiveTargets(input),
+        ...classSize(input),
         timeBudgetMinutes: input.timeBudgetMinutes,
         sessions: input.sessions,
         profile: input.classProfile,

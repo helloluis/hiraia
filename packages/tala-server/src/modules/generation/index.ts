@@ -1,4 +1,4 @@
-import { lessonRequest } from './compact';
+import { DEFAULT_LESSON_PROMPT_VERSION, lessonRequest } from './compact';
 import {
   BUILTIN_TEMPLATES,
   type GenerationInput,
@@ -128,7 +128,7 @@ export async function runJob(ctx: Ctx, id: string): Promise<void> {
           source: resolved.source,
           prior: resolved.prior,
           signal: controller.signal,
-          version: ctx.config.llm.promptVersions[promptId] ?? 2,
+          version: ctx.config.llm.promptVersions[promptId] ?? DEFAULT_LESSON_PROMPT_VERSION,
         }
       )
     );

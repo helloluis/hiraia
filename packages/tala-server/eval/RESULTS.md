@@ -1,3 +1,29 @@
+Learner-count update — 2026-11-14 (v3 active default)
+
+The generator now projects known per-grade learnerCount and, only when all grade counts are known, totalLearnerCount into every lesson prompt (single, multi-grade, week, section, adapt, translate). Unknown counts and totals are omitted, not guessed. Only counts are projected, never roster fields or learner names. Unit coverage includes the acceptance class: Grade 3 = 6, Grade 4 = 5, Grade 5 = 4, total 15, plus unknown counts and explicit zero.
+
+All six v3 prompt files are new; v2 files are unchanged and explicit version 2 selection remains available for rollback. V3 asks for pairs/triads/teams that fit actual counts, excludes four teams for four learners, sizes material needs in activity text while keeping exact material catalog names, and mentions size only when it affects instructions. Translation retains original quantities and meaning. No lesson-critic implementation or new validation rule was added.
+
+V3 passed the fixed offline set on both fake providers (18/18), then ONE DeepSeek sweep (9 cases, exactly 9 calls), then all six multi-grade Qwen cases (exactly 6 calls). Every live case passed existing schema, teacher-focus, group-activity, competency-presence, timing/transition and material checks on its first attempt, without repair. The default was advanced to v3 only after both live runs passed. These are structural regression gates; no new semantic critic score is claimed.
+
+| Case                  | DeepSeek v3 | Qwen v3       |
+| --------------------- | ----------- | ------------- |
+| g2-g4-en              | pass        | pass          |
+| g2-g4-fil             | pass        | pass          |
+| three-group-fil       | pass        | pass          |
+| four-group-en         | pass        | pass          |
+| no-electricity-fil    | pass        | pass          |
+| short-period-en       | pass        | pass          |
+| custom-objectives-fil | pass        | not requested |
+| single-dlp-en         | pass        | not requested |
+| weekly-dll-fil        | pass        | not requested |
+
+Final checks after activating the default: server type-check and 216/216 tests pass; core type-check and 231/231 tests pass; strict eval TypeScript check passes; offline v3 fixtures remain 18/18. Changed source and artifacts contain no loaded credential values. V2 prompts and the lockfile are unchanged. No files were created in the acceptance-test directory.
+
+Versioned diagnostics, results and fixture samples are kept separately as deepseek-v3-_ and qwen-v3-_; prior v2 evidence was not overwritten. The eval runner accepts --prompt-version 3 to pin evaluation before activating a default. Runtime-only test call ceilings were set to 9 DeepSeek and 6 Qwen. Credentials were sourced only into the process from the designated ignored server .env; no key file was copied or displayed. No extra live calls were made for the acceptance-class unit fixture.
+
+---
+
 DeepSeek live verification — 2026-11-13 (latest status)
 
 DeepSeek passed the entire fixed nine-case set in ONE clean sweep, run `2026-11-13T13:54:01.261Z`. All results were attributed to deepseek / deepseek-flash with fellBack=false. No retries, repairs, provider fallback, prompt edits or targeted DeepSeek reruns were needed. The existing v2 prompt files are unchanged. Three DeepSeek plans are saved next to Qwen samples with the -deepseek suffix.
@@ -13,17 +39,17 @@ Single-sweep pass matrix
 
 Time includes exact total minutes, valid transition bounds and weekly day count/duration. Competency coverage means presence in both objectives and assessment. Materials checks declared resource names; activity prose still needs teacher review.
 
-| Case | Schema | One teacher focus | Every group active | Competencies | Time | Materials | Input/output tokens | Latency s | Estimated USD | Retry / repair |
-|---|---|---|---|---|---|---|---|---|---|---|
-| g2-g4-en | pass | pass | pass | pass | pass | pass | 2235/540 | 3.640 | $0.0013185 | no / no |
-| g2-g4-fil | pass | pass | pass | pass | pass | pass | 2245/789 | 5.247 | $0.0016203 | no / no |
-| three-group-fil | pass | pass | pass | pass | pass | pass | 2322/1074 | 5.838 | $0.0019854 | no / no |
-| four-group-en | pass | pass | pass | pass | pass | pass | 2379/1046 | 5.338 | $0.0019689 | no / no |
-| no-electricity-fil | pass | pass | pass | pass | pass | pass | 2245/769 | 4.836 | $0.0015963 | no / no |
-| short-period-en | pass | pass | pass | pass | pass | pass | 2235/475 | 2.923 | $0.0012405 | no / no |
-| custom-objectives-fil | pass | pass | pass | pass | pass | pass | 1822/705 | 4.531 | $0.0013926 | no / no |
-| single-dlp-en | pass | pass | pass | pass | pass | pass | 1817/411 | 2.627 | $0.0010383 | no / no |
-| weekly-dll-fil | pass | pass | pass | pass | pass | pass | 1670/438 | 3.321 | $0.0010266 | no / no |
+| Case                  | Schema | One teacher focus | Every group active | Competencies | Time | Materials | Input/output tokens | Latency s | Estimated USD | Retry / repair |
+| --------------------- | ------ | ----------------- | ------------------ | ------------ | ---- | --------- | ------------------- | --------- | ------------- | -------------- |
+| g2-g4-en              | pass   | pass              | pass               | pass         | pass | pass      | 2235/540            | 3.640     | $0.0013185    | no / no        |
+| g2-g4-fil             | pass   | pass              | pass               | pass         | pass | pass      | 2245/789            | 5.247     | $0.0016203    | no / no        |
+| three-group-fil       | pass   | pass              | pass               | pass         | pass | pass      | 2322/1074           | 5.838     | $0.0019854    | no / no        |
+| four-group-en         | pass   | pass              | pass               | pass         | pass | pass      | 2379/1046           | 5.338     | $0.0019689    | no / no        |
+| no-electricity-fil    | pass   | pass              | pass               | pass         | pass | pass      | 2245/769            | 4.836     | $0.0015963    | no / no        |
+| short-period-en       | pass   | pass              | pass               | pass         | pass | pass      | 2235/475            | 2.923     | $0.0012405    | no / no        |
+| custom-objectives-fil | pass   | pass              | pass               | pass         | pass | pass      | 1822/705            | 4.531     | $0.0013926    | no / no        |
+| single-dlp-en         | pass   | pass              | pass               | pass         | pass | pass      | 1817/411            | 2.627     | $0.0010383    | no / no        |
+| weekly-dll-fil        | pass   | pass              | pass               | pass         | pass | pass      | 1670/438            | 3.321     | $0.0010266    | no / no        |
 
 Sweep totals: 18,970 input tokens, 6,247 output tokens; peak/uncached estimate $0.0131874. All nine HTTP responses were 200 with finish_reason=stop. Exact diagnostics and rule outcomes are in deepseek-attempts.jsonl and deepseek-results.json.
 
@@ -55,17 +81,17 @@ Qwen now has valid end-to-end results for all nine fixtures (the original eight 
 
 The final matrix combines the latest full nine-case sweep with the final three-case smoke run after constraining objective-reference enums. It is NOT a claim that one final sweep passed all nine at once: the full sweep passed eight, the typed-objective case then passed independently, and the final smoke confirmed English/Filipino two-grade and typed-objective cases. sourceRun in live-results.json preserves that provenance. No previously accepted reference is invalidated by the enum constraint: the converter already rejected unknown refs.
 
-| Case | Schema | One teacher | All groups active | Competencies in objectives + assessment | Time + transitions | Declared materials | Input/output tokens | Latency s | Retry / repair |
-|---|---|---|---|---|---|---|---|---|---|
-| g2-g4-en | pass | pass | pass | pass | pass | pass | 2066/683 | 4.76 | no / no |
-| g2-g4-fil | pass | pass | pass | pass | pass | pass | 2076/983 | 7.25 | no / no |
-| three-group-fil | pass | pass | pass | pass | pass | pass | 2054/1453 | 8.08 | no / no |
-| four-group-en | pass | pass | pass | pass | pass | pass | 2093/1454 | 8.15 | no / no |
-| no-electricity-fil | pass | pass | pass | pass | pass | pass | 1995/854 | 5.04 | no / no |
-| short-period-en | pass | pass | pass | pass | pass | pass | 1985/711 | 4.43 | no / no |
-| custom-objectives-fil | pass | pass | pass | pass | pass | pass | 1672/773 | 5.04 | no / no |
-| single-dlp-en | pass | pass | pass | pass | pass | pass | 1593/576 | 3.72 | no / no |
-| weekly-dll-fil | pass | pass | pass | pass | pass | pass | 1460/590 | 3.74 | no / no |
+| Case                  | Schema | One teacher | All groups active | Competencies in objectives + assessment | Time + transitions | Declared materials | Input/output tokens | Latency s | Retry / repair |
+| --------------------- | ------ | ----------- | ----------------- | --------------------------------------- | ------------------ | ------------------ | ------------------- | --------- | -------------- |
+| g2-g4-en              | pass   | pass        | pass              | pass                                    | pass               | pass               | 2066/683            | 4.76      | no / no        |
+| g2-g4-fil             | pass   | pass        | pass              | pass                                    | pass               | pass               | 2076/983            | 7.25      | no / no        |
+| three-group-fil       | pass   | pass        | pass              | pass                                    | pass               | pass               | 2054/1453           | 8.08      | no / no        |
+| four-group-en         | pass   | pass        | pass              | pass                                    | pass               | pass               | 2093/1454           | 8.15      | no / no        |
+| no-electricity-fil    | pass   | pass        | pass              | pass                                    | pass               | pass               | 1995/854            | 5.04      | no / no        |
+| short-period-en       | pass   | pass        | pass              | pass                                    | pass               | pass               | 1985/711            | 4.43      | no / no        |
+| custom-objectives-fil | pass   | pass        | pass              | pass                                    | pass               | pass               | 1672/773            | 5.04      | no / no        |
+| single-dlp-en         | pass   | pass        | pass              | pass                                    | pass               | pass               | 1593/576            | 3.72      | no / no        |
+| weekly-dll-fil        | pass   | pass        | pass              | pass                                    | pass               | pass               | 1460/590            | 3.74      | no / no        |
 
 Diagnostics and cause
 
