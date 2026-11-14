@@ -201,4 +201,14 @@ export const coreMigrations: Migration[] = [
       ALTER TABLE core_users ADD COLUMN email_verified_how TEXT;
     `,
   },
+  {
+    id: 'core:007_lock_keys',
+    sql: `
+      -- On a lock revision: which section keys that lock froze and which it left open for post-class
+      -- writing, as JSON {"outside": [...], "inside": [...]} (see LockKeys in plan-rules.ts). A teacher's own
+      -- template can be edited or deleted later; a locked plan goes by this record, so that cannot reopen a
+      -- locked part. NULL on every other revision, and on locks taken before this column existed.
+      ALTER TABLE core_plan_revisions ADD COLUMN lock_keys TEXT;
+    `,
+  },
 ];
