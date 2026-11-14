@@ -8,7 +8,7 @@ export const fil = {
   'app.name': 'Tala',
   'app.byHiraia': 'mula sa Hiraia',
   'app.tagline':
-    'Planuhin ang mga aralin mo. Alam ng Tala ang kurikulum ng DepEd at ang kalendaryo ng paaralan mo.',
+    'Ang mga aralin mo ngayong linggo, plinano kasama mo. Alam ng Tala ang kurikulum ng DepEd at ang kalendaryo ng paaralan mo.',
   'app.skipToContent': 'Dumiretso sa nilalaman',
 
   'nav.week': 'Ngayong Linggo',
@@ -52,8 +52,8 @@ export const fil = {
   'common.kinder': 'Kindergarten',
 
   'network.offline':
-    'Walang koneksyon. Naka-save ang gawa mo sa device na ito at ipapadala mamaya.',
-  'network.slow': 'Mabagal ang koneksyon. Nakapatay ang mga larawan para makatipid ng data.',
+    'Walang signal ngayon. Ligtas ang gawa mo sa device na ito at ipapadala kapag bumalik ang koneksyon.',
+  'network.slow': 'Mabagal ang koneksyon. Nakapatay ang mga larawan para makatipid ng data mo.',
   'network.readOnlyTitle': 'Nakahinto muna ang pag-edit',
   'network.readOnly': 'Kumonekta sa internet nang isang beses para makapag-sign in muli.',
   'network.storageFull':
@@ -67,15 +67,15 @@ export const fil = {
   'sync.sendNow': 'Ipadala ngayon',
   'sync.upToDate': 'Naipadala na ang lahat',
 
-  'auth.signIn': 'Mag-sign in',
-  'auth.register': 'Gumawa ng account',
+  'auth.signIn': 'Mag-log in',
+  'auth.register': 'Gumawa ng libreng account',
   'auth.email': 'Email',
   'auth.password': 'Password',
   'auth.displayName': 'Pangalan mo',
   'auth.displayNameHint': 'Kung paano mo gustong lumabas sa mga banghay-aralin mo.',
   'auth.passwordHint': 'Hindi bababa sa 10 karakter. Kahit anong salitang maaalala mo.',
   'auth.forgot': 'Nakalimutan ang password?',
-  'auth.noAccount': 'Bago sa Tala?',
+  'auth.noAccount': 'Bago rito? Libre ang Tala para sa bawat guro.',
   'auth.haveAccount': 'May account ka na?',
   'auth.resetTitle': 'I-reset ang password',
   'auth.resetBody':
@@ -117,7 +117,7 @@ export const fil = {
 
   'setup.title': 'I-set up ang klase mo',
   'setup.intro':
-    'Apat na maikling hakbang. Puwede mong tanggapin ang bawat mungkahi at baguhin ito mamaya.',
+    'Apat na maikling hakbang, isang upuan. Tanggapin ang bawat mungkahi kung gusto mo; mababago ang lahat mamaya.',
   'setup.sample': 'Subukan ang halimbawang klase',
   'setup.sampleBody':
     'Magdadagdag ng klase na may gawa-gawang mga mag-aaral at ilang halimbawang aralin. Alisin ito kahit kailan.',
@@ -168,8 +168,9 @@ export const fil = {
 
   'week.title': 'Ngayong Linggo',
   'week.month': 'Ngayong Buwan',
-  'week.empty': 'Walang sesyon ngayong linggo.',
-  'week.noClass': 'Wala ka pang klase.',
+  'week.empty': 'Walang klase ngayong linggo. Magpahinga muna, o tingnan ang susunod.',
+  'week.noClass':
+    'Walang laman ang linggo mo hangga’t wala kang klase. Isang upuan lang ito, o isang pindot para sa halimbawang klase.',
   'week.setupAction': 'I-set up ang klase',
   'week.state.none': 'Wala pang plano',
   'week.state.draft': 'Burador',
@@ -251,7 +252,8 @@ export const fil = {
 
   'lessons.title': 'Mga Aralin',
   'lessons.new': 'Bagong aralin',
-  'lessons.empty': 'Wala pang aralin. Isang pindot na lang ang una mo.',
+  'lessons.empty':
+    'Wala pang aralin. Isang pindot na lang ang una mo, at kayang ipaburador sa Tala kasama mo.',
   'lessons.search': 'Hanapin ang aralin',
   'lessons.all': 'Lahat',
   'lessons.untitled': 'Aralin na walang pamagat',
@@ -408,7 +410,7 @@ export const fil = {
     'Halimbawang klase ito na may gawa-gawang mga mag-aaral. Hindi ito maipo-post sa komunidad.',
   'class.roster': 'Mga mag-aaral',
   'class.rosterImport': 'Mag-import ng listahan ng mga mag-aaral',
-  'class.none': 'Wala pang klase.',
+  'class.none': 'Wala pang klase. Idagdag ang itinuturo mo at ilalatag ng Tala ang linggo mo.',
   'class.addClass': 'Magdagdag ng klase',
   'class.switch': 'Palitan ang klase',
   'class.name': 'Pangalan ng klase',
@@ -603,7 +605,8 @@ export const fil = {
   'roster.sexF': 'Babae',
   'roster.localId': 'Lokal na ID',
   'roster.localIdHint': 'Sarili mong numero para sa mag-aaral na ito. Hindi kailanman ang LRN.',
-  'roster.empty': 'Wala pang mag-aaral. Idagdag isa-isa, o mag-import ng listahan.',
+  'roster.empty':
+    'Wala pang mag-aaral. Idagdag isa-isa, o ibigay sa Tala ang listahang mayroon ka na.',
   'roster.removeConfirm': 'Alisin ang mag-aaral na ito sa klase?',
   'roster.moveUp': 'Itaas',
   'roster.moveDown': 'Ibaba',
@@ -627,7 +630,8 @@ export const fil = {
   'com.region': 'Rehiyon',
   'com.any': 'Kahit alin',
   'com.results': '{n} aralin',
-  'com.noResults': 'Walang araling tumutugma. Bawasan ang mga filter.',
+  'com.noResults':
+    'Wala pang ibinahaging araling tumutugma. Bawasan ang mga filter, o maging una sa pag-post.',
   'com.offline': 'Kailangan ng koneksyon ang paghahanap. Nasa Mga Aralin mo ang mga nakopya mo.',
   'com.mine': 'Mga post ko',
   'com.browse': 'Tingnan',
@@ -767,7 +771,89 @@ export const fil = {
   'merge.proofMissing':
     'Ibigay ang email at password ng isa pang account, o mag-sign in dito gamit ang Google.',
 
-  'error.generic': 'May nangyaring mali. Ligtas ang gawa mo sa device na ito. Subukan muli mamaya.',
+  'landing.eyebrow': 'Pagpaplano ng aralin para sa mga guro',
+  'landing.h1': 'Ang mga aralin mo ngayong linggo, plinano kasama mo.',
+  'landing.sub':
+    'Alam ng Tala ang kurikulum ng DepEd at ang kalendaryo ng paaralan mo. Bubukas ito sa ituturo mo ngayong linggo, magbuburador ng plano kasama mo, at gumagana sa karaniwang Android phone, kahit walang signal.',
+  'landing.register': 'Magrehistro',
+  'landing.login': 'Mag-log in',
+  'landing.openWeek': 'Buksan ang linggo ko',
+  'landing.download': 'I-download ang Android app',
+  'landing.heroAlt':
+    'Isang gurong Pilipina ng pampublikong paaralan sa harap ng pisara, nakangiti, may hawak na cellphone sa isang kamay at banghay-aralin sa kabila.',
+  'landing.earlyEyebrow': 'Maagang bersyon',
+  'landing.earlyTitle': 'Libre, tapat, at patuloy na lumalaki',
+  'landing.earlyBody':
+    'Libre ang Tala para sa bawat guro at mananatiling libre. Maagang bersyon pa ito: may mga bahaging ginagawa pa, at sinasabi namin iyon kung saan mahalaga. Burador ang isinusulat ng Tala. Ikaw ang babasa, mag-aayos, at magla-lock kapag tama na.',
+  'landing.todayEyebrow': 'Ano ang kaya ng Tala ngayon',
+  'landing.todayTitle': 'Lahat ng kailangan ng isang linggo ng pagpaplano, sa simpleng hakbang',
+  'landing.f.account.k': 'Sarili mong account bilang guro',
+  'landing.f.account.b':
+    'Mag-sign up gamit ang email at password. Sa iyo ang mga klase at aralin mo, sa web at sa cellphone mo.',
+  'landing.f.roster.k': 'Listahan ng klase mula sa mayroon ka na',
+  'landing.f.roster.b':
+    'I-paste ang mga pangalan o ibigay sa Tala ang file na ginagamit mo na. Lilinisin nito ang listahan, ipapakita ang bawat hanay na hindi nito tiyak, at pangalan, baitang at sarili mong numero lang ang itatago. Hindi kailanman ang LRN, kaarawan o tirahan.',
+  'landing.f.pacing.k': 'Lingguhan at buwanang takbo mula sa kurikulum',
+  'landing.f.pacing.b':
+    'Piliin ang taong panuruan at iskedyul mo; ilalatag ng Tala ang mga kompetensi sa tunay mong mga araw ng pagtuturo at ipapakita kung ano ang dapat ngayong linggo at ngayong buwan. Agham, Grade 3 hanggang 10 ngayon. Darating pa ang ibang asignatura.',
+  'landing.f.ai.k': 'Burador ng aralin gamit ang AI',
+  'landing.f.ai.b':
+    'Mula sa mga kompetensi sa timeline mo, magbuburador ang Tala ng aralin sa Filipino o English. Ang multi-grade na klase na hanggang apat na baitang ay makakakuha ng isang plano para sa isang silid. DeepSeek ang modelong nagbuburador, at Qwen ang pamalit.',
+  'landing.f.edit.k': 'Baguhin, i-lock, i-print',
+  'landing.f.edit.b':
+    'Simpleng tekstong bahagi na matitipa mo kahit saan. I-lock ang aralin kapag pinal na, at i-download bilang PDF sa A4 o long bond.',
+  'landing.f.offline.k': 'Android app na gumagana kahit offline',
+  'landing.f.offline.b':
+    'Nananatili sa cellphone ang linggo mo, mga aralin mo at mga PDF mo. Pagbalik ng signal, tahimik na ipapadala ang lahat.',
+  'landing.f.community.k': 'Magbahagi ng aralin sa ibang guro',
+  'landing.f.community.b':
+    'Mag-post ng naka-lock na aralin, kumopya mula sa ibang guro, at gawin itong sa iyo. Mananatili sa may-akda ang pagkilala.',
+  'landing.beta': 'Beta',
+  'landing.promiseEyebrow': 'Ang pangako namin',
+  'landing.p.free.k': 'Libre magpakailanman',
+  'landing.p.free.b': 'Walang bayad, walang plano, walang premium. Hindi pangkita ang Hiraia.',
+  'landing.p.offline.k': 'Gumagana kahit offline',
+  'landing.p.offline.b':
+    'Karaniwan dito ang mahinang signal, kaya para doon ginawa ang app sa cellphone.',
+  'landing.p.simple.k': 'Hindi kailangan ng teknikal na kaalaman',
+  'landing.p.simple.b':
+    'Kung marunong kang mag-text, kaya mong gamitin ang Tala. Sinasabi ng bawat screen ang susunod na gagawin.',
+  'landing.p.check.k': 'Burador ang burador',
+  'landing.p.check.b':
+    'Hugis ng burador ng AI ang sinusuri ng Tala, hindi ang mga katotohanan nito. Ikaw ang susuri, bago mo i-lock.',
+  'landing.getEyebrow': 'Magsimula',
+  'landing.getTitle': 'Gamitin sa browser ngayon, o ilagay sa cellphone mo',
+  'landing.getBody':
+    'Gumagana ang web na bersyon sa kahit anong cellphone o computer. Nagdaragdag ang Android app ng paggamit kahit offline. Pareho itong libre.',
+  'landing.footerHiraia': 'Proyekto ng Hiraia',
+  'landing.footerDeped':
+    'Hindi opisyal na produkto ng DepEd ang Tala. Sa DepEd ang teksto ng kurikulum at ipinapakita ito kung paano inilathala.',
+
+  'download.title': 'I-download ang Android app',
+  'download.intro':
+    'Itinatago ng Tala app para sa Android ang linggo mo, mga aralin mo at mga PDF mo sa cellphone, may signal man o wala.',
+  'download.button': 'I-download ang app ({size})',
+  'download.version': 'Bersyon',
+  'download.buildDate': 'Ginawa noong',
+  'download.size': 'Laki',
+  'download.minAndroid': 'Kailangang Android',
+  'download.sha': 'SHA-256 checksum',
+  'download.installTitle': 'Bago mag-install',
+  'download.installBody':
+    'Maagang test build ito at hindi galing sa Play Store. Kapag binuksan mo ang file, hihingin ng Android na payagan ang pag-install mula sa source na ito. Payagan ito nang isang beses para sa browser o file manager mo, saka buksan muli ang file.',
+  'download.notYet':
+    'Hindi pa nailalathala rito ang Android app. Gumagana na ang Tala sa browser na ito sa cellphone mo.',
+  'download.useWeb': 'Gamitin ang Tala sa browser',
+  'download.verify':
+    'Kung may nagpadala sa iyo ng file, ikumpara ang checksum nito sa nasa itaas bago mag-install.',
+
+  'empty.heading': 'Wala pa rito',
+  'auth.noEmailYet':
+    'Hindi pa nakabukas ang pagpapadala ng email, kaya wala pang ive-verify ngayon. Gumagana na ang account mo.',
+  'auth.resetNotAvailable':
+    'Hindi pa magagamit ang pag-reset ng password sa email. Ingatan ang password mo; kung mawala, sumulat sa Hiraia.',
+  'error.generic':
+    'May nagkamali sa panig namin. Ligtas ang gawa mo sa device na ito. Subukan muli mamaya.',
   'error.rateLimited': 'Masyadong maraming pagsubok. Maghintay ng isang minuto at subukan muli.',
   'error.notFound': 'Wala ang pahinang iyon.',
   'error.goHome': 'Pumunta sa Ngayong Linggo',

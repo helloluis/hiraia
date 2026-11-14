@@ -89,6 +89,9 @@ export function RosterImportScreen() {
   }, [cls, defaultGroup]);
 
   const route = config?.rosterLlmRoute ?? 'rules';
+  // Without email delivery there is nothing a teacher can verify; the server decides what it accepts.
+  const mailOn = config?.features.emailDelivery !== false;
+  const verifiedEnough = !!user?.emailVerified || !mailOn;
   const cloud = route === 'cloud';
   const online = network.online && network.rung !== 'offline';
   const groups = useMemo(() => (draft ? groupRows(draft.rows) : null), [draft]);
@@ -225,7 +228,7 @@ export function RosterImportScreen() {
           back={{ href: '/class/roster', label: t('roster.learners') }}
         />
         <p>{t('roster.intro')}</p>
-        {!user?.emailVerified && (
+        {!verifiedEnough && (
           <Banner
             kind="warn"
             action={<LinkButton href="/verify-email">{t('settings.verifyNow')}</LinkButton>}
@@ -299,14 +302,14 @@ export function RosterImportScreen() {
               variant="primary"
               full
               onClick={() => void start(false)}
-              disabled={!hasInput || !online || !user?.emailVerified}
+              disabled={!hasInput || !online || !verifiedEnough}
             >
               {t('roster.cleanNoAi')}
             </Button>
             <Button
               full
               onClick={() => void start(true)}
-              disabled={!hasInput || !online || !user?.emailVerified}
+              disabled={!hasInput || !online || !verifiedEnough}
             >
               {t('roster.cleanAi')}
             </Button>
@@ -316,7 +319,7 @@ export function RosterImportScreen() {
             variant="primary"
             full
             onClick={() => void start(route !== 'rules' && !exactly)}
-            disabled={!hasInput || !online || !user?.emailVerified}
+            disabled={!hasInput || !online || !verifiedEnough}
           >
             {t('common.next')}
           </Button>

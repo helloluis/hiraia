@@ -11,7 +11,7 @@ import { useAuthForm } from './useAuthForm';
 export function VerifyEmailScreen() {
   const { t } = useT();
   const router = useRouter();
-  const { user, refreshUser, status } = useSession();
+  const { user, refreshUser, status, config } = useSession();
   const [code, setCode] = useState('');
   const [done, setDone] = useState(false);
   const [resent, setResent] = useState(false);
@@ -52,6 +52,22 @@ export function VerifyEmailScreen() {
     });
     if (ok) setResent(true);
   };
+
+  if (config?.features.emailDelivery === false && !done && !user?.emailVerified) {
+    return (
+      <div className="flex flex-col gap-4">
+        <h1 className="text-display">{t('auth.verifyTitle')}</h1>
+        <Banner kind="info">{t('auth.noEmailYet')}</Banner>
+        <Button
+          variant="primary"
+          full
+          onClick={() => router.replace(status === 'signedIn' ? '/week' : '/sign-in')}
+        >
+          {t('common.done')}
+        </Button>
+      </div>
+    );
+  }
 
   if (done || user?.emailVerified) {
     return (
