@@ -1,6 +1,6 @@
 # Tala mobile — V1 development client
 
-Expo SDK 54, React Native 0.81.5, Hermes, TypeScript; no navigation framework, UI kit, animation or chart dependency. All code is confined to this package. V1 is not a production release.
+Expo SDK 54, React Native 0.81.5, Hermes, TypeScript; no navigation framework, UI kit, animation or chart dependency. All code is confined to this package. Public demo packaging is documented in [DEMO-APK.md](./DEMO-APK.md); native reference-phone acceptance remains separate.
 
 ## Run and verify
 
@@ -49,7 +49,7 @@ Filipino is the default; every interface key is paired in `src/i18n/fil.ts` / `e
 
 ## Remaining work / release gates
 
-- No Android/Gradle build, emulator instrumentation, APK, installation or deployment has run. All reference-device hard budgets and five-teacher unaided usability gates remain open.
+- The public demo Android build and smoke-test receipt are recorded in DEMO-APK.md / DEMO-VERIFICATION.md. All physical reference-device hard budgets and five-teacher unaided usability gates remain open. No deployment is performed by this worker.
 - Setup, creation, generated drafts/revisions, roster saves, realignment and Undo use the shared atomic batch. Incompatible multi-grade plan moves block Apply rather than silently choosing dates.
 - First-run curriculum area is Science; subject text is editable but does not select another pack area. Add proper learning-area selection, timetable editing, complete starting-position browse (beyond the first 20 quick picks), school-year editing and class Advanced controls.
 - Month view is a summary, not the complete lower-resolution per-subject month browser. At-risk and behind counts exist; superseded-pack notifications, older-plan pinning and realignment recomputation after remote pacing conflicts need UI completion.
