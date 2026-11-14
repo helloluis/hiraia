@@ -47,3 +47,5 @@ Added package-local SDK 0.23.0, Bare kit 0.16.0, Fabric Android ARM64/iOS 0.25.0
 6. Delete the model; confirm it cannot run until a fresh verified download. Confirm standard Tala still opens and has no On-device AI entry.
 
 Physical-phone inference, quality, thermal stability and battery drain require this test before recommending the feature to teachers. Device support is experimental; SDK inclusion alone does not close the local-model privacy/quality gate.
+
+Filipino strings needing human wording review: `onDeviceAi`, `localAiExperimental`, `localAiDownloadConsent`, `localAiMemory`, `localAiReviewNotice`, `localAiSampledPeak`, and `localAiNotices`. Technical model/version/licence names are intentionally preserved.
