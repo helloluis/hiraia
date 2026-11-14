@@ -102,3 +102,18 @@ test('prefilled objectives use official codes and stored text, never internal ID
   for (const id of ids) assert.equal(JSON.stringify(legacy.sections).includes(id), false);
   assert.deepEqual(base.competencies, { 'group-002': [ids[0]], 'group-004': [ids[1]] });
 });
+
+test('post-class sections stay blank in a prefilled draft and are never required from generation', () => {
+  const draft = buildPrefilledDraft(input);
+  for (const key of ['results', 'reflection']) {
+    const section = draft.sections.find((s) => s.key === key)!;
+    assert.ok(section);
+    assert.equal(JSON.stringify(section.content).includes('Describe roots.'), false);
+    if (section.content.type === 'text') assert.deepEqual(section.content.blocks, []);
+    else if (section.content.type === 'pergroup')
+      assert.ok(Object.values(section.content.groups).every((v) => v.length === 0));
+    else assert.fail('post-class format');
+  }
+  const generated = valid().sections.filter((s) => !['results', 'reflection'].includes(s.key));
+  assert.deepEqual(validateGeneratedSections(input, generated), []);
+});

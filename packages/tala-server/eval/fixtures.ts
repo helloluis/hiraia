@@ -15,50 +15,52 @@ export function fakeCompact(input: DraftInput): CompactLesson {
       .objectives.map((o) => o.ref);
   return compactSchema.parse({
     title: 'Plants',
-    sections: template.sections.map((s) => ({
-      key: s.key,
-      text: 'Describe plants and check understanding.',
-      targets: ['objectives', 'assessment'].includes(s.key)
-        ? input.gradeGroups.flatMap((g) => refs(g.id))
-        : [],
-      items: s.key === 'materials' ? input.classProfile.materials : [],
-      groups:
-        s.contentType === 'pergroup'
-          ? input.gradeGroups.map((g) => ({
-              grade: g.grade,
-              text: 'Describe plants and check understanding.',
-              targets: refs(g.id),
-              items: s.key === 'materials' ? input.classProfile.materials : [],
-            }))
+    sections: template.sections
+      .filter((s) => !s.outsideLock)
+      .map((s) => ({
+        key: s.key,
+        text: 'Describe plants and check understanding.',
+        targets: ['objectives', 'assessment'].includes(s.key)
+          ? input.gradeGroups.flatMap((g) => refs(g.id))
           : [],
-      steps:
-        s.contentType === 'procedure'
-          ? procedureSchedule(input).map((slot) => ({
-              slot: slot.slot,
-              title: slot.purpose!,
-              text: 'Observe and describe a familiar plant.',
-            }))
-          : [],
-      blocks:
-        s.contentType === 'multigrade'
-          ? multigradeSchedule(input).map((slot) => ({
-              slot: slot.slot,
-              label: 'Observe',
-              activities: input.gradeGroups.map((g) => ({
+        items: s.key === 'materials' ? input.classProfile.materials : [],
+        groups:
+          s.contentType === 'pergroup'
+            ? input.gradeGroups.map((g) => ({
                 grade: g.grade,
-                text: 'Observe a plant.',
-              })),
-            }))
-          : [],
-      days:
-        s.contentType === 'weekgrid'
-          ? Array.from({ length: input.sessions }, (_, i) => ({
-              weekday: i + 1,
-              minutes: input.timeBudgetMinutes,
-              text: 'Observe a plant and check understanding.',
-            }))
-          : [],
-    })),
+                text: 'Describe plants and check understanding.',
+                targets: refs(g.id),
+                items: s.key === 'materials' ? input.classProfile.materials : [],
+              }))
+            : [],
+        steps:
+          s.contentType === 'procedure'
+            ? procedureSchedule(input).map((slot) => ({
+                slot: slot.slot,
+                title: slot.purpose!,
+                text: 'Observe and describe a familiar plant.',
+              }))
+            : [],
+        blocks:
+          s.contentType === 'multigrade'
+            ? multigradeSchedule(input).map((slot) => ({
+                slot: slot.slot,
+                label: 'Observe',
+                activities: input.gradeGroups.map((g) => ({
+                  grade: g.grade,
+                  text: 'Observe a plant.',
+                })),
+              }))
+            : [],
+        days:
+          s.contentType === 'weekgrid'
+            ? Array.from({ length: input.sessions }, (_, i) => ({
+                weekday: i + 1,
+                minutes: input.timeBudgetMinutes,
+                text: 'Observe a plant and check understanding.',
+              }))
+            : [],
+      })),
   });
 }
 /** Sparse provider wire representation: omit fields that belong to other section formats. */

@@ -1,3 +1,35 @@
+Post-class boundary / pre-class teacher note — 2026-11-14 (v4 active default)
+
+Results and reflection are post-class. All outsideLock sections are omitted from model section schemas, requests, adaptation/prior context and translation leaves. Direct regeneration of a post-class section is rejected. Existing post-class sections are omitted from GeneratedSection patches, leaving client records untouched. Prefilled manual drafts keep those sections blank. Shared structural checks do not require post-class sections and ignore their content when checking a teacher's complete plan.
+
+V4 prompts move limited-direct-instruction and next-session guidance to the multi-grade content's optional plain-language note (maximum 600 characters); never to a learner activity or post-class section. Single-grade output has no note. Translation preserves a supplied note through its allowlisted path and enforces the same length cap. V1/v2/v3 prompt files are untouched. Explicit old versions still use the hard server-side post-class boundary, so old prompts that insist on reflection may require switching to v4.
+
+Verification: server type-check PASS, full suite 239/239; core type-check PASS, full suite 235/235; strict standalone eval type-check PASS; focused generation tests after final legacy/translation guards 24/24. Scripted Friction acceptance 1/1 PASS without editing its file or script. It builds output from the requested section list, so it requires no change to stop emitting reflection. Offline fixed evaluations pass 18/18 across both fake providers. Initial shared-validator tests exposed that complete editor plans legitimately contain blank post-class sections; those sections are now ignored rather than treated as generated output. The compact model-output schema still rejects post-class keys.
+
+One live DeepSeek sweep `2026-11-14T06:05:49.795Z` used exactly 9 DeepSeek calls. One Qwen multi-grade sweep `2026-11-14T06:06:32.338Z` used exactly 6 Qwen calls; primary was deliberately disabled in Qwen-only mode. Every case passed on its first attempt with no retry or repair.
+
+| Case                  | Provider | Schema / focus / active groups / competency / time / materials | Input/output tokens | Latency ms | Estimated USD |
+| --------------------- | -------- | -------------------------------------------------------------- | ------------------- | ---------- | ------------- |
+| g2-g4-en              | deepseek | all pass                                                       | 2620/599            | 3911       | 0.00150480    |
+| g2-g4-fil             | deepseek | all pass                                                       | 2630/815            | 5130       | 0.00176700    |
+| three-group-fil       | deepseek | all pass                                                       | 2714/1070           | 5993       | 0.00209820    |
+| four-group-en         | deepseek | all pass                                                       | 2778/1175           | 6237       | 0.00224340    |
+| no-electricity-fil    | deepseek | all pass                                                       | 2630/800            | 4751       | 0.00174900    |
+| short-period-en       | deepseek | all pass                                                       | 2620/641            | 4076       | 0.00155520    |
+| custom-objectives-fil | deepseek | all pass                                                       | 2185/576            | 4082       | 0.00134670    |
+| single-dlp-en         | deepseek | all pass                                                       | 2180/358            | 2471       | 0.00108360    |
+| weekly-dll-fil        | deepseek | all pass                                                       | 2030/472            | 3686       | 0.00117540    |
+| g2-g4-en              | qwen     | all pass                                                       | 2457/629            | 4684       | 0.00037445    |
+| g2-g4-fil             | qwen     | all pass                                                       | 2467/846            | 5520       | 0.00046175    |
+| three-group-fil       | qwen     | all pass                                                       | 2538/1300           | 8508       | 0.00064690    |
+| four-group-en         | qwen     | all pass                                                       | 2589/1401           | 8869       | 0.00068985    |
+| no-electricity-fil    | qwen     | all pass                                                       | 2467/825            | 4734       | 0.00045335    |
+| short-period-en       | qwen     | all pass                                                       | 2457/656            | 5248       | 0.00038525    |
+
+Saved v4 fixture samples contain no results or reflection sections; the multi-grade samples place teacher guidance in note. Credentials were inherited only at runtime from the authorized ignored integration `.env`; no credential file was copied. Estimated costs use the previously documented conservative rates. These checks establish structural validity; pedagogical teacher review remains pending. No critic phase, live acceptance calls, deployment, dependency or contract changes were added.
+
+---
+
 V3 duplicate-text / teacher-note follow-up — 2026-11-14
 
 Authoritative competency wording is retained unchanged. Objective and assessment model lines are removed when their Unicode/case/whitespace/punctuation-normalized text repeats or is contained in an authoritative competency, including partial restatements. Genuine additions (including Filipino explanations) remain. This applies to per-group, text and list section storage formats. Unit cases cover exact duplicates, partial duplicates and genuine additions for objectives and assessment.

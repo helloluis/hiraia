@@ -1,3 +1,4 @@
+import { blankContent } from '../plan';
 import {
   BUILTIN_TEMPLATES,
   type GenerationInput,
@@ -69,6 +70,14 @@ export function buildPrefilledDraft(input: DraftInput): {
     ])
   );
   const sections = template.sections.map((s) => {
+    if (s.outsideLock)
+      return {
+        key: s.key,
+        content: blankContent(
+          s.contentType,
+          input.gradeGroups.map((g) => g.id)
+        ),
+      };
     let content: SectionContent;
     switch (s.contentType) {
       case 'list':
@@ -152,12 +161,16 @@ export function validateGeneratedSections(input: DraftInput, sections: DraftSect
   const keys = sections.map((s) => s.key);
   if (new Set(keys).size !== keys.length) errors.push('Duplicate sections.');
   for (const spec of template?.sections ?? []) {
+    if (spec.outsideLock) continue;
     const section = sections.find((s) => s.key === spec.key);
     if (spec.required && !section) errors.push(`Missing ${spec.key}.`);
     if (section && section.content.type !== spec.contentType)
       errors.push(`Wrong content type for ${spec.key}.`);
   }
   for (const section of sections) {
+    if (template?.sections.find((s) => s.key === section.key)?.outsideLock) {
+      continue;
+    }
     if (!template?.sections.some((s) => s.key === section.key))
       errors.push(`Unknown section ${section.key}.`);
     if (

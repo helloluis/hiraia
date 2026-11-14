@@ -1,0 +1,365 @@
+{
+  "input": {
+    "kind": "full",
+    "templateId": "tpl.multigrade.v1",
+    "language": "en",
+    "subjectName": "Science",
+    "learningAreaId": "science",
+    "timeBudgetMinutes": 50,
+    "sessions": 1,
+    "gradeGroups": [
+      {
+        "id": "group-002",
+        "grade": "2",
+        "learnerCount": 10
+      },
+      {
+        "id": "group-004",
+        "grade": "4",
+        "learnerCount": 10
+      }
+    ],
+    "competencies": {
+      "group-002": ["C2"],
+      "group-004": ["C4"]
+    },
+    "curriculumVersion": "eval.v1",
+    "customObjectives": [],
+    "classProfile": {
+      "materials": ["paper", "pencils"],
+      "textbooks": [],
+      "electricity": true,
+      "projector": null,
+      "printing": false,
+      "outdoorSpace": null,
+      "notes": ""
+    },
+    "guidance": ""
+  },
+  "plan": {
+    "title": "Plants Around Us: Observing and Describing Plant Parts",
+    "sections": [
+      {
+        "key": "objectives",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants by naming and pointing to their parts (roots, stem, leaves, flower) using simple words."
+                  }
+                ]
+              }
+            ],
+            "group-004": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants by explaining the parts and how each part helps the plant live and grow."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "materials",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ],
+            "group-004": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "multigrade",
+        "content": {
+          "type": "multigrade",
+          "blocks": [
+            {
+              "id": "92180317-9db6-4113-b204-85847ebfa22d",
+              "label": "Opening",
+              "minutes": 5,
+              "transitionMinutes": 0,
+              "teacherWith": "all",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-002": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Say the name of a plant you know and point to one part you remember."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-004": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Share with a partner one plant part and what you think it does for the plant."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "5a71d845-9f7a-4b7b-ba0e-61558f901386",
+              "label": "Teach Grade 2",
+              "minutes": 20,
+              "transitionMinutes": 1,
+              "teacherWith": "group-002",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-002": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "With the teacher, look at a plant picture or plant part and name roots, stem, and leaves; then point to each part on your own drawing."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-004": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Working unaided, draw a plant on paper and label roots, stem, leaves, and flower; beside each label write one sentence about what that part does."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "0d23e547-f1eb-4cf7-b4e6-1c5f94b33575",
+              "label": "Teach Grade 4",
+              "minutes": 20,
+              "transitionMinutes": 1,
+              "teacherWith": "group-004",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-002": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Working unaided, fold a paper into four boxes and draw one plant part in each box: roots, stem, leaf, flower; say the name quietly as you draw."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-004": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "With the teacher, explain how roots, stem, leaves, and flower help a plant live and grow, using your labeled drawing as a guide."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "3fcf00a3-4c4e-4d92-bc3c-e5e6924a007d",
+              "label": "Closing",
+              "minutes": 5,
+              "transitionMinutes": 0,
+              "teacherWith": "all",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-002": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Show your four-box drawing and name two plant parts."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-004": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Show your labeled drawing and explain one plant part and how it helps the plant."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "note": "Each grade gets one direct-teaching turn (Grade 2 in slot 2, Grade 4 in slot 3) while the other grade works unaided. Grade 2 gets an early direct turn; continue and extend Grade 4 discussion next session if time is short."
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "assessment",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ask the learner to point to and name roots, stem, leaves, and flower on their drawing; note how many parts are correctly named."
+                  }
+                ]
+              }
+            ],
+            "group-004": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ask the learner to explain what roots, stem, leaves, and flower each do for the plant; check that each part is described accurately."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      }
+    ],
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "warnings": []
+  },
+  "review": "Teacher quality review pending; structural checks do not establish scientific or pedagogical quality."
+}

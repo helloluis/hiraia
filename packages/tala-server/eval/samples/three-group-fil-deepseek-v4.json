@@ -1,0 +1,526 @@
+{
+  "input": {
+    "kind": "full",
+    "templateId": "tpl.multigrade.v1",
+    "language": "fil",
+    "subjectName": "Science",
+    "learningAreaId": "science",
+    "timeBudgetMinutes": 50,
+    "sessions": 1,
+    "gradeGroups": [
+      {
+        "id": "group-001",
+        "grade": "1",
+        "learnerCount": 10
+      },
+      {
+        "id": "group-002",
+        "grade": "2",
+        "learnerCount": 10
+      },
+      {
+        "id": "group-003",
+        "grade": "3",
+        "learnerCount": 10
+      }
+    ],
+    "competencies": {
+      "group-001": ["C1"],
+      "group-002": ["C2"],
+      "group-003": ["C3"]
+    },
+    "curriculumVersion": "eval.v1",
+    "customObjectives": [],
+    "classProfile": {
+      "materials": ["paper", "pencils"],
+      "textbooks": [],
+      "electricity": true,
+      "projector": null,
+      "printing": false,
+      "outdoorSpace": null,
+      "notes": ""
+    },
+    "guidance": ""
+  },
+  "plan": {
+    "title": "Paglalarawan ng mga Halaman (Baitang 1–3)",
+    "sections": [
+      {
+        "key": "objectives",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-001": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman gamit ang mga simpleng salita at pagmamasid."
+                  }
+                ]
+              }
+            ],
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman sa pamamagitan ng kanilang mga bahagi at katangian."
+                  }
+                ]
+              }
+            ],
+            "group-003": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman at ipaliwanag ang mga katangiang napapansin."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "materials",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-001": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ],
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ],
+            "group-003": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "multigrade",
+        "content": {
+          "type": "multigrade",
+          "blocks": [
+            {
+              "id": "56b9780e-8574-4274-bee8-1c1dfc92efde",
+              "label": "Pagbubukas",
+              "minutes": 5,
+              "transitionMinutes": 0,
+              "teacherWith": "all",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Sabihin ang isang halaman na nakita mo sa labas at isang bahagi nito."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Sabihin ang isang halaman at dalawang bahagi nito."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Sabihin ang isang halaman at ipaliwanag ang isang katangian nito."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "4001e2d5-fa6e-4b30-8e53-8fa3ec7b1990",
+              "label": "Pagtuturo sa Baitang 1",
+              "minutes": 14,
+              "transitionMinutes": 1,
+              "teacherWith": "group-001",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Makinig at tumulong sa guro sa paglalarawan ng halaman; gumuhit ng isang halaman sa papel gamit ang lapis."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Mag-isa: gumuhit ng isang halaman sa papel gamit ang lapis at isulat ang pangalan ng dalawang bahagi nito."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Mag-isa: gumuhit ng isang halaman at magsulat ng dalawang pangungusap na naglalarawan dito."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "af5087bf-41bd-457b-9cae-84e753e4b0de",
+              "label": "Pagtuturo sa Baitang 2",
+              "minutes": 13,
+              "transitionMinutes": 1,
+              "teacherWith": "group-002",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Mag-isa: kulayan ang iginuhit na halaman at sabihin sa sarili ang isang bahagi nito."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Makinig at makibahagi sa guro sa paglalarawan ng mga bahagi at katangian ng halaman; itala sa papel."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Mag-isa: isulat ang tatlong katangian ng halaman na iginuhit at ipaliwanag ang isa sa papel."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "f3803978-2f18-4f47-9894-e431e044283b",
+              "label": "Pagtuturo sa Baitang 3",
+              "minutes": 13,
+              "transitionMinutes": 1,
+              "teacherWith": "group-003",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Mag-isa: ipakita ang iginuhit na halaman at sabihin ang isang bahagi nito sa katabi kung nais."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Mag-isa: isulat sa papel ang dalawang katangian ng halaman na napansin mo."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Makinig at makibahagi sa guro sa pagpapaliwanag ng mga katangian ng halaman; itala sa papel."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "9b834358-d322-4e28-86c3-022cf1c1e3b2",
+              "label": "Pagsasara",
+              "minutes": 5,
+              "transitionMinutes": 0,
+              "teacherWith": "all",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-001": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Sabihin ang isang bahagi ng halaman na iginuhit mo."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-002": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Sabihin ang isang katangian ng halaman na napansin mo."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-003": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Ipaliwanag sa isang pangungusap ang isang katangian ng halaman."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "note": "Limitado ang direktang oras ng guro sa tatlong grupo, kaya isang focused block bawat baitang; ang iba ay gagawa ng malayang gawain. Gawing gabay ang turn ng bawat baitang sa susunod na sesyon para sa hindi natapos na gawain. Kailangan ng pagsusuri ng guro sa pagkakatugma ng mga aktibidad sa kompetensi."
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "assessment",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-001": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Tanungin ang mag-aaral na ituro sa kanyang iginuhit ang isang bahagi ng halaman at ilarawan ito sa isang salita."
+                  }
+                ]
+              }
+            ],
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Tanungin ang mag-aaral na sabihin ang dalawang bahagi at isang katangian ng halaman mula sa kanyang iginuhit."
+                  }
+                ]
+              }
+            ],
+            "group-003": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Ilarawan ang mga halaman."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Tanungin ang mag-aaral na ipaliwanag sa dalawang pangungusap ang mga katangian ng halaman na iginuhit niya."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      }
+    ],
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "warnings": []
+  },
+  "review": "Teacher quality review pending; structural checks do not establish scientific or pedagogical quality."
+}

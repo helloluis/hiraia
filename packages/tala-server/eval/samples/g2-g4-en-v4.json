@@ -1,0 +1,349 @@
+{
+  "input": {
+    "kind": "full",
+    "templateId": "tpl.multigrade.v1",
+    "language": "en",
+    "subjectName": "Science",
+    "learningAreaId": "science",
+    "timeBudgetMinutes": 50,
+    "sessions": 1,
+    "gradeGroups": [
+      {
+        "id": "group-002",
+        "grade": "2",
+        "learnerCount": 10
+      },
+      {
+        "id": "group-004",
+        "grade": "4",
+        "learnerCount": 10
+      }
+    ],
+    "competencies": {
+      "group-002": ["C2"],
+      "group-004": ["C4"]
+    },
+    "curriculumVersion": "eval.v1",
+    "customObjectives": [],
+    "classProfile": {
+      "materials": ["paper", "pencils"],
+      "textbooks": [],
+      "electricity": true,
+      "projector": null,
+      "printing": false,
+      "outdoorSpace": null,
+      "notes": ""
+    },
+    "guidance": ""
+  },
+  "plan": {
+    "title": "Describing Plants",
+    "sections": [
+      {
+        "key": "objectives",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants."
+                  }
+                ]
+              }
+            ],
+            "group-004": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "materials",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ],
+            "group-004": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "paper"
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "pencils"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "multigrade",
+        "content": {
+          "type": "multigrade",
+          "blocks": [
+            {
+              "id": "1e587467-b1f2-48af-ae68-f9bb021fef76",
+              "label": "Opening",
+              "minutes": 5,
+              "transitionMinutes": 0,
+              "teacherWith": "all",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-002": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Name a plant you know."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-004": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "List three parts of a plant."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "9853761f-5929-496c-ab6c-4d6238108c02",
+              "label": "Teach grade 2",
+              "minutes": 20,
+              "transitionMinutes": 1,
+              "teacherWith": "group-002",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-002": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Draw a simple plant and label its main parts with your pencil."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-004": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Write one sentence describing how roots help a plant."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "82f49169-28d1-47b9-84ba-086187f9cbe4",
+              "label": "Teach grade 4",
+              "minutes": 20,
+              "transitionMinutes": 1,
+              "teacherWith": "group-004",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-002": {
+                  "mode": "independent",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Add details to your plant drawing using the example shown."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-004": {
+                  "mode": "direct",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Share your sentence with a partner and explain your answer."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "d5d99bb6-f223-4489-9b39-bb0bdabcc325",
+              "label": "Closing",
+              "minutes": 5,
+              "transitionMinutes": 0,
+              "teacherWith": "all",
+              "pairedGroupIds": [],
+              "groups": {
+                "group-002": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Show your drawing and name one part you drew."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "group-004": {
+                  "mode": "shared",
+                  "activity": [
+                    {
+                      "t": "p",
+                      "spans": [
+                        {
+                          "text": "Tell the class one thing you learned about plants today."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "note": "Each grade has one focused turn; extend unfinished practice next session."
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      },
+      {
+        "key": "assessment",
+        "content": {
+          "type": "pergroup",
+          "groups": {
+            "group-002": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Point to and name at least two parts of your plant drawing."
+                  }
+                ]
+              }
+            ],
+            "group-004": [
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Describe plants."
+                  }
+                ]
+              },
+              {
+                "t": "p",
+                "spans": [
+                  {
+                    "text": "Explain in your own words how plants use their roots."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gen": {
+          "provider": "qwen",
+          "model": "qwen-flash",
+          "promptId": "lesson/multigrade",
+          "promptVersion": 4,
+          "curriculumVersion": "eval.v1",
+          "at": "2026-11-16T00:00:00.000Z"
+        }
+      }
+    ],
+    "provider": "qwen",
+    "model": "qwen-flash",
+    "warnings": []
+  },
+  "review": "Teacher quality review pending; structural checks do not establish scientific or pedagogical quality."
+}
