@@ -10,6 +10,8 @@ User=tala
 Group=tala
 WorkingDirectory=/opt/tala/current/packages/tala-web
 EnvironmentFile=/etc/tala/tala.env
+# Written by deploy.sh: TALA_BUILD_ID=<tag>, reported by /api/v1/health.
+EnvironmentFile=-/opt/tala/build.env
 Environment=NODE_ENV=production
 ExecStart=/usr/bin/node node_modules/next/dist/bin/next start -p 3220 -H 127.0.0.1
 Restart=always

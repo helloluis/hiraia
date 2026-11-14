@@ -23,6 +23,7 @@ mkdir -p packages/tala-web/.next/cache && chown -R tala:tala packages/tala-web/.
 chmod -R o+rX "$REL" 2>/dev/null || true
 
 ln -sfn "$REL" "$ROOT/current.new" && mv -Tf "$ROOT/current.new" "$ROOT/current"
+printf 'TALA_BUILD_ID=%s\n' "$TAG" > "$ROOT/build.env"
 systemctl restart tala
 for i in $(seq 1 30); do
   if curl -fsS -m 3 http://127.0.0.1:3220/api/v1/health >/dev/null 2>&1; then
