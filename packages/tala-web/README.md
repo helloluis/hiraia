@@ -52,9 +52,17 @@ password, join another account (`account.merge`, both proofs). Every server reas
 
 ## Public pages
 
-- `/` — public homepage in the hiraia.org pattern (eyebrow, serif headline, benefit blocks, promises band, get-started
-  card). Server-rendered; the only client state is the "Open my week" swap for a signed-in visitor. Hero art in
-  `public/brand/tala-hero-teacher*.{webp,jpg}` (desktop 1600 px, mobile 720 px variants).
+- `/` — public homepage in hiraia.org's proportions: the photograph is the hero (near-full-viewport, headline card
+  laid over it), then a scroll-snap screenshot carousel, short feature headlines, "Our Promise", one get-started
+  card, and hiraia.org's footer (QVAC mark + the same disclaimer). Server-rendered; the only client state is the
+  "Open my week" swap for a signed-in visitor. Copy is Taglish in the Filipino locale.
+  - Hero art: `assets-src/tala-hero-teacher-master.jpg` is the one master (as generated, no edits);
+    `scripts/hero-build.cjs` rebuilds `public/brand/tala-hero-teacher{,-wide,-mobile}.{webp,jpg}` (1.2 % rim trim,
+    3:4 phone crop around the teacher).
+  - Carousel screenshots: `scripts/demo-seed.mjs` seeds a fictional teacher through the real API and sync engine
+    (two classes incl. a Grade 3/4/5 multigrade room, invented rosters, the saved DeepSeek Friction plans), then
+    `scripts/demo-capture.mjs` captures `public/screens/*.{webp,jpg}` at 360 px @2× and 1280 px. Run both against a
+    local production server (`TALA_ENV=local`, temp `TALA_DB_PATH`); see the headers of each script.
 - `/download` — reads `${TALA_DOWNLOAD_DIR}/tala-apk.json` at request time (schema in `src/app/download/page.tsx`);
   the APK is served by nginx. Without a manifest it says the app is not published yet.
 - `config.features.emailDelivery === false` hides every "verify your email" prompt and says plainly on the

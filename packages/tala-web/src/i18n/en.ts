@@ -183,8 +183,8 @@ export const en = {
   'week.ahead': '{n} sessions ahead',
   'week.needsAttention': 'Needs attention',
   'week.atRisk': '{subject}: {n} competencies may not fit this quarter',
-  'week.prev': 'Earlier week',
-  'week.next': 'Later week',
+  'week.prev': 'Earlier',
+  'week.next': 'Later',
   'week.thisWeek': 'Back to this week',
   'week.multigrade': 'Multigrade session',
   'week.mark': 'Mark',
@@ -740,63 +740,61 @@ export const en = {
   'merge.proofMissing':
     'Give the other account’s email and password, or sign in to it with Google.',
 
-  'landing.eyebrow': 'Lesson planning for teachers',
-  'landing.h1': 'Your week’s lessons, planned with you.',
+  'landing.h1': 'Plan this week’s lessons with Tala.',
   'landing.sub':
-    'Tala knows the DepEd curriculum and your school calendar. It opens on what you teach this week, drafts a plan with you, and works on an ordinary Android phone, even without signal.',
+    'Free for teachers. Knows the DepEd curriculum and your calendar. Drafts with you, and the Android app works offline.',
   'landing.register': 'Register',
   'landing.login': 'Log in',
   'landing.openWeek': 'Open my week',
   'landing.download': 'Download the Android app',
   'landing.heroAlt':
-    'A smiling teacher at the chalkboard, holding a phone and her lesson papers, facing children of different grades in a simple classroom. The picture looks like an old film still.',
-  'landing.earlyEyebrow': 'An early version',
-  'landing.earlyTitle': 'Free, honest, and still growing',
-  'landing.earlyBody':
-    'Tala is free for every teacher and will stay free. This is an early version: some parts are still being built, and we say so where it matters. A draft Tala writes is a draft. You read it, fix it, and lock it when it is right.',
-  'landing.todayEyebrow': 'What Tala does today',
-  'landing.todayTitle': 'Everything a planning week needs, in plain steps',
-  'landing.f.account.k': 'Your own teacher account',
-  'landing.f.account.b':
-    'Sign up with an email and a password. Your classes and lessons are yours, on the web and on your phone.',
-  'landing.f.roster.k': 'Class lists from what you already have',
+    'A public-school teacher smiles at her class in a bamboo-walled classroom, holding a phone and lesson papers in front of a blank chalkboard, with pupils watching from their desks.',
+  'landing.todayTitle': 'See what Tala can do',
+  'landing.f.roster.k': 'Class lists from any file',
   'landing.f.roster.b':
-    'Paste names or hand Tala the file you already keep. It cleans the list, shows you every row it is unsure about, and keeps only names, grade groups and your own numbers. Never LRNs, birthdays or addresses.',
-  'landing.f.pacing.k': 'Weekly and monthly pacing from the curriculum',
-  'landing.f.pacing.b':
-    'Pick your school year and timetable; Tala lays the competencies over your real teaching days and shows what is due this week and this month. Science, Grades 3 to 10 today. More subjects are coming.',
+    'Paste names or upload the file you already keep. You check every uncertain row. Names only, never LRNs.',
+  'landing.f.pacing.k': 'This week, from the curriculum',
+  'landing.f.pacing.b': 'Science, Grades 3 to 10 today. More subjects coming.',
   'landing.f.ai.k': 'Lesson drafts with AI',
   'landing.f.ai.b':
-    'From the competencies on your timeline, Tala drafts a lesson in Filipino or English. Multi-grade classes of up to four grade levels get one plan for one room. The drafting model is DeepSeek, with Qwen as backup.',
-  'landing.f.edit.k': 'Edit, lock, print',
+    'One plan for a multi-grade room of up to four grade levels. DeepSeek, with Qwen as backup.',
+  'landing.f.edit.k': 'Edit, lock, PDF',
   'landing.f.edit.b':
-    'Plain text sections you can type in anywhere. Lock a lesson when it is final, and download it as a PDF in A4 or long bond.',
-  'landing.f.offline.k': 'An Android app that keeps working offline',
+    'Plain text sections. Lock it when it is final and print it in A4 or long bond.',
+  'landing.f.offline.k': 'Works offline on Android',
   'landing.f.offline.b':
-    'Your week, your lessons and your PDFs stay on the phone. When signal comes back, everything is sent quietly.',
-  'landing.f.community.k': 'Share lessons with other teachers',
+    'Your week and your lessons stay on the phone. They send themselves when the signal is back.',
+  'landing.f.community.k': 'Share with other teachers',
   'landing.f.community.b':
-    'Post a locked lesson, copy one from another teacher, and make it your own. Credit stays with the author.',
+    'Post a locked lesson, copy one, make it yours. Credit stays with the author.',
   'landing.beta': 'Beta',
-  'landing.promiseEyebrow': 'What we promise',
   'landing.p.free.k': 'Free forever',
-  'landing.p.free.b': 'No payments, no plans, no premium tier. Hiraia is not-for-profit.',
+  'landing.p.free.b': 'No payments, no premium tier. Hiraia is not-for-profit.',
   'landing.p.offline.k': 'Works offline',
-  'landing.p.offline.b': 'Bad signal is the normal case here, so the phone app is built for it.',
+  'landing.p.offline.b': 'Weak signal is normal here, so the phone app is built for it.',
   'landing.p.simple.k': 'No technical skill needed',
-  'landing.p.simple.b':
-    'If you can send a text message, you can use Tala. Every screen says what to do next.',
+  'landing.p.simple.b': 'If you can send a text message, you can use Tala.',
   'landing.p.check.k': 'A draft is a draft',
   'landing.p.check.b':
     'Tala checks the shape of an AI draft, not its facts. You do, before you lock it.',
-  'landing.getEyebrow': 'Get started',
-  'landing.getTitle': 'Use it in the browser today, or put it on your phone',
-  'landing.getBody':
-    'The web version works on any phone or computer. The Android app adds offline use. Both are free.',
+  'landing.getTitle': 'Start in the browser, or get the Android app',
   'landing.footerHiraia': 'A project of Hiraia',
   'landing.footerDeped':
-    'Tala is not an official DepEd product. Curriculum text is DepEd’s own and is shown as published.',
+    'Hiraia is not affiliated with or endorsed by the Philippine Department of Education. Its alignment with the Revised K-12 Curriculum is based on information and content in the public domain, and is not guaranteed to be accurate, and has not been reviewed by the Department of Education or other public academic institutions. Although its originator has endeavoured to provide the most accurate synthesis possible of the current public school science curriculum, usage of Hiraia should be carried out at your own risk.',
 
+  'landing.promiseTitle': 'Our Promise',
+  'landing.early': 'An early version. Free, honest, still growing.',
+  'landing.carouselLabel': 'Screens of Tala',
+  'landing.c.week': 'Your week, paced from the Science curriculum. Three grade levels in one room.',
+  'landing.c.editor':
+    'One lesson for a multi-grade room: time blocks per grade, and where the teacher is.',
+  'landing.c.draft': 'An AI draft arrives marked as a draft. You read it, fix it, lock it.',
+  'landing.c.roster': 'Paste a class list. Tala cleans it and asks you about every uncertain row.',
+  'landing.c.print': 'Lock a lesson and print it. A4 or long bond, with signature lines.',
+  'landing.c.desktop': 'The same week on a laptop.',
+  'landing.builtWithQvac': 'Built with QVAC SDK',
+  'landing.prev': 'Previous screen',
+  'landing.next': 'Next screen',
   'download.title': 'Download the Android app',
   'download.intro':
     'The Tala app for Android keeps your week, your lessons and your PDFs on the phone, with or without signal.',
