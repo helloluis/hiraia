@@ -97,7 +97,8 @@ export const SessionInfo = z.object({
 export const PlanRevisionMeta = z.object({
   revision: z.number().int(),
   createdAt: IsoDateTime,
-  reason: z.enum(['save', 'lock', 'unlock', 'regenerate', 'restore', 'conflict']),
+  /** 'post_class' = writing in an after-class section of a locked plan (assessment results, reflection). */
+  reason: z.enum(['save', 'lock', 'unlock', 'regenerate', 'restore', 'conflict', 'post_class']),
   locked: z.boolean(),
 });
 
