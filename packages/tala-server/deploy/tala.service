@@ -1,0 +1,29 @@
+# Tala V1 web app + API (one process: Next.js serving the UI and /api/v1). Same hardening profile as hiraia-crm.service.
+# Install: /etc/systemd/system/tala.service   ·   Logs: journalctl -u tala (journald rotates them)
+[Unit]
+Description=Tala (tala.hiraia.org) web app and API (loopback :3220)
+After=network.target
+
+[Service]
+Type=simple
+User=tala
+Group=tala
+WorkingDirectory=/opt/tala/current/packages/tala-web
+EnvironmentFile=/etc/tala/tala.env
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node node_modules/next/dist/bin/next start -p 3220 -H 127.0.0.1
+Restart=always
+RestartSec=5
+# Exactly one instance: SQLite and the in-process job runners assume a single process.
+MemoryMax=1G
+UMask=0027
+StateDirectory=tala
+StateDirectoryMode=0750
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/tala /opt/tala/releases
+
+[Install]
+WantedBy=multi-user.target
