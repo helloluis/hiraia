@@ -224,7 +224,7 @@ test('pausing an active transfer preserves partial bytes and never installs unve
   assert.equal(f.stats().installs, 0);
 });
 
-test('worker process override never installs a Node builtin alias or modifies the SDK map', () => {
+test('standalone QVAC manifest never exposes builtin aliases or SDK peers to the workspace', () => {
   const require = createRequire(import.meta.url);
   const fs = require('node:fs');
   const path = require('node:path');
@@ -238,7 +238,25 @@ test('worker process override never installs a Node builtin alias or modifies th
     ...pkg.peerDependencies,
   }))
     assert.ok(!builtinModules.includes(name), `hoistable builtin dependency: ${name}`);
-  assert.equal(pkg.devDependencies['bare-process'], '4.4.1');
+  assert.equal(pkg.devDependencies['bare-process'], undefined);
+  for (const name of ['@qvac/sdk', 'react-native-bare-kit', 'expo-build-properties'])
+    assert.equal(pkg.dependencies[name], undefined);
+  const island = JSON.parse(fs.readFileSync(path.join(root, 'qvac-build/package.json'), 'utf8'));
+  assert.equal(island.devDependencies['bare-process'], '4.4.1');
+  assert.ok(fs.existsSync(path.join(root, 'qvac-build/pnpm-workspace.yaml')));
+  const isolated = require(path.join(root, 'qvac-build/resolve.cjs'));
+  assert.throws(() => isolated.resolve('node:process'), { code: 'MODULE_NOT_FOUND' });
+});
+
+test('installed standalone worker map preserves the SDK import map', (t) => {
+  const require = createRequire(import.meta.url);
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const root = path.resolve(import.meta.dirname, '../../..');
+  if (!fs.existsSync(path.join(root, 'qvac-build/node_modules/@qvac/sdk'))) {
+    t.skip('QVAC island is optional for standard tests');
+    return;
+  }
   // Node runs Expo's ESM plugins natively; tsx's CJS transform changes their interop.
   const proof = JSON.parse(
     execFileSync(
@@ -248,10 +266,10 @@ test('worker process override never installs a Node builtin alias or modifies th
         `
     const fs = require('node:fs'), path = require('node:path');
     const root = ${JSON.stringify(root)};
-    const localRequire = require('node:module').createRequire(path.join(root, 'package.json'));
+    const localRequire = require(root + '/qvac-build/resolve.cjs');
     const sdkPlugins = localRequire('@qvac/sdk/expo-plugin');
     const { workerSdkView } = require(root + '/plugins/with-qvac-worker.cjs');
-    const original = path.join(sdkPlugins.resolveSDKPackageDir(root).dir, 'bare-imports.json');
+    const original = path.join(sdkPlugins.resolveSDKPackageDir(path.join(root, 'qvac-build')).dir, 'bare-imports.json');
     const before = fs.readFileSync(original, 'utf8');
     const { stage } = workerSdkView(root);
     const map = JSON.parse(fs.readFileSync(path.join(stage, 'bare-imports.json'), 'utf8'));

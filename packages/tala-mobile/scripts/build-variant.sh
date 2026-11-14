@@ -7,6 +7,10 @@ export EXPO_PUBLIC_TALA_API_URL=https://tala.hiraia.org
 export TALA_BUILD_DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 export CI=1
 if [[ "$TALA_QVAC" == 1 ]]; then
+  if [[ ! -f qvac-build/node_modules/.modules.yaml ]]; then
+    echo "Install qvac-build separately with --ignore-workspace --frozen-lockfile first." >&2
+    exit 1
+  fi
   variant=with-qvac
   architectures=arm64-v8a
   pnpm exec expo prebuild --platform android --no-install --clean

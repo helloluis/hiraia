@@ -1,5 +1,7 @@
 # Experimental QVAC build
 
+Current dependency setup: [standalone lock isolation](QVAC-LOCK-ISOLATION.md) and [frozen build instructions](qvac-build/README.md).
+
 Implemented 14 November 2026 following Luis's approval of QVAC-PLAN.md. That file is the dated research record; this document describes the implementation and its verification limits.
 
 ## Two native outputs
@@ -15,7 +17,7 @@ The script sources `~/.config/hiraia/build-env.sh`, cleans disposable Android ou
 
 STANDARD remains `com.hiraia.tala.next`, Android API 24+, ARM64 and ARMv7. QVAC is side by side: `com.hiraia.tala.next.qvac`, label **Tala (on-device AI)**, API 31+, ARM64 only. Both are version `1.0.0-demo.1`, code 1. Increase `app.config.js` version/code for subsequent installable releases. Both use the same stable throwaway demo keystore at `~/.config/hiraia/tala-next-demo.keystore`; losing it requires uninstalling existing demo installations. It is unrelated to the pilot signing key.
 
-The flag controls Expo plugins, minimum SDK, Bare autolinking and the engine module selected by Metro. Expo 54 ignores a React Native config `android: null` override when merging autolinking output: the standard-only plugin therefore supplies the explicit `--exclude react-native-bare-kit` argument in generated settings.gradle. It fails closed if Expo's expected template changes. Always clean prebuild when changing the flag. No root configuration changed. Root's existing shamefully-hoist setting suffices; package-local worker import-map overrides and explicit Fabric pins are required by bare-pack/plugin verification.
+The flag controls Expo plugins, minimum SDK, Bare autolinking and the engine module selected by Metro. Expo 54 ignores a React Native config `android: null` override when merging autolinking output: the standard-only plugin therefore supplies the explicit `--exclude react-native-bare-kit` argument in generated settings.gradle. It fails closed if Expo's expected template changes. Always clean prebuild when changing the flag. No root configuration changed. Hoisting is confined to the standalone build island; worker import-map overrides and explicit Fabric pins are required by bare-pack/plugin verification.
 
 QVAC's upstream OpenCL manifest entry is made optional in our QVAC-only plugin because this adapter requests CPU inference. OpenCL/Vulkan backends still ship as upstream native dependencies. No GPU capability is promised. Native Bare libraries can be loaded by RN package registration; no worker/model starts until the teacher requests engine start or a local suggestion.
 
@@ -33,7 +35,7 @@ Only unresolved, locally parsed review rows offer a local suggestion. Exactly on
 
 ## Dependencies and notices
 
-Added package-local SDK 0.23.0, Bare kit 0.16.0, Fabric Android ARM64/iOS 0.25.0, expo-build-properties ~1.0.0; development bare-pack 3.1.0 and bare-process 4.4.1 under its real package name. The iOS Fabric package is required by the upstream worker bundler's platform validation, not an iOS delivery claim. No root/student/server dependency edits; the orchestrator regenerates the lockfile.
+The standalone `qvac-build` package pins SDK 0.23.0, Bare kit 0.16.0, Fabric Android ARM64/iOS 0.25.0, expo-build-properties ~1.0.0; development bare-pack 3.1.0 and bare-process 4.4.1 under its real package name. The iOS Fabric package is required by the upstream worker bundler's platform validation, not an iOS delivery claim. No root/student/server dependency edits; the orchestrator maintains the root lockfile, and only the island has its own SDK lockfile.
 
 `scripts/qvac-notices.cjs` copies the SDK/Bare/addon dependency licence inventory and complete available LICENSE/NOTICE texts into the QVAC APK, accessible under On-device AI → licences. Additional full model, V8, libuv, OpenSSL, Fabric llama and LLVM libc++ licence texts are retained under `native/local-ai/notices`. The inventory includes the broader SDK dependency closure, including unused plugin packages; it is not a claim that every listed package is executing or bundled. Completion-only qvac.config disables audio decoding and speech plugins. Published upstream notices are preserved; this is not an independent audit of every statically linked vendor component.
 
@@ -52,8 +54,8 @@ Filipino strings needing human wording review: `onDeviceAi`, `localAiExperimenta
 
 ## Worker resolver isolation correction
 
-The earlier `process: npm:bare-process` dependency was unsafe under this monorepo's `shamefully-hoist=true`: it polluted other packages' browser bundles. It has been removed. Only `bare-process@4.4.1` under its real name is declared now; no dependency/devDependency has a Node builtin name.
+The earlier `process: npm:bare-process` dependency was unsafe under this monorepo's `shamefully-hoist=true`: it polluted other packages' browser bundles. It has been removed. Only the standalone island declares `bare-process@4.4.1` under its real name; no dependency/devDependency has a Node builtin name.
 
-`plugins/with-qvac-worker.cjs` composes the pinned SDK's native Expo plugins but replaces its worker step. A disposable SDK view under ignored `qvac/sdk-worker-view/` preserves upstream files via links and copies its package metadata/import map. Only that worker map adds `process`/`node:process` → an absolute `bare-process` module URL under the Bare condition. Both bare-pack and native addon discovery through bare-link receive the scoped map. Installed SDK import maps are never changed. The upstream SDK's generated worker output is still copied to its normal mobile bundle location, verified, and its ARM64 addons linked. This replaces the earlier alias workaround; no Metro-wide or root alias is used.
+`plugins/with-qvac-worker.cjs` composes the pinned SDK's native Expo plugins but replaces its worker step. A disposable SDK view under ignored `qvac-build/qvac/sdk-worker-view/` preserves upstream files via links and copies its package metadata/import map. Only that worker map adds `process`/`node:process` → an absolute `bare-process` module URL under the Bare condition. Both bare-pack and native addon discovery through bare-link receive the scoped map. Installed SDK import maps are never changed. The upstream SDK's generated worker output is still copied to its normal mobile bundle location, verified, and its ARM64 addons linked. This replaces the earlier alias workaround; no Metro-wide or root alias is used.
 
 After moving away all generated root/package node_modules directories and installing mobile plus web together, root `require.resolve('process/package.json')` returns MODULE_NOT_FOUND. The mobile regression test checks builtin dependency names, correct worker maps and unchanged installed SDK maps. Native standard isolation remains the existing standard-only autolinking exclusion.
