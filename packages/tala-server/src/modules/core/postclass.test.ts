@@ -7,7 +7,7 @@
  */
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { BUILTIN_TEMPLATES, PlanRevisionMeta, parseRecordData } from '@hiraia/tala-core';
+import { BUILTIN_TEMPLATES, parseRecordData } from '@hiraia/tala-core';
 import type {
   EntityName,
   Mutation,
@@ -154,12 +154,6 @@ const storedReasons = (t: TestServer, planId = 'plan-0001') =>
       )
       .all(planId) as Array<{ revision: number; reason: string; locked: number }>
   ).map((r) => `${r.revision}:${r.reason}:${r.locked ? 'locked' : 'open'}`);
-/** The reason a client sees for a post-class edit: its own value once the contract has one, `save` until then. */
-const POST_CLASS_REASON = (PlanRevisionMeta.shape.reason.options as readonly string[]).includes(
-  'post_class'
-)
-  ? 'post_class'
-  : 'save';
 
 test('the built-in templates: results and reflection are the post-class parts, and neither is required', () => {
   for (const template of BUILTIN_TEMPLATES) {
@@ -855,7 +849,7 @@ test('(5) post-class edits leave the plan, its lock, its revision and aiDraft al
   assert.deepEqual(
     listed.map((r) => [r.revision, r.reason, r.locked]),
     [
-      [3, POST_CLASS_REASON, true],
+      [3, 'post_class', true],
       [2, 'lock', true],
       [1, 'save', false],
     ]
@@ -1441,7 +1435,7 @@ test('(7) an archived plan that keeps its lock behaves exactly the same', async 
   );
   // History labels the post-class writing the same way as on a locked plan.
   assert.equal(storedReasons(t)[0], '4:post_class:locked');
-  assert.equal((await revisionsOf(t, teacher))[0]!.reason, POST_CLASS_REASON);
+  assert.equal((await revisionsOf(t, teacher))[0]!.reason, 'post_class');
 
   // Back from the archive it is still the same locked plan.
   const [restored] = await push(t, teacher.token, [

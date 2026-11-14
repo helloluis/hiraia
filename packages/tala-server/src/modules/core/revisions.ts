@@ -19,37 +19,17 @@
  * (workstream H). These snapshots are the server's own, reachable through `plans.revisions`.
  */
 import { deflateSync, inflateSync } from 'node:zlib';
-import { PlanRevisionMeta } from '@hiraia/tala-core';
-import type { Id, RecordEnvelope } from '@hiraia/tala-core';
+import type { Id, PlanRevisionMeta, RecordEnvelope } from '@hiraia/tala-core';
 import type { z } from 'zod';
 import type { Db } from '../../kernel/db';
 import type { LockKeys } from './plan-rules';
 import { sha256 } from './stable';
 
 /**
- * What the server stores. `post_class` is writing in a post-class part (results, reflection) of a locked
- * plan: it is told apart from an ordinary save because nothing the teacher locked has changed.
+ * Why a revision was taken: the contract's own list (`PlanRevisionMeta.reason`), so what is stored is always
+ * something a client may be told. `restore` and `conflict` are the apps' to use; the server writes the rest.
  */
-export type RevisionReason =
-  | 'save'
-  | 'lock'
-  | 'unlock'
-  | 'regenerate'
-  | 'restore'
-  | 'conflict'
-  | 'post_class';
-
-type ContractReason = z.infer<typeof PlanRevisionMeta>['reason'];
-const CONTRACT_REASONS = PlanRevisionMeta.shape.reason.options as readonly string[];
-
-/**
- * The reason as a client may be told it. A stored reason the contract's list does not have yet is shown as
- * `save`; with `locked: true` beside it, a `save` can then only be a post-class edit or a change to the
- * plan's dates, "submitted" note or unit. The day the contract lists `post_class`, it is shown as itself.
- */
-export function shownReason(stored: RevisionReason): ContractReason {
-  return (CONTRACT_REASONS.includes(stored) ? stored : 'save') as ContractReason;
-}
+export type RevisionReason = z.infer<typeof PlanRevisionMeta>['reason'];
 
 export interface PlanSnapshotEnvelopes {
   plan: RecordEnvelope<'plan'>;
@@ -59,7 +39,7 @@ export interface PlanSnapshotEnvelopes {
 export interface RevisionMeta {
   revision: number;
   createdAt: string;
-  reason: ContractReason;
+  reason: RevisionReason;
   locked: boolean;
 }
 
@@ -146,7 +126,7 @@ export function createRevisions(db: Db, now: () => Date) {
   ): RevisionMeta => ({
     revision: row.revision,
     createdAt: row.created_at,
-    reason: shownReason(row.reason),
+    reason: row.reason,
     locked: row.locked === 1,
   });
 
