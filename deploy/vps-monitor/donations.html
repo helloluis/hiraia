@@ -1,0 +1,17 @@
+<div class="don" id="don" data-config="__DON_CONFIG__">
+  <div class="don-intro">
+    <h1>Donations</h1>
+    <p class="lede">Crypto donations confirmed on hiraia.org. Donors who left an email can be thanked; tick <b>Thanked</b> once you have written, and add a note if useful. Times are Manila time (GMT+8).</p>
+  </div>
+  <div class="don-bar">
+    <div class="don-chips" id="don-views" role="group" aria-label="Show"></div>
+    <button type="button" class="refresh don-refresh" id="don-refresh" aria-label="Refresh donations"><span aria-hidden="true">↻</span><span class="don-refresh-text"> Refresh</span></button>
+  </div>
+  <p class="don-count" id="don-count" role="status" aria-live="polite">Loading donations…</p>
+  <p class="don-banner" id="don-banner" role="alert" hidden></p>
+  <div class="don-grid" id="don-grid" aria-busy="true"></div>
+  <div class="don-empty" id="don-empty" hidden></div>
+  <p class="foot don-foot">Private: emails were given only so we can say thank you. Never share or publish them. Emails from checkouts that were never paid are deleted after 7 days; a donation’s email and note are cleared 180 days after it was confirmed, leaving an anonymous record. Rows come from the thirdweb checkout webhook (<i>Checkout</i>); direct transfers to the address will appear as <i>Direct</i> once the chain watcher feeds them. <span id="don-updated"></span></p>
+</div>
+<script>__DON_JS__</script>
+<script>HiraiaDonations.mount(document.getElementById('don'));</script>

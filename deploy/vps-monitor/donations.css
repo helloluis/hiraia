@@ -1,0 +1,45 @@
+
+/* Donations — layered on admin_chrome.CSS (same paper/ink/gold tokens), mirroring the CRM cards. */
+[hidden]{display:none!important}
+.don{--card:#fffef9;--soft:#f3f1e8;--done:#3d7a3a;--todo:#c48a1d;--anon:#8b8778}
+.don-intro{margin:26px 0 6px}.don-intro h1{margin-bottom:6px}.don-intro .lede{margin:8px 0 0}
+.don-bar{position:sticky;top:0;z-index:5;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:16px -8px 0;padding:12px 8px;background:var(--paper);box-shadow:0 10px 14px -16px rgba(28,59,46,.5)}
+.don-chips{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+.don-chip{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:13px}
+.don-chip:hover{border-color:#b9c0ad}
+.don-chip-count{min-width:1.5em;padding:0 6px;border-radius:999px;background:var(--soft);font-size:11px;font-weight:700;text-align:center;font-variant-numeric:tabular-nums}
+.don-chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fdf8ea;box-shadow:0 2px 0 var(--gold)}
+.don-chip[aria-pressed=true] .don-chip-count{background:rgba(255,255,255,.16);color:#fdf8ea}
+.don-refresh{height:40px;white-space:nowrap}.don-refresh:disabled{opacity:.55;cursor:progress}
+.don-count{margin:10px 0;font-size:13px;font-weight:650}
+.don-banner{margin:4px 0 12px;padding:10px 14px;border:1px solid #efd9a8;border-radius:8px;background:#fbf2dd;color:#6b4a07;font-size:13px}
+
+.don-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:14px;align-items:start;margin-bottom:8px}
+.don-card{position:relative;display:flex;flex-direction:column;gap:9px;min-width:0;padding:16px 18px 14px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.don-card::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:var(--accent,transparent)}
+.don-card[data-state=todo]{--accent:var(--todo)}.don-card[data-state=thanked]{--accent:var(--done)}.don-card[data-state=anonymous]{--accent:var(--anon)}
+.don-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.don-who{min-width:0;font:600 17px/1.3 Georgia,serif;overflow-wrap:anywhere}
+.don-who.is-anon{color:var(--muted);font-style:italic}
+.don-amount{flex:0 0 auto;font:600 20px/1.2 Georgia,serif;letter-spacing:-.5px;text-align:right;white-space:nowrap}
+.don-amount small{font:700 11px system-ui,sans-serif;letter-spacing:.8px;color:var(--muted);margin-left:4px}
+.don-tags{display:flex;flex-wrap:wrap;gap:6px}
+.don-tag{display:inline-flex;align-items:center;padding:2px 9px;border:1px solid var(--line);border-radius:999px;background:var(--soft);font-size:11.5px;font-weight:650}
+.don-tag.is-test{background:#fbe9e3;border-color:#e4c4bc;color:var(--crit)}
+.don-tag.is-direct{background:#e7f5fc;border-color:#c6e5f4;color:#125f87}
+.don-meta{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:0;font-size:13px}
+.don-meta dt{color:var(--muted)}.don-meta dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.don-meta a{font:12.5px ui-monospace,Menlo,monospace;color:var(--teal)}
+.don-thank{display:grid;gap:8px;margin-top:4px;padding-top:10px;border-top:1px dashed var(--line)}
+.don-toggle{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:650;cursor:pointer}
+.don-toggle input{width:20px;height:20px;accent-color:var(--done);cursor:pointer}
+.don-toggle .don-when{font-weight:400;font-size:12px;color:var(--muted)}
+.don-note{display:flex;gap:8px}
+.don-note input{flex:1;min-width:0;height:38px;padding:0 10px;border:1px solid #cfd2c4;border-radius:8px;background:#fff;color:var(--ink);font-size:14px}
+.don-note input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.don-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:12.5px}
+.don-actions a{color:var(--teal);font-weight:650}
+.don-saved{color:var(--muted)}.don-saved.is-error{color:var(--crit);font-weight:650}
+.don-anon-note{font-size:12.5px;color:var(--muted);margin:0}
+.don-empty{padding:28px;border:1px dashed var(--line);border-radius:12px;text-align:center;color:var(--muted)}
+@media(max-width:560px){.don-head{flex-direction:column;gap:4px}.don-amount{text-align:left}}

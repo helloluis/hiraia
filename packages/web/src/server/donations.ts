@@ -18,7 +18,7 @@ export const PURPOSE = 'hiraia-donation';
 export function purgeExpired() {
   const db = getDb();
   db.prepare(`DELETE FROM donation_sessions WHERE created_at < datetime('now', ?)`).run(`-${SESSION_TTL_DAYS} days`);
-  db.prepare(`UPDATE donations SET email = NULL WHERE email IS NOT NULL AND confirmed_at < datetime('now', ?)`).run(
+  db.prepare(`UPDATE donations SET email = NULL, thank_note = NULL WHERE email IS NOT NULL AND confirmed_at < datetime('now', ?)`).run(
     `-${EMAIL_TTL_DAYS} days`,
   );
 }
@@ -204,28 +204,4 @@ export async function notifyDonation(paymentId: string) {
     set('failed');
     return 'failed';
   }
-}
-
-/* ---------------------------------------------------------------- report */
-
-export function reportRows() {
-  purgeExpired();
-  const db = getDb();
-  const rows = db.prepare('SELECT * FROM donations ORDER BY confirmed_at DESC LIMIT 500').all() as DonationRow[];
-  const pending = (db.prepare('SELECT count(*) AS n FROM donation_sessions').get() as { n: number }).n;
-  return { rows, pending };
-}
-
-export function checkReportAuth(header: string | null) {
-  const expected = process.env.DONATIONS_REPORT_PASSWORD_SHA256;
-  if (!expected || !/^[0-9a-f]{64}$/.test(expected) || !header?.startsWith('Basic ')) return false;
-  let password = '';
-  try {
-    const decoded = Buffer.from(header.slice(6), 'base64').toString('utf8');
-    password = decoded.slice(decoded.indexOf(':') + 1);
-  } catch {
-    return false;
-  }
-  const got = createHash('sha256').update(password).digest();
-  return timingSafeEqual(got, Buffer.from(expected, 'hex'));
 }

@@ -32,7 +32,9 @@ import fs from 'node:fs';
  * purchaseData) and nothing reaches the chain. `donations` records checkout payments confirmed
  * by thirdweb's signed webhook; `email` is copied in only when the payment's reference matches a
  * session. Unmatched sessions are deleted after 7 days and emails after 180 days
- * (src/server/donations.ts). Private: no public read endpoint, no analytics.
+ * (src/server/donations.ts). Private: no public read endpoint, no analytics. Luis reads them, and marks
+ * who he has thanked (thanked_at/thank_note), on the admin dashboard at /admin/donations
+ * (deploy/vps-monitor/donations.py).
  *
  * `apk_download_hits` counts homepage APK-button clicks (one row per IP-hash per UTC
  * day). No raw IP. Country/city come from nginx GeoIP headers when present. Pears
@@ -120,6 +122,9 @@ CREATE TABLE IF NOT EXISTS donations (
   tx_hashes     TEXT NOT NULL,                   -- JSON [{chainId, transactionHash}]
   notified      TEXT NOT NULL DEFAULT 'pending', -- beaniebot | email | failed | unconfigured
   test          INTEGER NOT NULL DEFAULT 0,      -- 1 = signed verification payload (purchaseData.test)
+  source        TEXT NOT NULL DEFAULT 'checkout',-- checkout (thirdweb webhook) | direct (chain watcher, later)
+  thanked_at    TEXT,                            -- set from /admin/donations when Luis has thanked the donor
+  thank_note    TEXT,                            -- Luis's note; cleared with the email after 180 days
   confirmed_at  TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
@@ -173,9 +178,13 @@ export function getDb(): Database.Database {
 
 function migrate(db: Database.Database) {
   const donationCols = db.prepare('PRAGMA table_info(donations)').all() as { name: string }[];
-  if (donationCols.length && !donationCols.some((c) => c.name === 'test')) {
-    db.exec('ALTER TABLE donations ADD COLUMN test INTEGER NOT NULL DEFAULT 0');
-  }
+  const addDonationCol = (name: string, ddl: string) => {
+    if (donationCols.length && !donationCols.some((c) => c.name === name)) db.exec(`ALTER TABLE donations ADD COLUMN ${ddl}`);
+  };
+  addDonationCol('test', 'test INTEGER NOT NULL DEFAULT 0');
+  addDonationCol('source', "source TEXT NOT NULL DEFAULT 'checkout'");
+  addDonationCol('thanked_at', 'thanked_at TEXT');
+  addDonationCol('thank_note', 'thank_note TEXT');
   const apkCols = db.prepare('PRAGMA table_info(apk_download_hits)').all() as { name: string }[];
   if (apkCols.length && !apkCols.some((c) => c.name === 'city')) {
     db.exec('ALTER TABLE apk_download_hits ADD COLUMN city TEXT');

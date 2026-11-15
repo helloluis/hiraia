@@ -60,6 +60,18 @@ media reports fail closed and remain queued on the phone. The VPS must have
 `python3-pil`, `ffmpeg`, `util-linux` and the `hiraia-media` system user installed.
 Accepted reports live under `/var/lib/hiraia-monitor/tala-media` with private permissions.
 
+## Donations
+
+`https://hiraia.org/admin/donations` (after sign-in) lists crypto donations confirmed by the
+website's thirdweb checkout webhook (`packages/web/scripts/README-donations.md`), read from the
+website database (`HIRAIA_DB_PATH`). Cards show the donor email or "Anonymous", amount, token,
+network, explorer link, Manila time and source (Checkout / Direct). Identified donors have a
+**Thanked** tick and a short note, saved with `POST /admin/api/donations/thanked` (session + CSRF)
+into `donations.thanked_at` / `thank_note`. Views: To thank (default), Thanked, Anonymous, All
+(kept in the URL). Retention (7-day unpaid email sessions, 180-day emails and notes) is also
+applied on every load. Emails are private: never export or share them.
+Tests: `python3 -m unittest discover -s deploy/vps-monitor -p 'test_donations.py'`.
+
 ## CRM contact cards
 
 `https://hiraia.org/admin/crm` (after sign-in) shows the school-pipeline CRM

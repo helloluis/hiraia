@@ -2,7 +2,7 @@
 // Temporary database and mocked network only (no thirdweb, Beaniebot or Resend calls).
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { createHash, createHmac } from 'node:crypto';
+import { createHmac } from 'node:crypto';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -48,7 +48,6 @@ test('optional donor email: sessions, signed webhook matching, notification and 
   process.env.FEEDBACK_TO = 'luis@example.test';
   delete process.env.BEANIEBOT_ALERT_KEY;
   delete process.env.THIRDWEB_WEBHOOK_SECRET;
-  process.env.DONATIONS_REPORT_PASSWORD_SHA256 = createHash('sha256').update('correct horse').digest('hex');
 
   const session = (await import('./session/route')).POST;
   const webhook = (await import('./webhook/route')).POST;
@@ -180,26 +179,21 @@ test('optional donor email: sessions, signed webhook matching, notification and 
     }
     assert.equal((db.prepare('SELECT count(*) AS n FROM donations').get() as { n: number }).n, 3);
 
-    // Report: Basic auth, HTML-escaped, CSV.
-    const get = (auth?: string, q = '') =>
-      report(new NextRequest(`http://localhost/api/donations/report${q}`, { headers: auth ? { authorization: auth } : {} }));
-    assert.equal((await get()).status, 401);
-    assert.equal((await get('Basic ' + Buffer.from('luis:wrong').toString('base64'))).status, 401);
-    const good = 'Basic ' + Buffer.from('luis:correct horse').toString('base64');
-    const html = await (await get(good)).text();
-    assert.match(html, /donor@example\.test/);
-    assert.match(html, /3 confirmed checkout payments, 1 with an email/);
-    const csv = await (await get(good, '?format=csv')).text();
-    assert.equal(csv.trim().split('\n').length, 4);
-    db.prepare("UPDATE donations SET email = '<b>x</b>@example.test' WHERE email IS NOT NULL").run();
-    assert.doesNotMatch(await (await get(good)).text(), /<b>x<\/b>/);
+    // The old standalone report only redirects to the admin dashboard and serves no data.
+    const old = report();
+    assert.equal(old.status, 308);
+    assert.equal(old.headers.get('location'), 'https://hiraia.org/admin/donations');
+
+    // Admin-set thank-you fields survive webhooks and are cleared with the email by retention.
+    db.prepare("UPDATE donations SET thanked_at = datetime('now'), thank_note = 'emailed' WHERE email IS NOT NULL").run();
+    assert.equal((db.prepare("SELECT source FROM donations WHERE payment_id = ?").get(p1.data.paymentId) as { source: string }).source, 'checkout');
 
     // Retention: stale sessions and old emails are removed on the next write.
     db.prepare("INSERT INTO donation_sessions (ref, email, chain_id, token, amount, created_at) VALUES ('old', 'old@example.test', 1, 'USDT', '25', datetime('now','-8 days'))").run();
     db.prepare("UPDATE donations SET confirmed_at = datetime('now','-181 days') WHERE email IS NOT NULL").run();
     assert.equal((await postSession({ email: 'new@example.test', chainId: 1, token: 'USDT', amount: '25' })).status, 200);
     assert.equal((db.prepare("SELECT count(*) AS n FROM donation_sessions WHERE ref = 'old'").get() as { n: number }).n, 0);
-    assert.equal((db.prepare('SELECT count(*) AS n FROM donations WHERE email IS NOT NULL').get() as { n: number }).n, 0);
+    assert.equal((db.prepare('SELECT count(*) AS n FROM donations WHERE email IS NOT NULL OR thank_note IS NOT NULL').get() as { n: number }).n, 0);
   } finally {
     globalThis.fetch = realFetch;
     rmSync(temporary, { recursive: true, force: true });

@@ -31,18 +31,21 @@
 
 ## Retention
 Unmatched sessions are deleted after 7 days. Emails on confirmed donations are cleared after 180 days,
-leaving an anonymous row. Purges run on every session, webhook and report request.
+leaving an anonymous row. Purges run on every session and webhook request, and on every /admin/donations load.
+The thank-you note is cleared together with the email.
 
-## Viewing
-`GET https://hiraia.org/api/donations/report` uses HTTP Basic auth (any username; the password whose
-SHA-256 is `DONATIONS_REPORT_PASSWORD_SHA256`). It shows a table of confirmed checkout donations
-(identified and anonymous), the number of email sessions still awaiting payment, and `?format=csv`.
-Emails in it are HTML-escaped.
+## Viewing and thanking donors
+Donors are listed in exactly one place: the admin dashboard, **https://hiraia.org/admin/donations**
+(same sign-in as /admin/crm; `deploy/vps-monitor/donations.py`). Each card shows the email (or
+"Anonymous"), amount and token, network, transaction link, time, and source (Checkout now; Direct
+once the chain watcher feeds `source = 'direct'` rows). Identified donors have a **Thanked** tick
+(stored as `donations.thanked_at`) and a note (`thank_note`). Views: To thank (default), Thanked,
+Anonymous, All. The old `/api/donations/report` address only redirects there (308) and serves no data.
 
 ## Production settings (`/root/hiraia/packages/web/.env.local`, mode 600, git-ignored)
-`THIRDWEB_WEBHOOK_SECRET`, `DONATIONS_REPORT_PASSWORD_SHA256`, optional `BEANIEBOT_ALERT_KEY`,
-plus the existing `RESEND_API_KEY` and `FEEDBACK_TO`. Restart `hiraia-web` after changing them.
-The report password's plaintext pickup file is `/root/hiraia-donations-secrets/report-password`.
+`THIRDWEB_WEBHOOK_SECRET` (the thirdweb dashboard webhook's signing secret; never commit or print
+it), optional `BEANIEBOT_ALERT_KEY`, plus the existing `RESEND_API_KEY` and `FEEDBACK_TO`. Restart
+`hiraia-web` after changing them.
 
 ## Tests
 `node --conditions=react-server --import tsx src/app/api/donations/donations.test.ts`

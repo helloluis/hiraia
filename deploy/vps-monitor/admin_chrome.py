@@ -5,6 +5,7 @@ NAV = (
     ("/", "Observatory", "home"),
     ("/tala-reports", "Tala reports", "tala-reports"),
     ("/crm", "CRM", "crm"),
+    ("/donations", "Donations", "donations"),
     ("/archive/telemetry", "Detailed reports", "telemetry"),
     ("/archive/training", "Training", "training"),
 )

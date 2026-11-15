@@ -21,6 +21,7 @@ import hashlib, hmac, html, json, os, re, secrets, subprocess, threading, time, 
 from datetime import datetime, timezone
 import admin_chrome
 import crm_contacts
+import donations
 import pilot_analytics
 import tala_reports
 try:
@@ -1310,6 +1311,11 @@ class Handler(BaseHTTPRequestHandler):
             # Server-side read with the admin's own CRM key; the browser only gets the projection.
             code, body, headers = crm_contacts.api_response()
             return self._json(code, body, headers)
+        if path == "/donations":
+            return self._send(200, donations.page(MOUNT, self._csrf()))
+        if path == "/api/donations":
+            code, body, headers = donations.api_response()
+            return self._json(code, body, headers)
         media_match = re.fullmatch(r"/tala-reports/media/([a-f0-9-]{36})/([a-f0-9-]{36})", path)
         if media_match:
             attachment = tala_reports.attachment(*media_match.groups())
@@ -1477,6 +1483,16 @@ class Handler(BaseHTTPRequestHandler):
 
         if not self._session_ok():
             return self._json(401, {"error": "unauthenticated"})
+
+        if path == "/api/donations/thanked":
+            try:
+                data = json.loads(raw)
+            except json.JSONDecodeError:
+                return self._json(400, {"error": "bad json"})
+            if not isinstance(data, dict) or not hmac.compare_digest(str(data.get("csrf", "")), self._csrf()):
+                return self._json(403, {"error": "bad csrf"})
+            code, body = donations.set_thanked(data)
+            return self._json(code, body)
 
         retry_match = re.fullmatch(r"/tala-reports/([a-f0-9-]{36})/retry", path)
         if retry_match:
