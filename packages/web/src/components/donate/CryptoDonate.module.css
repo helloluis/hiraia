@@ -1,0 +1,252 @@
+/* /support — crypto donations. Same stock cards on the board as the page's "asks". */
+.donate {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.card,
+.direct {
+  min-width: 0;
+  padding: 26px 28px 28px;
+  background: var(--stock);
+  color: var(--ink);
+  border-radius: 12px;
+  box-shadow: 0 7px 0 rgba(0, 0, 0, 0.17);
+}
+.direct {
+  background: #fbf6ea;
+}
+.eyebrow {
+  font-size: 10px;
+  color: #987027;
+}
+.card h2 {
+  margin: 10px 0 8px;
+  font-size: 1.9rem;
+  line-height: 1.1;
+}
+.direct h3 {
+  margin: 10px 0 8px;
+  font-size: 1.5rem;
+  line-height: 1.15;
+}
+.lead,
+.direct > p:not(.eyebrow) {
+  font-size: 1.08rem;
+  line-height: 1.5;
+}
+
+.group {
+  margin: 20px 0 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.group legend {
+  margin-bottom: 8px;
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 7.5rem;
+  min-height: 48px;
+  padding: 7px 14px 8px;
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  background: #fffdf7;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+.chip b {
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+.chip span {
+  font-size: 0.8rem;
+  line-height: 1.2;
+  color: rgba(28, 59, 46, 0.7);
+}
+.chip[aria-pressed='true'] {
+  background: var(--ink);
+  color: var(--stock);
+}
+.chip[aria-pressed='true'] span {
+  color: var(--gold);
+}
+.chip:focus-visible,
+.preset:focus-visible,
+.copy:focus-visible,
+.custom input:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.amounts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.preset {
+  min-width: 4.5rem;
+  min-height: 44px;
+  padding: 6px 12px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: #fffdf7;
+  color: var(--ink);
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.preset[aria-pressed='true'] {
+  background: var(--gold);
+}
+.custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: #fffdf7;
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-weight: 700;
+}
+.custom input {
+  width: 6.5rem;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.05rem;
+  border-radius: 4px;
+}
+.custom input[aria-invalid='true'] {
+  color: var(--accent);
+}
+.hint,
+.problem {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+.hint {
+  color: rgba(28, 59, 46, 0.7);
+}
+.problem {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.card :global(.mc-ledge) {
+  margin-top: 22px;
+}
+.card :global(.mc-ticket:disabled) {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.widget {
+  margin-top: 22px;
+}
+.loading {
+  margin-top: 22px;
+  font-size: 1rem;
+  color: rgba(28, 59, 46, 0.75);
+}
+.pending,
+.thanks {
+  margin-top: 22px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 2px dashed rgba(28, 59, 46, 0.45);
+  font-size: 1.02rem;
+  line-height: 1.45;
+}
+.thanks {
+  border-style: solid;
+  border-color: var(--teal);
+}
+.thanks a {
+  display: inline-block;
+  margin-top: 6px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 4px;
+}
+
+.address {
+  display: block;
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  background: #fffdf7;
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+.copy {
+  margin-top: 10px;
+  min-height: 44px;
+  padding: 6px 16px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--ink);
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.rules {
+  margin: 16px 0 0;
+  padding-left: 1.1rem;
+  list-style: disc;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+.rules li + li {
+  margin-top: 4px;
+}
+.rules a {
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 860px) {
+  .donate {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 520px) {
+  .card,
+  .direct {
+    padding: 22px 18px 24px;
+  }
+  .chip {
+    min-width: 0;
+    flex: 1 1 8rem;
+  }
+}

@@ -3,6 +3,7 @@ import { Wordmark } from '@/components/brand/Wordmark';
 import { SiteFooter } from '@/components/SiteFooter';
 import shared from '@/components/PilotApplication.module.css';
 import styles from '@/components/Support.module.css';
+import { CryptoDonate } from '@/components/donate/CryptoDonate';
 
 export const metadata: Metadata = {
   title: 'Support Hiraia — help put science within reach',
@@ -84,6 +85,8 @@ export default function SupportPage() {
             </li>
           ))}
         </ol>
+
+        <CryptoDonate />
 
         <section className={styles.pitch} aria-label="How to get in touch">
           <p>
