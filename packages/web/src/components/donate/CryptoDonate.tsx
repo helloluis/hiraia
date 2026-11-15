@@ -122,6 +122,13 @@ export function CryptoDonate() {
   const [copied, setCopied] = useState(false);
   const problem = validAmount(amount, token);
   const configured = THIRDWEB_CLIENT_ID !== null;
+  // The thirdweb client ID is locked to https://hiraia.org; www.hiraia.org serves the same page
+  // but its requests are refused, so there the button sends donors to the apex instead.
+  const [apexUrl, setApexUrl] = useState<string | null>(null);
+  useEffect(() => {
+    const { hostname, pathname } = window.location;
+    if (hostname.startsWith('www.')) setApexUrl(`https://${hostname.slice(4)}${pathname}#donate-title`);
+  }, []);
 
   const pickToken = (next: 'ETH' | 'USDC') => {
     setSymbol(next);
@@ -280,7 +287,7 @@ export function CryptoDonate() {
               type="button"
               className="mc-ticket"
               disabled={problem !== null}
-              onClick={() => setOpen(true)}
+              onClick={() => (apexUrl ? window.location.assign(apexUrl) : setOpen(true))}
             >
               <span className="flex-1">
                 Donate {problem ? '' : `${amount} `}
