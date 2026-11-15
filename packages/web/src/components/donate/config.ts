@@ -116,3 +116,7 @@ export function validAmount(value: string, token: DonationToken): string | null 
   if (n > 1_000_000) return 'For a gift that large, please email lb@hiraia.org first.';
   return null;
 }
+
+/** Basic email shape only (no friction beyond that); the field is optional. */
+const EMAIL = /^[^\s@<>"',;]{1,64}@[^\s@<>"',;]+\.[^\s@<>"',;]{2,}$/;
+export const validEmail = (v: string) => v.length <= 254 && EMAIL.test(v);

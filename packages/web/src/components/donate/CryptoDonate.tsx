@@ -13,6 +13,7 @@ import {
   defaultAmount,
   tokenFor,
   validAmount,
+  validEmail,
   type DonationChain,
   type DonationToken,
 } from './config';
@@ -29,6 +30,7 @@ type WidgetModule = {
       tokenAddress: string | null;
       tokenSymbol: string;
       amount: string;
+      purchaseRef: string | null;
       onSuccess: (result: DonationResult) => void;
       onError: (message: string) => void;
     },
@@ -56,6 +58,7 @@ function Checkout({
   chain,
   token,
   amount,
+  purchaseRef,
   onSuccess,
   onError,
 }: {
@@ -63,6 +66,7 @@ function Checkout({
   chain: DonationChain;
   token: DonationToken;
   amount: string;
+  purchaseRef: string | null;
   onSuccess: (r: DonationResult) => void;
   onError: (m: string) => void;
 }) {
@@ -86,6 +90,7 @@ function Checkout({
           tokenAddress: token.address,
           tokenSymbol: token.symbol,
           amount,
+          purchaseRef,
           onSuccess: (r) => callbacks.current.onSuccess(r),
           onError: (msg) => callbacks.current.onError(msg),
         });
@@ -98,7 +103,7 @@ function Checkout({
       const u = unmount;
       if (u) window.setTimeout(u, 0);
     };
-  }, [clientId, chain.id, chain.name, token.address, token.symbol, amount]);
+  }, [clientId, chain.id, chain.name, token.address, token.symbol, amount, purchaseRef]);
 
   return (
     <div className={styles.widget}>
@@ -123,6 +128,14 @@ export function CryptoDonate() {
   const [done, setDone] = useState<DonationResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  // Optional donor email: blank = anonymous and nothing is sent anywhere. When filled, it is stored
+  // privately on hiraia.org and the checkout carries only a random reference to it.
+  const [email, setEmail] = useState('');
+  const [purchaseRef, setPurchaseRef] = useState<string | null>(null);
+  const [starting, setStarting] = useState(false);
+  const [sessionError, setSessionError] = useState<string | null>(null);
+  const trimmedEmail = email.trim();
+  const emailProblem = trimmedEmail && !validEmail(trimmedEmail) ? 'Please check the email, or leave it blank.' : null;
   const problem = validAmount(amount, token);
   const configured = THIRDWEB_CLIENT_ID !== null;
   // The thirdweb client ID is locked to https://hiraia.org; www.hiraia.org serves the same page
@@ -154,6 +167,36 @@ export function CryptoDonate() {
     setOpen(false);
     setDone(null);
     setError(null);
+    setPurchaseRef(null);
+    setSessionError(null);
+  };
+
+  const start = async () => {
+    if (apexUrl) return window.location.assign(apexUrl);
+    if (!trimmedEmail) {
+      setPurchaseRef(null);
+      setOpen(true);
+      return;
+    }
+    setStarting(true);
+    setSessionError(null);
+    try {
+      const res = await fetch('/api/donations/session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: trimmedEmail, chainId: chain.id, token: token.symbol, amount: amount.trim() }),
+      });
+      const body = (await res.json().catch(() => ({}))) as { ref?: string; error?: string };
+      if (!res.ok || !body.ref) throw new Error(body.error || 'We could not save your email right now.');
+      setPurchaseRef(body.ref);
+      setOpen(true);
+    } catch (e) {
+      setSessionError(
+        `${e instanceof Error ? e.message : 'We could not save your email right now.'} Try again, or clear the email to donate anonymously.`,
+      );
+    } finally {
+      setStarting(false);
+    }
   };
 
   const copy = async () => {
@@ -268,10 +311,37 @@ export function CryptoDonate() {
           </p>
         </fieldset>
 
+        <div className={styles.group}>
+          <label htmlFor="donor-email" className={styles.emailLabel}>
+            Email <span>(optional — so we can thank you)</span>
+          </label>
+          <input
+            id="donor-email"
+            className={styles.email}
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            maxLength={254}
+            placeholder="Leave blank to give anonymously"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              reset();
+            }}
+            aria-invalid={emailProblem !== null}
+            aria-describedby="donor-email-note"
+          />
+          <p id="donor-email-note" className={emailProblem ? styles.problem : styles.hint}>
+            {emailProblem ??
+              'Used only to say thank you. Never published or shared, never sent to the checkout provider or the blockchain, and deleted within six months.'}
+          </p>
+        </div>
+
         {done ? (
           <div className={styles.thanks} role="status">
             <p>
               <b>Thank you!</b> Your donation of {amount} {token.symbol} on {chain.name} was sent.
+              {purchaseRef ? ` We'll write to ${trimmedEmail} to say thanks.` : ''}
             </p>
             {done.hashes.map((h) => (
               <a key={h} href={`${chain.explorer}/tx/${h}`} target="_blank" rel="noopener">
@@ -293,6 +363,7 @@ export function CryptoDonate() {
               chain={chain}
               token={token}
               amount={amount}
+              purchaseRef={purchaseRef}
               onSuccess={(r) => setDone(r)}
               onError={(m) => setError(m)}
             />
@@ -306,20 +377,28 @@ export function CryptoDonate() {
             </p>
           </>
         ) : (
-          <div className="mc-ledge">
-            <button
-              type="button"
-              className="mc-ticket"
-              disabled={problem !== null}
-              onClick={() => (apexUrl ? window.location.assign(apexUrl) : setOpen(true))}
-            >
-              <span className="flex-1">
-                Donate {problem ? '' : `${amount} `}
-                {token.symbol} on {chain.name}
-              </span>
-              <span className="mc-arrow" aria-hidden />
-            </button>
-          </div>
+          <>
+            <div className="mc-ledge">
+              <button
+                type="button"
+                className="mc-ticket"
+                disabled={problem !== null || emailProblem !== null || starting}
+                aria-busy={starting}
+                onClick={() => void start()}
+              >
+                <span className="flex-1">
+                  Donate {problem ? '' : `${amount} `}
+                  {token.symbol} on {chain.name}
+                </span>
+                <span className="mc-arrow" aria-hidden />
+              </button>
+            </div>
+            {sessionError && (
+              <p className={styles.problem} role="status">
+                {sessionError}
+              </p>
+            )}
+          </>
         )}
       </div>
 

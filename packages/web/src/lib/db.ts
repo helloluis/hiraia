@@ -27,6 +27,13 @@ import fs from 'node:fs';
  * `pilot_applications` likewise holds volunteered school/contact information for
  * pilot coordination only. It is never exposed by a public read endpoint or analytics.
  *
+ * `donation_sessions` holds the OPTIONAL email a crypto donor volunteers on /support so Luis can
+ * thank them, keyed by a random reference. Only the reference travels to thirdweb (checkout
+ * purchaseData) and nothing reaches the chain. `donations` records checkout payments confirmed
+ * by thirdweb's signed webhook; `email` is copied in only when the payment's reference matches a
+ * session. Unmatched sessions are deleted after 7 days and emails after 180 days
+ * (src/server/donations.ts). Private: no public read endpoint, no analytics.
+ *
  * `apk_download_hits` counts homepage APK-button clicks (one row per IP-hash per UTC
  * day). No raw IP. Country/city come from nginx GeoIP headers when present. Pears
  * copies and direct /models/hiraia.apk hits are NOT in this table.
@@ -93,6 +100,29 @@ CREATE TABLE IF NOT EXISTS feedback (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS donation_sessions (
+  ref        TEXT PRIMARY KEY,                   -- random; the only thing sent to thirdweb
+  email      TEXT NOT NULL,
+  chain_id   INTEGER NOT NULL,                   -- what the donor picked, for the record
+  token      TEXT NOT NULL,
+  amount     TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS donations (
+  payment_id    TEXT PRIMARY KEY,                -- thirdweb paymentId (webhook retries dedupe)
+  ref           TEXT,                            -- donation_sessions.ref when the donor gave an email
+  email         TEXT,                            -- NULL = anonymous (or removed after retention)
+  chain_id      INTEGER NOT NULL,
+  token_symbol  TEXT NOT NULL,
+  token_address TEXT NOT NULL,
+  amount        TEXT NOT NULL,                   -- decimal string received by Hiraia's address
+  tx_hashes     TEXT NOT NULL,                   -- JSON [{chainId, transactionHash}]
+  notified      TEXT NOT NULL DEFAULT 'pending', -- beaniebot | email | failed | unconfigured
+  test          INTEGER NOT NULL DEFAULT 0,      -- 1 = signed verification payload (purchaseData.test)
+  confirmed_at  TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 CREATE TABLE IF NOT EXISTS pilot_applications (
   id                  INTEGER PRIMARY KEY AUTOINCREMENT,
   request_id          TEXT NOT NULL UNIQUE,
@@ -142,6 +172,10 @@ export function getDb(): Database.Database {
 }
 
 function migrate(db: Database.Database) {
+  const donationCols = db.prepare('PRAGMA table_info(donations)').all() as { name: string }[];
+  if (donationCols.length && !donationCols.some((c) => c.name === 'test')) {
+    db.exec('ALTER TABLE donations ADD COLUMN test INTEGER NOT NULL DEFAULT 0');
+  }
   const apkCols = db.prepare('PRAGMA table_info(apk_download_hits)').all() as { name: string }[];
   if (apkCols.length && !apkCols.some((c) => c.name === 'city')) {
     db.exec('ALTER TABLE apk_download_hits ADD COLUMN city TEXT');

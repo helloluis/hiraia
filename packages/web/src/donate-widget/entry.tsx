@@ -25,6 +25,8 @@ export type MountOptions = {
   tokenAddress: string | null;
   tokenSymbol: string;
   amount: string;
+  /** Random session reference when the donor left an email (never the email itself). */
+  purchaseRef?: string | null;
   onSuccess: (result: { chainId: number; hashes: string[] }) => void;
   onError: (message: string) => void;
 };
@@ -85,7 +87,7 @@ function Checkout(o: MountOptions) {
         buttonLabel={`Donate ${o.amount} ${o.tokenSymbol}`}
         paymentMethods={['crypto']}
         supportedTokens={{ [o.chainId]: [{ address: tokenAddress, symbol: o.tokenSymbol, name: o.tokenSymbol }] }}
-        purchaseData={{ purpose: 'hiraia-donation' }}
+        purchaseData={o.purchaseRef ? { purpose: 'hiraia-donation', ref: o.purchaseRef } : { purpose: 'hiraia-donation' }}
         connectOptions={{
           wallets: WALLETS,
           chain,
