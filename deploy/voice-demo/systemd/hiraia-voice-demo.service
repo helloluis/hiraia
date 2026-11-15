@@ -1,0 +1,39 @@
+[Unit]
+Description=Hiraia voice demo TTS (loopback :8139, hiraia.org/api/voice/)
+After=network.target
+
+[Service]
+Type=simple
+User=hiraia-voice
+Group=hiraia-voice
+WorkingDirectory=/opt/hiraia-voice-demo
+Environment=VOICE_DEMO_BUNDLE=/opt/hiraia-voice-demo/bundle
+Environment=VOICE_DEMO_PORT=8139
+Environment=VOICE_DEMO_THREADS=2
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/opt/hiraia-voice-demo/venv/bin/python -B /opt/hiraia-voice-demo/server.py
+Restart=on-failure
+RestartSec=5
+# Bounded footprint next to the website and the LLM: measured ~0.33 GB idle, ~0.56 GB peak
+# on a 500-character request; throttle at 800 MB, hard-kill at 1 GB; at most 2 of 4 cores.
+MemoryHigh=800M
+MemoryMax=1G
+MemorySwapMax=0
+CPUQuota=200%
+TasksMax=64
+LimitNOFILE=1024
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=yes
+LockPersonality=yes
+ReadOnlyPaths=/opt/hiraia-voice-demo
+
+[Install]
+WantedBy=multi-user.target

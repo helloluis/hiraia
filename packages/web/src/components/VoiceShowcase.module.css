@@ -245,16 +245,29 @@
   color: var(--accent);
 }
 
-.soon {
-  padding: 0.15rem 0.6rem;
+.voicePick {
+  display: inline-flex;
+  padding: 3px;
   border-radius: 999px;
-  background: var(--olive);
+  background: var(--ink);
+}
+.voiceOption {
+  min-height: 32px;
+  padding: 0.2rem 0.8rem;
+  border-radius: 999px;
   color: var(--stock);
-  font-family: 'Archivo Black', sans-serif;
-  font-size: 0.6rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  white-space: nowrap;
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.voiceOption[aria-checked='true'] {
+  background: var(--gold);
+  color: var(--ink);
+}
+.voiceOption:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
 }
 .input {
   display: block;
@@ -277,21 +290,28 @@
   outline: 3px solid var(--gold);
   outline-offset: 2px;
 }
-.speak {
-  display: block;
-  width: 100%;
-  margin-top: 0.85rem;
-  min-height: 48px;
-  border: 3px solid rgba(28, 59, 46, 0.35);
-  border-radius: 13px;
-  background: rgba(216, 160, 58, 0.35);
-  color: rgba(28, 59, 46, 0.6);
-  font-family: 'Zilla Slab', Georgia, serif;
-  font-size: 1.05rem;
-  font-weight: 700;
-  cursor: not-allowed;
+.speakTicket:disabled { cursor: progress; filter: saturate(0.8); }
+.speakTicket[aria-busy='true'] :global(.mc-arrow)::after { display: none; }
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(216, 160, 58, 0.35);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: vs-spin 0.8s linear infinite;
 }
+@keyframes vs-spin { to { transform: rotate(360deg); } }
+.demoError {
+  margin: 0.5rem 0.25rem 0;
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--accent);
+}
+.demoError:empty { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .track span { transition: none; }
+  .spinner { animation-duration: 2.4s; }
 }

@@ -44,14 +44,20 @@ const SAMPLES: Sample[] = [
     id: 'english',
     tag: 'English',
     voice: 'English voice',
-    text: "Mayon Volcano in Albay is famous for its almost perfect cone shape. Let's find out how volcanoes are formed!",
-    src: '/voices/sample-en-1.7bafc47d0a.mp3',
-    sha256: '7bafc47d0aaf782b3d0a9823181566ce9f536e4b2f95aef00a06570d4ea53c9e',
-    bytes: 81808,
+    text: 'Your heart is a strong muscle that pumps blood all around your body, every single day.',
+    src: '/voices/sample-en-2.1904db264b.mp3',
+    sha256: '1904db264b724593bd3399140837f3d8bf5c0fea19e58509a5e128fc8e03fcf3',
+    bytes: 56992,
   },
 ];
 
 const MAX_CHARS = 500;
+const SYNTH_URL = '/api/voice/synthesize';
+const SYNTH_TIMEOUT_MS = 45_000;
+const CUSTOM = 'custom';
+
+type DemoVoice = 'fil' | 'en';
+type DemoState = 'idle' | 'loading' | 'playing';
 
 export function VoiceShowcase() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -59,27 +65,29 @@ export function VoiceShowcase() {
   const [progress, setProgress] = useState(0);
   const [failed, setFailed] = useState<string | null>(null);
   const [draft, setDraft] = useState('');
+  const [demoVoice, setDemoVoice] = useState<DemoVoice>('fil');
+  const [demoState, setDemoState] = useState<DemoState>('idle');
+  const [demoError, setDemoError] = useState<string | null>(null);
+  const customUrlRef = useRef<string | null>(null);
+  const requestRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     return () => {
       audioRef.current?.pause();
       audioRef.current = null;
+      requestRef.current?.abort();
+      if (customUrlRef.current) URL.revokeObjectURL(customUrlRef.current);
     };
   }, []);
 
-  const toggle = (sample: Sample) => {
-    const current = audioRef.current;
-    if (current && playing === sample.id) {
-      current.pause();
-      setPlaying(null);
-      return;
-    }
-    current?.pause();
-    const audio = new Audio(sample.src);
+  // One player for the samples and the typed sentence: starting either stops the other.
+  const play = (id: string, src: string, onFail: () => void) => {
+    audioRef.current?.pause();
+    const audio = new Audio(src);
     audioRef.current = audio;
     setFailed(null);
     setProgress(0);
-    setPlaying(sample.id);
+    setPlaying(id);
     audio.ontimeupdate = () => {
       if (audio.duration > 0) setProgress(audio.currentTime / audio.duration);
     };
@@ -92,15 +100,88 @@ export function VoiceShowcase() {
     audio.onerror = () => {
       if (audioRef.current === audio) {
         setPlaying(null);
-        setFailed(sample.id);
+        onFail();
       }
     };
     audio.play().catch(() => {
       if (audioRef.current === audio) {
         setPlaying(null);
-        setFailed(sample.id);
+        onFail();
       }
     });
+  };
+
+  const stop = () => {
+    audioRef.current?.pause();
+    audioRef.current = null;
+    setPlaying(null);
+    setProgress(0);
+  };
+
+  const toggle = (sample: Sample) => {
+    if (audioRef.current && playing === sample.id) {
+      stop();
+      return;
+    }
+    play(sample.id, sample.src, () => setFailed(sample.id));
+  };
+
+  const speak = async () => {
+    if (demoState === 'loading') return;
+    if (playing === CUSTOM) {
+      stop();
+      return;
+    }
+    const text = draft.trim();
+    if (!text) {
+      setDemoError('Type a sentence first.');
+      return;
+    }
+    stop();
+    setDemoError(null);
+    setDemoState('loading');
+    const controller = new AbortController();
+    requestRef.current?.abort();
+    requestRef.current = controller;
+    const timer = window.setTimeout(() => controller.abort(), SYNTH_TIMEOUT_MS);
+    try {
+      const res = await fetch(SYNTH_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, voice: demoVoice }),
+        signal: controller.signal,
+      });
+      if (!res.ok) {
+        let message = 'The voice demo is unavailable right now. Please try again later.';
+        if (res.status === 429) message = "You've tried a lot of sentences! Please wait a minute and try again.";
+        try {
+          const body = (await res.json()) as { message?: string };
+          if (body.message) message = body.message;
+        } catch {
+          /* nginx-level errors are not JSON */
+        }
+        throw new Error(message);
+      }
+      const blob = await res.blob();
+      if (requestRef.current !== controller) return;
+      if (customUrlRef.current) URL.revokeObjectURL(customUrlRef.current);
+      const url = URL.createObjectURL(blob);
+      customUrlRef.current = url;
+      setDemoState('idle');
+      play(CUSTOM, url, () => setDemoError("This audio couldn't play. Please try again."));
+    } catch (error) {
+      if (requestRef.current !== controller) return;
+      setDemoState('idle');
+      setDemoError(
+        controller.signal.aborted
+          ? 'That took too long. Please try again, or try a shorter sentence.'
+          : error instanceof TypeError || !(error instanceof Error)
+            ? 'Could not reach the voice demo. Check your connection and try again.'
+            : error.message,
+      );
+    } finally {
+      window.clearTimeout(timer);
+    }
   };
 
   return (
@@ -202,14 +283,32 @@ export function VoiceShowcase() {
             </p>
           </div>
 
-          {/* Capsule 3 — try your own (coming soon) */}
+          {/* Capsule 3 — try your own sentence, synthesized live by the same two models */}
           <div className="mc-card">
             <div className="mc-keyline" aria-hidden />
-            <div className="flex items-center justify-between gap-3 px-1">
+            <div className="flex flex-wrap items-center justify-between gap-2 px-1">
               <label htmlFor="voice-try" className="mc-label text-[10px] text-[var(--teal)]">
                 Type your own sentence
               </label>
-              <span className={styles.soon}>Coming soon</span>
+              <div className={styles.voicePick} role="radiogroup" aria-label="Voice">
+                {(
+                  [
+                    ['fil', 'Filipino'],
+                    ['en', 'English'],
+                  ] as const
+                ).map(([value, label]) => (
+                  <button
+                    key={value}
+                    type="button"
+                    role="radio"
+                    aria-checked={demoVoice === value}
+                    className={styles.voiceOption}
+                    onClick={() => setDemoVoice(value)}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
             </div>
             <textarea
               id="voice-try"
@@ -217,21 +316,63 @@ export function VoiceShowcase() {
               rows={3}
               maxLength={MAX_CHARS}
               value={draft}
-              onChange={(e) => setDraft(e.target.value.slice(0, MAX_CHARS))}
-              placeholder="Halimbawa: Kapag mainit ang araw, nag-e-evaporate ang tubig sa dagat."
+              onChange={(e) => {
+                setDraft(e.target.value.slice(0, MAX_CHARS));
+                if (demoError) setDemoError(null);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                  e.preventDefault();
+                  void speak();
+                }
+              }}
+              placeholder={
+                demoVoice === 'fil'
+                  ? 'Halimbawa: Kapag mainit ang araw, nag-e-evaporate ang tubig sa dagat.'
+                  : 'For example: The Moon has no light of its own; it reflects light from the Sun.'
+              }
               aria-describedby="voice-try-note"
             />
-            <div className="mt-2 flex items-center justify-between gap-3 px-1">
+            <div className="mt-2 flex items-start justify-between gap-3 px-1">
               <p id="voice-try-note" className="font-zilla text-[0.85rem] font-medium leading-snug text-[var(--ink)]/75">
-                The live try-it demo is coming soon.
+                Mixing Tagalog and English? Use the Filipino voice; it reads English words too.
+                Spell out numbers in words.
               </p>
               <span className="shrink-0 font-zilla text-[0.8rem] font-semibold tabular-nums text-[var(--ink)]/60">
                 {draft.length}/{MAX_CHARS}
               </span>
             </div>
-            <button type="button" className={styles.speak} disabled aria-disabled="true">
-              Listen · coming soon
-            </button>
+            <div className="mc-ledge mt-3">
+              <button
+                type="button"
+                className={`mc-ticket ${styles.speakTicket}`}
+                onClick={() => void speak()}
+                disabled={demoState === 'loading'}
+                aria-busy={demoState === 'loading'}
+              >
+                <span className="flex-1">
+                  {demoState === 'loading'
+                    ? 'Making the audio\u2026'
+                    : playing === CUSTOM
+                      ? 'Stop'
+                      : `Listen in ${demoVoice === 'fil' ? 'Filipino' : 'English'}`}
+                </span>
+                <span className="mc-arrow" aria-hidden>
+                  {demoState === 'loading' ? <i className={styles.spinner} /> : null}
+                </span>
+              </button>
+            </div>
+            {playing === CUSTOM && (
+              <span className={`${styles.track} mx-1 mt-3`} aria-hidden>
+                <span style={{ transform: `scaleX(${progress})` }} />
+              </span>
+            )}
+            <p className={styles.demoError} role="status" aria-live="polite">
+              {demoError}
+            </p>
+            <p className="mt-1 px-1 font-zilla text-[0.75rem] font-medium leading-snug text-[var(--ink)]/60">
+              Generated live on our server by the same two models. We don&apos;t save what you type.
+            </p>
           </div>
         </div>
       </div>

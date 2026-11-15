@@ -43,23 +43,28 @@
       "post": "peak-normalised to -1 dBFS (gain only), mono MP3 80 kb/s (ffmpeg 8.1 libmp3lame)"
     },
     {
-      "file": "/voices/sample-en-1.7bafc47d0a.mp3",
-      "sha256": "7bafc47d0aaf782b3d0a9823181566ce9f536e4b2f95aef00a06570d4ea53c9e",
-      "bytes": 81808,
-      "text": "Mayon Volcano in Albay is famous for its almost perfect cone shape. Let's find out how volcanoes are formed!",
+      "file": "/voices/sample-en-2.1904db264b.mp3",
+      "sha256": "1904db264b724593bd3399140837f3d8bf5c0fea19e58509a5e128fc8e03fcf3",
+      "bytes": 56992,
+      "text": "Your heart is a strong muscle that pumps blood all around your body, every single day.",
       "voice_id": "hiraia-en-expanded-mini",
       "voice_version": "1.0.0-preview.1",
       "model_sha256": "0dd88287ab6326adc72bb01a69a024e269c53806200ed518727d92d4dacf3f03",
       "model_bytes": 95400403,
-      "source_wav_sha256": "6fc70b0bfaa989a8d4c3f9eec5905910b4b7b88b06833e9b9f4d517f752c23ce",
-      "duration_seconds": 8.09,
+      "source_wav_sha256": "6525dbe0425b38e1f98303eabb2fa8f6c4e804a4de98c50e09b0d70d243a14db",
+      "duration_seconds": 5.61,
       "scales": [
         0.6669999957084656,
         1.0,
         0.800000011920929
       ],
       "review_status": "Experimental voice; generated words, stress and phrasing pending native review",
-      "post": "peak-normalised to -1 dBFS (gain only), mono MP3 80 kb/s (ffmpeg 8.1 libmp3lame)"
+      "post": "peak-normalised to -1 dBFS (gain only), mono MP3 80 kb/s (ffmpeg 8.1 libmp3lame)",
+      "rendered_on": "2026-11-15",
+      "replaces": {
+        "file": "/voices/sample-en-1.7bafc47d0a.mp3",
+        "reason": "mispronounced the place name \"Albay\"; replaced with common words only"
+      }
     }
   ]
 }
