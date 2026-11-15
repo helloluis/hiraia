@@ -7,6 +7,9 @@ import {
   DONATION_ADDRESS,
   DONATION_CHAINS,
   THIRDWEB_CLIENT_ID,
+  TOKEN_CONTRACTS,
+  TOKEN_ORDER,
+  chainFor,
   defaultAmount,
   tokenFor,
   validAmount,
@@ -113,9 +116,9 @@ function Checkout({
 export function CryptoDonate() {
   const [chainKey, setChainKey] = useState(DEFAULT_CHAIN.key);
   const chain = DONATION_CHAINS.find((c) => c.key === chainKey) ?? DEFAULT_CHAIN;
-  const [symbol, setSymbol] = useState<'ETH' | 'USDC'>('USDC');
+  const [symbol, setSymbol] = useState<DonationToken['symbol']>('USDT');
   const token = tokenFor(chain, symbol);
-  const [amount, setAmount] = useState(() => defaultAmount(tokenFor(DEFAULT_CHAIN, 'USDC')));
+  const [amount, setAmount] = useState(() => defaultAmount(tokenFor(DEFAULT_CHAIN, 'USDT')));
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState<DonationResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -130,9 +133,21 @@ export function CryptoDonate() {
     if (hostname.startsWith('www.')) setApexUrl(`https://${hostname.slice(4)}${pathname}#donate-title`);
   }, []);
 
-  const pickToken = (next: 'ETH' | 'USDC') => {
+  // USDT exists only where Tether issues it (Ethereum): picking it moves the network there.
+  const pickToken = (next: DonationToken['symbol']) => {
+    const target = chain.tokens.some((t) => t.symbol === next) ? chain : chainFor(next);
+    setChainKey(target.key);
     setSymbol(next);
-    setAmount(defaultAmount(tokenFor(chain, next)));
+    setAmount(defaultAmount(tokenFor(target, next)));
+    reset();
+  };
+  const pickChain = (next: DonationChain) => {
+    setChainKey(next.key);
+    if (!next.tokens.some((t) => t.symbol === symbol)) {
+      const fallback = tokenFor(next, symbol);
+      setSymbol(fallback.symbol);
+      setAmount(defaultAmount(fallback));
+    }
     reset();
   };
   const reset = () => {
@@ -176,10 +191,7 @@ export function CryptoDonate() {
                 type="button"
                 className={styles.chip}
                 aria-pressed={c.key === chain.key}
-                onClick={() => {
-                  setChainKey(c.key);
-                  reset();
-                }}
+                onClick={() => pickChain(c)}
               >
                 <b>{c.name}</b>
                 <span>{c.note}</span>
@@ -191,18 +203,30 @@ export function CryptoDonate() {
         <fieldset className={styles.group}>
           <legend>Token</legend>
           <div className={styles.chips}>
-            {chain.tokens.map((t) => (
-              <button
-                key={t.symbol}
-                type="button"
-                className={styles.chip}
-                aria-pressed={t.symbol === token.symbol}
-                onClick={() => pickToken(t.symbol)}
-              >
-                <b>{t.symbol}</b>
-                <span>{t.symbol === 'USDC' ? 'US dollar stablecoin' : `Ether on ${chain.name}`}</span>
-              </button>
-            ))}
+            {TOKEN_ORDER.map((sym) => {
+              const here = chain.tokens.some((t) => t.symbol === sym);
+              const label =
+                sym === 'USDT'
+                  ? here
+                    ? 'Tether · ERC-20'
+                    : 'Tether · on Ethereum'
+                  : sym === 'USDC'
+                    ? 'US dollar stablecoin'
+                    : `Ether on ${chain.name}`;
+              return (
+                <button
+                  key={sym}
+                  type="button"
+                  className={styles.chip}
+                  aria-pressed={here && sym === token.symbol}
+                  onClick={() => pickToken(sym)}
+                  data-token={sym}
+                >
+                  <b>{sym}</b>
+                  <span>{label}</span>
+                </button>
+              );
+            })}
           </div>
         </fieldset>
 
@@ -220,7 +244,7 @@ export function CryptoDonate() {
                   reset();
                 }}
               >
-                {token.symbol === 'USDC' ? `$${p}` : p}
+                {token.symbol === 'ETH' ? p : `$${p}`}
               </button>
             ))}
             <label className={styles.custom}>
@@ -303,7 +327,7 @@ export function CryptoDonate() {
         <p className={`mc-label ${styles.eyebrow}`}>Or send directly</p>
         <h3 id="direct-title">Hiraia&apos;s address</h3>
         <p>
-          Send ETH or USDC from any wallet or exchange. Direct transfers carry no fee from
+          Send USDT, USDC or ETH from any wallet or exchange. Direct transfers carry no fee from
           Hiraia or thirdweb: only your network&apos;s gas, plus any withdrawal fee your
           exchange charges.
         </p>
@@ -318,13 +342,33 @@ export function CryptoDonate() {
             <b>Networks:</b> {DONATION_CHAINS.map((c) => c.name).join(', ')}.
           </li>
           <li>
-            <b>Tokens:</b> ETH or USDC.
+            <b>USDT:</b> on Ethereum only, the network where Tether issues it. Withdrawing from an
+            exchange? Choose <b>Ethereum (ERC-20)</b>, not TRC-20 (Tron) or BEP-20.
+          </li>
+          <li>
+            <b>USDC or ETH:</b> on any of the three networks.
           </li>
           <li>
             Ethereum-family networks only: this address cannot receive Bitcoin or Solana. To give
             on another network, please email <a href="mailto:lb@hiraia.org">lb@hiraia.org</a> first.
           </li>
         </ul>
+        <details className={styles.contracts}>
+          <summary>Token contracts we accept</summary>
+          <ul>
+            {TOKEN_CONTRACTS.map(({ chain: c, token: t, url }) => (
+              <li key={`${c.id}:${t.symbol}`} data-chain={c.id} data-token={t.symbol}>
+                <b>
+                  {t.symbol} on {c.name}
+                </b>
+                <a href={url} target="_blank" rel="noopener">
+                  <code>{t.address}</code>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p>Checked against Tether&apos;s and Circle&apos;s official contract lists.</p>
+        </details>
         <span className="sr-only" aria-live="polite">
           {copied ? 'Address copied' : ''}
         </span>

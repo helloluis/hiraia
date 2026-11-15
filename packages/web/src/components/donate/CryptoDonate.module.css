@@ -235,6 +235,43 @@
   text-underline-offset: 3px;
 }
 
+.contracts {
+  margin-top: 16px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+.contracts summary {
+  cursor: pointer;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 3px;
+}
+.contracts ul {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.contracts li + li {
+  margin-top: 8px;
+}
+.contracts li b {
+  display: block;
+}
+.contracts code {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+.contracts a {
+  text-decoration: underline;
+  text-decoration-color: rgba(28, 59, 46, 0.35);
+}
+.contracts p {
+  margin-top: 8px;
+  color: rgba(28, 59, 46, 0.7);
+}
+
 @media (max-width: 860px) {
   .donate {
     grid-template-columns: minmax(0, 1fr);
