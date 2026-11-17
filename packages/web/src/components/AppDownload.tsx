@@ -14,19 +14,17 @@ function DeviceIcon({device}: {device: DownloadPlatform['device']}) {
   </svg>;
 }
 
-function trackDownload(platform: string, release: PlatformRelease, onCount: (n: number) => void) {
+function trackDownload(platform: string, release: PlatformRelease) {
   const extension = release.platform === 'windows' ? release.format : 'apk';
   window.gtag?.('event', extension === 'apk' ? 'apk_download' : 'file_download', {
     file_name: release.url.split('/').pop(), file_extension: extension,
     link_url: release.url, app_version: release.versionName, platform,
   });
-  void fetch('/api/metrics/apk-download', { method: 'POST', keepalive: true })
-    .then(r => r.ok ? r.json() : null)
-    .then(data => { if (typeof data?.count === 'number') onCount(data.count); })
-    .catch(() => {});
+  // Private click count for the admin telemetry; no public download figure is shown.
+  void fetch('/api/metrics/apk-download', { method: 'POST', keepalive: true }).catch(() => {});
 }
 
-function PlatformDownload({platform, onCount}: {platform: DownloadPlatform; onCount: (n: number) => void}) {
+function PlatformDownload({platform}: {platform: DownloadPlatform}) {
   const release = platformRelease(platform.id);
   const format = release?.platform === 'windows' ? 'ZIP' : 'APK';
   const shot = platform.screenshot;
@@ -46,7 +44,7 @@ function PlatformDownload({platform, onCount}: {platform: DownloadPlatform; onCo
       </ul>}
       {platform.status !== 'planned' && <div className={styles.actions}>
         {release ? <>
-          <a href={release.url} download className={styles.downloadButton} onClick={() => trackDownload(platform.id, release, onCount)}>
+          <a href={release.url} download className={styles.downloadButton} onClick={() => trackDownload(platform.id, release)}>
             <span>Download for {platform.name}</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden><path d="M12 3v12m-5-4 5 5 5-5M5 21h14"/></svg>
           </a>
@@ -89,7 +87,7 @@ function PlatformDownload({platform, onCount}: {platform: DownloadPlatform; onCo
  * tab in step with swipes. Android shows first; /#download-<id> deep links open that edition.
  * Inactive editions are inert so keyboard and screen-reader users meet only the visible one.
  */
-function EditionCarousel({onCount}: {onCount: (n: number) => void}) {
+function EditionCarousel() {
   const track = useRef<HTMLDivElement>(null);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
   const [active, setActive] = useState(0);
@@ -181,24 +179,15 @@ function EditionCarousel({onCount}: {onCount: (n: number) => void}) {
     <div ref={track} className={styles.track}>
       {DOWNLOAD_PLATFORMS.map((platform, index) => <div key={platform.id} id={`edition-${platform.id}`} role="tabpanel"
         aria-labelledby={`edition-tab-${platform.id}`} className={styles.slide} inert={index !== active}>
-        <PlatformDownload platform={platform} onCount={onCount}/>
+        <PlatformDownload platform={platform}/>
       </div>)}
     </div>
   </div>;
 }
 
 export function AppDownload() {
-  const [downloads, setDownloads] = useState<number | null>(null);
-  useEffect(() => {
-    let cancelled = false;
-    void fetch('/api/metrics/apk-download').then(r => r.ok ? r.json() : null).then(data => {
-      if (!cancelled && typeof data?.count === 'number') setDownloads(data.count);
-    }).catch(() => {});
-    return () => { cancelled = true; };
-  }, []);
-
   return <div className={styles.downloads}>
-    <EditionCarousel onCount={setDownloads}/>
+    <EditionCarousel/>
     <div className={styles.offlineNote}>
       <div><p className={styles.eyebrow}>Same Hiraia. Your choice of screen.</p>
         <h3>Download once. Keep learning offline.</h3></div>
@@ -207,7 +196,6 @@ export function AppDownload() {
     </div>
     <div className={styles.sectionFoot}>
       <a href="/hiraia-whitepaper.pdf">Read how the on-device tutor works ↗</a>
-      {downloads != null && downloads > 0 && <p>{downloads.toLocaleString()} downloads from hiraia.org</p>}
     </div>
   </div>;
 }

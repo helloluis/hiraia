@@ -4,6 +4,7 @@ import { Wordmark } from '@/components/brand/Wordmark';
 
 import { type ReactNode } from 'react';
 import { AppDownload, TalaSection } from '@/components/AppDownload';
+import { DOWNLOAD } from '@/config/download';
 import { PilotInvitation } from '@/components/PilotInvitation';
 import { DevDiary } from '@/components/DevDiary';
 import { FeedbackBreaker } from '@/components/FeedbackBreaker';
@@ -13,19 +14,25 @@ import { VoiceShowcase } from '@/components/VoiceShowcase';
 import { DemoLightbox } from '@/components/demo/DemoLightbox';
 import { useDemoStore } from '@/store/useDemoStore';
 
+// "v0.5" from the published Android release (platform-releases.json), so it follows each release.
+const RELEASE_BADGE = `v${DOWNLOAD.version.split('.').slice(0, 2).join('.')}`;
+
 function Ticket({
   children,
   onClick,
   ghost,
+  badge,
 }: {
   children: ReactNode;
   onClick: () => void;
   ghost?: boolean;
+  badge?: string;
 }) {
   return (
     <div className="mc-ledge">
-      <button type="button" onClick={onClick} className={ghost ? 'mc-ticket mc-ticket-ghost' : 'mc-ticket'}>
+      <button type="button" onClick={onClick} className={`relative ${ghost ? 'mc-ticket mc-ticket-ghost' : 'mc-ticket'}`}>
         <span className="flex-1">{children}</span>
+        {badge && <span className="mc-ver-badge">{badge}</span>}
         <span className="mc-arrow" aria-hidden />
       </button>
     </div>
@@ -63,14 +70,6 @@ export function Landing({ afterDownload }: { afterDownload?: ReactNode }) {
             <div className="mc-keyline" aria-hidden />
             <div className="mc-hole mc-hole-a" aria-hidden />
             <div className="mc-hole mc-hole-b" aria-hidden />
-
-            <div className="mc-band !h-auto !min-h-[34px] !py-1.5">
-              <span className="mc-topic !whitespace-normal leading-tight !tracking-[0.08em]">
-                Science tutor for the Revised K-12 Curriculum
-              </span>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/hiraia-profile.png" alt="" width={26} height={26} className="mc-stamp" />
-            </div>
 
             <h1 className="mt-5 font-slab text-[3.5rem] leading-none tracking-wide text-[var(--ink)] sm:text-7xl">
               <Wordmark />
@@ -117,7 +116,7 @@ export function Landing({ afterDownload }: { afterDownload?: ReactNode }) {
                 </a>
               </p>
               <Ticket onClick={openDemo}>Try the demo</Ticket>
-              <Ticket onClick={scrollToDownload} ghost>
+              <Ticket onClick={scrollToDownload} ghost badge={RELEASE_BADGE}>
                 Download for free
               </Ticket>
             </div>
@@ -129,7 +128,7 @@ export function Landing({ afterDownload }: { afterDownload?: ReactNode }) {
       <section className="px-5 py-16 sm:px-12 sm:py-20 md:px-16 lg:px-24">
         <div className="mx-auto max-w-5xl">
           <h2 className="max-w-3xl text-3xl leading-none text-[var(--stock)] sm:text-4xl md:text-[2.75rem]">
-            Personal science tutor on your phone
+            A personal science tutor on your phone
           </h2>
           <p className="mt-5 max-w-2xl font-zilla text-lg font-medium leading-relaxed text-[var(--stock)]/90 sm:text-xl">
             Hiraia is a FREE AI tutor for Filipino students that knows what&apos;s
