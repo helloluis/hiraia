@@ -168,11 +168,17 @@ export async function notifyDonation(paymentId: string) {
         headers: { Authorization: `Bearer ${process.env.BEANIEBOT_ALERT_KEY}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text, source: 'hiraia-donations' }),
       });
-      if (r.ok) {
+      // Delivered only when Beaniebot says it posted a message; a 2xx can also mean "suppressed
+      // as a repeat" (anti-spam), which would leave Luis without an alert.
+      const reply = (await r.json().catch(() => null)) as
+        | { success?: boolean; data?: { messageId?: string; threadId?: string; suppressed?: boolean } }
+        | null;
+      if (r.ok && reply?.success && reply.data?.messageId && !reply.data.suppressed) {
         set('beaniebot');
+        console.log(`[donations] Beaniebot alert posted: message ${reply.data.messageId} in thread ${reply.data.threadId ?? '?'}`);
         return 'beaniebot';
       }
-      console.error(`[donations] Beaniebot alert failed (${r.status}); falling back to email`);
+      console.error(`[donations] Beaniebot alert not posted (${r.status}${reply?.data?.suppressed ? ', suppressed' : ''}); falling back to email`);
     } catch {
       console.error('[donations] Beaniebot alert unreachable; falling back to email');
     }

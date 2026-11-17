@@ -60,7 +60,9 @@ test('optional donor email: sessions, signed webhook matching, notification and 
   const realFetch = globalThis.fetch;
   globalThis.fetch = (async (url: string | URL, init?: RequestInit) => {
     sent.push({ url: String(url), body: JSON.parse(String(init?.body)) });
-    if (String(url).includes('beanie')) return new Response('{}', { status: beanieStatus });
+    if (String(url).includes('beanie'))
+      return new Response(JSON.stringify(beanieStatus === 200 ? { success: true, data: { threadId: 't1', messageId: 'm1' } }
+        : beanieStatus === 299 ? { success: true, data: { suppressed: true } } : { success: false }), { status: beanieStatus === 299 ? 200 : beanieStatus });
     return new Response('{"id":"x"}', { status: 200 });
   }) as typeof fetch;
   const settle = async (paymentId: string) => {
@@ -150,6 +152,13 @@ test('optional donor email: sessions, signed webhook matching, notification and 
     assert.equal(alert.body.message, `Donation: 0.5 USDC on Base\nFrom: anonymous\nTx: https://basescan.org/tx/0x${'cd'.repeat(32)}`);
     assert.equal(alert.body.source, 'hiraia-donations');
 
+    // Beaniebot answering 200 but "suppressed" is not a delivery → email.
+    beanieStatus = 299;
+    const p2b = payment({ destinationAmount: '2000000' });
+    const raw2b = JSON.stringify(p2b);
+    assert.equal((await postHook(raw2b, sign(raw2b))).status, 200);
+    assert.equal(await settle(p2b.data.paymentId), 'email');
+
     // Beaniebot down → falls back to email.
     beanieStatus = 500;
     const p3 = payment({ destinationToken: { chainId: 1, address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE', decimals: 18, symbol: 'ETH', name: 'Ether', priceUsd: 3000 }, destinationAmount: '10000000000000000' });
@@ -177,7 +186,7 @@ test('optional donor email: sessions, signed webhook matching, notification and 
       const r = await postHook(raw, sign(raw));
       assert.equal(((await r.json()) as { outcome: string }).outcome, 'ignored');
     }
-    assert.equal((db.prepare('SELECT count(*) AS n FROM donations').get() as { n: number }).n, 3);
+    assert.equal((db.prepare('SELECT count(*) AS n FROM donations').get() as { n: number }).n, 4);
 
     // The old standalone report only redirects to the admin dashboard and serves no data.
     const old = report();
