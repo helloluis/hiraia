@@ -51,6 +51,7 @@ function PlatformDownload({platform, onCount}: {platform: DownloadPlatform; onCo
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden><path d="M12 3v12m-5-4 5 5 5-5M5 21h14"/></svg>
           </a>
           <p className={styles.fileMeta}>v{release.versionName} <span aria-hidden>·</span> {Math.round(release.bytes / 1_000_000)} MB <span aria-hidden>·</span> {format}</p>
+          {platform.whatsNew?.version === release.versionName && <p className={styles.downloadNote}>{platform.whatsNew.text}</p>}
           {platform.downloadNote && <p className={styles.downloadNote}>{platform.downloadNote}</p>}
         </> : <p className={styles.pending}>Preview release pending</p>}
         <details className={styles.details}>

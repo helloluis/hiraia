@@ -41,6 +41,8 @@ export interface DownloadPlatform {
   description: string;
   requirements: string[];
   downloadNote?: string;
+  /** One line about the current release; shown only while that exact version is published. */
+  whatsNew?: { version: string; text: string };
   installNote: string;
   screenshot?: { src: string; width: number; height: number; alt: string; caption: string };
 }
@@ -53,6 +55,8 @@ export const DOWNLOAD_PLATFORMS: DownloadPlatform[] = [
     description: 'A little science, wherever you are. Swipe through illustrated cards, listen along, and put what you learn to the test.',
     requirements: ['Android 10 or newer · 64-bit ARM', '4 GB+ memory recommended for the optional AI tutor'],
     installNote: 'Download the APK, open it, and allow installation from your browser when Android asks. Updating an existing install keeps your progress.',
+    whatsNew: { version: '0.5.0',
+      text: 'New in v0.5: our own custom-built Filipino and English voices, a refreshed card layout, and reviewed science content and illustrations.' },
     screenshot: { src: '/screens/download-android.png', width: 720, height: 1600,
       alt: 'Hiraia on Android showing an illustrated science card in its vertical card feed.',
       caption: 'One card at a time. Read, listen, and explore.' },
