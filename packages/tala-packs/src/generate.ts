@@ -357,6 +357,23 @@ export function normalizeDay(day: number, art: Map<string, { titles: string[] }>
         s.revealOf = null;
         s.correctChoice = null;
       }
+      // A choice question whose answer is not one choice (e.g. "Pot A and Pot D") becomes an open question: its
+      // choices are listed on the slide (A-D) and the answer slide explains which ones, so nothing is lost.
+      const prev = slides[i - 1];
+      if (
+        s.kind === 'reveal' &&
+        prev?.kind === 'check' &&
+        Array.isArray(prev.choices) &&
+        prev.choices.length &&
+        !(Number.isInteger(s.correctChoice) && s.correctChoice >= 0 && s.correctChoice < prev.choices.length) &&
+        (prev.lines ?? []).length + prev.choices.length <= 5
+      ) {
+        log.push(`slide ${prev.id}: answer is not a single choice; choices listed as an open question`);
+        prev.lines = [...(prev.lines ?? []), ...prev.choices.map((c: string, k: number) => `${'ABCD'[k]}. ${c}`)];
+        prev.choices = [];
+        prev.correctChoice = null;
+        s.correctChoice = null;
+      }
     });
     // Flow ↔ slides: every slide in exactly one step, in deck order, steps never going backwards.
     const flow: any[] = Array.isArray(o.flow) ? o.flow : [];
