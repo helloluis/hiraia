@@ -107,6 +107,8 @@ interface LoopResult {
   /** Earlier issues the critic confirmed fixed / withdrew in verification rounds. */
   verified: number;
   withdrawn: number;
+  /** Review rounds that failed (the pack kept its last good state; issues stay open). */
+  roundFailures: string[];
 }
 
 /**
@@ -120,6 +122,7 @@ async function reviewLoop(meter: Meter, draft: WeeklyPackContent, t: WeekTarget,
   const revisions: RevisionReport[] = [];
   let verified = 0;
   let withdrawn = 0;
+  const roundFailures: string[] = [];
   for (let round = 1; round <= o.rounds; round++) {
     const snapshot = pack;
     // Deterministic failures (checks, structure, hard wording limits) go to the critic as issues it must report.
@@ -132,7 +135,15 @@ async function reviewLoop(meter: Meter, draft: WeeklyPackContent, t: WeekTarget,
     } else {
       const previous = critiques.at(-1)!.issues;
       const report = revisions.at(-1)!;
-      const got = await withRetry(() => recheck(meter, snapshot, t, round, previous, report, auto, { thinking: o.thorough }));
+      // A failed verification round leaves the earlier issues open (conservative) instead of losing the edition.
+      let got: Critique;
+      try {
+        got = await withRetry(() => recheck(meter, snapshot, t, round, previous, report, auto, { thinking: o.thorough }));
+      } catch (e) {
+        if (e instanceof BudgetExceeded) throw e;
+        roundFailures.push(`verification round ${round}: ${(e as Error).message.slice(0, 200)}`);
+        break;
+      }
       const ruled = new Map(got.previous.map((p) => [p.id, p] as const));
       const restated = new Set(got.issues.map((i) => i.id));
       const carried = previous
@@ -147,12 +158,19 @@ async function reviewLoop(meter: Meter, draft: WeeklyPackContent, t: WeekTarget,
     }
     critiques.push(c);
     if (!c.issues.some((i) => i.severity !== 'minor') || round === o.rounds) break;
-    const r = await withRetry(() => revise(meter, snapshot, t, c.issues, round, { thinking: false, extraCheck: extra }));
-    pack = r.pack;
-    revisions.push(r.report);
+    // A failed revision (e.g. a reply cut off for length twice) keeps the pack as it is, with its issues open.
+    try {
+      const r = await withRetry(() => revise(meter, snapshot, t, c.issues, round, { thinking: false, extraCheck: extra }));
+      pack = r.pack;
+      revisions.push(r.report);
+    } catch (e) {
+      if (e instanceof BudgetExceeded) throw e;
+      roundFailures.push(`revision round ${round}: ${(e as Error).message.slice(0, 200)}`);
+      break;
+    }
   }
   const last = critiques.at(-1)!;
-  return { pack, critiques, revisions, open: last.issues.filter((i) => i.severity !== 'minor'), verified, withdrawn };
+  return { pack, critiques, revisions, open: last.issues.filter((i) => i.severity !== 'minor'), verified, withdrawn, roundFailures };
 }
 
 function finalize(t: WeekTarget, pack: WeeklyPackContent, loop: LoopResult, extraFailures: string[], detail: Record<string, unknown>): { review: PackReview; status: PackStatus } {
@@ -201,7 +219,7 @@ function finalize(t: WeekTarget, pack: WeeklyPackContent, loop: LoopResult, extr
     note: 'Model critique and revision log. A model critique is not a human review.',
     critique: loop.critiques,
     revisions: loop.revisions,
-    verification: { confirmedFixed: loop.verified, withdrawn: loop.withdrawn, open: loop.open.length },
+    verification: { confirmedFixed: loop.verified, withdrawn: loop.withdrawn, open: loop.open.length, roundFailures: loop.roundFailures },
     finalChecks: { failures, warnings: fin.warnings },
     verbiage,
     ...detail,
