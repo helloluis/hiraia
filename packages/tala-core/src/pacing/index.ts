@@ -28,8 +28,22 @@ export const proposeStartPosition: PacingEngine['proposeStartPosition'] = (input
     checks: [],
   });
   const active = plan.items.filter((i) => i.sessions.length);
-  const item =
-    active.find((i) => i.sessions.some((s) => s.date >= input.today)) ?? active[active.length - 1];
+  // Where the stock plan IS today: the competency with the nearest session on or after today. Taking the first
+  // competency (in curriculum order) with ANY later session is wrong, because the stock plan hands the term's
+  // spare sessions back to early competencies: on 19 Nov it proposed Term 2 Week 1 topics for most grades.
+  let item: (typeof active)[number] | undefined;
+  let nearest: string | null = null;
+  for (const candidate of active) {
+    const next = candidate.sessions.reduce<string | null>(
+      (min, s) => (s.date >= input.today && (min === null || s.date < min) ? s.date : min),
+      null
+    );
+    if (next !== null && (nearest === null || next < nearest)) {
+      item = candidate;
+      nearest = next;
+    }
+  }
+  item ??= active[active.length - 1];
   return item
     ? {
         competencyId: item.competencyIds[0]!,
