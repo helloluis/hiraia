@@ -66,7 +66,12 @@ function watchWidth(el: Element, fit: (width: number) => void): () => void {
   if (typeof ResizeObserver === 'undefined') {
     const onResize = () => fit((el as HTMLElement).offsetWidth);
     window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    // Nothing tells an old browser when a hidden slide first gets a width (a dialog opening): keep looking.
+    const timer = setInterval(onResize, 250);
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('resize', onResize);
+    };
   }
   resizeObserver ??= new ResizeObserver((entries) => {
     for (const e of entries) fitters.get(e.target)?.(e.contentRect.width);
@@ -362,8 +367,12 @@ function SlideViewInner({ layout, number, mediaUrl, className, eager, decorative
     const el = root.current;
     const c = canvas.current;
     if (!el || !c) return;
+    // Until the slide has a width (inside a dialog that is still opening, a tab not shown yet) it stays hidden, so
+    // the unscaled 960 px layout is never painted for a frame.
     const fit = (width: number) => {
-      if (width > 0) c.style.transform = `scale(${width / BASE_W})`;
+      if (width <= 0) return;
+      c.style.transform = `scale(${width / BASE_W})`;
+      c.style.visibility = 'visible';
     };
     fit(el.offsetWidth);
     return watchWidth(el, fit);
@@ -390,7 +399,7 @@ function SlideViewInner({ layout, number, mediaUrl, className, eager, decorative
     >
       <div
         ref={canvas}
-        style={{ position: 'absolute', left: 0, top: 0, width: BASE_W, height: BASE_H, transformOrigin: '0 0', fontFamily: BODY_FONT, WebkitTextSizeAdjust: '100%', textSizeAdjust: '100%', textRendering: 'geometricPrecision' }}
+        style={{ position: 'absolute', left: 0, top: 0, width: BASE_W, height: BASE_H, transformOrigin: '0 0', visibility: 'hidden', fontFamily: BODY_FONT, WebkitTextSizeAdjust: '100%', textSizeAdjust: '100%', textRendering: 'geometricPrecision' }}
       >
         {layout.items.map((item, i) =>
           item.type === 'text' ? (
