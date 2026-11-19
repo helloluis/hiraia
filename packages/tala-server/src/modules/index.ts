@@ -10,6 +10,7 @@ import { generationModule } from './generation';
 import { llmModule } from './llm';
 import { printModule } from './print';
 import { packsModule } from './packs';
+import { decksModule } from './decks';
 import { rosterModule } from './roster';
 
 /** Order matters for migrations and service wiring: core first. */
@@ -22,4 +23,5 @@ export const modules: ServerModule[] = [
   communityModule,
   printModule,
   packsModule,
+  decksModule,
 ];

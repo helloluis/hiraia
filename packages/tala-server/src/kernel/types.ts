@@ -106,6 +106,11 @@ export interface BinaryResponse {
   binary: Uint8Array;
   contentType: string;
   filename?: string;
+  /**
+   * Cache policy for bytes that are safe to keep on the device for a while (drawings, slide previews). Must be
+   * `private, max-age=<seconds>`; anything else is ignored and the default (`no-store`) stays.
+   */
+  cacheControl?: string;
 }
 
 export interface Migration {

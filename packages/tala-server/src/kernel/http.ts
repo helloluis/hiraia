@@ -155,6 +155,9 @@ export function binaryResponse(result: BinaryResponse, requestId: string): Respo
     const safe = result.filename.replace(/[^A-Za-z0-9._-]+/g, '_').slice(0, 120) || 'download';
     headers.set('content-disposition', `attachment; filename="${safe}"`);
   }
+  // Only a private, time-limited policy may replace the default: never a shared cache, never forever.
+  if (result.cacheControl && /^private, max-age=\d{1,7}$/.test(result.cacheControl))
+    headers.set('cache-control', result.cacheControl);
   // Copy into a fresh ArrayBuffer-backed view so the Response owns its bytes.
   return new Response(new Uint8Array(result.binary), { status: 200, headers });
 }
