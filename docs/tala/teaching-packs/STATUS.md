@@ -190,3 +190,9 @@ Still open, not blocking the batch:
   Term 3 for grades 3, 6, 8, 9, 10 (55 weeks), groups flagged `offPeak` in
   `build/batch-priority-2026-11-19.queue.json`: no worker starts one during DeepSeek peak hours (until 10:00 UTC),
   and from then on every DeepSeek call waits for off-peak. Resume after any stop: same command, `--pending`.
+- 07:47–08:13 — two more failure causes, both mechanical: (1) every qwen4-max call that reached ~300 s failed as a
+  "network error" — Node's fetch gives up when response headers take over 300 s, and English critiques with
+  reasoning run 250–300 s+ (no call ever succeeded past 296 s) → model calls now go through `node:https` with only
+  our own 10-minute timeout and TCP keepalive (smoke-tested on both providers); (2) a day of 14 slides was refused
+  twice → 13–14 slides per day are accepted after one request to trim (`[length]`). Batch restarted 08:13 at $8.68
+  batch spend; failed weeks are retried by `--pending`.

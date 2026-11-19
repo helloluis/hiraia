@@ -9,6 +9,7 @@
  * providers' published price pages on 2026-11-19; an unpriced model is refused.
  */
 import { appendFileSync, mkdirSync } from 'node:fs';
+import { request as httpsRequest } from 'node:https';
 import { dirname } from 'node:path';
 
 export type Provider = 'deepseek' | 'qwen';
@@ -195,25 +196,22 @@ async function callOnce(meter: Meter, o: CallOptions, factor: number): Promise<C
   if (spec.provider === 'deepseek') body.thinking = { type: o.thinking ? 'enabled' : 'disabled' };
   if (spec.provider === 'qwen') body.enable_thinking = Boolean(o.thinking);
   const started = Date.now();
-  const ctl = new AbortController();
-  const timer = setTimeout(() => ctl.abort(), o.timeoutMs ?? 600_000);
-  let res: Response;
+  let res: { status: number; text: string; ok: boolean };
   try {
-    res = await fetch(ENDPOINT[spec.provider], {
-      method: 'POST',
-      signal: ctl.signal,
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${keyFor(spec.provider)}` },
-      body: JSON.stringify(body),
-    });
+    res = await postJson(
+      ENDPOINT[spec.provider],
+      { 'Content-Type': 'application/json', Authorization: `Bearer ${keyFor(spec.provider)}` },
+      JSON.stringify(body),
+      o.timeoutMs ?? 600_000
+    );
   } catch (e) {
-    clearTimeout(timer);
-    meter.record({ label: o.label, model: spec.model, outcome: 'network_error', costUsd: 0, latencyMs: Date.now() - started });
-    throw new ProviderError(`Network error calling ${spec.model}: ${(e as Error).name}`, 0, true);
+    const why = String((e as Error).message ?? e).slice(0, 80);
+    meter.record({ label: o.label, model: spec.model, outcome: 'network_error', error: why, costUsd: 0, latencyMs: Date.now() - started });
+    throw new ProviderError(`Network error calling ${spec.model}: ${why}`, 0, true);
   }
-  clearTimeout(timer);
   let j: any;
   try {
-    j = await res.json();
+    j = JSON.parse(res.text);
   } catch {
     meter.record({ label: o.label, model: spec.model, outcome: `http_${res.status}_nonjson`, costUsd: 0 });
     throw new ProviderError(`${spec.model} returned a non-JSON envelope (HTTP ${res.status}).`, res.status, res.status >= 500);
@@ -252,6 +250,40 @@ async function callOnce(meter: Meter, o: CallOptions, factor: number): Promise<C
     finishReason,
     latencyMs,
   };
+}
+
+/**
+ * POST JSON with node:https. Node's fetch gives up when response headers take more than 300 s, and a Qwen critique
+ * with reasoning can take longer (every qwen4-max call that reached ~300 s failed as "network_error" on 19 Nov).
+ * Here only our own timeout ends a call; TCP keepalive stops idle-connection drops while the model reasons.
+ */
+function postJson(url: string, headers: Record<string, string>, payload: string, timeoutMs: number): Promise<{ status: number; text: string; ok: boolean }> {
+  return new Promise((resolveP, rejectP) => {
+    const u = new URL(url);
+    const req = httpsRequest(
+      { method: 'POST', hostname: u.hostname, port: u.port || 443, path: u.pathname + u.search, headers: { ...headers, 'Content-Length': Buffer.byteLength(payload) } },
+      (res) => {
+        const chunks: Buffer[] = [];
+        res.on('data', (c: Buffer) => chunks.push(c));
+        res.on('end', () => {
+          clearTimeout(timer);
+          const status = res.statusCode ?? 0;
+          resolveP({ status, text: Buffer.concat(chunks).toString('utf8'), ok: status >= 200 && status < 300 });
+        });
+        res.on('error', (e) => {
+          clearTimeout(timer);
+          rejectP(e);
+        });
+      }
+    );
+    const timer = setTimeout(() => req.destroy(new Error(`no complete reply after ${Math.round(timeoutMs / 1000)} s`)), timeoutMs);
+    req.on('socket', (sock) => sock.setKeepAlive(true, 30_000));
+    req.on('error', (e) => {
+      clearTimeout(timer);
+      rejectP(e);
+    });
+    req.end(payload);
+  });
 }
 
 /** Parse a model's JSON object reply; tolerate a fenced block but nothing else. */

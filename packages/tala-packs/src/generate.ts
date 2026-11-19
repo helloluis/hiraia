@@ -73,7 +73,8 @@ function normalizeItem(v: unknown): unknown {
   return o;
 }
 
-export const DayOut = DayPlan.extend({ slides: z.array(Slide).min(5).max(12) });
+// 12 slides fit a 45-minute lesson; 13-14 are accepted after one request to trim (a `[length]` check), never fatal.
+export const DayOut = DayPlan.extend({ slides: z.array(Slide).min(5).max(14) });
 export type DayOut = z.infer<typeof DayOut>;
 
 export const TIMING_BASIS =
@@ -248,6 +249,7 @@ export function dayChecks(day: number, allowedSlugs: Set<string>, competencyIds:
       });
       if (s.lines.join('').length > 340) errs.push(`[length] slides[${i}] has too much text for a TV slide; cut it to the essentials`);
     });
+    if (d.slides.length > 12) errs.push(`${LENGTH_ONLY}the day has ${d.slides.length} slides; a 45-minute lesson fits at most 12 — merge or drop the least essential ones (and update the flow's slideIds)`);
     if (d.slides[0]?.kind !== 'day') errs.push('the first slide must be kind "day"');
     // A check + reveal pair on slides is asked for in the prompt; its absence is a recorded warning (checks.ts), not a
     // failed week: every day still has its written exit ticket.
