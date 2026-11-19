@@ -21,3 +21,14 @@ export function splitSlideLine(line: string, max = 110): string[] | null {
   };
   return pack(line.split(/(?<=[.!?])\s+/), ' ') ?? pack(line.split(/\s+(?=—\s)|(?<=;)\s+/), ' ');
 }
+
+/** Last resort for a line over the contract with no sentence break: split at the comma nearest the middle. */
+export function splitAtComma(line: string, max: number): string[] | null {
+  const commas = [...line.matchAll(/, /g)].map((m) => m.index!);
+  const mid = line.length / 2;
+  const best = commas.sort((a, b) => Math.abs(a - mid) - Math.abs(b - mid))[0];
+  if (best === undefined) return null;
+  const parts = [line.slice(0, best + 1).trim(), line.slice(best + 2).trim()];
+  return parts.every((x) => x.length > 0 && x.length <= max) ? parts : null;
+}
+

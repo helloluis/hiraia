@@ -12,9 +12,9 @@ import { z } from 'zod';
 import { AssessmentItem, TeacherGuide, type Slide, type WeeklyPackContent } from '@hiraia/tala-core/contracts';
 import { MODELS, type Meter, type ModelSpec } from './llm';
 import { fill, loadInputs, loadPrompt } from './context';
-import { DayOut, stage, tidySlide, type DayOut as DayOutT } from './generate';
+import { DayOut, LENGTH_ONLY, stage, tidySlide, type DayOut as DayOutT } from './generate';
 import type { WeekTarget } from './targets';
-import { lineMax, slideCharsMax, splitSlideLine, stripEnumerator } from './text';
+import { lineMax, slideCharsMax, splitAtComma, splitSlideLine, stripEnumerator } from './text';
 
 export const FilGuideOut = z.object({
   title: z.string().trim().min(1).max(80),
@@ -119,7 +119,7 @@ function lockDayStructure(enDay: DayOutT) {
         const fixed = s.lines.flatMap((l: unknown) => {
           if (typeof l !== 'string') return [l];
           const bare = stripEnumerator(l);
-          return bare.length > lineMax('fil') ? (splitSlideLine(bare, lineMax('fil')) ?? [bare]) : [l];
+          return bare.length > lineMax('fil') ? (splitSlideLine(bare, lineMax('fil')) ?? splitAtComma(bare, lineMax('fil')) ?? [bare]) : [l];
         });
         if (fixed.length <= 5) {
           s.lines = fixed;
@@ -140,11 +140,11 @@ function dayChecksFil(enDay: DayOutT) {
     d.slides.forEach((s, i) => {
       const e = enDay.slides[i];
       if (e && s.choices.length !== e.choices.length) errs.push(`slides[${i}] must have ${e.choices.length} choices`);
-      if (s.title.length > 60) errs.push(`slides[${i}].title is longer than 60 characters`);
+      if (s.title.length > 60) errs.push(`${LENGTH_ONLY}slides[${i}].title is longer than 60 characters`);
       s.lines.forEach((l, j) => {
-        if (stripEnumerator(l).length > lineMax('fil')) errs.push(`slides[${i}].lines[${j}] is ${stripEnumerator(l).length} characters; the limit is ${lineMax('fil')}. Shorten it or split it into two lines`);
+        if (stripEnumerator(l).length > lineMax('fil')) errs.push(`${LENGTH_ONLY}slides[${i}].lines[${j}] is ${stripEnumerator(l).length} characters; the limit is ${lineMax('fil')}. Shorten it or split it into two lines`);
       });
-      if (s.lines.join('').length > slideCharsMax('fil')) errs.push(`slides[${i}] has ${s.lines.join('').length} characters of text; the limit is ${slideCharsMax('fil')}. Keep the same ideas in fewer words`);
+      if (s.lines.join('').length > slideCharsMax('fil')) errs.push(`${LENGTH_ONLY}slides[${i}] has ${s.lines.join('').length} characters of text; the limit is ${slideCharsMax('fil')}. Keep the same ideas in fewer words`);
     });
     return errs;
   };

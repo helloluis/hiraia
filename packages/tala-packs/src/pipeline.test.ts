@@ -7,6 +7,7 @@ import { buildTargets, loadSciencePacks, targetId } from './targets';
 import { CURRICULUM_PACKS, LIBRARY } from './paths';
 import { DayOut, OutlineOut, dayChecks, normalizeDay, tidyCheckSlide, tidySlide } from './generate';
 import { annotate, applyPatch, canonicalPath, expectMatches, parsePath, placeholderIn, preparePatch, retarget, splitSlideLine, stripIndex } from './review';
+import { splitAtComma } from './text';
 import { checkPack, checkSameStructure } from './checks';
 import { checkVerbiage } from './verbiage';
 import { loadInputs } from './context';
@@ -319,5 +320,16 @@ test('the spend cap counts calls in flight, so several workers cannot pass it to
   meter.release(c);
   const row = JSON.parse(readFileSync(ledger, 'utf8').trim());
   assert.equal(row.batch, 'test', 'ledger rows carry the batch tag');
+});
+
+test('a slide line over the contract with no sentence break is split at a comma; length problems never fail a week', async () => {
+  const long = 'When you stir salt into warm water in a clear cup at the front of the room, the grains seem to vanish completely from sight';
+  assert.ok(long.length > 120);
+  const parts = splitAtComma(long, 130)!;
+  assert.equal(parts.length, 2);
+  assert.ok(parts.every((x) => x.length <= 130) && parts.join(' ').replace(/,/g, '') === long.replace(/,/g, ''));
+  assert.equal(splitAtComma('no commas here at all', 10), null);
+  const { LENGTH_ONLY } = await import('./generate');
+  assert.equal(LENGTH_ONLY, '[length] ');
 });
 

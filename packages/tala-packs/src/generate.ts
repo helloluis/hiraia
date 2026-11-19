@@ -32,7 +32,7 @@ import {
 } from './context';
 import { LIBRARY, PIPELINE_VERSION, WORK } from './paths';
 import type { WeekTarget } from './targets';
-import { lineMax, splitSlideLine, stripEnumerator } from './text';
+import { lineMax, splitAtComma, splitSlideLine, stripEnumerator } from './text';
 
 export const SENSITIVITY = z.enum(['human_reproduction', 'health', 'disaster', 'safety_critical']);
 
@@ -88,6 +88,9 @@ function workDir(packId: string) {
 }
 
 /** Run one model stage with JSON validation and a single repair round; cache the validated result. */
+/** Check messages with this prefix are text-length problems: asked to be fixed, but never fatal for a week. */
+export const LENGTH_ONLY = '[length] ';
+
 export async function stage<T>(args: {
   meter: Meter;
   packId: string;
@@ -174,7 +177,7 @@ export async function stage<T>(args: {
     });
   }
   writeFileSync(resolve(dir, `${args.name}.errors.json`), JSON.stringify(lastErrors, null, 1));
-  if (args.softCheck && lastValid) {
+  if ((args.softCheck || (lastValid && lastErrors.every((e) => e.startsWith(LENGTH_ONLY)))) && lastValid) {
     const warnings = JSON.parse(failures.at(-1) ?? '[]') as string[];
     writeFileSync(cacheFile, JSON.stringify({ key, model: args.spec.model, at: new Date().toISOString(), value: lastValid.value, warnings }, null, 1));
     return { value: lastValid.value, cached: false, attempts: lastValid.attempt, warnings };
@@ -236,12 +239,14 @@ export function dayChecks(day: number, allowedSlugs: Set<string>, competencyIds:
         if (prev?.choices.length && (s.correctChoice === null || s.correctChoice >= prev.choices.length)) errs.push(`slides[${i}].correctChoice must index the check's choices`);
       }
       if (s.kind === 'check' && i < d.slides.length - 1 && d.slides[i + 1]?.kind !== 'reveal') errs.push(`slides[${i}] (check) must be followed by its reveal slide (only the day's last slide may be an exit check without one)`);
-      if (s.title.length > 60) errs.push(`slides[${i}].title is longer than 60 characters`);
-      if (s.lines.length > 5 || (s.lines.length === 5 && s.lines.join('').length > 320)) errs.push(`slides[${i}] has too much text (max 4 lines, or 5 short ones)`);
+      // Length problems are asked to be fixed once, then accepted (`[length]`, see LENGTH_ONLY): the review loop gets
+      // them as automatic issues, and a pack that still has one is built and marked "needs fixes" instead of failing.
+      if (s.title.length > 60) errs.push(`[length] slides[${i}].title is longer than 60 characters`);
+      if (s.lines.length > 5 || (s.lines.length === 5 && s.lines.join('').length > 320)) errs.push(`[length] slides[${i}] has too much text (max 4 lines, or 5 short ones)`);
       s.lines.forEach((l, j) => {
-        if (l.length > 110) errs.push(`slides[${i}].lines[${j}] is longer than 110 characters; shorten it`);
+        if (l.length > 110) errs.push(`[length] slides[${i}].lines[${j}] is longer than 110 characters; shorten it`);
       });
-      if (s.lines.join('').length > 340) errs.push(`slides[${i}] has too much text for a TV slide; cut it to the essentials`);
+      if (s.lines.join('').length > 340) errs.push(`[length] slides[${i}] has too much text for a TV slide; cut it to the essentials`);
     });
     if (d.slides[0]?.kind !== 'day') errs.push('the first slide must be kind "day"');
     // A check + reveal pair on slides is asked for in the prompt; its absence is a recorded warning (checks.ts), not a
@@ -308,7 +313,11 @@ export function normalizeDay(day: number, art: Map<string, { titles: string[] }>
       s.lines ??= [];
       s.choices ??= [];
       if (Array.isArray(s.lines) && s.lines.some((l: unknown) => typeof l === 'string' && stripEnumerator(l).length > lineMax('en'))) {
-        const fixed = s.lines.flatMap((l: unknown) => (typeof l === 'string' && stripEnumerator(l).length > lineMax('en') ? (splitSlideLine(stripEnumerator(l), lineMax('en')) ?? [l]) : [l]));
+        const fixed = s.lines.flatMap((l: unknown) =>
+          typeof l === 'string' && stripEnumerator(l).length > lineMax('en')
+            ? (splitSlideLine(stripEnumerator(l), lineMax('en')) ?? (stripEnumerator(l).length > 130 ? (splitAtComma(stripEnumerator(l), 130) ?? [l]) : [l]))
+            : [l]
+        );
         if (fixed.length <= 5 && fixed.length !== s.lines.length) {
           s.lines = fixed;
           log.push(`slide ${id}: long line split at a sentence boundary`);
