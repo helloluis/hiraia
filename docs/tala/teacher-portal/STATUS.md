@@ -104,3 +104,39 @@ position PROPOSED on the set-up screen; classes already set up keep their saved 
 - The landing page still shows the earlier picture for Community.
 - Packs are still drafts and say so on every cover, page and slide. This work changes how they are shown, not
   what they say.
+
+## Release path check (2026-11-19 23:11–23:18 UTC; 07:11–07:18 PHT on 20 Nov): read-only, nothing deployed
+
+Asked for by the coordinator after Luis approved the release. Every check below only reads: nothing was pushed,
+fetched into the host repository, restarted or written on the host, and the database was not opened.
+
+- **State**: worktree `/home/b11/code/tala-wt/ui`, branch `tala-v1-teacher-ui`, clean, HEAD `696d1fc0e`. Tag
+  `tala-v1-demo.11` (annotated, tag object `d098674e1`) points at `696d1fc0e` and is local only: origin has no
+  such branch or tag, and the newest tag in the host repository is `tala-v1-demo.10`. Live answers
+  `0.1.0+tala-v1-demo.10`.
+- **The standard path** is the kit in `packages/tala-server/deploy/`, used the same way for demo.10: push the
+  branch and the tag from b11-dev, then run `/opt/tala/deploy.sh <tag>` as root on b11-apps. There is no other
+  release mechanism for Tala: none of the four GitHub workflows mentions Tala, a deploy or SSH (their runners are
+  GitHub-hosted or the macOS app runner, with no route to the private host), there is no `paseo.json` and no
+  Paseo schedule, and the status dashboard is read-only.
+- **Push**: origin is `git@github.com:helloluis/hiraia.git`. `git push --dry-run --no-verify origin
+  tala-v1-teacher-ui refs/tags/tala-v1-demo.11` is accepted (new branch, new tag; 10 commits, 214 objects), and
+  origin was unchanged afterwards. The pre-push hook is Git LFS; this release changes no LFS file.
+- **Host access from b11-dev**: both documented routes answer `root` on `b11-apps`: `sudo ssh b11-apps`
+  (`/home/b11/PRODUCTION-ACCESS.md`) and `ssh -i ~/.ssh/prod_ed25519 -o
+  UserKnownHostsFile=~/.ssh/known_hosts_ovh_guests root@10.77.0.20` (`deploy/README.md`, the route demo.10 was
+  deployed through).
+- **On the host**: `/opt/tala/deploy.sh` is `root:root`, mode 755, and byte-identical to the kit's script at
+  demo.9, demo.10 and demo.11 (sha256 `c25da204…ba98`). It has no dry-run mode. `current` points at
+  `releases/tala-v1-demo.10`; there is no `releases/tala-v1-demo.11` and no half-switched link. Unit `tala` has
+  been active since 06:01:36 UTC with 0 restarts and 0 error-level log lines. git 2.43, Node 22.22.0, pnpm and
+  sqlite3 3.45.1 are present; 169 GB of disk and 7.7 GB of memory are free; `/var/backups/tala/` holds the one
+  backup from the demo.10 deploy. The host repository can read origin, and its release worktrees use the sparse
+  set this release was rehearsed with.
+- **Health and version**: only `GET /api/v1/health` exists (`system.health` in `contracts/api.ts`, mounted by
+  `tala-web/src/app/api/v1/[...path]`; nginx proxies `/` to `127.0.0.1:3220`). `/api/health`, `/healthz` and
+  `/health` return the app's 404 page; `/api/v1/version` is a JSON 404.
+- **Node**: the dev box default is Node 24.21 and the host runs 22.22. The clean-tree build and the upgrade →
+  rollback → roll-forward rehearsal were repeated under Node 22.23.4: both builds pass, `decks:001_init` applies,
+  acceptance 34 of 34, the edit survives the rollback, 0 error lines.
+- **Blockers**: none technical. The release was not run in this step because the step was scoped read-only.
