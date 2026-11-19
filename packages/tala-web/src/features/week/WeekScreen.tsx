@@ -1,93 +1,100 @@
 'use client';
-import Link from 'next/link';
-import { useMemo, useState } from 'react';
+/**
+ * This Week answers one question first: "What am I teaching next, and what do I do first?"
+ *
+ *  - Up next: the calendar-aware next teaching day, open, with each lesson's topic, plan and ready-made help.
+ *  - Help from the Library: the packs that match the lessons still to teach (beside it on wide screens).
+ *  - Every other day of the week is one quiet row that opens on tap.
+ *  - Pacing ("Am I on pace?") and no-class days stay available, out of the way.
+ *
+ * The week shown by default is the week of the next teaching day, so on a weekend the teacher sees Monday.
+ */
+import { useEffect, useMemo, useState } from 'react';
 import type { CalendarDay, TimelineEntry } from '@hiraia/tala-core/contracts';
 import { NON_TEACHING_KINDS } from '@hiraia/tala-core/contracts';
-import { formatDate, formatLongDate, useT } from '@/i18n';
-import { addDays, isoDate, mondayOf, monthEnd, monthStart } from '@/data/ids';
+import { formatDate, useT } from '@/i18n';
+import { addDays, mondayOf, monthEnd, monthStart } from '@/data/ids';
+import { usePackIndex } from '@/data/packs';
+import { termWeekFor } from '@/data/recommend';
 import { useSession } from '@/data/session';
-import { groupByDate, useTimeline } from '@/data/timeline';
-import { topicLabel } from '@/data/topics';
+import { useTimeline } from '@/data/timeline';
 import { pendingDisruptionIds } from '@/data/realign';
-import {
-  Badge,
-  Banner,
-  Button,
-  EmptyState,
-  LinkButton,
-  List,
-  ListRow,
-  PageHeader,
-  Placeholder,
-  SectionTitle,
-  Toast,
-  type Tone,
-} from '@/components/ui';
+import { ArrowLink, Callout, Disclosure } from '@/components/editorial';
+import { Icon } from '@/components/icons';
+import { Badge, Button, EmptyState, LinkButton, List, ListRow, Placeholder, Toast, type Tone } from '@/components/ui';
+import { FirstSteps } from '@/features/shell/FirstSteps';
 import { MarkSheet } from './MarkSheet';
 import { NoClassSheet } from './NoClassSheet';
 import { RealignSheet } from './RealignSheet';
+import { DayRow, LibraryPanel, UpNext } from './WeekParts';
+import { buildSessions, packsFor, scienceGrades } from './sessions';
+import { LOOKAHEAD_DAYS, clockOf, nextTeachingDate, type Clock } from './upnext';
+
+/** The device clock, refreshed twice a minute so "Up next" moves on when a lesson ends. */
+function useClock(): Clock {
+  const [now, setNow] = useState(() => clockOf(new Date()));
+  useEffect(() => {
+    const id = setInterval(() => {
+      const c = clockOf(new Date());
+      setNow((prev) => (prev.date === c.date && prev.minutes === c.minutes ? prev : c));
+    }, 30_000);
+    return () => clearInterval(id);
+  }, []);
+  return now;
+}
 
 export function WeekScreen() {
   const { t, lang } = useT();
   const { engine } = useSession();
-  const today = isoDate();
-  const [weekStart, setWeekStart] = useState(() => mondayOf(today));
-  const weekEnd = addDays(weekStart, 6);
+  const now = useClock();
+  const today = now.date;
+  /** A week the teacher paged to; null = the week of the next teaching day. */
+  const [picked, setPicked] = useState<string | null>(null);
+
+  // One timeline covers the month (pacing), the week on screen and the look-ahead for "Up next".
+  const thisMonday = mondayOf(today);
+  const lookEnd = addDays(mondayOf(addDays(today, LOOKAHEAD_DAYS)), 6);
   const mStart = monthStart(today);
   const mEnd = monthEnd(today);
-  const from = weekStart < mStart ? weekStart : mStart;
-  const to = weekEnd > mEnd ? weekEnd : mEnd;
+  const from = [picked ?? thisMonday, thisMonday, mStart].sort()[0]!;
+  const to = [addDays(picked ?? thisMonday, 6), lookEnd, mEnd].sort().reverse()[0]!;
   const tl = useTimeline(from, to);
+  const { index, failed } = usePackIndex();
+
   const [marking, setMarking] = useState<TimelineEntry | null>(null);
   const [noClass, setNoClass] = useState(false);
   const [realignIds, setRealignIds] = useState<string[] | null>(null);
   const [toast, setToast] = useState<{ message: string; undo?: () => void } | null>(null);
 
-  const pending = useMemo(
-    () => pendingDisruptionIds(tl.ws, tl.currentTerm?.id ?? null),
-    [tl.ws, tl.currentTerm]
-  );
-
-  const weekEntries = useMemo(
-    () => tl.entries.filter((e) => e.date >= weekStart && e.date <= weekEnd),
-    [tl.entries, weekStart, weekEnd]
-  );
-  const days = useMemo(() => groupByDate(weekEntries), [weekEntries]);
-  const offDays = useMemo(
-    () =>
-      tl.ws.calendarDays.filter(
-        (d) =>
-          d.date >= weekStart &&
-          d.date <= weekEnd &&
-          NON_TEACHING_KINDS.includes(d.kind) &&
-          (!tl.ws.activeYear || d.schoolYearId === tl.ws.activeYear.id)
-      ),
-    [tl.ws.calendarDays, tl.ws.activeYear, weekStart, weekEnd]
-  );
-  const monthEntries = useMemo(
-    () => tl.entries.filter((e) => e.date >= mStart && e.date <= mEnd),
-    [tl.entries, mStart, mEnd]
-  );
+  const { entries, ws, competencyById } = tl;
+  const sessions = useMemo(() => buildSessions({ entries, ws, competencyById }, index, lang, now), [entries, ws, competencyById, index, lang, now]);
+  const nextDate = useMemo(() => nextTeachingDate(sessions, now), [sessions, now]);
+  const pending = useMemo(() => pendingDisruptionIds(ws, tl.currentTerm?.id ?? null), [ws, tl.currentTerm]);
   const atRisk = tl.summaries.filter((s) => s.plan.atRisk.length);
+  const monthEntries = useMemo(() => entries.filter((e) => e.date >= mStart && e.date <= mEnd), [entries, mStart, mEnd]);
 
-  if (tl.loading && !tl.ws.classes.length) {
+  if (tl.loading && !ws.classes.length) {
     return (
       <>
-        <PageHeader title={t('week.title')} />
+        <h1 className="mb-4 text-display">{t('week.title')}</h1>
         <Placeholder rows={5} />
       </>
     );
   }
 
-  if (!tl.ws.classes.length) {
+  if (!ws.classes.length) {
     return (
       <>
-        <PageHeader title={t('week.title')} />
+        <h1 className="mb-4 text-display">{t('week.title')}</h1>
         <EmptyState
+          art="board"
           action={
-            <LinkButton href="/setup" variant="primary">
-              {t('week.setupAction')}
-            </LinkButton>
+            <div className="flex flex-col items-center gap-1">
+              <LinkButton href="/setup" variant="primary">
+                {t('week.setupAction')}
+              </LinkButton>
+              <ArrowLink href="/library">{t('wk.empty.library')}</ArrowLink>
+            </div>
           }
         >
           {t('week.noClass')}
@@ -96,151 +103,194 @@ export function WeekScreen() {
     );
   }
 
-  const isThisWeek = weekStart === mondayOf(today);
+  const homeMonday = mondayOf(nextDate ?? today);
+  const weekStart = picked ?? homeMonday;
+  const weekEnd = addDays(weekStart, 6);
+  const isHome = weekStart === homeMonday;
+  const go = (weeks: number) => {
+    const next = addDays(weekStart, weeks * 7);
+    setPicked(next === homeMonday ? null : next);
+  };
+
+  const weekSessions = sessions.filter((s) => s.date >= weekStart && s.date <= weekEnd);
+  const offDays = ws.calendarDays.filter(
+    (d) => d.date >= weekStart && d.date <= weekEnd && NON_TEACHING_KINDS.includes(d.kind) && (!ws.activeYear || d.schoolYearId === ws.activeYear.id)
+  );
+  const heroDate = isHome ? nextDate : null;
+  const heroSessions = heroDate ? weekSessions.filter((s) => s.date === heroDate) : [];
+  const otherDates = [0, 1, 2, 3, 4, 5, 6]
+    .map((i) => addDays(weekStart, i))
+    .filter((date) => date !== heroDate && (weekSessions.some((s) => s.date === date) || offDays.some((d) => d.date === date)));
+  // Another week: its first teaching day opens if it is still ahead; a week behind us stays closed.
+  const openDate = isHome ? null : (otherDates.find((date) => date > today && weekSessions.some((s) => s.date === date)) ?? null);
+
+  // Header: the week's dates, and where they fall in the school year when the calendar knows.
+  const hasWeekend = [5, 6].some((i) => {
+    const date = addDays(weekStart, i);
+    return weekSessions.some((s) => s.date === date);
+  });
+  const lastDay = addDays(weekStart, hasWeekend ? 6 : 4);
+  const where = termWeekFor(ws.activeYear, weekStart) ?? termWeekFor(ws.activeYear, lastDay);
+  const range = `${formatDate(weekStart, lang)} – ${formatDate(lastDay, lang)}`;
+
+  // Library help: packs for the lessons still to teach this week (all of the week's lessons once it is behind us).
+  const live = weekSessions.filter((s) => !s.beforeTala);
+  const ahead = live.filter((s) => !s.over);
+  const packs = packsFor(ahead.length ? ahead : live);
+  const grades = scienceGrades({ entries, ws, competencyById });
+  const libraryTerm = where?.term ?? tl.currentTerm?.index ?? null;
+
+  const waiting = tl.loading && weekSessions.length === 0;
+  const nothingThisWeek = !waiting && !heroDate && otherDates.length === 0;
 
   return (
-    <>
-      <PageHeader
-        title={t('week.title')}
-        subtitle={isThisWeek ? undefined : t('week.weekOf', { date: formatDate(weekStart, lang) })}
-      />
-
-      {/* Needs attention */}
-      {(pending.length > 0 || atRisk.length > 0) && (
-        <section aria-labelledby="attention" className="flex flex-col gap-2 mb-4">
-          <h2 id="attention" className="text-title">
-            {t('week.needsAttention')}
-          </h2>
-          {pending.length > 0 && (
-            <Banner
-              kind="warn"
-              action={
-                <Button variant="primary" onClick={() => setRealignIds(pending)}>
-                  {t('realign.fix')}
-                </Button>
-              }
+    <div className="flex flex-col gap-6">
+      {/* Title, then the week it shows between its two arrows: the arrows visibly belong to the dates. */}
+      <header className="flex flex-col gap-2 wide:flex-row wide:items-center wide:justify-between wide:gap-4">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+          <h1 className="text-display">{t('week.title')}</h1>
+          {!isHome && (
+            <button
+              type="button"
+              onClick={() => setPicked(null)}
+              className="inline-flex min-h-touch items-center gap-1.5 rounded-full bg-talaTeal px-4 text-small font-semibold text-white hover:brightness-95"
             >
-              {t('realign.pending', { n: pending.length })}
-            </Banner>
+              <Icon name="restore" size={16} />
+              {t('wk.backToThisWeek')}
+            </button>
           )}
-          {atRisk.map((s) => (
-            <Banner key={s.track.id} kind="warn">
-              {t('week.atRisk', {
-                subject: `${s.subjectName} · ${t('common.grade', { g: s.grade })}`,
-                n: s.plan.atRisk.length,
-              })}
-            </Banner>
-          ))}
+        </div>
+        <nav aria-label={t('wk.pager')} className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => go(-1)}
+            aria-label={t('week.prev')}
+            title={t('week.prev')}
+            className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-hairline bg-white text-forest hover:bg-cream"
+          >
+            <Icon name="chevronLeft" size={22} />
+          </button>
+          {/* Dates, then where they fall in the school year: two tidy lines on a phone, one line on wide screens. */}
+          <p aria-live="polite" className="kicker min-w-0 flex-1 text-center text-talaTeal wide:flex-none wide:px-1">
+            <span className="block whitespace-nowrap wide:inline">{range}</span>
+            {where && (
+              <>
+                <span className="hidden wide:inline"> · </span>
+                <span className="mt-1 block whitespace-nowrap wide:mt-0 wide:inline">{t('wk.termWeek', { term: where.term, week: where.week })}</span>
+              </>
+            )}
+          </p>
+          <button
+            type="button"
+            onClick={() => go(1)}
+            aria-label={t('week.next')}
+            title={t('week.next')}
+            className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-hairline bg-white text-forest hover:bg-cream"
+          >
+            <Icon name="chevronRight" size={22} />
+          </button>
+        </nav>
+      </header>
+
+      <FirstSteps />
+
+      {(pending.length > 0 || atRisk.length > 0) && (
+        <section aria-labelledby="attention">
+          <Callout tint="yellow" icon="alert" title={<span id="attention">{t('week.needsAttention')}</span>}>
+            <ul className="flex flex-col gap-2">
+              {pending.length > 0 && (
+                <li className="flex flex-wrap items-center justify-between gap-2">
+                  <span>{t('realign.pending', { n: pending.length })}</span>
+                  <Button variant="primary" onClick={() => setRealignIds(pending)}>
+                    {t('realign.fix')}
+                  </Button>
+                </li>
+              )}
+              {atRisk.map((s) => (
+                <li key={s.track.id}>{t('week.atRisk', { subject: `${s.subjectName} · ${t('common.grade', { g: s.grade })}`, n: s.plan.atRisk.length })}</li>
+              ))}
+            </ul>
+          </Callout>
         </section>
       )}
 
-      {/* Week navigation */}
-      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-        <Button
-          variant="quiet"
-          onClick={() => setWeekStart((w) => addDays(w, -7))}
-          aria-label={t('week.prev')}
-        >
-          ← {t('week.prev')}
-        </Button>
-        {!isThisWeek && (
-          <Button variant="quiet" onClick={() => setWeekStart(mondayOf(today))}>
-            {t('week.thisWeek')}
-          </Button>
-        )}
-        <Button
-          variant="quiet"
-          onClick={() => setWeekStart((w) => addDays(w, 7))}
-          aria-label={t('week.next')}
-        >
-          {t('week.next')} →
-        </Button>
-      </div>
+      <div className="grid gap-6 min-[1180px]:grid-cols-[minmax(0,1fr)_20rem] min-[1180px]:items-start">
+        {/* 1. What is next */}
+        {waiting ? (
+          <div className="min-w-0 min-[1180px]:col-start-1 min-[1180px]:row-start-1">
+            <Placeholder rows={4} />
+          </div>
+        ) : heroDate ? (
+          <div className="min-w-0 min-[1180px]:col-start-1 min-[1180px]:row-start-1">
+            <UpNext date={heroDate} today={today} sessions={heroSessions} onMark={(s) => setMarking(s.entry)} />
+          </div>
+        ) : isHome && !nextDate ? (
+          <p className="min-w-0 rounded-lg bg-white px-5 py-5 text-lead shadow-card min-[1180px]:col-start-1 min-[1180px]:row-start-1">{t('wk.noUpcoming')}</p>
+        ) : null}
 
-      {tl.loading && weekEntries.length === 0 ? (
-        <Placeholder rows={4} />
-      ) : days.length === 0 && offDays.length === 0 ? (
-        <EmptyState>{t('week.empty')}</EmptyState>
-      ) : (
-        <div className="flex flex-col gap-4">
-          {[0, 1, 2, 3, 4, 5, 6].map((i) => {
-            const date = addDays(weekStart, i);
-            const entries = days.find((d) => d.date === date)?.entries ?? [];
-            const off = offDays.filter((d) => d.date === date);
-            if (!entries.length && !off.length) return null;
-            return (
-              <section key={date} aria-labelledby={`d-${date}`}>
-                <h2
-                  id={`d-${date}`}
-                  className={`text-title mb-1 flex items-center gap-2 ${date === today ? 'text-talaTeal' : ''}`}
-                >
-                  {formatLongDate(date, lang)}
-                  {date === today && <Badge tone="teal">{t('common.today')}</Badge>}
-                </h2>
-                <List>
-                  {off.map((d) => (
-                    <ListRow
-                      key={d.id}
-                      title={`${t('week.noClassDay')} · ${t(`noclass.kind.${d.kind}` as never) || d.kind}`}
-                      subtitle={d.label || undefined}
-                    />
-                  ))}
-                  {entries.map((e) => (
-                    <SessionRow
-                      key={`${e.date}-${e.assignmentId}-${e.slotId}`}
-                      entry={e}
-                      tl={tl}
-                      onMark={() => setMarking(e)}
-                    />
-                  ))}
-                </List>
-              </section>
-            );
-          })}
+        {/* 2. Where to get help. Beside the lessons on wide screens; under Up next on phones. */}
+        <div className={`min-w-0 min-[1180px]:sticky min-[1180px]:top-6 min-[1180px]:col-start-2 min-[1180px]:row-span-2 min-[1180px]:row-start-1 ${heroDate || waiting ? '' : 'order-last min-[1180px]:order-none'}`}>
+          <LibraryPanel packs={packs} grades={grades} term={libraryTerm} home={isHome} loaded={Boolean(index)} failed={failed} />
         </div>
-      )}
 
-      <div className="mt-4">
-        <Button onClick={() => setNoClass(true)} full>
-          {t('week.markNoClass')}
-        </Button>
+        {/* 3. The other days, closed; then the quiet extras. */}
+        <div className={`flex min-w-0 flex-col gap-6 min-[1180px]:col-start-1 ${heroDate || waiting || (isHome && !nextDate) ? 'min-[1180px]:row-start-2' : 'min-[1180px]:row-start-1'}`}>
+          {otherDates.length > 0 && (
+            <section aria-labelledby="days-h">
+              <h2 id="days-h" className="border-b border-hairline pb-2 text-title">
+                {isHome && heroDate ? t('wk.rest.title') : t('week.weekOf', { date: formatDate(weekStart, lang) })}
+              </h2>
+              <div key={weekStart}>
+                {otherDates.map((date) => (
+                  <DayRow
+                    key={date}
+                    date={date}
+                    today={today}
+                    sessions={weekSessions.filter((s) => s.date === date)}
+                    off={offDays.filter((d) => d.date === date)}
+                    defaultOpen={date === openDate}
+                    onMark={(s) => setMarking(s.entry)}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
+          {nothingThisWeek && <p className="rounded-lg bg-white px-5 py-5 text-lead shadow-card">{t('week.empty')}</p>}
+
+          <div className="flex flex-col">
+            <Disclosure
+              className="border-y border-hairline"
+              icon={<Icon name="challenge" size={22} className="text-talaTeal" />}
+              summary={t('wk.pace.title')}
+              hint={t('wk.pace.hint')}
+            >
+              {tl.summaries.length > 0 && (
+                <List className="mb-3">
+                  {tl.summaries.map((s) => {
+                    const n = s.plan.sessionsBehind;
+                    const text = n > 0.5 ? t('week.behind', { n: Math.round(n) }) : n < -0.5 ? t('week.ahead', { n: Math.round(-n) }) : t('week.onPace');
+                    const tone: Tone = n > 0.5 ? 'brick' : n < -0.5 ? 'teal' : 'sage';
+                    return <ListRow key={s.track.id} title={`${s.subjectName} · ${t('common.grade', { g: s.grade })}`} trailing={<Badge tone={tone}>{text}</Badge>} />;
+                  })}
+                </List>
+              )}
+              <MonthList entries={monthEntries} />
+            </Disclosure>
+            <div className="pt-2">
+              <Button variant="quiet" onClick={() => setNoClass(true)}>
+                <Icon name="flag" size={18} />
+                {t('wk.noClassAction')}
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* This Month */}
-      <SectionTitle>{t('week.month')}</SectionTitle>
-      {tl.summaries.length > 0 && (
-        <List className="mb-3">
-          {tl.summaries.map((s) => {
-            const n = s.plan.sessionsBehind;
-            const text =
-              n > 0.5
-                ? t('week.behind', { n: Math.round(n) })
-                : n < -0.5
-                  ? t('week.ahead', { n: Math.round(-n) })
-                  : t('week.onPace');
-            const tone: Tone = n > 0.5 ? 'brick' : n < -0.5 ? 'teal' : 'sage';
-            return (
-              <ListRow
-                key={s.track.id}
-                title={`${s.subjectName} · ${t('common.grade', { g: s.grade })}`}
-                trailing={<Badge tone={tone}>{text}</Badge>}
-              />
-            );
-          })}
-        </List>
-      )}
-      <MonthList entries={monthEntries} />
-
-      <MarkSheet
-        entry={marking}
-        onClose={() => setMarking(null)}
-        ws={tl.ws}
-        onSaved={() => setToast({ message: t('mark.saved') })}
-      />
+      <MarkSheet entry={marking} onClose={() => setMarking(null)} ws={ws} onSaved={() => setToast({ message: t('mark.saved') })} />
       <NoClassSheet
         open={noClass}
         onClose={() => setNoClass(false)}
-        ws={tl.ws}
+        ws={ws}
         defaultDate={today}
         onSaved={(day: CalendarDay) => {
           setNoClass(false);
@@ -260,135 +310,6 @@ export function WeekScreen() {
         />
       )}
       <Toast message={toast?.message ?? null} onUndo={toast?.undo} onDone={() => setToast(null)} />
-    </>
-  );
-}
-
-function SessionRow({
-  entry,
-  tl,
-  onMark,
-}: {
-  entry: TimelineEntry;
-  tl: ReturnType<typeof useTimeline>;
-  onMark: () => void;
-}) {
-  const { t, lang } = useT();
-  const cls = tl.ws.classes.find((c) => c.id === entry.classId);
-  const groups = Object.keys(entry.byGroup);
-  const multi = groups.length > 1;
-  const topics = groups.map((gid) => {
-    const grade = cls?.gradeGroups.find((g) => g.id === gid)?.grade;
-    const first = entry.byGroup[gid]?.[0];
-    const comp = first ? tl.competencyById.get(first) : null;
-    const tl2 = comp ? topicLabel(comp, lang) : null;
-    const text = tl2 ? tl2.text : '';
-    return { grade, text, heading: tl2?.heading ?? '' };
-  });
-  const assignment = tl.ws.assignments.find((a) => a.id === entry.assignmentId);
-  const slot = assignment?.slots.find((s) => s.id === entry.slotId);
-  // No curriculum data for this subject (typed objectives, CUR-10): no per-group competency lines to show.
-  const hasCurriculum = !!assignment?.learningAreaId && topics.some((tp) => tp.text);
-  const state =
-    entry.mark === 'taught'
-      ? 'taught'
-      : entry.mark === 'partial'
-        ? 'partial'
-        : entry.mark === 'not_taught'
-          ? 'notTaught'
-          : entry.planState === 'locked'
-            ? 'locked'
-            : entry.planState === 'draft'
-              ? 'draft'
-              : entry.mark === 'assumed_taught'
-                ? 'assumed'
-                : 'none';
-  const tone: Tone =
-    state === 'taught'
-      ? 'sage'
-      : state === 'locked'
-        ? 'teal'
-        : state === 'notTaught'
-          ? 'brick'
-          : 'neutral';
-  const stateLabel = t(`week.state.${state}` as never);
-  const kindLabel =
-    entry.kind === 'buffer'
-      ? t('week.buffer')
-      : entry.kind === 'assessment'
-        ? t('week.assessment')
-        : null;
-  const href = entry.planId
-    ? `/lessons/${entry.planId}`
-    : `/lessons/new?classId=${entry.classId}&assignmentId=${entry.assignmentId}&date=${entry.date}&slotId=${entry.slotId}`;
-  const past = entry.date <= tl.today;
-  const planTitle = entry.planId
-    ? tl.ws.plans.find((p) => p.id === entry.planId)?.title?.trim()
-    : '';
-  const beforeTala =
-    (entry.kind as string) === 'before_tala' || (entry.mark as string | null) === 'before_tala';
-  if (beforeTala) {
-    // Covered before the teacher started using Tala: no plan needed, never behind (PACE-5). A quiet completed row.
-    return (
-      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 px-4 py-3 bg-white border-b border-hairline last:border-b-0 text-forestMuted">
-        <span>
-          {slot?.startTime ? `${slot.startTime} · ` : ''}
-          {entry.subjectName}
-        </span>
-        <Badge tone="sage">✓ {t('week.state.beforeTala')}</Badge>
-      </div>
-    );
-  }
-  return (
-    <div className="flex flex-col gap-2 p-4 bg-white border-b border-hairline last:border-b-0">
-      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-        <span className="font-medium min-w-0 break-words [overflow-wrap:anywhere] line-clamp-3">
-          {slot?.startTime ? `${slot.startTime} · ` : ''}
-          {entry.subjectName}
-          {tl.ws.classes.length > 1 && cls ? ` · ${cls.name}` : ''}
-        </span>
-        <span className="flex flex-wrap items-center gap-2">
-          {multi && <Badge>{t('week.multigrade')}</Badge>}
-          {kindLabel ? <Badge>{kindLabel}</Badge> : <Badge tone={tone}>{stateLabel}</Badge>}
-        </span>
-      </div>
-      {planTitle ? (
-        <p className="line-clamp-3 break-words [overflow-wrap:anywhere]">{planTitle}</p>
-      ) : null}
-      {hasCurriculum
-        ? topics.map((tp, i) => (
-            <p key={i} className="text-small text-forestMuted break-words">
-              {multi && tp.grade ? (
-                <strong className="text-forest">{t('common.grade', { g: tp.grade })}: </strong>
-              ) : null}
-              {tp.heading ? <span className="text-forest font-medium">{tp.heading}</span> : null}
-              {tp.heading ? <br /> : null}
-              {tp.text || (entry.kind === 'lesson' ? t('editor.noCompetency') : '')}
-            </p>
-          ))
-        : multi && (
-            <p className="text-small text-forestMuted">
-              {topics
-                .map((tp) => (tp.grade ? t('common.grade', { g: tp.grade }) : ''))
-                .filter(Boolean)
-                .join(' + ')}
-            </p>
-          )}
-      <div className="flex flex-wrap gap-2">
-        {entry.kind === 'lesson' && (
-          <Link
-            href={href}
-            className={`inline-flex items-center justify-center min-h-touch px-4 rounded border font-medium ${entry.planId ? 'bg-white border-forest' : 'bg-talaTeal text-white border-talaTeal'}`}
-          >
-            {entry.planId ? t('week.open') : t('week.create')}
-          </Link>
-        )}
-        {past && groups.length > 0 && (
-          <Button variant="quiet" onClick={onMark}>
-            {t('week.mark')}
-          </Button>
-        )}
-      </div>
     </div>
   );
 }
@@ -403,7 +324,7 @@ function MonthList({ entries }: { entries: TimelineEntry[] }) {
     }
     return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0]));
   }, [entries]);
-  if (!weeks.length) return <EmptyState>{t('week.monthEmpty')}</EmptyState>;
+  if (!weeks.length) return <p className="text-forestMuted">{t('week.monthEmpty')}</p>;
   return (
     <List>
       {weeks.map(([w, es]) => {
