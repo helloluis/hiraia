@@ -72,18 +72,24 @@ export function GenerateScreen() {
       .catch(() => {});
   }, [online]);
 
+  // A lesson copied from a Hiraia teaching pack is adapted to the class, not drafted from scratch.
+  const fromPack = Boolean(ed.plan?.lineage?.artifactId?.startsWith('pack.'));
   const input = useMemo(
     () =>
       ed.plan && ed.template
-        ? buildGenerationInput({
-            plan: ed.plan,
-            cls: ed.cls,
-            template: ed.template,
-            language,
-            guidance,
-          })
+        ? {
+            ...buildGenerationInput({
+              plan: ed.plan,
+              cls: ed.cls,
+              template: ed.template,
+              language,
+              guidance,
+              kind: fromPack ? 'adapt' : 'full',
+            }),
+            ...(fromPack ? { targetLanguage: language } : {}),
+          }
         : null,
-    [ed.plan, ed.cls, ed.template, language, guidance]
+    [ed.plan, ed.cls, ed.template, language, guidance, fromPack]
   );
   const needsMultigrade =
     !!ed.template && !!ed.plan && ed.groups.length > 1 && ed.template.kind !== 'multigrade';
@@ -202,11 +208,11 @@ export function GenerateScreen() {
   return (
     <div className="flex flex-col gap-4 max-w-[40rem]">
       <PageHeader
-        title={t('gen.title')}
+        title={fromPack ? t('gen.adaptTitle') : t('gen.title')}
         subtitle={[ed.plan.subjectName, ed.cls?.name].filter(Boolean).join(' · ')}
         back={{ href: `/lessons/${ed.plan.id}`, label: t('common.back') }}
       />
-      <p>{t('gen.intro')}</p>
+      <p>{fromPack ? t('gen.adaptNotice') : t('gen.intro')}</p>
       <Banner kind="info">{t('gen.notice')}</Banner>
 
       <List>

@@ -10,6 +10,7 @@
 import { z } from 'zod';
 import { Id, IsoDateTime, Lang, Ok, Page, QueryBool } from './common';
 import { CalendarPreset, CheckSummary, CurriculumIndex, CurriculumPack } from './curriculum';
+import { PackDetail, PackIndex, PackLang } from './packs';
 import {
   ArtifactDetail,
   ArtifactSearchQuery,
@@ -45,7 +46,7 @@ export const MAIL_LINK_PATHS = {
   linkGoogle: '/link-google',
 } as const;
 
-export type Owner = 'core' | 'curriculum' | 'generation' | 'roster' | 'community' | 'print';
+export type Owner = 'core' | 'curriculum' | 'generation' | 'roster' | 'community' | 'print' | 'packs';
 
 export interface RouteSpec {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -529,6 +530,41 @@ export const API = {
     owner: 'community',
     body: ReportRequest,
     response: Ok,
+  }),
+
+  /* teaching packs — Hiraia's prebuilt weekly packs (read-only reference content; docs/tala/teaching-packs) */
+  'packs.index': route({
+    method: 'GET',
+    path: '/packs/index',
+    auth: 'none',
+    owner: 'packs',
+    response: PackIndex,
+  }),
+  'packs.detail': route({
+    method: 'GET',
+    path: '/packs/:packId',
+    auth: 'none',
+    owner: 'packs',
+    query: z.object({ lang: PackLang.default('en') }),
+    response: PackDetail,
+  }),
+  'packs.file': route({
+    method: 'GET',
+    path: '/packs/:packId/files/:kind',
+    auth: 'none',
+    owner: 'packs',
+    query: z.object({ lang: PackLang.default('en') }),
+    response: z.unknown(),
+    binary: true,
+  }),
+  'packs.preview': route({
+    method: 'GET',
+    path: '/packs/:packId/previews/:slide',
+    auth: 'none',
+    owner: 'packs',
+    query: z.object({ lang: PackLang.default('en') }),
+    response: z.unknown(),
+    binary: true,
   }),
 
   /* print — workstream H (server PDF fallback, PDF-4a) */

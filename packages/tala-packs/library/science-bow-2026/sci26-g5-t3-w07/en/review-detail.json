@@ -1,0 +1,917 @@
+{
+ "packId": "sci26-g5-t3-w07",
+ "language": "en",
+ "note": "Model critique and revision log. A model critique is not a human review.",
+ "critique": [
+  {
+   "verdict": "revise",
+   "issues": [
+    {
+     "id": "c1",
+     "severity": "blocker",
+     "category": "safety",
+     "path": "guide.background[4].paragraphs[0]",
+     "problem": "The guide tells teachers that as the signal number rises, 'more urgent actions are needed, such as reinforcing roofs'. Roof work at Signal No. 3–5 means climbing onto a roof while destructive winds are hours away — this is a real injury risk and is exactly what PAGASA/DRRM advice warns against. Day 2 also accepts 'fix the roof' as a family preparation with the instruction 'Do not judge answers; all reasonable preparations are welcome' (days[1].flow[0].teacher, slides[13].notes), so the unsafe idea is never corrected.",
+     "fix": "Rewrite as: 'Securing or repairing roofs, trimming branches and storing loose objects must be done by adults BEFORE the storm, while the weather is still calm (Signal No. 1 or earlier). Once stronger signals are raised, the safe actions are to stay indoors away from windows, keep the emergency kit ready, and evacuate if authorities advise — never climb on a roof.' Add a line to days[1].flow[0].teacher and slides[13].notes: 'If a learner says they climb up to fix the roof, say gently: that is an adult job for calm weather, never for children and never when the storm is near.'"
+    },
+    {
+     "id": "c2",
+     "severity": "major",
+     "category": "safety",
+     "path": "days[0].extension",
+     "problem": "The extension task models 'trim loose roofs or store materials to repair after' as a learner's before-the-storm action. 'Trim loose roofs' is not a real practice, and it puts Grade 5 learners on a roof; the second half (storing repair materials) does not reduce the effect at all, so the task also fails its own purpose.",
+     "fix": "Replace with genuinely child-safe, effect-reducing actions, e.g. 'for roofs torn off: ask an adult to check and tie down loose sheets while the sky is still calm; bring potted plants, toys and loose objects inside'; add the explicit rule 'learners never climb roofs, cut branches, or handle wires — these are adult jobs.'"
+    },
+    {
+     "id": "c3",
+     "severity": "major",
+     "category": "misconception_risk",
+     "path": "days[2].flow[1].teacher",
+     "problem": "The teacher is told to write 'BEFORE → DURING (eye) → eyewall' on the board. This teaches a wrong storm structure: the eyewall passes over a locality FIRST, then the eye, then the opposite eyewall. As written, learners will believe the strongest winds only begin after the calm. The same wrong order appears in days[2].support ('three cards (before, eye, eyewall)').",
+     "fix": "Write 'BEFORE → DURING: strong wind and rain (eyewall) → brief calm (eye) → strong wind and rain again (other side of the eyewall)'. Change the support cards to 'before → strong winds/rain → calm → strong winds again' and say explicitly: 'the eyewall comes before the eye and again after it.'"
+    },
+    {
+     "id": "c4",
+     "severity": "major",
+     "category": "consistency",
+     "path": "slides[28].lines",
+     "problem": "The activity slide instructs groups to 'Arrange them: before, during, and the calm part', i.e. it tells learners to put the calm LAST — while slides[28].notes says 'Watch for groups that put calm at the end—that is the misconception to correct.' The materials list six strip cards including 'strong winds return', but the slide never mentions that card, so the printed instruction contradicts both the notes and the card set.",
+     "fix": "Change step 2 to: 'Arrange all 6 cards: what happens before, the strong wind and rain, the short calm if the eye passes, and the strong winds that return.' Add to the notes: 'A sequence is only correct if strong winds and heavy rain appear both before and after the calm card.'"
+    },
+    {
+     "id": "c5",
+     "severity": "major",
+     "category": "alignment",
+     "path": "days[1].objective",
+     "problem": "Competency t3.13 asks learners to DESCRIBE THE WEATHER CONDITIONS according to a PAGASA signal. Day 2's objective, activity, check and exit ticket are all matching/recalling signal numbers, damage levels and lead times — an identify/match level task about damage, not a description of weather (wind strength and feel, sky, rain, sea state). Learners never once produce a description of the weather for a given signal, and the pack's repeated 'signals are about wind, not rain' leaves them with no rainfall/cloud picture at all.",
+     "fix": "Add a describe step: for each signal, learners say/write 2–3 sentences of weather ('Signal No. 2: the wind blows very strongly, branches and small trees bend or break, rain is heavy, walking outside is hard; Signal No. 4: violent winds, roofs blown off, rain almost horizontal'). Change the objective to 'describe the weather conditions expected under each PAGASA wind signal (1–5)' and make the exit ticket a description, keeping damage as supporting detail. Note that PAGASA also issues separate rainfall warnings, so heavy rain usually accompanies a cyclone even though the signal number itself measures wind."
+    },
+    {
+     "id": "c6",
+     "severity": "major",
+     "category": "consistency",
+     "path": "assessment[2].explanation",
+     "problem": "The weekly assessment requires numbers that are never taught to learners. q3's key/explanation depends on '121–170 km/h' and '18 hours'; q7's criteria require '61–120 km/h … within 24 hours'. The Day 2 slides (slides[15], slides[16]) and flow only give 'No.1 weakest / No.5 strongest' and the 36-hour vs 12-hour examples; the wind-speed ranges exist only in guide.background[1] and on a chart the teacher may or may not have drawn. Learners are assessed on untaught content.",
+     "fix": "Either (a) put the full 5-row table (signal, wind speed range, lead time, weather/damage) on a Day 2 slide and have learners read and use it in the matching activity, or (b) remove the km/h ranges and exact hours from q3/q7 keys and accept qualitative answers ('strong dangerous winds within about a day'). Keep guide, chart, slides and key identical."
+    },
+    {
+     "id": "c7",
+     "severity": "major",
+     "category": "alignment",
+     "path": "days[3].objective",
+     "problem": "Competency t3.14 asks for typical WEATHER CONDITIONS after a cyclone. Day 4 teaches almost entirely hazards and safety rules (wires, debris, manholes, posters), with weather reduced to one line 'Rain and wind become weaker'. assessment[5] (q6) then asks for 'one weather condition … after a typhoon' but its model answer is standing floodwater — a hydrological hazard, not a weather condition. The 'after' weather is therefore neither taught nor assessed at the verb 'describe'.",
+     "fix": "Add explicit after-weather content and a slide: skies gradually clear or leave scattered clouds, winds become light and gusty, only occasional light rain showers, it may feel hot and humid again; flooding and mud remain on the ground even under a calmer sky. Rewrite q6 as: 'Describe the weather after a typhoon has passed (sky, wind, rain) and name one danger that can remain even when the weather looks calm', with a key covering both parts."
+    },
+    {
+     "id": "c8",
+     "severity": "major",
+     "category": "alignment",
+     "path": "days[0].flow[3].teacher",
+     "problem": "Competency t3.12 covers 'weather disturbances that occur in or near the Philippines' (plural). The whole week — Day 1 activity, class web, exit ticket and assessment q1/q2 — deals only with typhoons. Low pressure areas are defined in the vocabulary but their effects are never taught, and the habagat (southwest monsoon) enhanced by a distant cyclone, thunderstorms and shear-line rains, which cause much of the flooding Filipino children actually experience, are absent.",
+     "fix": "Add at least one non-typhoon disturbance to Day 1: an LPA or habagat brings days of steady heavy rain and flooding even with little wind, and thunderstorms bring short bursts of heavy rain, lightning and gusts. Include a picture/scenario of monsoon flooding in the group web and add one assessment item contrasting 'floods without strong wind (habagat/LPA)' with typhoon damage."
+    },
+    {
+     "id": "c9",
+     "severity": "major",
+     "category": "slide_design",
+     "path": "slides[25].image",
+     "problem": "The 'Before the typhoon' slide (text: clouds thicken, light rain starts, wind slowly gets stronger) is illustrated with slug ffct-36957, alt 'Strong wind bending a tree and lifting the edge of a roof' — the same drawing used on slides[4] for destructive typhoon winds. The picture contradicts the text and plants the idea that roofs are already lifting off before the storm arrives.",
+     "fix": "Use an image of thickening grey cloud banks over a calm town with light rain and slightly bent leaves (or no image). Reserve ffct-36957 for the 'During the typhoon' slide."
+    },
+    {
+     "id": "c10",
+     "severity": "major",
+     "category": "misconception_risk",
+     "path": "slides[25].lines",
+     "problem": "The before/during sequence is taught as a fixed rule: 'Light rain starts and the wind slowly gets stronger', and the teacher is scripted to answer 'light rain comes first' and to correct learners who say strong winds come first (days[2].flow[2].teacher, slides[25].notes). This is not reliable: outer rainbands often deliver strong squally gusts before any steady rain, and many localities stay hot, clear and calm until the storm is close. Teaching a rigid order sets up a dangerous 'the wind is not strong yet, so it is safe' inference.",
+     "fix": "Word it as a typical, variable pattern: 'Usually the clouds thicken and the wind and rain build up, but the order is not always the same — sometimes strong gusts and heavy squalls arrive first, and sometimes the sky still looks calm and sunny while the storm is already near. That is why we follow PAGASA signals, not just what we see out of the window.'"
+    },
+    {
+     "id": "c11",
+     "severity": "major",
+     "category": "misconception_risk",
+     "path": "days[2].longerPeriod",
+     "problem": "The stirred-cup demonstration is presented as an explanation of the eye ('the calm center of the swirling water is like the eye of a typhoon, with the strongest motion around it'). The mechanisms are unrelated: a stirred cup's dip is a centrifugal vortex in a liquid, while the eye is calm because air is sinking and warming aloft. In a stirred cup the fastest tangential flow is at the outer wall, not in a ring next to the centre, so even the shape analogy misdescribes where the strongest winds are.",
+     "fix": "Either drop the demonstration, or keep it strictly as a shape comparison with an explicit caveat script: 'The water shows only that a spinning storm can have a hole in the middle. It does NOT show why: in a real typhoon the eye is calm because air sinks there, and the strongest winds are in the eyewall ring right next to the eye, not at the outer edge.'"
+    },
+    {
+     "id": "c12",
+     "severity": "major",
+     "category": "alignment",
+     "path": "assessment[6]",
+     "problem": "q7 is a performance task (write a broadcast script or draw a poster) placed inside the 13-minute silent written assessment on Day 5 (days[4].flow[4]), alongside 5 multiple-choice items and a short answer. It cannot be done in the time, no rubric or point allocation is given anywhere, and it duplicates the task the pack explicitly defers to next week (days[4].flow[6].teacher, slides[51]).",
+     "fix": "Move q7 out of the timed paper into a separate performance task with its own session or homework slot and a simple 3-point rubric (signal meaning correct / weather described / one correct safety reminder), or convert it to a short-answer item ('Write two sentences describing the weather and one safety reminder for Signal No. 2'). Adjust the Day 5 timing and the 'next week' preview accordingly."
+    },
+    {
+     "id": "c13",
+     "severity": "major",
+     "category": "slide_design",
+     "path": "slides[22].choices",
+     "problem": "An open prior-knowledge question ('What does the sky look like before a typhoon?') is displayed with four lettered options — Sunny / Cloudy and windy / Raining hard / Clear and calm — with no correctChoice and no reveal slide, while the notes say to accept all answers. On a TV this reads as a multiple-choice test with no answer, and two options ('Sunny' and 'Clear and calm') are the same idea, so learners cannot tell what is expected.",
+     "fix": "Remove the choices array and show it as a plain question with the prompt 'Think for 30 seconds, then share with a seatmate.' Keep the range of possible answers in the speaker notes only."
+    },
+    {
+     "id": "c14",
+     "severity": "minor",
+     "category": "scientific_accuracy",
+     "path": "guide.background[0].paragraphs[1]",
+     "problem": "'Not every LPA becomes a typhoon, but many develop into one if they stay over warm water' overstates development: most LPAs monitored by PAGASA dissipate or never reach tropical-cyclone strength, and warm water alone is not sufficient (a pre-existing disturbance, weak wind shear and distance from the equator are also needed).",
+     "fix": "Change to: 'Only a small number of LPAs grow into tropical cyclones, and fewer still become typhoons. Warm ocean water helps, but the system also needs the right wind conditions to organise; many LPAs simply bring rain and then fade away.'"
+    },
+    {
+     "id": "c15",
+     "severity": "minor",
+     "category": "scientific_accuracy",
+     "path": "slides[5].notes",
+     "problem": "The tsunami contrast is stated as an absolute: 'a tsunami follows an undersea earthquake'. Tsunamis can also be generated by submarine landslides and volcanic eruptions; the absolute wording creates a new misconception while correcting another.",
+     "fix": "Say: 'A tsunami is a huge sea wave usually caused by an undersea earthquake (sometimes an undersea landslide or volcano). A storm surge is sea water pushed inland by the typhoon's winds — no earthquake needed.' Mirror the change in days[0].flow[2].teacher."
+    },
+    {
+     "id": "c16",
+     "severity": "minor",
+     "category": "scientific_accuracy",
+     "path": "slides[24].notes",
+     "problem": "'Point out that the eye is small compared to the eyewall' is not accurate as stated: a typical eye is about 30–65 km across, while the eyewall is a comparatively narrow ring of cloud immediately around it. The claim also conflicts with the cross-section image on slides[27].",
+     "fix": "Replace with: 'The eye is a small clear circle in the middle of a much larger storm; the eyewall is the narrow ring of towering clouds hugging the eye, and that ring is where the winds are strongest.'"
+    },
+    {
+     "id": "c17",
+     "severity": "minor",
+     "category": "misconception_risk",
+     "path": "slides[16].lines",
+     "problem": "'Higher signal usually means less lead time to prepare' plus days[1].check.why ('the lead time is short enough that families must prepare immediately' for Signal No. 2, which carries 24 hours) teaches that a higher number means less total preparation time. In practice signals are raised progressively, so families have already been preparing since Signal No. 1; the listed lead time is the warning window for that wind level, not a countdown that shrinks the family's preparation.",
+     "fix": "Reword the slide line to: 'Each signal tells how soon those winds are expected: No. 1 about 36 hours, No. 2 about 24, No. 3 about 18, No. 4 and No. 5 about 12.' Change the check 'why' to: 'Signal No. 2 warns of strong winds within about 24 hours, so families should finish their preparations today, while it is still calm.'"
+    },
+    {
+     "id": "c18",
+     "severity": "minor",
+     "category": "consistency",
+     "path": "days[0].flow[1].teacher",
+     "problem": "The plan says 'Copy the two terms and their meanings in their notebooks', but the referenced vocabulary slide slides[3] carries three terms (tropical cyclone, typhoon, low pressure area) and its notes say 'Have learners copy the three words'.",
+     "fix": "Change the plan to 'Copy the three terms and their meanings' (or drop 'low pressure area' from the slide if only two are wanted) so plan, slide and notes match."
+    },
+    {
+     "id": "c19",
+     "severity": "minor",
+     "category": "consistency",
+     "path": "days[4].flow[4].phase",
+     "problem": "Day 5's phase labels are scrambled: the 13-minute individual weekly assessment is tagged 'developing_understanding', the exit ticket is tagged 'generalization', and the 5-minute closing preview is tagged 'evaluating_learning'. Day 5 also carries no genuine evaluating_learning step for the assessment itself, which will mislead any teacher or tool reading the phase structure.",
+     "fix": "Tag flow[4] (assessment) and flow[5] (exit ticket) as 'evaluating_learning', flow[3] (summary) as 'generalization', and flow[6] (closing/preview) as 'generalization' or a closing phase."
+    },
+    {
+     "id": "c20",
+     "severity": "minor",
+     "category": "age_appropriateness",
+     "path": "assessment[1].choices",
+     "problem": "The distractor 'The carrying capacity of the area will increase' uses a term that appears nowhere in the week's vocabulary, slides or lessons, so Grade 5 learners are tested on unexplained jargon. The explanation also asserts 'Soil may improve later, but not immediately after a typhoon', an unsupported claim that typhoon damage improves soil.",
+     "fix": "Replace the distractor with plain language, e.g. 'The animals and plants in the area will have more food and shelter'. Rewrite the explanation line as: 'Flooding and wind damage usually ruin crops and wash away soil; the area can support fewer living things afterwards, not more.'"
+    }
+   ],
+   "previous": []
+  },
+  {
+   "verdict": "revise",
+   "issues": [
+    {
+     "id": "c4",
+     "severity": "major",
+     "category": "consistency",
+     "path": "slides[28].lines",
+     "problem": "Step 2 still reads 'Arrange them: before, during, and the calm part', telling learners to end on the calm, while the notes now demand strong winds both before and after the calm card and the materials include a 'strong winds return' card the slide never mentions.",
+     "fix": "Replace the array element at index 1 with: 'Arrange all 6 cards: before, strong wind and rain, the short calm if the eye passes, then strong winds again.' Keep the other elements unchanged."
+    },
+    {
+     "id": "c5",
+     "severity": "major",
+     "category": "alignment",
+     "path": "slides[14].lines",
+     "problem": "Day 2's objective is now 'describe the weather conditions expected under each PAGASA wind signal', but the purpose slide learners read still says only 'Match each PAGASA wind signal … with the wind strength and damage it brings', and days[1].flow[1].teacher repeats the matching goal. The describe step exists only in teacher text (days[1].flow[3].teacher), so learners are never told on screen that they must describe weather.",
+     "fix": "Set slides[14].lines to ['Describe the weather each PAGASA signal warns about.', 'Match signals 1 to 5 with wind strength and damage.', 'Higher number means stronger wind and greater danger.'] and change days[1].flow[1].teacher's goal sentence to: 'Today our goal is to describe the weather we expect under each PAGASA wind signal, from No. 1 to No. 5, and match each signal with the damage it can cause.'"
+    },
+    {
+     "id": "c5",
+     "severity": "major",
+     "category": "alignment",
+     "path": "slides[17].lines",
+     "problem": "The activity slide lists only matching and explaining matches; the required 2–3 sentence weather description per signal (added in days[1].flow[3].teacher) has no step on the slide, so groups working from the TV will never produce the description that t3.13 assesses.",
+     "fix": "Append one element to the lines array: '6. For each signal, write 2 sentences describing the wind and rain you expect.' and adjust step 5 to 'Record your matches and your weather sentences on a sheet of paper.'"
+    },
+    {
+     "id": "c7",
+     "severity": "major",
+     "category": "alignment",
+     "path": "slides[34].lines",
+     "problem": "The only 'Weather after a tropical cyclone' slide still shows just 'Rain and wind become weaker / Floodwater and damage may remain / Structures may still be weak'. The sky, wind and rain description added to days[3].flow[2].teacher and to assessment[5] appears on no slide, and days[3].flow[2].teacher says 'Show the after-weather slide' — a slide that does not exist, so q6 tests content learners never see.",
+     "fix": "Set slides[34].lines to ['Sky clears slowly or stays partly cloudy.', 'Wind becomes light and gusty; only light showers.', 'It may feel hot and humid again.', 'Floodwater and mud stay even under a calmer sky.'] and keep the hazard detail in the notes."
+    },
+    {
+     "id": "c8",
+     "severity": "major",
+     "category": "alignment",
+     "path": "assessment[0]",
+     "problem": "The item was listed as patched for c8 but is unchanged: prompt, choices, answer and explanation are the original typhoon-only question. Nothing in the weekly assessment checks the newly taught non-typhoon disturbances (LPA/habagat flooding with little wind, thunderstorms), so t3.12's plural 'weather disturbances' is still assessed only through typhoons.",
+     "fix": "Either rewrite q1 as: prompt 'Which weather disturbance can flood streets and farms for days even when the wind is NOT strong?', choices ['A low pressure area or habagat (monsoon) rain', 'A fair-weather sunny day', 'An earthquake', 'A volcanic eruption'], correctChoice 0, answer 'A low pressure area or habagat (monsoon) rain', explanation 'LPAs and monsoon rains can pour for days and flood low places with little wind; a typhoon brings both strong wind and heavy rain.' — or add an eighth item with that content and keep q1 as it is."
+    },
+    {
+     "id": "c10",
+     "severity": "major",
+     "category": "misconception_risk",
+     "path": "slides[25].lines",
+     "problem": "The learner-facing line is still the absolute 'Light rain starts and the wind slowly gets stronger', and slides[25].notes opens by asking 'Which comes first, light rain or strong gusty winds?' with the flat answer '[light rain]' before the hedge. On screen the order still reads as a rule, supporting the unsafe inference 'the wind is not strong yet, so it is safe'.",
+     "fix": "Set slides[25].lines to ['Usually the clouds get thicker and darker.', 'Wind and rain build up — but the order can change.', 'Sometimes it still looks calm while the storm is near. Follow PAGASA signals.'] and change the notes answer to '[Usually light rain first, but not always — squally gusts can come first.]'"
+    },
+    {
+     "id": "c13",
+     "severity": "minor",
+     "category": "slide_design",
+     "path": "slides[22].lines",
+     "problem": "The open prior-knowledge question still displays four option-like lines ('Sunny', 'Cloudy and windy', 'Raining hard', 'Clear and calm') with no correctChoice and no reveal, while the notes now insist 'This slide is a plain question, not a multiple-choice test'; two lines are the same idea.",
+     "fix": "Set slides[22].lines to ['Think for 30 seconds, then share with a seatmate.'] and keep the range of possible answers in the notes only."
+    },
+    {
+     "id": "c17",
+     "severity": "minor",
+     "category": "misconception_risk",
+     "path": "slides[16].lines",
+     "problem": "'Higher signal usually means less lead time to prepare' is still on the slide, teaching that a higher number shrinks the family's total preparation time even though signals are raised progressively; the corrected check 'why' now contradicts the slide.",
+     "fix": "Replace that element with: 'Each signal tells how soon those winds are expected: No. 1 about 36 h, No. 2 about 24 h, No. 3 about 18 h, No. 4 and No. 5 about 12 h.'"
+    },
+    {
+     "id": "c18",
+     "severity": "minor",
+     "category": "consistency",
+     "path": "days[0].flow[1].learners",
+     "problem": "Still 'Copy the two terms and their meanings in their notebooks' while slides[3] shows three terms and its notes say 'Have learners copy the three words'.",
+     "fix": "Change to 'Read the vocabulary aloud with the teacher. Copy the three terms and their meanings in their notebooks.'"
+    },
+    {
+     "id": "c19",
+     "severity": "minor",
+     "category": "consistency",
+     "path": "days[4].flow[4].phase",
+     "problem": "Phase labels are still scrambled: the 13-minute individual assessment is 'developing_understanding', the exit ticket (flow[5]) is 'generalization', and the 5-minute closing preview (flow[6]) is 'evaluating_learning'.",
+     "fix": "If the schema forbids two evaluating_learning steps, tag flow[4] 'evaluating_learning', flow[5] 'evaluating_learning' or 'generalization', flow[3] 'generalization' and flow[6] 'generalization'; at minimum move 'evaluating_learning' from flow[6] to flow[4] so the assessment is the evaluated step."
+    }
+   ],
+   "previous": [
+    {
+     "id": "c1",
+     "status": "fixed",
+     "note": "Guide, Day 2 flow and slide notes now carry the calm-weather adult-only rule and the child correction script."
+    },
+    {
+     "id": "c2",
+     "status": "fixed",
+     "note": "Extension now models adult tie-down in calm weather plus bringing loose objects inside, with the explicit no-roofs/no-wires rule."
+    },
+    {
+     "id": "c3",
+     "status": "fixed",
+     "note": "Board sequence is eyewall → eye → eyewall again and the support cards say so explicitly (card count wording left as minor)."
+    },
+    {
+     "id": "c4",
+     "status": "open",
+     "note": "Notes were fixed but the rejected slides[28].lines patch still tells groups to put the calm part last."
+    },
+    {
+     "id": "c5",
+     "status": "open",
+     "note": "Objective, teacher describe step, check and exit ticket are descriptions now, but the learner-facing purpose slide and activity slide still only match damage."
+    },
+    {
+     "id": "c6",
+     "status": "fixed",
+     "note": "q3/q7 keys no longer require km/h ranges; 'about 18 hours' is taught in vocabulary and the chart, and q7 asks only qualitative description."
+    },
+    {
+     "id": "c7",
+     "status": "open",
+     "note": "After-weather is in teacher text and q6, but the rejected slides[34].lines patch leaves learners with no after-weather content on screen."
+    },
+    {
+     "id": "c8",
+     "status": "open",
+     "note": "LPA/monsoon/thunderstorm effects are now taught on Day 1, but the rewritten assessment item never contrasts them with typhoon damage."
+    },
+    {
+     "id": "c9",
+     "status": "fixed",
+     "note": "The roof-lifting drawing was removed from the 'Before the typhoon' slide (image now null) and stays on the destructive-wind slide."
+    },
+    {
+     "id": "c10",
+     "status": "open",
+     "note": "Notes and Day 3 teacher now hedge, but the rejected slides[25].lines patch still states the build-up as a fixed order."
+    },
+    {
+     "id": "c11",
+     "status": "fixed",
+     "note": "Cup demonstration keeps the shape comparison with the full caveat about sinking air and the eyewall ring."
+    },
+    {
+     "id": "c12",
+     "status": "fixed",
+     "note": "q7 is now a two-sentence short answer that fits the timed paper, and the broadcast task stays deferred to next week."
+    },
+    {
+     "id": "c13",
+     "status": "open",
+     "note": "Notes call it a plain question, but the four options are still printed in slides[22].lines with no key or reveal."
+    },
+    {
+     "id": "c14",
+     "status": "fixed",
+     "note": "Background now says only a small number of LPAs become cyclones and that wind conditions matter too."
+    },
+    {
+     "id": "c15",
+     "status": "fixed",
+     "note": "Tsunami wording is hedged identically in slides[5].notes and days[0].flow[2].teacher."
+    },
+    {
+     "id": "c16",
+     "status": "fixed",
+     "note": "Eye/eyewall size statement replaced with the accurate small-circle/narrow-ring description."
+    },
+    {
+     "id": "c17",
+     "status": "open",
+     "note": "Check 'why' was corrected, but the rejected slides[16].lines patch keeps 'higher signal usually means less lead time to prepare'."
+    },
+    {
+     "id": "c18",
+     "status": "open",
+     "note": "Slide notes say three words while the plan still says copy the two terms."
+    },
+    {
+     "id": "c19",
+     "status": "open",
+     "note": "All four phase patches were rejected, so Day 5's assessment is still tagged developing_understanding and the preview evaluating_learning."
+    },
+    {
+     "id": "c20",
+     "status": "fixed",
+     "note": "Jargon distractor replaced with plain language and the soil-improvement claim removed from the explanation."
+    }
+   ]
+  },
+  {
+   "verdict": "revise",
+   "issues": [
+    {
+     "id": "c5",
+     "severity": "major",
+     "category": "alignment",
+     "path": "slides[14].lines",
+     "problem": "Still open: slides[14] and days[1].flow[1].teacher are fixed, but slides[17].lines still lacks the describe step — patch was rejected due to array length limit. (Originally: Day 2's objective is now 'describe the weather conditions expected under each PAGASA wind signal', but the purpose slide learners read still says only 'Match each PAGASA wind signal … with the wind strength and damage it brings', and days[1].flow[1].teacher repeats the matching goal. The describe step exists only in teacher text (days[1].flow[3].teacher), so learners are never told on screen that they must describe weather.)",
+     "fix": "Set slides[14].lines to ['Describe the weather each PAGASA signal warns about.', 'Match signals 1 to 5 with wind strength and damage.', 'Higher number means stronger wind and greater danger.'] and change days[1].flow[1].teacher's goal sentence to: 'Today our goal is to describe the weather we expect under each PAGASA wind signal, from No. 1 to No. 5, and match each signal with the damage it can cause.'"
+    },
+    {
+     "id": "c5",
+     "severity": "major",
+     "category": "alignment",
+     "path": "slides[17].lines",
+     "problem": "Still open: slides[14] and days[1].flow[1].teacher are fixed, but slides[17].lines still lacks the describe step — patch was rejected due to array length limit. (Originally: The activity slide lists only matching and explaining matches; the required 2–3 sentence weather description per signal (added in days[1].flow[3].teacher) has no step on the slide, so groups working from the TV will never produce the description that t3.13 assesses.)",
+     "fix": "Append one element to the lines array: '6. For each signal, write 2 sentences describing the wind and rain you expect.' and adjust step 5 to 'Record your matches and your weather sentences on a sheet of paper.'"
+    }
+   ],
+   "previous": [
+    {
+     "id": "c4",
+     "status": "fixed",
+     "note": "slides[28].lines now instructs learners to arrange all 6 cards including strong winds before and after the calm."
+    },
+    {
+     "id": "c5",
+     "status": "open",
+     "note": "slides[14] and days[1].flow[1].teacher are fixed, but slides[17].lines still lacks the describe step — patch was rejected due to array length limit."
+    },
+    {
+     "id": "c7",
+     "status": "fixed",
+     "note": "slides[34].lines now shows sky, wind, rain, and leftover hazards matching days[3].flow[2].teacher and assessment[5]."
+    },
+    {
+     "id": "c8",
+     "status": "fixed",
+     "note": "assessment[0] now asks about LPA/habagat flooding with little wind, covering t3.12's plural disturbances."
+    },
+    {
+     "id": "c10",
+     "status": "fixed",
+     "note": "slides[25].lines and notes now hedge the order and warn that calm-looking skies can precede a storm."
+    },
+    {
+     "id": "c13",
+     "status": "fixed",
+     "note": "slides[22].lines is now a single plain prompt; option-like lines removed."
+    },
+    {
+     "id": "c17",
+     "status": "open",
+     "note": "slides[16].lines still contains 'Higher signal usually means less lead time to prepare' — patch was rejected."
+    },
+    {
+     "id": "c18",
+     "status": "fixed",
+     "note": "days[0].flow[1].learners now says 'three terms', matching slides[3]."
+    },
+    {
+     "id": "c19",
+     "status": "open",
+     "note": "Phase labels in days[4].flow remain scrambled — patches were rejected."
+    }
+   ]
+  }
+ ],
+ "revisions": [
+  {
+   "applied": [
+    {
+     "path": "guide.background[4].paragraphs[0]",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[1].flow[0].teacher",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "slides[13].notes",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[0].extension",
+     "issueIds": [
+      "c2"
+     ]
+    },
+    {
+     "path": "days[2].flow[1].teacher",
+     "issueIds": [
+      "c3"
+     ]
+    },
+    {
+     "path": "days[2].support",
+     "issueIds": [
+      "c3"
+     ]
+    },
+    {
+     "path": "slides[28].notes",
+     "issueIds": [
+      "c4"
+     ]
+    },
+    {
+     "path": "days[1].objective",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "days[1].flow[3].teacher",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "days[1].flow[6].teacher",
+     "issueIds": [
+      "c5"
+     ],
+     "from": "days[1].flow[5].teacher"
+    },
+    {
+     "path": "days[1].check",
+     "issueIds": [
+      "c5",
+      "c17"
+     ]
+    },
+    {
+     "path": "slides[15].notes",
+     "issueIds": [
+      "c6"
+     ]
+    },
+    {
+     "path": "assessment[2].explanation",
+     "issueIds": [
+      "c6"
+     ]
+    },
+    {
+     "path": "assessment[6].answer",
+     "issueIds": [
+      "c6"
+     ]
+    },
+    {
+     "path": "days[3].objective",
+     "issueIds": [
+      "c7"
+     ]
+    },
+    {
+     "path": "days[3].flow[1].teacher",
+     "issueIds": [
+      "c7"
+     ]
+    },
+    {
+     "path": "days[3].flow[2].teacher",
+     "issueIds": [
+      "c7"
+     ]
+    },
+    {
+     "path": "slides[34].notes",
+     "issueIds": [
+      "c7"
+     ]
+    },
+    {
+     "path": "assessment[5].prompt",
+     "issueIds": [
+      "c7"
+     ]
+    },
+    {
+     "path": "assessment[5].answer",
+     "issueIds": [
+      "c7"
+     ]
+    },
+    {
+     "path": "assessment[5].explanation",
+     "issueIds": [
+      "c7"
+     ]
+    },
+    {
+     "path": "days[0].flow[2].teacher",
+     "issueIds": [
+      "c8",
+      "c15"
+     ]
+    },
+    {
+     "path": "days[0].flow[3].teacher",
+     "issueIds": [
+      "c8"
+     ]
+    },
+    {
+     "path": "days[0].flow[4].teacher",
+     "issueIds": [
+      "c8"
+     ]
+    },
+    {
+     "path": "slides[4].notes",
+     "issueIds": [
+      "c8"
+     ]
+    },
+    {
+     "path": "assessment[0].prompt",
+     "issueIds": [
+      "c8"
+     ]
+    },
+    {
+     "path": "assessment[0].choices",
+     "issueIds": [
+      "c8"
+     ]
+    },
+    {
+     "path": "assessment[0].answer",
+     "issueIds": [
+      "c8"
+     ]
+    },
+    {
+     "path": "assessment[0].explanation",
+     "issueIds": [
+      "c8"
+     ]
+    },
+    {
+     "path": "slides[25].image",
+     "issueIds": [
+      "c9"
+     ]
+    },
+    {
+     "path": "slides[25].notes",
+     "issueIds": [
+      "c9",
+      "c10"
+     ]
+    },
+    {
+     "path": "days[2].flow[2].teacher",
+     "issueIds": [
+      "c10"
+     ]
+    },
+    {
+     "path": "days[2].longerPeriod",
+     "issueIds": [
+      "c11"
+     ]
+    },
+    {
+     "path": "assessment[6].kind",
+     "issueIds": [
+      "c12"
+     ]
+    },
+    {
+     "path": "assessment[6].prompt",
+     "issueIds": [
+      "c12"
+     ]
+    },
+    {
+     "path": "assessment[6].answer",
+     "issueIds": [
+      "c12"
+     ]
+    },
+    {
+     "path": "assessment[6].explanation",
+     "issueIds": [
+      "c12"
+     ]
+    },
+    {
+     "path": "days[4].flow[4].teacher",
+     "issueIds": [
+      "c12"
+     ]
+    },
+    {
+     "path": "days[4].flow[6].teacher",
+     "issueIds": [
+      "c12"
+     ]
+    },
+    {
+     "path": "slides[22].notes",
+     "issueIds": [
+      "c13"
+     ]
+    },
+    {
+     "path": "guide.background[0].paragraphs[1]",
+     "issueIds": [
+      "c14"
+     ]
+    },
+    {
+     "path": "slides[5].notes",
+     "issueIds": [
+      "c15"
+     ]
+    },
+    {
+     "path": "slides[24].notes",
+     "issueIds": [
+      "c16"
+     ]
+    },
+    {
+     "path": "days[1].check.why",
+     "issueIds": [
+      "c17"
+     ]
+    },
+    {
+     "path": "days[0].flow[1].teacher",
+     "issueIds": [
+      "c18"
+     ]
+    },
+    {
+     "path": "slides[3].notes",
+     "issueIds": [
+      "c18"
+     ]
+    },
+    {
+     "path": "assessment[1].choices",
+     "issueIds": [
+      "c20"
+     ]
+    },
+    {
+     "path": "assessment[1].explanation",
+     "issueIds": [
+      "c20"
+     ]
+    }
+   ],
+   "rejected": [
+    {
+     "path": "slides[28].lines",
+     "reason": "path slides[28].lines: type string replaces array"
+    },
+    {
+     "path": "slides[15].lines",
+     "reason": "path slides[15].lines: type string replaces array"
+    },
+    {
+     "path": "slides[34].lines",
+     "reason": "path slides[34].lines: type string replaces array"
+    },
+    {
+     "path": "slides[25].lines",
+     "reason": "path slides[25].lines: type string replaces array"
+    },
+    {
+     "path": "slides[51].lines",
+     "reason": "path slides[51].lines: type string replaces array"
+    },
+    {
+     "path": "slides[22].choices",
+     "reason": "the quoted current value does not match this path (wrong index?)"
+    },
+    {
+     "path": "slides[16].lines",
+     "reason": "path slides[16].lines: type string replaces array"
+    },
+    {
+     "path": "days[4].flow[4].phase",
+     "reason": "adds 1 check failure(s)"
+    },
+    {
+     "path": "days[4].flow[5].phase",
+     "reason": "adds 1 check failure(s)"
+    },
+    {
+     "path": "days[4].flow[3].phase",
+     "reason": "adds 1 check failure(s)"
+    },
+    {
+     "path": "days[4].flow[6].phase",
+     "reason": "adds 1 check failure(s)"
+    }
+   ],
+   "declined": []
+  },
+  {
+   "applied": [
+    {
+     "path": "slides[28].lines",
+     "issueIds": [
+      "c4"
+     ]
+    },
+    {
+     "path": "slides[14].lines",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "days[1].flow[1].teacher",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "slides[34].lines",
+     "issueIds": [
+      "c7"
+     ]
+    },
+    {
+     "path": "assessment[0]",
+     "issueIds": [
+      "c8"
+     ]
+    },
+    {
+     "path": "slides[25].lines",
+     "issueIds": [
+      "c10"
+     ]
+    },
+    {
+     "path": "slides[25].notes",
+     "issueIds": [
+      "c10"
+     ]
+    },
+    {
+     "path": "slides[22].lines",
+     "issueIds": [
+      "c13"
+     ]
+    },
+    {
+     "path": "days[0].flow[1].learners",
+     "issueIds": [
+      "c18"
+     ]
+    }
+   ],
+   "rejected": [
+    {
+     "path": "slides[17].lines",
+     "reason": "breaks the contract: slides.17.lines Array must contain at most 5 element(s)"
+    },
+    {
+     "path": "slides[16].lines",
+     "reason": "adds 1 check failure(s)"
+    },
+    {
+     "path": "days[4].flow[4].phase",
+     "reason": "adds 1 check failure(s)"
+    },
+    {
+     "path": "days[4].flow[5].phase",
+     "reason": "adds 1 check failure(s)"
+    },
+    {
+     "path": "days[4].flow[6].phase",
+     "reason": "adds 1 check failure(s)"
+    }
+   ],
+   "declined": []
+  }
+ ],
+ "verification": {
+  "confirmedFixed": 17,
+  "withdrawn": 0,
+  "open": 2
+ },
+ "finalChecks": {
+  "failures": [],
+  "warnings": [
+   "d1s3: line 3 is long for a TV slide (94 characters)",
+   "d3s8: line 2 is long for a TV slide (109 characters)",
+   "d5s8: line 3 is long for a TV slide (102 characters)",
+   "day 4: no check-and-answer pair on the slides (the written exit ticket remains)",
+   "acronym NOT is never expanded",
+   "acronym WIND is never expanded",
+   "acronym PDF is never expanded",
+   "vocabulary \"public storm warning signal / tropical cyclone wind signal\" is not used in any lesson or slide"
+  ]
+ },
+ "verbiage": {
+  "rulesVersion": "verbiage/1",
+  "state": "warn",
+  "metrics": {
+   "slides": 52,
+   "maxWordsOnSlide": 51,
+   "slidesOver48Words": 1,
+   "avgSentenceWords": 6.6,
+   "maxSentenceWords": 20,
+   "englishFunctionShare": null,
+   "filipinoFunctionShare": 0
+  },
+  "findings": [
+   "d1s2: title \"What does a typhoon look like from your window?\" is long for a child (≤ 8 words, no semicolon)",
+   "d1s10: title \"Which is an effect of a typhoon on crops?\" is long for a child (≤ 8 words, no semicolon)",
+   "d2s6: 51 words on the slide (Hiraia cards stop at 48)",
+   "d3s2: title \"What does the sky look like before a typhoon?\" is long for a child (≤ 8 words, no semicolon)",
+   "d3s10: title \"The rain stops and it feels calm. What now?\" is long for a child (≤ 8 words, no semicolon)",
+   "d5s5: title \"Which part of a typhoon is the most dangerous?\" is long for a child (≤ 8 words, no semicolon)"
+  ]
+ },
+ "images": {
+  "checked": 15,
+  "passed": 9,
+  "swapped": [
+   {
+    "slide": "d1s5",
+    "from": "ffct-36151",
+    "to": "ffct-34737"
+   },
+   {
+    "slide": "d3s7",
+    "from": "ffct-30423",
+    "to": "ffct-30428"
+   }
+  ],
+  "removed": [
+   {
+    "slide": "d2s4",
+    "slug": "ffct-30920",
+    "reason": "has text in the drawing"
+   }
+  ],
+  "costUsd": 0.23433100000000096
+ }
+}

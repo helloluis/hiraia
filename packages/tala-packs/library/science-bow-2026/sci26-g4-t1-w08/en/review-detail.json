@@ -1,0 +1,845 @@
+{
+ "packId": "sci26-g4-t1-w08",
+ "language": "en",
+ "note": "Model critique and revision log. A model critique is not a human review.",
+ "critique": [
+  {
+   "verdict": "revise",
+   "issues": [
+    {
+     "id": "c1",
+     "severity": "blocker",
+     "category": "scientific_accuracy",
+     "path": "guide.misconceptions[0].howToAddress",
+     "problem": "The suggested proof that bones are living is a false causal claim: learners are told the warmth they feel at the wrist 'comes from blood flowing through the bone'. Skin warmth comes from blood in the skin and soft tissue; bone lies deep and its blood flow cannot be felt as warmth. This teaches a wrong mechanism while trying to fix a misconception.",
+     "fix": "Replace with evidence a child can actually verify: 'Bones are living: they grow as you grow, they hurt when broken (they have nerves), and they heal after a break — a dead thing cannot grow or heal. Blood vessels run inside bones, but the warmth you feel at your wrist is from blood in your skin, not from the bone.'"
+    },
+    {
+     "id": "c2",
+     "severity": "major",
+     "category": "answer_key",
+     "path": "assessment[7].explanation",
+     "problem": "The performance-task key contradicts its own prompt: the prompt requires all five human body systems labelled with one job each, but the marking guidance says 'Look for correct labeling of at least three human systems'. There is also no scoring rule for the root/shoot labels or the habitat table, so two teachers would grade the same poster differently.",
+     "fix": "Make prompt and key agree and give explicit criteria, e.g. 'Full marks: all five systems named, drawn and given one correct job (muscular–pulls bones to move; skeletal–shape, support, protection; digestive–breaks food and absorbs nutrients; circulatory–transports oxygen, nutrients, wastes; respiratory–takes in oxygen, removes carbon dioxide); plant drawn with root system and shoot system correctly labelled with one job each. Deduct one point per missing or mislabelled system.'"
+    },
+    {
+     "id": "c3",
+     "severity": "major",
+     "category": "alignment",
+     "path": "assessment[7].prompt",
+     "problem": "Poster section (3) — 'one Philippine plant or animal from a chosen habitat (terrestrial, aquatic, aerial) and a table classifying it by habitat' — is not part of either competency for this week (describe five body systems; observe and describe root/shoot importance). Habitat classification is a different competency, is never taught in Days 1–4, and is nonetheless required in the graded task, the guide summary, Day 5 flow[4] and slides[47].",
+     "fix": "Delete the habitat-classification requirement from assessment[7].prompt, guide.summary, days[4].flow[4].teacher and slides[47].lines. Replace section (3) with an on-competency task: 'one local plant (e.g. kangkong or mung bean) with root system and shoot system labelled and one sentence on why each system matters to the plant.'"
+    },
+    {
+     "id": "c4",
+     "severity": "major",
+     "category": "alignment",
+     "path": "assessment[2].prompt",
+     "problem": "q3 tests the air path 'Nose → trachea → lungs → blood', but no learner-facing slide, day plan step or vocabulary entry ever teaches the nose–trachea–lungs route. Day 3 slides only say 'Lungs bring oxygen into the blood' (slides[29]); 'trachea' appears only in teacher background (guide.background[3]) and in the Day 3 note 'use the diaphragm or gas-exchange illustration if helpful'. The item assesses untaught content and undefined vocabulary.",
+     "fix": "Add to Day 3 developing_understanding (days[2].flow[3]) and a new concept slide: 'Air goes in through your nose (or mouth) → down the windpipe (trachea) → into the lungs → oxygen passes into the blood.' Add 'trachea/windpipe' to guide.vocabulary, or rewrite q3 to test only what was taught (e.g. 'What happens to oxygen when air reaches the lungs?')."
+    },
+    {
+     "id": "c5",
+     "severity": "major",
+     "category": "alignment",
+     "path": "assessment[6].prompt",
+     "problem": "q7 asks learners to 'Name one human body system', q5 offers 'Circulatory system / Respiratory system…' as choices, and Day 5 asks 'Which body system helps you lift your bag?' — but the terms muscular system, skeletal system, digestive system, circulatory system and respiratory system are never named in any learner-facing slide or vocabulary entry. Day 1 teaches 'skeleton/muscles', Day 2 is titled 'Food's Journey', Day 3 'Circulation and Breathing'. Learners are assessed on system names they were never taught.",
+     "fix": "Name each system explicitly as it is taught: Day 1 slides — 'The skeletal system (bones and joints)… The muscular system (muscles)…'; Day 2 — 'This is the digestive system'; Day 3 — 'This is the circulatory system… this is the respiratory system'. Add the five system names to guide.vocabulary and to each day's summary slide."
+    },
+    {
+     "id": "c6",
+     "severity": "major",
+     "category": "misconception_risk",
+     "path": "days[1].flow[3].teacher",
+     "problem": "The corrective script 'The stomach starts the job; the small intestine finishes it' (repeated verbatim in slides[18].notes and slides[19].notes) directly reinstates the misconception the lesson is trying to remove, and contradicts slides[15] ('Digestion begins here, not in the stomach') and guide.misconceptions[2].",
+     "fix": "Change all three occurrences to: 'Digestion starts in the mouth; the stomach churns and mixes food with juices; the small intestine finishes the job and takes in most nutrients.'"
+    },
+    {
+     "id": "c7",
+     "severity": "major",
+     "category": "scientific_accuracy",
+     "path": "guide.vocabulary[5].meaning",
+     "problem": "'Respiration — paghihinga — Taking in oxygen and releasing carbon dioxide' defines respiration as breathing. Respiration is the release of energy from food inside cells; breathing is ventilation. The pack itself instructs teachers twice to avoid this equation (days[2].flow[2].teacher: 'Avoid saying breathing is respiration'; slides[29].notes: 'Be careful not to say breathing is respiration'), so the vocabulary list contradicts the lesson scripts.",
+     "fix": "Replace the entry with 'Breathing (paghihinga) — moving air into and out of the lungs; brings oxygen in and takes carbon dioxide out.' If 'respiration' is kept at all, define it as 'the way cells use oxygen to get energy from food' and mark it as teacher background, not Grade 4 learner vocabulary."
+    },
+    {
+     "id": "c8",
+     "severity": "major",
+     "category": "misconception_risk",
+     "path": "days[0].flow[3].teacher",
+     "problem": "The model is mechanically wrong and plants a new misconception: one cardboard strip plus a rubber band, with the instruction 'Pull the rubber band to bend the strip', shows the bone itself bending. Bones are rigid; movement happens at a joint. The extension repeats the error ('hold a ruler at one end and bend it at a marked point to show how the elbow bends like a door hinge') — a bending ruler is not a hinge and suggests bones are flexible.",
+     "fix": "Use TWO rigid strips joined at one end with a paper fastener or tape hinge, with a rubber band on each side across the joint. Script: 'The two strips are two bones; the fastener is the elbow joint. The bones stay stiff — the rubber band pulls one bone around the joint.' Rewrite the extension to bend the two-strip model at the fastener, not to bend a ruler."
+    },
+    {
+     "id": "c9",
+     "severity": "major",
+     "category": "scientific_accuracy",
+     "path": "guide.background[2].paragraphs[1]",
+     "problem": "'Most chemical digestion happens in the mouth and small intestine' is wrong. In the mouth only salivary amylase begins starch breakdown, and it acts briefly; the overwhelming majority of chemical digestion occurs in the small intestine (with pancreatic enzymes and bile) and, for protein, begins in the stomach. A non-specialist teacher reading this will tell learners the mouth is a major site of chemical digestion.",
+     "fix": "Rewrite: 'Chemical digestion begins in the mouth (saliva starts breaking down starch), continues in the stomach (acid and enzymes start breaking down protein), and is completed mainly in the small intestine, where juices from the pancreas and liver finish the job.'"
+    },
+    {
+     "id": "c10",
+     "severity": "major",
+     "category": "safety",
+     "path": "days[2].flow[3].teacher",
+     "problem": "Learners are told to find a pulse 'on the wrist or side of the neck' and then, in the learners' column, to 'count each other's pulse'. Grade 4 children pressing a classmate's carotid artery can press too hard, compress both sides, or trigger a reflex slowing of the heart; no precaution is given. slides[26].notes also models only the wrist, so the neck option is unsupported.",
+     "fix": "Restrict the activity to the wrist (radial) pulse only: 'Use two fingertips on the inside of the wrist below the thumb. Press lightly. Do not press on the neck.' If a learner cannot find a wrist pulse, let them feel their own chest heartbeat or count breaths — never a partner's neck."
+    },
+    {
+     "id": "c11",
+     "severity": "major",
+     "category": "alignment",
+     "path": "days[4].flow[3].teacher",
+     "problem": "The whole weekly assessment (6 multiple-choice + 1 short answer + a full labelled poster performance task, with every item read aloud) is allotted 10 minutes, and the poster is only 'planned' in the following 12 minutes and never completed, collected or scored. The performance component of the assessment therefore cannot be administered or judged, and 8 items cannot be read and answered in 10 minutes by Grade 4 learners.",
+     "fix": "Split the assessment: give the 7 written items 20 minutes on Day 5 (trim the gallery walk to 5 minutes and poster planning to 10), and schedule the poster as a separate take-home/next-session task with its own collection and scoring slot; or drop q8 from the weekly assessment and mark the poster as an ungraded practice artefact, stating this explicitly."
+    },
+    {
+     "id": "c12",
+     "severity": "minor",
+     "category": "answer_key",
+     "path": "assessment[2].explanation",
+     "problem": "The explanation mis-describes distractor D: it says 'starting at trachea skips the nose', but option D is 'Trachea → nose → lungs → blood', which includes the nose. The stated reason does not match the option, so a teacher explaining the key will confuse learners.",
+     "fix": "Change to: 'D is wrong because the order is jumbled — air reaches the trachea only after passing the nose, not before it.'"
+    },
+    {
+     "id": "c13",
+     "severity": "minor",
+     "category": "misconception_risk",
+     "path": "days[2].flow[4].teacher",
+     "problem": "Red = oxygen-rich, blue = carbon-dioxide-rich blood is used with no caveat, which reinforces the very common belief that blood in veins is blue. Also, 'blue' blood still carries some oxygen and 'red' blood still carries some carbon dioxide.",
+     "fix": "Add one line to the script and to slides[30].notes: 'Blood is always red — brighter red when it carries more oxygen, darker red when it carries less. Blue is only a drawing colour we use to show blood heading back to the lungs.'"
+    },
+    {
+     "id": "c14",
+     "severity": "minor",
+     "category": "misconception_risk",
+     "path": "guide.misconceptions[3].howToAddress",
+     "problem": "The demonstration asks 'where does its food come from?' about a mung bean sprout grown in wet cotton and answers 'the leaves make sugar'. A 3–4-day-old sprout has little or no green leaf and is growing on food stored in the seed, so the demo as scripted can suggest that water alone feeds a plant.",
+     "fix": "Add the seed step: 'First the sprout uses the food packed inside the seed (the thick seed halves). Once green leaves open, the plant makes its own sugar from sunlight, water and air. The cotton and water supply only water — no food.'"
+    },
+    {
+     "id": "c15",
+     "severity": "minor",
+     "category": "consistency",
+     "path": "days[0].flow[6].teacher",
+     "problem": "The Day 1 exit ticket is word-for-word the check item that was just revealed on slides[11] (same stem, same four options), yet the slide notes say the slips will show 'who still has the misconception'. Learners can simply copy the revealed answer, so the exit ticket produces no independent evidence. The step also asks for check + reveal + a second written item in 4 minutes.",
+     "fix": "Use a different exit item, e.g. 'Draw an arm bending. Label the bone, the joint and the muscle that pulls. Write one sentence: why can a muscle not push the bone back?' Allow 5 minutes by trimming the developing phase."
+    },
+    {
+     "id": "c16",
+     "severity": "minor",
+     "category": "consistency",
+     "path": "days[2].check",
+     "problem": "The day-level 'check' fields on Days 2, 3 and 4 record the exit-ticket question, while the 'check' slides for those days show different multiple-choice items (slides[20] nutrient absorption, slides[31] what blood carries, slides[39] main job of roots). Those MC answers appear nowhere in the day answer keys, so a teacher using the day plan alone has no key for the on-screen check.",
+     "fix": "Either put the slide check question/answer/why in each day's check field and move the exit ticket to a separate 'exitTicket' note in the flow, or add the MC key explicitly to the flow step (e.g. Day 3: 'Check answer: option 2 — oxygen and nutrients')."
+    },
+    {
+     "id": "c17",
+     "severity": "minor",
+     "category": "consistency",
+     "path": "guide.materials[4].amount",
+     "problem": "The guide's materials list under-provisions relative to the day plans: cups 'one per group' vs Day 4 'one cup per pair (about 20 cups for 40 learners)'; manila paper 'one sheet per group of 4–5' vs Day 2 'one sheet per pair (about 30 sheets for a class of 60)'; rubber bands 'two per pair' vs Day 1 '2 rubber bands per teacher demonstration'; hand lenses appear only in Day 4. Teachers ordering from the guide will not have enough materials.",
+     "fix": "Reconcile the guide list with the day plans: cups one per pair, manila paper one per pair for Day 2 plus one per group for Days 4–5, rubber bands two per pair if pairs build the model (or state teacher-demo only in both places), and add hand lenses and masking tape to guide.materials."
+    },
+    {
+     "id": "c18",
+     "severity": "minor",
+     "category": "slide_design",
+     "path": "slides[14].notes",
+     "problem": "The purpose slide's image already shows the complete ordered food path (alt: 'from the mouth, through the esophagus, stomach, small intestine and large intestine'), while the note and days[1].flow[1] instruct 'Do not give the order of organs yet — learners will build it'. The answer to the day's main task is on screen before the task.",
+     "fix": "Use an unlabeled body outline (no organ order) on slides[14], or move the labelled journey image to a reveal/summary position after the drawing activity in slides[19]."
+    },
+    {
+     "id": "c19",
+     "severity": "minor",
+     "category": "slide_design",
+     "path": "slides[17].lines",
+     "problem": "A teacher-only safety instruction, 'Do not open the bag during the demonstration', is printed as a learner-facing bullet on the stomach concept slide, mixing management text with science content and adding a fourth line of text to read on the TV.",
+     "fix": "Delete that line from slides[17].lines (keep it in slides[17].notes and the safety list); leave the three science lines about the stomach's muscular walls, churning with juices, and the soupy mixture."
+    },
+    {
+     "id": "c20",
+     "severity": "minor",
+     "category": "local_accuracy",
+     "path": "guide.localExamples[3].connection",
+     "problem": "Cogon (Imperata cylindrica) is described as having a 'thick root system' that binds soil. Cogon's thick underground structures are rhizomes — creeping underground STEMS — plus relatively fine fibrous roots; the soil-binding mat is largely rhizomal. Calling them thick roots conflicts with guide.background[4] (fibrous roots) and mislabels a stem as a root in a week that teaches root vs shoot.",
+     "fix": "Rewrite: 'Cogon spreads by creeping underground stems (rhizomes) with many fibrous roots. Together they form a dense mat that holds soil and reduces washing away during heavy rain.' Keep the Day 4 wording 'many spreading roots and underground stems'."
+    }
+   ],
+   "previous": []
+  },
+  {
+   "verdict": "revise",
+   "issues": [
+    {
+     "id": "c2",
+     "severity": "major",
+     "category": "answer_key",
+     "path": "assessment[7].explanation",
+     "problem": "Still open: The assessment key still references a habitat table that is not in the prompt, and lacks explicit scoring criteria for all sections. (Originally: The performance-task key contradicts its own prompt: the prompt requires all five human body systems labelled with one job each, but the marking guidance says 'Look for correct labeling of at least three human systems'. There is also no scoring rule for the root/shoot labels or the habitat table, so two teachers would grade the same poster differently.)",
+     "fix": "Make prompt and key agree and give explicit criteria, e.g. 'Full marks: all five systems named, drawn and given one correct job (muscular–pulls bones to move; skeletal–shape, support, protection; digestive–breaks food and absorbs nutrients; circulatory–transports oxygen, nutrients, wastes; respiratory–takes in oxygen, removes carbon dioxide); plant drawn with root system and shoot system correctly labelled with one job each. Deduct one point per missing or mislabelled system.'"
+    },
+    {
+     "id": "c3",
+     "severity": "major",
+     "category": "alignment",
+     "path": "assessment[7].prompt",
+     "problem": "Still open: Habitat classification remains in slides[47] and days[4].flow[4], contradicting the revised assessment prompt. (Originally: Poster section (3) — 'one Philippine plant or animal from a chosen habitat (terrestrial, aquatic, aerial) and a table classifying it by habitat' — is not part of either competency for this week (describe five body systems; observe and describe root/shoot importance). Habitat classification is a different competency, is never taught in Days 1–4, and is nonetheless required in the graded task, the guide summary, Day 5 flow[4] and slides[47].)",
+     "fix": "Delete the habitat-classification requirement from assessment[7].prompt, guide.summary, days[4].flow[4].teacher and slides[47].lines. Replace section (3) with an on-competency task: 'one local plant (e.g. kangkong or mung bean) with root system and shoot system labelled and one sentence on why each system matters to the plant.'"
+    },
+    {
+     "id": "c5",
+     "severity": "major",
+     "category": "alignment",
+     "path": "assessment[6].prompt",
+     "problem": "Still open: System names are still not taught in learner-facing slides or vocabulary; only teacher background uses them. (Originally: q7 asks learners to 'Name one human body system', q5 offers 'Circulatory system / Respiratory system…' as choices, and Day 5 asks 'Which body system helps you lift your bag?' — but the terms muscular system, skeletal system, digestive system, circulatory system and respiratory system are never named in any learner-facing slide or vocabulary entry. Day 1 teaches 'skeleton/muscles', Day 2 is titled 'Food's Journey', Day 3 'Circulation and Breathing'. Learners are assessed on system names they were never taught.)",
+     "fix": "Name each system explicitly as it is taught: Day 1 slides — 'The skeletal system (bones and joints)… The muscular system (muscles)…'; Day 2 — 'This is the digestive system'; Day 3 — 'This is the circulatory system… this is the respiratory system'. Add the five system names to guide.vocabulary and to each day's summary slide."
+    },
+    {
+     "id": "c7",
+     "severity": "major",
+     "category": "scientific_accuracy",
+     "path": "guide.vocabulary[5].meaning",
+     "problem": "Still open: Vocabulary entry still equates respiration with breathing, contradicting the lesson scripts. (Originally: 'Respiration — paghihinga — Taking in oxygen and releasing carbon dioxide' defines respiration as breathing. Respiration is the release of energy from food inside cells; breathing is ventilation. The pack itself instructs teachers twice to avoid this equation (days[2].flow[2].teacher: 'Avoid saying breathing is respiration'; slides[29].notes: 'Be careful not to say breathing is respiration'), so the vocabulary list contradicts the lesson scripts.)",
+     "fix": "Replace the entry with 'Breathing (paghihinga) — moving air into and out of the lungs; brings oxygen in and takes carbon dioxide out.' If 'respiration' is kept at all, define it as 'the way cells use oxygen to get energy from food' and mark it as teacher background, not Grade 4 learner vocabulary."
+    },
+    {
+     "id": "c10",
+     "severity": "major",
+     "category": "safety",
+     "path": "days[2].flow[3].teacher",
+     "problem": "Still open: Learners are still instructed to count each other's pulse with no restriction to wrist-only, creating a safety risk. (Originally: Learners are told to find a pulse 'on the wrist or side of the neck' and then, in the learners' column, to 'count each other's pulse'. Grade 4 children pressing a classmate's carotid artery can press too hard, compress both sides, or trigger a reflex slowing of the heart; no precaution is given. slides[26].notes also models only the wrist, so the neck option is unsupported.)",
+     "fix": "Restrict the activity to the wrist (radial) pulse only: 'Use two fingertips on the inside of the wrist below the thumb. Press lightly. Do not press on the neck.' If a learner cannot find a wrist pulse, let them feel their own chest heartbeat or count breaths — never a partner's neck."
+    }
+   ],
+   "previous": [
+    {
+     "id": "c1",
+     "status": "fixed",
+     "note": "The false causal claim about wrist warmth has been replaced with verifiable evidence of living bone tissue."
+    },
+    {
+     "id": "c2",
+     "status": "open",
+     "note": "The assessment key still references a habitat table that is not in the prompt, and lacks explicit scoring criteria for all sections."
+    },
+    {
+     "id": "c3",
+     "status": "open",
+     "note": "Habitat classification remains in slides[47] and days[4].flow[4], contradicting the revised assessment prompt."
+    },
+    {
+     "id": "c4",
+     "status": "fixed",
+     "note": "The air path nose→trachea→lungs→blood is now explicitly taught in days[2].flow[3] and slides[29].notes."
+    },
+    {
+     "id": "c5",
+     "status": "open",
+     "note": "System names are still not taught in learner-facing slides or vocabulary; only teacher background uses them."
+    },
+    {
+     "id": "c6",
+     "status": "fixed",
+     "note": "The misleading script 'The stomach starts the job; the small intestine finishes it' has been corrected in slides[18] and [19]."
+    },
+    {
+     "id": "c7",
+     "status": "open",
+     "note": "Vocabulary entry still equates respiration with breathing, contradicting the lesson scripts."
+    },
+    {
+     "id": "c8",
+     "status": "fixed",
+     "note": "The model now uses two rigid strips joined at a hinge, correctly showing that bones stay stiff while muscles pull around the joint."
+    },
+    {
+     "id": "c9",
+     "status": "fixed",
+     "note": "The background now correctly states that chemical digestion begins in the mouth, continues in the stomach, and is completed mainly in the small intestine."
+    },
+    {
+     "id": "c10",
+     "status": "open",
+     "note": "Learners are still instructed to count each other's pulse with no restriction to wrist-only, creating a safety risk."
+    },
+    {
+     "id": "c11",
+     "status": "withdrawn",
+     "note": "The writer declined this issue, stating that teachers can adjust timing and the poster is a planned start, not final completion. While the 10-minute allocation for 8 items is tight, the pack does allow teacher adaptation and the poster is explicitly a planning activity, not a graded final product in this session."
+    },
+    {
+     "id": "c12",
+     "status": "fixed",
+     "note": "The explanation now correctly states that option D has jumbled order, not that it skips the nose."
+    },
+    {
+     "id": "c13",
+     "status": "fixed",
+     "note": "The caveat about blood always being red has been added to days[1].flow[4] and slides[30].notes."
+    },
+    {
+     "id": "c14",
+     "status": "fixed",
+     "note": "The demonstration now explains that the sprout first uses stored seed food, then makes its own sugar once leaves open."
+    },
+    {
+     "id": "c15",
+     "status": "fixed",
+     "note": "The exit ticket now uses a different question (draw and label an arm bending) instead of repeating the revealed check item."
+    },
+    {
+     "id": "c16",
+     "status": "open",
+     "note": "Day-level check fields still do not match the on-screen check slides, leaving teachers without answer keys for the MC items."
+    },
+    {
+     "id": "c17",
+     "status": "fixed",
+     "note": "Materials amounts have been reconciled: cups now 'one per pair', manila paper specifies 'one sheet per pair for Day 2, plus one per group for Days 4–5', rubber bands clarified."
+    },
+    {
+     "id": "c18",
+     "status": "fixed",
+     "note": "The purpose slide notes now state the image is an unlabeled body outline, not the complete ordered path."
+    },
+    {
+     "id": "c19",
+     "status": "open",
+     "note": "Teacher-only safety instruction still appears as a learner-facing bullet on the stomach slide."
+    },
+    {
+     "id": "c20",
+     "status": "fixed",
+     "note": "Cogon is now correctly described as spreading by underground stems (rhizomes) with fibrous roots, not 'thick roots'."
+    }
+   ]
+  },
+  {
+   "verdict": "revise",
+   "issues": [
+    {
+     "id": "c2",
+     "severity": "major",
+     "category": "answer_key",
+     "path": "assessment[7].answer",
+     "problem": "The model answer contradicts both the revised prompt and the new marking guidance: it says the poster must show 'all required labeled diagrams and the habitat table' and gives 'kangkong as an aquatic/terrestrial plant' as the example. The prompt's section (3) is now a local plant with root/shoot labels and one sentence per system, so two teachers reading answer vs explanation would grade different things.",
+     "fix": "Replace with: 'A poster showing all five human body systems, each drawn, named and given one correct job (muscular—pulls bones to move; skeletal—shape, support, protection; digestive—breaks food down and absorbs nutrients; circulatory—carries oxygen, nutrients and wastes; respiratory—takes in oxygen, removes carbon dioxide); a plant with root system and shoot system correctly labelled; and one local plant such as kangkong or mung bean with root system and shoot system labelled plus one sentence on why each system matters (roots take in water and minerals and hold the plant; shoots hold leaves up to the light and carry water and food).' Delete every mention of a habitat table or habitat classification."
+    },
+    {
+     "id": "c3",
+     "severity": "major",
+     "category": "alignment",
+     "path": "slides[47].lines",
+     "problem": "The learner-facing poster slide still instructs step 4 'Make a table: organism, habitat, system or part' and 'Record: one local plant or animal example', and its notes still tell the teacher to 'Show a simple table on the board with three columns'. This is off-competency habitat classification, is never taught in Days 1–4, and now contradicts assessment[7].prompt and days[4].flow[4].teacher.",
+     "fix": "Set lines to: ['1. Get one manila paper per group.', '2. Draw and label the five body systems, one job each.', '3. Draw and label a plant: root system and shoot system.', '4. Draw one local plant (kangkong or mung bean). Label its roots and shoots.', 'Record: one sentence on why each plant system matters.'] In notes, delete the three-column table instruction and replace with: 'Model the third section: draw kangkong, label the root system below and the shoot system above, and write one sentence beside each saying why it matters to the plant.'"
+    },
+    {
+     "id": "c3",
+     "severity": "major",
+     "category": "alignment",
+     "path": "summary",
+     "problem": "The pack summary (the path the writer could not find as guide.summary) still ends '…and begin a poster that classifies a Philippine plant or animal by habitat', which is not one of this week's two competencies and no longer matches the task.",
+     "fix": "Change the last sentence to: 'They make labeled diagrams and begin a poster showing the five body systems and a local plant with its root and shoot systems labeled and explained.'"
+    },
+    {
+     "id": "c3",
+     "severity": "major",
+     "category": "alignment",
+     "path": "days[4].flow[4].learners",
+     "problem": "The learners' column still says they finish 'filling in the classification table with one local example', although the teacher column in the same step now describes a labelled local plant with one sentence per system. Learners are being told to do a task the teacher no longer sets.",
+     "fix": "Replace with: 'In groups of 4–6, learners plan and begin drawing the three poster sections on manila paper, labeling the five body systems, the plant root and shoot systems, and one local plant with a sentence on why each of its systems matters.'"
+    },
+    {
+     "id": "c3",
+     "severity": "major",
+     "category": "alignment",
+     "path": "days[4].expectedObservations[3]",
+     "problem": "The expected observation still reads 'Learners give one local Philippine plant or animal example and its habitat in the classification table', so the teacher is looking for evidence of an untaught, off-competency skill.",
+     "fix": "Replace with: 'Learners label the root system and shoot system on a local plant such as kangkong or mung bean and say one reason each system matters to the plant.'"
+    },
+    {
+     "id": "n1",
+     "severity": "major",
+     "category": "misconception_risk",
+     "path": "slides[41].lines",
+     "problem": "The revision added 'The skeletal system and muscular system are two body systems.' as the third line of the Day 4 plant summary slide. It is unrelated to the root/shoot lesson, sits under an image of a flowering plant, and the slide notes tell learners to 'copy these two lines' while three are shown — so learners copy a plant summary containing a stray human-body fact and the teacher does not know which lines to use.",
+     "fix": "Delete the third line from slides[41].lines, leaving only the root-system and shoot-system sentences. The five system names are already carried by slides[4], [6], [14], [24], [25], [29] and the Day 5 review, so nothing is lost. If a bridge sentence is wanted, put it in slides[41].notes as teacher talk: 'Remind learners that plants have systems too, just as our bodies have the skeletal and muscular systems.'"
+    },
+    {
+     "id": "n2",
+     "severity": "minor",
+     "category": "safety",
+     "path": "days[2].expectedObservations[1]",
+     "problem": "After the wrist-only patch, this observation still says 'Learners can point to the wrist or neck to feel their pulse', which invites the neck option the activity now forbids.",
+     "fix": "Change to: 'Learners can find their pulse at the wrist using two fingertips and light pressure.'"
+    }
+   ],
+   "previous": [
+    {
+     "id": "c2",
+     "status": "open",
+     "note": "The explanation now has explicit criteria, but assessment[7].answer still requires a 'habitat table' and an aquatic/terrestrial classification that the revised prompt no longer asks for."
+    },
+    {
+     "id": "c3",
+     "status": "open",
+     "note": "The prompt was fixed, but habitat classification survives in summary, slides[47], days[4].flow[4].learners and days[4].expectedObservations[3]."
+    },
+    {
+     "id": "c5",
+     "status": "fixed",
+     "note": "All five system names now appear on learner slides (d1s4, d1s6, d2s3, d3s4, d3s8) and in day summaries; only the vocabulary list could not take them because of the 14-entry cap."
+    },
+    {
+     "id": "c7",
+     "status": "fixed",
+     "note": "guide.vocabulary[5] is now 'Breathing — moving air into and out of the lungs', matching the lesson scripts."
+    },
+    {
+     "id": "c10",
+     "status": "fixed",
+     "note": "days[2].flow[3].teacher and slides[26].notes now restrict the pulse to the wrist with light pressure and forbid neck pressing; partner counting is wrist-only."
+    }
+   ]
+  }
+ ],
+ "revisions": [
+  {
+   "applied": [
+    {
+     "path": "guide.misconceptions[0].howToAddress",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "assessment[7].explanation",
+     "issueIds": [
+      "c2"
+     ]
+    },
+    {
+     "path": "assessment[7].prompt",
+     "issueIds": [
+      "c3"
+     ]
+    },
+    {
+     "path": "days[4].flow[4].teacher",
+     "issueIds": [
+      "c3"
+     ]
+    },
+    {
+     "path": "assessment[2].prompt",
+     "issueIds": [
+      "c4"
+     ]
+    },
+    {
+     "path": "assessment[2].answer",
+     "issueIds": [
+      "c4"
+     ]
+    },
+    {
+     "path": "assessment[2].explanation",
+     "issueIds": [
+      "c4",
+      "c12"
+     ]
+    },
+    {
+     "path": "days[2].flow[3].teacher",
+     "issueIds": [
+      "c4",
+      "c10"
+     ]
+    },
+    {
+     "path": "slides[29].notes",
+     "issueIds": [
+      "c4"
+     ]
+    },
+    {
+     "path": "days[0].flow[3].teacher",
+     "issueIds": [
+      "c8"
+     ]
+    },
+    {
+     "path": "days[0].extension",
+     "issueIds": [
+      "c8"
+     ]
+    },
+    {
+     "path": "guide.background[2].paragraphs[0]",
+     "issueIds": [
+      "c9"
+     ],
+     "from": "guide.background[2].paragraphs[1]"
+    },
+    {
+     "path": "days[1].flow[4].teacher",
+     "issueIds": [
+      "c13"
+     ],
+     "from": "days[2].flow[4].teacher"
+    },
+    {
+     "path": "slides[30].notes",
+     "issueIds": [
+      "c13"
+     ]
+    },
+    {
+     "path": "guide.misconceptions[3].howToAddress",
+     "issueIds": [
+      "c14"
+     ]
+    },
+    {
+     "path": "days[0].flow[6].teacher",
+     "issueIds": [
+      "c15"
+     ]
+    },
+    {
+     "path": "slides[18].notes",
+     "issueIds": [
+      "c6"
+     ]
+    },
+    {
+     "path": "slides[19].notes",
+     "issueIds": [
+      "c6"
+     ]
+    },
+    {
+     "path": "guide.materials[4].amount",
+     "issueIds": [
+      "c17"
+     ]
+    },
+    {
+     "path": "guide.materials[0].amount",
+     "issueIds": [
+      "c17"
+     ]
+    },
+    {
+     "path": "guide.materials[6].amount",
+     "issueIds": [
+      "c17"
+     ]
+    },
+    {
+     "path": "slides[14].notes",
+     "issueIds": [
+      "c18"
+     ]
+    },
+    {
+     "path": "guide.localExamples[3].connection",
+     "issueIds": [
+      "c20"
+     ]
+    },
+    {
+     "path": "days[3].flow[4].teacher",
+     "issueIds": [
+      "c20"
+     ]
+    },
+    {
+     "path": "slides[43].notes",
+     "issueIds": [
+      "c5"
+     ]
+    }
+   ],
+   "rejected": [
+    {
+     "path": "guide.summary",
+     "reason": "path guide.summary does not exist in the pack (did you mean summary?)"
+    },
+    {
+     "path": "slides[47].lines",
+     "reason": "path slides[47].lines: type string replaces array"
+    },
+    {
+     "path": "slides[29].lines",
+     "reason": "path slides[29].lines: type string replaces array"
+    },
+    {
+     "path": "guide.vocabulary",
+     "reason": "path guide.vocabulary: type string replaces array"
+    },
+    {
+     "path": "days[2].check",
+     "reason": "path days[1].check: type string replaces object"
+    },
+    {
+     "path": "guide.materials",
+     "reason": "path guide.materials: type string replaces array"
+    },
+    {
+     "path": "slides[14].image",
+     "reason": "path slides[14].image: type string replaces object"
+    },
+    {
+     "path": "slides[17].lines",
+     "reason": "path slides[17].lines: type string replaces array"
+    },
+    {
+     "path": "days[2].check",
+     "reason": "path days[1].check: type string replaces object"
+    },
+    {
+     "path": "days[3].check",
+     "reason": "path days[2].check: type string replaces object"
+    },
+    {
+     "path": "days[4].check",
+     "reason": "path days[3].check: type string replaces object"
+    },
+    {
+     "path": "slides[43].lines",
+     "reason": "path slides[43].lines: type string replaces array"
+    }
+   ],
+   "declined": [
+    {
+     "issueId": "c11",
+     "reason": "The assessment time can be adjusted by the teacher; the pack does not require completing all items in 10 minutes, and the poster is a planned start, not final completion. The issue is logistical, not a factual error, and teachers can adapt."
+    }
+   ]
+  },
+  {
+   "applied": [
+    {
+     "path": "assessment[7].prompt",
+     "issueIds": [
+      "c3"
+     ]
+    },
+    {
+     "path": "days[4].flow[4].teacher",
+     "issueIds": [
+      "c3"
+     ]
+    },
+    {
+     "path": "slides[47].lines",
+     "issueIds": [
+      "c3"
+     ]
+    },
+    {
+     "path": "slides[4].title",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "slides[4].lines",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "slides[6].title",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "slides[6].lines",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "slides[14].title",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "slides[14].lines",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "slides[24].title",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "slides[24].lines",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "slides[25].title",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "slides[25].lines",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "slides[29].title",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "slides[29].lines",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "slides[9].lines",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "slides[30].lines",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "slides[41].lines",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "days[0].flow[5].teacher",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "days[1].flow[4].teacher",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "days[2].flow[3].teacher",
+     "issueIds": [
+      "c10"
+     ]
+    },
+    {
+     "path": "slides[26].notes",
+     "issueIds": [
+      "c10"
+     ]
+    },
+    {
+     "path": "guide.vocabulary[5]",
+     "issueIds": [
+      "c7"
+     ]
+    }
+   ],
+   "rejected": [
+    {
+     "path": "assessment[7].explanation",
+     "reason": "the quoted current value does not match this path (wrong index?)"
+    },
+    {
+     "path": "guide.summary",
+     "reason": "path guide.summary does not exist in the pack (did you mean summary?)"
+    },
+    {
+     "path": "guide.vocabulary",
+     "reason": "breaks the contract: guide.vocabulary Array must contain at most 14 element(s)"
+    }
+   ],
+   "declined": []
+  }
+ ],
+ "verification": {
+  "confirmedFixed": 15,
+  "withdrawn": 1,
+  "open": 6
+ },
+ "finalChecks": {
+  "failures": [],
+  "warnings": [
+   "d4s9: line 1 is long for a TV slide (92 characters)",
+   "d5s10: reveal text does not echo the correct choice \"skeletal and muscular\"",
+   "acronym TWO is never expanded",
+   "acronym PDF is never expanded"
+  ]
+ },
+ "verbiage": {
+  "rulesVersion": "verbiage/1",
+  "state": "warn",
+  "metrics": {
+   "slides": 52,
+   "maxWordsOnSlide": 52,
+   "slidesOver48Words": 1,
+   "avgSentenceWords": 6.2,
+   "maxSentenceWords": 15,
+   "englishFunctionShare": null,
+   "filipinoFunctionShare": 0
+  },
+  "findings": [
+   "d1s8: 52 words on the slide (Hiraia cards stop at 48)"
+  ]
+ },
+ "images": {
+  "checked": 23,
+  "passed": 10,
+  "swapped": [
+   {
+    "slide": "d4s9",
+    "from": "ffct-01187",
+    "to": "ffct-10270"
+   }
+  ],
+  "removed": [
+   {
+    "slide": "d1s5",
+    "slug": "ffct-08592",
+    "reason": "does not show what the slide explains; The skull is not depicted in the illustration, contradicting the slide's claim that it shows 'the skull around the head' and undermining the example 'Your skull protects your brain.'"
+   },
+   {
+    "slide": "d2s3",
+    "slug": "digestive-journey-of-food",
+    "reason": "The drawing shows food entering the mouth and traveling down the esophagus to the stomach, but the esophagus is drawn as a straight vertical tube directly behind the trachea without the natural curvature or anatomical positioning; also, the stomach is depicted as a simple sac without the pyloric sphincter clearly indicated, and the transition to the small intestine lacks the duodenum’s characteris"
+   },
+   {
+    "slide": "d2s4",
+    "slug": "chewing-food-in-mouth",
+    "reason": "does not show what the slide explains; The drawing shows multiple overlapping, misshapen teeth and an unclear oral cavity layout; saliva is not visibly depicted, and the food appears as a chaotic mass without clear grinding action or salivary secretion—failing to illustrate how teeth grind or saliva acts."
+   },
+   {
+    "slide": "d2s5",
+    "slug": "digestive-journey-of-food",
+    "reason": "The esophagus is shown as a straight, rigid tube without peristaltic constriction; no wave-like muscle squeezing is depicted, contradicting the slide’s emphasis on peristalsis. Also, the food bolus appears suspended mid-esophagus without clear directional movement or muscular action."
+   }
+  ],
+  "costUsd": 0.05249300000000012
+ }
+}

@@ -1,0 +1,454 @@
+{
+ "packId": "sci26-g4-t1-w08",
+ "language": "fil",
+ "note": "Model critique and revision log. A model critique is not a human review.",
+ "critique": [
+  {
+   "verdict": "revise",
+   "issues": [
+    {
+     "id": "c1",
+     "severity": "blocker",
+     "category": "scientific_accuracy",
+     "path": "guide.background[2].paragraphs[1]",
+     "problem": "'Karamihan sa chemical digestion ay nangyayari sa bibig at maliit na bituka' — false. Most chemical digestion occurs in the small intestine; only starch digestion begins in the mouth. The same paragraph contradicts itself two sentences earlier ('pangunahing natatapos sa maliit na bituka').",
+     "fix": "Palitan ng: 'Nagsisimula ang chemical digestion sa bibig (starch lamang), ngunit karamihan sa chemical digestion ay nangyayari sa maliit na bituka.'"
+    },
+    {
+     "id": "c2",
+     "severity": "blocker",
+     "category": "scientific_accuracy",
+     "path": "days[3].flow[4].teacher",
+     "problem": "'Ang kangkong ay may mga usbong na tumutubo sa itaas ng tubig o lupa.' Kangkong is a semi-aquatic plant with hollow, creeping stems that float on or root in water/mud — not a terrestrial plant with shoots growing above soil in the way described. More critically, the sentence implies kangkong can grow equally well on dry land without qualification, which is misleading for Grade 4.",
+     "fix": "Palitan ng: 'Ang kangkong ay lumalaki sa tubig o basang lupa; ang mga tangkay at dahon nito ay bahagi ng shoot system na lumulutang o tumutubo sa ibabaw ng tubig.'"
+    },
+    {
+     "id": "c3",
+     "severity": "blocker",
+     "category": "answer_key",
+     "path": "slides[50].choices",
+     "problem": "The check question title is 'Aling dalawang system ang gumagalaw?' but the actual question in lines is 'Aling dalawang system ang nagtutulungan para gumalaw ang braso mo?' The correct answer (choice index 1) is 'skeletal at muscular', which is correct. However, choice index 3 'circulatory at respiratory' could be argued as also involved in movement (oxygen delivery). More importantly, the slide title 'Aling dalawang system ang gumagalaw?' is misleading — systems don't move; they enable movement. This is a minor wording issue but the answer key itself (correctChoice: 1) is correct.",
+     "fix": "Palitan ang title ng slides[50] ng: 'Aling dalawang system ang nagtutulungan para gumalaw?'"
+    },
+    {
+     "id": "c4",
+     "severity": "major",
+     "category": "language_quality",
+     "path": "slides[0].title",
+     "problem": "Cover slide title is entirely in English: 'Body Systems and Plant Root and Shoot Systems'. Hiraia rules prohibit whole English sentences/titles on learner slides.",
+     "fix": "Palitan ng: 'Mga Body System at Root at Shoot System ng Halaman'"
+    },
+    {
+     "id": "c5",
+     "severity": "major",
+     "category": "language_quality",
+     "path": "slides[12].title",
+     "problem": "'Day 2: Paglalakbay ng Pagkain' — 'Day 2' is English. Learner-facing day slides should use Filipino.",
+     "fix": "Palitan ng: 'Araw 2: Paglalakbay ng Pagkain'"
+    },
+    {
+     "id": "c6",
+     "severity": "major",
+     "category": "language_quality",
+     "path": "slides[22].title",
+     "problem": "'Day 3: Sirkulasyon at Paghinga' — 'Day 3' is English on a learner slide.",
+     "fix": "Palitan ng: 'Araw 3: Sirkulasyon at Paghinga'"
+    },
+    {
+     "id": "c7",
+     "severity": "major",
+     "category": "language_quality",
+     "path": "slides[33].title",
+     "problem": "'Day 4: Ugat sa Ilalim, Usbong sa Taas' — 'Day 4' is English on a learner slide.",
+     "fix": "Palitan ng: 'Araw 4: Ugat sa Ilalim, Usbong sa Taas'"
+    },
+    {
+     "id": "c8",
+     "severity": "major",
+     "category": "language_quality",
+     "path": "slides[42].title",
+     "problem": "'Day 5: Review at Poster' — 'Day 5' and 'Review' are English on a learner slide.",
+     "fix": "Palitan ng: 'Araw 5: Balik-aral at Poster'"
+    },
+    {
+     "id": "c9",
+     "severity": "major",
+     "category": "language_quality",
+     "path": "guide.background[1].paragraphs[1]",
+     "problem": "'Ang mga skeletal muscle ay boluntaryo dahil nagpapasya tayong igalaw ang mga ito' — 'boluntaryo' is a formal/puristic Filipino word a Grade 4 child would not hear in class. The concept of voluntary vs involuntary muscle is also beyond Grade 4 scope and not required by the competency.",
+     "fix": "Alisin ang pangungusap tungkol sa boluntaryo/di-boluntaryo na kalamnan; panatilihin ang paglalarawan ng tatlong uri ng kalamnan nang simple: 'May tatlong uri ng kalamnan: skeletal muscle na nakakabit sa buto, smooth muscle sa mga organ, at cardiac muscle sa puso.'"
+    },
+    {
+     "id": "c10",
+     "severity": "major",
+     "category": "language_quality",
+     "path": "guide.background[3].paragraphs[0]",
+     "problem": "'dinadala ng mga ugat (veins) ang dugo pabalik' — 'ugat' is used here for veins, but throughout the pack 'ugat' means plant roots. This creates a confusing collision of terms for Grade 4 learners and teachers. Philippine schools use 'ugat' for plant roots and 'bena' or simply 'veins' for blood vessels.",
+     "fix": "Palitan ang 'mga ugat (veins)' ng 'mga veins' o 'mga bena (veins)' upang hindi malito sa ugat ng halaman."
+    },
+    {
+     "id": "c11",
+     "severity": "major",
+     "category": "readability",
+     "path": "guide.background[0].paragraphs[0]",
+     "problem": "The paragraph is 97 words — far over the 48-word card limit if used as teacher background read aloud, and contains unexplained jargon ('cell', 'tissue', 'organ system') introduced without scaffolding for Grade 4. While this is teacher background, the density makes it hard to use as a quick reference.",
+     "fix": "Hatiin sa dalawang maikling talata: una ang hierarchy (cell → tissue → organ → organ system) sa simpleng salita; pangalawa ang limang sistema at ang kanilang pangunahing trabaho."
+    },
+    {
+     "id": "c12",
+     "severity": "major",
+     "category": "consistency",
+     "path": "days[3].flow[4].teacher",
+     "problem": "Teacher says 'Ang kangkong ay may mga usbong na tumutubo sa itaas ng tubig o lupa' but guide.vocabulary[9] defines shoot system as 'lahat ng bahagi ng halaman na nasa itaas ng lupa' — kangkong grows in water, so 'itaas ng lupa' is inconsistent with the local example. The vocabulary definition should say 'itaas ng lupa o tubig' to cover aquatic plants.",
+     "fix": "Sa guide.vocabulary[9].meaning, palitan ang 'nasa itaas ng lupa' ng 'nasa itaas ng lupa o tubig'."
+    },
+    {
+     "id": "c13",
+     "severity": "major",
+     "category": "language_quality",
+     "path": "slides[35].lines[2]",
+     "problem": "'Shoot system — lahat ng bahaging nasa itaas ng lupa: tangkay, dahon, usbong, bulaklak, bunga.' — 'usbong' (seedling/sprout) is listed as a part of the shoot system alongside stem, leaf, flower, fruit. A seedling is a whole young plant, not a plant part. The correct term for bud is 'bud' or 'bukol' in Filipino botany.",
+     "fix": "Palitan ang 'usbong' sa listahan ng 'buds' (o 'bukol'): 'tangkay, dahon, buds, bulaklak, bunga.'"
+    },
+    {
+     "id": "c14",
+     "severity": "minor",
+     "category": "language_quality",
+     "path": "guide.background[4].paragraphs[1]",
+     "problem": "'Maraming damo at pananim sa Pilipinas, tulad ng palay at kogon, ay may fibrous root system na malawak kumalat' — 'malawak kumalat' is stiff/translated-sounding. Natural Filipino would be 'kumakalat nang malawak'.",
+     "fix": "Palitan ng 'kumakalat nang malawak'."
+    },
+    {
+     "id": "c15",
+     "severity": "minor",
+     "category": "language_quality",
+     "path": "guide.misconceptions[0].howToAddress",
+     "problem": "'ang init na nararamdaman mo sa iyong pulso ay mula sa dugo sa balat, hindi mula sa buto' — this clarification about warmth at the pulse is tangential and confusing; the misconception being addressed is that bones are dead/dry, not that pulse warmth comes from bones. The sentence adds unnecessary complexity.",
+     "fix": "Alisin ang pangungusap tungkol sa init ng pulso; panatilihin ang paliwanag na buhay ang buto dahil may blood vessels, nerves, lumalaki, at gumagaling."
+    },
+    {
+     "id": "c16",
+     "severity": "minor",
+     "category": "consistency",
+     "path": "days[4].flow[4].teacher",
+     "problem": "Teacher script says poster section 3 requires 'isang lokal na halimbawang halaman (hal. kangkong o mung bean)' but assessment q8 prompt says '(hal. kangkong o munggo)'. 'Mung bean' and 'munggo' refer to the same plant but the inconsistency in naming across teacher script and assessment may confuse teachers.",
+     "fix": "Gamitin ang 'munggo' nang pare-pareho sa lahat ng teacher script at assessment prompt."
+    },
+    {
+     "id": "c17",
+     "severity": "minor",
+     "category": "language_quality",
+     "path": "slides[51].lines[1]",
+     "problem": "'Ang buto ay parang lever, at ang kasukasuan ang nagpapabend.' — 'nagpapabend' is awkward Taglish mixing a Filipino prefix with an English verb stem in a non-standard way. 'Bend' is not a science term Filipinos use as a single Filipino word.",
+     "fix": "Palitan ng: 'Ang buto ay parang lever, at ang kasukasuan ang punto ng pag-ikot.'"
+    },
+    {
+     "id": "c18",
+     "severity": "minor",
+     "category": "readability",
+     "path": "guide.studentQuestions[2].answer",
+     "problem": "'lumilikha ng malakas na pagnanasang huminga' — 'pagnanasa' in Filipino commonly carries a connotation of desire/longing (often romantic), not the physiological urge to breathe. A Grade 4 child or teacher would find this odd.",
+     "fix": "Palitan ng 'lumilikha ng matinding pangangailangang huminga'."
+    }
+   ],
+   "previous": []
+  },
+  {
+   "verdict": "revise",
+   "issues": [
+    {
+     "id": "c1",
+     "severity": "blocker",
+     "category": "scientific_accuracy",
+     "path": "guide.background[2].paragraphs[1]",
+     "problem": "Still open: Rejected patch: guide.background[2].paragraphs[1] still says most chemical digestion happens in the bibig at maliit na bituka. (Originally: 'Karamihan sa chemical digestion ay nangyayari sa bibig at maliit na bituka' — false. Most chemical digestion occurs in the small intestine; only starch digestion begins in the mouth. The same paragraph contradicts itself two sentences earlier ('pangunahing natatapos sa maliit na bituka').)",
+     "fix": "Palitan ng: 'Nagsisimula ang chemical digestion sa bibig (starch lamang), ngunit karamihan sa chemical digestion ay nangyayari sa maliit na bituka.'"
+    }
+   ],
+   "previous": [
+    {
+     "id": "c1",
+     "status": "open",
+     "note": "Rejected patch: guide.background[2].paragraphs[1] still says most chemical digestion happens in the bibig at maliit na bituka."
+    },
+    {
+     "id": "c2",
+     "status": "fixed",
+     "note": "days[3].flow[4].teacher now correctly describes kangkong growing in water or wet soil with floating/rising shoots."
+    },
+    {
+     "id": "c3",
+     "status": "fixed",
+     "note": "slides[50].title now reads 'Aling dalawang system ang nagtutulungan para gumalaw?', matching the question and key."
+    },
+    {
+     "id": "c4",
+     "status": "fixed",
+     "note": "Cover title is now Filipino-led Taglish with English science terms only."
+    },
+    {
+     "id": "c5",
+     "status": "fixed",
+     "note": "slides[12].title now uses 'Araw 2'."
+    },
+    {
+     "id": "c6",
+     "status": "fixed",
+     "note": "slides[22].title now uses 'Araw 3'."
+    },
+    {
+     "id": "c7",
+     "status": "fixed",
+     "note": "slides[33].title now uses 'Araw 4'."
+    },
+    {
+     "id": "c8",
+     "status": "fixed",
+     "note": "slides[42].title now reads 'Araw 5: Balik-aral at Poster'."
+    },
+    {
+     "id": "c9",
+     "status": "fixed",
+     "note": "The boluntaryo/di-boluntaryo sentence is gone; three muscle types are listed simply."
+    },
+    {
+     "id": "c10",
+     "status": "fixed",
+     "note": "guide.background[3].paragraphs[0] now uses 'mga bena (veins)', avoiding the ugat collision."
+    },
+    {
+     "id": "c11",
+     "status": "fixed",
+     "note": "background[0] is split into a short hierarchy paragraph and a scope paragraph; the hierarchy line is now simple."
+    },
+    {
+     "id": "c12",
+     "status": "fixed",
+     "note": "guide.vocabulary[9].meaning and slides[35].lines[2] both say 'itaas ng lupa o tubig', consistent with kangkong."
+    },
+    {
+     "id": "c13",
+     "status": "fixed",
+     "note": "'usbong' replaced by 'buds' in the shoot-system list on slides[35]."
+    },
+    {
+     "id": "c14",
+     "status": "open",
+     "note": "Rejected patch: 'malawak kumalat' remains in guide.background[4].paragraphs[1]; minor polish only."
+    },
+    {
+     "id": "c15",
+     "status": "fixed",
+     "note": "The pulse-warmth sentence was removed from misconceptions[0].howToAddress."
+    },
+    {
+     "id": "c16",
+     "status": "withdrawn",
+     "note": "Writer's reason is acceptable: mung bean and munggo name the same plant and no learner confusion results."
+    },
+    {
+     "id": "c17",
+     "status": "fixed",
+     "note": "slides[51].lines[1] now says 'ang kasukasuan ang punto ng pag-ikot'."
+    },
+    {
+     "id": "c18",
+     "status": "fixed",
+     "note": "'pagnanasa' replaced with 'matinding pangangailangang huminga'."
+    }
+   ]
+  },
+  {
+   "verdict": "pass",
+   "issues": [],
+   "previous": [
+    {
+     "id": "c1",
+     "status": "fixed",
+     "note": "guide.background[2].paragraphs[1] now reads 'Nagsisimula ang chemical digestion sa bibig (starch lamang), ngunit karamihan sa chemical digestion ay nangyayari sa maliit na bituka', matching paragraph[0], misconception[2] and assessment q2."
+    }
+   ]
+  }
+ ],
+ "revisions": [
+  {
+   "applied": [
+    {
+     "path": "days[3].flow[4].teacher",
+     "issueIds": [
+      "c2",
+      "c12"
+     ]
+    },
+    {
+     "path": "guide.vocabulary[9].meaning",
+     "issueIds": [
+      "c12"
+     ]
+    },
+    {
+     "path": "slides[0].title",
+     "issueIds": [
+      "c4"
+     ]
+    },
+    {
+     "path": "slides[12].title",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "slides[22].title",
+     "issueIds": [
+      "c6"
+     ]
+    },
+    {
+     "path": "slides[33].title",
+     "issueIds": [
+      "c7"
+     ]
+    },
+    {
+     "path": "slides[42].title",
+     "issueIds": [
+      "c8"
+     ]
+    },
+    {
+     "path": "slides[50].title",
+     "issueIds": [
+      "c3"
+     ]
+    },
+    {
+     "path": "guide.background[1].paragraphs[1]",
+     "issueIds": [
+      "c9"
+     ]
+    },
+    {
+     "path": "guide.background[3].paragraphs[0]",
+     "issueIds": [
+      "c10"
+     ]
+    },
+    {
+     "path": "guide.background[0].paragraphs[0]",
+     "issueIds": [
+      "c11"
+     ]
+    },
+    {
+     "path": "guide.background[0].paragraphs",
+     "issueIds": [
+      "c11"
+     ]
+    },
+    {
+     "path": "guide.vocabulary[9].meaning",
+     "issueIds": [
+      "c12"
+     ]
+    },
+    {
+     "path": "slides[35].lines[2]",
+     "issueIds": [
+      "c13",
+      "c12"
+     ]
+    },
+    {
+     "path": "guide.misconceptions[0].howToAddress",
+     "issueIds": [
+      "c15"
+     ]
+    },
+    {
+     "path": "slides[51].lines[1]",
+     "issueIds": [
+      "c17"
+     ]
+    },
+    {
+     "path": "guide.studentQuestions[2].answer",
+     "issueIds": [
+      "c18"
+     ]
+    }
+   ],
+   "rejected": [
+    {
+     "path": "guide.background[2].paragraphs[1]",
+     "reason": "the quoted current value does not match this path (wrong index?)"
+    },
+    {
+     "path": "guide.background[4].paragraphs[1]",
+     "reason": "the quoted current value does not match this path (wrong index?)"
+    }
+   ],
+   "declined": [
+    {
+     "issueId": "c16",
+     "reason": "Ang 'mung bean' at 'munggo' ay parehong tinatanggap na termino; ang inconsistency ay hindi nagdudulot ng kalituhan dahil parehong tumutukoy sa iisang halaman. Hindi kritikal ang pagbabago."
+    }
+   ]
+  },
+  {
+   "applied": [
+    {
+     "path": "guide.background[2].paragraphs[1]",
+     "issueIds": [
+      "c1"
+     ]
+    }
+   ],
+   "rejected": [],
+   "declined": []
+  }
+ ],
+ "verification": {
+  "confirmedFixed": 16,
+  "withdrawn": 1,
+  "open": 0
+ },
+ "finalChecks": {
+  "failures": [],
+  "warnings": [
+   "d4s3: line 1 is long for a TV slide (92 characters)",
+   "d4s3: line 3 is long for a TV slide (99 characters)",
+   "d4s9: line 1 is long for a TV slide (114 characters)",
+   "d4s9: line 2 is long for a TV slide (96 characters)",
+   "d5s1: line 1 is long for a TV slide (101 characters)",
+   "d5s10: reveal text does not echo the correct choice \"skeletal at muscular\"",
+   "acronym PDF is never expanded",
+   "vocabulary \"Circulation\" is not used in any lesson or slide",
+   "vocabulary \"Breathing\" is not used in any lesson or slide"
+  ]
+ },
+ "verbiage": {
+  "rulesVersion": "verbiage/1",
+  "state": "warn",
+  "metrics": {
+   "slides": 52,
+   "maxWordsOnSlide": 54,
+   "slidesOver48Words": 7,
+   "avgSentenceWords": 6.8,
+   "maxSentenceWords": 17,
+   "englishFunctionShare": 0,
+   "filipinoFunctionShare": null
+  },
+  "findings": [
+   "d0s1: title \"Mga Body System at Root at Shoot System ng Halaman\" is long for a child (≤ 8 words, no semicolon)",
+   "d1s8: 54 words on the slide (Hiraia cards stop at 48)",
+   "d1s9: 51 words on the slide (Hiraia cards stop at 48)",
+   "d2s8: 51 words on the slide (Hiraia cards stop at 48)",
+   "d4s3: 50 words on the slide (Hiraia cards stop at 48)",
+   "d4s6: 51 words on the slide (Hiraia cards stop at 48)",
+   "d4s9: 50 words on the slide (Hiraia cards stop at 48)",
+   "d5s6: 53 words on the slide (Hiraia cards stop at 48)"
+  ]
+ },
+ "images": "Same drawings and slides as the English edition; each drawing was checked against the English text of its slide."
+}

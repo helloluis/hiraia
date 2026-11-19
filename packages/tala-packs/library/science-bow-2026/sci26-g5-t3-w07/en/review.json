@@ -1,0 +1,57 @@
+{
+ "packId": "sci26-g5-t3-w07",
+ "language": "en",
+ "contentSha256": "82750d9fbddd1cba32069cb8fd67e161059ac616d1a085e2df781157872eed62",
+ "autoChecks": {
+  "state": "pass",
+  "checkerVersion": "checks/1",
+  "failures": [],
+  "warnings": [
+   "d1s3: line 3 is long for a TV slide (94 characters)",
+   "d3s8: line 2 is long for a TV slide (109 characters)",
+   "d5s8: line 3 is long for a TV slide (102 characters)",
+   "day 4: no check-and-answer pair on the slides (the written exit ticket remains)",
+   "acronym NOT is never expanded",
+   "acronym WIND is never expanded",
+   "acronym PDF is never expanded",
+   "vocabulary \"public storm warning signal / tropical cyclone wind signal\" is not used in any lesson or slide"
+  ],
+  "at": "2026-11-19T04:35:47.437Z"
+ },
+ "modelCritique": {
+  "state": "issues_open",
+  "model": "qwen4-max",
+  "rounds": 3,
+  "openIssues": [
+   "[major] alignment at slides[14].lines: Still open: slides[14] and days[1].flow[1].teacher are fixed, but slides[17].lines still lacks the describe step — patch was rejected due to array length limit. (Originally: Day 2's objective is now 'describe the weather conditions expected under each PAGASA wind signal', but the purpose slide learners read still says only 'Match each PAGASA wind signal … with the wind strength and damage it brings', and days[1].flow[1].teacher repeats the matching goal. The describe step exists only in teacher text (days[1].flow[3].teacher), so learners are never told on",
+   "[major] alignment at slides[17].lines: Still open: slides[14] and days[1].flow[1].teacher are fixed, but slides[17].lines still lacks the describe step — patch was rejected due to array length limit. (Originally: The activity slide lists only matching and explaining matches; the required 2–3 sentence weather description per signal (added in days[1].flow[3].teacher) has no step on the slide, so groups working from the TV will never produce the description that t3.13 assesses.)"
+  ],
+  "resolvedIssues": 17,
+  "at": "2026-11-19T04:35:47.437Z"
+ },
+ "teacherReview": null,
+ "expertReview": null,
+ "verbiage": {
+  "rulesVersion": "verbiage/1",
+  "state": "warn",
+  "metrics": {
+   "slides": 52,
+   "maxWordsOnSlide": 51,
+   "slidesOver48Words": 1,
+   "avgSentenceWords": 6.6,
+   "maxSentenceWords": 20,
+   "englishFunctionShare": null,
+   "filipinoFunctionShare": 0
+  },
+  "findings": [
+   "d1s2: title \"What does a typhoon look like from your window?\" is long for a child (≤ 8 words, no semicolon)",
+   "d1s10: title \"Which is an effect of a typhoon on crops?\" is long for a child (≤ 8 words, no semicolon)",
+   "d2s6: 51 words on the slide (Hiraia cards stop at 48)",
+   "d3s2: title \"What does the sky look like before a typhoon?\" is long for a child (≤ 8 words, no semicolon)",
+   "d3s10: title \"The rain stops and it feels calm. What now?\" is long for a child (≤ 8 words, no semicolon)",
+   "d5s5: title \"Which part of a typhoon is the most dangerous?\" is long for a child (≤ 8 words, no semicolon)"
+  ]
+ },
+ "publication": "draft",
+ "publicationBy": null
+}

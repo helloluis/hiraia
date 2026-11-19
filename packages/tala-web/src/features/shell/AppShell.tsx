@@ -10,12 +10,15 @@ import { NetworkBanner } from './NetworkBanner';
 import { SyncIndicator } from './SyncIndicator';
 import { GenerationRunner } from '@/features/generate/GenerationRunner';
 
+/** Phone bottom bar: at most four destinations (SIMPLE-9). Community is reached from the Library page. */
 const NAV = [
   { href: '/week', key: 'nav.week', icon: '▦' },
+  { href: '/library', key: 'nav.library', icon: '▤' },
   { href: '/lessons', key: 'nav.lessons', icon: '≡' },
-  { href: '/community', key: 'nav.community', icon: '☺' },
   { href: '/class', key: 'nav.class', icon: '⌂' },
 ] as const;
+/** Wide screens have room for Community in the side rail as well. */
+const RAIL = [...NAV.slice(0, 3), { href: '/community', key: 'nav.community', icon: '☺' }, NAV[3]] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { t } = useT();
@@ -66,7 +69,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <TalaWordmark height={22} />
         </div>
         <nav aria-label={t('nav.main')} className="flex flex-col px-2">
-          {NAV.map((n) => (
+          {RAIL.map((n) => (
             <NavLink
               key={n.href}
               href={n.href}

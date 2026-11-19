@@ -1,0 +1,68 @@
+{
+ "packId": "sci26-g5-t3-w07",
+ "language": "fil",
+ "contentSha256": "799be875449975c3e1ad4e38bdd1062c50d6e3a56118e8163c27c4b841ec4b4c",
+ "autoChecks": {
+  "state": "pass",
+  "checkerVersion": "checks/1",
+  "failures": [],
+  "warnings": [
+   "d1s3: line 2 is long for a TV slide (103 characters)",
+   "d1s3: line 3 is long for a TV slide (99 characters)",
+   "d3s4: line 1 is long for a TV slide (94 characters)",
+   "d3s4: line 3 is long for a TV slide (98 characters)",
+   "d3s7: line 2 is long for a TV slide (97 characters)",
+   "d3s8: line 2 is long for a TV slide (118 characters)",
+   "d3s9: line 1 is long for a TV slide (91 characters)",
+   "d3s9: line 3 is long for a TV slide (94 characters)",
+   "d3s10: line 1 is long for a TV slide (91 characters)",
+   "d5s3: line 1 is long for a TV slide (99 characters)",
+   "d5s8: line 3 is long for a TV slide (109 characters)",
+   "day 4: no check-and-answer pair on the slides (the written exit ticket remains)",
+   "day 4: mentions \"wire\" but the lesson steps carry no safety instruction",
+   "acronym HUWAG is never expanded",
+   "acronym HABANG is never expanded",
+   "acronym MAY is never expanded",
+   "acronym PDF is never expanded"
+  ],
+  "at": "2026-11-19T04:42:11.783Z"
+ },
+ "modelCritique": {
+  "state": "issues_open",
+  "model": "qwen4-max",
+  "rounds": 3,
+  "openIssues": [
+   "[major] scientific_accuracy at guide.background[1].paragraphs[0]: Still open: Applied paths are correct, but the rejected slides[16] patch left an exact-countdown example in its notes, and two other named places still teach fixed lead times. (Originally: Still open: guide.background[1] and assessment[2] are fixed, but the same exact-countdown lead times remain on learner slides and in Day 2 teacher talk. (Originally: Lead times are stated as fixed certainties: \"Ang Signal No. 1 ay nangangahulugang malakas na hangin na 30–60 km/h ay maaaring dumating sa loob ng 36 oras... Signal No. 2... sa loo"
+  ],
+  "resolvedIssues": 17,
+  "at": "2026-11-19T04:42:11.783Z"
+ },
+ "teacherReview": null,
+ "expertReview": null,
+ "verbiage": {
+  "rulesVersion": "verbiage/1",
+  "state": "warn",
+  "metrics": {
+   "slides": 52,
+   "maxWordsOnSlide": 52,
+   "slidesOver48Words": 7,
+   "avgSentenceWords": 7.1,
+   "maxSentenceWords": 21,
+   "englishFunctionShare": 0,
+   "filipinoFunctionShare": null
+  },
+  "findings": [
+   "d1s2: title \"Ano ang itsura ng bagyo mula sa bintana mo?\" is long for a child (≤ 8 words, no semicolon)",
+   "d1s3: 50 words on the slide (Hiraia cards stop at 48)",
+   "d1s7: 50 words on the slide (Hiraia cards stop at 48)",
+   "d2s2: title \"Ano ang ginagawa ng pamilya ninyo bago ang bagyo?\" is long for a child (≤ 8 words, no semicolon)",
+   "d2s6: 50 words on the slide (Hiraia cards stop at 48)",
+   "d2s7: 52 words on the slide (Hiraia cards stop at 48)",
+   "d3s4: 51 words on the slide (Hiraia cards stop at 48)",
+   "d3s10: 50 words on the slide (Hiraia cards stop at 48)",
+   "d5s8: 51 words on the slide (Hiraia cards stop at 48)"
+  ]
+ },
+ "publication": "draft",
+ "publicationBy": null
+}

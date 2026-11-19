@@ -1,0 +1,27 @@
+{
+  "name": "@hiraia/tala-packs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tala prebuilt weekly teaching packs: curriculum targets, grounding, generation, checks, critique, illustration mapping, PPTX/PDF rendering and the review ledger. Offline batch tooling; nothing here runs in the web request path.",
+  "type": "module",
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "test": "tsx --test \"src/**/*.test.ts\"",
+    "packs": "tsx src/cli.ts"
+  },
+  "dependencies": {
+    "@hiraia/tala-core": "workspace:*",
+    "better-sqlite3": "^12.10.0",
+    "jszip": "^3.10.1",
+    "playwright-core": "1.58.2",
+    "pptxgenjs": "^4",
+    "sharp": "^0.34",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.15.29",
+    "tsx": "^4.19.2",
+    "typescript": "^5.8.3"
+  }
+}

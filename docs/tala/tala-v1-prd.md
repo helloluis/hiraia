@@ -1156,7 +1156,7 @@ Not in Tala V1.0:
 - On-device lesson generation (generation requires a connection in V1.0)
 - Generation or interface in Cebuano or any language other than Filipino and English
 - Photo/handwriting roster import; photo timetable import
-- Generated images, slides, worksheets as separate designed files, or quizzes with answer keys as a distinct product feature (a plan's assessment section is in scope)
+- Generated images, worksheets as separate designed files, or quizzes with answer keys as a distinct product feature (a plan's assessment section is in scope). *Superseded for slides and teacher guides by §18.4: Hiraia's prebuilt weekly teaching packs include classroom slide decks, teacher guides and answer keys.*
 - DOCX or Google Docs export; Google Drive, Classroom or Calendar integration
 - Real-time co-editing of a plan by two teachers
 - Regional contextualised curriculum content shipped by Tala
@@ -1224,6 +1224,22 @@ Each was resolved in favour of decision 14. The lighter path is now the V1.0 req
 | Appendix B: many configurable parameters | Could surface as teacher settings | Hiraia-side configuration only; teacher Settings holds five items (SIMPLE-4) |
 
 ---
+
+### 18.4 Luis's decisions (19 November 2026): prebuilt teaching packs
+
+Luis: "the average science teachers are themselves not science experts … prebuild all the weekly lesson plans along with
+PowerPoint slides that they can display on the classroom TV as well as teacher notes so they actually understand what
+they're teaching … combine the Hiraia illustrations." Later the same day: slides "generatable in Filipino as well";
+DeepSeek V4.1 Flash as the generator; Filipino "basic enough for grade school kids", Taglish allowed, following the
+Hiraia app's wording rules.
+
+| # | Decision | Where applied |
+|---|---|---|
+| 16 | **Library first, AI adaptation second.** Tala opens on a library of prepared weekly packs for each DepEd Science week (Grades 3–10, 2026 three-term BOW); a teacher previews and downloads a pack, or copies its five lessons into her own plans and optionally adapts one to her class with AI (existing `adapt` generation). Hand-written plans, community, rosters, offline use and multi-grade planning are unchanged. | `docs/tala/teaching-packs/`, `packages/tala-packs`, server module `packs`, web `/library` |
+| 17 | **A pack per week, per language:** five MATATAG-format lesson plans (45 minutes, five times a week: DO 010 and 012, s. 2024), a 16:9 classroom deck with speaker notes, and a teacher guide for non-specialists (the science and why, prerequisites, vocabulary, misconceptions, learners' questions with answers, Philippine examples, materials, safety, expected observations, worked answers, sources). English and Filipino, same structure; review status per language. | `WeeklyPackContent`, `PackReview` |
+| 18 | **Hiraia's approved B&W illustrations only**, chosen per competency from the app's own curriculum tags and checked against each slide; nothing generated or redrawn. Missing art is reported. | `data/art/competency-candidates.json` |
+| 19 | **Review is staged and never merged:** deterministic checks → independent model critique (not human review) → named teacher and expert review → publication by Luis or a reviewer he names. Only approved packs are public; reviewers see drafts. | `PackReview`, `packs` module |
+| 20 | **Model tiers:** DeepSeek V4.1 Flash for high-volume plans, slides and notes; DeepSeek V4 Pro with reasoning for each week's design and teacher-guide science; Qwen (direct) as independent critic and image checker. Never through an aggregator. | `packages/tala-packs/src/llm.ts` |
 
 ## 19. Assumptions to confirm, and open questions
 

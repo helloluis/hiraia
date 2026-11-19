@@ -1,0 +1,57 @@
+{
+ "packId": "sci26-g4-t1-w08",
+ "language": "fil",
+ "contentSha256": "3420dc607da2c9dd70d57824d0104acac5121be230cb02af43d2677aa983da33",
+ "autoChecks": {
+  "state": "pass",
+  "checkerVersion": "checks/1",
+  "failures": [],
+  "warnings": [
+   "d4s3: line 1 is long for a TV slide (92 characters)",
+   "d4s3: line 3 is long for a TV slide (99 characters)",
+   "d4s9: line 1 is long for a TV slide (114 characters)",
+   "d4s9: line 2 is long for a TV slide (96 characters)",
+   "d5s1: line 1 is long for a TV slide (101 characters)",
+   "d5s10: reveal text does not echo the correct choice \"skeletal at muscular\"",
+   "acronym PDF is never expanded",
+   "vocabulary \"Circulation\" is not used in any lesson or slide",
+   "vocabulary \"Breathing\" is not used in any lesson or slide"
+  ],
+  "at": "2026-11-19T04:42:06.699Z"
+ },
+ "modelCritique": {
+  "state": "pass",
+  "model": "qwen4-max",
+  "rounds": 3,
+  "openIssues": [],
+  "resolvedIssues": 16,
+  "at": "2026-11-19T04:42:06.699Z"
+ },
+ "teacherReview": null,
+ "expertReview": null,
+ "verbiage": {
+  "rulesVersion": "verbiage/1",
+  "state": "warn",
+  "metrics": {
+   "slides": 52,
+   "maxWordsOnSlide": 54,
+   "slidesOver48Words": 7,
+   "avgSentenceWords": 6.8,
+   "maxSentenceWords": 17,
+   "englishFunctionShare": 0,
+   "filipinoFunctionShare": null
+  },
+  "findings": [
+   "d0s1: title \"Mga Body System at Root at Shoot System ng Halaman\" is long for a child (≤ 8 words, no semicolon)",
+   "d1s8: 54 words on the slide (Hiraia cards stop at 48)",
+   "d1s9: 51 words on the slide (Hiraia cards stop at 48)",
+   "d2s8: 51 words on the slide (Hiraia cards stop at 48)",
+   "d4s3: 50 words on the slide (Hiraia cards stop at 48)",
+   "d4s6: 51 words on the slide (Hiraia cards stop at 48)",
+   "d4s9: 50 words on the slide (Hiraia cards stop at 48)",
+   "d5s6: 53 words on the slide (Hiraia cards stop at 48)"
+  ]
+ },
+ "publication": "draft",
+ "publicationBy": null
+}

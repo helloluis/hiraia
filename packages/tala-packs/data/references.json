@@ -1,0 +1,223 @@
+{
+  "version": 1,
+  "purpose": "Closed list of sources a teaching pack may cite. The generator cites only these ids (plus a locator such as a chapter or DCI code); the checker rejects any other id. A citation names where a teacher can confirm an idea; it is model-selected and has not been verified line by line by a person.",
+  "checkedAt": "2026-11-19T02:20Z",
+  "references": [
+    {
+      "id": "deped-bow-science-2026",
+      "kind": "curriculum",
+      "title": "Science, Grades 3–10: Three-Term Budget of Work for Learning Competencies (last updated April 8, 2026)",
+      "publisher": "Department of Education (Philippines)",
+      "url": "https://sites.google.com/deped.gov.ph/lsguide/budgets-of-work",
+      "locatorHint": "Grade, term and page, e.g. 'Grade 4, First Term, p. 2'",
+      "verification": "Archived copies with SHA-256 in rag/sources/curriculum-guides/three-term-2026/sources.json; text matches Tala curriculum packs."
+    },
+    {
+      "id": "deped-do-010-2024",
+      "kind": "policy",
+      "title": "DepEd Order No. 010, s. 2024: Policy Guidelines on the Implementation of the MATATAG Curriculum",
+      "publisher": "Department of Education (Philippines)",
+      "url": "https://www.deped.gov.ph/wp-content/uploads/DO_s2024_010.pdf",
+      "locatorHint": "Table number and printed page, e.g. 'Table 6, p. 41'",
+      "verification": "HTTP 200 on 2026-11-19; Tables 3, 5 and 6 read from the scanned pages."
+    },
+    {
+      "id": "deped-do-012-2024",
+      "kind": "policy",
+      "title": "DepEd Order No. 012, s. 2024: Amendment to DepEd Order No. 010, s. 2024",
+      "publisher": "Department of Education (Philippines)",
+      "url": "https://www.deped.gov.ph/wp-content/uploads/DO_s2024_012.pdf",
+      "locatorHint": "Paragraph, e.g. '§2.a'",
+      "verification": "HTTP 200 on 2026-11-19; §2 read from the scanned pages."
+    },
+    {
+      "id": "nrc-framework-2012",
+      "kind": "framework",
+      "title": "A Framework for K-12 Science Education: Practices, Crosscutting Concepts, and Core Ideas (2012)",
+      "publisher": "National Research Council, The National Academies Press",
+      "url": "https://doi.org/10.17226/13165",
+      "locatorHint": "Disciplinary core idea code, e.g. 'PS1.A', 'LS1.C', 'ESS2.D'",
+      "verification": "DOI resolves (302) to the publisher page on 2026-11-19; the publisher blocks automated page checks. The MATATAG Science curriculum names this framework as a basis (rag/sources/GROUNDING.md)."
+    },
+    {
+      "id": "aaas-benchmarks",
+      "kind": "framework",
+      "title": "Benchmarks for Science Literacy (Project 2061)",
+      "publisher": "American Association for the Advancement of Science",
+      "url": "https://www.project2061.org/publications/bsl/online/index.php",
+      "locatorHint": "Chapter and section, e.g. 'Ch. 4D Structure of Matter', 'Ch. 5E Flow of Matter and Energy'",
+      "verification": "HTTP 200 on 2026-11-19."
+    },
+    {
+      "id": "harlen-big-ideas-2015",
+      "kind": "framework",
+      "title": "Working with Big Ideas of Science Education (Harlen, ed., 2015)",
+      "publisher": "Science Education Programme of the InterAcademy Partnership",
+      "url": "https://www.interacademies.org/publication/working-big-ideas-science-education",
+      "locatorHint": "Big Idea number, e.g. 'Big Idea 1'",
+      "verification": "HTTP 200 on 2026-11-19. Named by the MATATAG Science curriculum as a basis."
+    },
+    {
+      "id": "openstax-concepts-biology",
+      "kind": "textbook",
+      "title": "Concepts of Biology (OpenStax, CC BY 4.0)",
+      "publisher": "OpenStax, Rice University",
+      "url": "https://openstax.org/details/books/concepts-biology",
+      "locatorHint": "Chapter and section, e.g. 'Ch. 5.1 Overview of Photosynthesis'",
+      "verification": "HTTP 200 on 2026-11-19."
+    },
+    {
+      "id": "openstax-biology-2e",
+      "kind": "textbook",
+      "title": "Biology 2e (OpenStax, CC BY 4.0)",
+      "publisher": "OpenStax, Rice University",
+      "url": "https://openstax.org/details/books/biology-2e",
+      "locatorHint": "Chapter and section",
+      "verification": "HTTP 200 on 2026-11-19."
+    },
+    {
+      "id": "openstax-anatomy-physiology-2e",
+      "kind": "textbook",
+      "title": "Anatomy and Physiology 2e (OpenStax, CC BY 4.0)",
+      "publisher": "OpenStax, Rice University",
+      "url": "https://openstax.org/details/books/anatomy-and-physiology-2e",
+      "locatorHint": "Chapter and section",
+      "verification": "HTTP 200 on 2026-11-19."
+    },
+    {
+      "id": "openstax-microbiology",
+      "kind": "textbook",
+      "title": "Microbiology (OpenStax, CC BY 4.0)",
+      "publisher": "OpenStax, Rice University",
+      "url": "https://openstax.org/details/books/microbiology",
+      "locatorHint": "Chapter and section",
+      "verification": "HTTP 200 on 2026-11-19."
+    },
+    {
+      "id": "openstax-chemistry-2e",
+      "kind": "textbook",
+      "title": "Chemistry 2e (OpenStax, CC BY 4.0)",
+      "publisher": "OpenStax, Rice University",
+      "url": "https://openstax.org/details/books/chemistry-2e",
+      "locatorHint": "Chapter and section",
+      "verification": "HTTP 200 on 2026-11-19."
+    },
+    {
+      "id": "openstax-physics-hs",
+      "kind": "textbook",
+      "title": "Physics (OpenStax high-school edition, CC BY 4.0)",
+      "publisher": "OpenStax, Rice University",
+      "url": "https://openstax.org/details/books/physics",
+      "locatorHint": "Chapter and section",
+      "verification": "HTTP 200 on 2026-11-19."
+    },
+    {
+      "id": "openstax-college-physics-2e",
+      "kind": "textbook",
+      "title": "College Physics 2e (OpenStax, CC BY 4.0)",
+      "publisher": "OpenStax, Rice University",
+      "url": "https://openstax.org/details/books/college-physics-2e",
+      "locatorHint": "Chapter and section",
+      "verification": "HTTP 200 on 2026-11-19."
+    },
+    {
+      "id": "openstax-astronomy-2e",
+      "kind": "textbook",
+      "title": "Astronomy 2e (OpenStax, CC BY 4.0)",
+      "publisher": "OpenStax, Rice University",
+      "url": "https://openstax.org/details/books/astronomy-2e",
+      "locatorHint": "Chapter and section",
+      "verification": "HTTP 200 on 2026-11-19."
+    },
+    {
+      "id": "pagasa",
+      "kind": "agency",
+      "title": "Philippine Atmospheric, Geophysical and Astronomical Services Administration (PAGASA)",
+      "publisher": "DOST-PAGASA",
+      "url": "https://www.pagasa.dost.gov.ph/",
+      "locatorHint": "Topic, e.g. 'Tropical Cyclone Wind Signals', 'climate of the Philippines'",
+      "verification": "HTTP 200 on 2026-11-19."
+    },
+    {
+      "id": "phivolcs",
+      "kind": "agency",
+      "title": "Philippine Institute of Volcanology and Seismology (PHIVOLCS)",
+      "publisher": "DOST-PHIVOLCS",
+      "url": "https://www.phivolcs.dost.gov.ph/",
+      "locatorHint": "Topic, e.g. 'PHIVOLCS Earthquake Intensity Scale', 'volcano alert levels', 'FaultFinder'",
+      "verification": "Official agency domain; not reachable from the build server on 2026-11-19 (connection refused, likely regional filtering). The 2026 Grade 7 BOW itself names PHIVOLCS FaultFinder."
+    },
+    {
+      "id": "denr-bmb",
+      "kind": "agency",
+      "title": "Biodiversity Management Bureau, Department of Environment and Natural Resources",
+      "publisher": "DENR-BMB",
+      "url": "https://bmb.gov.ph/",
+      "locatorHint": "Topic, e.g. 'protected areas', 'threatened species'",
+      "verification": "Official agency domain; returned 403 to automated checks on 2026-11-19."
+    },
+    {
+      "id": "doh-ph",
+      "kind": "agency",
+      "title": "Department of Health (Philippines)",
+      "publisher": "DOH",
+      "url": "https://doh.gov.ph/",
+      "locatorHint": "Topic",
+      "verification": "Official agency domain; returned 403 to automated checks on 2026-11-19."
+    },
+    {
+      "id": "who",
+      "kind": "agency",
+      "title": "World Health Organization fact sheets",
+      "publisher": "WHO",
+      "url": "https://www.who.int/news-room/fact-sheets",
+      "locatorHint": "Fact sheet title",
+      "verification": "who.int HTTP 200 on 2026-11-19."
+    },
+    {
+      "id": "nasa-science",
+      "kind": "agency",
+      "title": "NASA Science",
+      "publisher": "NASA",
+      "url": "https://science.nasa.gov/",
+      "locatorHint": "Topic page, e.g. 'Moon phases', 'Earth's seasons'",
+      "verification": "HTTP 200 on 2026-11-19."
+    },
+    {
+      "id": "noaa",
+      "kind": "agency",
+      "title": "National Oceanic and Atmospheric Administration education resources",
+      "publisher": "NOAA",
+      "url": "https://www.noaa.gov/education",
+      "locatorHint": "Topic",
+      "verification": "noaa.gov HTTP 200 on 2026-11-19."
+    },
+    {
+      "id": "usgs",
+      "kind": "agency",
+      "title": "U.S. Geological Survey science explorer",
+      "publisher": "USGS",
+      "url": "https://www.usgs.gov/",
+      "locatorHint": "Topic, e.g. 'earthquake magnitude and intensity', 'rock cycle'",
+      "verification": "Official agency domain; returned 403/405 to automated checks on 2026-11-19."
+    },
+    {
+      "id": "iucn-red-list",
+      "kind": "agency",
+      "title": "IUCN Red List of Threatened Species",
+      "publisher": "International Union for Conservation of Nature",
+      "url": "https://www.iucnredlist.org/",
+      "locatorHint": "Species name",
+      "verification": "HTTP 200 on 2026-11-19."
+    },
+    {
+      "id": "doe-ph",
+      "kind": "agency",
+      "title": "Department of Energy (Philippines)",
+      "publisher": "DOE",
+      "url": "https://doe.gov.ph/",
+      "locatorHint": "Topic, e.g. 'power generation mix', 'energy efficiency'",
+      "verification": "HTTP 200 on 2026-11-19."
+    }
+  ]
+}

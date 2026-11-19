@@ -1,0 +1,1101 @@
+{
+ "packId": "sci26-g7-t1-w06",
+ "language": "en",
+ "note": "Model critique and revision log. A model critique is not a human review.",
+ "critique": [
+  {
+   "verdict": "revise",
+   "issues": [
+    {
+     "id": "c1",
+     "severity": "blocker",
+     "category": "scientific_accuracy",
+     "path": "slides[32].lines[2]",
+     "problem": "The slide states as a rule that 'Salt solutions are neutral and do not change litmus color', and days[3].flow[3].teacher builds on it: 'Salt solutions are neutral... That is one way we know it is a salt and not an acid or a base.' Both are false. Many salts give acidic or basic solutions (sodium carbonate, ammonium chloride), and the pack's own base example — baking soda, sodium bicarbonate — IS a salt. Neutral litmus results also cannot identify a salt: sugar water and pure water are neutral but are not salts. slides[46].lines[3] repeats 'salts are neutral', and slides[32].notes even tells the teacher not to say this without qualification, contradicting the slide text.",
+     "fix": "Replace the line with: 'Table salt (sodium chloride) solution is neutral: it does not change red or blue litmus.' In days[3].flow[3].teacher and slides[46].lines[3], say: 'Litmus tells us acid or base only. A no-change result means neutral, not \"it is a salt\" — sugar water is neutral too. Some salts, like baking soda, actually give a basic solution.' Add a teacher note that 'salt' is a chemical family (acid + base product), not a third litmus category."
+    },
+    {
+     "id": "c2",
+     "severity": "major",
+     "category": "alignment",
+     "path": "days[2].objective",
+     "problem": "Competency t1.10 asks learners to DEMONSTRATE how factors affect SOLUBILITY (the maximum amount that dissolves), such as heat. Day 3 only demonstrates rate of dissolving ('heat speeds up the dissolving'), and no activity, check or assessment item anywhere tests whether warm water dissolves MORE salt than cold water. Solubility is defined in slides[24] but never investigated or assessed; assessment[2] (q3) only asks about stirring. The verb 'demonstrate ... solubility' is therefore unmet, and the day's framing risks welding 'dissolves faster' to 'dissolves more'.",
+     "fix": "Add a saturation comparison to Day 3: add salt teaspoon by teaspoon to equal volumes (e.g. 50 mL) of cold and warm water, count teaspoons until solid remains undissolved after equal stirring, and record the totals. Rewrite the objective: 'Learners will demonstrate that warm water dissolves a greater maximum amount of salt than cold water, and distinguish this from dissolving faster.' Add an assessment item asking which cup held more salt at saturation and why."
+    },
+    {
+     "id": "c3",
+     "severity": "major",
+     "category": "scientific_accuracy",
+     "path": "days[1].flow[3].teacher",
+     "problem": "Learners measure 100 mL of WATER, dissolve 5 g salt (or 10 g sugar) in it, then label and calculate it as 5% / 10% mass/volume. Percent mass/volume is per 100 mL of SOLUTION; adding 10 g sugar to 100 mL water gives about 106 mL, so the true value is about 9.4%, not 10%. This directly contradicts the formula taught in the same lesson and the generalization question ('Why do we divide by the volume of the solution, not by the amount of water?'), and days[1].expectedObservations[2] repeats the error ('10 g sugar in 100 mL solution gives 10%'). guide.background[2] flags this exact shortcut, so the pack is internally inconsistent.",
+     "fix": "Change the procedure to: dissolve the weighed solute in about 60 mL water in the cup, then pour back into the cylinder and top up to the 100 mL mark (or use a 100 mL-marked cup) before final stirring. Label 'salt solution, 5 g per 100 mL of solution'. Update expectedObservations[2] accordingly, or else label honestly as 'g of solute per 100 mL of water' and do not call it % mass/volume."
+    },
+    {
+     "id": "c4",
+     "severity": "major",
+     "category": "answer_key",
+     "path": "days[1].extension",
+     "problem": "The extension expects learners to explain 'why a small glass and a big glass of equally sweet juice do not necessarily have the same concentration'. This is backwards: equal sweetness indicates (approximately) equal concentration; the big glass contains more total sugar, not a higher concentration. The intended teaching point of the Day 2 hook is lost and a wrong idea is planted.",
+     "fix": "Rewrite as: 'Explain why a small glass and a big glass of equally sweet juice have about the same concentration, but the big glass contains more grams of sugar. Use 5 g/100 mL and 10 g/200 mL in your explanation.'"
+    },
+    {
+     "id": "c5",
+     "severity": "major",
+     "category": "scientific_accuracy",
+     "path": "days[1].expectedObservations[1]",
+     "problem": "States as an expected observation that 'The salt dissolves faster than the sugar in the same amount of water because the grains are smaller'. Grain size is not controlled or measured in this activity (materials only say 'fine salt' and 'fine sugar'), and the causal claim is invented — relative dissolving rates of NaCl and sucrose depend on crystal size, stirring and temperature, and sugar commonly dissolves readily. A non-specialist teacher will present this as a demonstrated fact.",
+     "fix": "Delete the rate comparison. Replace with: 'Both salt and sugar dissolve completely when stirred; neither is visible afterwards. We did not control grain size, so we cannot compare how fast salt and sugar dissolve.'"
+    },
+    {
+     "id": "c6",
+     "severity": "major",
+     "category": "scientific_accuracy",
+     "path": "guide.misconceptions[0].howToAddress",
+     "problem": "'Weigh a cup before and after adding salt. The total mass stays the same' is wrong as written: the mass after adding salt is greater by the mass of salt added. Following this script the demonstration fails and appears to prove the opposite of conservation of mass.",
+     "fix": "Rewrite: 'Weigh the cup with water AND the salt separately, then weigh the cup after the salt has dissolved. The final mass equals cup + water + salt. Nothing was lost, even though the salt can no longer be seen.'"
+    },
+    {
+     "id": "c7",
+     "severity": "major",
+     "category": "alignment",
+     "path": "days[2].flow[3].teacher",
+     "problem": "The fair test never specifies the volume of water in each cup. Materials list '200 mL per group' of warm and of cold water, but neither the teacher script nor slides[25].lines tells learners to measure equal volumes (e.g. 100 mL in each cup). The lesson purpose claims 'keep the amount of water the same', yet learners have no step that makes this happen, so the demonstration of a controlled variable is not actually carried out.",
+     "fix": "Add an explicit step in both the script and slide: 'Measure 100 mL of cold water into cup C and 100 mL of warm water into cup W using the graduated cylinder (or the same marked cup).' State the volume on the activity slide."
+    },
+    {
+     "id": "c8",
+     "severity": "major",
+     "category": "scientific_accuracy",
+     "path": "days[2].expectedObservations[0]",
+     "problem": "Learners are told to watch WITHOUT stirring and 'record how long the salt takes to disappear', and the pack promises the salt in the warm cup disappears faster within a 17-minute slot. A teaspoon of salt sitting undisturbed at the bottom of a cup dissolves by diffusion only and typically takes far longer than a class period; most groups will record nothing, and the follow-up 'then stir each cup and record again' has no defined measurement. The stated expected observation is not reliably obtainable.",
+     "fix": "Make stirring the controlled constant instead: 'Stir both cups at the same steady rate (about one stir per second) and time how long until no grains remain. Warm cup finishes first.' Remove the unstirred timing, or keep it only as a short 2-minute qualitative observation ('compare how much salt is left after 2 minutes') with no claim of complete dissolving."
+    },
+    {
+     "id": "c9",
+     "severity": "major",
+     "category": "answer_key",
+     "path": "days[3].extension",
+     "problem": "Learners are asked to sort the four test solutions into 'strong acid, weak acid, base, and neutral'. None of the four (vinegar, calamansi juice, baking soda solution, salt solution) is a strong acid, so the expected sorting is impossible and the task implies vinegar or calamansi is a strong acid. Acid strength is also not taught anywhere this week.",
+     "fix": "Change the categories to 'acid, base, neutral' and drop strong/weak from the learner task. If strength is mentioned at all, keep it as a teacher note: 'Vinegar and calamansi juice are both weak acids; strength is not tested by litmus.'"
+    },
+    {
+     "id": "c10",
+     "severity": "major",
+     "category": "consistency",
+     "path": "days[4].materials[0]",
+     "problem": "Day 5 requires '1 written assessment paper per learner (30 items...)' to be completed in 18 minutes, but the pack supplies only 7 assessment items (5 MC, 1 short answer, 1 performance task). The teacher has no 30-item paper, and 30 items in 18 minutes is unrealistic for Grade 7 in any case.",
+     "fix": "Change the materials line and slides[42].lines to match what is supplied: '1 copy of the 6-item written assessment per learner (items q1–q6), 12 minutes', and take the performance plan (q7) as the separate group task. Or supply the additional items and lengthen the slot."
+    },
+    {
+     "id": "c11",
+     "severity": "major",
+     "category": "alignment",
+     "path": "assessment[4].prompt",
+     "problem": "Competency t1.12 ('Demonstrate proper use and handling of science equipment') is assessed only by a multiple-choice item naming a graduated cylinder, plus a recall check on reading position. No observed performance or checklist exists, so the verb 'demonstrate' is never assessed. Days 2 and 4 do have learners handling cylinders and litmus, but no recording instrument.",
+     "fix": "Add a short performance checklist used during Day 2 and Day 4 (cylinder on flat surface; eye level at meniscus bottom; two-hand carrying; fresh strip per test; used strips in waste cup; hands washed) and record pass/needs-support per learner. Tag that checklist to t1.12 in the assessment list."
+    },
+    {
+     "id": "c12",
+     "severity": "major",
+     "category": "safety",
+     "path": "assessment[6].answer",
+     "problem": "The sample evaporation plan lets learners use an unspecified 'heat source', with the only precaution 'Use low heat, handle dish with care, wash hands after'. No eye protection, no tongs/heat-proof mat, no teacher-only heating rule, and no warning about spitting as the solution nears dryness or about hot glass looking cold. guide.preparation even allows learners to set up evaporation, and guide.safety has no heating entry at all.",
+     "fix": "Specify: 'Sun/warm-window evaporation only for learners. If heat is used, the teacher alone heats the dish, learners wear goggles and stay an arm's length away, the dish is moved only with tongs onto a heat-proof mat, and heating stops while a little liquid remains to avoid spitting hot salt.' Add the same rule to guide.safety and days[4].flow[3].teacher."
+    },
+    {
+     "id": "c13",
+     "severity": "minor",
+     "category": "answer_key",
+     "path": "days[1].flow[5].teacher",
+     "problem": "The distractor rationale is arithmetically wrong: '2% means they divided 200 by 8' — 200 ÷ 8 = 25, not 2. slides[18].notes repeats 'divided the volume by the mass by mistake'. A teacher diagnosing errors from this will misdiagnose learners.",
+     "fix": "Replace with: '2% usually means the learner halved 4% or used 400 mL; 8% means they divided by 100 instead of 200; 16% means they doubled instead of dividing.'"
+    },
+    {
+     "id": "c14",
+     "severity": "minor",
+     "category": "slide_design",
+     "path": "slides[17].lines",
+     "problem": "Automatic check: d2s7 carries 66 words plus a recording instruction — well over the ~48-word limit for a TV slide, and it mixes four procedure steps with a data-recording instruction.",
+     "fix": "Cut the slide to: '1. Measure 100 mL of water. 2. Dissolve 5 g salt. 3. Label: 5 g per 100 mL. 4. Repeat: 10 g sugar.' Move 'Record mass, volume and % mass/volume in your table' into the notes and onto the printed record sheet."
+    },
+    {
+     "id": "c15",
+     "severity": "minor",
+     "category": "slide_design",
+     "path": "slides[35].lines",
+     "problem": "d4s7 has about 52 words including a five-field recording instruction, above the ~48-word readable limit, and step 4 bundles two operations (new colour, three more solutions) into one line.",
+     "fix": "Reduce to: '1. Dip a red strip for 5 seconds. 2. Record its colour. 3. Repeat with a blue strip. 4. Test all four solutions.' Put the record-table headings on the printed sheet and in the notes."
+    },
+    {
+     "id": "c16",
+     "severity": "minor",
+     "category": "misconception_risk",
+     "path": "slides[14].image.alt",
+     "problem": "The concentration concept is illustrated by 'one very dark and one very light' liquid, and the notes say the darker one has more solute. All the solutions learners actually make this week (salt, sugar) are colourless, so this plants the idea that concentration is judged by colour depth.",
+     "fix": "Use an image of two colourless solutions with different amounts of dissolved solid shown as particle dots, or a labelled juice example. Add to the notes: 'Colour only helps for coloured solutes like juice. Salt and sugar solutions stay clear at any concentration — we must calculate.'"
+    },
+    {
+     "id": "c17",
+     "severity": "minor",
+     "category": "slide_design",
+     "path": "slides[23].image.alt",
+     "problem": "The Day 3 concept image shows steaming hot water and undissolved sugar cubes, while the activity uses salt and explicitly warm-not-boiling water. The steam cue conflicts with the safety rule and the solute differs from the one tested.",
+     "fix": "Swap for an image of two cups labelled 'warm' and 'cold' with salt grains, no steam, and add 'warm, not boiling' as a caption on the slide."
+    },
+    {
+     "id": "c18",
+     "severity": "minor",
+     "category": "consistency",
+     "path": "days[0].materials[0]",
+     "problem": "Day 1 lists '12 clear plastic cups... one per group of 4–6' and '12 sheets of bond paper', which does not fit a class of 40 (8–10 groups, 40 drawings), and disagrees with guide.materials ('4 per group'). The teacher script and slides[6].notes then give glass-breakage instructions for plastic cups.",
+     "fix": "State '1 clear cup per group (8–10 groups for 40 learners), plus 2 extra cups for the sand/sugar comparison; 1 drawing sheet per learner'. Keep the glass rule only where glass jars/beakers are the substitute, and say 'if you use glass jars' before it."
+    },
+    {
+     "id": "c19",
+     "severity": "minor",
+     "category": "safety",
+     "path": "guide.vocabulary[6].meaning",
+     "problem": "Base is defined as a substance that 'feels slippery' and acid as one that 'tastes sour', and slides[30] asks 'When you bite a calamansi or sip vinegar, what do you taste?'. In a week whose central rule is never taste or touch test solutions, these sensory definitions invite exactly the behaviour the safety rules forbid.",
+     "fix": "Define base as 'a substance that turns red litmus blue' (add 'some bases feel slippery, but never touch a chemical to test it'), and acid as 'a substance that turns blue litmus red'. Reword the Day 4 hook to 'Think about calamansi juice you have tasted in food at home — what flavour was it?' so no learner is prompted to taste in class."
+    },
+    {
+     "id": "c20",
+     "severity": "minor",
+     "category": "consistency",
+     "path": "slides[44]",
+     "problem": "d5s6/d5s7 and d5s9/d5s10 are two nearly identical graduated-cylinder checks with word-for-word identical reveal text, wasting scarce Day 5 minutes. Also days[4].flow[3] lists d5s6 and d5s7 in its slideIds but its teacher script never mentions running that check, so a teacher following the script will skip a reveal slide that the deck shows.",
+     "fix": "Delete d5s6/d5s7 and remove them from days[4].flow[3].slideIds, keeping the single check d5s9/d5s10 in the evaluating phase; use the freed minute for the exit ticket."
+    }
+   ],
+   "previous": []
+  },
+  {
+   "verdict": "revise",
+   "issues": [
+    {
+     "id": "c1",
+     "severity": "blocker",
+     "category": "scientific_accuracy",
+     "path": "slides[46].lines[3]",
+     "problem": "The Day 5 summary still states as a rule 'Litmus: acids turn blue litmus red; bases turn red litmus blue; salts are neutral.' This is false (baking soda is a salt and gives a basic solution) and contradicts the corrected slides[32] and days[3].flow[3].teacher. The same claim is scripted in days[4].flow[4].teacher ('What does litmus tell us?' … 'salts are neutral').",
+     "fix": "Replace slides[46].lines[3] with two short lines within the 130-character limit: \"Litmus: acids turn blue litmus red; bases turn red litmus blue.\" and \"No change means neutral, not 'a salt'.\" In days[4].flow[4].teacher change the expected answer to: 'Acids turn blue litmus red; bases turn red litmus blue; no change means neutral — not that it is a salt. Some salts, like baking soda, give a basic solution.' Also soften guide.background[4] 'A neutral solution, like a salt solution' to 'like table salt solution'."
+    },
+    {
+     "id": "c2",
+     "severity": "major",
+     "category": "alignment",
+     "path": "assessment[2].prompt",
+     "problem": "The solubility demonstration now exists in the Day 3 teacher script, but nothing assesses it: q3 still tests only stirring vs rate, and the Day 3 exit ticket (days[2].flow[6]) asks only about speed. The competency verb 'demonstrate … solubility' is still unassessed, and the day's checks all point learners back to 'faster'.",
+     "fix": "Add one item tagged science-bow-2026.science.g7.t1.10 (or extend q3): 'Two cups each hold 100 mL of water, one cold and one warm. Salt is added a teaspoon at a time and stirred the same way until solid stays at the bottom. The warm cup took 9 teaspoons, the cold cup 8. Which cup dissolved more salt, and what does this show?' Answer: 'The warm cup; warm water has a higher solubility — it can dissolve a greater maximum amount of salt, not just dissolve it faster.' Also change the Day 3 exit ticket to ask both 'which dissolves faster' and 'which dissolved more salt in our test'."
+    },
+    {
+     "id": "c3",
+     "severity": "major",
+     "category": "scientific_accuracy",
+     "path": "slides[17].lines",
+     "problem": "The learner-facing steps still read '1. Measure 100 mL of water… 2. Weigh 5 g of salt and stir it into the water… 3. Pour the solution back into the cylinder and top up to 100 mL.' Starting from 100 mL of water the solution is already over 100 mL, so step 3 is impossible and the labelled 5% / 10% is wrong. The teacher script also opens with the contradictory instruction 'First, measure 100 mL of water… Pour it into the cup. Weigh 5 g of salt and stir it in… However…'.",
+     "fix": "Rewrite slides[17].lines to match the corrected method: ['1. Put 5 g of salt in the cup.', '2. Add about 60 mL of water. Stir to dissolve.', '3. Pour into the cylinder. Top up to 100 mL.', '4. Label: 5 g per 100 mL of solution.', '5. Repeat with 10 g of sugar.'] Delete the opening 'measure 100 mL of water… stir it in' sentences from days[1].flow[3].teacher so only the dissolve-then-top-up method is stated, and update days[1].flow[3].learners ('learners measure 100 mL of water, weigh 5 g of salt…') to 'learners dissolve 5 g of salt in about 60 mL of water and make the solution up to 100 mL'."
+    },
+    {
+     "id": "c4",
+     "severity": "major",
+     "category": "answer_key",
+     "path": "days[1].extension",
+     "problem": "The last sentence still asks learners to explain 'why a small glass and a big glass of equally sweet juice do not necessarily have the same concentration', the backwards claim flagged before. It also contradicts the corrected days[0].extension.",
+     "fix": "Delete that sentence, or replace it with: 'They can also explain why a small glass and a big glass of equally sweet juice have about the same concentration, but the big glass holds more grams of sugar (5 g/100 mL and 10 g/200 mL are both 5%).' Keep the 15% calculation as written."
+    },
+    {
+     "id": "c7",
+     "severity": "major",
+     "category": "alignment",
+     "path": "slides[25].lines",
+     "problem": "The activity slide never tells learners to measure equal volumes; it starts at labelling the cups and adding salt. The controlled variable the lesson is built on is only in the teacher notes, so groups following the slide will use unequal amounts of water.",
+     "fix": "Make line 2 an explicit measuring step (array of strings, each under 130 characters): '2. Measure 100 mL of cold water into C and 100 mL of warm water into W.'"
+    },
+    {
+     "id": "c8",
+     "severity": "major",
+     "category": "scientific_accuracy",
+     "path": "slides[25].lines[2]",
+     "problem": "Lines 2–4 still instruct 'Watch without stirring. Record how long the salt takes to disappear. Stir both cups and record again.' Undisturbed salt will not disappear within the 17-minute slot, and this now directly contradicts the revised teacher script and notes, which run a stirred saturation test. days[2].flow[3].learners repeats the same obsolete unstirred timing.",
+     "fix": "Replace lines 2–4 with: ['3. Add 1 teaspoon of salt to both cups.', '4. Stir both at the same rate. Keep adding salt.', '5. Stop when solid stays. Record teaspoons in each cup.'] Keep the safety line. Rewrite days[2].flow[3].learners to: 'In groups of 4–6, label cups C and W, measure 100 mL into each, add salt one teaspoon at a time, stir both cups at the same steady rate, and record how many teaspoons dissolved before solid remained. Compare the two totals.'"
+    },
+    {
+     "id": "c11",
+     "severity": "major",
+     "category": "alignment",
+     "path": "assessment[4].prompt",
+     "problem": "t1.12 'Demonstrate proper use and handling of science equipment' is still assessed only by a multiple-choice item naming a graduated cylinder. No observed performance record exists anywhere in the pack, so the verb 'demonstrate' is unassessed even though learners handle cylinders on Day 2 and litmus on Day 4.",
+     "fix": "If the assessment array cannot take a new object, embed the checklist in the existing performance item assessment[6] (add a 'Equipment handling checklist — observe on Day 2 and Day 4, mark pass / needs support: cylinder on flat surface; eye level at bottom of meniscus; carried with two hands; fresh strip per test; used strips in waste cup; hands washed') and reference it in days[1].flow[3].teacher and days[3].flow[2].teacher. Alternatively put the checklist in guide.preparation and days[3].materials as a printed per-learner record, and state that it is the evidence for t1.12."
+    },
+    {
+     "id": "c12",
+     "severity": "major",
+     "category": "safety",
+     "path": "assessment[6].answer",
+     "problem": "The sample plan learners are marked against still lists 'heat source or sunny area', 'Evaporate the water by gentle heating or leaving in sunlight' and 'Safety: Use low heat, handle dish with care, wash hands after.' This contradicts the new guide.safety rule and days[4].flow[3].teacher, which forbid learner heating, and a group copying the sample plan would be scored correct for an unsafe method.",
+     "fix": "Edit the strings in place (no new array elements): materials → '100 mL salt water sample, shallow dish, graduated cylinder, balance, sunny warm place'; step → 'Leave the dish in direct sunlight or a warm place until the water evaporates. Learners never use a flame or hot plate.'; safety → 'Learners use sun/warm-place evaporation only. If the teacher demonstrates heating, learners wear goggles and stay an arm's length away, the dish is moved only with tongs onto a heat-proof mat, and heating stops while a little liquid remains to avoid spitting hot salt. Wash hands after.' Mirror the same wording in slides[43].notes, which still says 'use warm water, not boiling, if heat is used'."
+    },
+    {
+     "id": "c13",
+     "severity": "minor",
+     "category": "answer_key",
+     "path": "days[1].flow[5].teacher",
+     "problem": "Still reads '2% means they divided 200 by 8 and made an error' — 200 ÷ 8 = 25, not 2. The corrected rationale exists only in slides[18].notes, so the script and the notes disagree.",
+     "fix": "Replace with: 'Common wrong answers: 8% means the learner divided by 100 instead of 200; 2% usually means they halved 4% or used 400 mL; 16% means they doubled instead of dividing.'"
+    },
+    {
+     "id": "c14",
+     "severity": "minor",
+     "category": "slide_design",
+     "path": "slides[17].lines",
+     "problem": "Automatic check: d2s7 now carries 71 words across five procedure steps, well over the ~48-word limit for a TV slide (it was 66 before the revision).",
+     "fix": "Use the five short lines given under c3 (about 45 words total) and move 'cylinder on a flat table, read at eye level' and the mass/volume/% recording instruction into slides[17].notes and the printed record sheet."
+    },
+    {
+     "id": "c19",
+     "severity": "minor",
+     "category": "safety",
+     "path": "slides[30].lines[0]",
+     "problem": "The slide shown to learners still reads 'When you bite a calamansi or sip vinegar, what do you taste?', and days[3].flow[0].teacher scripts the same prompt. Only the speaker note was softened, so the on-screen text still invites tasting during a no-tasting week.",
+     "fix": "Set slides[30].lines to [\"Think about calamansi juice you have tasted in food at home.\", \"What flavour was it?\"] and change the question in days[3].flow[0].teacher to 'Think about calamansi juice you have tasted in food at home — what flavour was it? (sour)'. Keep the follow-up 'we never taste a solution in class'."
+    },
+    {
+     "id": "c20",
+     "severity": "minor",
+     "category": "consistency",
+     "path": "slides[44]",
+     "problem": "d5s6/d5s7 were not deleted and still duplicate d5s9/d5s10 with identical reveal text, and days[4].flow[3].slideIds still lists d5s6 and d5s7 while its teacher script never runs that check.",
+     "fix": "If the slides and slideIds cannot be changed, add the missing step to days[4].flow[3].teacher: 'Before groups start writing, run the one-minute check on d5s6: read the four choices, take answers from two groups, then reveal d5s7 and ask groups to check their plan uses that rule.' Then remove the duplicate check d5s9/d5s10 from days[4].flow[5] usage by keeping only the exit ticket there, or delete d5s6/d5s7 and their slideIds when the schema allows."
+    }
+   ],
+   "previous": [
+    {
+     "id": "c1",
+     "status": "open",
+     "note": "slides[32] and days[3].flow[3] are corrected, but the rejected patch left 'salts are neutral' on slides[46].lines[3] and in days[4].flow[4].teacher."
+    },
+    {
+     "id": "c2",
+     "status": "open",
+     "note": "Saturation comparison added to the teacher script and objective, but the learner activity slide still shows the old unstirred rate test and no assessment item asks which cup held more salt at saturation."
+    },
+    {
+     "id": "c3",
+     "status": "open",
+     "note": "Top-up-to-100 mL now appears in the teacher script, but the slide steps still measure 100 mL of water first and top up afterwards, which cannot give 100 mL of solution."
+    },
+    {
+     "id": "c4",
+     "status": "open",
+     "note": "days[0].extension is rewritten correctly, but days[1].extension still ends with the backwards 'do not necessarily have the same concentration' sentence."
+    },
+    {
+     "id": "c5",
+     "status": "fixed",
+     "note": "The invented rate comparison is replaced by an honest statement that grain size was not controlled."
+    },
+    {
+     "id": "c6",
+     "status": "fixed",
+     "note": "Conservation-of-mass demo now weighs cup + water + salt separately before dissolving."
+    },
+    {
+     "id": "c7",
+     "status": "open",
+     "note": "Equal 100 mL volumes are specified in the script and notes, but the rejected slides[25].lines patch means learners never see the measuring step."
+    },
+    {
+     "id": "c8",
+     "status": "open",
+     "note": "Script now stirs both cups at a steady rate, yet slides[25].lines[2]–[3] and days[2].flow[3].learners still tell learners to time undisturbed dissolving."
+    },
+    {
+     "id": "c9",
+     "status": "fixed",
+     "note": "Extension now sorts into acid/base/neutral with strength kept as a teacher note."
+    },
+    {
+     "id": "c10",
+     "status": "fixed",
+     "note": "Materials and d5s4 now say 7 items in 18 minutes, matching what is supplied."
+    },
+    {
+     "id": "c11",
+     "status": "open",
+     "note": "No performance checklist exists; t1.12 is still assessed only by MC q5 (the assessment-array patch was rejected)."
+    },
+    {
+     "id": "c12",
+     "status": "open",
+     "note": "guide.safety and days[4].flow[3] now carry the heating rules, but the rejected assessment[6].answer patch leaves 'heat source', 'gentle heating' and 'use low heat' in the sample plan learners are marked against."
+    },
+    {
+     "id": "c13",
+     "status": "open",
+     "note": "slides[18].notes is corrected, but days[1].flow[5].teacher still says '2% means they divided 200 by 8'."
+    },
+    {
+     "id": "c14",
+     "status": "open",
+     "note": "d2s7 was rewritten for c3 and is now 71 words — worse than before."
+    },
+    {
+     "id": "c15",
+     "status": "fixed",
+     "note": "d4s7 is four short steps with the record headings moved to notes and the printed sheet."
+    },
+    {
+     "id": "c16",
+     "status": "fixed",
+     "note": "Image is now particle dots in clear glasses and the notes warn that colour does not indicate concentration."
+    },
+    {
+     "id": "c17",
+     "status": "fixed",
+     "note": "Image shows warm/cold cups with salt, no steam, and the notes add 'warm, not boiling'."
+    },
+    {
+     "id": "c18",
+     "status": "fixed",
+     "note": "Cup and paper counts now fit 40 learners and the glass rule is conditional."
+    },
+    {
+     "id": "c19",
+     "status": "open",
+     "note": "Vocabulary definitions are fixed, but the rejected slides[30].lines patch leaves 'sip vinegar' on screen and in days[3].flow[0].teacher."
+    },
+    {
+     "id": "c20",
+     "status": "open",
+     "note": "d5s6/d5s7 remain word-for-word duplicates of d5s9/d5s10 and days[4].flow[3].teacher still never runs that check."
+    }
+   ]
+  },
+  {
+   "verdict": "revise",
+   "issues": [
+    {
+     "id": "c2",
+     "severity": "major",
+     "category": "alignment",
+     "path": "assessment[2].explanation",
+     "problem": "t1.10 ('Demonstrate how different factors affect the solubility … such as heat') is still assessed only by q3, which tests rate versus stirring. The saturation test learners run on Day 3 and the new exit ticket have no counterpart in the written assessment, so the maximum-amount idea is never scored.",
+     "fix": "Keep the choices and correctChoice, but extend the item so the solubility limit is tested: prompt → 'A student wants sugar to dissolve faster without changing the maximum amount that can dissolve. Which action should the student take? Then answer: two cups each hold 100 mL of water, one cold and one warm; salt is added a teaspoon at a time and stirred the same way until solid stays at the bottom. The warm cup took 9 teaspoons, the cold cup 8. Which cup dissolved more salt?' answer → 'Stir the solution. The warm cup dissolved more salt.' explanation → append: 'Warm water has a higher solubility: it dissolves a greater maximum amount of salt, not just dissolves it faster.'"
+    },
+    {
+     "id": "c4",
+     "severity": "major",
+     "category": "answer_key",
+     "path": "days[1].extension",
+     "problem": "The last sentence still asks learners to explain why equally sweet small and big glasses 'do not necessarily have the same concentration', the backwards claim, and it now contradicts the corrected days[0].extension.",
+     "fix": "Replace that sentence with: 'They can also explain why a small glass and a big glass of equally sweet juice have about the same concentration, but the big glass holds more grams of sugar (5 g/100 mL and 10 g/200 mL are both 5%).' Keep the 15% calculation as written."
+    },
+    {
+     "id": "c7",
+     "severity": "major",
+     "category": "alignment",
+     "path": "slides[25].lines[1]",
+     "problem": "The learner-facing activity still never tells groups to measure equal volumes of cold and warm water; the controlled variable exists only in slides[25].notes and days[2].flow[3].teacher, so groups following the slide will use unequal amounts.",
+     "fix": "Make line 2 the measuring step: '2. Measure 100 mL of cold water into C and 100 mL of warm water into W.'"
+    },
+    {
+     "id": "c8",
+     "severity": "major",
+     "category": "scientific_accuracy",
+     "path": "slides[25].lines[2]",
+     "problem": "Lines 3–4 still read 'Watch without stirring. Record how long the salt takes to disappear.' and 'Stir both cups and record again.' Undisturbed salt will not disappear in the 17-minute slot, and this contradicts the stirred saturation test in the same slide's notes and in days[2].flow[3].",
+     "fix": "Within the five-element limit, set lines to ['1. Label cups C (cold) and W (warm). Measure 100 mL into each.', '2. Add 1 teaspoon of salt to both cups.', '3. Stir both at the same rate. Keep adding salt.', '4. Stop when solid stays. Record teaspoons in each cup.', 'Note: Do not taste or drink. Use warm, not boiling, water.']"
+    },
+    {
+     "id": "c11",
+     "severity": "major",
+     "category": "alignment",
+     "path": "days[1].materials",
+     "problem": "The equipment handling checklist is handed out and completed in days[1].flow[3], but it is not in the Day 2 materials list, so nothing tells the teacher to print it; and no observed record of litmus-strip handling exists on Day 4, where t1.12 is also being demonstrated.",
+     "fix": "Add to days[1].materials: '1 printed equipment handling checklist per learner (cylinder on flat surface; eye level at bottom of meniscus; carried with two hands) — this is the evidence for t1.12.' In days[3].flow[2].teacher add: 'Mark each learner on the same checklist: fresh strip per test, tip only dipped, used strips in the waste cup, hands washed.'"
+    },
+    {
+     "id": "c12",
+     "severity": "major",
+     "category": "safety",
+     "path": "assessment[6].answer",
+     "problem": "The sample plan learners are marked against still lists 'heat source or sunny area', 'Evaporate the water by gentle heating or leaving in sunlight' and 'Safety: Use low heat, handle dish with care, wash hands after.' This contradicts guide.safety, days[4].flow[3].teacher and the corrected slides[43].notes, and would score an unsafe learner-heating plan as correct.",
+     "fix": "Edit inside the existing string (it shortens, so the 840-character cap is met): materials → '100 mL salt water sample, shallow dish, graduated cylinder, balance, sunny warm place'; step → 'Leave the dish in sunlight or a warm place until the water evaporates. Learners never use a flame or hot plate.'; safety → 'Sun/warm-place evaporation only. If the teacher demonstrates heating, learners wear goggles and stay an arm's length away; the teacher moves the dish with tongs onto a heat-proof mat and stops while liquid remains. Wash hands after.'"
+    },
+    {
+     "id": "c13",
+     "severity": "minor",
+     "category": "answer_key",
+     "path": "days[1].flow[5].teacher",
+     "problem": "The Day 2 percent-error rationale ('2% means they divided 200 by 8 and made an error' — 200 ÷ 8 = 25) is still here unchanged; the corrected version was mistakenly inserted into Day 1 instead.",
+     "fix": "Replace the sentence with: 'Common wrong answers: 8% means the learner divided by 100 instead of the actual volume; 2% usually means they halved 4% or used 400 mL; 16% means they doubled instead of dividing.'"
+    },
+    {
+     "id": "n1",
+     "severity": "major",
+     "category": "consistency",
+     "path": "days[0].flow[5].teacher",
+     "problem": "The revision pasted the percent-concentration error rationale into Day 1's exit ticket, which asks only 'In a glass of salt water, what is the solute and what is the solvent?' A teacher following this script now discusses 8%, 2% and 16% after a question with no numbers in it.",
+     "fix": "Delete the final sentence beginning 'Common wrong answers: 8% means…' from days[0].flow[5].teacher, leaving 'Note: the correct answer is \"Salt is the solute; water is the solvent.\"' Move that rationale to days[1].flow[5].teacher as described under c13."
+    }
+   ],
+   "previous": [
+    {
+     "id": "c1",
+     "status": "fixed",
+     "note": "slides[46].lines now carries the two corrected litmus lines, days[4].flow[4].teacher gives the neutral-not-salt answer, and guide.background[4] says 'like table salt solution'."
+    },
+    {
+     "id": "c2",
+     "status": "open",
+     "note": "The Day 3 exit ticket now asks both faster and more, but no assessment item tests maximum solubility — q3 still tests stirring only."
+    },
+    {
+     "id": "c3",
+     "status": "fixed",
+     "note": "slides[17].lines, days[1].flow[3].teacher and .learners all use dissolve-in-60-mL then top-up-to-100-mL; the contradictory opening is gone."
+    },
+    {
+     "id": "c4",
+     "status": "open",
+     "note": "days[0].extension was corrected, but days[1].extension still ends with 'do not necessarily have the same concentration'."
+    },
+    {
+     "id": "c7",
+     "status": "open",
+     "note": "slides[25].lines still starts at labelling and adding salt; equal volumes appear only in the teacher notes."
+    },
+    {
+     "id": "c8",
+     "status": "open",
+     "note": "days[2].flow[3].learners was rewritten, but slides[25].lines[2]–[3] still say watch without stirring and time disappearance."
+    },
+    {
+     "id": "c11",
+     "status": "open",
+     "note": "Day 2 now uses an observed handling checklist, but it is absent from days[1].materials and nothing on Day 4 observes strip handling for t1.12."
+    },
+    {
+     "id": "c12",
+     "status": "open",
+     "note": "slides[43].notes was corrected, but assessment[6].answer still lists a heat source, gentle heating and low-heat safety as the marked sample plan."
+    },
+    {
+     "id": "c13",
+     "status": "open",
+     "note": "The corrected rationale was pasted into Day 1's solute/solvent exit ticket, while days[1].flow[5].teacher still says '2% means they divided 200 by 8'."
+    },
+    {
+     "id": "c14",
+     "status": "fixed",
+     "note": "d2s7 is now five short lines of about 37 words, with the meniscus/recording detail moved to notes and script."
+    },
+    {
+     "id": "c19",
+     "status": "fixed",
+     "note": "slides[30].lines and days[3].flow[0].teacher both refer to calamansi tasted in food at home, with the no-tasting rule kept."
+    },
+    {
+     "id": "c20",
+     "status": "fixed",
+     "note": "days[4].flow[3].teacher now runs the d5s6/d5s7 check before groups write, so the listed slideIds are used."
+    }
+   ]
+  }
+ ],
+ "revisions": [
+  {
+   "applied": [
+    {
+     "path": "slides[32].lines[2]",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[3].flow[3].teacher",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "slides[32].notes",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[2].objective",
+     "issueIds": [
+      "c2"
+     ]
+    },
+    {
+     "path": "days[2].flow[2].teacher",
+     "issueIds": [
+      "c2"
+     ]
+    },
+    {
+     "path": "days[2].flow[3].teacher",
+     "issueIds": [
+      "c2",
+      "c7",
+      "c8"
+     ]
+    },
+    {
+     "path": "days[2].flow[4].teacher",
+     "issueIds": [
+      "c2"
+     ]
+    },
+    {
+     "path": "days[2].flow[5].teacher",
+     "issueIds": [
+      "c2"
+     ]
+    },
+    {
+     "path": "days[2].expectedObservations[0]",
+     "issueIds": [
+      "c2",
+      "c8"
+     ]
+    },
+    {
+     "path": "days[2].expectedObservations[1]",
+     "issueIds": [
+      "c2",
+      "c8"
+     ]
+    },
+    {
+     "path": "days[2].expectedObservations[2]",
+     "issueIds": [
+      "c2"
+     ]
+    },
+    {
+     "path": "days[2].expectedObservations[3]",
+     "issueIds": [
+      "c2"
+     ]
+    },
+    {
+     "path": "days[2].check",
+     "issueIds": [
+      "c2"
+     ]
+    },
+    {
+     "path": "slides[25].notes",
+     "issueIds": [
+      "c2",
+      "c7",
+      "c8"
+     ]
+    },
+    {
+     "path": "slides[26].notes",
+     "issueIds": [
+      "c2"
+     ]
+    },
+    {
+     "path": "slides[27].lines",
+     "issueIds": [
+      "c2"
+     ]
+    },
+    {
+     "path": "slides[27].notes",
+     "issueIds": [
+      "c2"
+     ]
+    },
+    {
+     "path": "slides[28].lines",
+     "issueIds": [
+      "c2"
+     ]
+    },
+    {
+     "path": "slides[28].notes",
+     "issueIds": [
+      "c2"
+     ]
+    },
+    {
+     "path": "assessment[3].prompt",
+     "issueIds": []
+    },
+    {
+     "path": "assessment[3].choices",
+     "issueIds": []
+    },
+    {
+     "path": "assessment[3].correctChoice",
+     "issueIds": []
+    },
+    {
+     "path": "assessment[3].answer",
+     "issueIds": []
+    },
+    {
+     "path": "assessment[3].explanation",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[1].flow[3].teacher",
+     "issueIds": [
+      "c3"
+     ]
+    },
+    {
+     "path": "slides[17].lines",
+     "issueIds": [
+      "c3",
+      "c14"
+     ]
+    },
+    {
+     "path": "slides[17].notes",
+     "issueIds": [
+      "c3"
+     ]
+    },
+    {
+     "path": "days[1].expectedObservations[2]",
+     "issueIds": [
+      "c3"
+     ]
+    },
+    {
+     "path": "days[0].extension",
+     "issueIds": [
+      "c4"
+     ],
+     "from": "days[1].extension"
+    },
+    {
+     "path": "days[1].expectedObservations[1]",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "guide.misconceptions[0].howToAddress",
+     "issueIds": [
+      "c6"
+     ]
+    },
+    {
+     "path": "slides[35].lines",
+     "issueIds": [
+      "c15"
+     ]
+    },
+    {
+     "path": "slides[35].notes",
+     "issueIds": [
+      "c15"
+     ]
+    },
+    {
+     "path": "slides[14].image.alt",
+     "issueIds": [
+      "c16"
+     ]
+    },
+    {
+     "path": "slides[14].notes",
+     "issueIds": [
+      "c16"
+     ]
+    },
+    {
+     "path": "slides[23].image.alt",
+     "issueIds": [
+      "c17"
+     ]
+    },
+    {
+     "path": "slides[23].notes",
+     "issueIds": [
+      "c17"
+     ]
+    },
+    {
+     "path": "days[0].materials[0]",
+     "issueIds": [
+      "c18"
+     ]
+    },
+    {
+     "path": "days[0].materials[5]",
+     "issueIds": [
+      "c18"
+     ],
+     "from": "days[0].materials[6]"
+    },
+    {
+     "path": "days[0].flow[3].teacher",
+     "issueIds": [
+      "c18"
+     ]
+    },
+    {
+     "path": "slides[6].notes",
+     "issueIds": [
+      "c18"
+     ]
+    },
+    {
+     "path": "guide.vocabulary[6].meaning",
+     "issueIds": [
+      "c19"
+     ]
+    },
+    {
+     "path": "guide.vocabulary[5].meaning",
+     "issueIds": [
+      "c19"
+     ]
+    },
+    {
+     "path": "slides[30].notes",
+     "issueIds": [
+      "c19"
+     ]
+    },
+    {
+     "path": "days[4].materials[0]",
+     "issueIds": [
+      "c10"
+     ]
+    },
+    {
+     "path": "slides[42].lines",
+     "issueIds": [
+      "c10"
+     ]
+    },
+    {
+     "path": "slides[42].notes",
+     "issueIds": [
+      "c10"
+     ]
+    },
+    {
+     "path": "assessment[4].prompt",
+     "issueIds": []
+    },
+    {
+     "path": "assessment[4].choices",
+     "issueIds": []
+    },
+    {
+     "path": "assessment[4].correctChoice",
+     "issueIds": []
+    },
+    {
+     "path": "assessment[4].answer",
+     "issueIds": []
+    },
+    {
+     "path": "assessment[4].explanation",
+     "issueIds": []
+    },
+    {
+     "path": "guide.safety",
+     "issueIds": [
+      "c12"
+     ]
+    },
+    {
+     "path": "days[4].flow[3].teacher",
+     "issueIds": [
+      "c12"
+     ]
+    },
+    {
+     "path": "days[0].flow[5].teacher",
+     "issueIds": [],
+     "from": "days[1].flow[5].teacher"
+    },
+    {
+     "path": "slides[18].notes",
+     "issueIds": [
+      "c13"
+     ]
+    },
+    {
+     "path": "slides[44]",
+     "issueIds": [
+      "c20"
+     ]
+    },
+    {
+     "path": "slides[45]",
+     "issueIds": [
+      "c20"
+     ]
+    },
+    {
+     "path": "days[3].extension",
+     "issueIds": [
+      "c9"
+     ]
+    }
+   ],
+   "rejected": [
+    {
+     "path": "slides[46].lines[3]",
+     "reason": "breaks the contract: slides.46.lines.3 String must contain at most 130 character(s)"
+    },
+    {
+     "path": "slides[26].lines",
+     "reason": "path slides[26].lines: type string replaces array"
+    },
+    {
+     "path": "slides[30].lines",
+     "reason": "path slides[30].lines: type string replaces array"
+    },
+    {
+     "path": "slides[25].lines",
+     "reason": "adds 3 check failure(s)"
+    },
+    {
+     "path": "assessment[6].answer",
+     "reason": "adds 1 check failure(s)"
+    },
+    {
+     "path": "days[4].flow[3].slideIds",
+     "reason": "adds 1 check failure(s)"
+    },
+    {
+     "path": "assessment",
+     "reason": "adds 1 check failure(s)"
+    }
+   ],
+   "declined": []
+  },
+  {
+   "applied": [
+    {
+     "path": "slides[46].lines",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[4].flow[4].teacher",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "guide.background[4].paragraphs[0]",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[2].flow[6].teacher",
+     "issueIds": [
+      "c2"
+     ]
+    },
+    {
+     "path": "slides[17].lines",
+     "issueIds": [
+      "c3",
+      "c14"
+     ]
+    },
+    {
+     "path": "days[1].flow[3].teacher",
+     "issueIds": [
+      "c3",
+      "c11"
+     ]
+    },
+    {
+     "path": "days[1].flow[3].learners",
+     "issueIds": [
+      "c3",
+      "c11"
+     ]
+    },
+    {
+     "path": "days[0].extension",
+     "issueIds": [
+      "c4"
+     ],
+     "from": "days[1].extension"
+    },
+    {
+     "path": "days[2].flow[3].learners",
+     "issueIds": [
+      "c8"
+     ]
+    },
+    {
+     "path": "slides[30].lines",
+     "issueIds": [
+      "c19"
+     ]
+    },
+    {
+     "path": "days[3].flow[0].teacher",
+     "issueIds": [
+      "c19"
+     ]
+    },
+    {
+     "path": "days[4].flow[3].teacher",
+     "issueIds": [
+      "c20",
+      "c11"
+     ]
+    },
+    {
+     "path": "assessment[6].prompt",
+     "issueIds": [
+      "c11"
+     ]
+    },
+    {
+     "path": "slides[43].notes",
+     "issueIds": [
+      "c12"
+     ]
+    },
+    {
+     "path": "days[0].flow[5].teacher",
+     "issueIds": [
+      "c13"
+     ],
+     "from": "days[1].flow[5].teacher"
+    }
+   ],
+   "rejected": [
+    {
+     "path": "assessment",
+     "reason": "breaks the contract: assessment.6.answer String must contain at most 840 character(s)"
+    },
+    {
+     "path": "slides[25].lines",
+     "reason": "breaks the contract: slides.25.lines Array must contain at most 5 element(s)"
+    },
+    {
+     "path": "assessment[6].answer",
+     "reason": "breaks the contract: assessment.6.answer String must contain at most 840 character(s)"
+    }
+   ],
+   "declined": []
+  }
+ ],
+ "verification": {
+  "confirmedFixed": 13,
+  "withdrawn": 0,
+  "open": 7
+ },
+ "finalChecks": {
+  "failures": [],
+  "warnings": [
+   "day 1: the exit ticket repeats a question already answered on a slide that day",
+   "day 2: the exit ticket repeats a question already answered on a slide that day",
+   "day 3: the exit ticket repeats a question already answered on a slide that day",
+   "day 4: the exit ticket repeats a question already answered on a slide that day",
+   "d2s2: line 1 is long for a TV slide (101 characters)",
+   "d2s9: reveal text does not echo the correct choice \"4%\"",
+   "d3s4: line 1 is long for a TV slide (99 characters)",
+   "acronym PDF is never expanded"
+  ]
+ },
+ "verbiage": {
+  "rulesVersion": "verbiage/1",
+  "state": "warn",
+  "metrics": {
+   "slides": 49,
+   "maxWordsOnSlide": 58,
+   "slidesOver48Words": 5,
+   "avgSentenceWords": 6.4,
+   "maxSentenceWords": 18,
+   "englishFunctionShare": null,
+   "filipinoFunctionShare": 0
+  },
+  "findings": [
+   "d2s1: write the numeral and unit symbol (°C, cm, %) rather than the spelled-out unit",
+   "d2s3: write the numeral and unit symbol (°C, cm, %) rather than the spelled-out unit",
+   "d2s5: write the numeral and unit symbol (°C, cm, %) rather than the spelled-out unit",
+   "d2s7: 50 words on the slide (Hiraia cards stop at 48)",
+   "d2s10: write the numeral and unit symbol (°C, cm, %) rather than the spelled-out unit",
+   "d3s5: 58 words on the slide (Hiraia cards stop at 48)",
+   "d3s8: 52 words on the slide (Hiraia cards stop at 48)",
+   "d5s6: 54 words on the slide (Hiraia cards stop at 48)",
+   "d5s8: 55 words on the slide (Hiraia cards stop at 48)",
+   "d5s9: title \"What is one safe way to use a graduated cylinder?\" is long for a child (≤ 8 words, no semicolon)",
+   "d2s8: the question (22 words) is much longer than its answer (13 words)"
+  ]
+ },
+ "images": {
+  "checked": 26,
+  "passed": 8,
+  "swapped": [
+   {
+    "slide": "d1s5",
+    "from": "sugar-dissolving-in-water",
+    "to": "ffct-15587"
+   },
+   {
+    "slide": "d1s6",
+    "from": "ffct-15818",
+    "to": "sugar-dissolving-in-water"
+   },
+   {
+    "slide": "d2s3",
+    "from": "ffct-16556",
+    "to": "saturated-solution-undissolved"
+   },
+   {
+    "slide": "d2s4",
+    "from": "ffct-17933",
+    "to": "saturated-solution-undissolved"
+   },
+   {
+    "slide": "d2s7",
+    "from": "ffct-15818",
+    "to": "sugar-dissolving-in-water"
+   }
+  ],
+  "removed": [
+   {
+    "slide": "d2s6",
+    "slug": "ffct-19217",
+    "reason": "does not show what the slide explains; The measuring cup is not a graduated cylinder and lacks precise volume markings; the slide is specifically about reading a graduated cylinder, but the illustration prominently features an inappropriate substitute (measuring cup) that could confuse students about the correct instrument."
+   },
+   {
+    "slide": "d3s3",
+    "slug": "ffct-17927",
+    "reason": "does not show what the slide explains; The illustration uses sugar cubes instead of salt (as stated in the slide text), and shows only one cube dissolving in warm water versus three cubes in cold water—introducing unequal solute amounts, which confounds the comparison; also, the particle motion arrows in warm water suggest dissolution is due to agitation rather than molecular kinetic energy alone."
+   },
+   {
+    "slide": "d3s5",
+    "slug": "ffct-15591",
+    "reason": "does not show what the slide explains; The motion lines and particle distribution imply vigorous stirring, but the slide explicitly instructs to 'Watch without stirring' in step 3; the illustration contradicts this key experimental condition."
+   },
+   {
+    "slide": "d4s6",
+    "slug": "ffct-34832",
+    "reason": "Germs are anthropomorphized with faces and limbs, implying sentience and agency, which is scientifically inaccurate; microbes do not 'run' or 'scream'—they are passively carried by water flow."
+   }
+  ],
+  "costUsd": 0.0005430000000004043
+ }
+}

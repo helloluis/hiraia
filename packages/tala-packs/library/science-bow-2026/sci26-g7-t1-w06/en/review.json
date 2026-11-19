@@ -1,0 +1,67 @@
+{
+ "packId": "sci26-g7-t1-w06",
+ "language": "en",
+ "contentSha256": "2c9c188d458f1afc0187c6b5b15f55612b9be0a39be2a76f66d46977c1ce34d7",
+ "autoChecks": {
+  "state": "pass",
+  "checkerVersion": "checks/1",
+  "failures": [],
+  "warnings": [
+   "day 1: the exit ticket repeats a question already answered on a slide that day",
+   "day 2: the exit ticket repeats a question already answered on a slide that day",
+   "day 3: the exit ticket repeats a question already answered on a slide that day",
+   "day 4: the exit ticket repeats a question already answered on a slide that day",
+   "d2s2: line 1 is long for a TV slide (101 characters)",
+   "d2s9: reveal text does not echo the correct choice \"4%\"",
+   "d3s4: line 1 is long for a TV slide (99 characters)",
+   "acronym PDF is never expanded"
+  ],
+  "at": "2026-11-19T04:45:00.801Z"
+ },
+ "modelCritique": {
+  "state": "issues_open",
+  "model": "qwen4-max",
+  "rounds": 3,
+  "openIssues": [
+   "[major] alignment at assessment[2].explanation: t1.10 ('Demonstrate how different factors affect the solubility … such as heat') is still assessed only by q3, which tests rate versus stirring. The saturation test learners run on Day 3 and the new exit ticket have no counterpart in the written assessment, so the maximum-amount idea is never scored.",
+   "[major] answer_key at days[1].extension: The last sentence still asks learners to explain why equally sweet small and big glasses 'do not necessarily have the same concentration', the backwards claim, and it now contradicts the corrected days[0].extension.",
+   "[major] alignment at slides[25].lines[1]: The learner-facing activity still never tells groups to measure equal volumes of cold and warm water; the controlled variable exists only in slides[25].notes and days[2].flow[3].teacher, so groups following the slide will use unequal amounts.",
+   "[major] scientific_accuracy at slides[25].lines[2]: Lines 3–4 still read 'Watch without stirring. Record how long the salt takes to disappear.' and 'Stir both cups and record again.' Undisturbed salt will not disappear in the 17-minute slot, and this contradicts the stirred saturation test in the same slide's notes and in days[2].flow[3].",
+   "[major] alignment at days[1].materials: The equipment handling checklist is handed out and completed in days[1].flow[3], but it is not in the Day 2 materials list, so nothing tells the teacher to print it; and no observed record of litmus-strip handling exists on Day 4, where t1.12 is also being demonstrated.",
+   "[major] safety at assessment[6].answer: The sample plan learners are marked against still lists 'heat source or sunny area', 'Evaporate the water by gentle heating or leaving in sunlight' and 'Safety: Use low heat, handle dish with care, wash hands after.' This contradicts guide.safety, days[4].flow[3].teacher and the corrected slides[43].notes, and would score an unsafe learner-heating plan as correct.",
+   "[major] consistency at days[0].flow[5].teacher: The revision pasted the percent-concentration error rationale into Day 1's exit ticket, which asks only 'In a glass of salt water, what is the solute and what is the solvent?' A teacher following this script now discusses 8%, 2% and 16% after a question with no numbers in it."
+  ],
+  "resolvedIssues": 13,
+  "at": "2026-11-19T04:45:00.801Z"
+ },
+ "teacherReview": null,
+ "expertReview": null,
+ "verbiage": {
+  "rulesVersion": "verbiage/1",
+  "state": "warn",
+  "metrics": {
+   "slides": 49,
+   "maxWordsOnSlide": 58,
+   "slidesOver48Words": 5,
+   "avgSentenceWords": 6.4,
+   "maxSentenceWords": 18,
+   "englishFunctionShare": null,
+   "filipinoFunctionShare": 0
+  },
+  "findings": [
+   "d2s1: write the numeral and unit symbol (°C, cm, %) rather than the spelled-out unit",
+   "d2s3: write the numeral and unit symbol (°C, cm, %) rather than the spelled-out unit",
+   "d2s5: write the numeral and unit symbol (°C, cm, %) rather than the spelled-out unit",
+   "d2s7: 50 words on the slide (Hiraia cards stop at 48)",
+   "d2s10: write the numeral and unit symbol (°C, cm, %) rather than the spelled-out unit",
+   "d3s5: 58 words on the slide (Hiraia cards stop at 48)",
+   "d3s8: 52 words on the slide (Hiraia cards stop at 48)",
+   "d5s6: 54 words on the slide (Hiraia cards stop at 48)",
+   "d5s8: 55 words on the slide (Hiraia cards stop at 48)",
+   "d5s9: title \"What is one safe way to use a graduated cylinder?\" is long for a child (≤ 8 words, no semicolon)",
+   "d2s8: the question (22 words) is much longer than its answer (13 words)"
+  ]
+ },
+ "publication": "draft",
+ "publicationBy": null
+}

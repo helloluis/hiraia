@@ -100,7 +100,7 @@ export function MoreSheet({
             <ListRow title={t('editor.pdf')} onClick={onPdf} />
             {!locked && ed.cls && (
               <ListRow
-                title={t('lessons.generate')}
+                title={ed.plan?.lineage?.artifactId?.startsWith('pack.') ? t('gen.adaptTitle') : t('lessons.generate')}
                 subtitle={t('gen.notice')}
                 onClick={onGenerate}
               />

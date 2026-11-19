@@ -15,6 +15,7 @@ merges into it. Each worker has its own worktree and branch `tala-v1-<letter>` c
 | `packages/tala-web` | `@hiraia/tala-web` | Next.js 15 app for `tala.hiraia.org`. Mounts the server at `/api/v1/[...path]`. |
 | `packages/tala-mobile` | `@hiraia/tala-mobile` | Expo / React Native Android app, offline-first. |
 | `packages/tala` | — | The existing Kotlin Tala 0.4.x app. **Do not touch.** Its absorption (PRD §6.7) is a later wave. |
+| `packages/tala-packs` | `@hiraia/tala-packs` | Prebuilt weekly teaching packs (PRD §18.4): offline batch pipeline (targets, grounding, generation, checks, critique, illustration checks, PPTX/PDF rendering, review ledger) and the committed library `library/science-bow-2026/<week>/<en|fil>/`. Never in the web request path; the server only reads its library and built files. |
 
 ## Tala 0.4.x stays independent and shippable (Luis, 13 Nov 2026)
 
@@ -88,6 +89,7 @@ read-only reference data delivered as packs. Pacing and the timeline are compute
 | **F** Rosters | Deterministic parsing + normalisation, file readers, import pipeline, LLM-assisted cleaning with the flagged route | `packages/tala-core/src/roster/**`; `packages/tala-server/src/modules/roster/**`; `packages/tala-server/prompts/roster/**` |
 | **G** Community | Artifacts, versions, lineage, search, copy, report, LLM moderation with loose guidelines, rule detectors | `packages/tala-core/src/moderation/**`; `packages/tala-server/src/modules/community/**`; `packages/tala-server/prompts/moderation/**` |
 | **H** Sync engine + print | Client sync engine + in-memory store, plan helpers, HTML print templates, server PDF fallback | `packages/tala-core/src/sync/**`; `packages/tala-core/src/plan/**`; `packages/tala-core/src/print/**`; `packages/tala-server/src/modules/print/**` |
+| Teaching packs (2026-11-19) | Pack pipeline, pack contracts, packs server module, library screens | `packages/tala-packs/**`; `packages/tala-core/src/contracts/packs.ts` and the `packs.*` routes in `api.ts`; `packages/tala-server/src/modules/packs/**`; `packages/tala-web/src/features/library/**`, `src/app/library/**`, `src/data/packs.ts`, `src/data/pack-plans.ts`; `docs/tala/teaching-packs/**` |
 | Orchestrator | Contracts, tokens, module registry, root config, this file, integration | `packages/tala-core/src/contracts/**`, `src/tokens.ts`, `src/index.ts`, `package.json`s of core/server, `packages/tala-server/src/kernel/types.ts`, `src/modules/index.ts`, `docs/tala/**`, root files |
 
 Rules:

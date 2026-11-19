@@ -11,7 +11,8 @@ import { LinkButton } from '@/components/ui';
 import { Carousel, type Screen } from './Carousel';
 import { Feature, PublicShell } from './PublicShell';
 
-const FEATURES = ['pacing', 'ai', 'roster', 'edit', 'offline', 'community'] as const;
+// The library is an early preview (a few sample weeks), so it follows the features teachers can rely on today.
+const FEATURES = ['pacing', 'ai', 'roster', 'edit', 'offline', 'community', 'library'] as const;
 const PROMISES = ['free', 'offline', 'simple', 'check'] as const;
 export const SCREENS: Screen[] = [
   { name: 'week-phone', w: 786, h: 1704, captionKey: 'landing.c.week', kind: 'phone' },
@@ -89,6 +90,9 @@ export function LandingPage() {
                   </LinkButton>
                 </>
               )}
+              <LinkButton href="/library" full>
+                {t('landing.openLibrary')}
+              </LinkButton>
               <Link
                 href="/download"
                 className="inline-flex items-center justify-center min-h-touch px-2 text-talaTealText underline underline-offset-4"

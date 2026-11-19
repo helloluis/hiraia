@@ -1,0 +1,52 @@
+{
+ "packId": "sci26-g4-t1-w08",
+ "language": "en",
+ "contentSha256": "d56a7129af7f1bf11ab7d12e4442f66788902fae6f36db1acf469373570d3b3c",
+ "autoChecks": {
+  "state": "pass",
+  "checkerVersion": "checks/1",
+  "failures": [],
+  "warnings": [
+   "d4s9: line 1 is long for a TV slide (92 characters)",
+   "d5s10: reveal text does not echo the correct choice \"skeletal and muscular\"",
+   "acronym TWO is never expanded",
+   "acronym PDF is never expanded"
+  ],
+  "at": "2026-11-19T04:37:39.856Z"
+ },
+ "modelCritique": {
+  "state": "issues_open",
+  "model": "qwen4-max",
+  "rounds": 3,
+  "openIssues": [
+   "[major] answer_key at assessment[7].answer: The model answer contradicts both the revised prompt and the new marking guidance: it says the poster must show 'all required labeled diagrams and the habitat table' and gives 'kangkong as an aquatic/terrestrial plant' as the example. The prompt's section (3) is now a local plant with root/shoot labels and one sentence per system, so two teachers reading answer vs explanation would grade different things.",
+   "[major] alignment at slides[47].lines: The learner-facing poster slide still instructs step 4 'Make a table: organism, habitat, system or part' and 'Record: one local plant or animal example', and its notes still tell the teacher to 'Show a simple table on the board with three columns'. This is off-competency habitat classification, is never taught in Days 1–4, and now contradicts assessment[7].prompt and days[4].flow[4].teacher.",
+   "[major] alignment at summary: The pack summary (the path the writer could not find as guide.summary) still ends '…and begin a poster that classifies a Philippine plant or animal by habitat', which is not one of this week's two competencies and no longer matches the task.",
+   "[major] alignment at days[4].flow[4].learners: The learners' column still says they finish 'filling in the classification table with one local example', although the teacher column in the same step now describes a labelled local plant with one sentence per system. Learners are being told to do a task the teacher no longer sets.",
+   "[major] alignment at days[4].expectedObservations[3]: The expected observation still reads 'Learners give one local Philippine plant or animal example and its habitat in the classification table', so the teacher is looking for evidence of an untaught, off-competency skill.",
+   "[major] misconception_risk at slides[41].lines: The revision added 'The skeletal system and muscular system are two body systems.' as the third line of the Day 4 plant summary slide. It is unrelated to the root/shoot lesson, sits under an image of a flowering plant, and the slide notes tell learners to 'copy these two lines' while three are shown — so learners copy a plant summary containing a stray human-body fact and the teacher does not know which lines to use."
+  ],
+  "resolvedIssues": 15,
+  "at": "2026-11-19T04:37:39.856Z"
+ },
+ "teacherReview": null,
+ "expertReview": null,
+ "verbiage": {
+  "rulesVersion": "verbiage/1",
+  "state": "warn",
+  "metrics": {
+   "slides": 52,
+   "maxWordsOnSlide": 52,
+   "slidesOver48Words": 1,
+   "avgSentenceWords": 6.2,
+   "maxSentenceWords": 15,
+   "englishFunctionShare": null,
+   "filipinoFunctionShare": 0
+  },
+  "findings": [
+   "d1s8: 52 words on the slide (Hiraia cards stop at 48)"
+  ]
+ },
+ "publication": "draft",
+ "publicationBy": null
+}
