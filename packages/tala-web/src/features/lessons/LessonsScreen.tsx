@@ -17,6 +17,8 @@ import {
   TextInput,
   type Tone,
 } from '@/components/ui';
+import { Icon } from '@/components/icons';
+import { LibraryNudge } from '@/features/library/LibraryNudge';
 
 const PAGE = 20;
 
@@ -56,22 +58,26 @@ export function LessonsScreen() {
         title={t('lessons.title')}
         action={
           <LinkButton href="/lessons/new" variant="primary">
-            + {t('lessons.new')}
+            <Icon name="plus" size={20} />
+            {t('lessons.new')}
           </LinkButton>
         }
       />
       {ws.loading ? (
         <Placeholder rows={5} />
       ) : ws.plans.filter((p) => p.state !== 'archived').length === 0 ? (
-        <EmptyState
-          action={
-            <LinkButton href="/lessons/new" variant="primary">
-              {t('lessons.new')}
-            </LinkButton>
-          }
-        >
-          {t('lessons.empty')}
-        </EmptyState>
+        <div className="flex flex-col gap-3">
+          <EmptyState
+            action={
+              <LinkButton href="/lessons/new" variant="primary">
+                {t('lessons.new')}
+              </LinkButton>
+            }
+          >
+            {t('lessons.empty')}
+          </EmptyState>
+          <LibraryNudge />
+        </div>
       ) : (
         <div className="flex flex-col gap-3">
           <div className="grid gap-2 wide:grid-cols-2">
@@ -111,6 +117,7 @@ export function LessonsScreen() {
           {list.length > shown && (
             <Button onClick={() => setShown((s) => s + PAGE)}>{t('lessons.loadMore')}</Button>
           )}
+          <LibraryNudge className="mt-2" />
         </div>
       )}
     </>

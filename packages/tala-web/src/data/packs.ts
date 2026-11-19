@@ -17,6 +17,8 @@ const DETAIL_PREFIX = 'packs.detail.';
 
 export const fileUrl = (packId: string, kind: PackFileKind, lang: PackLang) => `${API_BASE}/packs/${encodeURIComponent(packId)}/files/${kind}?lang=${lang}`;
 export const previewUrl = (packId: string, slide: number, lang: PackLang) => `${API_BASE}/packs/${encodeURIComponent(packId)}/previews/${slide}?lang=${lang}`;
+/** A drawing of the pack's deck, exactly as embedded in the built deck (with its Hiraia mark). */
+export const mediaUrl = (packId: string, slug: string, lang: PackLang) => `${API_BASE}/packs/${encodeURIComponent(packId)}/media/${encodeURIComponent(slug)}?lang=${lang}`;
 
 export function usePackIndex() {
   const { cache, status } = useSession();

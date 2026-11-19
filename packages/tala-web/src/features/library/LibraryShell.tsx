@@ -10,10 +10,10 @@ import { PublicShell } from '@/features/landing/PublicShell';
 
 export function LibraryShell({ children }: { children: ReactNode }) {
   const { status } = useSession();
-  if (status === 'signedIn') return <AppShell>{children}</AppShell>;
+  if (status === 'signedIn') return <AppShell wide>{children}</AppShell>;
   return (
     <PublicShell>
-      <div className="w-full max-w-[64rem] mx-auto px-4 py-5 wide:px-8">{children}</div>
+      <div className="w-full max-w-[76rem] mx-auto px-4 py-5 wide:px-8">{children}</div>
     </PublicShell>
   );
 }
