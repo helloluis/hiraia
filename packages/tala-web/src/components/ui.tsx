@@ -17,6 +17,7 @@ import {
 import Link from 'next/link';
 import { useT } from '@/i18n';
 import { HiraiaGlyph } from './Brand';
+import { Icon, type IconName } from './icons';
 
 export function cx(...parts: Array<string | false | null | undefined>): string {
   return parts.filter(Boolean).join(' ');
@@ -130,8 +131,9 @@ export function Field({
       )}
       {children(fid, describedBy)}
       {error && (
-        <p id={errId} role="alert" className="text-small text-brick">
-          ⚠ {error}
+        <p id={errId} role="alert" className="flex items-start gap-1.5 text-small text-brick">
+          <Icon name="alert" size={16} strokeWidth={2} className="mt-0.5" />
+          <span>{error}</span>
         </p>
       )}
     </div>
@@ -410,7 +412,7 @@ const BANNER: Record<'info' | 'warn' | 'error' | 'success', string> = {
   error: 'bg-white border-brick text-brick',
   success: 'bg-white border-sage',
 };
-const BANNER_ICON = { info: 'ℹ', warn: '⚠', error: '⚠', success: '✓' } as const;
+const BANNER_ICON: Record<'info' | 'warn' | 'error' | 'success', IconName> = { info: 'info', warn: 'alert', error: 'alert', success: 'checkCircle' };
 export function Banner({
   kind = 'info',
   children,
@@ -428,7 +430,7 @@ export function Banner({
         BANNER[kind]
       )}
     >
-      <span aria-hidden="true">{BANNER_ICON[kind]}</span>
+      <Icon name={BANNER_ICON[kind]} size={20} />
       <span className="flex-1 basis-48 min-w-0 break-words">{children}</span>
       {action}
     </div>
@@ -471,9 +473,10 @@ export function PageHeader({
       {back && (
         <Link
           href={back.href}
-          className="inline-flex items-center gap-1 min-h-touch text-talaTealText self-start"
+          className="inline-flex items-center gap-1.5 min-h-touch font-medium text-talaTealText self-start"
         >
-          ← {back.label}
+          <Icon name="arrowLeft" size={18} />
+          {back.label}
         </Link>
       )}
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -504,19 +507,42 @@ export function SectionTitle({
 
 /* ---------- Empty state: one sentence, one action (SIMPLE-10) ---------- */
 
-export function EmptyState({ children, action }: { children: ReactNode; action?: ReactNode }) {
+/** `art`: a drawing from /public/art instead of the glyph (`board` for "no class yet", `shelf` for "nothing here"). */
+export function EmptyState({
+  children,
+  action,
+  art,
+  heading,
+}: {
+  children: ReactNode;
+  action?: ReactNode;
+  art?: 'board' | 'shelf';
+  heading?: ReactNode;
+}) {
   const { t } = useT();
   return (
     <div className="rounded-[1.25rem] border border-hairline bg-white px-5 py-8 text-center flex flex-col items-center gap-4">
-      <span
-        aria-hidden="true"
-        className="relative inline-flex h-20 w-20 items-center justify-center rounded-full bg-cream"
-      >
-        <span className="absolute -left-2 top-3 h-3 w-3 rounded-full bg-yellow" />
-        <span className="absolute right-0 -bottom-1 h-4 w-4 rounded-sm rotate-12 bg-sage" />
-        <HiraiaGlyph size={40} title="" />
-      </span>
-      <p className="font-display text-title">{t('empty.heading')}</p>
+      {art ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={art === 'board' ? '/art/class-board.webp' : '/art/empty-shelf.webp'}
+          alt=""
+          width={320}
+          height={320}
+          loading="lazy"
+          className="h-36 w-36 object-contain"
+        />
+      ) : (
+        <span
+          aria-hidden="true"
+          className="relative inline-flex h-20 w-20 items-center justify-center rounded-full bg-cream"
+        >
+          <span className="absolute -left-2 top-3 h-3 w-3 rounded-full bg-yellow" />
+          <span className="absolute right-0 -bottom-1 h-4 w-4 rounded-sm rotate-12 bg-sage" />
+          <HiraiaGlyph size={40} title="" />
+        </span>
+      )}
+      <p className="font-display text-title">{heading ?? t('empty.heading')}</p>
       <p className="max-w-[28rem] text-forestMuted">{children}</p>
       {action}
     </div>
@@ -569,7 +595,7 @@ export function Sheet({
               {title}
             </h2>
             <Button variant="quiet" onClick={onClose} aria-label={t('common.close')}>
-              ✕ <span className="sr-only">{t('common.close')}</span>
+              <Icon name="x" size={22} />
             </Button>
           </div>
           <div className="flex flex-col gap-3">{children}</div>

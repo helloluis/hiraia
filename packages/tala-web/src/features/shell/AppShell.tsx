@@ -6,21 +6,23 @@ import { useT } from '@/i18n';
 import { useSession } from '@/data/session';
 import { HiraiaGlyph, TalaWordmark } from '@/components/Brand';
 import { cx } from '@/components/ui';
+import { Icon, type IconName } from '@/components/icons';
 import { NetworkBanner } from './NetworkBanner';
 import { SyncIndicator } from './SyncIndicator';
 import { GenerationRunner } from '@/features/generate/GenerationRunner';
 
 /** Phone bottom bar: at most four destinations (SIMPLE-9). Community is reached from the Library page. */
 const NAV = [
-  { href: '/week', key: 'nav.week', icon: '▦' },
-  { href: '/library', key: 'nav.library', icon: '▤' },
-  { href: '/lessons', key: 'nav.lessons', icon: '≡' },
-  { href: '/class', key: 'nav.class', icon: '⌂' },
-] as const;
+  { href: '/week', key: 'nav.week', icon: 'calendar' },
+  { href: '/library', key: 'nav.library', icon: 'book' },
+  { href: '/lessons', key: 'nav.lessons', icon: 'lessons' },
+  { href: '/class', key: 'nav.class', icon: 'school' },
+] as const satisfies ReadonlyArray<{ href: string; key: string; icon: IconName }>;
 /** Wide screens have room for Community in the side rail as well. */
-const RAIL = [...NAV.slice(0, 3), { href: '/community', key: 'nav.community', icon: '☺' }, NAV[3]] as const;
+const RAIL = [...NAV.slice(0, 3), { href: '/community', key: 'nav.community', icon: 'users' }, NAV[3]] as const;
 
-export function AppShell({ children }: { children: ReactNode }) {
+/** `wide`: reading pages (library, packs, my slides) get a wider column for a magazine layout with a side rail. */
+export function AppShell({ children, wide }: { children: ReactNode; wide?: boolean }) {
   const { t } = useT();
   const { status } = useSession();
   const pathname = usePathname();
@@ -83,7 +85,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <NavLink
             href="/settings"
             label={t('nav.settings')}
-            icon="⚙"
+            icon="settings"
             active={pathname?.startsWith('/settings') ?? false}
           />
           <SyncIndicator />
@@ -109,7 +111,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               )}
               aria-current={pathname?.startsWith('/settings') ? 'page' : undefined}
             >
-              <span aria-hidden="true">⚙</span>
+              <Icon name="settings" size={22} />
               <span>{t('nav.settings')}</span>
             </Link>
           </div>
@@ -117,7 +119,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <NetworkBanner />
         <main
           id="main"
-          className="flex-1 w-full max-w-[64rem] mx-auto px-4 py-5 wide:px-8 pb-24 wide:pb-8"
+          className={cx('flex-1 w-full mx-auto px-4 py-5 wide:px-8 pb-24 wide:pb-10', wide ? 'max-w-[76rem]' : 'max-w-[64rem]')}
         >
           {children}
         </main>
@@ -134,15 +136,13 @@ export function AppShell({ children }: { children: ReactNode }) {
                 href={n.href}
                 aria-current={active ? 'page' : undefined}
                 className={cx(
-                  'flex flex-col items-center justify-center min-h-touch py-1 text-small leading-tight',
+                  'flex flex-col items-center justify-center gap-0.5 min-h-[3.5rem] py-1.5 text-small leading-tight',
                   active
                     ? 'text-talaTeal font-medium border-t-2 border-talaTeal'
                     : 'text-forest border-t-2 border-transparent'
                 )}
               >
-                <span aria-hidden="true" className="text-body">
-                  {n.icon}
-                </span>
+                <Icon name={n.icon} size={24} strokeWidth={active ? 2.1 : 1.75} />
                 <span className="text-center px-1">{t(n.key)}</span>
               </Link>
             );
@@ -161,7 +161,7 @@ function NavLink({
 }: {
   href: string;
   label: string;
-  icon: string;
+  icon: IconName;
   active: boolean;
 }) {
   return (
@@ -173,7 +173,7 @@ function NavLink({
         active ? 'bg-talaTeal text-white font-medium' : 'text-forest hover:bg-cream'
       )}
     >
-      <span aria-hidden="true">{icon}</span>
+      <Icon name={icon} size={22} />
       <span>{label}</span>
     </Link>
   );

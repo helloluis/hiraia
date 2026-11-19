@@ -11,6 +11,33 @@
   src: url('/fonts/fraunces-semibold.woff2') format('woff2');
 }
 
+/*
+ * Classroom slides name Calibri and Cambria (Office-safe, as in the PowerPoint file). Where those are not installed
+ * (phones, Macs, Chromebooks without them) the slide viewer uses these metric-compatible subsets, so a slide wraps
+ * and fits the same on every device. Used by the slide viewer only. Licences: /fonts/SLIDE-FONTS-LICENSES.txt.
+ */
+@font-face {
+  font-family: 'Tala Slide Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Carlito'), url('/fonts/tala-slide-sans-regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Tala Slide Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Carlito Bold'), url('/fonts/tala-slide-sans-bold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Tala Slide Serif';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Caladea Bold'), url('/fonts/tala-slide-serif-bold.woff2') format('woff2');
+}
+
 @layer base {
   html {
     background: var(--c-cream);
@@ -57,4 +84,28 @@
     content: attr(data-placeholder);
     color: var(--c-forestMuted);
   }
+
+  /* ---------- Editorial pages (library, packs, This Week) ---------- */
+  /* Small-caps label above a headline. */
+  .kicker {
+    font-size: 0.78125rem;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  /* Long-form reading: comfortable size, generous leading, paragraphs set apart. */
+  .reading { font-size: 1.0625rem; line-height: 1.65; }
+  .reading > p + p { margin-top: 0.85em; }
+  /* Ink drawings sit on the page like print: white paper drops out. */
+  .ink { mix-blend-mode: multiply; }
+  /* <details> without the browser's triangle; the component draws its own chevron. */
+  details.disclosure > summary { list-style: none; cursor: pointer; }
+  details.disclosure > summary::-webkit-details-marker { display: none; }
+  details.disclosure[open] > summary .disclosure-chevron { transform: rotate(180deg); }
+  .disclosure-chevron { transition: transform 120ms ease; }
+  /* Horizontal strips (day picker, filmstrip): scroll by touch, no scrollbar chrome. */
+  .strip { overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; }
+  .strip::-webkit-scrollbar { display: none; }
+  .strip > * { scroll-snap-align: start; }
 }

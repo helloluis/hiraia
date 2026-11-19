@@ -1,4 +1,8 @@
 /** English interface strings. Keys are the contract; src/i18n/fil.ts must have the same keys. No text lives in components. */
+import { slidesEn } from './parts/slides.en';
+import { uiEn } from './parts/ui.en';
+import { weekEn } from './parts/week.en';
+
 export const en = {
   'app.name': 'Tala',
   'app.byHiraia': 'by Hiraia',
@@ -236,7 +240,7 @@ export const en = {
   'realign.apply': 'Apply',
   'realign.applied': 'Done. Lessons moved.',
   'realign.later': 'Later',
-  'realign.pending': '{n} days not yet fitted',
+  'realign.pending': 'No-class days not yet fitted into your plan: {n}',
   'realign.fix': 'Fit lessons',
   'realign.pickDate': 'Make-up date',
   'realign.recommended': 'Recommended',
@@ -938,6 +942,10 @@ export const en = {
   'lib.pack.language': 'Language of the pack',
   'lib.pack.filipino': 'Filipino',
   'lib.pack.english': 'English',
+  /* teacher-portal rework: one file per area under ./parts */
+  ...uiEn,
+  ...weekEn,
+  ...slidesEn,
 } as const;
 
 export type StringKey = keyof typeof en;

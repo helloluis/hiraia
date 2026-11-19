@@ -1,4 +1,7 @@
 import type { StringKey } from './en';
+import { slidesFil } from './parts/slides.fil';
+import { uiFil } from './parts/ui.fil';
+import { weekFil } from './parts/week.fil';
 
 /**
  * Filipino interface strings — the default language. Plain teacher-facing Filipino; DepEd terms teachers
@@ -970,4 +973,8 @@ export const fil = {
   'lib.pack.language': 'Wika ng pack',
   'lib.pack.filipino': 'Filipino',
   'lib.pack.english': 'English',
+  /* teacher-portal rework: one file per area under ./parts */
+  ...uiFil,
+  ...weekFil,
+  ...slidesFil,
 } satisfies Record<StringKey, string>;
