@@ -276,7 +276,10 @@ export async function renderDeck(pack: WeeklyPackContent, review: PackReview | n
       continue;
     }
 
-    const mcq = (s.kind === 'check' && s.choices.length > 0) || (s.kind === 'reveal' && (pack.slides.find((x) => x.id === s.revealOf)?.choices.length ?? 0) > 0);
+    // A question slide may offer choices too (a quick poll with no answer slide): drawn like a check, nothing marked.
+    const mcq =
+      ((s.kind === 'check' || s.kind === 'question') && s.choices.length > 0) ||
+      (s.kind === 'reveal' && (pack.slides.find((x) => x.id === s.revealOf)?.choices.length ?? 0) > 0);
     const hasImg = Boolean(s.image) && !mcq && s.kind !== 'credits' && mayShow(s.day, s.image?.slug);
     markShown(s.day, hasImg ? s.image!.slug : null);
     const slide = pres.addSlide({ masterName: hasImg ? 'TALA_LIGHT_SPLIT' : 'TALA_LIGHT', sectionTitle: section });
@@ -310,7 +313,7 @@ export async function renderDeck(pack: WeeklyPackContent, review: PackReview | n
 
     title(slide, s.title, textW);
 
-    if (s.kind === 'check' || s.kind === 'reveal') {
+    if (s.kind === 'check' || s.kind === 'reveal' || (s.kind === 'question' && s.choices.length > 0)) {
       const check = s.kind === 'reveal' ? pack.slides.find((x) => x.id === s.revealOf) : s;
       const choices = check?.choices ?? [];
       if (!choices.length) {
@@ -321,7 +324,7 @@ export async function renderDeck(pack: WeeklyPackContent, review: PackReview | n
         continue;
       }
       let y = 2.35;
-      if (s.kind === 'check' && s.lines.length) {
+      if ((s.kind === 'check' || s.kind === 'question') && s.lines.length) {
         body(slide, s.id, s.lines, M, y, W - 2 * M, 0.95, { bullets: false, sizes: [28, 26, 24] });
         y += 1.05;
       }
