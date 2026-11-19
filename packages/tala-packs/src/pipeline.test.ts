@@ -7,7 +7,7 @@ import { buildTargets, loadSciencePacks, targetId } from './targets';
 import { CURRICULUM_PACKS, LIBRARY } from './paths';
 import { DayOut, OutlineOut, dayChecks, normalizeDay, tidyCheckSlide, tidySlide } from './generate';
 import { annotate, applyPatch, canonicalPath, expectMatches, parsePath, placeholderIn, preparePatch, retarget, splitSlideLine, stripIndex } from './review';
-import { splitAtComma } from './text';
+import { clampText, foldList, splitAtComma } from './text';
 import { checkPack, checkSameStructure } from './checks';
 import { checkVerbiage } from './verbiage';
 import { loadInputs } from './context';
@@ -331,5 +331,17 @@ test('a slide line over the contract with no sentence break is split at a comma;
   assert.equal(splitAtComma('no commas here at all', 10), null);
   const { LENGTH_ONLY } = await import('./generate');
   assert.equal(LENGTH_ONLY, '[length] ');
+});
+
+test('over-long alt text and material lists are trimmed deterministically, without touching lesson text', () => {
+  const alt = 'A cutaway drawing of a seed. ' + 'The root grows down into the soil while the shoot grows up toward the light, '.repeat(4);
+  const short = clampText(alt, 200);
+  assert.ok(short.length <= 200 && alt.startsWith(short.replace(/…$/, '')));
+  assert.equal(clampText('Short alt.', 200), 'Short alt.');
+  const mats = Array.from({ length: 14 }, (_, i) => `item ${i + 1}`);
+  const folded = foldList(mats, 12);
+  assert.equal(folded.length, 12);
+  assert.equal(folded[11], 'item 12; item 13; item 14');
+  assert.deepEqual(foldList(['a', 'b'], 12), ['a', 'b']);
 });
 

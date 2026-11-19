@@ -14,7 +14,7 @@ import { MODELS, type Meter, type ModelSpec } from './llm';
 import { fill, loadInputs, loadPrompt } from './context';
 import { DayOut, LENGTH_ONLY, stage, tidySlide, type DayOut as DayOutT } from './generate';
 import type { WeekTarget } from './targets';
-import { lineMax, slideCharsMax, splitAtComma, splitSlideLine, stripEnumerator } from './text';
+import { clampText, lineMax, slideCharsMax, splitAtComma, splitSlideLine, stripEnumerator } from './text';
 
 export const FilGuideOut = z.object({
   title: z.string().trim().min(1).max(80),
@@ -126,7 +126,7 @@ function lockDayStructure(enDay: DayOutT) {
           log.push(`slides[${i}]: long line split or unnumbered`);
         }
       }
-      s.image = e.image ? { slug: e.image.slug, alt: (s.image && typeof s.image === 'object' && s.image.alt) || e.image.alt } : null;
+      s.image = e.image ? { slug: e.image.slug, alt: clampText(String((s.image && typeof s.image === 'object' && s.image.alt) || e.image.alt), 200) } : null;
     });
     return o;
   };

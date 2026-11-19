@@ -32,3 +32,20 @@ export function splitAtComma(line: string, max: number): string[] | null {
   return parts.every((x) => x.length > 0 && x.length <= max) ? parts : null;
 }
 
+/** Shorten descriptive text (image alt text) to `max` characters at a sentence end, else a word boundary + "…". */
+export function clampText(text: string, max: number): string {
+  const t = text.trim();
+  if (t.length <= max) return t;
+  const cut = t.slice(0, max);
+  const sentence = cut.lastIndexOf('. ');
+  if (sentence >= max * 0.6) return cut.slice(0, sentence + 1);
+  const space = cut.lastIndexOf(' ', max - 1);
+  return `${cut.slice(0, space > 0 ? space : max - 1).replace(/[,;:\s]+$/, '')}…`;
+}
+
+/** A list over the contract's length keeps its first items and joins the rest into the last allowed one. */
+export function foldList(items: string[], max: number): string[] {
+  if (items.length <= max) return items;
+  return [...items.slice(0, max - 1), items.slice(max - 1).join('; ')];
+}
+

@@ -32,7 +32,7 @@ import {
 } from './context';
 import { LIBRARY, PIPELINE_VERSION, WORK } from './paths';
 import type { WeekTarget } from './targets';
-import { lineMax, splitAtComma, splitSlideLine, stripEnumerator } from './text';
+import { clampText, foldList, lineMax, splitAtComma, splitSlideLine, stripEnumerator } from './text';
 
 export const SENSITIVITY = z.enum(['human_reproduction', 'health', 'disaster', 'safety_critical']);
 
@@ -278,6 +278,10 @@ export function normalizeDay(day: number, art: Map<string, { titles: string[] }>
     const o = structuredClone(raw) as any;
     o.day = day;
     if (typeof o.minutes !== 'number') o.minutes = 45;
+    if (Array.isArray(o.materials) && o.materials.length > 12 && o.materials.every((m: unknown) => typeof m === 'string')) {
+      o.materials = foldList(o.materials, 12);
+      log.push('materials: more than 12 items; the rest joined into the 12th');
+    }
     for (const [i, f] of (Array.isArray(o.flow) ? o.flow : []).entries()) {
       if (typeof f.minutes === 'string') f.minutes = parseInt(f.minutes, 10);
       if (typeof f.phase === 'string' && !(PHASES as readonly string[]).includes(f.phase)) {
@@ -328,6 +332,10 @@ export function normalizeDay(day: number, art: Map<string, { titles: string[] }>
       s.revealOf ??= null;
       s.correctChoice ??= null;
       if (typeof s.image === 'string') s.image = { slug: s.image, alt: '' };
+      if (s.image && typeof s.image === 'object' && typeof s.image.alt === 'string' && s.image.alt.length > 200) {
+        s.image.alt = clampText(s.image.alt, 200);
+        log.push(`slide ${id}: image alt text shortened to 200 characters`);
+      }
       if (s.image && typeof s.image === 'object') {
         const cand = art.get(s.image.slug);
         if (!cand) {

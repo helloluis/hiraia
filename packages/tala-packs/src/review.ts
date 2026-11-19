@@ -11,7 +11,7 @@ import { artCandidatesFor, artText, fill, groundingFor, loadPrompt } from './con
 import { stage } from './generate';
 import { checkPack } from './checks';
 import { checkVerbiage } from './verbiage';
-import { lineMax, splitSlideLine, stripEnumerator } from './text';
+import { clampText, foldList, lineMax, splitSlideLine, stripEnumerator } from './text';
 export { splitSlideLine } from './text';
 import type { WeekTarget } from './targets';
 
@@ -337,6 +337,11 @@ export function preparePatch(pack: WeeklyPackContent, path: string, value: unkno
     }
   }
   if (typeof value === 'string' && before === null && value.trim() === 'null') return { path, value: null, note: '"null" sent as text' };
+  if (/^slides\[\d+\]\.image\.alt$/.test(path) && typeof value === 'string' && value.length > 200) return { path, value: clampText(value, 200), note: 'alt text shortened' };
+  if (/^slides\[\d+\]\.image$/.test(path) && value && typeof value === 'object' && typeof (value as { alt?: unknown }).alt === 'string' && (value as { alt: string }).alt.length > 200)
+    return { path, value: { ...(value as object), alt: clampText((value as { alt: string }).alt, 200) }, note: 'alt text shortened' };
+  if (/^days\[\d+\]\.materials$/.test(path) && Array.isArray(value) && value.length > 12 && value.every((x) => typeof x === 'string'))
+    return { path, value: foldList(value as string[], 12), note: 'materials folded to 12 items' };
   const max = lineMax(pack.language);
   const one = path.match(/^(slides\[\d+\]\.lines)\[(\d+)\]$/);
   if (one && typeof value === 'string' && value.length > max) {
