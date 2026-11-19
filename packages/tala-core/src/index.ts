@@ -16,3 +16,4 @@ export * as moderation from './moderation';
 export * as plan from './plan';
 export * as print from './print';
 export * as sync from './sync';
+export * as decks from './decks';

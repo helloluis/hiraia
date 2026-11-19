@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { Id, IsoDateTime, Lang, Ok, Page, QueryBool } from './common';
 import { CalendarPreset, CheckSummary, CurriculumIndex, CurriculumPack } from './curriculum';
 import { PackDetail, PackIndex, PackLang } from './packs';
+import { DeckCreateRequest, DeckDetail, DeckList, DeckSaveRequest, DeckSaveResult } from './decks';
 import {
   ArtifactDetail,
   ArtifactSearchQuery,
@@ -46,7 +47,7 @@ export const MAIL_LINK_PATHS = {
   linkGoogle: '/link-google',
 } as const;
 
-export type Owner = 'core' | 'curriculum' | 'generation' | 'roster' | 'community' | 'print' | 'packs';
+export type Owner = 'core' | 'curriculum' | 'generation' | 'roster' | 'community' | 'print' | 'packs' | 'decks';
 
 export interface RouteSpec {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -563,6 +564,83 @@ export const API = {
     auth: 'none',
     owner: 'packs',
     query: z.object({ lang: PackLang.default('en') }),
+    response: z.unknown(),
+    binary: true,
+  }),
+
+  /** One drawing of a pack's deck, as embedded in the built deck (Hiraia-watermarked). Same visibility as the pack. */
+  'packs.media': route({
+    method: 'GET',
+    path: '/packs/:packId/media/:slug',
+    auth: 'none',
+    owner: 'packs',
+    query: z.object({ lang: PackLang.default('en') }),
+    response: z.unknown(),
+    binary: true,
+  }),
+
+  /* decks — a teacher's own editable copy of a pack's slides (contracts/decks.ts). Every route is owner-only. */
+  'decks.list': route({
+    method: 'GET',
+    path: '/decks',
+    auth: 'user',
+    owner: 'decks',
+    response: DeckList,
+  }),
+  /** Make my copy of a pack's deck. Answers the existing copy when I already have one for this pack and language. */
+  'decks.create': route({
+    method: 'POST',
+    path: '/decks',
+    auth: 'user',
+    owner: 'decks',
+    body: DeckCreateRequest,
+    response: DeckDetail,
+  }),
+  'decks.get': route({
+    method: 'GET',
+    path: '/decks/:deckId',
+    auth: 'user',
+    owner: 'decks',
+    response: DeckDetail,
+  }),
+  'decks.save': route({
+    method: 'PUT',
+    path: '/decks/:deckId',
+    auth: 'user',
+    owner: 'decks',
+    body: DeckSaveRequest,
+    response: DeckSaveResult,
+  }),
+  /** Throw my edits away and copy the library's current original again. */
+  'decks.reset': route({
+    method: 'POST',
+    path: '/decks/:deckId/reset',
+    auth: 'user',
+    owner: 'decks',
+    response: DeckDetail,
+  }),
+  'decks.delete': route({
+    method: 'DELETE',
+    path: '/decks/:deckId',
+    auth: 'user',
+    owner: 'decks',
+    response: Ok,
+  }),
+  /** A drawing of my copy (the watermarked derivative kept with the copy). */
+  'decks.media': route({
+    method: 'GET',
+    path: '/decks/:deckId/media/:slug',
+    auth: 'user',
+    owner: 'decks',
+    response: z.unknown(),
+    binary: true,
+  }),
+  /** My copy as an editable PowerPoint file, built from the saved slides. */
+  'decks.pptx': route({
+    method: 'GET',
+    path: '/decks/:deckId/pptx',
+    auth: 'user',
+    owner: 'decks',
     response: z.unknown(),
     binary: true,
   }),

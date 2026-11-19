@@ -8,3 +8,4 @@ export * from './features';
 export * from './api';
 export * from './client';
 export * from './packs';
+export * from './decks';
