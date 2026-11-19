@@ -8,6 +8,8 @@ import JSZip from 'jszip';
 import { WeeklyPackContent, PackReview } from '@hiraia/tala-core/contracts';
 import { LIBRARY, REFERENCE_ROOT } from '../paths';
 import { renderDeck } from './pptx';
+import { watermark } from './watermark';
+import { checkEditability } from './editability';
 import { guideHtml, lessonPlansHtml } from './docs';
 
 const ids = existsSync(LIBRARY)
@@ -51,13 +53,24 @@ test('each committed pack renders to a deck whose slides, notes and pictures mat
       // Notes never leak onto the slide.
       if (s.notes.length > 80) assert.ok(!shown.includes(squash(s.notes).slice(0, 80)), `${id} ${s.id}: notes not on slide`);
     }
-    // Every illustration embedded is byte-identical to the checked library file.
+    // Every illustration embedded is the Hiraia-watermarked derivative of the checked library file.
     const media = await Promise.all(
       Object.keys(zip.files)
         .filter((f) => f.startsWith('ppt/media/') && !f.endsWith('/'))
         .map(async (f) => createHash('sha256').update(await zip.file(f)!.async('nodebuffer')).digest('hex'))
     );
-    for (const img of report.images) assert.ok(media.includes(img.sha256), `${id}: ${img.slug} embedded unchanged`);
+    for (const img of report.images) {
+      const rec = pack.illustrations.find((x) => x.slug === img.slug)!;
+      const source = readFileSync(resolve(REFERENCE_ROOT, rec.file));
+      assert.equal(createHash('sha256').update(source).digest('hex'), rec.sha256, `${id}: ${img.slug} source is the checked file`);
+      assert.equal((await watermark(source)).sha256, img.embeddedSha256, `${id}: ${img.slug} derivative is reproducible`);
+      assert.ok(media.includes(img.embeddedSha256), `${id}: ${img.slug} embedded as its watermarked derivative`);
+      assert.ok(!media.includes(img.sha256), `${id}: ${img.slug} is not embedded without the watermark`);
+    }
+    // Teachers can edit it: every learner-facing word is text, lists are native, no flattened slides.
+    const edit = await checkEditability(out, pack);
+    assert.equal(edit.state, 'pass', `${id}: editability — ${edit.findings.slice(0, 3).join('; ')}`);
+    assert.ok(edit.metrics.nativeListParagraphs > 0 && edit.metrics.largestPictureShareOfSlide < 0.5);
     const used = new Set(pack.slides.filter((s) => s.image).map((s) => s.image!.slug));
     for (const slug of used) assert.ok(report.images.some((i) => i.slug === slug), `${id}: ${slug} rendered`);
     // Brand palette in the theme; one section per day plus introduction and credits.
@@ -115,3 +128,20 @@ test('a downloaded deck and its PDFs need nothing from the internet', { skip: !i
     }
   }
 });
+
+test('the watermark adds a strip with the Hiraia name below the drawing and leaves the drawing untouched', { skip: !haveArt }, async () => {
+  const catalog = JSON.parse(readFileSync(resolve(LIBRARY, '..', '..', 'data', 'art', 'competency-candidates.json'), 'utf8'));
+  const first = Object.values(catalog.competencies as Record<string, { candidates: Array<{ file: string }> }>)[0]!.candidates[0]!;
+  const source = readFileSync(resolve(REFERENCE_ROOT, first.file));
+  const wm = await watermark(source);
+  const sharp = (await import('sharp')).default;
+  const a = await sharp(source).flatten({ background: '#ffffff' }).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+  const b = await sharp(wm.png).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+  assert.equal(b.info.width, a.info.width);
+  assert.ok(b.info.height > a.info.height, 'a strip is added below');
+  assert.ok(b.data.subarray(0, a.data.length).equals(a.data), 'the drawing itself is pixel-identical');
+  const strip = b.data.subarray(a.data.length);
+  const inked = [...strip].filter((v) => v < 200).length;
+  assert.ok(inked > 50, 'the strip carries the wordmark');
+});
+

@@ -22,8 +22,8 @@ export interface ModelSpec {
   note?: string;
 }
 
-/** Published prices (2026-11-19). DeepSeek: peak rates (01:00-04:00, 06:00-10:00 UTC weekdays) used as the
- * conservative estimate; off-peak is half. Qwen: Singapore list prices. */
+/** Published prices (2026-11-19), at DeepSeek's peak rate (01:00-04:00, 06:00-10:00 UTC weekdays; half off-peak,
+ * applied per call by rateFactor). Qwen: Singapore list prices. */
 export const MODELS = {
   writer: { provider: 'deepseek', model: 'deepseek-v4-pro', inputPerM: 1.32, outputPerM: 3.96 },
   writerFlash: { provider: 'deepseek', model: 'deepseek-flash', inputPerM: 0.3, outputPerM: 1.2 },
@@ -83,29 +83,74 @@ export class ProviderError extends Error {
   }
 }
 
+/**
+ * DeepSeek peak hours (published 2026-11-19): 01:00-04:00 and 06:00-10:00 UTC, Monday to Friday; off-peak is half
+ * price. (Chinese public holidays are also off-peak; not modelled, so the estimate errs high on those days.)
+ */
+export function isDeepSeekPeak(d = new Date()): boolean {
+  const day = d.getUTCDay();
+  if (day === 0 || day === 6) return false;
+  const h = d.getUTCHours() + d.getUTCMinutes() / 60;
+  return (h >= 1 && h < 4) || (h >= 6 && h < 10);
+}
+/** Price factor for a call starting now: DeepSeek off-peak is half; Qwen has one price. */
+export function rateFactor(spec: ModelSpec, d = new Date()): number {
+  return spec.provider === 'deepseek' && !isDeepSeekPeak(d) ? 0.5 : 1;
+}
+/** Milliseconds until DeepSeek's next off-peak minute (0 when off-peak now). */
+export function msUntilDeepSeekOffPeak(d = new Date()): number {
+  if (!isDeepSeekPeak(d)) return 0;
+  const h = d.getUTCHours() + d.getUTCMinutes() / 60 + d.getUTCSeconds() / 3600;
+  const end = h < 4 ? 4 : 10;
+  return Math.ceil((end - h) * 3_600_000) + 30_000;
+}
+
+let offPeakOnly = false;
+/** When set, every DeepSeek call waits for off-peak hours before it starts (the batch runs at half price). */
+export function setDeepSeekOffPeakOnly(on: boolean) {
+  offPeakOnly = on;
+}
+
 export class Meter {
   spentUsd = 0;
   calls = 0;
+  /** Worst-case cost of calls in flight: with several workers, each must count the others' reservations. */
+  reservedUsd = 0;
   constructor(
     readonly budgetUsd: number,
     readonly ledgerPath: string,
-    initialSpend = 0
+    initialSpend = 0,
+    /** Written on every ledger row, e.g. { batch: 'priority-2026-11-19' }, so a cap can span restarts. */
+    readonly tags: Record<string, string> = {}
   ) {
     this.spentUsd = initialSpend;
     mkdirSync(dirname(ledgerPath), { recursive: true });
   }
-  /** Refuse a call whose worst case (all maxTokens used) could pass the budget. */
-  reserve(spec: ModelSpec, approxInputTokens: number, maxTokens: number) {
-    const worst = (approxInputTokens * spec.inputPerM + maxTokens * spec.outputPerM) / 1e6;
-    if (this.spentUsd + worst > this.budgetUsd)
+  /**
+   * Refuse a call whose worst case (every maxTokens used, priced at the rate in force now) could pass the budget
+   * together with what is spent and what the other in-flight calls might still cost. Returns the reservation,
+   * to be released when the call ends.
+   */
+  reserve(spec: ModelSpec, approxInputTokens: number, maxTokens: number, at = new Date()): number {
+    const worst = ((approxInputTokens * spec.inputPerM + maxTokens * spec.outputPerM) / 1e6) * rateFactor(spec, at);
+    if (this.spentUsd + this.reservedUsd + worst > this.budgetUsd)
       throw new BudgetExceeded(
-        `Budget guard: $${this.spentUsd.toFixed(2)} spent, next call could cost up to $${worst.toFixed(3)}, cap $${this.budgetUsd}.`
+        `Budget guard: $${this.spentUsd.toFixed(2)} spent and $${this.reservedUsd.toFixed(2)} reserved by calls in flight; the next call could cost up to $${worst.toFixed(3)}; cap $${this.budgetUsd.toFixed(2)}.`
       );
+    this.reservedUsd += worst;
+    return worst;
   }
+  release(reservation: number) {
+    this.reservedUsd = Math.max(0, this.reservedUsd - reservation);
+  }
+  /** Spend per pack (the label's first segment), so a week's cost is its own even with several workers. */
+  readonly byPack = new Map<string, number>();
   record(entry: Record<string, unknown> & { costUsd: number }) {
     this.spentUsd += entry.costUsd;
     this.calls += 1;
-    appendFileSync(this.ledgerPath, JSON.stringify({ at: new Date().toISOString(), ...entry }) + '\n');
+    const pack = String(entry.label ?? '').split(':')[0] ?? '';
+    this.byPack.set(pack, (this.byPack.get(pack) ?? 0) + entry.costUsd);
+    appendFileSync(this.ledgerPath, JSON.stringify({ at: new Date().toISOString(), ...this.tags, ...entry }) + '\n');
   }
 }
 
@@ -123,7 +168,24 @@ const approxTokens = (messages: ChatMessage[]) =>
 
 export async function chat(meter: Meter, o: CallOptions): Promise<CallResult> {
   const { spec } = o;
-  meter.reserve(spec, approxTokens(o.messages), o.maxTokens);
+  if (offPeakOnly && spec.provider === 'deepseek') {
+    for (let wait = msUntilDeepSeekOffPeak(); wait > 0; wait = msUntilDeepSeekOffPeak()) {
+      console.log(`${new Date().toISOString()} ${o.label}: waiting ${Math.round(wait / 60000)} min for DeepSeek off-peak pricing`);
+      await new Promise((r) => setTimeout(r, Math.min(wait, 15 * 60_000)));
+    }
+  }
+  const startedAt = new Date();
+  const factor = rateFactor(spec, startedAt);
+  const reservation = meter.reserve(spec, approxTokens(o.messages), o.maxTokens, startedAt);
+  try {
+    return await callOnce(meter, o, factor);
+  } finally {
+    meter.release(reservation);
+  }
+}
+
+async function callOnce(meter: Meter, o: CallOptions, factor: number): Promise<CallResult> {
+  const { spec } = o;
   const body: Record<string, unknown> = {
     model: spec.model,
     messages: o.messages,
@@ -165,7 +227,9 @@ export async function chat(meter: Meter, o: CallOptions): Promise<CallResult> {
   const inputTokens = usage.prompt_tokens ?? approxTokens(o.messages);
   const outputTokens = usage.completion_tokens ?? o.maxTokens;
   const reasoningTokens = usage.completion_tokens_details?.reasoning_tokens ?? 0;
-  const costUsd = (inputTokens * spec.inputPerM + outputTokens * spec.outputPerM) / 1e6;
+  // Priced at the rate in force when the call started (DeepSeek off-peak is half); cache hits are not discounted,
+  // so the ledger errs high.
+  const costUsd = ((inputTokens * spec.inputPerM + outputTokens * spec.outputPerM) / 1e6) * factor;
   const finishReason = j.choices?.[0]?.finish_reason ?? 'unknown';
   const latencyMs = Date.now() - started;
   meter.record({
@@ -176,6 +240,7 @@ export async function chat(meter: Meter, o: CallOptions): Promise<CallResult> {
     outputTokens,
     reasoningTokens,
     costUsd: Number(costUsd.toFixed(6)),
+    rate: factor === 1 ? 'list' : 'off-peak',
     latencyMs,
   });
   return {

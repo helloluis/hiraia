@@ -10,6 +10,10 @@ import { annotate, applyPatch, canonicalPath, expectMatches, parsePath, placehol
 import { checkPack, checkSameStructure } from './checks';
 import { checkVerbiage } from './verbiage';
 import { loadInputs } from './context';
+import { BudgetExceeded, MODELS, Meter, isDeepSeekPeak, msUntilDeepSeekOffPeak, rateFactor } from './llm';
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 const targets = buildTargets(loadSciencePacks(CURRICULUM_PACKS));
 
@@ -278,3 +282,42 @@ test('the checker catches an answer shown before its reveal', () => {
   pack.slides[q].lines = ['Answer: oxygen'];
   assert.ok(checkPack(pack, t).failures.some((f) => f.includes('shows an answer')));
 });
+
+test('DeepSeek peak windows and prices follow the published schedule', () => {
+  const at = (iso: string) => new Date(iso);
+  // 2026-11-19 is a Thursday; 2026-11-21 a Saturday.
+  assert.equal(isDeepSeekPeak(at('2026-11-19T05:59:00Z')), false);
+  assert.equal(isDeepSeekPeak(at('2026-11-19T06:00:00Z')), true);
+  assert.equal(isDeepSeekPeak(at('2026-11-19T09:59:00Z')), true);
+  assert.equal(isDeepSeekPeak(at('2026-11-19T10:00:00Z')), false);
+  assert.equal(isDeepSeekPeak(at('2026-11-19T01:30:00Z')), true);
+  assert.equal(isDeepSeekPeak(at('2026-11-21T07:00:00Z')), false, 'weekends are off-peak');
+  assert.equal(rateFactor(MODELS.writer, at('2026-11-19T12:00:00Z')), 0.5);
+  assert.equal(rateFactor(MODELS.writer, at('2026-11-19T07:00:00Z')), 1);
+  assert.equal(rateFactor(MODELS.critic, at('2026-11-19T12:00:00Z')), 1, 'Qwen has one price');
+  const wait = msUntilDeepSeekOffPeak(at('2026-11-19T09:30:00Z'));
+  assert.ok(wait >= 30 * 60_000 && wait <= 31 * 60_000, `waits until 10:00 (got ${wait} ms)`);
+  assert.equal(msUntilDeepSeekOffPeak(at('2026-11-19T12:00:00Z')), 0);
+});
+
+test('the spend cap counts calls in flight, so several workers cannot pass it together', () => {
+  const ledger = join(mkdtempSync(join(tmpdir(), 'tala-meter-')), 'calls.jsonl');
+  const meter = new Meter(1.0, ledger, 0.2, { batch: 'test' });
+  const qwen = MODELS.critic; // $1.5 in / $4.5 out per million
+  // worst case of one call: (10k in * 1.5 + 50k out * 4.5) / 1e6 = 0.24
+  const a = meter.reserve(qwen, 10_000, 50_000);
+  const b = meter.reserve(qwen, 10_000, 50_000);
+  const c = meter.reserve(qwen, 10_000, 50_000); // 0.2 spent + 0.72 reserved = 0.92
+  assert.throws(() => meter.reserve(qwen, 10_000, 50_000), BudgetExceeded, 'a fourth would pass the cap');
+  meter.release(a);
+  meter.record({ label: 'sci26-g3-t3-w01:outline:1', model: 'x', costUsd: 0.1 });
+  assert.equal(meter.byPack.get('sci26-g3-t3-w01'), 0.1);
+  // 0.3 spent + 0.48 still reserved + 0.24 > 1.0: still refused until another call ends
+  assert.throws(() => meter.reserve(qwen, 10_000, 50_000), BudgetExceeded);
+  meter.release(b);
+  assert.doesNotThrow(() => meter.release(meter.reserve(qwen, 10_000, 50_000)));
+  meter.release(c);
+  const row = JSON.parse(readFileSync(ledger, 'utf8').trim());
+  assert.equal(row.batch, 'test', 'ledger rows carry the batch tag');
+});
+

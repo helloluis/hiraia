@@ -19,6 +19,7 @@ import sharp from 'sharp';
 import type { PackReview, Slide, WeeklyPackContent } from '@hiraia/tala-core/contracts';
 import { REFERENCE_ROOT, REPO_ROOT } from '../paths';
 import { LABELS } from './labels';
+import { WATERMARK_VERSION, watermark } from './watermark';
 
 export const C = {
   forest: '1C3B2E',
@@ -83,7 +84,8 @@ async function brandPng(file: string, recolor: Record<string, string>, heightPx:
 export interface RenderReport {
   slides: number;
   fitWarnings: string[];
-  images: Array<{ slug: string; sha256: string; slides: string[] }>;
+  /** sha256: the approved library file; embeddedSha256: its watermarked derivative inside the deck. */
+  images: Array<{ slug: string; sha256: string; embeddedSha256: string; watermark: string; slides: string[] }>;
 }
 
 export async function renderDeck(pack: WeeklyPackContent, review: PackReview | null, outFile: string): Promise<RenderReport> {
@@ -136,10 +138,10 @@ export async function renderDeck(pack: WeeklyPackContent, review: PackReview | n
   const glyph = await brandPng(resolve(REPO_ROOT, 'packages/tala-web/public/brand/hiraia-glyph.svg'), { '#BD8928': `#${C.yellow}` }, 240);
   const wordmark = await brandPng(resolve(REPO_ROOT, 'packages/tala-web/public/brand/tala-wordmark.svg'), { '#2F6360': `#${C.cream}` }, 160);
 
-  // Illustrations: verify bytes, then embed.
-  const imgCache = new Map<string, Img & { sha256: string }>();
+  // Illustrations: verify the approved file's bytes, then embed its Hiraia-watermarked derivative (render/watermark).
+  const imgCache = new Map<string, Img & { sha256: string; embeddedSha256: string }>();
   const used = new Map<string, string[]>();
-  const image = async (slug: string): Promise<Img & { sha256: string }> => {
+  const image = async (slug: string): Promise<Img & { sha256: string; embeddedSha256: string }> => {
     const hit = imgCache.get(slug);
     if (hit) return hit;
     const rec = pack.illustrations.find((x) => x.slug === slug);
@@ -147,8 +149,8 @@ export async function renderDeck(pack: WeeklyPackContent, review: PackReview | n
     const bytes = readFileSync(resolve(REFERENCE_ROOT, rec.file));
     const sha = createHash('sha256').update(bytes).digest('hex');
     if (sha !== rec.sha256) throw new Error(`illustration ${slug}: bytes changed since it was checked (${sha.slice(0, 12)} ≠ ${rec.sha256.slice(0, 12)})`);
-    const meta = await sharp(bytes).metadata();
-    const v = { data: 'image/png;base64,' + bytes.toString('base64'), w: meta.width!, h: meta.height!, sha256: sha };
+    const wm = await watermark(bytes);
+    const v = { data: 'image/png;base64,' + wm.png.toString('base64'), w: wm.w, h: wm.h, sha256: sha, embeddedSha256: wm.sha256 };
     imgCache.set(slug, v);
     return v;
   };
@@ -193,15 +195,14 @@ export async function renderDeck(pack: WeeklyPackContent, review: PackReview | n
     const marker = opts.numbered || opts.bullets !== false;
     const fit = pickSize(lines, w - (marker ? 0.55 : 0.05), h, opts.sizes ?? [32, 30, 28, 26, 24], { paraGap: 12 });
     if (!fit.fits) fitWarnings.push(`${slideId}: body text may overflow at ${fit.size}pt`);
+    // Native PowerPoint lists (auto-numbering, bullet characters): a teacher who adds, removes or reorders a line
+    // gets correct numbers and bullets. The teal marker colour is written in applyThemeColors (buClr).
+    const list = opts.numbered ? { type: 'number' as const, indent: 30 } : opts.bullets === false ? undefined : { characterCode: '2022', indent: 26 };
     s.addText(
-      lines.flatMap((l, i) => [
-        ...(opts.numbered
-          ? [{ text: `${i + 1}  `, options: { bold: true, color: C.teal } }]
-          : opts.bullets === false
-            ? []
-            : [{ text: '•  ', options: { bold: true, color: C.teal } }]),
-        { text: l, options: { color: opts.color ?? C.forest, breakLine: i < lines.length - 1, paraSpaceAfter: 12 } },
-      ]),
+      lines.map((l, i) => ({
+        text: l,
+        options: { color: opts.color ?? C.forest, breakLine: i < lines.length - 1, paraSpaceAfter: 12, ...(list ? { bullet: list } : {}) },
+      })),
       { x, y, w, h, fontFace: FONTS.body, fontSize: fit.size, valign: 'top', margin: 0, isTextBox: true, objectName: 'slide text', fit: 'none' }
     );
   };
@@ -339,21 +340,21 @@ export async function renderDeck(pack: WeeklyPackContent, review: PackReview | n
       if (explain) for (const h of [1.0, 1.15, 1.3]) if (!fit.fits) { ch = h; fit = fitEach(cw - 1.1, ch, [26, 24, 22]); }
       const below = y + rows * (ch + 0.15) + 0.15;
       const explanationFits = !explain || pickSize(s.lines.map(clean), W - 2 * M, H - 0.65 - below, [30, 28, 26, 24, 22], { paraGap: 12 }).fits;
+      // One editable shape per choice (box and its words together), with the letter badge on top.
       const choiceBox = (i: number, cx: number, cy: number, w: number, h: number, size: number) => {
         const right = s.kind === 'reveal' && s.correctChoice === i;
         const faded = s.kind === 'reveal' && !right;
-        slide.addShape(pres.ShapeType.roundRect, {
-          x: cx, y: cy, w, h, rectRadius: 0.1,
-          fill: { color: right ? C.teal : C.white }, line: { color: right ? C.teal : C.hairline, width: 1.25 }, objectName: `choice ${'ABCD'[i]}`,
+        slide.addText(right ? `${clean(choices[i]!)}  ✓` : clean(choices[i]!), {
+          shape: pres.ShapeType.roundRect, rectRadius: 0.1, x: cx, y: cy, w, h,
+          fill: { color: right ? C.teal : C.white }, line: { color: right ? C.teal : C.hairline, width: 1.25 },
+          fontFace: FONTS.body, fontSize: size, color: right ? C.white : faded ? C.faded : C.forest, bold: right,
+          // [left, right, bottom, top] in points: the words start right of the letter badge.
+          valign: 'middle', margin: [68, 8, 3, 3], fit: 'none', objectName: `choice ${'ABCD'[i]}`,
         });
         slide.addText('ABCD'[i]!, {
           shape: pres.ShapeType.ellipse, x: cx + 0.18, y: cy + (h - 0.58) / 2, w: 0.58, h: 0.58,
           fill: { color: right ? C.white : faded ? 'E4E9E6' : C.teal }, color: right ? C.teal : faded ? C.faded : C.white,
-          fontFace: FONTS.body, fontSize: 22, bold: true, align: 'center', valign: 'middle', margin: 0, isTextBox: true,
-        });
-        slide.addText(right ? `${clean(choices[i]!)}  ✓` : clean(choices[i]!), {
-          x: cx + 0.95, y: cy + 0.04, w: w - 1.1, h: h - 0.08, fontFace: FONTS.body, fontSize: size,
-          color: right ? C.white : faded ? C.faded : C.forest, bold: right, valign: 'middle', margin: 0, isTextBox: true, fit: 'none',
+          fontFace: FONTS.body, fontSize: 22, bold: true, align: 'center', valign: 'middle', margin: 0, objectName: `choice letter ${'ABCD'[i]}`,
         });
       };
       if (s.kind === 'reveal' && s.correctChoice !== null && (!fit.fits || !explanationFits)) {
@@ -401,7 +402,7 @@ export async function renderDeck(pack: WeeklyPackContent, review: PackReview | n
   return {
     slides: pack.slides.length,
     fitWarnings,
-    images: [...used.entries()].map(([slug, slides]) => ({ slug, sha256: imgCache.get(slug)!.sha256, slides })),
+    images: [...used.entries()].map(([slug, slides]) => ({ slug, sha256: imgCache.get(slug)!.sha256, embeddedSha256: imgCache.get(slug)!.embeddedSha256, watermark: WATERMARK_VERSION, slides })),
   };
 }
 
@@ -420,6 +421,15 @@ async function applyThemeColors(file: string) {
   const out = xml.replace(/<a:clrScheme\b[\s\S]*?<\/a:clrScheme>/, scheme).replace(/(<a:(?:theme|fontScheme)\b[^>]*?\bname=")[^"]*"/g, '$1Tala Hiraia"');
   if (!out.includes(scheme)) throw new Error('theme part has no colour scheme to replace');
   zip.file(part, out);
+  // Teal list markers (pptxgenjs has no bullet-colour option): add buClr, in schema order before buSzPct.
+  for (const name of Object.keys(zip.files).filter((f) => /^ppt\/slides\/slide\d+\.xml$/.test(f))) {
+    const xml = await zip.file(name)!.async('string');
+    const coloured = xml
+      .replace(/<a:buSzPct val="100000"\/>(<a:buFont typeface="\+mj-lt"\/><a:buAutoNum|<a:buChar)/g, '<a:buClr><a:schemeClr val="accent1"/></a:buClr><a:buSzPct val="100000"/>$1')
+      // pptxgenjs writes startAt="1" on every numbered paragraph; Impress then restarts at 1 on each line. 1 is the default.
+      .replace(/(<a:buAutoNum type="[^"]+") startAt="1"\/>/g, '$1/>');
+    if (coloured !== xml) zip.file(name, coloured);
+  }
   // Rebuild without folder entries: decks with them have failed to open or co-edit in cloud drives (Drive, OneDrive),
   // where many teachers will put them. Entry order is kept ([Content_Types].xml first).
   const clean = new JSZip();

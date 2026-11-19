@@ -16,7 +16,7 @@
  * Three consecutive weeks failing with the same error class stop the run.
  */
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import sharp from 'sharp';
@@ -30,7 +30,7 @@ import {
   type PackStatus,
   type PackVariant,
 } from '@hiraia/tala-core/contracts';
-import { BudgetExceeded, MODELS, Meter, ProviderError } from './llm';
+import { BudgetExceeded, MODELS, Meter, ProviderError, msUntilDeepSeekOffPeak, setDeepSeekOffPeakOnly } from './llm';
 import { loadInputs } from './context';
 import { draftPack } from './generate';
 import { CHECKER_VERSION, checkPack, checkSameStructure, slideStats } from './checks';
@@ -41,9 +41,12 @@ import { checkVerbiage } from './verbiage';
 import { ARTIFACTS, BUILD, LIBRARY, SOFFICE, WORK } from './paths';
 import { targetTopic, type WeekTarget } from './targets';
 import { renderDeck } from './render/pptx';
+import { checkEditability } from './render/editability';
 import { guideHtml, htmlToPdf, lessonPlansHtml, writeHtml } from './render/docs';
 
 const sha = (b: Buffer | string) => createHash('sha256').update(b).digest('hex');
+/** Luis, 19 Nov 2026: Hiraia owns the drawings; decks embed them with the Hiraia watermark (render/watermark). */
+export const ILLUSTRATION_LICENCE = 'Hiraia-owned illustrations (licence decision by Luis Buenaventura, 2026-11-19); embedded with the Hiraia watermark';
 const now = () => new Date().toISOString();
 const readJson = <T>(p: string): T => JSON.parse(readFileSync(p, 'utf8')) as T;
 const writeJson = (p: string, v: unknown) => {
@@ -64,6 +67,16 @@ interface PackState {
   packId: string;
   attempts: Array<{ at: string; outcome: string; error?: string; costUsd: number }>;
   lastStatus: Partial<Record<PackLang, PackStatus>>;
+}
+
+function batchSpend(ledger: string, batch: string): number {
+  if (!existsSync(ledger)) return 0;
+  return readFileSync(ledger, 'utf8')
+    .split('\n')
+    .filter(Boolean)
+    .map((l) => JSON.parse(l) as { batch?: string; costUsd?: number })
+    .filter((r) => r.batch === batch)
+    .reduce((n, r) => n + (r.costUsd ?? 0), 0);
 }
 
 function priorSpend(ledger: string): number {
@@ -204,7 +217,8 @@ export async function processTarget(meter: Meter, t: WeekTarget, o: RunOptions):
   const stateFile = resolve(dir, 'state.json');
   const state: PackState = existsSync(stateFile) ? readJson(stateFile) : { packId: t.targetId, attempts: [], lastStatus: {} };
   if (typeof state.lastStatus !== 'object' || state.lastStatus === null) state.lastStatus = {};
-  const spent0 = meter.spentUsd;
+  const spent0 = meter.byPack.get(t.targetId) ?? 0;
+  const weekCost = () => Number(((meter.byPack.get(t.targetId) ?? 0) - spent0).toFixed(4));
   try {
     // ---- English ----
     const { content: draft } = await withRetry(() => draftPack(meter, t));
@@ -233,12 +247,12 @@ export async function processTarget(meter: Meter, t: WeekTarget, o: RunOptions):
       state.lastStatus.fil = filOut.status;
       if (o.render) await renderPack(fil, filOut.review, o.previews);
     }
-    state.attempts.push({ at: now(), outcome: JSON.stringify(state.lastStatus), costUsd: meter.spentUsd - spent0 });
+    state.attempts.push({ at: now(), outcome: JSON.stringify(state.lastStatus), costUsd: weekCost() });
     writeJson(stateFile, state);
     return state.lastStatus;
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
-    state.attempts.push({ at: now(), outcome: 'failed', error: msg.slice(0, 500), costUsd: meter.spentUsd - spent0 });
+    state.attempts.push({ at: now(), outcome: 'failed', error: msg.slice(0, 500), costUsd: weekCost() });
     for (const l of o.languages) if (!state.lastStatus[l]) state.lastStatus[l] = 'failed';
     writeJson(stateFile, state);
     if (e instanceof BudgetExceeded) throw e;
@@ -253,6 +267,9 @@ export async function renderPack(pack: WeeklyPackContent, review: PackReview, pr
   const base = `tala-g${pack.grade}-t${pack.term}-w${String(pack.week).padStart(2, '0')}-${pack.language}`;
   const pptx = resolve(out, `${base}-slides.pptx`);
   const deck = await renderDeck(pack, review, pptx);
+  // Teachers edit these decks: every learner-facing word must be editable text (recorded; a failure is a builder bug).
+  const editability = await checkEditability(pptx, pack);
+  if (editability.state === 'fail') console.log(`${now()} ${pack.packId} ${pack.language}: deck editability FAIL — ${editability.findings.slice(0, 3).join('; ')}`);
   const slideImages: Record<string, string> = {};
   if (previews) {
     execFileSync(SOFFICE, ['--headless', '--convert-to', 'pdf', '--outdir', out, pptx], {
@@ -297,6 +314,8 @@ export async function renderPack(pack: WeeklyPackContent, review: PackReview, pr
     }),
     previews: Object.keys(slideImages).length,
     images: deck.images,
+    editability,
+    illustrationLicence: ILLUSTRATION_LICENCE,
   };
   writeJson(resolve(out, 'manifest.json'), manifest);
   return manifest;
@@ -363,14 +382,6 @@ export function buildIndex(reviewerView = true): PackIndex {
   };
 }
 
-/** DeepSeek charges double 01:00–04:00 and 06:00–10:00 UTC on weekdays. */
-export function msUntilOffPeak(d = new Date()): number {
-  const day = d.getUTCDay();
-  if (day === 0 || day === 6) return 0;
-  const h = d.getUTCHours() + d.getUTCMinutes() / 60;
-  const end = h >= 1 && h < 4 ? 4 : h >= 6 && h < 10 ? 10 : null;
-  return end === null ? 0 : Math.ceil((end - h) * 3_600_000) + 60_000;
-}
 
 export async function runCli(cmd: string, args: string[]) {
   const opt = (name: string, dflt?: string) => {
@@ -439,8 +450,15 @@ export async function runCli(cmd: string, args: string[]) {
   const languages = (opt('languages', 'en,fil')!.split(',') as PackLang[]).filter((l) => (PACK_LANGS as readonly string[]).includes(l));
   if (flag('pending')) selected = selected.filter((t) => languages.some((l) => !existsSync(resolve(LIBRARY, t.targetId, l, 'pack.json'))));
   const ledger = resolve(BUILD, 'calls.jsonl');
-  const budget = Number(opt('budget', '10'));
-  const meter = new Meter(budget + priorSpend(ledger), ledger, priorSpend(ledger));
+  // A named batch has a hard cap on its own spend, summed from the ledger, so it holds across restarts:
+  //   --batch priority-2026-11-19 --cap 90
+  const batch = opt('batch');
+  const cap = opt('cap');
+  if (batch && !cap) throw new Error('--batch needs --cap <usd>');
+  const meter = batch
+    ? new Meter(Number(cap), ledger, batchSpend(ledger, batch), { batch })
+    : new Meter(Number(opt('budget', '10')) + priorSpend(ledger), ledger, priorSpend(ledger));
+  const budget = batch ? Number(cap) - meter.spentUsd : Number(opt('budget', '10'));
   const o: RunOptions = {
     thorough: flag('thorough'),
     rounds: Number(opt('rounds', '3')),
@@ -450,14 +468,23 @@ export async function runCli(cmd: string, args: string[]) {
   };
   const concurrency = Math.max(1, Number(opt('concurrency', '2')));
   const offPeak = flag('off-peak');
-  console.log(`run: ${selected.length} weeks × [${languages.join(', ')}], budget $${budget} on top of $${meter.spentUsd.toFixed(2)} already spent, concurrency ${concurrency}${offPeak ? ', DeepSeek off-peak only' : ''}`);
+  if (offPeak) setDeepSeekOffPeakOnly(true);
+  console.log(
+    batch
+      ? `run: batch ${batch}: ${selected.length} weeks × [${languages.join(', ')}], cap $${Number(cap).toFixed(2)}, batch spend so far $${meter.spentUsd.toFixed(2)}, concurrency ${concurrency}${offPeak ? ', DeepSeek off-peak only' : ''}`
+      : `run: ${selected.length} weeks × [${languages.join(', ')}], budget $${budget} on top of $${meter.spentUsd.toFixed(2)} already spent, concurrency ${concurrency}${offPeak ? ', DeepSeek off-peak only' : ''}`
+  );
   const results: Record<string, Partial<Record<PackLang, PackStatus>>> = {};
   let streak = { cls: '', n: 0 };
   let stop = false;
   // Workers take a whole grade-term at a time, in week order, so a multi-week topic is designed in sequence.
   const groups = new Map<string, WeekTarget[]>();
   for (const t of selected) groups.set(`${t.grade}-${t.term}`, [...(groups.get(`${t.grade}-${t.term}`) ?? []), t]);
-  const termQueue = [...groups.values()].map((ws) => ws.sort((a, b) => a.week - b.week));
+  // Urgent first: the earliest term in the selection (e.g. Term 2 weeks 10-11) before the next, then by grade.
+  const termQueue = [...groups.values()]
+    .map((ws) => ws.sort((a, b) => a.week - b.week))
+    .sort((a, b) => a[0]!.term - b[0]!.term || Number(a[0]!.grade) - Number(b[0]!.grade));
+  let done = 0;
   const queue: WeekTarget[] = [];
   const nextTarget = (mine: WeekTarget[]) => {
     if (!mine.length) mine.push(...(termQueue.shift() ?? []));
@@ -467,7 +494,7 @@ export async function runCli(cmd: string, args: string[]) {
     const mine: WeekTarget[] = [];
     while ((mine.length || termQueue.length) && !stop) {
       if (offPeak) {
-        const wait = msUntilOffPeak();
+        const wait = msUntilDeepSeekOffPeak();
         if (wait) {
           console.log(`${now()} waiting ${Math.round(wait / 60000)} min for DeepSeek off-peak pricing`);
           await new Promise((r) => setTimeout(r, wait));
@@ -491,7 +518,16 @@ export async function runCli(cmd: string, args: string[]) {
         stop = true;
         console.log(`circuit breaker: three weeks in a row failed with "${cls}"; stopping for review`);
       }
-      console.log(`${now()} ${t.targetId} → ${JSON.stringify(s)}  (spent $${meter.spentUsd.toFixed(2)})`);
+      done += 1;
+      const cost = st?.attempts.at(-1)?.costUsd ?? 0;
+      console.log(
+        `${now()} ${t.targetId} → ${JSON.stringify(s)}  week $${cost.toFixed(2)} · ${batch ? `batch $${meter.spentUsd.toFixed(2)} of $${Number(cap).toFixed(2)}` : `spent $${meter.spentUsd.toFixed(2)}`} · ${done}/${selected.length} weeks`
+      );
+      if (batch)
+        appendFileSync(
+          resolve(BUILD, `batch-${batch}.jsonl`),
+          JSON.stringify({ at: now(), packId: t.targetId, status: s, weekUsd: cost, batchUsd: Number(meter.spentUsd.toFixed(4)), done, of: selected.length }) + '\n'
+        );
       writeJson(resolve(LIBRARY, '..', 'index.json'), buildIndex(true));
     }
   };

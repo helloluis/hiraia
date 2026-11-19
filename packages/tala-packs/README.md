@@ -29,7 +29,7 @@ Offline batch tooling. The web app only reads the committed library (`library/`)
 | Filipino days (structure locked to English) | `deepseek-flash` | Filipino edition |
 | Filipino critique (science + Hiraia wording rules) → patches (text only) | `qwen4-max` ↔ `deepseek-v4-pro` | revised Filipino |
 | Deterministic checks, wording (verbiage/1) checks, structure equality | none | `review.json` per language |
-| Render: PPTX (pptxgenjs), slide previews (LibreOffice), PDFs (Chromium) | none | `build/artifacts/<id>/<lang>/` |
+| Render: editable PPTX (pptxgenjs; native lists, text-bearing shapes, Hiraia-watermarked drawings), slide previews (LibreOffice), PDFs (Chromium), editability audit (`editability/1`) | none | `build/artifacts/<id>/<lang>/` (manifest records editability, both image hashes, licence) |
 
 Stage results are cached in `build/work/<id>/` (keyed by prompt and model), so reruns resume. A week that fails is
 recorded and the run continues; three weeks failing the same way stop the run. Spend is metered against `--budget`
@@ -41,7 +41,9 @@ in `build/calls.jsonl`.
 set -a; . /home/b11/code/tala-v1/packages/tala-server/.env; set +a   # DEEPSEEK_API_KEY, ALIBABACLOUD_API_KEY (names only)
 npx tsx src/cli.ts targets                                   # the 262 weeks
 npx tsx src/cli.ts run --targets sci26-g4-t1-w08 --thorough  # one week, 3 critique rounds per language
-npx tsx src/cli.ts run --all --pending --budget 60 --concurrency 4 --off-peak
+npx tsx src/cli.ts run --targets <ids> --pending --batch <name> --cap 90 --off-peak --concurrency 6   # capped batch (cap summed from the ledger, survives restarts)
+npx tsx src/cli.ts render --targets sci26-g4-t1-w08            # re-render from the library, no model calls
+scripts/stage-for-deploy.sh /tmp/tala-packs.tgz              # served files only, for /var/lib/tala/packs (tala-server deploy README)
 npx tsx src/cli.ts inventory                                 # library/INVENTORY.md
 npx tsx src/cli.ts approve sci26-g4-t1-w08 --lang fil --by "Name" --role "Grade 4 teacher, …" [--expert] [--publish]
 pnpm --filter @hiraia/tala-packs test

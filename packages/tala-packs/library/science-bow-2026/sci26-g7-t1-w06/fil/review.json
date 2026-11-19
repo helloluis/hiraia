@@ -1,0 +1,70 @@
+{
+ "packId": "sci26-g7-t1-w06",
+ "language": "fil",
+ "contentSha256": "74d3b0132d3a27abc9c0cf709474291e2890b5c676dad7264bfcb3561e6ebbe9",
+ "autoChecks": {
+  "state": "pass",
+  "checkerVersion": "checks/1",
+  "failures": [],
+  "warnings": [
+   "day 1: the exit ticket repeats a question already answered on a slide that day",
+   "day 3: the exit ticket repeats a question already answered on a slide that day",
+   "day 4: the exit ticket repeats a question already answered on a slide that day",
+   "d2s1: line 1 is long for a TV slide (100 characters)",
+   "d2s2: line 1 is long for a TV slide (104 characters)",
+   "d2s9: reveal text does not echo the correct choice \"4%\"",
+   "d3s1: line 1 is long for a TV slide (104 characters)",
+   "d3s2: line 1 is long for a TV slide (98 characters)",
+   "d3s3: line 1 is long for a TV slide (99 characters)",
+   "d3s3: line 2 is long for a TV slide (116 characters)",
+   "d3s4: line 1 is long for a TV slide (116 characters)",
+   "d3s7: line 1 is long for a TV slide (110 characters)",
+   "d3s7: line 2 is long for a TV slide (102 characters)",
+   "d3s8: line 2 is long for a TV slide (91 characters)",
+   "d3s8: line 3 is long for a TV slide (94 characters)",
+   "d4s1: line 1 is long for a TV slide (102 characters)",
+   "d4s4: line 3 is long for a TV slide (97 characters)",
+   "d5s6: line 1 is long for a TV slide (91 characters)",
+   "d5s8: line 3 is long for a TV slide (98 characters)",
+   "day 1: mentions \"glass\" but the lesson steps carry no safety instruction",
+   "acronym PDF is never expanded"
+  ],
+  "at": "2026-11-19T06:10:15.778Z"
+ },
+ "modelCritique": {
+  "state": "pass",
+  "model": "qwen4-max",
+  "rounds": 3,
+  "openIssues": [],
+  "resolvedIssues": 21,
+  "at": "2026-11-19T06:10:15.778Z"
+ },
+ "teacherReview": null,
+ "expertReview": null,
+ "verbiage": {
+  "rulesVersion": "verbiage/1",
+  "state": "warn",
+  "metrics": {
+   "slides": 49,
+   "maxWordsOnSlide": 60,
+   "slidesOver48Words": 5,
+   "avgSentenceWords": 6.7,
+   "maxSentenceWords": 19,
+   "englishFunctionShare": 0,
+   "filipinoFunctionShare": null
+  },
+  "findings": [
+   "d2s1: write the numeral and unit symbol (°C, cm, %) rather than the spelled-out unit",
+   "d2s3: write the numeral and unit symbol (°C, cm, %) rather than the spelled-out unit",
+   "d2s5: write the numeral and unit symbol (°C, cm, %) rather than the spelled-out unit",
+   "d2s7: 50 words on the slide (Hiraia cards stop at 48)",
+   "d2s10: write the numeral and unit symbol (°C, cm, %) rather than the spelled-out unit",
+   "d3s7: 54 words on the slide (Hiraia cards stop at 48)",
+   "d3s8: 57 words on the slide (Hiraia cards stop at 48)",
+   "d5s6: 53 words on the slide (Hiraia cards stop at 48)",
+   "d5s8: 60 words on the slide (Hiraia cards stop at 48)"
+  ]
+ },
+ "publication": "draft",
+ "publicationBy": null
+}

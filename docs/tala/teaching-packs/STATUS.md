@@ -35,31 +35,22 @@ Claude Opus 5.5. Started 2026-11-19 01:45 UTC (09:45 PHT). Requested by Luis via
 | 3a | **Learner-facing Filipino is child-readable Taglish, following the Hiraia student app's existing wording rules** (Luis, 03:22 UTC: "basic enough for grade school kids… Taglish is allowed… roughly follow the Hiraia app's verbiage rules with the slides too"). Rules are cited from their source files in `VERBIAGE-RULES.md`; `src/verbiage.ts` measures them on every slide and the result is stored in each language's `review.json`. Teacher-facing text stays plain but complete. | Luis; Beanie relay. |
 | 4 | **Model tiers** (Luis, 03:02 UTC: "Can this be DeepSeek v4.1 flash?" — yes; Beanie: stronger models allowed where reasoning matters, economise on volume, never OpenRouter). `deepseek-flash` (DeepSeek V4.1 Flash, direct API) writes the high-volume parts in both languages: day plans, slides, speaker notes. `deepseek-v4-pro` writes each week's design and teacher-guide science with reasoning (explanations, misconceptions, worked answers), the Filipino guide and assessment (no reasoning), and review patches (no reasoning). `qwen4-max` (Alibaba Model Studio direct, Singapore) is the independent critic per language. `qwen3-vl-plus` checks every illustration against its slide. | Luis; Beanie; PRD §9.1, §9.8. |
 | 5 | Review stages are recorded separately and never merged: `auto_checks` (deterministic) → `model_critique` (a second model; **not** human review) → `teacher_review` / `expert_review` (named humans only) → publication (`approved` only by Luis or a reviewer he names). The public library lists only approved packs; drafts are visible only to reviewers and in non-production environments. | Brief §5. |
-| 6 | Illustrations come only from Hiraia's approved B&W card art, mapped per competency and checked; none are generated, regenerated or edited. Missing art is reported, not filled with clip art. | Brief §3. |
+| 6 | Illustrations come only from Hiraia's approved B&W card art, mapped per competency and checked; none are generated, regenerated or edited. Missing art is reported, not filled with clip art. **Licence closed (Luis, 2026-11-19: "License granted, we just need to watermark with the Hiraia brand-name"): Hiraia owns the drawings; decks embed a derived copy with the Hiraia wordmark in a white strip below the drawing (watermark `wm/1`, `src/render/watermark.ts`), so the mark never covers science content; the manifest records the approved file's hash and the derivative's.** | Brief §3; Luis. |
 | 7 | Decks use Office-safe fonts (Cambria titles, Calibri body) instead of the Fraunces display face, so a downloaded deck renders the same offline on any school laptop. | Brief §4 (no online dependencies); PRD BRAND-4. |
+| 8 | **Decks are genuinely editable by the teacher** (Luis, 2026-11-19: "The presentations we generate need to be editable by the actual teacher user"). All text is in text boxes, placeholders or text-bearing shapes (answer choices are one shape each); lists are native PowerPoint auto-numbering/bullets (no typed "1." or "•"); pictures are only the drawings and brand marks (largest ≈ 21% of a slide); fonts Cambria/Calibri; speaker notes on every slide. Audited per deck at build time (`editability/1`, `src/render/editability.ts`), recorded in each manifest and in INVENTORY.md. The drawings themselves are raster art (their few labels are not editable text); teachers can replace or delete them. | Luis; Beanie relay. |
+| 9 | **Priority batch approved** (Luis, 2026-11-19: "That's fine, I'll budget for it"; Beanie: 102 weeks — Term 2 weeks 10–11 and Term 3 — at off-peak pricing, hard cap $90; the remaining weeks are not approved). Run as batch `priority-2026-11-19` with `--cap 90`: the cap is summed from ledger rows tagged with the batch (so it survives restarts) and counts the worst case of calls in flight; DeepSeek calls wait for off-peak and are priced at the rate in force per call. | Luis; Beanie relay. |
 
 ## waiting_for_user
 
-Recorded 2026-11-19 04:55 UTC (12:55 PHT). Nothing below is started until Luis answers.
+Updated 2026-11-19 07:00 UTC. Luis answered the earlier items (verbatim): "1. Topped up 2. That's fine, I'll budget for
+it 3. The presentations we generate need to be editable by the actual teacher user 4. License granted, we just need to
+watermark with the Hiraia brand-name". Closed: DeepSeek balance (topped up; G7 T1 W6 Filipino finished), batch spend
+(priority batch approved with a $90 cap — decision 9), illustration licence (decision 6), deploy (done, see below).
 
-1. **DeepSeek account balance is $0.04** (`/user/balance`, 04:52 UTC); calls now fail with HTTP 402. Every pack is
-   written by DeepSeek, so the batch cannot run, and G7 T1 W6 Filipino stopped one revision short (its stages are
-   cached; finishing it costs about $0.10). Needs a top-up by Luis. The writer was **not** switched to another model.
-2. **Batch spend.** Measured on the three sample weeks with the final pipeline (both languages, list prices):
-   about **$1.09 per week** — DeepSeek $0.58, Qwen $0.51 (≈ $0.80 if DeepSeek runs off-peak, which the batch does).
-   - Priority batch — Term 2 weeks 10–11 (current per the provisional calendar) and all of Term 3: 102 weeks still to
-     build → ≈ $82 off-peak (DeepSeek ≈ $30, Qwen ≈ $52), ≈ $111 at peak.
-   - Everything else (all 259 unbuilt weeks) → ≈ $207 off-peak (DeepSeek ≈ $75, Qwen ≈ $132), ≈ $282 at peak.
-   - The Qwen (Alibaba Model Studio) balance cannot be read with the API key; please confirm it covers the Qwen share.
-   Proposed: top up DeepSeek by ≥ $40, approve the priority batch with a $90 cap, decide on the rest after looking at
-   the samples. Command: `run --all --terms 3 --pending --off-peak --budget 90 --concurrency 4`, then
-   `--terms 2 --min-week 10`.
-3. **Illustration licence**: the Hiraia drawings are AI-generated with no licence recorded; fine for drafts, but a
-   public, approved library needs Luis's licensing decision.
-4. **Human review**: a named Science teacher (and a Filipino reader for the Filipino editions) must review a pack
-   before it can be approved; in production, reviewers are listed in `TALA_PACK_REVIEWERS`.
-5. **Deploy / commit**: nothing is committed, pushed or deployed. Production needs the contract change (Filipino
-   field lengths) deployed together with any pack built after 04:10 UTC.
+Still open, not blocking the batch:
+1. **Human review**: a named Science teacher, and a Filipino reader for the Filipino editions, per pack. Until then
+   every pack stays "draft / model-critiqued"; nothing is marked teacher- or expert-reviewed.
+2. **The remaining weeks** (all 262 minus the priority 103) are not approved; the batch does not start them.
 
 ## Attempt history
 
@@ -171,3 +162,15 @@ Recorded 2026-11-19 04:55 UTC (12:55 PHT). Nothing below is started until Luis a
   class" → five drafts labelled "Drafted by AI", offline in-app navigation shows the no-signal notice and the opened
   pack from the device cache; APK download unchanged (SHA-256 matches its manifest); mobile sync pull works; server
   log since restart: no errors.
+- 06:09–07:00 — Luis's decisions (above). G7 T1 W6 Filipino finished from cache ($0.13): **draft**, 3 rounds, no open
+  blocker/major. Deck audit for teacher editability: all text was already real text (no flattened slides), but every
+  shipped deck typed its list markers ("•", "1") instead of using native lists, and answer choices were a box plus a
+  separate text box → native auto-numbering/bullets (teal markers via `buClr`; `startAt` dropped because Impress
+  restarted numbering on every line), one text-bearing shape per choice, and the `editability/1` audit, which fails
+  all five previously shipped decks and passes all six re-rendered ones. Hiraia watermark added (decision 6),
+  inspected on rendered slides (cover, day and content plates). All six sample decks re-rendered and deployed to
+  `/var/lib/tala/packs` (data only; the server code is unchanged): 18 files byte-identical when downloaded from
+  tala.hiraia.org, all six served decks pass the audit; "use for my class" then "Adapt with AI" on a deployed pack ran
+  on production (job done in 8 s, lesson redrafted, marked "Drafted by AI"); temporary accounts deleted.
+- 06:51 — priority batch launched: 102 weeks (Term 2 weeks 10–11 first, then Term 3; G5 T3 W7 already built),
+  6 workers, `--batch priority-2026-11-19 --cap 90 --off-peak`; waiting for DeepSeek off-peak (10:00 UTC).

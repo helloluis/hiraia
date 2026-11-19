@@ -26,7 +26,7 @@ export const LABELS: Record<PackLang, Labels> = {
     footer: (g, t, w) => `Grade ${g} Science · Term ${t} · Week ${w}`,
     creditsReviewed: (n) => `Reviewed by ${n}`,
     creditsDraft: 'Draft: checked automatically and by a second AI model; not yet reviewed by a teacher',
-    creditsArt: 'Drawings are AI-generated (OpenAI and Google image models) and were checked for science errors by Hiraia',
+    creditsArt: 'Drawings © Hiraia: AI-generated (OpenAI and Google image models) and checked for science errors by Hiraia',
     sourcesIntro: 'Sources in the teacher guide',
     phase: {
       activating_prior_knowledge: 'Activating prior knowledge',
@@ -115,7 +115,7 @@ export const LABELS: Record<PackLang, Labels> = {
       citeNote:
         'Citations show where a teacher can confirm an idea. They were chosen by the AI model that wrote the pack from a fixed list of trusted sources and have not been checked line by line by a person.',
       artNote:
-        'Drawings: Hiraia science illustration library ({n} used this week). They are AI-generated ({gens}), passed Hiraia’s image review, and were checked against each slide by a vision model. Hiraia is not affiliated with or endorsed by the Department of Education.',
+        'Drawings © Hiraia, from the Hiraia science illustration library ({n} used this week), marked with the Hiraia name. They are AI-generated ({gens}), passed Hiraia’s image review, and were checked against each slide by a vision model. Hiraia is not affiliated with or endorsed by the Department of Education.',
     },
   },
   fil: {
@@ -125,7 +125,7 @@ export const LABELS: Record<PackLang, Labels> = {
     footer: (g, t, w) => `Grade ${g} Science · Term ${t} · Week ${w}`,
     creditsReviewed: (n) => `Na-review ni ${n}`,
     creditsDraft: 'Draft: chine-check nang automatic at ng pangalawang AI; hindi pa na-review ng teacher',
-    creditsArt: 'AI-generated ang mga drawing (OpenAI at Google image models) at chine-check ng Hiraia para sa mali sa science',
+    creditsArt: 'Mga drawing © Hiraia: AI-generated (OpenAI at Google image models) at chine-check ng Hiraia para sa mali sa science',
     sourcesIntro: 'Mga source sa teacher guide',
     phase: {
       activating_prior_knowledge: 'Pagkuha ng Dating Kaalaman',
@@ -214,7 +214,7 @@ export const LABELS: Record<PackLang, Labels> = {
       citeNote:
         'Ipinapakita ng mga citation kung saan puwedeng i-check ng teacher ang isang ideya. Pinili ito ng AI model na sumulat ng pack mula sa nakatakdang listahan ng mapagkakatiwalaang source, at hindi pa ito na-check ng tao nang linya-linya.',
       artNote:
-        'Mga drawing: Hiraia science illustration library ({n} ang ginamit ngayong linggo). AI-generated ang mga ito ({gens}), pumasa sa image review ng Hiraia, at chine-check ng vision model laban sa bawat slide. Hindi kaanib o inendorso ng Department of Education ang Hiraia.',
+        'Mga drawing © Hiraia, mula sa Hiraia science illustration library ({n} ang ginamit ngayong linggo), may tatak na Hiraia. AI-generated ang mga ito ({gens}), pumasa sa image review ng Hiraia, at chine-check ng vision model laban sa bawat slide. Hindi kaanib o inendorso ng Department of Education ang Hiraia.',
     },
   },
 };

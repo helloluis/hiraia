@@ -368,8 +368,7 @@ def main() -> int:
         'referenceRoot': str(ref),
         'referenceCommit': ref_commit,
         'usableStatuses': list(USABLE),
-        'rights': 'No licence is recorded for these AI-generated illustrations (docs/licensing in the reference '
-        'checkout). They may be used inside Tala drafts; publication needs a licensing decision.',
+        'rights': 'Hiraia owns these illustrations (licence decision by Luis Buenaventura, 2026-11-19). Teaching-pack decks embed them with the Hiraia watermark (packages/tala-packs/src/render/watermark.ts); the approved files themselves are never edited.',
         'inputs': {k: sha256_file(v) for k, v in inputs.items()},
         'excludedCandidateCounts': dict(sorted(excluded.items())),
         'competenciesWithoutCandidates': sorted(k for k, v in out_comp.items() if not v['candidates']),

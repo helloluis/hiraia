@@ -3,12 +3,12 @@
  * every DepEd week the 2026 Science BOWs print (the denominator), each language version's status and review stages,
  * illustration coverage and gaps, failures with their recorded errors, and spend.
  */
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { PackReview, WeeklyPackContent, type PackLang } from '@hiraia/tala-core/contracts';
 import { buildIndex } from './runner';
 import { loadInputs } from './context';
-import { BUILD, LIBRARY, WORK } from './paths';
+import { ARTIFACTS, BUILD, LIBRARY, WORK } from './paths';
 
 const readJson = <T>(p: string): T => JSON.parse(readFileSync(p, 'utf8')) as T;
 
@@ -41,16 +41,32 @@ export function writeInventory(): string {
     }
   lines.push('');
 
+  // Spend per week, all attempts, from the call ledger (list prices; DeepSeek at the rate in force per call).
+  const ledgerFile = resolve(BUILD, 'calls.jsonl');
+  const spendByPack = new Map<string, number>();
+  if (existsSync(ledgerFile))
+    for (const l of readFileSync(ledgerFile, 'utf8').split('\n').filter(Boolean)) {
+      const r = JSON.parse(l) as { label?: string; costUsd?: number };
+      const id = String(r.label ?? '').split(':')[0]!;
+      spendByPack.set(id, (spendByPack.get(id) ?? 0) + (r.costUsd ?? 0));
+    }
   lines.push('## Built packs', '');
-  lines.push('| Week | Lang | Status | Slides (illustrated) | Checks | Critique | Wording (verbiage/1) | Teacher review |', '|---|---|---|---|---|---|---|---|');
+  lines.push(
+    'Teacher review is "none" for every pack below: model critique is not human review, and no pack is expert-verified. "Editable deck" is the build-time audit of the PPTX (editability/1: every learner-facing word is editable text, native lists, no picture over half a slide, Office fonts, notes on every slide).',
+    ''
+  );
+  lines.push('| Week | Lang | Status | Slides (illustrated) | Checks | Critique | Wording (verbiage/1) | Editable deck | Teacher review | Week spend |', '|---|---|---|---|---|---|---|---|---|---:|');
   for (const p of index.packs)
     for (const l of ['en', 'fil'] as const) {
       const v = p.variants[l];
       if (v.status === 'not_built') continue;
       const reviewFile = resolve(LIBRARY, p.packId, l, 'review.json');
       const r = existsSync(reviewFile) ? PackReview.parse(readJson(reviewFile)) : null;
+      const manifestFile = resolve(ARTIFACTS, p.packId, l, 'manifest.json');
+      const m = existsSync(manifestFile) ? readJson<{ editability?: { state: string; version: string }; images?: Array<{ watermark?: string }> }>(manifestFile) : null;
+      const editable = m?.editability ? `${m.editability.state}${m.images?.every((i) => i.watermark) ? ', watermarked' : ''}` : 'not audited (built before editability/1)';
       lines.push(
-        `| ${p.packId} | ${l} | ${v.status} | ${v.slideCount ?? '—'} (${v.illustratedSlides ?? '—'}) | ${r?.autoChecks.state ?? '—'} | ${r ? `${r.modelCritique.state}, ${r.modelCritique.rounds} rounds, ${r.modelCritique.resolvedIssues} fixed, ${r.modelCritique.openIssues.length} open` : '—'} | ${r?.verbiage ? `${r.verbiage.state} (max ${r.verbiage.metrics.maxWordsOnSlide} words/slide)` : '—'} | ${r?.teacherReview ? `${r.teacherReview.reviewer}` : 'none'} |`
+        `| ${p.packId} | ${l} | ${v.status} | ${v.slideCount ?? '—'} (${v.illustratedSlides ?? '—'}) | ${r?.autoChecks.state ?? '—'} | ${r ? `${r.modelCritique.state}, ${r.modelCritique.rounds} rounds, ${r.modelCritique.resolvedIssues} fixed, ${r.modelCritique.openIssues.length} open` : '—'} | ${r?.verbiage ? `${r.verbiage.state} (max ${r.verbiage.metrics.maxWordsOnSlide} words/slide)` : '—'} | ${editable} | ${r?.teacherReview ? `${r.teacherReview.reviewer}` : 'none'} | ${l === 'en' ? `$${(spendByPack.get(p.packId) ?? 0).toFixed(2)}` : ''} |`
       );
     }
   lines.push('');
@@ -88,8 +104,14 @@ export function writeInventory(): string {
     }
   lines.push('Built weeks where fewer than 15% of content slides carry a drawing (missing suitable art, reported rather than filled with unrelated pictures):', '');
   lines.push(...(noArt.length ? noArt.map((x) => `- ${x}`) : ['None among built weeks.']), '');
-  lines.push('Rights: no licence is recorded for the AI-generated PNG illustrations (Hiraia docs/licensing). They are used in drafts; publishing packs publicly needs Luis’s licensing decision.', '');
+  lines.push('Licence: Hiraia owns the illustrations (decision by Luis Buenaventura, 2026-11-19). Decks embed each approved drawing as a derived copy with the Hiraia wordmark in a strip below it (watermark wm/1); the approved files are never edited, and each build manifest records both hashes.', '');
 
+  for (const f of existsSync(BUILD) ? readdirSync(BUILD).filter((x) => /^batch-.*\.jsonl$/.test(x)) : []) {
+    const rows = readFileSync(resolve(BUILD, f), 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l) as { packId: string; status: Record<string, string>; weekUsd: number; batchUsd: number; done: number; of: number });
+    const last = rows.at(-1);
+    lines.push(`## Batch ${f.replace(/^batch-|\.jsonl$/g, '')}`, '');
+    lines.push(`${rows.length} weeks finished of ${last?.of ?? '—'}; batch spend $${(last?.batchUsd ?? 0).toFixed(2)} (ledger rows tagged with the batch). Failed language versions: ${rows.flatMap((r) => Object.entries(r.status).filter(([, s]) => s === 'failed').map(([lang]) => `${r.packId} ${lang}`)).join(', ') || 'none'}.`, '');
+  }
   const ledger = resolve(BUILD, 'calls.jsonl');
   if (existsSync(ledger)) {
     const rows = readFileSync(ledger, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l) as { model: string; costUsd: number });

@@ -1,0 +1,925 @@
+{
+ "packId": "sci26-g7-t1-w06",
+ "language": "fil",
+ "note": "Model critique and revision log. A model critique is not a human review.",
+ "critique": [
+  {
+   "verdict": "revise",
+   "issues": [
+    {
+     "id": "c1",
+     "severity": "blocker",
+     "category": "scientific_accuracy",
+     "path": "days[2].objective",
+     "problem": "Ang objective ay nagsasabing 'ang maligamgam na tubig ay nakakapagpatunaw ng mas maraming asin kaysa malamig na tubig.' Ang solubility ng NaCl (table salt) ay halos hindi nagbabago sa temperatura — mula ~35.7 g/100 mL sa 0°C hanggang ~39.1 g/100 mL sa 100°C. Sa maligamgam (~40°C) vs malamig (~20°C), ang pagkakaiba ay napakaliit at hindi mapapansin sa isang classroom experiment. Ang lahat ng expected observations, flow notes, at generalization sa Day 3 ay umaasa sa resultang ito na hindi mangyayari nang malinaw.",
+     "fix": "Palitan ang solute ng asukal (sucrose) sa buong Day 3 activity — o baguhin ang objective at lahat ng kaugnay na teksto upang tumutok sa bilis ng pagtunaw (rate) lamang, hindi sa dami (solubility). Kung asin pa rin ang gagamitin, alisin ang claim na mas maraming asin ang matutunaw sa maligamgam na tubig; sabihin na ang init ay nagpapabilis ng pagtunaw ngunit halos pareho ang maximum na dami ng asin na matutunaw."
+    },
+    {
+     "id": "c2",
+     "severity": "blocker",
+     "category": "language_quality",
+     "path": "slides[37].lines",
+     "problem": "Buong English sentence sa learner slide: 'Red litmus paper is dipped into vinegar. What happens?' — labag sa patakaran ng Hiraia na walang whole English sentences sa learner slides.",
+     "fix": "Palitan ng Filipino: 'Isinawsaw ang pulang litmus paper sa suka. Ano ang mangyayari?'"
+    },
+    {
+     "id": "c3",
+     "severity": "blocker",
+     "category": "language_quality",
+     "path": "slides[38].lines",
+     "problem": "Buong English sentence sa learner reveal slide: 'It stays red.' — labag sa patakaran ng Hiraia.",
+     "fix": "Palitan ng Filipino: 'Nanatiling pula ito.'"
+    },
+    {
+     "id": "c4",
+     "severity": "blocker",
+     "category": "language_quality",
+     "path": "slides[37].choices",
+     "problem": "Lahat ng apat na choices ay buong English sentences: 'It turns blue', 'It turns green', 'It stays red', 'It turns black' — labag sa patakaran ng Hiraia.",
+     "fix": "Palitan ng Filipino: ['Nagiging asul', 'Nagiging berde', 'Nanatiling pula', 'Nagiging itim']"
+    },
+    {
+     "id": "c5",
+     "severity": "blocker",
+     "category": "answer_key",
+     "path": "days[3].check.question",
+     "problem": "Ang check question ay buong English: 'Red litmus paper is dipped into vinegar. What happens to it?' at ang answer ay 'It stays red.' — dapat Filipino ang lahat ng check/reveal text para sa Filipino edition.",
+     "fix": "question: 'Isinawsaw ang pulang litmus paper sa suka. Ano ang mangyayari dito?' answer: 'Nanatiling pula ito.' why: 'Ang suka ay asido, at pinupula ng mga asido ang asul na litmus. Hindi nila pinapabughaw ang pulang litmus (base ang gumagawa noon).'"
+    },
+    {
+     "id": "c6",
+     "severity": "blocker",
+     "category": "readability",
+     "path": "slides[25].lines",
+     "problem": "61 words sa isang slide (d3s5) — lampas sa 48-word limit ng Hiraia cards.",
+     "fix": "Paikliin ang lines sa essentials (mga hakbang 1–4 lamang, tanggalin ang step 3 na 'Panoorin nang hindi hinahalo...' at step 4 na 'Haluin...'), ilipat ang detalye sa notes. Panatilihin ang safety reminder bilang huling linya. Target: ≤48 words."
+    },
+    {
+     "id": "c7",
+     "severity": "major",
+     "category": "consistency",
+     "path": "slides[25].lines",
+     "problem": "Ang slide d3s5 ay may hakbang na 'Panoorin nang hindi hinahalo' at 'Haluin ang parehong baso at itala muli' — isang rate-of-dissolving test. Ngunit ang teacher flow (days[2].flow[3]) ay naglalarawan ng solubility test: patuloy na pagdagdag ng asin hanggang may solidong natira. Magkaibang experiment ang slide at ang flow.",
+     "fix": "Iayon ang slide sa flow: palitan ang mga hakbang upang tumutugma sa solubility test (magdagdag ng asin isang kutsarita sa isang pagkakataon, haluin, itala kung ilang kutsarita ang natunaw bago may solidong natira) — o kung rate test ang layunin, iayon ang flow sa slide."
+    },
+    {
+     "id": "c8",
+     "severity": "major",
+     "category": "language_quality",
+     "path": "slides[0].title",
+     "problem": "Buong English title sa cover slide: 'What Dissolves? Solute, Solvent, and Safety' — dapat Filipino ang pamagat ng deck para sa Filipino edition.",
+     "fix": "Palitan ng: 'Ano ang Natutunaw? Solute, Solvent, at Kaligtasan' (tugma sa pack title)."
+    },
+    {
+     "id": "c9",
+     "severity": "major",
+     "category": "language_quality",
+     "path": "slides[30].title",
+     "problem": "Buong English title sa learner slide: 'What Do You Think?' — dapat Filipino.",
+     "fix": "Palitan ng: 'Ano sa Palagay Mo?'"
+    },
+    {
+     "id": "c10",
+     "severity": "major",
+     "category": "language_quality",
+     "path": "slides[32].title",
+     "problem": "Buong English title sa learner slide: 'How Litmus Reacts' — dapat Filipino.",
+     "fix": "Palitan ng: 'Paano Tumutugon ang Litmus'"
+    },
+    {
+     "id": "c11",
+     "severity": "major",
+     "category": "language_quality",
+     "path": "slides[33].title",
+     "problem": "Buong English title sa learner slide: 'Our Four Test Solutions' — dapat Filipino.",
+     "fix": "Palitan ng: 'Apat na Solusyong Susubukan'"
+    },
+    {
+     "id": "c12",
+     "severity": "major",
+     "category": "language_quality",
+     "path": "slides[34].title",
+     "problem": "Buong English title sa learner slide: 'Safety First' — dapat Filipino.",
+     "fix": "Palitan ng: 'Kaligtasan Muna'"
+    },
+    {
+     "id": "c13",
+     "severity": "major",
+     "category": "language_quality",
+     "path": "slides[35].title",
+     "problem": "Buong English title sa learner slide: 'Activity: Test Each Solution' — dapat Filipino.",
+     "fix": "Palitan ng: 'Gawain: Subukan ang Bawat Solusyon'"
+    },
+    {
+     "id": "c14",
+     "severity": "major",
+     "category": "language_quality",
+     "path": "slides[36].title",
+     "problem": "Buong English title sa learner slide: 'What Results Should We Compare?' — dapat Filipino.",
+     "fix": "Palitan ng: 'Anong mga Resulta ang Ihahambing?'"
+    },
+    {
+     "id": "c15",
+     "severity": "major",
+     "category": "language_quality",
+     "path": "days[3].flow[1].teacher",
+     "problem": "Ang teacher script ay nag-uutos ng choral reading sa buong English: 'Acids turn blue litmus red. Bases turn red litmus blue.' — sa Filipino edition, dapat Filipino ang ipasabi sa klase.",
+     "fix": "Palitan ng: 'Pinupula ng mga asido ang asul na litmus. Pinapabughaw ng mga base ang pulang litmus.'"
+    },
+    {
+     "id": "c16",
+     "severity": "major",
+     "category": "scientific_accuracy",
+     "path": "guide.vocabulary[6].meaning",
+     "problem": "'nagpapabughaw sa pulang litmus' — ang salitang 'bughaw' ay hindi karaniwang ginagamit sa Philippine schools para sa kulay asul. Ang standard na termino sa science classes ay 'asul'. Maaaring malito ang mag-aaral dahil iba ang salitang ginagamit sa ibang bahagi ng pack ('asul na litmus').",
+     "fix": "Palitan ang lahat ng 'nagpapabughaw' at 'pinapabughaw' sa buong pack ng 'nagpapa-asul' / 'pinapa-asul' o 'nagiging asul' upang maging consistent sa 'asul na litmus' na ginagamit sa ibang slides."
+    },
+    {
+     "id": "c17",
+     "severity": "minor",
+     "category": "language_quality",
+     "path": "slides[1].title",
+     "problem": "'Day 1: Solute at Solvent' — ang 'Day 1' ay English. Ginagamit ang 'Araw' sa ibang slides (d3s1: 'Araw 3'). Hindi consistent.",
+     "fix": "Palitan ng 'Araw 1: Solute at Solvent' upang maging consistent sa 'Araw 3' at 'Araw 5'."
+    },
+    {
+     "id": "c18",
+     "severity": "minor",
+     "category": "language_quality",
+     "path": "slides[11].title",
+     "problem": "'Day 2: Pagsukat ng Concentration' — 'Day 2' ay English, hindi consistent sa 'Araw 3'.",
+     "fix": "Palitan ng 'Araw 2: Pagsukat ng Concentration'."
+    },
+    {
+     "id": "c19",
+     "severity": "minor",
+     "category": "language_quality",
+     "path": "slides[29].title",
+     "problem": "'Day 4: Testing with Litmus' — buong English title, hindi consistent sa 'Araw 3' at 'Araw 5'.",
+     "fix": "Palitan ng 'Araw 4: Pagsusuri gamit ang Litmus'."
+    },
+    {
+     "id": "c20",
+     "severity": "minor",
+     "category": "consistency",
+     "path": "guide.background[2].paragraphs[1]",
+     "problem": "Ang background ay nagsasabing 'kayang tunawin ng 100 mL ng tubig ang humigit-kumulang 36 gramo ng table salt' sa room temperature — tama ito. Ngunit ang Day 3 activity ay gumagamit ng asin upang ipakita na mas maraming matutunaw sa maligamgam na tubig, na halos hindi totoo para sa NaCl. Ang background mismo ay hindi nagbabanggit ng exception na ito para sa asin.",
+     "fix": "Idagdag sa background[3] ang paalala: 'Ang solubility ng table salt (NaCl) ay halos hindi nagbabago sa temperatura; ang asukal ang mas angkop na halimbawa para sa epekto ng init sa solubility.'"
+    }
+   ],
+   "previous": []
+  },
+  {
+   "verdict": "revise",
+   "issues": [
+    {
+     "id": "c6",
+     "severity": "blocker",
+     "category": "readability",
+     "path": "slides[25].lines",
+     "problem": "Ang d3s5 ay 61 words pa rin sa limang linya — lampas sa ~48-word limit ng Hiraia cards. Ang patch dito ay tinanggihan ng writer.",
+     "fix": "Palitan ang buong lines array ng apat na maikling linya (≈33 words), kasama ang safety line: [\"1. Sukatin ang 100 mL: malamig sa C, maligamgam sa W.\", \"2. Magdagdag ng isang kutsaritang asin sa bawat baso. Haluin.\", \"3. Ulitin hanggang may solidong natira. Itala ang bilang ng kutsarita.\", \"Paalala: Huwag tikman. Maligamgam lang, hindi kumukulo.\"] Ilipat ang detalye ng timing sa notes."
+    },
+    {
+     "id": "c7",
+     "severity": "major",
+     "category": "consistency",
+     "path": "slides[25].lines",
+     "problem": "Ang slide ay nagsasabi pa ring 'Panoorin nang hindi hinahalo' at 'Haluin ang parehong baso at itala muli' (rate test), pero ang days[2].flow[3] at slides[25].notes ay saturation test: dagdag ng asin isang kutsarita hanggang may solidong natira, at itala ang bilang ng kutsarita. Iba ang gagawin ng bata sa ipinapakita ng slide.",
+     "fix": "Gamitin ang parehong palit sa c6: ang mga hakbang ay maging pagdaragdag ng isang kutsaritang asin sa bawat baso, paghalo, at pagtatala ng bilang ng kutsaritang natunaw bago may solidong natira — tugma sa flow at notes. Alisin ang 'Panoorin nang hindi hinahalo' at 'Haluin... itala muli'."
+    },
+    {
+     "id": "c16",
+     "severity": "minor",
+     "category": "consistency",
+     "path": "assessment[3].prompt",
+     "problem": "Learner-facing test item: 'Aling household solution ang nagpapabughaw sa pulang litmus paper?' — 'nagpapabughaw' din ang explanation nito. Sa lahat ng slides ay 'asul' / 'pinapa-asul' ang gamit, kaya hindi tugma ang salita ng pagsusulit sa aralin.",
+     "fix": "prompt: 'Aling household solution ang nagpapa-asul sa pulang litmus paper?' At sa explanation: 'Ang mga base ay nagpapa-asul sa pulang litmus paper.'"
+    },
+    {
+     "id": "c16",
+     "severity": "minor",
+     "category": "consistency",
+     "path": "days[3].flow[1].teacher",
+     "problem": "Ang ipasasabi sa klase (choral reading) ay 'Pinapabughaw ng mga base ang pulang litmus,' pero ang slide na binabasa nila (slides[32].lines) ay 'Pinapa-asul ng mga base ang pulang litmus.' Magkaiba ang sinasabi ng guro at nakasulat sa slide.",
+     "fix": "Palitan ng: 'Pinupula ng mga asido ang asul na litmus. Pinapa-asul ng mga base ang pulang litmus.' Gawin ding 'pinapa-asul' ang 'Pinapabughaw' sa days[3].expectedObservations[2] at ang 'pinapabughaw' sa days[3].check.why."
+    },
+    {
+     "id": "n1",
+     "severity": "blocker",
+     "category": "language_quality",
+     "path": "slides[37].title",
+     "problem": "Buong English phrase ang pamagat ng learner check slide: 'Red litmus in vinegar'. Na-Filipino ang lines at choices pero naiwan ang title.",
+     "fix": "Palitan ng: 'Pulang litmus sa suka'."
+    },
+    {
+     "id": "n2",
+     "severity": "blocker",
+     "category": "language_quality",
+     "path": "slides[38].title",
+     "problem": "Ang title ng learner reveal slide ay 'Answer' — buong English, samantalang Filipino ang lahat ng iba pang reveal titles ('Sagot: 4%', 'Sagot: Asin ang solute').",
+     "fix": "Palitan ng: 'Sagot: Nanatiling pula'."
+    }
+   ],
+   "previous": [
+    {
+     "id": "c1",
+     "status": "fixed",
+     "note": "Day 3 now keeps asin but teaches rate only, with the 'halos pareho ang solubility' caveat in objective, flow, slides, check and guide."
+    },
+    {
+     "id": "c2",
+     "status": "fixed",
+     "note": "slides[37].lines is now Filipino ('Isinawsaw ang pulang litmus paper sa suka...')."
+    },
+    {
+     "id": "c3",
+     "status": "fixed",
+     "note": "slides[38].lines now reads 'Nanatiling pula ito.' plus a Filipino explanation."
+    },
+    {
+     "id": "c4",
+     "status": "fixed",
+     "note": "All four choices on slides[37] are Filipino and the reveal key still matches choice 2."
+    },
+    {
+     "id": "c5",
+     "status": "fixed",
+     "note": "days[3].check question/answer are Filipino; only the 'pinapabughaw' wording in why remains (tracked under c16)."
+    },
+    {
+     "id": "c6",
+     "status": "open",
+     "note": "The patch to slides[25].lines was rejected, so d3s5 still carries 61 words."
+    },
+    {
+     "id": "c7",
+     "status": "open",
+     "note": "d3s5 lines still describe a no-stir rate test while flow[3] and the slide notes run a saturation test."
+    },
+    {
+     "id": "c8",
+     "status": "fixed",
+     "note": "Cover title is now 'Ano ang Natutunaw? Solute, Solvent, at Kaligtasan'."
+    },
+    {
+     "id": "c9",
+     "status": "fixed",
+     "note": "slides[30].title is 'Ano sa Palagay Mo?'."
+    },
+    {
+     "id": "c10",
+     "status": "fixed",
+     "note": "slides[32].title is 'Paano Tumutugon ang Litmus'."
+    },
+    {
+     "id": "c11",
+     "status": "fixed",
+     "note": "slides[33].title is 'Apat na Solusyong Susubukan'."
+    },
+    {
+     "id": "c12",
+     "status": "fixed",
+     "note": "slides[34].title is 'Kaligtasan Muna'."
+    },
+    {
+     "id": "c13",
+     "status": "fixed",
+     "note": "slides[35].title is 'Gawain: Subukan ang Bawat Solusyon'."
+    },
+    {
+     "id": "c14",
+     "status": "fixed",
+     "note": "slides[36].title is 'Anong mga Resulta ang Ihahambing?'."
+    },
+    {
+     "id": "c15",
+     "status": "fixed",
+     "note": "The choral reading is now in Filipino, so no whole-English recitation remains."
+    },
+    {
+     "id": "c16",
+     "status": "open",
+     "note": "'bughaw' survives in learner-facing assessment text and in Day 4 script/observations/check, still clashing with 'asul'."
+    },
+    {
+     "id": "c17",
+     "status": "fixed",
+     "note": "slides[1].title is 'Araw 1: Solute at Solvent'."
+    },
+    {
+     "id": "c18",
+     "status": "fixed",
+     "note": "slides[11].title is 'Araw 2: Pagsukat ng Concentration'."
+    },
+    {
+     "id": "c19",
+     "status": "fixed",
+     "note": "slides[29].title is 'Araw 4: Pagsusuri gamit ang Litmus'."
+    },
+    {
+     "id": "c20",
+     "status": "fixed",
+     "note": "guide.background[3] now carries the NaCl exception note."
+    }
+   ]
+  },
+  {
+   "verdict": "revise",
+   "issues": [],
+   "previous": [
+    {
+     "id": "c6",
+     "status": "fixed",
+     "note": "Ang slides[25].lines ay apat na maikling linya na (~33 words) kasama ang safety line, at nasa notes na ang detalye ng timing."
+    },
+    {
+     "id": "c7",
+     "status": "fixed",
+     "note": "Ang mga hakbang sa slide ay saturation test na (dagdag ng kutsarita hanggang may solidong natira), tugma sa days[2].flow[3] at notes; wala nang 'Panoorin nang hindi hinahalo'."
+    },
+    {
+     "id": "c16",
+     "status": "open",
+     "note": "Naayos ang assessment[3] at days[3].expectedObservations/check.why, pero buhay pa ang 'Pinapabughaw' sa choral reading ng days[3].flow[1].teacher (tinanggihan ang patch)."
+    },
+    {
+     "id": "n1",
+     "status": "fixed",
+     "note": "Ang slides[37].title ay 'Pulang litmus sa suka' na."
+    },
+    {
+     "id": "n2",
+     "status": "fixed",
+     "note": "Ang slides[38].title ay 'Sagot: Nanatiling pula' na."
+    }
+   ]
+  }
+ ],
+ "revisions": [
+  {
+   "applied": [
+    {
+     "path": "days[2].objective",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[2].materials",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[2].flow[0].teacher",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[2].flow[1].teacher",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[2].flow[2].teacher",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[2].flow[3].teacher",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[2].flow[4].teacher",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[2].flow[5].teacher",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[2].flow[6].teacher",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[2].expectedObservations",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[2].check",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[2].support",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[2].extension",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[2].longerPeriod",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "slides[23].title",
+     "issueIds": [
+      "c17"
+     ]
+    },
+    {
+     "path": "slides[23].lines",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "slides[23].notes",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "slides[24].title",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "slides[24].lines",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "slides[24].notes",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "slides[25].notes",
+     "issueIds": [
+      "c1",
+      "c6",
+      "c7"
+     ]
+    },
+    {
+     "path": "slides[26].title",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "slides[26].lines",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "slides[26].choices",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "slides[26].notes",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "slides[27].title",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "slides[27].lines",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "slides[27].notes",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "slides[28].title",
+     "issueIds": [
+      "c17"
+     ]
+    },
+    {
+     "path": "slides[28].lines",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "slides[28].notes",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "slides[37].lines",
+     "issueIds": [
+      "c2",
+      "c4"
+     ]
+    },
+    {
+     "path": "slides[37].choices",
+     "issueIds": [
+      "c4"
+     ]
+    },
+    {
+     "path": "slides[37].notes",
+     "issueIds": [
+      "c2",
+      "c4"
+     ]
+    },
+    {
+     "path": "slides[38].lines",
+     "issueIds": [
+      "c3",
+      "c4",
+      "c16"
+     ]
+    },
+    {
+     "path": "slides[38].notes",
+     "issueIds": [
+      "c3",
+      "c4",
+      "c16"
+     ]
+    },
+    {
+     "path": "days[3].check.question",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "days[3].check.answer",
+     "issueIds": [
+      "c5"
+     ]
+    },
+    {
+     "path": "days[3].check.why",
+     "issueIds": [
+      "c5",
+      "c16"
+     ]
+    },
+    {
+     "path": "days[3].flow[1].teacher",
+     "issueIds": [
+      "c15",
+      "c16"
+     ]
+    },
+    {
+     "path": "slides[0].title",
+     "issueIds": [
+      "c8"
+     ]
+    },
+    {
+     "path": "slides[30].title",
+     "issueIds": [
+      "c9"
+     ]
+    },
+    {
+     "path": "slides[32].title",
+     "issueIds": [
+      "c10"
+     ]
+    },
+    {
+     "path": "slides[33].title",
+     "issueIds": [
+      "c11"
+     ]
+    },
+    {
+     "path": "slides[34].title",
+     "issueIds": [
+      "c12"
+     ]
+    },
+    {
+     "path": "slides[35].title",
+     "issueIds": [
+      "c13"
+     ]
+    },
+    {
+     "path": "slides[36].title",
+     "issueIds": [
+      "c14"
+     ]
+    },
+    {
+     "path": "slides[1].title",
+     "issueIds": [
+      "c17"
+     ]
+    },
+    {
+     "path": "slides[11].title",
+     "issueIds": [
+      "c18"
+     ]
+    },
+    {
+     "path": "slides[29].title",
+     "issueIds": [
+      "c19"
+     ]
+    },
+    {
+     "path": "guide.background[3].paragraphs",
+     "issueIds": [
+      "c20"
+     ]
+    },
+    {
+     "path": "guide.vocabulary[6].meaning",
+     "issueIds": [
+      "c16"
+     ]
+    },
+    {
+     "path": "guide.vocabulary[6].example",
+     "issueIds": [
+      "c16"
+     ]
+    },
+    {
+     "path": "guide.misconceptions[3].correctIdea",
+     "issueIds": [
+      "c16"
+     ]
+    },
+    {
+     "path": "guide.misconceptions[3].howToAddress",
+     "issueIds": [
+      "c16"
+     ]
+    },
+    {
+     "path": "guide.localExamples[2].connection",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "guide.studentQuestions[1].answer",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[3].flow[0].teacher",
+     "issueIds": [
+      "c9",
+      "c16"
+     ]
+    },
+    {
+     "path": "days[3].flow[2].teacher",
+     "issueIds": [
+      "c11",
+      "c12",
+      "c13",
+      "c16"
+     ]
+    },
+    {
+     "path": "days[3].flow[3].teacher",
+     "issueIds": [
+      "c14",
+      "c16"
+     ]
+    },
+    {
+     "path": "days[3].flow[4].teacher",
+     "issueIds": [
+      "c5",
+      "c16"
+     ]
+    },
+    {
+     "path": "slides[32].lines",
+     "issueIds": [
+      "c16"
+     ]
+    },
+    {
+     "path": "slides[36].lines",
+     "issueIds": [
+      "c16"
+     ]
+    },
+    {
+     "path": "guide.vocabulary[7].meaning",
+     "issueIds": [
+      "c16"
+     ]
+    },
+    {
+     "path": "guide.vocabulary[8].meaning",
+     "issueIds": [
+      "c16"
+     ]
+    },
+    {
+     "path": "days[4].flow[4].teacher",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "days[4].flow[4].teacher",
+     "issueIds": [
+      "c1"
+     ]
+    },
+    {
+     "path": "guide.background[2].paragraphs[2]",
+     "issueIds": [
+      "c20"
+     ]
+    }
+   ],
+   "rejected": [
+    {
+     "path": "slides[25].lines",
+     "reason": "the quoted current value does not match this path (wrong index?)"
+    },
+    {
+     "path": "days[2].flow[4].learners",
+     "reason": "the quoted current value does not match this path (wrong index?)"
+    },
+    {
+     "path": "slides[46].lines",
+     "reason": "breaks the contract: slides.46.lines.2 String must contain at most 130 character(s)"
+    }
+   ],
+   "declined": [
+    {
+     "issueId": "c16",
+     "reason": "Ang 'bughaw' ay isang katanggap-tanggap na synonym para sa 'asul' sa Filipino. Gayunpaman, para sa consistency, pinalitan namin ang mga pagbanggit ng 'nagpapabughaw' at 'pinapabughaw' sa mga pangungusap na may direktang kinalaman sa litmus upang maging 'nagpapa-asul' o 'pinapa-asul'. Hindi namin binago ang lahat ng iba pang paggamit ng 'bughaw' dahil hindi ito itinuturing na blocker o major issue. Ang pagpapalit sa lahat ng 'bughaw' ay magiging sobrang pagbabago at maaaring makasira sa natural na daloy ng Filipino."
+    }
+   ]
+  },
+  {
+   "applied": [
+    {
+     "path": "slides[25].lines",
+     "issueIds": [
+      "c6",
+      "c7"
+     ]
+    },
+    {
+     "path": "slides[25].notes",
+     "issueIds": [
+      "c6"
+     ]
+    },
+    {
+     "path": "assessment[3].prompt",
+     "issueIds": [
+      "c16"
+     ]
+    },
+    {
+     "path": "assessment[3].explanation",
+     "issueIds": [
+      "c16"
+     ]
+    },
+    {
+     "path": "days[3].expectedObservations[2]",
+     "issueIds": [
+      "c16"
+     ]
+    },
+    {
+     "path": "days[3].check.why",
+     "issueIds": [
+      "c16"
+     ]
+    },
+    {
+     "path": "slides[37].title",
+     "issueIds": [
+      "n1"
+     ]
+    },
+    {
+     "path": "slides[38].title",
+     "issueIds": [
+      "n2"
+     ]
+    }
+   ],
+   "rejected": [
+    {
+     "path": "days[3].flow[1].teacher",
+     "reason": "the quoted current value does not match this path (wrong index?)"
+    }
+   ],
+   "declined": []
+  }
+ ],
+ "verification": {
+  "confirmedFixed": 21,
+  "withdrawn": 0,
+  "open": 0
+ },
+ "finalChecks": {
+  "failures": [],
+  "warnings": [
+   "day 1: the exit ticket repeats a question already answered on a slide that day",
+   "day 3: the exit ticket repeats a question already answered on a slide that day",
+   "day 4: the exit ticket repeats a question already answered on a slide that day",
+   "d2s1: line 1 is long for a TV slide (100 characters)",
+   "d2s2: line 1 is long for a TV slide (104 characters)",
+   "d2s9: reveal text does not echo the correct choice \"4%\"",
+   "d3s1: line 1 is long for a TV slide (104 characters)",
+   "d3s2: line 1 is long for a TV slide (98 characters)",
+   "d3s3: line 1 is long for a TV slide (99 characters)",
+   "d3s3: line 2 is long for a TV slide (116 characters)",
+   "d3s4: line 1 is long for a TV slide (116 characters)",
+   "d3s7: line 1 is long for a TV slide (110 characters)",
+   "d3s7: line 2 is long for a TV slide (102 characters)",
+   "d3s8: line 2 is long for a TV slide (91 characters)",
+   "d3s8: line 3 is long for a TV slide (94 characters)",
+   "d4s1: line 1 is long for a TV slide (102 characters)",
+   "d4s4: line 3 is long for a TV slide (97 characters)",
+   "d5s6: line 1 is long for a TV slide (91 characters)",
+   "d5s8: line 3 is long for a TV slide (98 characters)",
+   "day 1: mentions \"glass\" but the lesson steps carry no safety instruction",
+   "acronym PDF is never expanded"
+  ]
+ },
+ "verbiage": {
+  "rulesVersion": "verbiage/1",
+  "state": "warn",
+  "metrics": {
+   "slides": 49,
+   "maxWordsOnSlide": 60,
+   "slidesOver48Words": 5,
+   "avgSentenceWords": 6.7,
+   "maxSentenceWords": 19,
+   "englishFunctionShare": 0,
+   "filipinoFunctionShare": null
+  },
+  "findings": [
+   "d2s1: write the numeral and unit symbol (°C, cm, %) rather than the spelled-out unit",
+   "d2s3: write the numeral and unit symbol (°C, cm, %) rather than the spelled-out unit",
+   "d2s5: write the numeral and unit symbol (°C, cm, %) rather than the spelled-out unit",
+   "d2s7: 50 words on the slide (Hiraia cards stop at 48)",
+   "d2s10: write the numeral and unit symbol (°C, cm, %) rather than the spelled-out unit",
+   "d3s7: 54 words on the slide (Hiraia cards stop at 48)",
+   "d3s8: 57 words on the slide (Hiraia cards stop at 48)",
+   "d5s6: 53 words on the slide (Hiraia cards stop at 48)",
+   "d5s8: 60 words on the slide (Hiraia cards stop at 48)"
+  ]
+ },
+ "images": "Same drawings and slides as the English edition; each drawing was checked against the English text of its slide."
+}
