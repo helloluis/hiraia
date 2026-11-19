@@ -24,7 +24,13 @@ Server configuration is by environment variable **names** (see `packages/tala-se
 - `src/data` client, IndexedDB store, cache, network rung monitor, session (engine + sync loop), record hooks,
   curriculum loaders, timeline assembly, plans, realignment, sample class, print, retry, errors, generation
   (request builder, job apply, on-device queue), roster (import helpers), community (pre-post review, copy).
-- `src/components/ui.tsx` the whole design system; `src/features/*` screens.
+- `src/components/ui.tsx` the base design system; `src/components/icons.tsx` the one icon family;
+  `src/components/editorial.tsx` the reading-page blocks (kicker, section head, Big Idea, callout, disclosure, tabs);
+  `src/features/*` screens.
+- Teacher-portal rework (Library as a magazine, pack reading pages, slide carousel and "My copy" editor, This Week):
+  design decisions, demo path and how to check it are in `docs/tala/teacher-portal/README.md`. Evidence tooling:
+  `scripts/ui-seed.mjs` (fictional teacher), `scripts/ui-capture.mjs` (screenshots), `scripts/decks-acceptance.mjs`
+  (two teachers: private copies, unchanged original, export, new library snapshot).
 
 ## Filipino strings flagged for a fluent teacher's review
 

@@ -16,11 +16,15 @@ const FEATURES = ['pacing', 'ai', 'roster', 'edit', 'offline', 'community', 'lib
 const PROMISES = ['free', 'offline', 'simple', 'check'] as const;
 export const SCREENS: Screen[] = [
   { name: 'week-phone', w: 786, h: 1704, captionKey: 'landing.c.week', kind: 'phone' },
+  { name: 'library-phone', w: 786, h: 1704, captionKey: 'landing.c.library', kind: 'phone' },
+  { name: 'pack-phone', w: 786, h: 1704, captionKey: 'landing.c.pack', kind: 'phone' },
+  { name: 'slides-phone', w: 786, h: 1704, captionKey: 'landing.c.slides', kind: 'phone' },
   { name: 'editor-phone', w: 786, h: 1704, captionKey: 'landing.c.editor', kind: 'phone' },
   { name: 'draft-phone', w: 786, h: 1704, captionKey: 'landing.c.draft', kind: 'phone' },
   { name: 'roster-phone', w: 786, h: 1704, captionKey: 'landing.c.roster', kind: 'phone' },
   { name: 'print-phone', w: 786, h: 1704, captionKey: 'landing.c.print', kind: 'phone' },
   { name: 'community-phone', w: 786, h: 1704, captionKey: 'landing.c.community', kind: 'phone' },
+  { name: 'slides-desktop', w: 1200, h: 750, captionKey: 'landing.c.mycopy', kind: 'desktop' },
   { name: 'week-desktop', w: 1200, h: 750, captionKey: 'landing.c.desktop', kind: 'desktop' },
 ];
 
