@@ -481,9 +481,22 @@ export async function runCli(cmd: string, args: string[]) {
   const groups = new Map<string, WeekTarget[]>();
   for (const t of selected) groups.set(`${t.grade}-${t.term}`, [...(groups.get(`${t.grade}-${t.term}`) ?? []), t]);
   // Urgent first: the earliest term in the selection (e.g. Term 2 weeks 10-11) before the next, then by grade.
-  const termQueue = [...groups.values()]
-    .map((ws) => ws.sort((a, b) => a.week - b.week))
-    .sort((a, b) => a[0]!.term - b[0]!.term || Number(a[0]!.grade) - Number(b[0]!.grade));
+  // --queue-file <json>: an explicit order instead — an array of groups, each an array of target ids done in order by
+  // one worker (e.g. demo grades first, a term split in parts so it finishes sooner). Selected weeks the file leaves
+  // out are appended at the end, so none is dropped.
+  const queueFile = opt('queue-file');
+  const termQueue: WeekTarget[][] = queueFile
+    ? (() => {
+        const byId = new Map(selected.map((t) => [t.targetId, t]));
+        const listed = (JSON.parse(readFileSync(queueFile, 'utf8')) as string[][]).map((g) => g.map((id) => byId.get(id)).filter((t): t is WeekTarget => Boolean(t))).filter((g) => g.length);
+        const seen = new Set(listed.flat().map((t) => t.targetId));
+        const rest = selected.filter((t) => !seen.has(t.targetId));
+        return rest.length ? [...listed, rest] : listed;
+      })()
+    : [...groups.values()]
+        .map((ws) => ws.sort((a, b) => a.week - b.week))
+        .sort((a, b) => a[0]!.term - b[0]!.term || Number(a[0]!.grade) - Number(b[0]!.grade));
+  if (queueFile) console.log(`queue: ${termQueue.map((g) => `[${g.map((t) => t.targetId.replace('sci26-', '')).join(' ')}]`).join(' ')}`);
   let done = 0;
   const queue: WeekTarget[] = [];
   const nextTarget = (mine: WeekTarget[]) => {

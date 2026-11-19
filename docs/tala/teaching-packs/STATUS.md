@@ -174,3 +174,11 @@ Still open, not blocking the batch:
   on production (job done in 8 s, lesson redrafted, marked "Drafted by AI"); temporary accounts deleted.
 - 06:51 — priority batch launched: 102 weeks (Term 2 weeks 10–11 first, then Term 3; G5 T3 W7 already built),
   6 workers, `--batch priority-2026-11-19 --cap 90 --off-peak`; waiting for DeepSeek off-peak (10:00 UTC).
+- 07:29 — Luis: "I'm demonstrating this tomorrow morning so let's not wait for the off-peak, just get it going". The
+  waiting batch was stopped ($0 spent) and relaunched at 07:30 UTC without `--off-peak` (the option stays). DeepSeek
+  calls are billed at peak until 10:00 UTC and automatically at half price after; the meter prices each call at the
+  rate in force, and the $90 cap is unchanged — when it stops the batch, the stop is reported, not exceeded.
+  Demo-first queue (`--queue-file`, 8 workers): Term 2 weeks 10–11 for grades 4, 5, 7, then 3, 6, 8, 9, 10; Term 3
+  for grades 4, 5, 7 split in thirds (so they finish early); then the other grades' Term 3, weeks 1–6 before 7–11.
+  A split costs continuity: a week that starts a part may not see the previous week's plan. Live-library refreshes
+  use a consistent snapshot (`stage-for-deploy.sh` leaves out anything mid-build and recounts the index).
