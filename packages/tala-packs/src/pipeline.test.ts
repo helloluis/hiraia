@@ -7,7 +7,7 @@ import { buildTargets, loadSciencePacks, targetId } from './targets';
 import { CURRICULUM_PACKS, LIBRARY } from './paths';
 import { DayOut, OutlineOut, dayChecks, normalizeDay, tidyCheckSlide, tidySlide } from './generate';
 import { annotate, applyPatch, canonicalPath, expectMatches, parsePath, placeholderIn, preparePatch, retarget, splitSlideLine, stripIndex } from './review';
-import { clampText, foldList, splitAtComma } from './text';
+import { clampText, foldList, splitAtComma, splitOverContract } from './text';
 import { checkPack, checkSameStructure } from './checks';
 import { checkVerbiage } from './verbiage';
 import { loadInputs } from './context';
@@ -343,5 +343,14 @@ test('over-long alt text and material lists are trimmed deterministically, witho
   assert.equal(folded.length, 12);
   assert.equal(folded[11], 'item 12; item 13; item 14');
   assert.deepEqual(foldList(['a', 'b'], 12), ['a', 'b']);
+});
+
+test('a line over the contract with no sentence break, dash, semicolon or comma is split at a space', () => {
+  const line = '— nagsasama ang maliliit na sentro ng hydrogen atoms para maging helium at lumabas ang enerhiya (tinatawag nating nuclei ang mga sentro).';
+  assert.ok(line.length > 130);
+  const parts = splitOverContract(line, 130)!;
+  assert.equal(parts.length, 2);
+  assert.ok(parts.every((x) => x.length <= 130));
+  assert.equal(parts.join(' '), line);
 });
 

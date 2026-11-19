@@ -32,7 +32,7 @@ import {
 } from './context';
 import { LIBRARY, PIPELINE_VERSION, WORK } from './paths';
 import type { WeekTarget } from './targets';
-import { clampText, foldList, lineMax, splitAtComma, splitSlideLine, stripEnumerator } from './text';
+import { clampText, foldList, lineMax, splitOverContract, splitSlideLine, stripEnumerator } from './text';
 
 export const SENSITIVITY = z.enum(['human_reproduction', 'health', 'disaster', 'safety_critical']);
 
@@ -321,7 +321,7 @@ export function normalizeDay(day: number, art: Map<string, { titles: string[] }>
       if (Array.isArray(s.lines) && s.lines.some((l: unknown) => typeof l === 'string' && stripEnumerator(l).length > lineMax('en'))) {
         const fixed = s.lines.flatMap((l: unknown) =>
           typeof l === 'string' && stripEnumerator(l).length > lineMax('en')
-            ? (splitSlideLine(stripEnumerator(l), lineMax('en')) ?? (stripEnumerator(l).length > 130 ? (splitAtComma(stripEnumerator(l), 130) ?? [l]) : [l]))
+            ? (splitSlideLine(stripEnumerator(l), lineMax('en')) ?? (stripEnumerator(l).length > 130 ? (splitOverContract(stripEnumerator(l), 130) ?? [l]) : [l]))
             : [l]
         );
         if (fixed.length <= 5 && fixed.length !== s.lines.length) {

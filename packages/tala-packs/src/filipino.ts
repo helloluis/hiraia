@@ -14,7 +14,7 @@ import { MODELS, type Meter, type ModelSpec } from './llm';
 import { fill, loadInputs, loadPrompt } from './context';
 import { DayOut, LENGTH_ONLY, stage, tidySlide, type DayOut as DayOutT } from './generate';
 import type { WeekTarget } from './targets';
-import { clampText, lineMax, slideCharsMax, splitAtComma, splitSlideLine, stripEnumerator } from './text';
+import { clampText, lineMax, slideCharsMax, splitOverContract, stripEnumerator } from './text';
 
 export const FilGuideOut = z.object({
   title: z.string().trim().min(1).max(80),
@@ -119,7 +119,7 @@ function lockDayStructure(enDay: DayOutT) {
         const fixed = s.lines.flatMap((l: unknown) => {
           if (typeof l !== 'string') return [l];
           const bare = stripEnumerator(l);
-          return bare.length > lineMax('fil') ? (splitSlideLine(bare, lineMax('fil')) ?? splitAtComma(bare, lineMax('fil')) ?? [bare]) : [l];
+          return bare.length > lineMax('fil') ? (splitOverContract(bare, lineMax('fil')) ?? [bare]) : [l];
         });
         if (fixed.length <= 5) {
           s.lines = fixed;

@@ -11,7 +11,7 @@ import { artCandidatesFor, artText, fill, groundingFor, loadPrompt } from './con
 import { stage } from './generate';
 import { checkPack } from './checks';
 import { checkVerbiage } from './verbiage';
-import { clampText, foldList, lineMax, splitSlideLine, stripEnumerator } from './text';
+import { clampText, foldList, lineMax, splitOverContract, splitSlideLine, stripEnumerator } from './text';
 export { splitSlideLine } from './text';
 import type { WeekTarget } from './targets';
 
@@ -345,7 +345,7 @@ export function preparePatch(pack: WeeklyPackContent, path: string, value: unkno
   const max = lineMax(pack.language);
   const one = path.match(/^(slides\[\d+\]\.lines)\[(\d+)\]$/);
   if (one && typeof value === 'string' && value.length > max) {
-    const split = splitSlideLine(value, max);
+    const split = splitSlideLine(value, max) ?? (value.length > 130 ? splitOverContract(value, 130) : null);
     if (!split) return { path, value };
     let lines: any = pack;
     for (const x of parsePath(one[1]!)) lines = lines?.[x];
@@ -355,7 +355,7 @@ export function preparePatch(pack: WeeklyPackContent, path: string, value: unkno
     return next.length <= 5 ? { path: one[1]!, value: next, note: `line split in ${split.length}` } : { path, value };
   }
   if (/^slides\[\d+\]\.lines$/.test(path) && Array.isArray(value) && value.some((l) => typeof l === 'string' && l.length > max)) {
-    const next = value.flatMap((l) => (typeof l === 'string' ? (splitSlideLine(l, max) ?? [l]) : [l]));
+    const next = value.flatMap((l) => (typeof l === 'string' ? (splitSlideLine(l, max) ?? (l.length > 130 ? splitOverContract(l, 130) : null) ?? [l]) : [l]));
     return next.length <= 5 ? { path, value: next, note: 'line split' } : { path, value };
   }
   return { path, value };

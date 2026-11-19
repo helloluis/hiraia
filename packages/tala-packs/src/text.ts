@@ -49,3 +49,20 @@ export function foldList(items: string[], max: number): string[] {
   return [...items.slice(0, max - 1), items.slice(max - 1).join('; ')];
 }
 
+/** Very last resort for a line over the contract: split at the space nearest the middle (reads like a wrapped line). */
+export function splitAtSpace(line: string, max: number): string[] | null {
+  const t = line.trim();
+  if (t.length <= max) return [t];
+  const spaces = [...t.matchAll(/ /g)].map((m) => m.index!);
+  const mid = t.length / 2;
+  const best = spaces.sort((a, b) => Math.abs(a - mid) - Math.abs(b - mid))[0];
+  if (best === undefined) return null;
+  const parts = [t.slice(0, best).trim(), t.slice(best + 1).trim()];
+  return parts.every((x) => x.length > 0 && x.length <= max) ? parts : null;
+}
+
+/** Split a line over the contract maximum: sentence, dash or semicolon, comma, then space. */
+export function splitOverContract(line: string, contractMax: number): string[] | null {
+  return splitSlideLine(line, contractMax) ?? splitAtComma(line, contractMax) ?? splitAtSpace(line, contractMax);
+}
+
