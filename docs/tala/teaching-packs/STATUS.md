@@ -143,3 +143,31 @@ Recorded 2026-11-19 04:55 UTC (12:55 PHT). Nothing below is started until Luis a
   answer slide whose grid and explanation cannot both fit shows only the right answer full-width; the sources line
   ends on a whole reference. The tala-web dev server had to be restarted to load the new contract (Filipino slide
   lines up to 130 characters) — production must deploy the contract with the packs.
+
+## Production deploy — 2026-11-19 06:01 UTC (Luis: "Let's get it up on the website now pls", relayed by Beanie)
+
+- **Release `tala-v1-demo.10`** = commit `87d001ca6` on branch `tala-v1-packs-live` (pushed, no force), built on
+  the live tag `tala-v1-demo.9` (`4aa7187c5`) **on purpose**: local `tala-v1` carries 91 undeployed commits after
+  demo.9 (the non-Science curriculum harvest) whose live deploy Luis is holding until verified; they are not in
+  this release. Same change as `68efab3eb` on `tala-v1-packs` (local). Deployed with the kit:
+  `/opt/tala/deploy.sh tala-v1-demo.10` (built on the host, health-checked, current → `releases/tala-v1-demo.10`).
+- **Pack data** in `/var/lib/tala/packs` (294 files, `SHA256SUMS` verified on the host): G4 T1 W8 EN+FIL,
+  G5 T3 W7 EN+FIL, G7 T1 W6 EN. G7 Filipino not shipped (DeepSeek balance −$0.02; labelled "Not built yet").
+- **Settings** added to `/etc/tala/tala.env`: `TALA_PACKS_LIBRARY_DIR`, `TALA_PACKS_ARTIFACTS_DIR`,
+  `TALA_PACK_DRAFT_PREVIEW=signed-in` (drafts open to signed-in accounts, still labelled drafts; signed-out
+  visitors see counts only). `TALA_PACK_REVIEWERS` unset.
+- **Backups before deploy**: `/var/backups/tala/20261119T060057Z/` (SQLite online backup, integrity ok; env file;
+  previous release `tala-v1-demo.9`).
+- **Rollback**: code — `/opt/tala/deploy.sh tala-v1-demo.9` (or switch `/opt/tala/current` back to
+  `releases/tala-v1-demo.9`, write `TALA_BUILD_ID=tala-v1-demo.9` to `/opt/tala/build.env`, restart `tala`). No DB
+  migration in this release. Hide drafts without a code rollback: remove `TALA_PACK_DRAFT_PREVIEW` and restart.
+  Data: `/var/lib/tala/packs` is ignored by demo.9. **The next deploy from `tala-v1` must merge
+  `tala-v1-packs-live` first**, or it will drop the library.
+- **Verified from outside** (public URL, own hashes): health reports `tala-v1-demo.10`; signed-out: honest counts,
+  no draft content or files (404); signed-in (temporary account, deleted afterwards): all 5 built language versions
+  load and say "draft", Filipino packs with 114–118-character slide lines load (contract live), G7 Filipino 404
+  with a plain message; all 15 files byte-identical to the builds, PPTX ZIPs intact; browser: library and pack pages
+  on desktop (EN) and 390 px phone (FIL) without horizontal overflow, EN/FIL switch, slide previews, "use for my
+  class" → five drafts labelled "Drafted by AI", offline in-app navigation shows the no-signal notice and the opened
+  pack from the device cache; APK download unchanged (SHA-256 matches its manifest); mobile sync pull works; server
+  log since restart: no errors.
