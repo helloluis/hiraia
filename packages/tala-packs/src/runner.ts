@@ -484,23 +484,48 @@ export async function runCli(cmd: string, args: string[]) {
   // --queue-file <json>: an explicit order instead — an array of groups, each an array of target ids done in order by
   // one worker (e.g. demo grades first, a term split in parts so it finishes sooner). Selected weeks the file leaves
   // out are appended at the end, so none is dropped.
+  // A group may be { ids, offPeak: true } (Luis, 19 Nov: critical weeks now, the rest at off-peak rates): no worker
+  // starts it during DeepSeek's peak hours, and from then on every DeepSeek call waits for off-peak.
+  type Group = WeekTarget[] & { offPeak?: boolean };
   const queueFile = opt('queue-file');
-  const termQueue: WeekTarget[][] = queueFile
+  const termQueue: Group[] = queueFile
     ? (() => {
         const byId = new Map(selected.map((t) => [t.targetId, t]));
-        const listed = (JSON.parse(readFileSync(queueFile, 'utf8')) as string[][]).map((g) => g.map((id) => byId.get(id)).filter((t): t is WeekTarget => Boolean(t))).filter((g) => g.length);
+        const raw = JSON.parse(readFileSync(queueFile, 'utf8')) as Array<string[] | { ids: string[]; offPeak?: boolean }>;
+        const listed = raw
+          .map((g) => {
+            const ids = Array.isArray(g) ? g : g.ids;
+            const grp = ids.map((id) => byId.get(id)).filter((t): t is WeekTarget => Boolean(t)) as Group;
+            if (!Array.isArray(g) && g.offPeak) grp.offPeak = true;
+            return grp;
+          })
+          .filter((g) => g.length);
         const seen = new Set(listed.flat().map((t) => t.targetId));
-        const rest = selected.filter((t) => !seen.has(t.targetId));
+        const rest = selected.filter((t) => !seen.has(t.targetId)) as Group;
+        if (rest.length && listed.at(-1)?.offPeak) rest.offPeak = true;
         return rest.length ? [...listed, rest] : listed;
       })()
     : [...groups.values()]
         .map((ws) => ws.sort((a, b) => a.week - b.week))
         .sort((a, b) => a[0]!.term - b[0]!.term || Number(a[0]!.grade) - Number(b[0]!.grade));
-  if (queueFile) console.log(`queue: ${termQueue.map((g) => `[${g.map((t) => t.targetId.replace('sci26-', '')).join(' ')}]`).join(' ')}`);
+  if (queueFile)
+    console.log(`queue: ${termQueue.map((g) => `${g.offPeak ? 'off-peak:' : ''}[${g.map((t) => t.targetId.replace('sci26-', '')).join(' ')}]`).join(' ')}`);
   let done = 0;
   const queue: WeekTarget[] = [];
-  const nextTarget = (mine: WeekTarget[]) => {
-    if (!mine.length) mine.push(...(termQueue.shift() ?? []));
+  const nextTarget = async (mine: WeekTarget[]) => {
+    if (!mine.length) {
+      const g = termQueue.shift();
+      if (g?.offPeak) {
+        const wait = msUntilDeepSeekOffPeak();
+        if (wait) {
+          const left = termQueue.reduce((n, x) => n + x.length, 0) + g.length;
+          console.log(`${now()} phase 2 held: next group [${g.map((t) => t.targetId.replace('sci26-', '')).join(' ')}] (${left} weeks queued) starts at DeepSeek off-peak, in ${Math.round(wait / 60000)} min`);
+          await new Promise((r) => setTimeout(r, wait));
+        }
+        setDeepSeekOffPeakOnly(true);
+      }
+      mine.push(...(g ?? []));
+    }
     return mine.shift();
   };
   const worker = async () => {
@@ -513,8 +538,9 @@ export async function runCli(cmd: string, args: string[]) {
           await new Promise((r) => setTimeout(r, wait));
         }
       }
-      const t = nextTarget(mine);
+      const t = await nextTarget(mine);
       if (!t) break;
+      if (stop) break;
       const s = await processTarget(meter, t, o).catch((e) => {
         if (e instanceof BudgetExceeded) {
           stop = true;

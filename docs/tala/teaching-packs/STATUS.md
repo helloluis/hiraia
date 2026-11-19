@@ -182,3 +182,11 @@ Still open, not blocking the batch:
   for grades 4, 5, 7 split in thirds (so they finish early); then the other grades' Term 3, weeks 1–6 before 7–11.
   A split costs continuity: a week that starts a part may not see the previous week's plan. Live-library refreshes
   use a consistent snapshot (`stage-for-deploy.sh` leaves out anything mid-build and recounts the index).
+- 07:39 — G10 T2 W10 failed on a slide line over 110 characters the writer would not shorten → text-length problems
+  are asked once and then passed to the review loop (`[length]` checks), never fatal; comma split as a last resort.
+- 07:42 — Luis: "Since it'll be more expensive how about we prioritize the most critical weeks (the ones closest to
+  today) and then just do the second half at off-peak rates". Two phases in one resumable batch (same tag, same
+  $90 cap): phase 1 now — Term 2 weeks 10–11 (all grades) and Term 3 for grades 4, 5, 7 (47 weeks); phase 2 —
+  Term 3 for grades 3, 6, 8, 9, 10 (55 weeks), groups flagged `offPeak` in
+  `build/batch-priority-2026-11-19.queue.json`: no worker starts one during DeepSeek peak hours (until 10:00 UTC),
+  and from then on every DeepSeek call waits for off-peak. Resume after any stop: same command, `--pending`.
