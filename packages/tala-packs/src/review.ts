@@ -415,6 +415,10 @@ export async function revise(
   const report: RevisionReport = { applied: [], rejected: [], declined: res.value.declined };
   let current = pack;
   const failuresOf = (p: WeeklyPackContent) => checkPack(p, t).failures.length + (opts.extraCheck?.(p).length ?? 0) + checkVerbiage(p).failures.length;
+  // The extra check (the Filipino edition's structure = the English one) is an invariant, never traded against other
+  // fixes: a patch that breaks it is refused alone and in a group (a whole-assessment patch once added 4 questions).
+  const breaksInvariant = (before: WeeklyPackContent, after: WeeklyPackContent) =>
+    Boolean(opts.extraCheck) && (opts.extraCheck!(after).length > opts.extraCheck!(before).length);
   let baseline = failuresOf(current);
   const deferred: Array<{ path: string; value: unknown; issueIds: string[]; from: string; added: number }> = [];
   for (const p of res.value.patches) {
@@ -440,6 +444,7 @@ export async function revise(
       const next = applyPatch(current, prepared.path, prepared.value);
       const parsed = WeeklyPackContent.safeParse(next);
       if (!parsed.success) throw new Error(`breaks the contract: ${parsed.error.issues[0]?.path.join('.')} ${parsed.error.issues[0]?.message}`);
+      if (breaksInvariant(current, parsed.data)) throw new Error(`changes the structure fixed by the English edition (${opts.extraCheck!(parsed.data)[0]})`);
       const failures = failuresOf(parsed.data);
       if (failures > baseline) {
         // Kept for a second try together with the other patches that failed this way (moving a slide between two
@@ -463,7 +468,7 @@ export async function revise(
       ok = false;
     }
     const parsed = ok ? WeeklyPackContent.safeParse(group) : null;
-    if (parsed?.success && failuresOf(parsed.data) <= baseline && deferred.length > 1) {
+    if (parsed?.success && !breaksInvariant(current, parsed.data) && failuresOf(parsed.data) <= baseline && deferred.length > 1) {
       current = parsed.data;
       for (const d of deferred) report.applied.push({ path: d.path, issueIds: d.issueIds, ...(d.path !== d.from ? { from: d.from } : {}), note: 'applied together with the other deferred patches' });
     } else for (const d of deferred) report.rejected.push({ path: d.from, reason: `adds ${d.added} check failure(s)` });
