@@ -86,7 +86,10 @@ export async function checkEditability(pptxFile: string, pack: WeeklyPackContent
     }
     // native lists, and no typed list markers
     lists += (xml.match(/<a:buAutoNum\b|<a:buChar\b/g) ?? []).length;
-    for (const r of runs) if (/^\s*(?:•|●|▪)\s|^\s*\d{1,2}\s{2,}/.test(unescape(r))) findings.push(`${id}: typed list marker "${r.slice(0, 12)}" (use a native list)`);
+    // Typed list markers, outside answer-choice shapes (a numeric answer such as "6  ✓" is not a list marker).
+    for (const sp of shapes.filter((x) => !/<p:cNvPr [^>]*name="choice /.test(x)))
+      for (const r of (sp.match(/<a:t>([^<]*)<\/a:t>/g) ?? []).map((t) => t.slice(5, -6)))
+        if (/^\s*(?:•|●|▪)\s|^\s*\d{1,2}\s{2,}/.test(unescape(r))) findings.push(`${id}: typed list marker "${r.slice(0, 12)}" (use a native list)`);
     for (const m of xml.matchAll(/<a:(?:latin|ea|cs) typeface="([^"]+)"/g)) fonts.add(m[1]!);
     // speaker notes
     const rels = await zip.file(f.replace('slides/', 'slides/_rels/') + '.rels')?.async('string');

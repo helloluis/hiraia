@@ -288,6 +288,23 @@ function postJson(url: string, headers: Record<string, string>, payload: string,
 
 /** Parse a model's JSON object reply; tolerate a fenced block but nothing else. */
 export function parseJsonObject(text: string): unknown {
-  const trimmed = text.trim().replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '');
-  return JSON.parse(trimmed);
+  let t = text.trim().replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '');
+  // Models sometimes leave a quoted phrase unescaped inside a string ('Why is "only volcanoes" wrong?'). On a
+  // delimiter error, escape the last unescaped quote before the error and try again (bounded); the schema still
+  // validates whatever comes out.
+  for (let i = 0; i < 12; i++) {
+    try {
+      return JSON.parse(t);
+    } catch (e) {
+      const m = /position (\d+)/.exec(String((e as Error).message));
+      const msg = String((e as Error).message);
+      if (!m || !/Expected ',' or|Expecting ',' delimiter|Expected ':' after|Expecting ':' delimiter|Expected double-quoted property/.test(msg)) throw e;
+      const at = Number(m[1]);
+      let q = at - 1;
+      while (q >= 0 && !(t[q] === '"' && t[q - 1] !== '\\')) q--;
+      if (q <= 0) throw e;
+      t = `${t.slice(0, q)}\\"${t.slice(q + 1)}`;
+    }
+  }
+  return JSON.parse(t);
 }
