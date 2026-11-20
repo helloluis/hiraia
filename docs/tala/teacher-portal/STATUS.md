@@ -184,3 +184,32 @@ authorization for `tala-v1-demo.11`.
   `/opt/tala/build.env` and restart `tala`. Teachers' copies stay in the database either way.
 - **Not part of this deploy**: pack data. The host still serves the 28-week snapshot from 2026-11-19 09:14 UTC;
   newer batch output is installed by the pack workstream (`stage-for-deploy.sh`), which this task did not touch.
+
+## Pack library refresh on production: 2026-11-20 03:26 UTC (11:26 PHT)
+
+Luis: "Install the new batch pls I need the latest versions, I'm demoing in 45 mins". Done by this task as deployment
+owner, with the pack workstream's own procedure; its owner agent (`0a1a3e5f`) was idle and was sent a note.
+
+- **Source**: the finished batch `priority-2026-11-19` in the pack worktree (68 of 68 weeks, ended 2026-11-19
+  13:29 UTC, nothing written since). `stage-for-deploy.sh` staged 204 language versions and left none out as
+  mid-build. Nothing in that worktree, the batch or its ledger was changed, and no generation was started.
+- **Checked before install, with the release code**: all 204 versions load through the real pack routes, all 612
+  downloadable files are served and equal their manifests, and a teacher's copy of every deck can be made and
+  exported (0 problems). The snapshot keeps every one of the 56 language versions that were live; only Grade 7
+  Term 2 Week 11 is replaced, by its newer build.
+- **Backup**: `/var/backups/tala/20261120T032629Z-packs/` (the library that was live as `packs-before.tar`, the
+  older `packs.prev` as `packs-prev-before.tar`, the old index, checksums). The library that was live is also
+  `/var/lib/tala/packs.prev`. Roll back the data with
+  `mv /var/lib/tala/packs /var/lib/tala/packs.new-rolled-back && mv /var/lib/tala/packs.prev /var/lib/tala/packs`.
+- **Install**: tarball sha256 `9839519a…df19` verified on the host, all 11,795 files verified against
+  `SHA256SUMS`, owner `tala:tala`, then swapped at 03:26:35 UTC. No restart; the release stays `tala-v1-demo.11`.
+- **Live now** (public index): 103 of 262 weeks, 204 language versions: 35 draft, 169 draft with open problems,
+  0 approved. Every status is unchanged from the staged snapshot, and draft content still answers 404 to a
+  signed-out visitor. Term 2 weeks 10 and 11 are built for every grade; Term 3 is complete for Grades 3 to 9.
+- **Still unavailable**: 159 weeks. Term 1 except two samples (Grade 4 Week 8, Grade 7 Week 6); Term 2 except
+  weeks 10 and 11; Grade 10 Term 3 Weeks 3 and 10 (both languages failed); the Filipino edition of Grade 3 Term 3
+  Week 1 and of Grade 9 Term 3 Week 7 (English is there).
+- **On the host after the swap**: all 612 downloadable files match their manifests, 0 error lines, 0 teacher
+  copies existed at the time (copies do not depend on the library in any case).
+- **NOT verified on production**: opening or downloading a pack while signed in (no authorized test login; see
+  "Production deploy").
