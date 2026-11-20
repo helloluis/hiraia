@@ -29,7 +29,7 @@ relayed by Beanie, to run in parallel with the DeepSeek pack batch (Paseo agent 
 
 See `README.md` in this folder (design decisions, the demo path, how to check it).
 
-## Release handoff (prepared, NOT deployed by this task)
+## Release handoff (prepared 2026-11-19; deployed 2026-11-20, see "Production deploy" below)
 
 Luis asked for this to go to tala.hiraia.org as soon as it is ready; the coordination notes say this task must not
 push, change production or restart services itself. So the release is packaged for Luis's release process:
@@ -55,8 +55,8 @@ push, change production or restart services itself. So the release is packaged f
   afterwards through `POST /api/v1/account/delete`).
 - **Lineage rule, updated**: the next deploy cut from `tala-v1` must merge `tala-v1-packs-live` AND
   `tala-v1-teacher-ui`, or it drops the library and this rework.
-- **Still not live after this task**: everything. Nothing was pushed, tagged on origin or deployed. At 14:32 UTC
-  (22:32 PHT) on 2026-11-19 the live site still answered `0.1.0+tala-v1-demo.10`.
+- **Status**: prepared on 2026-11-19 and not pushed or deployed that day (at 14:32 UTC the live site still
+  answered `0.1.0+tala-v1-demo.10`). Deployed on 2026-11-20 at 00:23 UTC after Luis authorized it.
 
 ## Verification (2026-11-19; code as of `449c07675`, the tag adds only the notes in this folder)
 
@@ -140,3 +140,47 @@ fetched into the host repository, restarted or written on the host, and the data
   rollback → roll-forward rehearsal were repeated under Node 22.23.4: both builds pass, `decks:001_init` applies,
   acceptance 34 of 34, the edit survives the rollback, 0 error lines.
 - **Blockers**: none technical. The release was not run in this step because the step was scoped read-only.
+
+## Production deploy: 2026-11-20 00:22–00:23 UTC (08:22–08:23 PHT)
+
+Luis: "Look for the work we've done on Tala.hiraia.org and deploy it to production." The coordinator confirmed the
+authorization for `tala-v1-demo.11`.
+
+- **Release**: `tala-v1-demo.11` = commit `696d1fc0e` (tag object `d098674e1`), branch `tala-v1-teacher-ui`.
+  Pushed at 00:22 UTC with `git push origin tala-v1-teacher-ui refs/tags/tala-v1-demo.11` (no force; nothing else
+  was pushed). Rechecked first: origin and live were still on demo.10, `tala-v1-packs-live` had not moved, and
+  nothing was building on the host.
+- **Backup before deploy**: `/var/backups/tala/20261120T002240Z/` on b11-apps (root only): SQLite online backup
+  (`integrity_check` ok), the environment file, `PREVIOUS_RELEASE`, `PREVIOUS_BUILD_ENV`, `SHA256SUMS` (verified)
+  and the deploy log.
+- **Deploy**: `sudo ssh b11-apps`, then `/opt/tala/deploy.sh tala-v1-demo.11`: exit 0 in 28 seconds (00:22:55 to
+  00:23:23 UTC). Built on the host from `696d1fc0e` with pnpm 9.15.9; `current` points at
+  `releases/tala-v1-demo.11`; unit `tala` active since 00:23:22 UTC with 0 restarts. No setting was changed and no
+  other service was touched.
+- **Database**: `decks:001_init` applied at start (13 migrations recorded, 12 before). Tables `decks_decks` and
+  `decks_media` exist and are empty. All 24 earlier tables have at least the rows they had in the backup;
+  `quick_check` ok.
+- **Verified on production** (public URL unless noted):
+  - `GET /api/v1/health` answers `0.1.0+tala-v1-demo.11`.
+  - The new routes are mounted and reachable through Cloudflare and nginx: `GET`, `POST`, `PUT` and `DELETE` on
+    `/api/v1/decks…` answer the app's 401 for a signed-out visitor (404 on demo.10).
+  - Twelve static files of the release (art, slide fonts, landing screens) are served byte-identical.
+  - In a browser, signed out, at desktop 1366 px (English) and phone 390 px (Filipino): the landing page with the
+    new screens, sign-in, the Library front, a draft pack ("still a draft, sign in"), and `/week` and `/slides/…`
+    sending a signed-out visitor to sign-in. No console errors apart from the expected 404s for draft content,
+    and no sideways scrolling.
+  - Host log since the restart: 0 error lines; one warning, the known `auth_auto_verify_on` stop-gap.
+- **Checked off production, against production's pack files**: 3,216 of the 3,227 pack files on the host are
+  byte-identical to the library the release was tested on, where a sweep with the release code copied and
+  exported every built language version (200 copies, 10,372 slides, 0 problems). The other 11 files are one week
+  (Grade 7, Term 2, Week 11) that was rebuilt later; its production files were copied to the dev box read-only and
+  pass the two-teacher check, 35 of 35 in English and in Filipino.
+- **NOT verified on production**: everything behind sign-in. That is This Week, the signed-in Library ("For your
+  classes"), the pack pages, the slide carousel, Edit my copy, present mode and the PowerPoint download. No test
+  login for tala.hiraia.org exists on the dev box, and this step was told not to create production accounts.
+  These flows were verified on the dev box only (same commit, the host's Node line, and the pack files above).
+- **Rollback**: `/opt/tala/deploy.sh tala-v1-demo.10` (its release directory is still on the host), or switch
+  `/opt/tala/current` back to `releases/tala-v1-demo.10`, write `TALA_BUILD_ID=tala-v1-demo.10` to
+  `/opt/tala/build.env` and restart `tala`. Teachers' copies stay in the database either way.
+- **Not part of this deploy**: pack data. The host still serves the 28-week snapshot from 2026-11-19 09:14 UTC;
+  newer batch output is installed by the pack workstream (`stage-for-deploy.sh`), which this task did not touch.
