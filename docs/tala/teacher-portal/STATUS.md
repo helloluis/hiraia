@@ -213,3 +213,53 @@ owner, with the pack workstream's own procedure; its owner agent (`0a1a3e5f`) wa
   copies existed at the time (copies do not depend on the library in any case).
 - **NOT verified on production**: opening or downloading a pack while signed in (no authorized test login; see
   "Production deploy").
+
+## Mathematics pilot on production: 2026-11-21 13:49–13:51 UTC (21:49–21:51 PHT)
+
+Luis: "Let's get it on production so I can view it directly." The coordinator authorized the Mathematics production
+release and the targeted integration it needs, not a wider library expansion.
+
+- **Content and evidence** belong to the Math owner `b11-002:f6c61cce`. Bundle
+  `tala-math-six-week-pilot-20261121.tar.gz`, 79,436,215 bytes, sha256 `3d2eeeff…c1d5`, confirmed by the owner over
+  the cross-host bridge as the final verified bundle (request `c57f50e7…`, reply `6d7850b3…`). All 1,413 files match
+  its `FILES-SHA256.json`; the nine evidence files and twelve pack hashes the owner named match the copy used.
+  Six weeks, English and Filipino: Grade 4 Term 3 Weeks 1 and 4, Grade 5 Term 2 Week 10 and Term 3 Week 7, Grade 7
+  Term 3 Weeks 2 and 4.
+- **Integration (this task)**: branch `tala-v1-math-pilot` = `tala-v1-teacher-ui` with `tala-v1-packs-live` merged
+  in, plus `4910276d2` (contract, packs module, staging tool, tests) and `d57b2c18c` (Library and pack pages). The
+  pilot is a second pack library BESIDE Science, so a Science refresh cannot remove it. The pack contract was
+  widened in exactly the four places that kept the pilot packs out; no pack was relabelled. Slides are shown from
+  the delivery's own checked pictures. A pilot deck is not copied for editing and "use for my class" is not
+  offered; both would need work that is outside this release.
+- **Release**: `tala-v1-demo.12` = `d57b2c18c` (tag object `0f6d28d17`). No database migration, no new setting, no
+  dependency change. Checks before release: types clean; tests 250 core, 289 server (8 new), 82 web; the staged
+  library validated through the real routes (12 versions, 64 downloads equal to their manifests, 520 slide
+  pictures, drafts closed to visitors, Science unchanged); clean-tree build with the host's steps and demo.11 →
+  demo.12 → demo.11 → demo.12 on one database under Node 22, with a teacher's Science copy made beforehand: copy
+  kept, Science counts identical, 0 migrations, 0 error lines.
+- **Data**: `deploy/math-pilot/stage-math-pilot.py` copies an explicit list of files from the bundle and compares
+  every hash with the bundle's own records: 626 files, tarball sha256 `6b157550…4b98`. Installed to
+  `/var/lib/tala/packs-math` (all 625 listed files verified on the host, `tala:tala`). Review is recorded as it is:
+  automatic checks and an AI cross-review passed, no teacher or expert reviewed anything, publication `draft`. The
+  solids week also carries its diagram bank and net templates, with the author's note.
+- **Deploy window**: held the shared `hiraia` deploy lock from 13:48:36 to 13:51:46 UTC. Backup
+  `/var/backups/tala/20261121T134925Z/` (database, integrity ok; environment file; previous release; the Science
+  library's checksum-list hash; deploy log). `/opt/tala/deploy.sh tala-v1-demo.12` exit 0 in 28 seconds.
+- **Verified on production**: health answers `0.1.0+tala-v1-demo.12`; the Science index is identical to the one
+  saved before the release in every field; the Mathematics index lists the six weeks, twelve drafts, 0 approved;
+  a signed-out visitor sees no title, no file and no content, and every pilot route answers 404 for them; on the
+  host, as the service user, all 64 downloads match their manifests and all 520 slide pictures are present; the
+  database has the same rows in all 26 tables, the one teacher copy that existed is still there, no migration ran;
+  the Science library's checksum list is unchanged; 0 error lines; in a browser as a visitor, desktop and phone,
+  the Library switch, the Mathematics view and the draft page load with no error beyond the expected 404s.
+- **NOT verified on production**: everything behind sign-in, for Mathematics and Science alike: opening a pilot
+  pack, its lesson plans, slides, carousel, present mode and the seven downloads. No authorized test login exists
+  and no account was created. These were exercised on the dev box only, on the same commit and the same bytes.
+- **Rollback**: `/opt/tala/deploy.sh tala-v1-demo.11`, which ignores the Mathematics folder; to take the pilot
+  away without a code change, `mv /var/lib/tala/packs-math /var/lib/tala/packs-math.removed` (no restart).
+- **Not in this release**: the teacher PPTX upload and its preview renderer (owner `b11-002:f500f47c`; nothing of
+  it was installed and its pending choice is untouched), any Mathematics pacing or calendar matching, and any
+  change to the Science library.
+- **Deploy lock, said plainly**: the two production changes of 20 Nov (demo.11 and the Science library refresh)
+  were made without the shared deploy lock that `/home/b11/code/AGENTS.md` requires; I had not read that file
+  then. Nothing else was deploying at the time. This release held it.
