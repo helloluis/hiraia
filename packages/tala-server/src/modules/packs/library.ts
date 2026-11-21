@@ -13,12 +13,15 @@ import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
+  PACK_ID_PATTERN,
   PackIndex,
   PackReview,
   WeeklyPackContent,
+  packSubjectOf,
   type PackFileKind,
   type PackIndexEntry,
   type PackLang,
+  type PackSubject,
   type PackVariant,
 } from '@hiraia/tala-core/contracts';
 import { HttpError, type Ctx } from '../../kernel/types';
@@ -27,7 +30,14 @@ import { readDeckDrawings, type DeckDrawing } from '../decks/pptx-read';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const DEFAULT_LIBRARY = resolve(HERE, '../../../../tala-packs/library/science-bow-2026');
 const DEFAULT_ARTIFACTS = resolve(HERE, '../../../../tala-packs/build/artifacts');
-export const PACK_ID = /^sci26-g(3|4|5|6|7|8|9|10)-t[1-3]-w\d{2}$/;
+export const PACK_ID = PACK_ID_PATTERN;
+/**
+ * The Mathematics pilot (six weeks, 21 Nov 2026) is its own small library BESIDE the Science one, never inside it:
+ * a Science refresh replaces the Science folder wholesale and must not be able to remove Mathematics. Unless told
+ * otherwise it sits next to the Science root: `<root>/../packs-math/{index.json,mathematics-bow-2026,artifacts}`.
+ */
+const MATH_ROOT_NAME = 'packs-math';
+const MATH_LIBRARY_NAME = 'mathematics-bow-2026';
 
 /** Said whenever a built file is missing or does not match the reviewed content. */
 export const REBUILDING = 'This file is being rebuilt. Please try again later.';
@@ -43,14 +53,21 @@ export interface PackManifest {
 export interface PacksOptions {
   libraryDir?: string;
   artifactsDir?: string;
+  /** The Mathematics pilot library and its built files; default: beside the Science root (see MATH_ROOT_NAME). */
+  mathLibraryDir?: string;
+  mathArtifactsDir?: string;
 }
 
 export interface PackLibrary {
+  /** The Science library and its built files (the Mathematics pilot has its own: `artifactsDirFor`). */
   libraryDir(): string;
   artifactsDir(): string;
+  /** Where the built files of this pack's learning area live. */
+  artifactsDirFor(packId: string): string;
   isReviewer(ctx: Ctx): boolean;
   canView(v: PackVariant, reviewer: boolean): boolean;
-  loadIndex(): PackIndex;
+  /** One learning area's index (Science unless asked); `not_found` where that library is not installed. */
+  loadIndex(subject?: PackSubject): PackIndex;
   /** The index entry of a language version the caller may open; `not_found` with a plain reason otherwise. */
   entryFor(ctx: Ctx, packId: string, lang: PackLang): PackIndexEntry;
   manifestFor(packId: string, lang: PackLang): PackManifest | null;
@@ -82,6 +99,21 @@ export function createPackLibrary(options: PacksOptions = {}): PackLibrary {
     process.env.TALA_PACKS_LIBRARY_DIR || options.libraryDir || DEFAULT_LIBRARY;
   const artifactsDir = () =>
     process.env.TALA_PACKS_ARTIFACTS_DIR || options.artifactsDir || DEFAULT_ARTIFACTS;
+  const mathRoot = () => resolve(libraryDir(), '..', '..', MATH_ROOT_NAME);
+  const mathLibraryDir = () =>
+    process.env.TALA_PACKS_MATH_LIBRARY_DIR ||
+    options.mathLibraryDir ||
+    resolve(mathRoot(), MATH_LIBRARY_NAME);
+  const mathArtifactsDir = () =>
+    process.env.TALA_PACKS_MATH_ARTIFACTS_DIR ||
+    options.mathArtifactsDir ||
+    resolve(mathRoot(), 'artifacts');
+  const libraryDirOf = (subject: PackSubject) =>
+    subject === 'mathematics' ? mathLibraryDir() : libraryDir();
+  const artifactsDirOf = (subject: PackSubject) =>
+    subject === 'mathematics' ? mathArtifactsDir() : artifactsDir();
+  const libraryDirFor = (packId: string) => libraryDirOf(packSubjectOf(packId));
+  const artifactsDirFor = (packId: string) => artifactsDirOf(packSubjectOf(packId));
   const verified = new Map<string, string>(); // path+mtime+size → sha256 already checked
   const drawings = new Map<string, Map<string, DeckDrawing>>(); // path+mtime+size → drawings, oldest first
 
@@ -96,15 +128,16 @@ export function createPackLibrary(options: PacksOptions = {}): PackLibrary {
     return list.includes(ctx.user.email.toLowerCase());
   };
 
-  const loadIndex = (): PackIndex => {
-    const file = resolve(libraryDir(), '..', 'index.json');
+  const loadIndex = (subject: PackSubject = 'science'): PackIndex => {
+    const file = resolve(libraryDirOf(subject), '..', 'index.json');
     if (!existsSync(file))
       throw new HttpError('not_found', 'The teaching pack library is not available yet.');
-    return PackIndex.parse(JSON.parse(readFileSync(file, 'utf8')));
+    // The folder decides the learning area, whatever the file says about itself.
+    return { ...PackIndex.parse(JSON.parse(readFileSync(file, 'utf8'))), subject };
   };
 
   const manifestFor = (packId: string, lang: PackLang): PackManifest | null => {
-    const file = resolve(artifactsDir(), packId, lang, 'manifest.json');
+    const file = resolve(artifactsDirFor(packId), packId, lang, 'manifest.json');
     return existsSync(file) ? (JSON.parse(readFileSync(file, 'utf8')) as PackManifest) : null;
   };
 
@@ -114,7 +147,12 @@ export function createPackLibrary(options: PacksOptions = {}): PackLibrary {
   const entryFor = (ctx: Ctx, packId: string, lang: PackLang) => {
     if (!PACK_ID.test(packId))
       throw new HttpError('not_found', 'This teaching pack does not exist.');
-    const entry = loadIndex().packs.find((p) => p.packId === packId);
+    const subject = packSubjectOf(packId);
+    // A learning area that is not installed here has no packs: same answer as an id nobody built.
+    const entry =
+      subject === 'science' || existsSync(resolve(libraryDirOf(subject), '..', 'index.json'))
+        ? loadIndex(subject).packs.find((p) => p.packId === packId)
+        : undefined;
     if (!entry) throw new HttpError('not_found', 'This teaching pack does not exist.');
     const v = entry.variants[lang];
     if (!canView(v, isReviewer(ctx)))
@@ -140,16 +178,17 @@ export function createPackLibrary(options: PacksOptions = {}): PackLibrary {
   };
 
   const readContent = (packId: string, lang: PackLang) => {
-    const bytes = readFileSync(resolve(libraryDir(), packId, lang, 'pack.json'));
-    return {
-      content: WeeklyPackContent.parse(JSON.parse(bytes.toString('utf8'))),
-      sha256: createHash('sha256').update(bytes).digest('hex'),
-    };
+    const bytes = readFileSync(resolve(libraryDirFor(packId), packId, lang, 'pack.json'));
+    const content = WeeklyPackContent.parse(JSON.parse(bytes.toString('utf8')));
+    // A pack filed under one learning area that says it is another is a packaging mistake, never served.
+    if (content.packId !== packId || content.learningAreaId !== packSubjectOf(packId))
+      throw new HttpError('not_found', REBUILDING);
+    return { content, sha256: createHash('sha256').update(bytes).digest('hex') };
   };
   const content = (packId: string, lang: PackLang) => readContent(packId, lang).content;
   const review = (packId: string, lang: PackLang) =>
     PackReview.parse(
-      JSON.parse(readFileSync(resolve(libraryDir(), packId, lang, 'review.json'), 'utf8'))
+      JSON.parse(readFileSync(resolve(libraryDirFor(packId), packId, lang, 'review.json'), 'utf8'))
     );
 
   const builtFile = (packId: string, lang: PackLang, kind: PackFileKind, known?: PackReview) => {
@@ -160,7 +199,7 @@ export function createPackLibrary(options: PacksOptions = {}): PackLibrary {
         ? manifest.files.find((x) => x.kind === kind)
         : undefined;
     return f
-      ? { name: f.name, path: resolve(artifactsDir(), packId, lang, f.name), sha256: f.sha256 }
+      ? { name: f.name, path: resolve(artifactsDirFor(packId), packId, lang, f.name), sha256: f.sha256 }
       : undefined;
   };
 
@@ -188,6 +227,7 @@ export function createPackLibrary(options: PacksOptions = {}): PackLibrary {
   return {
     libraryDir,
     artifactsDir,
+    artifactsDirFor,
     isReviewer,
     canView,
     loadIndex,
@@ -205,7 +245,9 @@ export function createPackLibrary(options: PacksOptions = {}): PackLibrary {
 const shared = new Map<string, PackLibrary>();
 /** One library per pair of directories, so modules given the same options share its caches. */
 export function packLibrary(options: PacksOptions = {}): PackLibrary {
-  const key = `${options.libraryDir ?? ''}\n${options.artifactsDir ?? ''}`;
+  const key = [options.libraryDir, options.artifactsDir, options.mathLibraryDir, options.mathArtifactsDir]
+    .map((d) => d ?? '')
+    .join('\n');
   let lib = shared.get(key);
   if (!lib) {
     lib = createPackLibrary(options);

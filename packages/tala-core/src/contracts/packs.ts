@@ -19,6 +19,19 @@ const prose = (max: number) => text(Math.ceil(max * 1.4));
 
 export const PACK_SCHEMA_VERSION = 1;
 
+/**
+ * Learning areas that have prebuilt packs. Science is the library. Mathematics is a six-week pilot (21 Nov 2026):
+ * a separate, much smaller library with its own index, kept apart so a Science refresh can never remove it.
+ */
+export const PACK_SUBJECTS = ['science', 'mathematics'] as const;
+export const PackSubject = z.enum(PACK_SUBJECTS);
+export type PackSubject = z.infer<typeof PackSubject>;
+
+/** `sci26-g4-t2-w10`, `math26-g4-t3-w01`: the prefix names the learning area. */
+export const PACK_ID_PATTERN = /^(sci26|math26)-g(3|4|5|6|7|8|9|10)-t[1-3]-w\d{2}$/;
+export const packSubjectOf = (packId: string): PackSubject =>
+  packId.startsWith('math26-') ? 'mathematics' : 'science';
+
 /** Every pack is produced in English and in Filipino, with the same structure, competencies, timing and drawings. */
 export const PACK_LANGS = ['en', 'fil'] as const;
 export const PackLang = z.enum(PACK_LANGS);
@@ -213,12 +226,13 @@ export const PackIllustration = z.object({
   file: z.string(),
   sha256: z.string().regex(/^[0-9a-f]{64}$/),
   px: z.tuple([z.number().int(), z.number().int()]),
-  v05Status: z.enum(['clean', 'approved_regen']),
+  /** Card art: `clean` or `approved_regen`. Mathematics diagrams are drawn by code from the problem's own numbers. */
+  v05Status: z.enum(['clean', 'approved_regen', 'pilot_code_generated']),
   generator: z.string(),
   slides: z.array(z.string()).min(1),
   /** Independent image check for each slide claim it supports. */
   check: z.object({
-    method: z.enum(['vision_model', 'none']),
+    method: z.enum(['vision_model', 'none', 'code_and_visual']),
     model: z.string().nullable(),
     verdict: z.enum(['pass', 'fail', 'not_checked']),
     note: z.string().max(600),
@@ -228,10 +242,11 @@ export type PackIllustration = z.infer<typeof PackIllustration>;
 
 export const WeeklyPackContent = z.object({
   schemaVersion: z.literal(PACK_SCHEMA_VERSION),
-  packId: z.string().regex(/^sci26-g(3|4|5|6|7|8|9|10)-t[1-3]-w\d{2}$/),
+  packId: z.string().regex(PACK_ID_PATTERN),
   curriculumVersion: z.string(),
   curriculumDataRevision: z.number().int(),
-  learningAreaId: z.literal('science'),
+  /** Must agree with the pack id's prefix (the library refuses a pack where they differ). */
+  learningAreaId: PackSubject,
   grade: z.string(),
   term: z.number().int().min(1).max(3),
   week: z.number().int().min(1).max(14),
@@ -325,7 +340,12 @@ export const PackStatus = z.enum([
 ]);
 export type PackStatus = z.infer<typeof PackStatus>;
 
-export const PackFileKind = z.enum(['slides', 'guide', 'plans']);
+/**
+ * `exercises` and `solutions` are the Mathematics pilot's learner worksheet and worked answers; `diagrams` and
+ * `templates` are materials a week cannot be taught without (the solids week's diagram bank and cut-out nets).
+ * All PDF.
+ */
+export const PackFileKind = z.enum(['slides', 'guide', 'plans', 'exercises', 'solutions', 'diagrams', 'templates']);
 export type PackFileKind = z.infer<typeof PackFileKind>;
 
 /** One language version of a week's pack. */
@@ -336,7 +356,17 @@ export const PackVariant = z.object({
   title: z.string().nullable(),
   /** Whether the caller may open this version (approved, or a reviewer viewing a draft). */
   viewable: z.boolean(),
-  files: z.array(z.object({ kind: PackFileKind, bytes: z.number().int(), sha256: z.string() })).default([]),
+  files: z
+    .array(
+      z.object({
+        kind: PackFileKind,
+        bytes: z.number().int(),
+        sha256: z.string(),
+        /** The author's instructions for using this file, when it has any (shown beside the download). */
+        note: z.string().max(800).optional(),
+      })
+    )
+    .default([]),
   slideCount: z.number().int().nullable(),
   illustratedSlides: z.number().int().nullable(),
   review: z
@@ -367,6 +397,8 @@ export const PackIndexEntry = z.object({
 export type PackIndexEntry = z.infer<typeof PackIndexEntry>;
 
 export const PackIndex = z.object({
+  /** Which library this is. Index files written before the Mathematics pilot have no field: they are Science. */
+  subject: PackSubject.default('science'),
   curriculumVersion: z.string(),
   libraryVersion: z.string(),
   /** The caller sees drafts (reviewer account or a non-production environment). */

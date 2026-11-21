@@ -24,14 +24,24 @@ const CONTENT_TYPE: Record<PackFileKind, string> = {
   slides: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
   guide: 'application/pdf',
   plans: 'application/pdf',
+  exercises: 'application/pdf',
+  solutions: 'application/pdf',
+  diagrams: 'application/pdf',
+  templates: 'application/pdf',
 };
+
+/** Slide pictures: small WebP thumbnails for Science; the Mathematics pilot ships its checked renders as PNG. */
+const PREVIEW_TYPES = [
+  ['webp', 'image/webp'],
+  ['png', 'image/png'],
+] as const;
 
 /** Drawing slugs as the art catalog writes them. */
 const SLUG = /^[A-Za-z0-9][A-Za-z0-9._-]{0,119}$/;
 
 export function createPacksModule(options: PacksOptions = {}): ServerModule {
   const lib = packLibrary(options);
-  const { artifactsDir, isReviewer, loadIndex, manifestFor, canView, entryFor, verifiedBytes } = lib;
+  const { artifactsDirFor, isReviewer, loadIndex, manifestFor, canView, entryFor, verifiedBytes } = lib;
 
   const projectVariant = (v: PackVariant, reviewer: boolean): PackVariant => {
     const can = canView(v, reviewer);
@@ -47,8 +57,8 @@ export function createPacksModule(options: PacksOptions = {}): ServerModule {
     name: 'packs',
     migrations: [],
     handlers: {
-      'packs.index': (ctx) => {
-        const index = loadIndex();
+      'packs.index': (ctx, input) => {
+        const index = loadIndex(input.query.subject);
         const reviewer = isReviewer(ctx);
         return { ...index, reviewerView: reviewer, packs: index.packs.map((p) => project(p, reviewer)) };
       },
@@ -78,10 +88,11 @@ export function createPacksModule(options: PacksOptions = {}): ServerModule {
         const n = Number(input.params.slide);
         const manifest = manifestFor(entry.packId, lang);
         if (!manifest || !Number.isInteger(n) || n < 1 || n > manifest.previews) throw new HttpError('not_found', 'No preview for this slide.');
-        const file = resolve(artifactsDir(), entry.packId, lang, 'previews', `thumb-${String(n).padStart(2, '0')}.webp`);
-        if (!existsSync(file)) throw new HttpError('not_found', 'No preview for this slide.');
+        const stem = resolve(artifactsDirFor(entry.packId), entry.packId, lang, 'previews', `thumb-${String(n).padStart(2, '0')}`);
+        const found = PREVIEW_TYPES.find(([ext]) => existsSync(`${stem}.${ext}`));
+        if (!found) throw new HttpError('not_found', 'No preview for this slide.');
         // No filename: previews display inline.
-        return { binary: new Uint8Array(readFileSync(file)), contentType: 'image/webp', cacheControl: 'private, max-age=3600' };
+        return { binary: new Uint8Array(readFileSync(`${stem}.${found[0]}`)), contentType: found[1], cacheControl: 'private, max-age=3600' };
       },
       /** One drawing exactly as the built deck embeds it (the Hiraia-watermarked derivative). Displays inline. */
       'packs.media': (ctx, input) => {

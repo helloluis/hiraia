@@ -10,7 +10,7 @@
 import { z } from 'zod';
 import { Id, IsoDateTime, Lang, Ok, Page, QueryBool } from './common';
 import { CalendarPreset, CheckSummary, CurriculumIndex, CurriculumPack } from './curriculum';
-import { PackDetail, PackIndex, PackLang } from './packs';
+import { PackDetail, PackIndex, PackLang, PackSubject } from './packs';
 import { DeckCreateRequest, DeckDetail, DeckList, DeckSaveRequest, DeckSaveResult } from './decks';
 import {
   ArtifactDetail,
@@ -539,6 +539,8 @@ export const API = {
     path: '/packs/index',
     auth: 'none',
     owner: 'packs',
+    /** Science unless asked: the Mathematics pilot is a separate index (`not_found` where it is not installed). */
+    query: z.object({ subject: PackSubject.default('science') }),
     response: PackIndex,
   }),
   'packs.detail': route({

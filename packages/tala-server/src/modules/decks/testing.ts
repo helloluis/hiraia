@@ -267,6 +267,7 @@ function buildInto(dir: string, specs: VariantSpec[]): BuiltVariant[] {
   const count = (s: string) =>
     packs.flatMap((p) => [p.variants.en, p.variants.fil]).filter((v) => v.status === s).length;
   const index: PackIndex = {
+    subject: 'science',
     curriculumVersion: committed.curriculumVersion,
     libraryVersion: committed.libraryVersion,
     reviewerView: true,

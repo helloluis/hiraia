@@ -46,3 +46,35 @@ A file is served only when its bytes match its manifest for the exact reviewed c
 open to the emails in `TALA_PACK_REVIEWERS`, or to every signed-in account with `TALA_PACK_DRAFT_PREVIEW=signed-in`.
 Only a pack a named teacher approved is public. Roll back the data with `mv /var/lib/tala/packs.prev
 /var/lib/tala/packs` (after moving the current one aside).
+
+## Mathematics pilot data (six weeks, from `tala-v1-demo.12`)
+
+A second, separate library BESIDE the Science one, so that a Science refresh (which replaces `/var/lib/tala/packs`
+wholesale) can never remove it:
+
+    /var/lib/tala/packs-math/index.json
+    /var/lib/tala/packs-math/mathematics-bow-2026/<packId>/<en|fil>/{pack.json,review.json}
+    /var/lib/tala/packs-math/artifacts/<packId>/<en|fil>/{manifest.json,<files>,previews/thumb-NN.png}
+    /var/lib/tala/packs-math/{SHA256SUMS,STAGE-RECORD.json,NOTICES/}
+
+No setting is needed: the server looks for `packs-math` next to the Science root (two levels above
+`TALA_PACKS_LIBRARY_DIR`). `TALA_PACKS_MATH_LIBRARY_DIR` and `TALA_PACKS_MATH_ARTIFACTS_DIR` override that. Where the
+folder is absent, the Library is Science only, exactly as before the pilot.
+
+1. Stage it on the dev box from the Math owner's verified delivery, extracted into an empty folder (nothing in the
+   delivery is executed; the script copies an explicit list of files and compares every hash with the delivery's
+   own records):
+   `python3 -I packages/tala-server/deploy/math-pilot/stage-math-pilot.py <bundle root> <empty out dir> --bundle-sha256 <hex>`
+   then `tar -czf tala-packs-math.tgz -C <out dir> .`
+2. Copy the tarball to the host, then as root:
+   `mkdir -p /var/lib/tala/packs-math.new && tar -xzf /var/tmp/tala-packs-math.tgz -C /var/lib/tala/packs-math.new &&
+   (cd /var/lib/tala/packs-math.new && sha256sum -c --quiet SHA256SUMS) && chown -R tala:tala /var/lib/tala/packs-math.new &&
+   { [ ! -d /var/lib/tala/packs-math ] || mv /var/lib/tala/packs-math /var/lib/tala/packs-math.prev; } &&
+   mv /var/lib/tala/packs-math.new /var/lib/tala/packs-math`. The server reads it per request (no restart).
+3. Take it away again: `mv /var/lib/tala/packs-math /var/lib/tala/packs-math.removed`. The Library is Science only
+   at the next request. A release older than `tala-v1-demo.12` ignores the folder.
+
+The same rules as Science apply: every version is a draft until a named teacher approves it, drafts are closed to
+signed-out visitors, and a file is served only when its bytes match its manifest. A pilot deck is shown from the
+delivery's own checked slide pictures and cannot be copied for editing in Tala; its PowerPoint file can be downloaded.
+

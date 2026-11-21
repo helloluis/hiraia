@@ -16,7 +16,7 @@
  * Slide text, speaker notes and emails are never logged.
  */
 import { z } from 'zod';
-import { DECK_LIMITS, DeckSlide } from '@hiraia/tala-core/contracts';
+import { DECK_LIMITS, DeckSlide, packSubjectOf } from '@hiraia/tala-core/contracts';
 import type {
   DeckDetail,
   DeckMedia,
@@ -228,6 +228,13 @@ export function createDecksModule(options: DecksOptions = {}): ServerModule {
         const user = requireUser(ctx);
         if (!PACK_ID.test(body.packId))
           throw new HttpError('not_found', 'This teaching pack does not exist.');
+        // The Mathematics pilot is shown from its own checked slide pictures. Tala's slide layout was written for
+        // the Science decks and would draw a mathematics diagram differently, so no copy is made from it here.
+        if (packSubjectOf(body.packId) !== 'science')
+          throw new HttpError(
+            'not_found',
+            'These slides cannot be copied in Tala yet. Download the PowerPoint file to change them.'
+          );
         const store = storeFor(ctx.db);
         // My copy is mine whatever the library does next: it is answered before the library is even looked at.
         const mine = store.latestCopy(user.id, body.packId, body.lang);
