@@ -114,6 +114,8 @@ export interface SlideViewProps {
   label?: string;
   /** The teacher's own copy in the editor: the words can be clicked and changed. */
   editing?: SlideEditing;
+  /** A ready-made picture of this slide: shown whole instead of drawing the layout (see DeckView.slidePictureUrl). */
+  pictureUrl?: string;
 }
 
 function shapeStyle(shape: TextItem['shape'] | ShapeItem['shape']): CSSProperties {
@@ -421,10 +423,48 @@ function SlideViewInner({ layout, number, mediaUrl, className, eager, decorative
   );
 }
 
+/** A slide shown from its ready-made picture: the same frame, label and slide id as a drawn slide. */
+function SlidePicture({ layout, pictureUrl, className, eager, decorative, label }: SlideViewProps & { pictureUrl: string }) {
+  const [failed, setFailed] = useState(false);
+  return (
+    <div
+      className={cx('relative w-full overflow-hidden select-none', className)}
+      style={{ aspectRatio: `${SLIDE_W} / ${SLIDE_H}`, background: `#${layout.background}` }}
+      role={decorative ? undefined : 'group'}
+      aria-roledescription={decorative ? undefined : 'slide'}
+      aria-label={decorative ? undefined : label}
+      aria-hidden={decorative ? true : undefined}
+      data-slide-id={layout.id}
+      data-slide-picture=""
+    >
+      {failed ? (
+        <p className="absolute inset-0 m-0 flex items-center justify-center px-4 text-center text-small italic text-forestMuted">{label}</p>
+      ) : (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={pictureUrl}
+          alt=""
+          loading={eager ? 'eager' : 'lazy'}
+          decoding="async"
+          draggable={false}
+          onError={() => setFailed(true)}
+          // The whole slide, never cropped.
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+        />
+      )}
+    </div>
+  );
+}
+
+function SlideViewAny(props: SlideViewProps) {
+  return props.pictureUrl ? <SlidePicture {...props} pictureUrl={props.pictureUrl} /> : <SlideViewInner {...props} />;
+}
+
 /** Re-drawn only when the slide itself changed (a deck is laid out again on every edit). */
 export const SlideView = memo(
-  SlideViewInner,
+  SlideViewAny,
   (a, b) =>
+    a.pictureUrl === b.pictureUrl &&
     a.number === b.number &&
     a.eager === b.eager &&
     a.decorative === b.decorative &&

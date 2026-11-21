@@ -920,6 +920,7 @@ export const fil = {
   'lib.pack.guide': 'Teacher guide (PDF)',
   'lib.pack.plans': 'Mga lesson plan (PDF)',
   'lib.pack.size': '{size} MB',
+  'lib.pack.sizeKb': '{size} KB',
   'lib.pack.notBuiltFiles': 'Inihahanda pa ang mga file ng pack na ito.',
   'lib.pack.use': 'Gamitin ang mga lesson na ito sa class ko',
   'lib.pack.useSignIn': 'Mag-log in para idagdag ang mga lesson sa class mo',

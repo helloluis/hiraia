@@ -889,6 +889,7 @@ export const en = {
   'lib.pack.guide': 'Teacher guide (PDF)',
   'lib.pack.plans': 'Lesson plans (PDF)',
   'lib.pack.size': '{size} MB',
+  'lib.pack.sizeKb': '{size} KB',
   'lib.pack.notBuiltFiles': 'The files for this pack are being prepared.',
   'lib.pack.use': 'Use these lessons for my class',
   'lib.pack.useSignIn': 'Sign in to add these lessons to your class',

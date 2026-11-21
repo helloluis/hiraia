@@ -223,7 +223,7 @@ export const Presenter = forwardRef<PresenterHandle, { view: DeckView; onExit?: 
       >
         {active && layout && (
           <div style={{ width: 'min(100vw, calc(100dvh * 16 / 9))' }}>
-            <SlideView layout={layout} number={index + 1} mediaUrl={view.mediaUrl} eager label={slideName(t, layout, total)} />
+            <SlideView layout={layout} number={index + 1} mediaUrl={view.mediaUrl} pictureUrl={view.slidePictureUrl?.(layout.index)} eager label={slideName(t, layout, total)} />
           </div>
         )}
         {active && !layout && (

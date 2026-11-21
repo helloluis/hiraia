@@ -95,10 +95,11 @@ export function Lightbox({
   // The drawings of the slides either side are fetched ahead, so moving on never shows an empty plate.
   useEffect(() => {
     for (const l of [view.layouts[at + 1], view.layouts[at - 1]]) {
-      if (!l?.picture) continue;
+      const src = l ? (view.slidePictureUrl ? view.slidePictureUrl(l.index) : l.picture ? view.mediaUrl(l.picture) : null) : null;
+      if (!src) continue;
       const img = new Image();
       img.decoding = 'async';
-      img.src = view.mediaUrl(l.picture);
+      img.src = src;
     }
   }, [at, view]);
 
@@ -173,7 +174,7 @@ export function Lightbox({
           <div className="relative min-h-[9rem] flex-1" onPointerDown={onDown} onPointerUp={onUp} style={{ touchAction: 'pan-y pinch-zoom' }}>
             <div ref={stage} className="absolute inset-0 mx-2 my-1 flex items-center justify-center wide:mx-20 wide:my-3">
               <div key={layout.id} className="shadow-lift" style={{ width: fit ?? '100%', visibility: fit ? 'visible' : 'hidden', animation: 'sl-in 160ms ease-out' }}>
-                <SlideView layout={layout} number={at + 1} mediaUrl={view.mediaUrl} eager label={slideName(t, layout, total)} />
+                <SlideView layout={layout} number={at + 1} mediaUrl={view.mediaUrl} pictureUrl={view.slidePictureUrl?.(layout.index)} eager label={slideName(t, layout, total)} />
               </div>
             </div>
             <button type="button" onClick={() => go(at - 1)} disabled={at === 0} aria-label={t('sl.lb.prev')} className={cx(arrow, 'absolute left-3 top-1/2 hidden h-14 w-14 -translate-y-1/2 wide:inline-flex')}>

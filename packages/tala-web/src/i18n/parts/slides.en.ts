@@ -181,4 +181,6 @@ export const slidesEn = {
   'sl.ed.prevSlide': 'Previous slide',
   'sl.ed.nextSlide': 'Next slide',
   'sl.ed.draftSource': 'Made from a draft pack that no teacher has reviewed yet. Check the science before you teach it.',
+  // Mathematics pilot (21 Nov 2026)
+  'sl.pilot.note': "These are the pilot's own checked slide pictures. To change the slides, download the PowerPoint file. Editing a copy inside Tala is not part of this pilot.",
 } as const;

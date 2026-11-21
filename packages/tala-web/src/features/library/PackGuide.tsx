@@ -14,8 +14,9 @@ export function PackGuide({ detail }: { detail: PackDetail }) {
   const { t } = useT();
   const p = detail.content;
   const g = p.guide;
+  const math = p.learningAreaId === 'mathematics';
   const sections: Array<{ id: string; icon: IconName; label: string; show: boolean }> = [
-    { id: 'g-science', icon: 'flask', label: t('pk.g.science'), show: true },
+    { id: 'g-science', icon: math ? 'grid' : 'flask', label: t(math ? 'pk.g.math' : 'pk.g.science'), show: true },
     { id: 'g-prereq', icon: 'layers', label: t('pk.g.prereq'), show: g.prerequisites.length > 0 },
     { id: 'g-words', icon: 'book', label: t('pk.g.words'), show: g.vocabulary.length > 0 },
     { id: 'g-wrong', icon: 'alert', label: t('pk.g.wrong'), show: g.misconceptions.length > 0 },
@@ -49,8 +50,8 @@ export function PackGuide({ detail }: { detail: PackDetail }) {
 
       <div className="flex min-w-0 flex-col gap-10">
         <section aria-labelledby="g-science" className="scroll-mt-28">
-          <SectionHead id="g-science" icon="flask" title={t('pk.g.science')} rule={false} />
-          <p className="mt-2 text-forestMuted">{t('pk.g.scienceHint')}</p>
+          <SectionHead id="g-science" icon={math ? 'grid' : 'flask'} title={t(math ? 'pk.g.math' : 'pk.g.science')} rule={false} />
+          <p className="mt-2 text-forestMuted">{t(math ? 'pk.g.mathHint' : 'pk.g.scienceHint')}</p>
           <div className="mt-3 divide-y divide-hairline border-y border-hairline">
             {g.background.map((b, i) => (
               <Disclosure key={b.heading} defaultOpen={i === 0} summary={<span className="font-display text-title leading-snug">{b.heading}</span>}>

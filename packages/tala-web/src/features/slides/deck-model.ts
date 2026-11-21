@@ -21,12 +21,18 @@ export interface DeckView {
   approved: boolean;
   layouts: SlideLayout[];
   mediaUrl: (slug: string) => string;
+  /**
+   * When set, each slide is shown from its ready-made picture (0-based index) instead of being drawn from the
+   * layout. The Mathematics pilot uses this: its checked renders are the truth, and Tala's layout was written
+   * for the Science decks. The layouts still give the order, the groups, the titles and the notes.
+   */
+  slidePictureUrl?: (index: number) => string;
 }
 
 const packViews = new WeakMap<PackDetail, DeckView>();
 
 /** The shared original, laid out once per loaded pack (several strips on one page share it). */
-export function viewOfPack(detail: PackDetail, mediaUrl: (slug: string) => string): DeckView {
+export function viewOfPack(detail: PackDetail, mediaUrl: (slug: string) => string, slidePictureUrl?: (index: number) => string): DeckView {
   const hit = packViews.get(detail);
   if (hit) return hit;
   const input = layoutInputFromPack(detail.content, detail.review);
@@ -38,6 +44,7 @@ export function viewOfPack(detail: PackDetail, mediaUrl: (slug: string) => strin
     approved: input.approved,
     layouts: layoutDeck(input),
     mediaUrl,
+    slidePictureUrl,
   };
   packViews.set(detail, view);
   return view;

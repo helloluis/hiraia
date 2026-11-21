@@ -6,7 +6,7 @@
  */
 import { useEffect, useState } from 'react';
 import { API_BASE } from '@hiraia/tala-core/contracts';
-import type { ClassRecord, PackDetail, PackFileKind, PackIndex, PackLang, SyncEngine } from '@hiraia/tala-core/contracts';
+import type { ClassRecord, PackDetail, PackFileKind, PackIndex, PackLang, PackSubject, SyncEngine } from '@hiraia/tala-core/contracts';
 import { planFromPackDay, weekdaysFrom } from './pack-plans';
 export { planFromPackDay, packVersion, weekdaysFrom } from './pack-plans';
 import { getClient } from './client';
@@ -20,20 +20,27 @@ export const previewUrl = (packId: string, slide: number, lang: PackLang) => `${
 /** A drawing of the pack's deck, exactly as embedded in the built deck (with its Hiraia mark). */
 export const mediaUrl = (packId: string, slug: string, lang: PackLang) => `${API_BASE}/packs/${encodeURIComponent(packId)}/media/${encodeURIComponent(slug)}?lang=${lang}`;
 
-export function usePackIndex() {
+/**
+ * One learning area's index: Science (the library) unless asked. The Mathematics pilot is a separate, small index;
+ * where it is not installed the request fails and `failed` is set, so callers simply do not offer it.
+ */
+export function usePackIndex(subject: PackSubject = 'science') {
   const { cache, status } = useSession();
   const [index, setIndex] = useState<PackIndex | null>(null);
   const [failed, setFailed] = useState(false);
   useEffect(() => {
     let alive = true;
+    setIndex(null);
+    setFailed(false);
     (async () => {
-      const cached = await cache.get<PackIndex>(INDEX_KEY).catch(() => null);
+      const key = subject === 'science' ? INDEX_KEY : `${INDEX_KEY}.${subject}`;
+      const cached = await cache.get<PackIndex>(key).catch(() => null);
       if (cached && alive) setIndex(cached);
       try {
-        const fresh = await getClient().call('packs.index');
+        const fresh = await getClient().call('packs.index', { query: { subject } });
         if (!alive) return;
         setIndex(fresh);
-        await cache.set(INDEX_KEY, fresh).catch(() => {});
+        await cache.set(key, fresh).catch(() => {});
       } catch {
         if (alive && !cached) setFailed(true);
       }
@@ -41,7 +48,7 @@ export function usePackIndex() {
     return () => {
       alive = false;
     };
-  }, [cache, status]);
+  }, [cache, status, subject]);
   return { index, failed };
 }
 

@@ -8,10 +8,10 @@
  */
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { PackDetail } from '@hiraia/tala-core/contracts';
+import { packSubjectOf, type PackDetail } from '@hiraia/tala-core/contracts';
 import { formatTime, useT } from '@/i18n';
 import { useSession } from '@/data/session';
-import { fileUrl } from '@/data/packs';
+import { fileUrl, previewUrl } from '@/data/packs';
 import { createDeck, deckFailure, deckMediaUrl, deckPptxUrl, forgetDecks, packMediaUrl, useDeck, useMyDeck } from '@/data/decks';
 import { Callout, Facts, IconBadge, Kicker, Segmented, StatusChip } from '@/components/editorial';
 import { Icon } from '@/components/icons';
@@ -23,7 +23,13 @@ import { SlideThumb } from './SlideThumb';
 
 /** The shared original of a loaded pack, laid out once. */
 function packView(detail: PackDetail): DeckView {
-  return viewOfPack(detail, (slug) => packMediaUrl(detail.content.packId, slug, detail.language));
+  const { packId } = detail.content;
+  return viewOfPack(
+    detail,
+    (slug) => packMediaUrl(packId, slug, detail.language),
+    // The Mathematics pilot is shown from its own checked slide pictures (one per slide, in order).
+    packSubjectOf(packId) === 'science' ? undefined : (index) => previewUrl(packId, index + 1, detail.language)
+  );
 }
 
 const GRID = 'grid grid-cols-2 gap-x-3 gap-y-4 min-[560px]:grid-cols-3 min-[1100px]:grid-cols-4';
@@ -80,6 +86,8 @@ export function PackSlidesTab({ detail, initialSlideId }: { detail: PackDetail; 
   const router = useRouter();
   const packId = detail.content.packId;
   const lang = detail.language;
+  /** Only Science decks can be copied and edited in Tala; the Mathematics pilot offers its PowerPoint file. */
+  const copyable = packSubjectOf(packId) === 'science';
   const variant = detail.entry.variants[lang];
   const file = variant.files.find((f) => f.kind === 'slides') ?? null;
   const original = useMemo(() => packView(detail), [detail]);
@@ -90,7 +98,7 @@ export function PackSlidesTab({ detail, initialSlideId }: { detail: PackDetail; 
   const presentOriginal = useRef<PresenterHandle>(null);
   const presentMine = useRef<PresenterHandle>(null);
 
-  const mine = useMyDeck(packId, lang);
+  const mine = useMyDeck(copyable ? packId : '', lang);
   const mineId = mine.summary?.id ?? null;
   const deck = useDeck(which === 'mine' ? mineId : null);
   const mineUrl = useCallback((slug: string) => (mineId ? deckMediaUrl(mineId, slug) : ''), [mineId]);
@@ -143,16 +151,18 @@ export function PackSlidesTab({ detail, initialSlideId }: { detail: PackDetail; 
           <Kicker icon="slides">{t('sl.kicker')}</Kicker>
           {!original.approved && <StatusChip tone="draft">{t('sl.draft')}</StatusChip>}
         </div>
-        <Segmented
-          label={t('sl.view.label')}
-          value={which}
-          onChange={setWhich}
-          className="self-start"
-          options={[
-            { value: 'original', label: t('sl.view.original'), icon: 'slides' },
-            { value: 'mine', label: t('sl.view.mine'), icon: 'pencil' },
-          ]}
-        />
+        {copyable && (
+          <Segmented
+            label={t('sl.view.label')}
+            value={which}
+            onChange={setWhich}
+            className="self-start"
+            options={[
+              { value: 'original', label: t('sl.view.original'), icon: 'slides' },
+              { value: 'mine', label: t('sl.view.mine'), icon: 'pencil' },
+            ]}
+          />
+        )}
       </div>
       {makeError && <Banner kind="error">{makeError}</Banner>}
 
@@ -169,10 +179,10 @@ export function PackSlidesTab({ detail, initialSlideId }: { detail: PackDetail; 
                 {t('sl.downloadSize', { size: mb(file.bytes) })}
               </a>
             )}
-            {editControl}
+            {copyable && editControl}
           </div>
           <Callout tint="teal" icon="info">
-            <p className="max-w-measure">{t('sl.original.note')}</p>
+            <p className="max-w-measure">{t(copyable ? 'sl.original.note' : 'sl.pilot.note')}</p>
           </Callout>
           {!file && <p className="text-small text-forestMuted">{t('sl.notBuilt')}</p>}
           <SlideGroups view={original} onOpen={(index) => setOpen({ which: 'original', index })} />
@@ -257,7 +267,7 @@ export function PackSlidesTab({ detail, initialSlideId }: { detail: PackDetail; 
           onIndex={(index) => setOpen((o) => (o ? { ...o, index } : o))}
           onClose={() => setOpen(null)}
           action={
-            signedIn ? (
+            signedIn && copyable ? (
               <button
                 type="button"
                 onClick={() => void edit(openSlideId)}

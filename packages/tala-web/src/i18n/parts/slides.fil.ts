@@ -186,4 +186,6 @@ export const slidesFil = {
   'sl.ed.prevSlide': 'Nakaraang slide',
   'sl.ed.nextSlide': 'Susunod na slide',
   'sl.ed.draftSource': 'Galing ito sa draft pack na hindi pa na-review ng teacher. I-check ang science bago mo ituro.',
+  // Mathematics pilot (21 Nov 2026)
+  'sl.pilot.note': "Ito ang mga na-check na picture ng slides ng pilot. Para baguhin ang slides, i-download ang PowerPoint file. Hindi kasama sa pilot na ito ang pag-edit ng kopya sa loob ng Tala.",
 } satisfies Record<keyof typeof slidesEn, string>;

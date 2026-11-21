@@ -72,7 +72,7 @@ export function SlideThumb({
           frameClassName
         )}
       >
-        <SlideView layout={layout} number={n} mediaUrl={view.mediaUrl} decorative />
+        <SlideView layout={layout} number={n} mediaUrl={view.mediaUrl} pictureUrl={view.slidePictureUrl?.(layout.index)} decorative />
       </span>
       {caption && (
         <span className={cx('flex items-baseline gap-1.5 px-0.5 text-small leading-snug', tone === 'dark' ? 'text-cream/80' : 'text-forestMuted')}>

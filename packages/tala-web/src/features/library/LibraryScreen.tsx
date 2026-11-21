@@ -7,9 +7,9 @@
  */
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useMemo } from 'react';
+import { useMemo, type ReactNode } from 'react';
 import { engine as pacing } from '@hiraia/tala-core/pacing';
-import type { PackIndexEntry, PackLang, PackStatus, PackVariant } from '@hiraia/tala-core/contracts';
+import type { PackIndex, PackIndexEntry, PackLang, PackStatus, PackSubject, PackVariant } from '@hiraia/tala-core/contracts';
 import { useT, type StringKey } from '@/i18n';
 import { isoDate, mondayOf } from '@/data/ids';
 import { previewUrl, usePackIndex } from '@/data/packs';
@@ -47,8 +47,24 @@ export function LibraryScreen() {
   const params = useSearchParams();
   const { status } = useSession();
   const { index, failed } = usePackIndex();
+  // The Mathematics pilot is a second, small library. Where it is not installed its index does not load and the
+  // Library is Science only, exactly as before.
+  const mathIndex = usePackIndex('mathematics').index;
+  const subject: PackSubject = params.get('subject') === 'mathematics' && mathIndex ? 'mathematics' : 'science';
   const ws = useWorkspace();
   const uiLang: PackLang = lang === 'fil' ? 'fil' : 'en';
+  const subjects = mathIndex ? (
+    <Segmented
+      label={t('lib.subject.label')}
+      value={subject}
+      onChange={(v) => router.replace(v === 'mathematics' ? '/library?subject=mathematics' : '/library', { scroll: false })}
+      className="self-start"
+      options={[
+        { value: 'science', label: t('lib.subject.science'), icon: 'flask' },
+        { value: 'mathematics', label: t('lib.subject.math'), icon: 'grid' },
+      ]}
+    />
+  ) : null;
 
   // The teacher's own grade levels and where the school calendar is today.
   const today = isoDate();
@@ -94,8 +110,11 @@ export function LibraryScreen() {
     return out.sort((a, b) => (a.when === b.when ? 0 : a.when === 'this' ? -1 : 1)).slice(0, 4);
   }, [packs, myGrades, now]);
 
+  if (subject === 'mathematics' && mathIndex) return <MathLibrary index={mathIndex} uiLang={uiLang} signedIn={status === 'signedIn'} subjects={subjects} />;
+
   return (
     <div className="flex flex-col gap-8 wide:gap-10">
+      {subjects}
       <header className="grid items-center gap-4 wide:grid-cols-[minmax(0,1fr)_24rem] wide:gap-10">
         <div className="min-w-0">
           <Kicker icon="book">{t('lib2.kicker')}</Kicker>
@@ -243,8 +262,69 @@ export function LibraryScreen() {
   );
 }
 
+/**
+ * The Mathematics pilot: six weeks, said plainly to be a pilot. No grade or term pickers (there are six packs) and no
+ * "for your classes" (the pilot is not tied to a class calendar): the packs by grade, each with its printed term and
+ * week, and the pilot's terms above them.
+ */
+function MathLibrary({ index, uiLang, signedIn, subjects }: { index: PackIndex; uiLang: PackLang; signedIn: boolean; subjects: ReactNode }) {
+  const { t } = useT();
+  const grades = [...new Set(index.packs.map((p) => p.grade))].sort((a, b) => Number(a) - Number(b));
+  const locked = !index.reviewerView && index.packs.some((p) => !p.viewable);
+  return (
+    <div className="flex flex-col gap-8 wide:gap-10">
+      {subjects}
+      <header className="min-w-0">
+        <Kicker icon="grid">{t('libm.kicker')}</Kicker>
+        <h1 className="mt-3 text-hero">{t('libm.title')}</h1>
+        <p className="mt-3 max-w-measure text-read text-forest/90 wide:text-lead">{t('libm.lead')}</p>
+      </header>
+
+      <section aria-label={t('libm.noteTitle')} className="rounded-lg bg-yellow/20 px-4 py-3 wide:px-5" data-testid="pilot-terms">
+        <div className="flex gap-3">
+          <Icon name="info" size={22} className="mt-0.5 shrink-0 text-forest" />
+          <div className="flex min-w-0 flex-1 flex-col gap-2">
+            <p className="break-words">
+              <span className="font-semibold">{t('libm.noteTitle')}. </span>
+              {t('libm.noteBody')}
+            </p>
+            <p className="text-small break-words text-forest/90">{t('libm.noteDates')}</p>
+          </div>
+        </div>
+        {locked && !signedIn && (
+          <Link href="/sign-in" className="mt-2 inline-flex min-h-touch items-center gap-2 rounded bg-talaTeal px-4 font-medium text-white">
+            <Icon name="lock" size={18} />
+            {t('lib2.signIn')}
+          </Link>
+        )}
+      </section>
+
+      {grades.map((g) => {
+        const packs = index.packs.filter((p) => p.grade === g).sort((a, b) => a.term - b.term || a.week - b.week);
+        return (
+          <section key={g} aria-labelledby={`math-g${g}`} className="flex flex-col gap-4 border-t border-hairline pt-6">
+            <div className="flex items-baseline justify-between gap-3">
+              <h2 id={`math-g${g}`} className="text-headline">
+                {t('lib.grade', { grade: g })}
+              </h2>
+              <p className="text-small text-forestMuted">{t('lib2.builtCount', { n: packs.length })}</p>
+            </div>
+            <ol className="grid gap-4 min-[560px]:grid-cols-2 wide:grid-cols-3">
+              {packs.map((p) => (
+                <li key={p.packId}>
+                  <WeekCard entry={p} uiLang={uiLang} kicker={t('libm.termWeek', { term: p.term, week: p.week })} />
+                </li>
+              ))}
+            </ol>
+          </section>
+        );
+      })}
+    </div>
+  );
+}
+
 /** One built week as a cover: the deck's own cover slide, the week, its title and each language's honest status. */
-function WeekCard({ entry, uiLang, badge, showGrade }: { entry: PackIndexEntry; uiLang: PackLang; badge?: string; showGrade?: boolean }) {
+function WeekCard({ entry, uiLang, badge, showGrade, kicker }: { entry: PackIndexEntry; uiLang: PackLang; badge?: string; showGrade?: boolean; kicker?: string }) {
   const { t } = useT();
   const mine = entry.variants[uiLang];
   const other = entry.variants[uiLang === 'fil' ? 'en' : 'fil'];
@@ -266,7 +346,7 @@ function WeekCard({ entry, uiLang, badge, showGrade }: { entry: PackIndexEntry; 
         {badge && <span className="absolute left-3 top-3 rounded-full bg-yellow px-2.5 py-1 text-small font-semibold text-forest shadow-card">{badge}</span>}
       </span>
       <span className="flex flex-1 flex-col gap-1.5 px-4 py-4">
-        <span className="kicker text-talaTeal">{showGrade ? `${t('lib.grade', { grade: entry.grade })} · ${t('lib2.weekNo', { week: entry.week })}` : t('lib2.weekNo', { week: entry.week })}</span>
+        <span className="kicker text-talaTeal">{kicker ?? (showGrade ? `${t('lib.grade', { grade: entry.grade })} · ${t('lib2.weekNo', { week: entry.week })}` : t('lib2.weekNo', { week: entry.week }))}</span>
         <span className="font-display text-title leading-snug break-words">{title}</span>
         {title !== entry.topic && <span className="text-small text-forestMuted break-words">{entry.topic}</span>}
         <span className="mt-auto flex flex-col gap-1 pt-2">

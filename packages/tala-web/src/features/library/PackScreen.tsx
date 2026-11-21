@@ -7,7 +7,7 @@
  */
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
-import type { PackDetail, PackFileKind, PackLang } from '@hiraia/tala-core/contracts';
+import { packSubjectOf, type PackDetail, type PackFileKind, type PackLang } from '@hiraia/tala-core/contracts';
 import { layoutDeck, layoutInputFromPack } from '@hiraia/tala-core/decks';
 import { useT } from '@/i18n';
 import { useSession } from '@/data/session';
@@ -29,7 +29,10 @@ export function PackScreen({ packId }: { packId: string }) {
   const router = useRouter();
   const params = useSearchParams();
   const { status } = useSession();
-  const { index } = usePackIndex();
+  const subject = packSubjectOf(packId);
+  /** The Mathematics pilot: shown from its own slide pictures, with its pilot terms said plainly. */
+  const math = subject === 'mathematics';
+  const { index } = usePackIndex(subject);
   const entry0 = index?.packs.find((p) => p.packId === packId);
 
   // Language: an explicit choice (?lang=) wins; else the interface language; else whichever version can be opened.
@@ -54,7 +57,7 @@ export function PackScreen({ packId }: { packId: string }) {
   const [useOpen, setUseOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
-  const layouts = useMemo(() => (detail ? layoutDeck(layoutInputFromPack(detail.content, detail.review)) : []), [detail]);
+  const layouts = useMemo(() => (detail && !math ? layoutDeck(layoutInputFromPack(detail.content, detail.review)) : []), [detail, math]);
 
   // A link that names a tab or a day lands on the reading section, not on the cover.
   const [landed, setLanded] = useState(false);
@@ -79,7 +82,7 @@ export function PackScreen({ packId }: { packId: string }) {
     />
   );
   const back = (grade?: string, term?: number) => (
-    <a href={grade ? `/library?grade=${grade}&term=${term}` : '/library'} className="inline-flex min-h-touch items-center gap-1.5 font-medium text-talaTeal">
+    <a href={math ? '/library?subject=mathematics' : grade ? `/library?grade=${grade}&term=${term}` : '/library'} className="inline-flex min-h-touch items-center gap-1.5 font-medium text-talaTeal">
       <Icon name="arrowLeft" size={18} />
       {t('lib.back')}
     </a>
@@ -117,7 +120,7 @@ export function PackScreen({ packId }: { packId: string }) {
   const variant = entry.variants[detail.language];
   const approved = review.publication === 'approved' && Boolean(review.teacherReview);
   const needsWork = variant.status === 'needs_work';
-  const coverSlug = layouts[0]?.picture ?? p.illustrations[0]?.slug ?? null;
+  const coverSlug = math ? null : (layouts[0]?.picture ?? p.illustrations[0]?.slug ?? null);
   const coverAlt = p.slides.find((s) => s.image?.slug === coverSlug)?.image?.alt ?? '';
   const idea = leadSentence(p.guide.bigIdea);
   const file = (kind: PackFileKind) => variant.files.find((f) => f.kind === kind);
@@ -126,7 +129,15 @@ export function PackScreen({ packId }: { packId: string }) {
     { kind: 'slides', icon: 'slides', label: t('pk.dl.slides'), type: t('pk.dl.pptx') },
     { kind: 'guide', icon: 'book', label: t('pk.dl.guide'), type: t('pk.dl.pdf') },
     { kind: 'plans', icon: 'lessons', label: t('pk.dl.plans'), type: t('pk.dl.pdf') },
+    { kind: 'exercises', icon: 'pencil', label: t('pk.dl.exercises'), type: t('pk.dl.pdf') },
+    { kind: 'solutions', icon: 'checkCircle', label: t('pk.dl.solutions'), type: t('pk.dl.pdf') },
+    { kind: 'diagrams', icon: 'image', label: t('pk.dl.diagrams'), type: t('pk.dl.pdf') },
+    { kind: 'templates', icon: 'layers', label: t('pk.dl.templates'), type: t('pk.dl.pdf') },
   ];
+  const fileNotes = downloads.flatMap((d) => {
+    const f = file(d.kind);
+    return f?.note ? [{ kind: d.kind, label: d.label, note: f.note }] : [];
+  });
   const checkState = (s: string) => (s === 'pass' ? t('pk.check.pass') : s === 'fail' ? t('pk.check.fail') : s === 'issues_open' ? t('pk.check.open') : t('pk.check.none'));
   const checkTone = (s: string): 'ready' | 'fix' | 'quiet' => (s === 'pass' ? 'ready' : s === 'fail' || s === 'issues_open' ? 'fix' : 'quiet');
 
@@ -140,7 +151,7 @@ export function PackScreen({ packId }: { packId: string }) {
         </div>
         <div className="grid items-start gap-6 wide:grid-cols-[minmax(0,1fr)_20rem] wide:gap-10">
           <div className="min-w-0">
-            <Kicker icon="flask">{t('pk.kicker', { grade: p.grade, term: p.term, week: p.week })}</Kicker>
+            <Kicker icon={math ? 'grid' : 'flask'}>{t(math ? 'pk.kicker.math' : 'pk.kicker', { grade: p.grade, term: p.term, week: p.week })}</Kicker>
             <h1 className="mt-3 text-hero break-words [overflow-wrap:anywhere]">{p.title}</h1>
             <p className="mt-4 max-w-measure text-read text-forest/90 break-words wide:text-lead">{p.summary}</p>
             <Facts
@@ -153,9 +164,22 @@ export function PackScreen({ packId }: { packId: string }) {
             />
             <div className="mt-5 border-l-[3px] border-yellow pl-3">
               <StatusChip tone={approved ? 'ready' : needsWork ? 'fix' : 'draft'}>
-                {approved ? t('pk.status.ready', { reviewer: review.teacherReview!.reviewer }) : needsWork ? t('pk.status.fix') : t('pk.status.draft')}
+                {approved ? t('pk.status.ready', { reviewer: review.teacherReview!.reviewer }) : needsWork ? t('pk.status.fix') : t(math ? 'pk.status.pilot' : 'pk.status.draft')}
               </StatusChip>
-              {!approved && <p className="mt-2 max-w-measure text-small text-forestMuted">{needsWork ? t('pk.fixNote') : t('pk.draftNote')}</p>}
+              {!approved && <p className="mt-2 max-w-measure text-small text-forestMuted">{needsWork ? t('pk.fixNote') : t(math ? 'pk.pilotNote' : 'pk.draftNote')}</p>}
+              {math && (
+                // The pilot's own terms, kept beside the status: where the week comes from, and that the daily split is editorial.
+                <ul className="mt-2 flex max-w-measure flex-col gap-1.5 text-small text-forestMuted" data-testid="pilot-terms">
+                  <li className="flex gap-2">
+                    <Icon name="calendar" size={15} className="mt-0.5 shrink-0" />
+                    <span className="min-w-0 break-words">{t('pk.pilotDates')}</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <Icon name="timer" size={15} className="mt-0.5 shrink-0" />
+                    <span className="min-w-0 break-words">{t('pk.pilotTiming')}</span>
+                  </li>
+                </ul>
+              )}
               <a href="#pack-checked" className="mt-1 inline-flex min-h-[2.5rem] items-center gap-1 text-small font-medium text-talaTeal underline-offset-4 hover:underline">
                 {t('pk.status.more')}
                 <Icon name="arrowDown" size={14} />
@@ -163,10 +187,16 @@ export function PackScreen({ packId }: { packId: string }) {
             </div>
           </div>
           {coverSlug && <Plate eager src={mediaUrl(p.packId, coverSlug, detail.language)} alt={coverAlt} className="aspect-[16/10] w-full max-w-sm justify-self-center wide:aspect-[4/3] wide:max-w-none" />}
+          {math && variant.files.length > 0 && (
+            // The pilot's cover is its first slide, exactly as rendered.
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={previewUrl(p.packId, 1, detail.language)} alt="" width={1281} height={720} decoding="async" className="aspect-video w-full max-w-sm justify-self-center rounded-lg shadow-card wide:max-w-none" />
+          )}
         </div>
 
         <div className="flex flex-col gap-3 wide:flex-row wide:flex-wrap wide:items-center">
-          {status === 'signedIn' ? (
+          {/* Copying lessons into a class follows the class's Science pacing; the Mathematics pilot is read and downloaded. */}
+          {math ? null : status === 'signedIn' ? (
             <Button variant="primary" onClick={() => setUseOpen(true)} className="wide:shrink-0 wide:whitespace-nowrap wide:px-6">
               <Icon name="plus" size={20} />
               {t('pk.use')}
@@ -193,7 +223,7 @@ export function PackScreen({ packId }: { packId: string }) {
                       <Icon name="download" size={18} className="text-talaTeal" />
                       <span className="font-medium">{d.label}</span>
                       <span className="text-small text-forestMuted">
-                        {d.type} · {t('lib.pack.size', { size: mb(f.bytes) })}
+                        {d.type} · {mb(f.bytes) === '0.0' ? t('lib.pack.sizeKb', { size: Math.max(1, Math.round(f.bytes / 1024)) }) : t('lib.pack.size', { size: mb(f.bytes) })}
                       </span>
                     </a>
                   </li>
@@ -202,6 +232,15 @@ export function PackScreen({ packId }: { packId: string }) {
             </ul>
           )}
         </div>
+        {fileNotes.map((n) => (
+          // The author's own instructions for a material, word for word.
+          <p key={n.kind} className="flex max-w-measure gap-2 text-small text-forestMuted" data-testid={`file-note-${n.kind}`}>
+            <Icon name="info" size={15} className="mt-0.5 shrink-0" />
+            <span className="min-w-0 break-words">
+              <span className="font-medium text-forest">{n.label}:</span> {n.note}
+            </span>
+          </p>
+        ))}
       </header>
 
       {/* ---------- Big idea ---------- */}
@@ -298,13 +337,16 @@ export function PackScreen({ packId }: { packId: string }) {
             <div className="mt-1.5">
               <StatusChip tone={checkTone(review.autoChecks.state)}>{checkState(review.autoChecks.state)}</StatusChip>
             </div>
+            {math && <p className="mt-1.5 text-small text-forestMuted">{t('pk.check.autoMath')}</p>}
           </li>
           <li>
-            <p className="font-semibold">{t('pk.check.model')}</p>
+            <p className="font-semibold">{t(math ? 'pk.check.modelMath' : 'pk.check.model')}</p>
             <div className="mt-1.5">
               <StatusChip tone={checkTone(review.modelCritique.state)}>{checkState(review.modelCritique.state)}</StatusChip>
             </div>
-            <p className="mt-1.5 text-small text-forestMuted">{t('pk.check.modelDetail', { model: review.modelCritique.model ?? '—', rounds: review.modelCritique.rounds })}</p>
+            <p className="mt-1.5 text-small text-forestMuted">
+              {math ? t('pk.check.modelDetailMath', { model: review.modelCritique.model ?? '—' }) : t('pk.check.modelDetail', { model: review.modelCritique.model ?? '—', rounds: review.modelCritique.rounds })}
+            </p>
           </li>
           <li>
             <p className="font-semibold">{t('pk.check.teacher')}</p>
