@@ -71,7 +71,7 @@ const events: DiaryEvent[] = [
   },
   {
     date: '2026-11-06', day: '06',
-    caption: 'Siay National High School, Zamboanga Sibugay',
+    caption: 'Fifth pilot launched at Siay National High School, Zamboanga Sibugay',
     images: [{
       src: '/dev-diary/siay-nhs-phones.jpg',
       alt: 'Three people at a table at Siay National High School examining smartphones, with chargers and cables laid out beside them',
