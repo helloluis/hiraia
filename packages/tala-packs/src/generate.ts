@@ -89,6 +89,64 @@ function workDir(packId: string) {
 }
 
 /** Run one model stage with JSON validation and a single repair round; cache the validated result. */
+/**
+ * Rewrite strings that are over their limit, keeping meaning and language (English, Filipino or Taglish), with one
+ * DeepSeek Flash call. Returns the patched value, or null when the reply does not fit either.
+ */
+export async function shortenStrings(meter: Meter, label: string, value: unknown, items: Array<{ path: Array<string | number>; max: number }>) {
+  const get = (path: Array<string | number>) => path.reduce<any>((n, k) => (n == null ? n : n[k]), value);
+  const todo = items.map((it, k) => ({ id: k, max: it.max, text: String(get(it.path) ?? '') })).filter((x) => x.text.length > x.max);
+  if (!todo.length || todo.length > 12) return null;
+  const done = new Map<number, string>();
+  // Two rounds: models misjudge length, so each text gets its current length and a target 10 characters under the limit.
+  for (let round = 1; round <= 2 && done.size < todo.length; round++) {
+    const ask = todo
+      .filter((x) => !done.has(x.id))
+      .map((x) => {
+        const current = round === 1 ? x.text : x.text;
+        return { id: x.id, currentLength: current.length, targetLength: x.max - 10, text: current };
+      });
+    const res = await chat(meter, {
+      spec: MODELS.writerFlash,
+      label: `${label}${round}`,
+      maxTokens: 2000,
+      thinking: false,
+      messages: [
+        { role: 'system', content: 'You shorten texts for a classroom slide. Output one JSON object only.' },
+        {
+          role: 'user',
+          content:
+            'Each text below is too long for its place on a slide. Rewrite each one SHORTER: at most "targetLength" characters (it is now "currentLength"). ' +
+            'Use fewer and shorter words; drop filler; keep every fact, number and the meaning; keep the same language (English, Filipino or Taglish). Do not add anything.\n' +
+            JSON.stringify(ask) +
+            '\nReturn JSON only: {"items": [{"id": 0, "text": "the shorter text"}]}',
+        },
+      ],
+    });
+    let out: { items?: Array<{ id: number; text: string }> };
+    try {
+      out = parseJsonObject(res.content) as typeof out;
+    } catch {
+      continue;
+    }
+    for (const x of todo) {
+      const got = out.items?.find((y) => y.id === x.id)?.text?.trim();
+      if (got && got.length <= x.max && got.length >= Math.min(20, x.text.length / 3)) done.set(x.id, got);
+    }
+  }
+  if (done.size < todo.length) return null;
+  const copy = structuredClone(value) as any;
+  const log: string[] = [];
+  for (const x of todo) {
+    const path = items[x.id]!.path;
+    let node = copy;
+    for (const k of path.slice(0, -1)) node = node[k];
+    node[path.at(-1)!] = done.get(x.id)!;
+    log.push(`${path.join('.')}: ${x.text.length} → ${done.get(x.id)!.length} characters`);
+  }
+  return { value: copy, log };
+}
+
 /** Check messages with this prefix are text-length problems: asked to be fixed, but never fatal for a week. */
 export const LENGTH_ONLY = '[length] ';
 
@@ -151,7 +209,17 @@ export async function stage<T>(args: {
       const log: string[] = [];
       if (args.normalize) parsed = args.normalize(parsed, log);
       if (log.length) writeFileSync(resolve(dir, `${args.name}.normalized${attempt}.json`), JSON.stringify(log, null, 1));
-      const r = args.schema.safeParse(parsed);
+      let r = args.schema.safeParse(parsed);
+      // Only strings over the contract's length? One small call shortens exactly those strings (same meaning, same
+      // language) before the attempt counts as failed: long scenario-style answer choices failed four weeks.
+      if (!r.success && r.error.issues.every((i) => i.code === 'too_big' && i.type === 'string')) {
+        const fixed = await shortenStrings(args.meter, `${args.packId}:${args.name}:shorten`, parsed, r.error.issues.map((i) => ({ path: i.path, max: Number((i as { maximum?: number }).maximum) })));
+        if (fixed) {
+          writeFileSync(resolve(dir, `${args.name}.shortened${attempt}.json`), JSON.stringify(fixed.log, null, 1));
+          parsed = fixed.value;
+          r = args.schema.safeParse(parsed);
+        }
+      }
       if (r.success) {
         const extra = args.check?.(r.data) ?? [];
         if (!extra.length) {
