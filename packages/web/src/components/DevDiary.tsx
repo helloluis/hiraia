@@ -69,6 +69,15 @@ const events: DiaryEvent[] = [
       caption: 'Students and staff with their Hiraia phones at the pilot launch, Cornelio Lintawagin Memorial Elementary School, Naujan, Oriental Mindoro.',
     }],
   },
+  {
+    date: '2026-11-06', day: '06',
+    caption: 'Siay National High School, Zamboanga Sibugay',
+    images: [{
+      src: '/dev-diary/siay-nhs-phones.jpg',
+      alt: 'Three people at a table at Siay National High School examining smartphones, with chargers and cables laid out beside them',
+      caption: 'Examining smartphones and charging accessories at Siay National High School, Siay, Zamboanga Sibugay.',
+    }],
+  },
 ];
 
 type Point = { x: number; y: number };
