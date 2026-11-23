@@ -78,3 +78,20 @@ The same rules as Science apply: every version is a draft until a named teacher 
 signed-out visitors, and a file is served only when its bytes match its manifest. A pilot deck is shown from the
 delivery's own checked slide pictures and cannot be copied for editing in Tala; its PowerPoint file can be downloaded.
 
+## Replacing some Filipino editions only (Science overlay)
+
+When revised Filipino editions are ready for part of the library, the next Science library is built FROM THE LIVE ONE,
+so English and every edition that is held stay byte-identical:
+
+1. Copy the live library to the dev box and check it against its own `SHA256SUMS` (it is the base).
+2. `python3 -I packages/tala-server/deploy/science-overlay/overlay-filipino.py --base <live> --source <revised library>
+   --holds <holds.json> --out <empty dir> --source-sha256 <hex> --library-version <date>`. The holds file names every
+   pack whose Filipino edition is NOT taken, by reason. The tool refuses to run when a label would change, when a
+   taken edition is not whole or does not pair with the live English, or when any file outside the taken Filipino
+   folders would differ. It writes `OVERLAY-RECORD.json` (what was taken, what was held, counts before and after).
+3. Validate the output with the release code, then install it exactly like a full Science refresh (above):
+   `packs.new`, `sha256sum -c`, `chown`, previous library to `packs.prev`. No restart.
+4. Roll back: `mv /var/lib/tala/packs /var/lib/tala/packs.rolled-back && mv /var/lib/tala/packs.prev /var/lib/tala/packs`.
+
+A teacher's private copy never depends on the library: after a swap it only says that its original was updated.
+

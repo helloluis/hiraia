@@ -263,3 +263,66 @@ release and the targeted integration it needs, not a wider library expansion.
 - **Deploy lock, said plainly**: the two production changes of 20 Nov (demo.11 and the Science library refresh)
   were made without the shared deploy lock that `/home/b11/code/AGENTS.md` requires; I had not read that file
   then. Nothing else was deploying at the time. This release held it.
+
+## Filipino interface and revised Filipino Science editions on production: 2026-11-23 10:05–10:08 UTC (18:05–18:08 PHT)
+
+Luis: "Did we deploy all the improvements already? If not please do so now." The coordinator approved the remaining
+Tala improvements lane by lane and kept the PPTX renderer question open. What follows is the two lanes that were
+ready; the others are in the ledger at the end.
+
+- **Owners and hand-offs** (all read back over the pinned route and hash-checked, then confirmed over the bridge):
+  Filipino owner `b11-002:7964278f`: review bundle sha256 `9afd7889…de1c` (866,511,405 bytes, checkpoint 18, 12,164
+  files verified) and code patch sha256 `15b5b447…f37f`, both confirmed final (bridge reply `c1a3a8db…`). Science
+  source owner `b11-dev:0a1a3e5f`: decisions on the known gaps (reply of 23 Nov, 09:5x UTC).
+- **Code**: `tala-v1-demo.13` = `6ebaf2c96` (tag object `f3f139913`), branch `tala-v1-filipino`. `f4937e469` is the
+  Filipino owner's patch for tala-core, tala-server, tala-web and the two pack-renderer files (16 files
+  byte-identical to the owner's results; three strings files carry every revised line and keep the Mathematics
+  keys). `packages/mobile/src/tala/copy.ts` and `packages/tala-mobile/**` from the same patch were left out: not in
+  this build, no app build in scope. `6ebaf2c96` lays out question slides as the revised renderer does (checked
+  against a rebuilt deck's own picture), puts the Mathematics Filipino strings in the revised voice, and adds the
+  overlay tool. No migration, no setting, no dependency change.
+- **Data**: the Science library was rebuilt from the live one with `deploy/science-overlay/overlay-filipino.py`.
+  **72 Filipino editions taken** from the bundle (70 replace a live edition with its label unchanged, 2 are new:
+  Grade 3 Term 3 Week 1 as a draft and Grade 9 Term 3 Week 7 as a draft with open problems). **33 held** and left
+  exactly as they were (`filipino-overlay-holds-20261123.json` in this folder): the Filipino owner's 29 (missing or
+  conflicting safety directions, answer-key conflicts, evidence a scored item needs, the two weeks never to add)
+  and 4 more whose own flags record an unresolved safety conflict (Grade 3 Term 3 Weeks 4 and 7, Grade 5 Term 3
+  Week 2, Grade 8 Term 3 Week 11). English: 0 files changed. Counts: 204 → 206 built language versions, 103 weeks,
+  0 approved. Overlay tarball sha256 `eaaa7915…8a20d`, 11,916 files verified on the host.
+- **Checks before release**: types clean; tests 250 core, 289 server, 82 web; the overlay served through the real
+  routes (206 editions, 618 downloads equal to their manifests, 206 teacher copies made and exported, 0 problems);
+  clean-tree build and rehearsal under Node 22 on one database: upgrade, library swap while running, code rollback,
+  roll forward, data rollback, with three teacher copies made beforehand (edits kept throughout; the copy of a
+  replaced edition reports "original updated"), 0 error lines.
+- **Deploy window**: shared `hiraia` lock held 10:05:02–10:08:26 UTC. Backup `/var/backups/tala/20261123T100545Z/`
+  (database, integrity ok; environment file; previous release; `packs-before.tar` of the library that was live; the
+  old index). `/opt/tala/deploy.sh tala-v1-demo.13` exit 0 in 25 seconds; library swapped at 10:06:47 UTC.
+- **Verified on production**: health answers `0.1.0+tala-v1-demo.13`; the Science index equals the staged overlay
+  (statuses and counts); the only status changes against the index saved before the release are the two added
+  Filipino editions; the Mathematics index is identical to before; signed-out visitors still get no draft content.
+  On the host, as the service user: all 206 Science editions are whole; exactly the 72 taken Filipino editions
+  differ from the previous library, 0 English files, 0 held editions; database rows unchanged in all 26 tables, the
+  one teacher copy still there, no migration; 0 error lines. In a browser as a visitor, Filipino and English, desktop
+  and phone: landing, sign-in, Library, Mathematics view, draft page, with the revised Filipino wording.
+- **NOT verified on production**: anything behind sign-in. The authorized test account exists on production
+  (`beanie-reg-20261120-1205@example.com`), but no credential or session for it is retrievable on b11-dev: it is in
+  no project document, the two credential stores on the dev box are from October, and the Beaniebot attachment
+  inbox is empty since October. Nothing was searched beyond that, no account was created, reset or impersonated.
+- **Rollback**: code `/opt/tala/deploy.sh tala-v1-demo.12`; data
+  `mv /var/lib/tala/packs /var/lib/tala/packs.rolled-back && mv /var/lib/tala/packs.prev /var/lib/tala/packs`
+  (the previous library is also `packs-before.tar` in the backup). Either can be done alone.
+- **Open decision for Luis (withdrawal)**: the Science source owner asks to WITHDRAW four live Filipino editions
+  whose Filipino text lost safety directions that the English keeps: Grade 6 Term 3 Week 8 (Day 4 instruction cut
+  off mid-activity), Grade 3 Term 3 Week 2 (rubber bands near faces, string near the neck, light into eyes), Grade 3
+  Term 3 Week 11 (do not look at the Sun), Grade 7 Term 3 Week 6 (tsunami answer lost "do not return after the first
+  wave"). They were held, not withdrawn: they are still live exactly as before, as labelled drafts.
+
+### Ledger, 23 Nov 2026
+
+| Lane | State |
+|---|---|
+| 1. Six-week Mathematics pilot | Live since 21 Nov (demo.12), untouched by this release. Signed-in check on production still not done (no credential route). |
+| 2. Filipino interface revisions | Live in demo.13 (web interface, print templates, deck credits, mail texts). Mobile app strings from the same patch not applied: no app build in scope. |
+| 3. Revised Filipino Science editions | 72 of 105 live; 33 held (list in this folder); 2 weeks never added (Grade 10 Term 3 Weeks 3 and 10). |
+| 4. Teacher PPTX upload, editing, export | Not released. A preview on b11-002, not committed; the owner's own production gates are open; renderer question open with Luis. |
+| 5. Combined multi-grade plans, DOCX, print | Not released. Per the owner's 21 Nov status only the core logic exists; DOCX export, the web screen and print pagination tests are missing. |
