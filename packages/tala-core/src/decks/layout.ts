@@ -343,15 +343,22 @@ export function layoutDeck(input: DeckLayoutInput): SlideLayout[] {
         done();
         continue;
       }
+      const cols = 2;
+      const rows = Math.ceil(choices.length / cols);
       let y = top;
       if ((s.kind === 'check' || s.kind === 'question') && s.lines.length) {
-        body(s.lines, M, y, W - 2 * M, 0.95, { bullets: false, sizes: [28, 26, 24] });
-        y += 1.05;
+        // The question gets the height its words need at the smallest size (as the pack renderer does since the
+        // Filipino revision, 21 Nov 2026), never less than before and never so much that a choice row has under an inch.
+        const width = W - 2 * M;
+        const minimumSize = 24;
+        const measured = estimateHeight(s.lines.map(cleanLine).filter(Boolean), width - 0.05, minimumSize, { paraGap: 12 });
+        const available = H - 0.75 - y - 0.1 - rows * 1.15;
+        const height = Math.min(available, Math.max(0.95, measured + 0.02));
+        body(s.lines, M, y, width, height, { bullets: false, sizes: [28, 26, minimumSize] });
+        y += height + 0.1;
       }
-      const cols = 2;
       const gap = 0.3;
       const cw = (W - 2 * M - gap) / cols;
-      const rows = Math.ceil(choices.length / cols);
       const explain = s.kind === 'reveal' && s.lines.length > 0;
       // Each choice must fit its own box.
       const fitEach = (w: number, h: number, sizes: number[]) => {

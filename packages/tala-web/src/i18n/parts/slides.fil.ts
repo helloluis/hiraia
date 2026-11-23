@@ -187,5 +187,5 @@ export const slidesFil = {
   'sl.ed.nextSlide': 'Susunod na slide',
   'sl.ed.draftSource': 'Draft ang pinagmulan ng kopyang ito. Wala pang gurong nagsuri nito. Suriin ang Science bago ituro.',
   // Mathematics pilot (21 Nov 2026)
-  'sl.pilot.note': "Ito ang mga na-check na picture ng slides ng pilot. Para baguhin ang slides, i-download ang PowerPoint file. Hindi kasama sa pilot na ito ang pag-edit ng kopya sa loob ng Tala.",
+  'sl.pilot.note': "Ito ang mga larawan ng slides ng pilot na nasuri na. Para baguhin ang slides, i-download ang PowerPoint file. Hindi kasama sa pilot na ito ang pag-edit ng kopya sa Tala.",
 } satisfies Record<keyof typeof slidesEn, string>;
