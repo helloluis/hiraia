@@ -24,8 +24,8 @@ for (const kind of ['dlp', 'dll', 'multigrade'] as const)
     );
     assert.ok(!/<script|<iframe|<link|<img|url\(https?:/i.test(html));
     assert.ok(html.includes('DRAFT'));
-    assert.ok(html.includes('Prepared by'));
-    assert.ok(html.includes('Checked by'));
+    assert.ok(html.includes('Inihanda ni'));
+    assert.ok(html.includes('Sinuri ni'));
     assert.ok(html.includes('ñ, á, é, í, ó, ú'));
     assert.ok(html.includes('data:font/ttf;base64,'));
   });
@@ -115,7 +115,7 @@ for (const withClass of [true, false])
         'Lahat ng pangkat',
         'Sama-sama',
         'Kasama ang guro',
-        'Mag-isa',
+        'Sariling gawain',
         'min',
       ])
         assert.ok(output.includes(label), label);

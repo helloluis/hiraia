@@ -75,10 +75,10 @@ export function buildSampleClass(input: {
     languages: [input.lang],
     isSample: true,
     profile: {
-      materials: [L('Sample: counters and paper', 'Halimbawa: mga pananda at papel')],
+      materials: [L('Sample: counters and paper', 'Halimbawa: mga pambilang at papel')],
       notes: L(
         'Fictional demonstration class and learners. Not an official curriculum.',
-        'Kathang-isip na klase at mga mag-aaral. Hindi opisyal na kurikulum.'
+        'Halimbawa lang ang klase at mga mag-aaral dito. Hindi ito opisyal na kurikulum.'
       ),
     },
   });
@@ -173,7 +173,7 @@ export function buildSampleClass(input: {
     const entry = timeline[i];
     const plan = Plan.parse({
       id: newId(),
-      title: `${label} — ${L(['Compare collections', 'Describe a pattern', 'Explain your grouping'][i]!, ['Paghambingin ang mga pangkat', 'Ilarawan ang padron', 'Ipaliwanag ang pagpapangkat'][i]!)}`,
+      title: `${label} — ${L(['Compare collections', 'Describe a pattern', 'Explain your grouping'][i]!, ['Paghambingin ang mga pangkat', 'Ilarawan ang pattern', 'Ipaliwanag ang pagpapangkat'][i]!)}`,
       templateId: template.id,
       language: input.lang,
       subjectName: assignment.subjectName,
@@ -206,10 +206,10 @@ export function buildSampleClass(input: {
                   `Baitang ${g.grade}: ilarawan at paghambingin ang mga pangkat ng bagay.`
                 )
               : section.key === 'materials'
-                ? text('Paper, pencils and ten counters.', 'Papel, lapis at sampung pananda.')
+                ? text('Paper, pencils and ten counters.', 'Papel, lapis at sampung pambilang.')
                 : text(
                     'Show one way to group the objects and explain your choice.',
-                    'Ipakita ang isang paraan ng pagpapangkat at ipaliwanag ang iyong pinili.'
+                    'Ipakita ang isang paraan ng pagpapangkat. Ipaliwanag kung bakit iyon ang pinili mo.'
                   ),
           ])
         );
@@ -217,7 +217,7 @@ export function buildSampleClass(input: {
         section.content.blocks = [
           {
             id: newId(),
-            label: `${label}: ${L('Explore together', 'Sama-samang tumuklas')}`,
+            label: `${label}: ${L('Explore together', 'Sama-samang tumingin at maglarawan')}`,
             minutes: 10,
             transitionMinutes: 0,
             teacherWith: 'all',
@@ -251,11 +251,11 @@ export function buildSampleClass(input: {
                     j === index
                       ? text(
                           'Explain your grouping to the teacher.',
-                          'Ipaliwanag sa guro ang iyong pagpapangkat.'
+                          'Ipaliwanag sa guro kung paano mo pinangkat ang mga bagay.'
                         )
                       : text(
                           'Draw and label a collection on your paper.',
-                          'Iguhit at lagyan ng pangalan ang pangkat sa iyong papel.'
+                          'Iguhit ang isang pangkat ng mga bagay sa papel mo at lagyan ito ng pangalan.'
                         ),
                 },
               ])
@@ -273,7 +273,7 @@ export function buildSampleClass(input: {
                 g.id,
                 {
                   mode: 'shared' as const,
-                  activity: text('Share what you noticed.', 'Ibahagi ang iyong napansin.'),
+                  activity: text('Share what you noticed.', 'Ibahagi ang napansin mo.'),
                 },
               ])
             ),
@@ -282,7 +282,7 @@ export function buildSampleClass(input: {
       } else if (section.content.type === 'text')
         section.content.blocks = text(
           'Example reflection; no real learners or observations.',
-          'Halimbawang pagninilay; walang tunay na mag-aaral o obserbasyon.'
+          'Halimbawa lang ito ng pagninilay. Wala itong totoong mag-aaral o obserbasyon.'
         );
     }
     sections.push(...planSections);

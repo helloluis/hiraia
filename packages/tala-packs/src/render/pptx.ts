@@ -323,15 +323,21 @@ export async function renderDeck(pack: WeeklyPackContent, review: PackReview | n
         slide.addNotes(s.notes);
         continue;
       }
+      const cols = 2;
+      const rows = Math.ceil(choices.length / cols);
       let y = 2.35;
       if ((s.kind === 'check' || s.kind === 'question') && s.lines.length) {
-        body(slide, s.id, s.lines, M, y, W - 2 * M, 0.95, { bullets: false, sizes: [28, 26, 24] });
-        y += 1.05;
+        const width = W - 2 * M;
+        const minimumSize = 24;
+        const measured = estimateHeight(s.lines.map(clean).filter(Boolean), width - 0.05, minimumSize, { paraGap: 12 });
+        // Reserve at least one inch for each choice row, plus the spacing the grid adds below it.
+        const available = H - 0.75 - y - 0.1 - rows * 1.15;
+        const height = Math.min(available, Math.max(0.95, measured + 0.02));
+        body(slide, s.id, s.lines, M, y, width, height, { bullets: false, sizes: [28, 26, minimumSize] });
+        y += height + 0.1;
       }
-      const cols = 2;
       const gap = 0.3;
       const cw = (W - 2 * M - gap) / cols;
-      const rows = Math.ceil(choices.length / cols);
       const explain = s.kind === 'reveal' && s.lines.length > 0;
       // Each choice must fit its own box (the old estimate stacked all four in one box and warned on every slide).
       const fitEach = (w: number, h: number, sizes: number[]) => {

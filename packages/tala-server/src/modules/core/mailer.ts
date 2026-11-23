@@ -59,11 +59,11 @@ const TEMPLATES: Record<MailTemplate, Record<Lang, TemplateText>> = {
         `Tala, by Hiraia`,
     },
     fil: {
-      subject: 'Kumpirmahin ang iyong email para sa Tala',
+      subject: 'I-verify ang email mo sa Tala',
       body: (v) =>
         `Kumusta ${v.displayName ?? ''},\n\n` +
-        `Pakikumpirma na sa iyo ang email address na ito sa pagbukas ng link na ito:\n\n${v.link ?? ''}\n\n` +
-        `Gagana ang link sa loob ng 48 oras at isang beses lang. Kung hindi ikaw ang gumawa ng Tala account, huwag mo na lang pansinin ang mensaheng ito.\n\n` +
+        `Buksan ang link para kumpirmahing sa iyo ang email address na ito.\n\n${v.link ?? ''}\n\n` +
+        `Gagana ang link sa loob ng 48 oras at isang beses mo lang ito magagamit. Kung hindi ikaw ang gumawa ng Tala account, puwede mong balewalain ang email na ito.\n\n` +
         `Tala, mula sa Hiraia`,
     },
   },
@@ -77,11 +77,11 @@ const TEMPLATES: Record<MailTemplate, Record<Lang, TemplateText>> = {
         `Tala, by Hiraia`,
     },
     fil: {
-      subject: 'Palitan ang iyong password sa Tala',
+      subject: 'Palitan ang password mo sa Tala',
       body: (v) =>
         `Kumusta ${v.displayName ?? ''},\n\n` +
-        `Para pumili ng bagong password, buksan ang link na ito:\n\n${v.link ?? ''}\n\n` +
-        `Gagana ang link sa loob ng 30 minuto at isang beses lang. Kung hindi ikaw ang humiling nito, huwag mo na lang pansinin ang mensaheng ito. Hindi magbabago ang iyong password.\n\n` +
+        `Buksan ang link para pumili ng bagong password.\n\n${v.link ?? ''}\n\n` +
+        `Gagana ang link sa loob ng 30 minuto at isang beses mo lang ito magagamit. Kung hindi ikaw ang humiling nito, puwede mong balewalain ang email na ito. Mananatili ang kasalukuyan mong password.\n\n` +
         `Tala, mula sa Hiraia`,
     },
   },
@@ -96,12 +96,12 @@ const TEMPLATES: Record<MailTemplate, Record<Lang, TemplateText>> = {
         `Tala, by Hiraia`,
     },
     fil: {
-      subject: 'Ikonekta ang Google sa iyong Tala account',
+      subject: 'Ikonekta ang Google sa Tala account mo',
       body: (v) =>
         `Kumusta ${v.displayName ?? ''},\n\n` +
-        `May humiling na ikonekta ang Google account na ${v.googleEmail ?? ''} sa iyong Tala account, para makapag-sign in ka gamit ang Google. ` +
-        `Kung ikaw ito, buksan ang link na ito:\n\n${v.link ?? ''}\n\n` +
-        `Gagana ang link sa loob ng 30 minuto at isang beses lang. Kung hindi ikaw ito, huwag mo na lang pansinin ang mensaheng ito. Walang magbabago.\n\n` +
+        `May humiling na ikonekta ang Google account na ${v.googleEmail ?? ''} sa Tala account mo para makapag-sign in ka gamit ang Google. ` +
+        `Kung ikaw ang humiling nito, buksan ang link.\n\n${v.link ?? ''}\n\n` +
+        `Gagana ang link sa loob ng 30 minuto at isang beses mo lang ito magagamit. Kung hindi ikaw ito, puwede mong balewalain ang email na ito. Walang magbabago.\n\n` +
         `Tala, mula sa Hiraia`,
     },
   },
