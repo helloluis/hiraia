@@ -403,3 +403,31 @@ one test and the owner's notes.
   and is handing its text to the feature owner, who re-issues the patch.
 - Still open: Luis's word that the work may be committed; a person opening a sample `.docx` in real Word, Google
   Docs or WPS, or Luis's word to ship without that; the re-issued patch after the Filipino pass.
+
+### Lane 5: fourth hand-over, 23 Nov 2026 19:50 PH (bridge reply `347c6563…`): Filipino pass in, release content complete
+
+Nothing is committed. Read back and verified: multi-grade alone `f0a27077…0601` (tree `b6125b4d…` when applied
+alone on `6ebaf2c96`), both lanes `e988c49a…3b81` (tree `05715727…`), the uploads patch unchanged; all equal to the
+owner's values. Against the third hand-over exactly nine files differ:
+
+- **Filipino pass.** The three Filipino files in the patch are byte for byte the files in the Filipino owner's own
+  hand-over folder (`combine.fil.ts` `9f6c97ac…`, `combine-words.ts` `a32399ca…`, `print/table.ts` `d39eb6ba…`),
+  which that owner confirmed separately over the bridge (`422b4d03…`). Only Filipino values changed (28 of 58);
+  keys, placeholders and English are untouched. It is an editorial pass by the Filipino owner, not a teacher's
+  review; the print notice still says the draft was made with AI, that no teacher has checked it, and to check
+  it before use.
+- **One bug fixed**, found by the Filipino owner's notes: with exactly one multi-grade subject, choosing "All grades
+  together" snapped back to that subject. The owner's browser walk has a check for it (19 checks now).
+- The multi-grade patch contains no uploads code.
+
+Release-owner checks of this version alone on `6ebaf2c96` (Node 22.23.4, frozen install, lockfile unchanged):
+types clean; tests 270 core, 288 server (1 opt-in skip), 87 web; production build clean. Full rehearsal on one
+database with the libraries that are live: `tala-v1-demo.13` → candidate → `tala-v1-demo.13` → candidate; 26
+tables throughout; the owner's walk 19 of 19 on the candidate; after switching back the combined plans open, keep
+the teacher's note and print on the current release (11 of 11); forward again 11 of 11; no error lines.
+
+**What is left**: Luis's word that the work may be committed, and a person opening a sample `.docx` in real Word,
+Google Docs or WPS (or Luis's word to ship without that). When the owner's commit arrives with parent `6ebaf2c96`
+and tree `b6125b4d…`, it is the content rehearsed here and goes out as `tala-v1-demo.14` (multi-grade alone).
+The Filipino pass on the uploads strings is also done on the Filipino owner's side; the uploads patch will be
+re-issued and stays unreleased.
