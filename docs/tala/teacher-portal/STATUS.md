@@ -346,3 +346,42 @@ over the pinned route and match the owner's checksums; they are kept outside the
 - **Multi-grade plans (lane 5)**: patch sha256 `bdcf3305…e0be` (7 files), for reading only: library code and 12
   tests, nothing a teacher can reach. The owner is building the editable DOCX export, the combine-and-edit screen,
   the A4 and long-bond print layout, strings and tests, and will hand over patches against `6ebaf2c96`.
+
+### Lanes 4 and 5: second hand-over, 23 Nov 2026 19:15 PH (bridge reply `2f4898e4…`): multi-grade is built
+
+Still nothing committed, pushed or installed. The first hand-over's patches are superseded. All three new patches
+are against the live commit `6ebaf2c96`, were read back over the pinned route and match the owner's checksums:
+multi-grade alone `a904397d…a08d` (33 files), uploads alone `9c703d7e…5d2a` (44 files), both `8d74eafe…283d`
+(74 files). Applied in a throwaway index they give the trees `b0d7c202…` (multi-grade alone), `85cff385…`
+(uploads alone) and `f90c49b4…` (both), the last equal to the tree the owner built and tested.
+
+- **Multi-grade (lane 5), what it is**: Lessons shows "Combine lessons for a multi-grade class" to a teacher who has
+  a class with two or more grades; one saved lesson per grade becomes one private draft on the existing
+  multi-grade template, edited and synced like any plan; the print sheet gains a table layout (A4 and long bond)
+  and "Download as Word (.docx)", made in the browser. No migration, dependency, setting, server route or process.
+  It also changes three things for every plan: the print page ends with one unsplittable block (signature lines
+  and footer), every print sheet offers the Word download, and a multi-grade plan's sheet opens on the table layout.
+- **Release-owner checks of the multi-grade patch alone on `6ebaf2c96`** (scratch trees, Node 22.23.4, frozen
+  install, lockfile unchanged): types clean; tests 270 core, 288 server (1 opt-in skip), 87 web; production build
+  clean with the new `/lessons/combine` route. Rehearsal on one database with the libraries that are live:
+  `tala-v1-demo.13` → candidate → back to `tala-v1-demo.13` → candidate. The database keeps its 26 tables
+  throughout. On the candidate the owner's browser walk passed 18 of 18 (two and three grades, a teacher's edit
+  kept across reload and devices, source lessons unchanged, A4 and long-bond print, Word download, phone,
+  Filipino). The Word file is a well-formed document that LibreOffice opens and converts. After the switch back,
+  the plans made on the candidate open in the current release's editor with the teacher's note and print in the
+  list layout (11 of 11); after switching forward again, 11 of 11. No error lines in any server log.
+- **Not verified by anyone**: the Word file in Microsoft Word, Google Docs or WPS; a real printer. The print sheet
+  itself says the file "Opens in Word, WPS Office and Google Docs", so this check decides whether that line is true.
+- **Open before release** (the owner's gates): (1) Luis's word that the work may be committed; the owner then
+  commits multi-grade first and uploads second on `tala-v1-teacher-uploads` and sends the commit ids and a bundle;
+  (2) a person to open a sample `.docx` in real Word, Google Docs or WPS, or Luis's word to ship without that;
+  (3) the Filipino pass on `combine.fil.ts` and the Filipino halves of `combine-words.ts` and `print/table.ts`
+  (first drafts; the Filipino owner has paths and checksums and was asked for the pass on 23 Nov).
+- **Uploads (lane 4)**: no change in function; moved onto `6ebaf2c96`; everything in the first hand-over stands,
+  including the renderer question.
+- Sample files for the hand checks (the owner's, checksum-verified) and screenshots from the rehearsal were
+  published as unlisted links for Luis; they expire on 30 Nov 2026.
+- **Release plan once the gates close**: take the owner's multi-grade commit, compare its tree with `b0d7c202…`
+  plus whatever the Filipino pass changes, repeat the checks above, tag `tala-v1-demo.14` (multi-grade alone,
+  no uploads code) and deploy under the lock. Rollback is `/opt/tala/deploy.sh tala-v1-demo.13`; plans combined
+  in the meantime stay usable there.
