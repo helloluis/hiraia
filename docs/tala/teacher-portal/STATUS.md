@@ -431,3 +431,22 @@ Google Docs or WPS (or Luis's word to ship without that). When the owner's commi
 and tree `b6125b4d…`, it is the content rehearsed here and goes out as `tala-v1-demo.14` (multi-grade alone).
 The Filipino pass on the uploads strings is also done on the Filipino owner's side; the uploads patch will be
 re-issued and stays unreleased.
+
+### Lane 4: fifth hand-over, 23 Nov 2026 20:15 PH (bridge reply `8b58a427…`): uploads re-issued, still not releasable
+
+Nothing is committed. The multi-grade patch is byte for byte the fourth hand-over's (`f0a27077…`, tree
+`b6125b4d…`). Read back and verified: uploads alone `5a402f22…4f29` (tree `b2762367…` when applied alone on
+`6ebaf2c96`), both lanes `2e4032a0…8d7e` (tree `76da81cd…`), equal to the owner's values. Against the second
+hand-over exactly five files differ: the Filipino owner's pass on `uploads.fil.ts` (`6905616e…`, byte for byte the
+file in that owner's hand-over folder; 79 of 144 messages revised; an editorial pass, teacher review open), 15
+English values and five server messages brought to the same accuracy (wording only, no logic), and the owner's
+notes.
+
+- Release-owner check of the uploads patch alone on `6ebaf2c96` (Node 22.23.4, frozen install, lockfile unchanged):
+  types clean; tests 271 core, 299 server (1 opt-in skip), 89 web; production build clean with `/library/mine` and
+  `/slides/mine/[uploadId]`. No rehearsal yet: it has a migration and server-side file handling, and is to be
+  rehearsed in the configuration Luis chooses.
+- Still waits on Luis: the renderer question, unchanged ("Should Fable add a sandboxed production renderer before
+  enabling PPTX previews, or ship without preview pictures?"); a person opening an edited `.pptx` in real
+  PowerPoint, Google Slides or WPS, or his word to ship without that; the wording of the privacy line; his word
+  that the work may be committed.
