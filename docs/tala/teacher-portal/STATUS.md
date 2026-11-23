@@ -385,3 +385,21 @@ multi-grade alone `a904397d…a08d` (33 files), uploads alone `9c703d7e…5d2a` 
   plus whatever the Filipino pass changes, repeat the checks above, tag `tala-v1-demo.14` (multi-grade alone,
   no uploads code) and deploy under the lock. Rollback is `/opt/tala/deploy.sh tala-v1-demo.13`; plans combined
   in the meantime stay usable there.
+
+### Lane 5: third hand-over, 23 Nov 2026 19:40 PH (bridge reply `93acaacc…`)
+
+The owner acted on two observations from the release check; nothing is committed. Five files changed in the
+multi-grade patch, the uploads patch is byte for byte the same. Read back and verified: multi-grade alone
+`3197af66…e765` (tree `45500908…` when applied alone on `6ebaf2c96`), both lanes `a10a7f31…7bf1` (tree
+`e79b7e64…`), equal to the owner's values. The difference from the second hand-over is exactly: the print sheet
+now says the Word file is "in the .docx format that Word, WPS Office and Google Docs use" instead of claiming it
+opens in them; a combined plan's title says a label all its lessons share once ("Day 1 · Grade 4: … · Grade 5: …");
+one test and the owner's notes.
+
+- Release-owner checks of this version alone on `6ebaf2c96` (Node 22.23.4, frozen install): types clean; tests 270
+  core, 288 server (1 opt-in skip), 87 web; production build clean. The rehearsal (upgrade, browser walk, switch
+  back and forward) was run on the second hand-over's version and is to be repeated on the committed one.
+- Filipino pass: the Filipino owner started it on request the same evening, finished the three multi-grade files
+  and is handing its text to the feature owner, who re-issues the patch.
+- Still open: Luis's word that the work may be committed; a person opening a sample `.docx` in real Word, Google
+  Docs or WPS, or Luis's word to ship without that; the re-issued patch after the Filipino pass.
