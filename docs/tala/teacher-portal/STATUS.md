@@ -326,3 +326,23 @@ ready; the others are in the ledger at the end.
 | 3. Revised Filipino Science editions | 72 of 105 live; 33 held (list in this folder); 2 weeks never added (Grade 10 Term 3 Weeks 3 and 10). |
 | 4. Teacher PPTX upload, editing, export | Not released. A preview on b11-002, not committed; the owner's own production gates are open; renderer question open with Luis. |
 | 5. Combined multi-grade plans, DOCX, print | Not released. Per the owner's 21 Nov status only the core logic exists; DOCX export, the web screen and print pagination tests are missing. |
+
+### Lanes 4 and 5: the owner's hand-over, 23 Nov 2026 18:30 PH (bridge reply `840ceae7…`)
+
+Owner `b11-002:f500f47c`. Nothing of either lane is committed, pushed or installed. Both patches were read back
+over the pinned route and match the owner's checksums; they are kept outside the repository.
+
+- **Uploads (lane 4)**: patch against `d57b2c18c`, sha256 `b879fd2c…82c7` (44 files). Checked by the release owner
+  in a scratch tree: it applies cleanly on the live commit `6ebaf2c96`; with the patch alone, frozen install with the
+  lockfile unchanged, types clean, tests 271 core, 299 server (1 opt-in skip), 89 web. Adds one additive migration
+  (`decks:002_uploads`, five tables), no dependency. Nothing is spawned while `TALA_DECKS_PREVIEW_SOFFICE` is unset;
+  upload, editing, autosave and export work without it, and the editor then shows text boxes instead of a picture.
+  Owner's suggested limits for a first release: 15 MB per file, 50 MB per account.
+  **Waiting on Luis**: (1) the renderer question, unchanged: "Should Fable add a sandboxed production renderer before
+  enabling PPTX previews, or ship without preview pictures?"; (2) a person to hand-check an edited file in real
+  PowerPoint, Google Slides or WPS, or his word to ship without that; (3) the wording of the privacy line (uploaded
+  files are kept until the teacher deletes them or her account); (4) his word that the work may be committed.
+  Also open: the Filipino pass on the uploads strings.
+- **Multi-grade plans (lane 5)**: patch sha256 `bdcf3305…e0be` (7 files), for reading only: library code and 12
+  tests, nothing a teacher can reach. The owner is building the editable DOCX export, the combine-and-edit screen,
+  the A4 and long-bond print layout, strings and tests, and will hand over patches against `6ebaf2c96`.
