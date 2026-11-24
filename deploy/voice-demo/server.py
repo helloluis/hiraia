@@ -12,6 +12,11 @@ default scales 0.667/1.0/0.8), run per sentence chunk so memory and per-chunk la
 bounded. Mixed Tagalog-English text goes through whichever voice was chosen; there is no
 language guessing.
 
+Brand names (Hiraia, QVAC, Tala, ...) are spoken from the shared speech-only lexicon
+pronunciation/brand-lexicon.json, layered over the frozen bundle's dictionary after the bundle
+itself is verified. The lexicon is pinned by BRAND_LEXICON_SHA256; its URL rewrites change
+only what is spoken, never the visitor's text, and run after the length cap.
+
 Protection: hard 500-character cap (after normalisation, counted in code points), 4 KB body
 cap, per-client sliding-window limits, one synthesis at a time with a short bounded queue, a
 per-request deadline, and log lines that carry no text and no raw address (a keyed hash that
@@ -56,6 +61,9 @@ ALLOWED_ORIGINS = {o.strip() for o in os.environ.get(
     "VOICE_DEMO_ORIGINS", "https://hiraia.org,https://www.hiraia.org").split(",") if o.strip()}
 SCALES = (0.667, 1.0, 0.8)
 FFMPEG = os.environ.get("VOICE_DEMO_FFMPEG", "/usr/bin/ffmpeg")
+# Shared speech-only lexicon (pronunciation/brand-lexicon.json). Pinned: a lexicon change must
+# update this hash in the same commit, so a deployed server never runs an unreviewed pairing.
+BRAND_LEXICON_SHA256 = "111c93a5c0e2269cee74a97110275a9e37046ac1da54c5348361dd81e35a57dd"
 
 log = logging.getLogger("voice-demo")
 
@@ -75,11 +83,47 @@ _LETTER = re.compile(r"[^\W\d_]", re.UNICODE)
 _DIGIT = re.compile(r"\d")
 
 
+def _brand_lexicon_path() -> Path:
+    configured = os.environ.get("VOICE_DEMO_BRAND_LEXICON")
+    if configured:
+        return Path(configured)
+    here = Path(__file__).resolve().parent
+    deployed = here / "brand-lexicon.json"            # /opt/hiraia-voice-demo/brand-lexicon.json
+    return deployed if deployed.exists() else here.parents[1] / "pronunciation" / "brand-lexicon.json"
+
+
+def load_brand_lexicon(path: Path | None = None) -> dict:
+    """Read and pin-check the shared lexicon; fail closed on any mismatch."""
+    path = path or _brand_lexicon_path()
+    raw = path.read_bytes()
+    digest = hashlib.sha256(raw).hexdigest()
+    if digest != BRAND_LEXICON_SHA256:
+        raise SystemExit(f"Brand lexicon {path} is {digest}, expected pinned {BRAND_LEXICON_SHA256}")
+    lexicon = json.loads(raw)
+    if lexicon.get("schema") != "hiraia-brand-lexicon/1":
+        raise SystemExit("Unsupported brand lexicon schema")
+    lexicon["sha256"] = digest
+    lexicon["rewrites"] = [(re.compile(r["pattern"], re.IGNORECASE), r["replacement"])
+                           for r in lexicon["speech_text_rewrites"]]
+    return lexicon
+
+
+BRAND = load_brand_lexicon()
+
+
+def speech_rewrites(text: str) -> str:
+    """Spoken forms for hiraia.org URLs (speech only; the visitor's text box is untouched)."""
+    for pattern, replacement in BRAND["rewrites"]:
+        text = pattern.sub(replacement, text)
+    return text
+
+
 def normalise(text: str, voice: str) -> str:
     """Map visitor text onto what the frozen frontend accepts, without changing words."""
     text = unicodedata.normalize("NFC", text)
     if len(text) > MAX_CHARS:
         raise UserError(413, "too_long", f"Please keep it to {MAX_CHARS} characters.")
+    text = speech_rewrites(text)
     if _DIGIT.search(text):
         raise UserError(422, "digits", "Please spell out numbers in words (for example “tatlo” or “three”).")
     # Line breaks end a sentence; tabs are spaces.
@@ -174,13 +218,21 @@ class Engine:
         import numpy as np
         import onnxruntime as ort
         import synthesize  # the bundle's reference CLI: integrity check
-        from hiraia_voice.phoneme_frontend import PhonemeFrontend
+        from hiraia_voice.phoneme_frontend import DATA, PhonemeFrontend
 
         self.np = np
         self.manifest = synthesize.verify_bundle(bundle)
-        self.frontend = PhonemeFrontend()
-        if self.frontend.provenance != self.manifest["frontend"]:
+        frozen = PhonemeFrontend()
+        if frozen.provenance != self.manifest["frontend"]:
             raise SystemExit("Frontend dependencies/data differ from the frozen bundle")
+        self.frontend = self._with_brand_lexicon(PhonemeFrontend, DATA / "overrides.json",
+                                                 bundle / "data" / "pronunciation" / "lexicon.json")
+        layered = dict(self.frontend.provenance)
+        for key in ("overrides_sha256", "dictionary_sha256"):
+            layered[key] = self.manifest["frontend"][key]
+        if layered != self.manifest["frontend"] or self.frontend.id_map != frozen.id_map:
+            raise SystemExit("Brand lexicon layer changed more than the overrides and dictionary")
+        del frozen
         self.sessions = {}
         for language in VOICES.values():
             directory = bundle / "models" / language
@@ -195,6 +247,19 @@ class Engine:
                                                            providers=["CPUExecutionProvider"])
         self.scales = np.asarray(SCALES, dtype=np.float32)
         self.models = {v: self.manifest["models"][language] for v, language in VOICES.items()}
+
+    @staticmethod
+    def _with_brand_lexicon(frontend_class, overrides_path: Path, dictionary_path: Path):
+        """Frozen overrides/dictionary plus the brand entries, written to a private temp dir."""
+        import tempfile
+        overrides = json.loads(overrides_path.read_text())
+        overrides["entries"] = overrides["entries"] + BRAND["tagalog_overrides"]
+        dictionary = json.loads(dictionary_path.read_text())
+        dictionary["entries"] = dictionary["entries"] + BRAND["dictionary_entries"]
+        work = Path(tempfile.mkdtemp(prefix="hiraia-voice-brand-"))
+        (work / "overrides.json").write_text(json.dumps(overrides, ensure_ascii=False))
+        (work / "lexicon.json").write_text(json.dumps(dictionary, ensure_ascii=False))
+        return frontend_class(overrides_path=work / "overrides.json", dictionary_path=work / "lexicon.json")
 
     def synthesize(self, text: str, voice: str, deadline: float):
         np = self.np
@@ -291,6 +356,9 @@ def make_handler(app: App):
             self._json(200 if ok else 503, {
                 "ok": ok, "voices": {v: {"id": VOICE_IDS[v], "model_sha256": m["model_sha256"],
                                          "model_bytes": m["model_bytes"]} for v, m in app.engine.models.items()} if ok else {},
+                "pronunciation": {"brand_lexicon": BRAND["version"], "sha256": BRAND["sha256"],
+                                  "entries": len(BRAND["dictionary_entries"]) + len(BRAND["tagalog_overrides"]),
+                                  "rewrites": len(BRAND["rewrites"])},
                 "max_chars": MAX_CHARS, "uptime_s": int(time.time() - app.started), "served": app.served})
 
         def do_POST(self):

@@ -7,7 +7,7 @@
 #
 #   [VOICE_RELEASE=/path/to/voice-models/expanded-mini/1.0.0-preview.1] deploy/voice-demo/install.sh [root@10.77.0.20]
 #
-# Installs:  /opt/hiraia-voice-demo/{server.py,bundle/,venv/}   (service user hiraia-voice)
+# Installs:  /opt/hiraia-voice-demo/{server.py,brand-lexicon.json,bundle/,venv/}   (service user hiraia-voice)
 #            systemd: hiraia-voice-demo.service (loopback :8139, MemoryMax=1G, CPUQuota=200%)
 #            nginx: conf.d/hiraia-voice-rate.conf + the BEGIN/END hiraia-voice-demo block before
 #            `location /` in sites-available/hiraia.org (backed up next to it first)
@@ -42,6 +42,7 @@ rssh 'set -e; id -u hiraia-voice >/dev/null 2>&1 || useradd --system --no-create
   mkdir -p /opt/hiraia-voice-demo.new && rm -rf /opt/hiraia-voice-demo.new/*'
 tar -C "$BUNDLE" --exclude=__pycache__ -cf - . | rssh 'mkdir -p /opt/hiraia-voice-demo.new/bundle && tar -C /opt/hiraia-voice-demo.new/bundle -xf -'
 tar -C "$HERE" -cf - server.py | rssh 'tar -C /opt/hiraia-voice-demo.new -xf -'
+tar -C "$ROOT/pronunciation" -cf - brand-lexicon.json | rssh 'tar -C /opt/hiraia-voice-demo.new -xf -'
 
 echo ">> [2/5] python venv (pinned bundle requirements)"
 rssh 'set -e; N=/opt/hiraia-voice-demo.new; O=/opt/hiraia-voice-demo
@@ -81,3 +82,5 @@ echo ">> [5/5] verify"
 rssh 'curl -s -o /dev/null -w "  local synth %{http_code} %{time_total}s %{size_download}B\n" -H "Content-Type: application/json" -d "{\"text\":\"Kumusta ka?\",\"voice\":\"fil\"}" http://127.0.0.1:8139/api/voice/synthesize
   systemctl show -p MemoryCurrent -p MemoryPeak hiraia-voice-demo | tr "\n" " "; echo'
 curl -s -o /dev/null -w "  public health %{http_code}\n" https://hiraia.org/api/voice/health
+LEXICON_SHA="$(sha256sum "$ROOT/pronunciation/brand-lexicon.json" | cut -d" " -f1)"
+curl -sf https://hiraia.org/api/voice/health | python3 -c 'import json,sys; h=json.load(sys.stdin); p=h.get("pronunciation") or {}; assert h["ok"] and p.get("sha256")==sys.argv[1], h; print("  public brand lexicon", p["brand_lexicon"], p["sha256"][:12])' "$LEXICON_SHA"

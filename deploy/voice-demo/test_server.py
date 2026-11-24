@@ -75,6 +75,104 @@ class Limits(unittest.TestCase):
         self.assertEqual(h("203.0.113.9"), h("203.0.113.9"))
 
 
+class BrandSpeechRewrites(unittest.TestCase):
+    """hiraia.org URLs are spoken as words; visitor text is otherwise untouched."""
+
+    def test_pinned_repo_lexicon_loads(self):
+        repo = Path(__file__).resolve().parents[2] / "pronunciation" / "brand-lexicon.json"
+        self.assertEqual(server.load_brand_lexicon(repo)["sha256"], server.BRAND_LEXICON_SHA256)
+
+    def test_urls_spoken(self):
+        cases = {
+            "Visit Hiraia.org.": "Visit Hiraia dot org.",
+            "Visit hiraia.org to download it.": "Visit Hiraia dot org to download it.",
+            "HIRAIA.ORG": "Hiraia dot org",
+            "https://hiraia.org/support": "Hiraia dot org support",
+            "Go to https://www.hiraia.org now": "Go to www dot Hiraia dot org now",
+            "assets.hiraia.org": "assets dot Hiraia dot org",
+            "Bisitahin ang Hiraia.org, salamat!": "Bisitahin ang Hiraia dot org, salamat!",
+        }
+        for text, spoken in cases.items():
+            for voice in ("fil", "en"):
+                with self.subTest(text=text, voice=voice):
+                    self.assertEqual(normalise(text, voice), spoken)
+
+    def test_unrelated_text_unchanged(self):
+        texts = ("Visit example.org today.", "notHiraia.org", "Hiraia org", "Ang tala sa langit.",
+                 "Kapag mainit, nag-e-evaporate ang water.", "Visit https://example.org now")
+        with_rewrites = [normalise(t, "en") for t in texts]
+        saved, server.BRAND["rewrites"] = server.BRAND["rewrites"], []
+        try:
+            without = [normalise(t, "en") for t in texts]
+        finally:
+            server.BRAND["rewrites"] = saved
+        self.assertEqual(with_rewrites, without)
+
+    def test_length_cap_applies_to_visitor_text(self):
+        text = ("hiraia.org " * 46)[:500]
+        self.assertEqual(len(text), 500)
+        self.assertGreater(len(normalise(text, "en")), 500)
+
+
+@unittest.skipUnless(os.environ.get("VOICE_DEMO_BUNDLE"), "needs the voice bundle")
+class BrandPronunciation(unittest.TestCase):
+    """Every named term, both voices, plus capitalisation, punctuation and unaffected words."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.engine = server.Engine(Path(os.environ["VOICE_DEMO_BUNDLE"]))
+        from hiraia_voice.phoneme_frontend import PhonemeFrontend
+        cls.frozen = PhonemeFrontend()
+
+    def phones(self, text, voice, frontend=None):
+        frontend = frontend or self.engine.frontend
+        return " | ".join(frontend.prepare(p, server.VOICES[voice], label_mode="target",
+                                           allow_provisional=True).phoneme_text
+                          for p in chunks(normalise(text, voice)))
+
+    EXPECTED = {
+        "en": {"Hiraia": "hiːɹˈɑːjə", "Hiraia's": "hiːɹˈɑːjəz", "QVAC": "kjˈuːvæk", "Tala": "tˈɑːlə",
+               "Luis Buenaventura": "luˈiːs bwˌɛnəvɛntˈʊɹə", "Tether": "tˈɛðɚ", "Qwen": "tʃwˈɛn",
+               "DeepSeek": "dˈiːpsiːk", "Claude": "klˈɔːd", "ChatGPT": "tʃˈæt dʒˌiːpˌiːtˈiː",
+               "Hiraia.org": "hiːɹˈɑːjə dˈɑːt ˈɔːɹɡ"},
+        "fil": {"Hiraia": "hiɾˈaja", "Hiraia's": "hiɾˈajas", "QVAC": "kjˈuvak", "Tala": "tˈala",
+                "Luis Buenaventura": "luˈis bwenaventˈuɾa", "Tether": "tˈɛdɛɾ", "Qwen": "tʃwˈɛn",
+                "DeepSeek": "dˈipsik", "Claude": "klˈod", "ChatGPT": "tʃˈat dʒˌipitˈi",
+                "Hiraia.org": "hiɾˈaja dˈɔt ˈɔɾɡ"},
+    }
+
+    def test_every_term_both_voices(self):
+        import unicodedata
+        for voice, terms in self.EXPECTED.items():
+            for term, expected in terms.items():
+                for variant in (term, term.upper(), term.lower(), f"({term})", f"{term}!", f"{term}, at"):
+                    if voice == "en" and variant.endswith(", at"):
+                        variant = f"{term}, and"
+                    with self.subTest(voice=voice, variant=variant):
+                        self.assertIn(unicodedata.normalize("NFD", expected), self.phones(variant, voice))
+
+    def test_unaffected_text_identical_to_frozen_frontend(self):
+        controls = {
+            "fil": ["Ang paniki lang ang mammal sa buong mundo na talagang nakakalipad.",
+                    "Isulat ang tala sa talaan.", "Ang Parañaque at Quezon ay nasa Metro Manila.",
+                    "Kapag mainit, nag-e-evaporate ang water.", "Si Luisa ay may tuldok sa papel."],
+            "en": ["We call this change evaporation. Now, tell me what happened to the water.",
+                   "Claudette tethered the boat in Manila.", "Talk to Luisa about the queue."],
+        }
+        for voice, texts in controls.items():
+            for text in texts:
+                with self.subTest(voice=voice, text=text):
+                    self.assertEqual(self.phones(text, voice), self.phones(text, voice, self.frozen))
+
+    def test_filipino_dot_and_org_are_lexicon_scoped(self):
+        # Intentional: the Filipino "dot"/"org" entries that say "Hiraia dot org" apply to those
+        # standalone words too (Filipino-English /dɔt/, /ɔɾɡ/). Nothing else in the sentence moves.
+        brand, frozen = self.phones("May dot sa org.", "fil"), self.phones("May dot sa org.", "fil", self.frozen)
+        self.assertEqual(brand, "mˈaj dˈɔt sˈa ˈɔɾɡ.")
+        self.assertNotEqual(brand, frozen)
+        self.assertEqual(brand.split()[0::2], frozen.split()[0::2])
+
+
 @unittest.skipUnless(os.environ.get("VOICE_DEMO_BUNDLE"), "needs the voice bundle")
 class FrontendFuzz(unittest.TestCase):
     """Anything normalise() accepts must either prepare or raise a UserError, never crash."""

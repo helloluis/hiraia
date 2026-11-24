@@ -1,0 +1,315 @@
+{
+ "schema": "hiraia-brand-lexicon/1",
+ "version": "2026.11.24-1",
+ "purpose": "Speech-only pronunciations for Hiraia's own names, shared by the main Hiraia APK, the Reader APK and the hiraia.org voice demo. Changes audio only; displayed text is never rewritten.",
+ "approval": {
+  "date": "2026-11-24",
+  "by": "Luis Buenaventura",
+  "record": "Luis specified Hiraia = Hee-RA-ya and QVAC = CUE-vak, then accepted the proposed set after the local A/B page ('Those sound correct to me'). This does not record that every clip was heard."
+ },
+ "runtime_notes": "status uses the strictest runtime schema (website Python: draft|source_checked|native_reviewed). Tagalog overrides need annotation_scope and source. Rewrites use only regex syntax shared by Python re and JavaScript (case-insensitive, no backreferences) and run in order before text normalisation.",
+ "speech_text_rewrites": [
+  {
+   "id": "url-scheme",
+   "pattern": "\\bhttps?://(?=(?:[a-z0-9-]+\\.)*hiraia\\.org\\b)",
+   "replacement": "",
+   "status": "draft",
+   "notes": "drop the scheme of a hiraia.org URL"
+  },
+  {
+   "id": "url-subdomain-dots",
+   "pattern": "\\.(?=(?:[a-z0-9-]+\\.)*hiraia\\.org\\b)",
+   "replacement": " dot ",
+   "status": "draft",
+   "notes": "www.hiraia.org / assets.hiraia.org"
+  },
+  {
+   "id": "hiraia-org",
+   "pattern": "\\bhiraia\\.org\\b",
+   "replacement": "Hiraia dot org",
+   "status": "draft"
+  }
+ ],
+ "dictionary_entries": [
+  {
+   "id": "brand-en-hiraia",
+   "language": "en-PH",
+   "forms": [
+    "Hiraia"
+   ],
+   "phonemes": "hiːɹˈɑːjə",
+   "status": "draft",
+   "notes": "Hee-RA-ya",
+   "owner_review": "specified by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-en-hiraia-possessive",
+   "language": "en-PH",
+   "forms": [
+    "Hiraia's",
+    "Hiraia’s"
+   ],
+   "phonemes": "hiːɹˈɑːjəz",
+   "status": "draft",
+   "notes": "frontend skips dictionary hits followed by 's, so the possessive needs its own form",
+   "owner_review": "specified by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-en-qvac",
+   "language": "en-PH",
+   "forms": [
+    "QVAC"
+   ],
+   "phonemes": "kjˈuːvæk",
+   "status": "draft",
+   "notes": "CUE-vak",
+   "owner_review": "specified by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-en-tala",
+   "language": "en-PH",
+   "forms": [
+    "Tala"
+   ],
+   "phonemes": "tˈɑːlə",
+   "status": "draft",
+   "owner_review": "accepted by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-en-luis",
+   "language": "en-PH",
+   "forms": [
+    "Luis"
+   ],
+   "phonemes": "luˈiːs",
+   "status": "draft",
+   "notes": "loo-EES",
+   "owner_review": "accepted by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-en-buenaventura",
+   "language": "en-PH",
+   "forms": [
+    "Buenaventura"
+   ],
+   "phonemes": "bwˌɛnəvɛntˈʊɹə",
+   "status": "draft",
+   "notes": "bweh-na-ven-TOO-ra",
+   "owner_review": "accepted by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-en-tether",
+   "language": "en-PH",
+   "forms": [
+    "Tether"
+   ],
+   "phonemes": "tˈɛðɚ",
+   "status": "draft",
+   "owner_review": "accepted by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-en-qwen",
+   "language": "en-PH",
+   "forms": [
+    "Qwen"
+   ],
+   "phonemes": "tʃwˈɛn",
+   "status": "draft",
+   "notes": "chwen; 'kwen' is the common alternative — owner choice",
+   "owner_review": "accepted by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-en-deepseek",
+   "language": "en-PH",
+   "forms": [
+    "DeepSeek"
+   ],
+   "phonemes": "dˈiːpsiːk",
+   "status": "draft",
+   "owner_review": "accepted by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-en-claude",
+   "language": "en-PH",
+   "forms": [
+    "Claude"
+   ],
+   "phonemes": "klˈɔːd",
+   "status": "draft",
+   "owner_review": "accepted by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-en-chatgpt",
+   "language": "en-PH",
+   "forms": [
+    "ChatGPT"
+   ],
+   "phonemes": "tʃˈæt dʒˌiːpˌiːtˈiː",
+   "status": "draft",
+   "owner_review": "accepted by Luis 2026-11-24"
+  }
+ ],
+ "tagalog_overrides": [
+  {
+   "id": "brand-tl-hiraia",
+   "language": "tagalog",
+   "forms": [
+    "hiraia"
+   ],
+   "phonemes": "hiɾˈaja",
+   "status": "draft",
+   "notes": "Hee-RA-ya",
+   "annotation_scope": "Brand/proper-name speech-only override; display text unchanged",
+   "source": "pronunciation/brand-lexicon.json#brand-tl-hiraia",
+   "owner_review": "specified by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-tl-hiraia-possessive",
+   "language": "tagalog",
+   "forms": [
+    "hiraia's",
+    "hiraia’s"
+   ],
+   "phonemes": "hiɾˈajas",
+   "status": "draft",
+   "notes": "Hee-RA-ya",
+   "annotation_scope": "Brand/proper-name speech-only override; display text unchanged",
+   "source": "pronunciation/brand-lexicon.json#brand-tl-hiraia-possessive",
+   "owner_review": "specified by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-tl-qvac",
+   "language": "tagalog",
+   "forms": [
+    "qvac"
+   ],
+   "phonemes": "kjˈuvak",
+   "status": "draft",
+   "notes": "CUE-vak",
+   "annotation_scope": "Brand/proper-name speech-only override; display text unchanged",
+   "source": "pronunciation/brand-lexicon.json#brand-tl-qvac",
+   "owner_review": "specified by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-tl-tala",
+   "language": "tagalog",
+   "forms": [
+    "tala"
+   ],
+   "phonemes": "tˈala",
+   "status": "draft",
+   "notes": "brand Tala; collides with common noun tala (star/note) — see report",
+   "annotation_scope": "Brand/proper-name speech-only override; display text unchanged",
+   "source": "pronunciation/brand-lexicon.json#brand-tl-tala",
+   "owner_review": "accepted by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-tl-luis",
+   "language": "tagalog",
+   "forms": [
+    "luis"
+   ],
+   "phonemes": "luˈis",
+   "status": "draft",
+   "annotation_scope": "Brand/proper-name speech-only override; display text unchanged",
+   "source": "pronunciation/brand-lexicon.json#brand-tl-luis",
+   "owner_review": "accepted by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-tl-buenaventura",
+   "language": "tagalog",
+   "forms": [
+    "buenaventura"
+   ],
+   "phonemes": "bwenaventˈuɾa",
+   "status": "draft",
+   "annotation_scope": "Brand/proper-name speech-only override; display text unchanged",
+   "source": "pronunciation/brand-lexicon.json#brand-tl-buenaventura",
+   "owner_review": "accepted by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-tl-tether",
+   "language": "tagalog",
+   "forms": [
+    "tether"
+   ],
+   "phonemes": "tˈɛdɛɾ",
+   "status": "draft",
+   "annotation_scope": "Brand/proper-name speech-only override; display text unchanged",
+   "source": "pronunciation/brand-lexicon.json#brand-tl-tether",
+   "owner_review": "accepted by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-tl-qwen",
+   "language": "tagalog",
+   "forms": [
+    "qwen"
+   ],
+   "phonemes": "tʃwˈɛn",
+   "status": "draft",
+   "annotation_scope": "Brand/proper-name speech-only override; display text unchanged",
+   "source": "pronunciation/brand-lexicon.json#brand-tl-qwen",
+   "owner_review": "accepted by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-tl-deepseek",
+   "language": "tagalog",
+   "forms": [
+    "deepseek"
+   ],
+   "phonemes": "dˈipsik",
+   "status": "draft",
+   "annotation_scope": "Brand/proper-name speech-only override; display text unchanged",
+   "source": "pronunciation/brand-lexicon.json#brand-tl-deepseek",
+   "owner_review": "accepted by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-tl-claude",
+   "language": "tagalog",
+   "forms": [
+    "claude"
+   ],
+   "phonemes": "klˈod",
+   "status": "draft",
+   "annotation_scope": "Brand/proper-name speech-only override; display text unchanged",
+   "source": "pronunciation/brand-lexicon.json#brand-tl-claude",
+   "owner_review": "accepted by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-tl-chatgpt",
+   "language": "tagalog",
+   "forms": [
+    "chatgpt"
+   ],
+   "phonemes": "tʃˈat dʒˌipitˈi",
+   "status": "draft",
+   "annotation_scope": "Brand/proper-name speech-only override; display text unchanged",
+   "source": "pronunciation/brand-lexicon.json#brand-tl-chatgpt",
+   "owner_review": "accepted by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-tl-dot",
+   "language": "tagalog",
+   "forms": [
+    "dot"
+   ],
+   "phonemes": "dˈɔt",
+   "status": "draft",
+   "annotation_scope": "Brand/proper-name speech-only override; display text unchanged",
+   "source": "pronunciation/brand-lexicon.json#brand-tl-dot",
+   "owner_review": "accepted by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-tl-org",
+   "language": "tagalog",
+   "forms": [
+    "org"
+   ],
+   "phonemes": "ˈɔɾɡ",
+   "status": "draft",
+   "annotation_scope": "Brand/proper-name speech-only override; display text unchanged",
+   "source": "pronunciation/brand-lexicon.json#brand-tl-org",
+   "owner_review": "accepted by Luis 2026-11-24"
+  }
+ ]
+}
