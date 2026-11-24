@@ -10,6 +10,7 @@ import {
   printOrientation,
   type RenderPlanOptions,
 } from '@hiraia/tala-core/print';
+import { DOCX_CONTENT_TYPE, planDocxFileName, renderPlanDocx as sharedDocx } from '@hiraia/tala-core/docx';
 import type { Competency } from '@hiraia/tala-core/contracts';
 
 export type PrintInput = Omit<RenderPlanOptions, 'competencyLookup'> & {
@@ -31,6 +32,30 @@ export function renderPlanText(input: PrintInput): string {
 }
 
 export { printOrientation };
+
+/** The plan as an editable Word document, made on this device (also offline). */
+export function renderPlanDocx(input: PrintInput): { bytes: Uint8Array; fileName: string; type: string } {
+  const options = withLookup(input);
+  return { bytes: sharedDocx(options), fileName: planDocxFileName(options), type: DOCX_CONTENT_TYPE };
+}
+
+/** Hand a file made on the device to the browser's downloads. False if the browser refused. */
+export function downloadBytes(file: { bytes: Uint8Array; fileName: string; type: string }): boolean {
+  if (typeof document === 'undefined') return false;
+  try {
+    const url = URL.createObjectURL(new Blob([file.bytes as BlobPart], { type: file.type }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = file.fileName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 10_000);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 /** Open the print window on an HTML document in a same-origin iframe; resolves false if the browser refused. */
 export function printHtml(html: string): boolean {

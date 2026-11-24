@@ -433,3 +433,7 @@ export function planProvenance(input: {
     substantiallyRewritten: rewritten,
   };
 }
+
+/* One session plan for a multi-grade class, made from its grade groups' separate lessons. */
+export * from './combine';
+export { COMBINE_WORDS, type CombineWords } from './combine-words';

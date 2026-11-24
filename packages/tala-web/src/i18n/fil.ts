@@ -2,6 +2,7 @@ import type { StringKey } from './en';
 import { slidesFil } from './parts/slides.fil';
 import { uiFil } from './parts/ui.fil';
 import { weekFil } from './parts/week.fil';
+import { combineFil } from './parts/combine.fil';
 
 /**
  * Filipino interface strings — the default language. Plain teacher-facing Filipino; DepEd terms teachers
@@ -977,5 +978,6 @@ export const fil = {
   /* teacher-portal rework: one file per area under ./parts */
   ...uiFil,
   ...weekFil,
+  ...combineFil,
   ...slidesFil,
 } satisfies Record<StringKey, string>;

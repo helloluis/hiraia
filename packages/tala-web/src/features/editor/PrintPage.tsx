@@ -11,6 +11,7 @@ export function PrintPage({ planId }: { planId: string }) {
   const { t, lang } = useT();
   const params = useSearchParams();
   const paper = params.get('paper') === 'long' ? 'long' : 'a4';
+  const layout = params.get('layout') === 'table' ? 'table' : params.get('layout') === 'stack' ? 'stack' : undefined;
   const ed = usePlanEditor(planId);
   const html = useMemo(() => {
     if (!ed.plan || !ed.template) return null;
@@ -26,13 +27,14 @@ export function PrintPage({ planId }: { planId: string }) {
       paper,
       lang,
       competencies: ed.competencies,
+      layout,
     });
     // On screen (not print) give the page the same 16 px gutters as the app; print CSS keeps its own margins.
     return html.replace(
       '</head>',
       '<style>@media screen{body{padding:16px 16px 32px}}</style></head>'
     );
-  }, [ed.plan, ed.template, ed.sections, ed.cls, ed.ws, paper, lang, ed.competencies]);
+  }, [ed.plan, ed.template, ed.sections, ed.cls, ed.ws, paper, layout, lang, ed.competencies]);
   if (!html) return <Placeholder rows={6} />;
   return (
     <div className="min-h-dvh flex flex-col bg-white">

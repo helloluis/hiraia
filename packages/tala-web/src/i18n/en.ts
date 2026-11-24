@@ -2,6 +2,7 @@
 import { slidesEn } from './parts/slides.en';
 import { uiEn } from './parts/ui.en';
 import { weekEn } from './parts/week.en';
+import { combineEn } from './parts/combine.en';
 
 export const en = {
   'app.name': 'Tala',
@@ -946,6 +947,7 @@ export const en = {
   /* teacher-portal rework: one file per area under ./parts */
   ...uiEn,
   ...weekEn,
+  ...combineEn,
   ...slidesEn,
 } as const;
 
