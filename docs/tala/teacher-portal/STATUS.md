@@ -594,3 +594,35 @@ PowerPoint application check, and how long uploads are kept with the privacy wor
 `apt-get update` is probably needed first (package lists from 20 Oct), then `install.sh` (53 new packages, none
 upgraded or removed in simulation), the owner's suite with a root-only output folder (without the fork-bomb and
 memory-hog section, which held on the rehearsal machine), the three settings, deploy, and live checks.
+
+### Lane 4: ninth hand-over, 24 Nov 2026 17:43 PH (bridge reply `133e593c…`): an increment, taken into the first release
+
+Optional increment on top of the rehearsed commit, offered by the feature owner; the release owner took it because
+the release waits on Luis anyway. Commit `d1eb90438243a666aea8a4d4ea80fcd2bb3675dd`, parent `c6938a492`, tree
+`3d9ea436…`, 20 files, bundle sha256 `e88c3217…3549`; uploads alone as a patch `4b741d07…d05f` (tree `2727397f…`).
+Read back and equal to the owner's values. The sandbox's unit files, the installer and the web app's source are
+byte for byte the eighth hand-over's. `c6938a492` stays a valid fallback.
+
+**What it changes**: the built-in limits become 15 MiB per file and 50 MiB per account (30 MiB can still be set);
+the single file worker is shared out between accounts and a content type is bounded, so one account can no longer
+keep it busy with a slow file (the owner reproduced that lead: 7.4 s per read and per download before, refused in
+12 ms now); a counted download is let go the moment its client has gone or has taken nothing for 30 s (reproduced
+before: about ten minutes of "come back"); a file put back together from its pieces is checksum-checked before it
+is written from; the drawing job's picture limit equals the web app's.
+
+**Round on the rehearsal machine, with no size setting**: production's upgrade path clean; sandbox reinstall 18 of
+18 and the owner's suite 100 of 100 as root; the release owner's two files harmless as before; the owner's hostile
+set with held downloads and one minute of stress 36 of 36 (health 779 asked, 0 failed, longest 0.6 s measured from
+a thread of its own; memory group peak 672 MB, never at the ceiling); service states 20 of 20; browser walk 34 of
+34 in English and in Filipino; all 206 pack editions validate; back to `tala-v1-demo.13` and forward with a kept
+upload, clean both ways. Clean export under Node 22: types clean; tests 303 core, 338 server (1 opt-in skip), 94
+web; build clean. With the limit set to 30 MiB the stress had one health answer at 1.3 s (the server's, now
+measured separately from the script): the release stays at 15 MiB. Not repeated: the release owner's own sandbox
+probes (units unchanged) and the multi-grade walk (web source unchanged). No third static review.
+
+**Known limits accepted for a first release** (the owner's list in `docs/tala/teacher-uploads/STATUS.md` of that
+commit): a few hostile accounts can still make pictures late or downloads "come back" for other teachers while
+they keep at it. None reaches the site as a whole, another teacher's files or the host.
+
+**State**: `d1eb90438` is the content held for the uploads release. Still open, and Luis's: the PowerPoint
+application check; how long uploads are kept and the privacy wording.
