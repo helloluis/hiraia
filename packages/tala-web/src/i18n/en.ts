@@ -1,5 +1,6 @@
 /** English interface strings. Keys are the contract; src/i18n/fil.ts must have the same keys. No text lives in components. */
 import { slidesEn } from './parts/slides.en';
+import { uploadsEn } from './parts/uploads.en';
 import { uiEn } from './parts/ui.en';
 import { weekEn } from './parts/week.en';
 import { combineEn } from './parts/combine.en';
@@ -949,6 +950,7 @@ export const en = {
   ...weekEn,
   ...combineEn,
   ...slidesEn,
+  ...uploadsEn,
 } as const;
 
 export type StringKey = keyof typeof en;

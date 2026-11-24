@@ -19,6 +19,7 @@ import { ArrowLink, Disclosure, Kicker, Segmented } from '@/components/editorial
 import { Icon } from '@/components/icons';
 import { Banner, Placeholder, cx, type Tone } from '@/components/ui';
 import { MyCopies } from './MyCopies';
+import { MyUploadsCard } from '@/features/slides/UploadsScreen';
 
 const GRADES = ['3', '4', '5', '6', '7', '8', '9', '10'] as const;
 type Grade = (typeof GRADES)[number];
@@ -172,6 +173,8 @@ export function LibraryScreen() {
       )}
 
       <MyCopies />
+
+      <MyUploadsCard />
 
       <section aria-label={`${t('lib.grade', { grade })}, ${t('lib.term', { term })}`} className="flex flex-col gap-5">
         <div className="flex flex-col gap-3 border-t border-hairline pt-6">

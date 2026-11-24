@@ -62,6 +62,10 @@ export interface ZipArchive {
   read(name: string): Uint8Array;
   /** An entry as UTF-8 text. */
   text(name: string): string;
+  /** An entry as stored (not inflated), to carry it into another archive unchanged. */
+  raw(name: string): ZipRawEntry;
+  /** Total bytes the archive's directory says it inflates to. */
+  declaredBytes: number;
 }
 
 /** Open an archive held in memory. Throws ZipError for anything that is not a plain, sane ZIP. */
@@ -152,18 +156,50 @@ export function readZip(
     return new Uint8Array(out.buffer, out.byteOffset, out.byteLength);
   };
 
+  const raw = (name: string): ZipRawEntry => {
+    const e = entries.get(name);
+    if (!e) throw new ZipError(`The ZIP file has no entry "${name}".`);
+    const h = e.localOffset;
+    if (h + 30 > buf.length || buf.readUInt32LE(h) !== SIG_LOCAL)
+      throw new ZipError('A ZIP entry is damaged.');
+    const start = h + 30 + buf.readUInt16LE(h + 26) + buf.readUInt16LE(h + 28);
+    if (start + e.compressedSize > buf.length) throw new ZipError('A ZIP entry is damaged.');
+    return {
+      method: e.method,
+      crc: e.crc,
+      size: e.size,
+      bytes: new Uint8Array(buf.buffer, buf.byteOffset + start, e.compressedSize),
+    };
+  };
+
   return {
     names,
     has: (name) => entries.has(name),
     read,
     text: (name) => Buffer.from(read(name)).toString('utf8'),
+    raw,
+    declaredBytes: declared,
   };
+}
+
+/** An entry exactly as it is stored in an archive: still compressed, with the size and CRC its directory states. */
+export interface ZipRawEntry {
+  method: number;
+  crc: number;
+  size: number;
+  bytes: Uint8Array;
 }
 
 export interface ZipInput {
   /** Forward slashes, no leading slash, never a folder. */
   name: string;
-  data: Uint8Array | string;
+  /** New content. Ignored when `raw` is given. */
+  data?: Uint8Array | string;
+  /**
+   * An entry carried over from another archive without being inflated: its stored bytes go out exactly as they
+   * came in. This is how an edited deck keeps every untouched part bit for bit, whatever it is.
+   */
+  raw?: ZipRawEntry;
 }
 
 /** Build an archive. Entries are written in the order given; a name may appear only once. */
@@ -185,18 +221,33 @@ export function writeZip(files: ZipInput[]): Uint8Array {
     if (seen.has(f.name)) throw new ZipError(`"${f.name}" appears twice.`);
     seen.add(f.name);
     const name = Buffer.from(f.name, 'utf8');
-    const data =
-      typeof f.data === 'string'
-        ? Buffer.from(f.data, 'utf8')
-        : Buffer.from(f.data.buffer, f.data.byteOffset, f.data.byteLength);
-    // PNG is already deflated inside: storing it costs no size and no time.
-    const store = data.length === 0 || /\.(png|jpe?g|webp)$/i.test(f.name);
-    const body = store ? data : deflateRawSync(data, { level: 9 });
-    const crc = crc32(data);
     // Bit 11: the name is UTF-8 (only set when it is not plain ASCII).
     // eslint-disable-next-line no-control-regex
     const flags = /^[\x00-\x7f]*$/.test(f.name) ? 0 : 0x0800;
-    const method = store ? 0 : 8;
+    let body: Buffer;
+    let crc: number;
+    let method: number;
+    let data: { length: number };
+    if (f.raw) {
+      if (f.raw.method !== 0 && f.raw.method !== 8)
+        throw new ZipError('This ZIP file uses a compression method that is not supported.');
+      body = Buffer.from(f.raw.bytes.buffer, f.raw.bytes.byteOffset, f.raw.bytes.byteLength);
+      crc = f.raw.crc >>> 0;
+      method = f.raw.method;
+      data = { length: f.raw.size };
+    } else {
+      const input = f.data ?? '';
+      const plain =
+        typeof input === 'string'
+          ? Buffer.from(input, 'utf8')
+          : Buffer.from(input.buffer, input.byteOffset, input.byteLength);
+      // PNG is already deflated inside: storing it costs no size and no time.
+      const store = plain.length === 0 || /\.(png|jpe?g|webp)$/i.test(f.name);
+      body = store ? plain : deflateRawSync(plain, { level: 9 });
+      crc = crc32(plain);
+      method = store ? 0 : 8;
+      data = plain;
+    }
     if (offset > 0xfffffffe || data.length > 0xfffffffe || body.length > 0xfffffffe)
       throw new ZipError('Too large for a ZIP file.');
 
