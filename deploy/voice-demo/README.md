@@ -46,3 +46,15 @@ deploy/voice-demo/install.sh            # origin root@10.77.0.20; VOICE_RELEASE=
 
 The installer keeps the previous install at `/opt/hiraia-voice-demo.prev` and backs the nginx site
 up to `sites-available/hiraia.org.bak-voice-demo-<stamp>`. Uninstall steps are in `install.sh`.
+
+## Release log
+
+| UTC | Source | Change | Verified |
+|---|---|---|---|
+| 2026-11-24 15:03 | `23ec5a443` (main) | Brand lexicon `2026.11.24-2` (`93596125…`): hiraia.org through one token, standalone *dot*/*org* untouched | installer 5/5; host `server.py` `0faae362…` + lexicon `93596125…` = repo; fresh PID, 0 restarts; deployed-code phonemes for all terms, case and URL forms; 4 public POSTs 200 `audio/mpeg`, `no-store`, `cf-cache-status: DYNAMIC`; health `pronunciation.brand_lexicon = 2026.11.24-2`; model hashes unchanged (`dade54f9…`, `0dd88287…`) |
+| 2026-11-24 14:53 | `6fc300d0d` (main) | Brand lexicon `2026.11.24-1` (superseded 10 min later) | installer 5/5, public health pin |
+
+Both installs ran under the `hiraia` and `apps-ingress` locks. Rollback: `/opt/hiraia-voice-demo.prev` holds the
+`6fc300d0d` install (swap the directories back, then `systemctl restart hiraia-voice-demo`). For the pre-lexicon server
+(`8807d6a2…`), run `install.sh` from `3176662c4`. The nginx backups are `sites-available/hiraia.org.bak-voice-demo-*`.
+Synthesis responses are POST + `no-store`, so no client or CDN cache can replay older audio.
