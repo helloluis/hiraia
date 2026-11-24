@@ -476,3 +476,26 @@ release owner implements none of it, receives the checksum-verified hand-off, re
   signed-in check route on production for the release owner.
 - **Multi-grade plans**: unchanged, rehearsed and ready (tree `b6125b4d…`). It waits for the feature owner's commit
   and the Word application check. It is not held for the sandbox work.
+
+### Lane 5: sixth hand-over, 24 Nov 2026 11:55 PH (bridge reply `d7edf0b5…`): multi-grade as a commit, staged
+
+The feature owner committed the multi-grade plan on its own reading of Luis's 23 Nov request, which the coordinator
+told both of us to use as the standing approval: one local commit on b11-002, nothing pushed there.
+
+- **Commit** `de6bd222ead05526f6aec325efee092cc5f4937a`, parent `6ebaf2c96` (`tala-v1-demo.13`), tree
+  `b6125b4d4dcca15c5e78c027688ef9ccab7a7552`, which is the tree rehearsed on 23 Nov. 33 files, all under
+  `packages/tala-core`, `packages/tala-web` and `docs/tala/multigrade-plan`. Received as a bundle (78,333 bytes,
+  sha256 `61892554…a89b`), read back over the pinned route, checksum equal, `git bundle verify` clean, fetched here
+  as local branch `tala-v1-multigrade-plan`.
+- **Release candidate, local only**: branch `tala-v1-multigrade` = the notes-only release line merged with that
+  commit (`e2b372540` at the time of writing). It differs from the owner's commit only in two files under `docs/`
+  and the deploy README. Built the way the host builds (clean export of the host's folder set, Node 22.23.4, frozen
+  install, lockfile the same as the live release): types clean; tests 270 core, 288 server (1 opt-in skip), 87 web;
+  production build clean with `/lessons/combine`. Not pushed and not tagged.
+- **Staged, not deployed.** The one gate left is the Word application check (a sample `.docx` opened in real Word,
+  Google Docs or WPS, or Luis's word to ship without it), which the coordinator says is not waived. When it
+  closes: recreate the merge on the then-current notes tip, confirm the build set equals the one checked here,
+  tag `tala-v1-demo.14`, push branch and tag, back up, deploy under the lock, verify, record. No migration, no
+  setting, no data change; rollback is `/opt/tala/deploy.sh tala-v1-demo.13`.
+- **Uploads**: not committed. The owner is building the sandboxed renderer as its own systemd service and slice,
+  outside the web process's cgroup, and will hand it over separately.
