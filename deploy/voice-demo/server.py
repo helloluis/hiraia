@@ -63,7 +63,7 @@ SCALES = (0.667, 1.0, 0.8)
 FFMPEG = os.environ.get("VOICE_DEMO_FFMPEG", "/usr/bin/ffmpeg")
 # Shared speech-only lexicon (pronunciation/brand-lexicon.json). Pinned: a lexicon change must
 # update this hash in the same commit, so a deployed server never runs an unreviewed pairing.
-BRAND_LEXICON_SHA256 = "111c93a5c0e2269cee74a97110275a9e37046ac1da54c5348361dd81e35a57dd"
+BRAND_LEXICON_SHA256 = "93596125538a44ec629d927b26e4c46885bea8cbcd9e1bf4f450a804e3f78039"
 
 log = logging.getLogger("voice-demo")
 

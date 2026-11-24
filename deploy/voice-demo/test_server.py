@@ -84,13 +84,13 @@ class BrandSpeechRewrites(unittest.TestCase):
 
     def test_urls_spoken(self):
         cases = {
-            "Visit Hiraia.org.": "Visit Hiraia dot org.",
-            "Visit hiraia.org to download it.": "Visit Hiraia dot org to download it.",
-            "HIRAIA.ORG": "Hiraia dot org",
-            "https://hiraia.org/support": "Hiraia dot org support",
-            "Go to https://www.hiraia.org now": "Go to www dot Hiraia dot org now",
-            "assets.hiraia.org": "assets dot Hiraia dot org",
-            "Bisitahin ang Hiraia.org, salamat!": "Bisitahin ang Hiraia dot org, salamat!",
+            "Visit Hiraia.org.": "Visit Hiraia-dot-org.",
+            "Visit hiraia.org to download it.": "Visit Hiraia-dot-org to download it.",
+            "HIRAIA.ORG": "Hiraia-dot-org",
+            "https://hiraia.org/support": "Hiraia-dot-org support",
+            "Go to https://www.hiraia.org now": "Go to www dot Hiraia-dot-org now",
+            "assets.hiraia.org": "assets dot Hiraia-dot-org",
+            "Bisitahin ang Hiraia.org, salamat!": "Bisitahin ang Hiraia-dot-org, salamat!",
         }
         for text, spoken in cases.items():
             for voice in ("fil", "en"):
@@ -155,7 +155,7 @@ class BrandPronunciation(unittest.TestCase):
         controls = {
             "fil": ["Ang paniki lang ang mammal sa buong mundo na talagang nakakalipad.",
                     "Isulat ang tala sa talaan.", "Ang Parañaque at Quezon ay nasa Metro Manila.",
-                    "Kapag mainit, nag-e-evaporate ang water.", "Si Luisa ay may tuldok sa papel."],
+                    "Kapag mainit, nag-e-evaporate ang water.", "Si Luisa ay may tuldok sa papel.", "May dot sa org."],
             "en": ["We call this change evaporation. Now, tell me what happened to the water.",
                    "Claudette tethered the boat in Manila.", "Talk to Luisa about the queue."],
         }
@@ -164,13 +164,12 @@ class BrandPronunciation(unittest.TestCase):
                 with self.subTest(voice=voice, text=text):
                     self.assertEqual(self.phones(text, voice), self.phones(text, voice, self.frozen))
 
-    def test_filipino_dot_and_org_are_lexicon_scoped(self):
-        # Intentional: the Filipino "dot"/"org" entries that say "Hiraia dot org" apply to those
-        # standalone words too (Filipino-English /dɔt/, /ɔɾɡ/). Nothing else in the sentence moves.
-        brand, frozen = self.phones("May dot sa org.", "fil"), self.phones("May dot sa org.", "fil", self.frozen)
-        self.assertEqual(brand, "mˈaj dˈɔt sˈa ˈɔɾɡ.")
-        self.assertNotEqual(brand, frozen)
-        self.assertEqual(brand.split()[0::2], frozen.split()[0::2])
+    def test_standalone_dot_and_org_untouched(self):
+        # "Hiraia.org" is spoken through its own token; Lewis "dot" structures and the
+        # astronaut-free word "org" keep the frozen pronunciation in both voices.
+        for voice, text in (("fil", "Ang Lewis dot structure at ang org chart."), ("en", "A Lewis dot structure and an org chart.")):
+            with self.subTest(voice=voice):
+                self.assertEqual(self.phones(text, voice), self.phones(text, voice, self.frozen))
 
 
 @unittest.skipUnless(os.environ.get("VOICE_DEMO_BUNDLE"), "needs the voice bundle")

@@ -7,9 +7,9 @@ weights are not touched.
 
 | Part | What it does | Used by |
 |---|---|---|
-| `speech_text_rewrites` | `hiraia.org` URLs → "Hiraia dot org" (scheme dropped, subdomain dots spoken). Case-insensitive; Python `re` and JavaScript share the syntax, with no backreferences. Runs before text normalisation. | all runtimes |
+| `speech_text_rewrites` | `hiraia.org` URLs → the single token `Hiraia-dot-org` (scheme dropped, subdomain dots spoken as "dot"). Case-insensitive; Python `re` and JavaScript share the syntax, with no backreferences. Runs before text normalisation. | all runtimes |
 | `dictionary_entries` (`en-PH`) | English-voice phonemes; longest form first; case-insensitive. `Hiraia's` has its own form because the frontend skips a dictionary hit that is followed by `'s`. | English voice |
-| `tagalog_overrides` | Filipino-voice phonemes per word (lower-case key, so any capitalisation). Includes `dot` and `org` for "Hiraia dot org"; those also apply to standalone *dot*/*org* in Filipino text (tested and intentional). | Filipino voice |
+| `tagalog_overrides` | Filipino-voice phonemes per word (lower-case key, so any capitalisation). `hiraia-dot-org` is its own entry, so the standalone words *dot* (Lewis dot structure, 32 Science card texts) and *org* keep their usual pronunciation. *Tether* is per word: the Filipino voice also says the astronaut "tether" (2 Science card texts) the accepted Filipino-English way. | Filipino voice |
 
 **Approval.** Luis Buenaventura specified *Hiraia* = Hee-RA-ya and *QVAC* = CUE-vak on
 2026-11-24. He then accepted the full proposed set after a local A/B listening page

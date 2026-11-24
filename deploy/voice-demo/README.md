@@ -18,7 +18,7 @@ Claude, ChatGPT) are spoken from the shared speech-only lexicon
 [`pronunciation/brand-lexicon.json`](../../pronunciation/README.md). `server.py` verifies the frozen
 bundle first, then layers the lexicon on top. The lexicon is pinned by `BRAND_LEXICON_SHA256`, and a
 mismatch refuses to start. `hiraia.org` URLs are spoken as "Hiraia dot org" after the 500-character
-cap. `GET /api/voice/health` → `pronunciation.{brand_lexicon, sha256}` identifies the deployed lexicon.
+cap, through a single `Hiraia-dot-org` token, so the word *dot* elsewhere is unaffected. `GET /api/voice/health` → `pronunciation.{brand_lexicon, sha256}` identifies the deployed lexicon.
 The model weights are unchanged.
 
 ## Limits

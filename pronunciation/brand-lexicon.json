@@ -1,6 +1,6 @@
 {
  "schema": "hiraia-brand-lexicon/1",
- "version": "2026.11.24-1",
+ "version": "2026.11.24-2",
  "purpose": "Speech-only pronunciations for Hiraia's own names, shared by the main Hiraia APK, the Reader APK and the hiraia.org voice demo. Changes audio only; displayed text is never rewritten.",
  "approval": {
   "date": "2026-11-24",
@@ -26,8 +26,9 @@
   {
    "id": "hiraia-org",
    "pattern": "\\bhiraia\\.org\\b",
-   "replacement": "Hiraia dot org",
-   "status": "draft"
+   "replacement": "Hiraia-dot-org",
+   "status": "draft",
+   "notes": "one hyphenated token with its own entry per voice, so standalone \"dot\"/\"org\" elsewhere keep their usual pronunciation"
   }
  ],
  "dictionary_entries": [
@@ -53,6 +54,17 @@
    "status": "draft",
    "notes": "frontend skips dictionary hits followed by 's, so the possessive needs its own form",
    "owner_review": "specified by Luis 2026-11-24"
+  },
+  {
+   "id": "brand-en-hiraia-org",
+   "language": "en-PH",
+   "forms": [
+    "Hiraia-dot-org"
+   ],
+   "phonemes": "hiːɹˈɑːjə dˈɑːt ˈɔːɹɡ",
+   "status": "draft",
+   "notes": "Hee-RA-ya",
+   "owner_review": "accepted by Luis 2026-11-24"
   },
   {
    "id": "brand-en-qvac",
@@ -178,6 +190,19 @@
    "owner_review": "specified by Luis 2026-11-24"
   },
   {
+   "id": "brand-tl-hiraia-org",
+   "language": "tagalog",
+   "forms": [
+    "hiraia-dot-org"
+   ],
+   "phonemes": "hiɾˈaja dˈɔt ˈɔɾɡ",
+   "status": "draft",
+   "notes": "Hee-RA-ya",
+   "annotation_scope": "Brand/proper-name speech-only override; display text unchanged",
+   "source": "pronunciation/brand-lexicon.json#brand-tl-hiraia-org",
+   "owner_review": "accepted by Luis 2026-11-24"
+  },
+  {
    "id": "brand-tl-qvac",
    "language": "tagalog",
    "forms": [
@@ -285,30 +310,6 @@
    "status": "draft",
    "annotation_scope": "Brand/proper-name speech-only override; display text unchanged",
    "source": "pronunciation/brand-lexicon.json#brand-tl-chatgpt",
-   "owner_review": "accepted by Luis 2026-11-24"
-  },
-  {
-   "id": "brand-tl-dot",
-   "language": "tagalog",
-   "forms": [
-    "dot"
-   ],
-   "phonemes": "dˈɔt",
-   "status": "draft",
-   "annotation_scope": "Brand/proper-name speech-only override; display text unchanged",
-   "source": "pronunciation/brand-lexicon.json#brand-tl-dot",
-   "owner_review": "accepted by Luis 2026-11-24"
-  },
-  {
-   "id": "brand-tl-org",
-   "language": "tagalog",
-   "forms": [
-    "org"
-   ],
-   "phonemes": "ˈɔɾɡ",
-   "status": "draft",
-   "annotation_scope": "Brand/proper-name speech-only override; display text unchanged",
-   "source": "pronunciation/brand-lexicon.json#brand-tl-org",
    "owner_review": "accepted by Luis 2026-11-24"
   }
  ]
