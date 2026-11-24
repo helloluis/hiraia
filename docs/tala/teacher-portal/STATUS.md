@@ -499,3 +499,53 @@ told both of us to use as the standing approval: one local commit on b11-002, no
   setting, no data change; rollback is `/opt/tala/deploy.sh tala-v1-demo.13`.
 - **Uploads**: not committed. The owner is building the sandboxed renderer as its own systemd service and slice,
   outside the web process's cgroup, and will hand it over separately.
+
+### Lane 4: seventh hand-over, 24 Nov 2026 13:20 PH (bridge reply `10bb18ea…`): uploads with the sandboxed drawing service. Rehearsed; NOT releasable
+
+The feature owner handed over teacher uploads with the sandboxed renderer Luis chose, as a commit on top of the
+multi-grade commit: `eba4e6da9874650d8734544fd8383396e788becf`, parent `de6bd222e`, tree `b50cc05d…`, 58 files,
+bundle sha256 `cbae3577…845f`; uploads alone as a patch `d5780238…926e` (tree `fbccf077…`). All read back and equal
+to the owner's values; fetched here as local branch `tala-v1-my-own-slides`. Nothing of it is installed on
+production.
+
+**Shape**: a socket file (`/run/tala-render/render.sock`, 0660 root:tala) starts one hardened systemd job per file
+in its own slice and under its own user; the job checks its own sandbox before reading the file and refuses to draw
+if anything is missing; the web process holds no code that starts a program; pictures are off unless
+`TALA_DECKS_PREVIEW_SOCKET` is set.
+
+**Rehearsal machine**: a KVM guest on the dev box with Ubuntu 24.04.5, kernel 6.8.0-147 and systemd
+255.4-1ubuntu8.18 (both identical to production), AppArmor on with the same namespace restriction, Node
+22.22.0-1nodesource1, the host's `tala.service` text, the live libraries, the candidate built as `deploy.sh` builds.
+
+**Passed there as root** (what the owner could not run):
+- `install.sh` dry run, then for real: 68 packages (LibreOffice 24.2.7, poppler 24.02), user `tala-render`, units,
+  first check 18 of 18. On production an apt simulation says 53 new packages, 0 upgraded, 0 removed (its package
+  lists date from 20 Oct, so an `apt-get update` may be needed in the window).
+- The owner's full suite `verify.mjs --slow`: 96 of 96 (hostile files, protocol abuse, turns, a hostile program in
+  the box, every ceiling hit for real).
+- The release owner's own probe in an exact copy of the installed job unit: no capabilities, no network of any
+  family, an empty root with programs and fonts only, database, settings, home folders and devices absent, one
+  small in-memory place to write, no new namespaces or privileges; memory hog killed by the kernel near 736 MiB,
+  fork bomb held at 126 children, a sleeper killed by systemd at exactly 120 s.
+- Web side: upgrade from `tala-v1-demo.13` on one database (one additive migration, five tables, earlier rows
+  untouched); the owner's browser walk 34 of 34 in English and in Filipino with real pictures; tenant checks (a
+  picture only for its owner, 404 for another teacher); back to `tala-v1-demo.13` with the new tables (clean
+  start, 0 errors) and forward again (0 migrations, uploads intact). The owner's service-state check: 19 of 20; the
+  one failure is its own kill step erroring on this systemd while the outcomes it protects all passed.
+
+**Blockers, confirmed by test on that machine** (web process under the host's unit, MemoryMax=1G):
+1. A 63 KB file freezes the whole site: one table cell with `gridSpan="4000000000"` held the event loop for more
+   than 30 s (`tala-core/src/pptx/walk.ts:274-276`; the attribute may be 250 times larger). Nothing restarts a
+   process that is only busy.
+2. A 542 KB file kills the web process: seven slides with 1.4 million empty elements each, inside every per-part
+   limit, ended in "JavaScript heap out of memory" and a restart. The upload size settings do not help.
+3. A taken-over drawing job can read everything under `/usr/local` (a canary script planted there was read), which
+   on production holds other services' operational scripts; what it reads can leave in the returned pictures.
+Also confirmed: the job can list other services' control groups with their memory figures and process ids, and
+`io_uring` is available inside the sandbox. Two independent static reviews list further unbounded paths in the
+file reader and exporter (quadratic scans, a size cap that goes by file extension, overlapping zip entries, export
+size, stored inspection outside the quota); those are passed to the owner as unverified leads.
+
+**State**: sent back to the feature owner with the evidence (bridge request `efbfec14…`). Uploads stay as a
+commit and patches, not installed. Independent of that, two questions remain Luis's: the PowerPoint application
+check, and how long uploads are kept with the privacy wording. Multi-grade is not affected and stays staged.
