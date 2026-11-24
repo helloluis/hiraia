@@ -268,13 +268,23 @@ says so (`isolation: "shared-user"`), and the web app refuses such a job unless 
 for it by name. It needs unprivileged user namespaces, which the production host does not give its service user:
 this set-up is for building and testing, never for a server.
 
-## What is verified, and what is not (24 Nov 2026, second round)
+## What is verified, and what is not (24 Nov 2026, third round)
 
 **By the release owner, as root, on a machine set up like the host** (KVM guest, Ubuntu 24.04.5, kernel 6.8,
-systemd 255.4, AppArmor, Node 22.22.0), with the FIRST version of this folder: `install.sh` for real, `verify.mjs
---slow` 96 of 96 (so `User=`/`Group=`, `PrivateUsers`, `ProtectProc`/`ProcSubset`, `IPAddressDeny`, `RemoveIPC` and
-the socket's owner all hold there), an upgrade and a rollback of the web app, and the browser walk. Their probe is
-what found the three leaks named at the top.
+systemd 255.4, AppArmor, Node 22.22.0, the host's `tala.service` with `MemoryMax=1G`). With the first version of
+this folder: `install.sh` for real and `verify.mjs --slow` 96 of 96; their probe then found the three leaks named
+at the top. With the second version (the box as it is here, but for the two lines named below): `install.sh` over
+the earlier install, 18 of 18; `verify.mjs --slow` with `--out /root/tala-render-verify`, 100 of 100; and their
+own probe in a copy of the installed unit: a canary in `/usr/local/sbin` is not there for the job and `/usr/local`
+holds its program only; `/sys/fs/cgroup` holds only the way to the job's own group, which it reads and cannot
+write; `io_uring_setup` is refused; a unit whose own group cannot be bound does not start; and after a crash in
+the box with apport as the handler nothing is in `/var/crash`. So `User=`/`Group=`, `PrivateUsers`,
+`ProtectProc`/`ProcSubset`, `IPAddressDeny`, `RemoveIPC`, the socket's owner, the two new pairs of mount lines on
+systemd 255 and `LimitCORE=1` against apport all hold there.
+
+**Two lines of the job changed after that run** and have been run only here, without root: the job sends no
+picture larger than the web app takes (2 MiB, was 4), and a `/usr/local` that is there but cannot be listed is no
+longer taken as hidden.
 
 **By the author, with THIS version**, on the build machine (Debian 12, kernel 6.1, systemd 252, per-user service
 manager), with the unit lines of this folder minus the four that need root:
@@ -299,21 +309,18 @@ manager), with the unit lines of this folder minus the four that need root:
 - the unit files: `systemd-analyze verify` (no complaint but this machine's missing `/usr/bin/node`), and
   `systemd-analyze security --offline`.
 
-**Not verified by the author, because it needs root and the host:**
+**Not verified as root:**
 
-- **This version has not been installed or run as root, and not on systemd 255.** As root the check has three
-  more lines than here (it "sees no process but its own", cannot signal the tester, reads no kernel tables): 100
-  with `--slow`.
-- How systemd 255 applies the two new pairs of lines (`/usr/local`, `/sys/fs/cgroup`). Read in its source
-  (`src/core/namespace.c` of v255): rules for one path are ordered by kind and the first wins, a temporary file
-  system outranks the implicit rule `ProtectKernelTunables=` has for `/sys/fs/cgroup` and is outranked by
-  `ProtectControlGroups=`; sources of binds are taken from the host's own tree. That is the behaviour seen here
-  on 252. If the host does it differently the job's own check (`usr-local-hidden`, `control-groups-hidden`, and
-  the ceilings it reads from its own group) fails and no picture is drawn.
-- `LimitCORE=1` against a real piped crash handler (apport, systemd-coredump). Read in `fs/coredump.c` of Linux
-  6.8; the `box` section's crash check shows it on a machine that has one.
-- The four root-only lines and `ProtectProc`/`ProcSubset` with this version (unchanged since the root run above).
-- Ubuntu's own Node package instead of the nodejs.org build; real load beside the host's other services.
+- The two lines of the job that changed after the release owner's run (above). `verify.mjs` on the host shows
+  them: the `probe` section prints the job's own report, and the `draw` and `files` sections draw.
+- Ubuntu's own Node package instead of the NodeSource or nodejs.org build; real load beside the host's other
+  services.
+
+How systemd 255 applies the two pairs of mount lines (`/usr/local`, `/sys/fs/cgroup`) was first read in its source
+(`src/core/namespace.c` of v255: rules for one path are ordered by kind and the first wins, a temporary file
+system outranks the implicit rule `ProtectKernelTunables=` has for `/sys/fs/cgroup` and is outranked by
+`ProtectControlGroups=`) and then shown by the release owner's run. `LimitCORE=1` was read in `fs/coredump.c` of
+Linux 6.8 and then shown the same way.
 
 For each of these the design answers the same way: the job re-checks its box on the host, on every job, and
 draws nothing if the box is not whole. `verify.mjs` as root on a box set up like the host is the test that

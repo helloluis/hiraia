@@ -45,7 +45,9 @@ const KiB = 1024;
 const MiB = 1024 * KiB;
 const GiB = 1024 * MiB;
 /** Ceilings no setting can raise. */
-const HARD = { inputBytes: 64 * MiB, pages: 400, width: 2048, height: 4096, pictureBytes: 4 * MiB, deadlineSec: 110, pdfBytes: 256 * MiB };
+// pictureBytes is what the web app takes for one picture (RENDER_LIMITS.pictureBytes in upload-render.ts): a larger
+// one would be sent only to be dropped there, with the whole drawing.
+const HARD = { inputBytes: 64 * MiB, pages: 400, width: 2048, height: 4096, pictureBytes: 2 * MiB, deadlineSec: 110, pdfBytes: 256 * MiB };
 /** What the box may be at most for a drawing to start (selfCheck). The unit file sets far less. */
 const BOX = { memoryBytes: 4 * GiB, processes: 1024, scratchBytes: GiB, otherWritableBytes: MiB, fileBytes: GiB, openFiles: 4096, cpuSeconds: 600 };
 /** The archive that arrives is one the web app wrote itself, so the rules can be strict. */
@@ -193,6 +195,8 @@ async function selfCheck() {
   // /usr/local is the administrator's own corner of the host: of it, the job may see its own program and nothing else.
   const local = readDir('/usr/local');
   facts.usrLocal = local === null ? [] : local.flatMap((entry) => (entry === 'lib' ? (readDir('/usr/local/lib') ?? ['?']).map((e) => `lib/${e}`) : [entry])).slice(0, 40);
+  // A folder that is there but cannot be listed is not shown to be empty (its files could still be opened by name).
+  if (local === null && fs.existsSync('/usr/local')) facts.usrLocal = ['cannot be listed'];
   need(facts.usrLocal.every((entry) => entry === 'lib/tala-render'), 'usr-local-hidden');
 
   // Nowhere to write but the scratch space, which is in memory, small and made for this job. Every mount point is

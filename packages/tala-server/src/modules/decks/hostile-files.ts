@@ -231,6 +231,17 @@ export const HOSTILE_FILES: HostileFile[] = [
     },
   },
   {
+    name: 'one-megabyte-type-for-four-thousand-parts',
+    about: '3,900 parts that all share one "content type" a megabyte long (reading it took 7.6 s, and as long again for every download)',
+    expect: 'damaged',
+    build: () => {
+      const extra: Parts = {};
+      for (let i = 0; i < 3900; i++) extra[`customXml/item${i}.zzz`] = 'x';
+      extra['[Content_Types].xml'] = part('[Content_Types].xml').replace('<Default Extension="xml"', `<Default Extension="zzz" ContentType="application/x-${'a'.repeat(1_000_000)}"/><Default Extension="xml"`);
+      return zipped(extra);
+    },
+  },
+  {
     name: 'sixty-thousand-slides-listed',
     about: 'a slide list of 60,000 entries, none of which is there',
     expect: 'damaged',

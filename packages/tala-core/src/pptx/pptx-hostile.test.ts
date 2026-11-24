@@ -9,7 +9,7 @@
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { applyEdits, inspectDeck, noEdits, PACKAGE_LIMITS, PptxError, PptxPackage, PPTX_LIMITS, XML_LIMITS, xmlBudget, type DeckEdits, type DeckInspection } from './index';
+import { applyEdits, CONTENT_TYPE_CHARS, inspectDeck, noEdits, PACKAGE_LIMITS, PptxError, PptxPackage, PPTX_LIMITS, XML_LIMITS, xmlBudget, type DeckEdits, type DeckInspection } from './index';
 import { syntheticDeck, syntheticDeckParts } from './testing';
 
 /** Generous for a slow machine; the cases below took from seconds to (extrapolated) hours before. */
@@ -139,6 +139,28 @@ test('thousands of parts, each with a type of its own, are looked up, not search
   assert.equal(r.code, undefined);
   quick(r, `${n} parts with ${n} content types`);
   assert.equal((r.value as DeckInspection).slides.length, 3);
+});
+
+test('one "content type" a megabyte long, shared by thousands of parts, is not a content type', () => {
+  const many = (type: string, parts = 3900) => {
+    const extra: Record<string, string> = {};
+    for (let i = 0; i < parts; i++) extra[`customXml/item${i}.zzz`] = 'x';
+    extra['[Content_Types].xml'] = part('[Content_Types].xml').replace('<Default Extension="xml"', `<Default Extension="zzz" ContentType="${type}"/><Default Extension="xml"`);
+    return syntheticDeck(extra);
+  };
+  // Reading this took 7.6 seconds (the type was looked at once for every part), and as long again for every download.
+  const r = timed(() => inspectDeck(many(`application/x-${'a'.repeat(1_000_000)}`)));
+  assert.equal(r.code, 'damaged');
+  quick(r, '3,900 parts sharing a type of a megabyte');
+  // The longest type that is taken, on as many parts, costs nothing: each distinct type is looked at once.
+  const longest = `application/${'a'.repeat(CONTENT_TYPE_CHARS - 12)}`;
+  assert.equal(longest.length, CONTENT_TYPE_CHARS);
+  const ok = timed(() => inspectDeck(many(longest)));
+  assert.equal(ok.code, undefined);
+  quick(ok, '3,900 parts sharing the longest type taken');
+  assert.equal(timed(() => inspectDeck(many(`${longest}a`, 1))).code, 'damaged');
+  // A macro type hidden behind many ordinary parts is still found.
+  assert.equal(timed(() => inspectDeck(many('application/vnd.ms-office.vbaProject'))).code, 'macros');
 });
 
 test('a slide list or a relationships list of absurd length is refused before it is worked through', () => {

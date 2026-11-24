@@ -113,12 +113,16 @@ export function indexDeck(pkg: PptxPackage): DeckIndex & { kind: DeckInspection[
   if (MACRO_TYPES.test(contentType)) fail('macros', 'This file contains macros.');
   const kind: DeckInspection['kind'] =
     contentType === CONTENT_TYPE.template ? 'template' : contentType === CONTENT_TYPE.slideshow ? 'slideshow' : contentType === CONTENT_TYPE.presentation ? 'presentation' : fail('not_a_presentation', 'This is not a PowerPoint file.');
+  // Thousands of parts can share one content type: each distinct type is looked at once.
+  const looked = new Set<string>();
   for (const name of pkg.names()) {
     const lower = name.toLowerCase();
     if (lower.endsWith('vbaproject.bin') || lower.endsWith('.vba')) fail('macros', 'This file contains macros.');
     if (lower.startsWith('ppt/activex/') || lower.includes('/activex/')) fail('active_content', 'This file contains ActiveX controls.');
     if (lower.startsWith('_xmlsignatures/')) fail('signed', 'This file is digitally signed.');
     const ct = pkg.contentType(name) ?? '';
+    if (looked.has(ct)) continue;
+    looked.add(ct);
     if (MACRO_TYPES.test(ct) || /vbaProject|activeX/i.test(ct)) fail(/activeX/i.test(ct) ? 'active_content' : 'macros', 'This file contains macros or controls.');
   }
   const presentation = pkg.xml(mainPart);

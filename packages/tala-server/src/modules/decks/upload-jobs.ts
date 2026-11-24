@@ -6,7 +6,10 @@
  * job runs in a worker thread of its own, started for that job and gone after it, with:
  *   - a time limit: past it the worker is stopped, wherever it is;
  *   - a memory limit of its own: past it the worker dies and the web server does not;
- *   - one job at a time for the whole server, and a short queue: more than that is told to come back.
+ *   - one job at a time for the whole server, and a short queue: more than that is told to come back;
+ *   - the one place is shared out between accounts: an account can have one job being done and one waiting, and
+ *     when the place is free it goes to the waiting account that has had the least of it lately. One account, or
+ *     a few, cannot keep everybody else at "come back".
  * A job that is stopped is "this file is more than is read here", never a crash and never a fallback to reading
  * the file on the server's own thread: there is no such code path.
  */
@@ -38,17 +41,24 @@ export class UploadWorkError extends Error {
  */
 export type UploadBytes = Uint8Array | (() => Uint8Array);
 
+/**
+ * Every job may say whose it is (`who`: an account's id, never anything of the file). Jobs with no owner named are
+ * taken as one owner without a share of their own (tests, tools).
+ */
 export interface UploadWork {
   /** What the file holds. Throws UploadRefused (not a deck this version takes) or UploadWorkError. */
-  read(file: UploadBytes, sha256?: string): Promise<DeckInspection>;
+  read(file: UploadBytes, sha256?: string, who?: string): Promise<DeckInspection>;
   /**
    * The same for a file that is about to be stored. Its bytes are handed to the worker and come back with the
    * reading, so the file is in memory once and nowhere twice. The worker takes the checksum before it reads and
    * again afterwards; only a file that is still the one announced comes back.
    */
-  take(file: () => Uint8Array, sha256: string): Promise<{ inspection: DeckInspection; file: Uint8Array }>;
-  /** The file with the edits written in. Throws UploadRefused or UploadWorkError. */
-  write(file: UploadBytes, edits: DeckEdits): Promise<{ pptx: Uint8Array; report: ApplyReport }>;
+  take(file: () => Uint8Array, sha256: string, who?: string): Promise<{ inspection: DeckInspection; file: Uint8Array }>;
+  /**
+   * The file with the edits written in. Throws UploadRefused or UploadWorkError. `sha256`: what the file has to be
+   * (it was put back together from stored pieces); a file that is not is refused as `checksum_mismatch`.
+   */
+  write(file: UploadBytes, edits: DeckEdits, sha256?: string, who?: string): Promise<{ pptx: Uint8Array; report: ApplyReport }>;
   /** Whether a worker can start and load the reader at all. Resolves to null when it can, else to why not. */
   check(): Promise<string | null>;
 }
@@ -63,6 +73,8 @@ export interface UploadWorkOptions {
   waiting?: number;
   /** How long a job may wait for its turn. */
   waitMs?: number;
+  /** Jobs one account may have here at once, being done or waiting. */
+  perAccount?: number;
 }
 
 export function uploadWorkers(options: UploadWorkOptions = {}): UploadWork {
@@ -71,32 +83,80 @@ export function uploadWorkers(options: UploadWorkOptions = {}): UploadWork {
   const heapMb = options.heapMb ?? 192;
   const maxWaiting = options.waiting ?? 8;
   const waitMs = options.waitMs ?? 15_000;
+  const perAccount = options.perAccount ?? 2;
   let running = false;
-  const queue: Array<() => void> = [];
+  const queue: Array<{ who: string; since: number; go: () => void }> = [];
+  /** Jobs each account has here now (being done or waiting), and the time its jobs took in the last minute. */
+  const here = new Map<string, number>();
+  const spent = new Map<string, Array<{ at: number; ms: number }>>();
+  const leave = (who: string) => {
+    const n = (here.get(who) ?? 1) - 1;
+    if (n > 0) here.set(who, n);
+    else here.delete(who);
+  };
+  const lately = (who: string, now: number): number => {
+    const recent = (spent.get(who) ?? []).filter((s) => now - s.at < 60_000);
+    if (recent.length) spent.set(who, recent);
+    else spent.delete(who);
+    return recent.reduce((sum, s) => sum + s.ms, 0);
+  };
 
-  /** One job at a time. A job waits its turn for a while; a long queue is turned away at once. */
-  async function turn<T>(job: () => Promise<T>): Promise<T> {
+  /**
+   * One job at a time. A job waits its turn for a while; a long queue is turned away at once, and so is an account
+   * that already has its share of jobs here. The free place goes to the waiting account that has used the least
+   * of it in the last minute (who has waited longest, among equals).
+   */
+  async function turn<T>(who: string, job: () => Promise<T>): Promise<T> {
+    if (who !== '' && (here.get(who) ?? 0) >= perAccount) throw new UploadWorkError('busy');
     if (running) {
       if (queue.length >= maxWaiting) throw new UploadWorkError('busy');
-      // Woken by the job before it, which hands its turn over directly (`running` stays true in between).
-      await new Promise<void>((resolve, reject) => {
-        const go = () => {
-          clearTimeout(timer);
-          resolve();
-        };
-        const timer = setTimeout(() => {
-          const at = queue.indexOf(go);
-          if (at >= 0) queue.splice(at, 1);
-          reject(new UploadWorkError('busy'));
-        }, waitMs);
-        queue.push(go);
-      });
-    } else running = true;
+      here.set(who, (here.get(who) ?? 0) + 1);
+      try {
+        // Woken by the job before it, which hands its turn over directly (`running` stays true in between).
+        await new Promise<void>((resolve, reject) => {
+          const mine = {
+            who,
+            since: Date.now(),
+            go: () => {
+              clearTimeout(timer);
+              resolve();
+            },
+          };
+          const timer = setTimeout(() => {
+            const at = queue.indexOf(mine);
+            if (at >= 0) queue.splice(at, 1);
+            reject(new UploadWorkError('busy'));
+          }, waitMs);
+          queue.push(mine);
+        });
+      } catch (err) {
+        leave(who);
+        throw err;
+      }
+    } else {
+      running = true;
+      here.set(who, (here.get(who) ?? 0) + 1);
+    }
+    const started = Date.now();
     try {
       return await job();
     } finally {
-      const next = queue.shift();
-      if (next) next();
+      const now = Date.now();
+      leave(who);
+      // Only the last minute is kept, for this account and (now and then) for all of them: nothing here grows with
+      // the number of jobs a server has done or of accounts it has seen.
+      spent.set(who, [...(spent.get(who) ?? []).filter((s) => now - s.at < 60_000), { at: now, ms: now - started }]);
+      if (spent.size > 256) for (const other of [...spent.keys()]) lately(other, now);
+      let next = -1;
+      let least = Infinity;
+      queue.forEach((w, i) => {
+        const used = lately(w.who, now);
+        if (used < least) {
+          least = used;
+          next = i;
+        }
+      });
+      if (next >= 0) queue.splice(next, 1)[0]!.go();
       else running = false;
     }
   }
@@ -165,26 +225,26 @@ export function uploadWorkers(options: UploadWorkOptions = {}): UploadWork {
   };
 
   return {
-    read: (file, sha256) =>
-      turn(async () => {
+    read: (file, sha256, who = '') =>
+      turn(who, async () => {
         const result = await run({ kind: 'read', bytes: bytesOf(file).bytes, sha256 }, readMs);
         return result.ok && result.kind === 'read' ? result.inspection : refused(result);
       }),
-    take: (file, sha256) =>
-      turn(async () => {
+    take: (file, sha256, who = '') =>
+      turn(who, async () => {
         const result = await run({ kind: 'read', bytes: bytesOf(file).bytes, sha256 }, readMs, true);
         if (!result.ok || result.kind !== 'read') return refused(result);
         if (result.sha256 !== sha256) throw new UploadWorkError('fault', 'the file was not the same after it was read');
         return { inspection: result.inspection, file: result.bytes };
       }),
-    write: (file, edits) =>
-      turn(async () => {
+    write: (file, edits, sha256, who = '') =>
+      turn(who, async () => {
         const { bytes, ours } = bytesOf(file);
-        const result = await run({ kind: 'write', bytes, edits }, writeMs, ours);
+        const result = await run({ kind: 'write', bytes, edits, sha256 }, writeMs, ours);
         return result.ok && result.kind === 'write' ? { pptx: result.pptx, report: result.report } : refused(result);
       }),
     check: () =>
-      turn(async () => {
+      turn('', async () => {
         try {
           const result = await run({ kind: 'ping' }, readMs);
           return result.ok ? null : 'unexpected answer';
@@ -194,4 +254,3 @@ export function uploadWorkers(options: UploadWorkOptions = {}): UploadWork {
       }),
   };
 }
-

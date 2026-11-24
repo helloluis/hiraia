@@ -161,7 +161,8 @@ export function writeEditedDeck(bytes: Uint8Array, edits: DeckEdits): { pptx: Ui
 export type UploadJob =
   /** Read a file that has just arrived: its checksum first (when one was announced), then what it holds. */
   | { kind: 'read'; bytes: Uint8Array; sha256?: string }
-  | { kind: 'write'; bytes: Uint8Array; edits: DeckEdits }
+  /** Write the edited file. `sha256`: what the uploaded file has to be (it was put back together from stored pieces). */
+  | { kind: 'write'; bytes: Uint8Array; edits: DeckEdits; sha256?: string }
   /** Nothing to do: shows that a worker can start and load the reader. */
   | { kind: 'ping' };
 
@@ -184,6 +185,7 @@ export function runUploadJob(job: UploadJob): UploadJobResult {
       const inspection = readUploadedDeck(job.bytes);
       return { ok: true, kind: 'read', inspection, bytes: job.bytes, sha256: job.sha256 !== undefined ? sha256Hex(job.bytes) : null };
     }
+    if (job.sha256 !== undefined && sha256Hex(job.bytes) !== job.sha256) return { ok: false, reason: 'checksum_mismatch' };
     return { ok: true, kind: 'write', ...writeEditedDeck(job.bytes, job.edits) };
   } catch (err) {
     if (err instanceof UploadRefused) return { ok: false, reason: err.reason };

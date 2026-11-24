@@ -135,6 +135,75 @@ test('the kernel can take a counted answer from a source, a piece at a time, and
   await assert.rejects(failing.arrayBuffer());
 });
 
+test('the kernel lets a counted answer go as soon as its client has gone, and when the connection stops taking it', async () => {
+  const bytes = new Uint8Array(randomBytes(200_000));
+  const answer = (signal: AbortSignal | undefined, stallMs?: number) => {
+    const state = { released: 0 };
+    const response = binaryResponse({ binary: bytes, contentType: 'application/octet-stream', held: { release: () => void (state.released += 1), withinMs: 60_000, stallMs } }, 'req-6', signal);
+    return { state, response };
+  };
+  // The client left before its answer was ready (the job took a while): nothing is held for it at all.
+  const early = answer(AbortSignal.abort());
+  assert.equal(early.state.released, 1);
+  await assert.rejects(early.response.arrayBuffer());
+  // It leaves while nothing has been taken yet, or after a piece: let go at that moment, once.
+  for (const takeOne of [false, true]) {
+    const leaving = new AbortController();
+    const a = answer(leaving.signal);
+    const reader = a.response.body!.getReader();
+    if (takeOne) assert.equal((await reader.read()).value!.length, 65536);
+    assert.equal(a.state.released, 0);
+    leaving.abort();
+    assert.equal(a.state.released, 1);
+    await assert.rejects(reader.read());
+    assert.equal(a.state.released, 1);
+  }
+  // A connection that stays but stops taking: let go after the stall time, long before the answer's whole time.
+  const stalled = answer(undefined, 40);
+  const reader = stalled.response.body!.getReader();
+  assert.equal((await reader.read()).value!.length, 65536);
+  await sleep(15);
+  assert.equal((await reader.read()).value!.length, 65536, 'a connection that keeps taking is not cut');
+  assert.equal(stalled.state.released, 0);
+  await sleep(100);
+  assert.equal(stalled.state.released, 1);
+  await assert.rejects(reader.read());
+  // One that never takes the first piece: the same.
+  const never = answer(undefined, 40);
+  await sleep(100);
+  assert.equal(never.state.released, 1);
+  // A whole download with a signal that never fires is as before.
+  const fine = answer(new AbortController().signal);
+  assert.deepEqual(new Uint8Array(await fine.response.arrayBuffer()), bytes);
+  assert.equal(fine.state.released, 1);
+});
+
+test('a client that asks for the edited file and leaves before it is written does not keep its room', async () => {
+  const file = pptx(700_000);
+  // Room for one edited file on its way, for her and for everybody.
+  const t = server({ sendingBytesPerAccount: file.length + 1000, sendingBytes: file.length + 1000 });
+  try {
+    const ana = await t.registerUser();
+    const deck = await uploaded(t, ana, file);
+    const url = `http://tala.test/api/v1/deck-uploads/${deck.id}/pptx`;
+    for (let i = 0; i < 4; i++) {
+      // She asks and is gone before the worker has written the file.
+      const leaving = new AbortController();
+      const asked = t.server.handle(new Request(url, { headers: { authorization: `Bearer ${ana.token}` }, signal: leaving.signal }));
+      leaving.abort();
+      const response = await asked;
+      if (response.status === 200) await assert.rejects(response.arrayBuffer());
+    }
+    // Her next download finds the room free: nothing waited for a timer.
+    const next = await t.request('GET', `/deck-uploads/${deck.id}/pptx`, { token: ana.token });
+    assert.equal(next.status, 200);
+    assert.equal(readUploadedDeck(new Uint8Array(await next.arrayBuffer())).slides.length, 3);
+    assert.deepEqual(t.errors, []);
+  } finally {
+    t.close();
+  }
+});
+
 test('"the file I uploaded" is kept in pieces and sent a piece at a time: a download nobody takes holds one piece, not the file', async () => {
   const file = pptx(1_300_000);
   // Room for six pieces on their way for one account: far less than six of these files.

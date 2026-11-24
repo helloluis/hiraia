@@ -9,7 +9,11 @@
 //     piece at a time, so any number of clients sitting on it hold next to nothing; the edited file is counted,
 //     and past what one account may have on its way the next is told to come back; when the clients go away the
 //     room is free again;
+//   - a client that asks for the edited file and leaves before it is written does not keep its room;
 //   - all the while the health route answers, promptly, and the web process is the same one at the end.
+//
+// The health route is asked from a thread of its own: this script's own work (making files of tens of megabytes,
+// their checksums) holds this thread for seconds at a time and must not be read as the site being slow.
 //
 //   pnpm exec tsx scripts/uploads-hostile-http.mjs <baseUrl> <out.json> [--db <TALA_DB_PATH>] [--server-pid PID]
 //        [--file some.pptx]... [--only name,name] [--no-sending] [--health-ms 1000]
@@ -19,10 +23,11 @@
 // --server-pid   the web process: checked to be alive, and its memory high-water mark noted, before and after
 // --file         one more file to send (as often as wanted): it must be read or refused without disturbing anybody.
 //                Nothing is expected of it but that; what the server said is in the output.
-// --no-sending   leave out the part that sits on downloads (it uploads a file of 20 MB)
+// --no-sending   leave out the parts that sit on downloads and leave early (they upload a file of up to 20 MB;
+//                its size follows what the site says it takes)
 // --health-ms    the longest a health answer may take (default 1000)
 // --stress N     then, for N seconds, everything at once at the limits: several accounts (--stress-accounts, default
-//                4), each with a deck near the largest size (--stress-file-mb, default 29), sitting on downloads,
+//                4), each with a deck near the largest size the site takes (--stress-file-mb to set it), sitting on downloads,
 //                downloading, uploading more (another large file, and the heaviest file the reader still takes)
 //                and having slides drawn. What is held to: the health route answers throughout and the web process
 //                is the same one afterwards. Its memory at the peak is reported (--server-pid), and its control
@@ -35,6 +40,7 @@ import { createRequire } from 'node:module';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import http from 'node:http';
 import { basename } from 'node:path';
+import { Worker } from 'node:worker_threads';
 
 const require = createRequire(import.meta.url);
 const { createTalaClient } = await import('@hiraia/tala-core/contracts');
@@ -62,30 +68,68 @@ const check = (name, ok, detail = '') => {
 };
 const reasonOf = (err) => err?.details?.reason ?? err?.code ?? String(err).slice(0, 80);
 
-/* ---------------- the site's pulse, all the while ---------------- */
-const pulse = { asked: 0, failed: 0, longest: 0, slow: 0, stop: false, during: '' };
-const beating = (async () => {
-  while (!pulse.stop) {
-    const started = performance.now();
-    let ok = false;
-    try {
-      const res = await fetch(`${base}/api/v1/health`, { signal: AbortSignal.timeout(30_000) });
-      ok = res.status === 200;
-      await res.arrayBuffer();
-    } catch {
-      ok = false;
-    }
-    const took = performance.now() - started;
-    pulse.asked += 1;
-    if (!ok) pulse.failed += 1;
-    if (took > healthMs) pulse.slow += 1;
-    if (took > pulse.longest) {
-      pulse.longest = took;
-      pulse.longestDuring = pulse.during;
-    }
-    await sleep(Math.max(0, 100 - took));
-  }
-})();
+/* ---------------- the site's pulse, all the while, from a thread of its own ---------------- */
+const pulseThread = new Worker(
+  `const { parentPort, workerData } = require('node:worker_threads');
+   const { base, healthMs } = workerData;
+   const s = { asked: 0, failed: 0, slow: 0, longest: 0, longestAt: 0, late: 0 };
+   let stop = false;
+   parentPort.on('message', (m) => {
+     if (m === 'stop') stop = true;
+     if (m === 'now') parentPort.postMessage({ ...s });
+   });
+   (async () => {
+     while (!stop) {
+       const started = performance.now();
+       let ok = false;
+       try {
+         const res = await fetch(base + '/api/v1/health', { signal: AbortSignal.timeout(30000) });
+         ok = res.status === 200;
+         await res.arrayBuffer();
+       } catch {
+         ok = false;
+       }
+       const took = performance.now() - started;
+       s.asked += 1;
+       if (!ok) s.failed += 1;
+       if (took > healthMs) s.slow += 1;
+       if (took > s.longest) {
+         s.longest = took;
+         s.longestAt = Date.now();
+       }
+       // How late this thread's own timer fires says whether the machine, not the site, was the slow one.
+       const before = performance.now();
+       await new Promise((r) => setTimeout(r, Math.max(0, 100 - took)));
+       s.late = Math.max(s.late, performance.now() - before - Math.max(0, 100 - took));
+     }
+     parentPort.postMessage({ ...s, done: true });
+   })();`,
+  { eval: true, workerData: { base, healthMs } }
+);
+/** What was going on when: to say during what the slowest health answer came. */
+const timeline = [[Date.now(), 'start']];
+const pulse = {
+  set during(label) {
+    timeline.push([Date.now(), label]);
+  },
+};
+const pulseAsk = (message, wanted) =>
+  new Promise((resolve) => {
+    const onMessage = (m) => {
+      if (!wanted(m)) return;
+      pulseThread.off('message', onMessage);
+      resolve(m);
+    };
+    pulseThread.on('message', onMessage);
+    pulseThread.postMessage(message);
+  });
+const pulseNow = () => pulseAsk('now', (m) => !m.done);
+const pulseEnd = async () => {
+  const last = await pulseAsk('stop', (m) => m.done === true);
+  await pulseThread.terminate();
+  const during = [...timeline].reverse().find(([at]) => at <= last.longestAt)?.[1] ?? 'start';
+  return { asked: last.asked, failed: last.failed, slow: last.slow, longest: last.longest, longestDuring: during, ownLateness: last.late };
+};
 /** The process's memory high-water mark in MiB, or null when no pid was given or it is not ours to read. */
 const serverMemory = () => {
   if (!serverPid) return null;
@@ -159,7 +203,14 @@ async function teacher(n) {
       });
       req.on('error', reject);
     });
-  return { client, upload, binary, sitOn };
+  /** Asks for a download and hangs up `ms` after the connection is made, without waiting for any answer. */
+  const leaveEarly = (path, ms) =>
+    new Promise((resolve) => {
+      const req = http.get(`${base}/api/v1${path}`, { headers: { cookie: jar.cookie }, agent: false });
+      req.on('error', () => undefined);
+      req.on('socket', (socket) => socket.on('connect', () => setTimeout(() => (req.destroy(), resolve()), ms)));
+    });
+  return { client, upload, binary, sitOn, leaveEarly };
 }
 
 const made = [];
@@ -229,10 +280,13 @@ try {
   if (!flag('no-sending')) {
     pulse.during = 'downloads nobody takes';
     const t = await nextTeacher();
-    // 20 MB that do not compress: far more than a connection's own buffers swallow.
-    const big = writeZip(Object.entries(syntheticDeckParts({ 'ppt/media/photo.png': new Uint8Array(randomBytes(20 * 1024 * 1024)) })).map(([name, data]) => ({ name, data })));
-    const up = await t.upload(big, 'Twenty megabytes.pptx');
-    if (!up.deck) check('a deck of 20 MB is taken (for the next checks)', false, up.outcome);
+    // As large as this site takes, up to 20 MB, of bytes that do not compress: far more than a connection's own
+    // buffers swallow.
+    const allowed = (await t.client.call('decks.uploads.list')).allowance.fileBytes;
+    const bigMb = Math.max(1, Math.min(20, Math.floor(allowed / (1024 * 1024)) - 1));
+    const big = writeZip(Object.entries(syntheticDeckParts({ 'ppt/media/photo.png': new Uint8Array(randomBytes(bigMb * 1024 * 1024)) })).map(([name, data]) => ({ name, data })));
+    const up = await t.upload(big, 'A large deck.pptx');
+    if (!up.deck) check(`a deck of ${bigMb} MB is taken by a site whose largest file is ${Math.round(allowed / (1024 * 1024))} MiB (for the next checks)`, false, up.outcome);
     else {
       made.push([t, up.deck.id]);
       const path = `/deck-uploads/${up.deck.id}/original`;
@@ -243,13 +297,15 @@ try {
       for (let i = 0; i < 10; i++) idle.push(await t.sitOn(path));
       await sleep(500);
       const during = serverMemory();
-      check('ten downloads of a 20 MB original that nobody takes are all started, and cost the web process next to nothing', idle.every((s) => s.status === 200 && s.length === big.length) && (!before || !during || during.rssMiB - before.rssMiB < 60), `statuses ${idle.map((s) => s.status).join(',')}; memory of the web process before ${JSON.stringify(before)}, with all ten waiting ${JSON.stringify(during)}`);
+      check(`ten downloads of a ${bigMb} MB original that nobody takes are all started, and cost the web process next to nothing`, idle.every((s) => s.status === 200 && s.length === big.length) && (!before || !during || during.rssMiB - before.rssMiB < 60), `statuses ${idle.map((s) => s.status).join(',')}; memory of the web process before ${JSON.stringify(before)}, with all ten waiting ${JSON.stringify(during)}`);
       for (const s of idle) s.letGo();
       // The edited file exists whole while it is sent, so it is counted: one account may have 48 MiB on its way.
       const edited = `/deck-uploads/${up.deck.id}/pptx`;
       const sitting = [];
       let turnedAway = null;
-      for (let i = 0; i < 6 && !turnedAway; i++) {
+      // How many fit depends on the file: never more than 96 MiB of them for everybody.
+      const most = Math.ceil((96 * 1024 * 1024) / big.length) + 1;
+      for (let i = 0; i < most && !turnedAway; i++) {
         const s = await t.sitOn(edited);
         if (s.status === 200) sitting.push(s);
         else {
@@ -259,7 +315,7 @@ try {
       }
       await sleep(500);
       const meanwhile = await t.client.call('decks.uploads.get', { params: { uploadId: up.deck.id } });
-      check('edited downloads nobody takes: after a few, the next is told to come back (503), and the rest of the site answers', sitting.length >= 1 && sitting.length <= 4 && turnedAway?.status === 503 && meanwhile.id === up.deck.id, `${sitting.length} of ${big.length} bytes each were started and left; the next: ${turnedAway?.status ?? 'none was turned away'}; memory of the web process now: ${JSON.stringify(serverMemory())}`);
+      check('edited downloads nobody takes: after a few, the next is told to come back (503), and the rest of the site answers', sitting.length >= 1 && sitting.length * big.length <= 96 * 1024 * 1024 && turnedAway?.status === 503 && meanwhile.id === up.deck.id, `${sitting.length} of ${big.length} bytes each were started and left; the next: ${turnedAway?.status ?? 'none was turned away'}; memory of the web process now: ${JSON.stringify(serverMemory())}`);
       for (const s of sitting) s.letGo();
       // The server notices the clients have gone and the room is free again.
       let whole = null;
@@ -271,6 +327,29 @@ try {
       const original = await t.binary(path);
       check('when those clients go away the room is free again; the edited file comes whole, and the original bit for bit', whole?.status === 200 && whole.bytes.length > big.length - 100_000 && original.status === 200 && sha(original.bytes) === sha(big), `edited ${whole?.status} ${whole?.bytes.length} bytes in ${whole?.ms} ms; original ${original.status} ${original.bytes.length} bytes in ${original.ms} ms`);
     }
+
+    /* ---------------- a client that leaves before its download is ready ---------------- */
+    pulse.during = 'clients that leave early';
+    // An account of its own: the downloads above have used most of a minute's allowance of the other.
+    const leaver = await teacher(++teachers);
+    const kept = await leaver.upload(big, 'A large deck.pptx');
+    if (!kept.deck) check('a large deck is taken (for the early-leave check)', false, kept.outcome);
+    else {
+      made.push([leaver, kept.deck.id]);
+      const edited = `/deck-uploads/${kept.deck.id}/pptx`;
+      const first = await leaver.binary(edited);
+      // Six times: ask for the edited file and hang up 15 ms after connecting, long before it can have been written.
+      for (let i = 0; i < 6; i++) await leaver.leaveEarly(edited, 15);
+      // Were their room held until a timer, the next download would be told to come back for minutes.
+      const started = Date.now();
+      let after = null;
+      for (let i = 0; i < 15; i++) {
+        after = await leaver.binary(edited);
+        if (after.status === 200) break;
+        await sleep(1000);
+      }
+      check('six clients that ask for the edited file and leave before it is written do not keep its room', first.status === 200 && after?.status === 200 && Date.now() - started < 15_000, `before: ${first.status}; after they left, a new download: ${after?.status} within ${Date.now() - started} ms`);
+    }
   }
 
   /* ---------------- everything at once, at the limits ---------------- */
@@ -278,7 +357,10 @@ try {
   if (stressSeconds > 0) {
     pulse.during = 'everything at once';
     const accounts = Number(opt('stress-accounts') || 4);
-    const fileMb = Number(opt('stress-file-mb') || 29);
+    const probe = await teacher(++teachers);
+    const takes = (await probe.client.call('decks.uploads.list')).allowance.fileBytes;
+    // A megabyte under the largest file this site takes, unless told otherwise.
+    const fileMb = Number(opt('stress-file-mb') || Math.max(1, Math.floor(takes / (1024 * 1024)) - 1));
     const bigOf = () => writeZip(Object.entries(syntheticDeckParts({ 'ppt/media/photo.png': new Uint8Array(randomBytes(fileMb * 1024 * 1024)) })).map(([name, data]) => ({ name, data })));
     const heavy = HOSTILE_FILES.find((f) => f.name === 'eight-slides-each-within-the-limits').build();
     // Fresh accounts, each with a deck near the largest size taken.
@@ -301,7 +383,7 @@ try {
       count(counts.errorKinds, `${where}: ${String(err?.details?.reason ?? err?.code ?? err?.cause?.code ?? err?.message ?? err).slice(0, 60)}`);
     };
     let peakRss = 0;
-    const failedBefore = pulse.failed;
+    const failedBefore = (await pulseNow()).failed;
     const until = Date.now() + stressSeconds * 1000;
     const going = () => Date.now() < until;
     const watching = (async () => {
@@ -395,21 +477,20 @@ try {
     results.push({ name: 'everything at once', seconds: stressSeconds, accounts: mine.length, fileMb, counts, peakRssMiB: peakRss, memory: serverMemory(), group });
     check(
       `everything at once for ${stressSeconds} s (${mine.length} accounts with ${fileMb} MB decks: downloads nobody takes, downloads, uploads, the heaviest file, drawings): the site answered all the while and its process is the same`,
-      mine.length === accounts && serverAlive() && pulse.failed === failedBefore && counts.errors === 0 && counts.satOn > 0 && counts.uploads > 0,
+      mine.length === accounts && serverAlive() && (await pulseNow()).failed === failedBefore && counts.errors === 0 && counts.satOn > 0 && counts.uploads > 0,
       `${JSON.stringify(counts)}; the web process: ${peakRss} MiB at most during it, ${JSON.stringify(serverMemory())} now${group}`
     );
   }
 } finally {
   pulse.during = 'clearing up';
   for (const [t, id] of made) await t.client.call('decks.uploads.delete', { params: { uploadId: id } }).catch(() => undefined);
-  pulse.stop = true;
-  await beating;
 }
+const beat = await pulseEnd();
 
 const memoryAfter = serverMemory();
-check(`the site answered its health route all the while, each time within ${healthMs} ms`, pulse.asked > 20 && pulse.failed === 0 && pulse.slow === 0, `${pulse.asked} asked, ${pulse.failed} failed, ${pulse.slow} slow; the longest took ${Math.round(pulse.longest)} ms (during: ${pulse.longestDuring || 'start'})`);
+check(`the site answered its health route all the while, each time within ${healthMs} ms`, beat.asked > 20 && beat.failed === 0 && beat.slow === 0, `${beat.asked} asked, ${beat.failed} failed, ${beat.slow} slow; the longest took ${Math.round(beat.longest)} ms (during: ${beat.longestDuring}); the asking thread's own timer was never later than ${Math.round(beat.ownLateness)} ms`);
 check('the web process is the same one as at the start', serverAlive(), serverPid ? `pid ${serverPid}; memory before ${JSON.stringify(memoryBefore)}, after ${JSON.stringify(memoryAfter)}` : 'no --server-pid given: not checked beyond its health');
 const failed = checks.filter((c) => !c.ok);
-writeFileSync(outFile, JSON.stringify({ base, at: new Date().toISOString(), teachers, pulse: { asked: pulse.asked, failed: pulse.failed, slow: pulse.slow, longestMs: Math.round(pulse.longest), longestDuring: pulse.longestDuring ?? '' }, memoryBefore, memoryAfter, results, checks }, null, 1));
+writeFileSync(outFile, JSON.stringify({ base, at: new Date().toISOString(), teachers, pulse: { asked: beat.asked, failed: beat.failed, slow: beat.slow, longestMs: Math.round(beat.longest), longestDuring: beat.longestDuring, askingThreadLateMs: Math.round(beat.ownLateness) }, memoryBefore, memoryAfter, results, checks }, null, 1));
 console.log(`\n${checks.length - failed.length} of ${checks.length} checks passed${failed.length ? `; FAILED: ${failed.map((c) => c.name).join(' | ')}` : ''}`);
 process.exit(failed.length ? 1 : 0);

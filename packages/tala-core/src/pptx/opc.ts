@@ -107,6 +107,13 @@ export interface PackageLimits {
   cachedRels: number;
 }
 
+/**
+ * The longest content type taken. The longest in the 91 real files of the corpus is 82 characters. A type is
+ * carried by every part that shares its extension, so one megabyte-long "type" would be looked at once for each
+ * of thousands of parts.
+ */
+export const CONTENT_TYPE_CHARS = 255;
+
 export const PACKAGE_LIMITS: PackageLimits = { parts: 4000, nameLength: 240, xml: {}, listNodes: 40_000, writtenChars: 32 * 1024 * 1024, writtenBytes: 24 * 1024 * 1024, cachedNodes: 200_000, cachedChars: 16 * 1024 * 1024, cachedRels: 50_000 };
 
 export const dirOf = (part: string): string => {
@@ -378,13 +385,14 @@ export class PptxPackage {
       const defaults = new Map<string, string>();
       const overrides = new Map<string, { type: string; el: XmlElement }>();
       for (const el of kids(doc.root, NS.CT)) {
+        if (el.local !== 'Default' && el.local !== 'Override') continue;
+        const type = attr(el, 'ContentType');
+        if (type && type.length > CONTENT_TYPE_CHARS) throw new PptxError('damaged', 'This file names a content type that is not one.');
         if (el.local === 'Default') {
           const ext = attr(el, 'Extension');
-          const type = attr(el, 'ContentType');
           if (ext && type) defaults.set(ext.toLowerCase(), type);
-        } else if (el.local === 'Override') {
+        } else {
           const part = attr(el, 'PartName');
-          const type = attr(el, 'ContentType');
           if (part && type) overrides.set((part.startsWith('/') ? part.slice(1) : part).toLowerCase(), { type, el });
         }
       }

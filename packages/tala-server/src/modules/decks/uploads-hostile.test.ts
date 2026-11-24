@@ -18,7 +18,7 @@ import { createDecksModule, type DecksOptions } from './index';
 import { HOSTILE_FILES } from './hostile-files';
 import { readUploadedDeck, UPLOAD_ZIP_LIMITS, UploadRefused } from './upload-file';
 import { UploadWorkError, uploadWorkers, type UploadWork } from './upload-jobs';
-import { envBytes } from './uploads';
+import { envBytes, UPLOAD_DEFAULTS } from './uploads';
 import { readZip, writeZip } from './zip';
 
 /** The longest this thread may go without a turn while a request is answered. Before: 30 seconds and more. */
@@ -198,6 +198,41 @@ test('the worker: one job at a time, a short queue, and beyond that "come back i
   assert.equal((await slow.read(small)).slides.length, 3);
 });
 
+test('the worker: the one place is shared out between accounts; one account cannot crowd the others out', async () => {
+  const small = pptx();
+  const heavy = HOSTILE_FILES.find((f) => f.name === 'eight-slides-each-within-the-limits')!.build();
+  const work = uploadWorkers();
+  // One account asks for six jobs at once: one is done, one waits, four are told to come back at once.
+  const hers = await Promise.allSettled(Array.from({ length: 6 }, () => work.read(small, undefined, 'ana')));
+  assert.deepEqual(hers.map((r) => (r.status === 'fulfilled' ? 'read' : r.reason instanceof UploadWorkError ? r.reason.kind : 'error')), ['read', 'read', 'busy', 'busy', 'busy', 'busy']);
+  // Ana has a long job under way and another waiting. Ben comes last, and is served before Ana's second: the free
+  // place goes to whoever has had the least of it lately, not to whoever queued first.
+  const order: string[] = [];
+  const done = (name: string) => () => void order.push(name);
+  const jobs = [work.read(heavy, undefined, 'ana').then(done('ana 1')), work.read(heavy, undefined, 'ana').then(done('ana 2'))];
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  jobs.push(work.read(small, undefined, 'ben').then(done('ben')));
+  await Promise.all(jobs);
+  assert.deepEqual(order, ['ana 1', 'ben', 'ana 2']);
+  // Many accounts at once still only fill the short queue: the ninth to wait is told to come back.
+  const crowd = await Promise.allSettled(Array.from({ length: 12 }, (_x, i) => work.read(small, undefined, `teacher ${i}`)));
+  assert.deepEqual(crowd.filter((r) => r.status === 'fulfilled').length, 9);
+  // Jobs that say no owner (tools, tests) are not held to one account's share.
+  const tools = await Promise.allSettled(Array.from({ length: 5 }, () => work.read(small)));
+  assert.equal(tools.filter((r) => r.status === 'fulfilled').length, 5);
+});
+
+test('the worker: a file put back together from its pieces is checked before anything is written from it', async () => {
+  const work = uploadWorkers();
+  const file = pptx();
+  const deck = await work.read(file);
+  const edits = { slides: deck.slides.map((s) => ({ id: s.id, source: s.id })) };
+  assert.ok((await work.write(file, edits, sha(file))).pptx.length > 1000);
+  const damaged = file.slice();
+  damaged[damaged.length - 40] = damaged[damaged.length - 40]! ^ 0xff;
+  await assert.rejects(work.write(damaged, edits, sha(file)), (err: unknown) => err instanceof UploadRefused && err.reason === 'checksum_mismatch');
+});
+
 test('the worker: bytes given as they are stay the caller\'s; bytes fetched for a job that writes are handed over, not copied', async () => {
   const work = uploadWorkers();
   const file = pptx();
@@ -285,6 +320,29 @@ test('settings: a size that cannot be read turns uploads off; it is never guesse
   assert.equal(envBytes('X', fallback, fallback, { X: '' }), fallback);
   assert.equal(envBytes('X', fallback, fallback, { X: '5000000' }), 5_000_000);
   assert.equal(envBytes('X', fallback, fallback, { X: '999999999999' }), fallback, 'a larger number than the most allowed is the most allowed');
+
+  // With nothing set a server takes what it was measured to hold with room to spare, not the most the contract allows.
+  assert.deepEqual(UPLOAD_DEFAULTS, { fileBytes: 15 * 1024 * 1024, accountBytes: 50 * 1024 * 1024 });
+  assert.ok(UPLOAD_DEFAULTS.fileBytes < UPLOAD_LIMITS.fileBytes);
+  const asSet = async (value: string | undefined) => {
+    const was = process.env.TALA_DECK_UPLOAD_MAX_BYTES;
+    if (value === undefined) delete process.env.TALA_DECK_UPLOAD_MAX_BYTES;
+    else process.env.TALA_DECK_UPLOAD_MAX_BYTES = value;
+    const s = createTestServer({ quiet: true, modules: [createDecksModule({ uploads: { renderer: null } })] });
+    if (was === undefined) delete process.env.TALA_DECK_UPLOAD_MAX_BYTES;
+    else process.env.TALA_DECK_UPLOAD_MAX_BYTES = was;
+    try {
+      const teacher = await s.registerUser();
+      const allowance = (await s.ok('decks.uploads.list', { token: teacher.token })).allowance;
+      const sixteen = await s.call('decks.uploads.begin', { body: { fileName: 'Sixteen.pptx', bytes: 16 * 1024 * 1024, sha256: 'a'.repeat(64) }, token: teacher.token });
+      return [allowance.fileBytes, sixteen.status];
+    } finally {
+      s.close();
+    }
+  };
+  assert.deepEqual(await asSet(undefined), [15 * 1024 * 1024, 400], 'nothing set: 15 MiB, and a file of 16 MiB is refused before a byte is sent');
+  assert.deepEqual(await asSet(String(30 * 1024 * 1024)), [30 * 1024 * 1024, 200], 'a server may be set to the contract\'s 30 MiB');
+  assert.deepEqual(await asSet(String(64 * 1024 * 1024)), [30 * 1024 * 1024, 200], 'and never to more');
 
   const before = process.env.TALA_DECK_UPLOAD_MAX_BYTES;
   process.env.TALA_DECK_UPLOAD_MAX_BYTES = '10MB';
@@ -393,6 +451,31 @@ test('the list of her files is a line per file: what each file holds is not read
     const list = await t.ok('decks.uploads.list', { token: ana.token });
     assert.deepEqual(list.decks.map((d) => [d.id, d.slideCount]), [[deck.id, 3]]);
     assert.equal((await t.call('decks.uploads.get', { params: { uploadId: deck.id }, token: ana.token })).status, 500);
+    // Neither is it read to send her file, to write the edited one, to draw it or to send a picture of it.
+    assert.equal((await t.call('decks.uploads.original', { params: { uploadId: deck.id }, token: ana.token })).status, 200);
+    assert.equal((await t.call('decks.uploads.pptx', { params: { uploadId: deck.id }, token: ana.token })).status, 200);
+    assert.equal((await t.ok('decks.uploads.render', { params: { uploadId: deck.id }, token: ana.token })).state, 'unavailable');
+    assert.equal((await t.call('decks.uploads.preview', { params: { uploadId: deck.id, slideId: 's256' }, token: ana.token })).status, 404);
+  } finally {
+    t.close();
+  }
+});
+
+test('a stored file that is no longer the file that was uploaded is not written from: no download, and the log says so', async () => {
+  const t = server();
+  try {
+    const ana = await t.registerUser();
+    const deck = await t.ok('decks.uploads.finish', { params: { sessionId: await sendFile(t, ana, pptx(), 'Plants.pptx') }, token: ana.token });
+    assert.equal((await t.call('decks.uploads.pptx', { params: { uploadId: deck.id }, token: ana.token })).status, 200);
+    // One byte of a stored piece changes (a damaged disk, a mistake by hand).
+    const piece = t.db.prepare('SELECT bytes FROM decks_upload_file_pieces WHERE sha256 = ? AND idx = 0').get(deck.originalSha256) as { bytes: Buffer };
+    const changed = Buffer.from(piece.bytes);
+    changed[changed.length - 40] = changed[changed.length - 40]! ^ 0xff;
+    t.db.prepare('UPDATE decks_upload_file_pieces SET bytes = ? WHERE sha256 = ? AND idx = 0').run(changed, deck.originalSha256);
+    const r = await t.call('decks.uploads.pptx', { params: { uploadId: deck.id }, token: ana.token });
+    assert.deepEqual([r.status, reason(r)], [503, 'export_failed']);
+    assert.equal(t.logs.find((l) => l.event === 'deck_upload_file_damaged')?.fields.uploadId, deck.id);
+    assert.equal(t.logs.find((l) => l.event === 'deck_upload_export_failed')?.fields.reason, 'checksum_mismatch');
   } finally {
     t.close();
   }

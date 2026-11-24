@@ -114,15 +114,17 @@ export interface BinaryResponse {
   /**
    * For a large answer the route keeps count of (so that the answers on their way to slow or silent clients can
    * never add up to more than the route allows). The bytes are then handed to the connection in pieces, as it
-   * takes them, and `release` is called exactly once: when the last piece has been taken, when the client has gone
-   * away, or when `withinMs` has passed (the answer is then cut short, which the client sees as a failed
-   * download). After `release` the server holds nothing of `binary` but the piece under way.
+   * takes them, and `release` is called exactly once: when the last piece has been taken; when the client has gone
+   * away, also when it went before the answer was ready; when the connection has not asked for a piece for
+   * `stallMs` (30 s when not given); or when `withinMs` has passed. In the last three cases the answer is cut
+   * short, which a client that is still there sees as a failed download. After `release` the server holds nothing
+   * of `binary` but the piece under way.
    *
    * `pieces`: the answer is not in memory at all. It is `bytes` long and is fetched a piece at a time (`next`
    * gives the next piece, then null) as the connection takes it; `binary` is then left empty. Ending early, or
    * with more than `bytes`, cuts the answer short like running out of time does.
    */
-  held?: { release(): void; withinMs: number; pieces?: { bytes: number; next(): Uint8Array | null } };
+  held?: { release(): void; withinMs: number; stallMs?: number; pieces?: { bytes: number; next(): Uint8Array | null } };
 }
 
 export interface Migration {

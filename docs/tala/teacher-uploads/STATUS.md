@@ -5,7 +5,7 @@ service: [`packages/tala-server/deploy/render/README.md`](../../../packages/tala
 
 | | |
 |---|---|
-| State | **Built and handed over (twice on 24 Nov). Not deployed.** Production is untouched. The release owner's root rehearsal of the first hand-over passed the drawing sandbox and found that the file reader, inside the web process, could be made to stop the site; the second hand-over answers that (below) |
+| State | **Built, handed over and rehearsed as root. Not deployed.** Production is untouched. On 24 Nov the release owner ran the second hand-over (commit `c6938a492`) as root on a machine like the host: their three blockers are closed by test, and the lane is technically releasable with 15 MiB files. A third hand-over the same day adds what their second readers found (below); they have not rehearsed it. The release waits on Luis's two questions |
 | Where | Worktree `/home/debian/code/tala-wt/uploads` on b11-002. Handed to the release owner as patches against `tala-v1-demo.13` (`6ebaf2c96`) and as a commit on top of the multi-grade commit |
 | On top of | `tala-v1-demo.13` (`6ebaf2c96`), what tala.hiraia.org runs. First built on `tala-v1-demo.11`; moved over on 23 Nov with three-way merges, no conflicts, and re-tested each time |
 | Owner | The agent session that built it (sole owner of this lane). Release, installation on the host and restarts belong to the release owner (b11-dev `bcd615b4`) |
@@ -30,7 +30,7 @@ service: [`packages/tala-server/deploy/render/README.md`](../../../packages/tala
   stored in pieces, the uploaded file sent from the database a piece at a time); the edited file and pictures on
   their way to clients counted for everybody and for each account; settings that cannot be read turn uploads off. The two files that stopped the rehearsal server (a
   63 KB file that held the site's thread for half a minute, a 542 KB file that ran the process out of memory)
-  are rebuilt in the tests with eighteen more of their kind: each is read or refused in under a second, with the
+  are rebuilt in the tests with nineteen more of their kind: each is read or refused in under a second, with the
   server's thread held for milliseconds. Four accounts doing all of the worst at once for a minute, with decks
   near the largest size, leave the site answering and its process well under its memory ceiling (the numbers are
   in the README).
@@ -39,7 +39,18 @@ service: [`packages/tala-server/deploy/render/README.md`](../../../packages/tala
   program in `/usr/local` and nothing else, its own control group and nothing else, and the system-call filter
   refuses `io_uring`; the job checks the first two itself before every drawing. A crash inside the box makes no
   memory image: tested here for a core file; that a crash handler of the host (apport) is not started either is
-  the kernel's rule for the setting used, read in its source and not tried here.
+  the kernel's rule for the setting used, read in its source and then shown by the release owner's run as root
+  (with apport as the handler, nothing was left in `/var/crash`).
+- **What the release owner's second readers found** (third hand-over, same day): the one job place is shared out
+  between accounts (two jobs of an account there at a time, being done or waiting; the free place goes to the
+  waiting account that has had the least of it in the last minute); a content type is 255 characters at most and
+  each is looked at once; the room of a download is given back the moment its client has gone, and after 30 s in
+  which the connection took nothing; a file put back together from its stored pieces is checked against its
+  checksum before anything is written from it; a deck's stored reading is fetched only to answer the editor; and
+  a server with nothing set takes 15 MiB files and 50 MiB for an account. The first two leads were tried before
+  anything was changed, and were real: a 489 KB file kept the job place for 7.4 s, and again for every download;
+  six abandoned requests kept an account at "come back" for as long as was watched (the README has both before
+  and after).
 - Tests, type-checks, production build, the browser walk in English and Filipino, the real-file corpus through
   the engine, through the real HTTP API and through the sandboxed drawing; the drawing service's own checks with
   ordinary files, hostile files and a hostile program in the box; hostile files through the reader, the worker,
@@ -50,15 +61,19 @@ service: [`packages/tala-server/deploy/render/README.md`](../../../packages/tala
 - **Not opened in Microsoft PowerPoint, Google Slides or WPS.** None is available on the build machine. See the
   first question below.
 - No Open XML SDK validation run.
-- **The drawing service has not been installed or run as root, and not on a host like production.** It was built
-  and tested without root on the build machine, including with the exact Ubuntu 24.04 packages the host will get
-  unpacked into a folder. What that leaves untested is listed at the end of the drawing service's README. The
-  release owner installs it and runs its checks on a box set up like the host before anything of this lane is
-  released.
-- **The second hand-over has not been run as root, and not on systemd 255.** The new lines of the drawing unit
-  were run here under the per-user service manager of systemd 252, with this machine's programs and with the
-  Ubuntu 24.04 packages. That systemd 255 orders the same rules the same way was read in its source, not run.
-  The release owner repeats the whole root rehearsal, with their own two files.
+- **The drawing service has not been installed on the production host.** It was built and tested without root on
+  the build machine, including with the exact Ubuntu 24.04 packages the host will get unpacked into a folder; and
+  the release owner installed it and ran its checks as root, twice, on a machine set up like the host (24 Nov;
+  the second time every check passed, and their own probe of the box). What is left untested is listed at the
+  end of the drawing service's README. On the host itself the release owner plans to install it and run its
+  checks again, without the two that fill a machine's memory and process table.
+- **The third hand-over has not been run as root or by the release owner.** The second was, on systemd 255 with
+  AppArmor and Node 22.22.0: the drawing service's check 100 of 100 as root, the release owner's own probe of the
+  box, the upgrade from the first hand-over's database and from production's, the hostile files and their own
+  two through the real API, the stress at 15 MiB. Since then two lines of the drawing job changed (it sends no
+  picture larger than the web app takes; a `/usr/local` that cannot be listed is not taken as hidden), and the
+  web app changed as "What the release owner's second readers found" above says. All of it was run here,
+  without root.
 - The web app was not run here with the host's Node 22.22.0 (its database driver is built for this machine's
   Node). The worker alone was: every hostile file, and both of its limits.
 - Originals and pictures are stored in SQLite. Acceptable for a first release; see the README.
@@ -78,14 +93,48 @@ service: [`packages/tala-server/deploy/render/README.md`](../../../packages/tala
   commits. The lanes were committed locally on that basis (multi-grade first, this lane on top); nothing is pushed
   from b11-002.
 
-## For the release owner to set
+## Settled with the release owner (24 Nov)
 
-**The largest file the first release takes.** Measured on 24 Nov under the host's ceiling (`MemoryMax=1G`), with
-four accounts doing all of the worst at once for a minute: with 30 MiB files (what the server takes when nothing
-is set) the web process held 735 MiB and its memory group as a whole was at the ceiling 243 times, with nothing
-killed; with 15 MiB files the group peaked at 786 MiB and never reached it. So either
-`TALA_DECK_UPLOAD_MAX_BYTES=15728640` for the first release (the line is in `deploy/tala.env.example`, commented
-out), or more memory for the service. Blocks nothing here; it is a setting of the host.
+**The largest file.** Production takes 15 MiB files and 50 MiB for an account (their setting). Since the third
+hand-over that is also what a server takes when nothing is set, so that a missing setting is not the weaker
+case; 30 MiB files remain possible by setting, with more memory for the service than 1 GiB.
+
+## Known limits: what a few hostile accounts could still do to this feature
+
+None of these reaches the site as a whole, another teacher's files, or the host. They are about this feature
+being slow or told "come back" for other teachers while someone works at it. Found by the release owner's two
+independent readers on 24 Nov. The first two below were tried here before anything was changed, and were real (the
+evidence has each before and after); the other three can be read in the code.
+
+Closed in the third hand-over:
+- one account keeping the one job place busy (a 489 KB file with 3,900 parts sharing a megabyte-long content type
+  was read, after 7.4 s, and cost as much again for every download): a content type is 255 characters at most
+  and is looked at once; and the job place is shared out between accounts;
+- downloads whose client left before they were written keeping their room for about ten minutes: let go at once;
+- the drawing job sending pictures the web app would drop (4 MiB against 2): one number now;
+- a file put back together from its pieces written from without a check: the worker checks its checksum;
+- the stored reading of a deck fetched for every picture, drawing and download: fetched only to answer the
+  editor (opening a deck, saving it) and the upload itself.
+
+Left as they are, with the reason:
+- **The drawing place.** Three accounts with decks that take a minute to draw can still take most of it, in turn;
+  an editor stops asking by itself after about half a minute of "busy"; and a drawing goes on to its own end
+  (100 s at most) after the web app has given up on it, because the job cannot tell a client that has finished
+  sending from one that has gone without a change to how the two talk. Effect: pictures come late. Editing,
+  saving and downloading never wait for pictures.
+- **Clients that stay connected and take nothing.** Two or three accounts doing that to edited downloads can fill
+  the 96 MiB count for as long as they keep at it (each answer is let go after 30 s without progress, and they
+  can ask again). Behind a proxy that takes a whole answer off the server at once, as the host's does, a slow
+  client does not hold the server at all.
+- **Still on the server's own thread:** a file's pieces are stored in one transaction and a drawing's pictures
+  in another; the stored reading (2 MB at most) is parsed for the editor and for a save.
+- **A change too large to write** (more than 24 MiB of new or changed parts) can be saved and then not
+  downloaded; the editor does not say so when it is saved.
+- **"The file I uploaded"** is sent from its stored pieces without a checksum on the way out (the edited file is
+  written only from a checked file).
+- The drawing client joins a picture's bytes as they arrive (one picture is 2 MiB at most).
+- The job's system-call filter still allows the keyring calls and `process_vm_*`: its keyring is its own, and it
+  sees no process but its own.
 
 ## Decisions waiting for Luis (`waiting_for_user`)
 
@@ -127,8 +176,8 @@ one spread in `i18n/en.ts` and `i18n/fil.ts`.
 | `packages/tala-core/src/contracts/api.ts`, `contracts/index.ts` | the `decks.uploads.*` routes; one export line |
 | `packages/tala-server/src/modules/decks/index.ts` | the uploads handlers, migration and account hooks joined to the decks module |
 | `packages/tala-server/src/modules/decks/zip.ts` | reading and writing an entry's stored bytes as they are (`raw`); and, since 24 Nov, for every archive this module reads: a name may appear once, an entry's own header must agree with the directory, no two entries may share bytes; for writing, an optional ceiling on the archive's size |
-| `packages/tala-server/src/kernel/types.ts`, `kernel/http.ts` | one optional field on a binary answer (`held`): the answer is then handed to the connection in pieces and its route is told when it has gone. An answer without the field is sent exactly as before |
-| `packages/tala-server/deploy/tala.env.example` | eight comment lines: the upload limits and the drawing socket, all commented out (off) |
+| `packages/tala-server/src/kernel/types.ts`, `kernel/http.ts`, `kernel/server.ts` | one optional field on a binary answer (`held`): the answer is then handed to the connection in pieces, let go when its client has gone or stops taking it, and its route is told when it has gone. For that the kernel hands the request's own signal to a binary answer (the one line in `server.ts`). An answer without the field is sent exactly as before |
+| `packages/tala-server/deploy/tala.env.example` | eleven lines, all comments: the upload limits and the drawing socket, commented out (the limits are then the measured defaults, the drawing off) |
 | `packages/tala-web/src/features/library/LibraryScreen.tsx` | one card: "Your own slides" |
 | `packages/tala-web/src/i18n/en.ts`, `fil.ts` | one import and one spread each |
 

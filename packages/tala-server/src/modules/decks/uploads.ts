@@ -21,10 +21,17 @@ import { UPLOAD_ZIP_LIMITS, UploadRefused } from './upload-file';
 import { UploadWorkError, uploadWorkers, type UploadWork } from './upload-jobs';
 import { RenderError, rendererFromEnv, retiredRenderSettings, type DeckRenderer } from './upload-render';
 
+/**
+ * What a server takes when nothing is set: the sizes its memory was measured to hold with room to spare under the
+ * production ceiling (docs/tala/teacher-uploads/README.md). The contract's limits (30 MiB a file) are the most a
+ * server may be SET to, with more memory.
+ */
+export const UPLOAD_DEFAULTS = { fileBytes: 15 * 1024 * 1024, accountBytes: 50 * 1024 * 1024 } as const;
+
 export interface UploadOptions {
-  /** Largest file taken, in bytes (never above the contract's limit). Default: `TALA_DECK_UPLOAD_MAX_BYTES` or the contract's. */
+  /** Largest file taken, in bytes (never above the contract's limit). Default: `TALA_DECK_UPLOAD_MAX_BYTES` or UPLOAD_DEFAULTS. */
   maxFileBytes?: number;
-  /** Total an account may keep. Default: `TALA_DECK_UPLOAD_ACCOUNT_BYTES` or the contract's. */
+  /** Total an account may keep. Default: `TALA_DECK_UPLOAD_ACCOUNT_BYTES` or UPLOAD_DEFAULTS. */
   maxAccountBytes?: number;
   maxUploads?: number;
   /**
@@ -47,6 +54,8 @@ export interface UploadOptions {
    */
   sendGraceMs?: number;
   sendBytesPerSecond?: number;
+  /** How long a connection may go without taking the next piece of an answer before it is let go, ms. */
+  sendStallMs?: number;
   /**
    * Bytes of stored readings (what each file was read into: its slides' words and places) one account may keep, all
    * files together. They are kept beside the files and are not part of the file allowance.
@@ -271,8 +280,8 @@ export function envBytes(name: string, fallback: number, max: number, env: NodeJ
 }
 
 export function createUploads(options: UploadOptions = {}): Pick<ServerModule, 'migrations' | 'handlers' | 'onAccountDeleted' | 'onAccountMerged' | 'start'> {
-  const fileBytesSetting = options.maxFileBytes ?? envBytes('TALA_DECK_UPLOAD_MAX_BYTES', UPLOAD_LIMITS.fileBytes, UPLOAD_LIMITS.fileBytes);
-  const accountBytesSetting = options.maxAccountBytes ?? envBytes('TALA_DECK_UPLOAD_ACCOUNT_BYTES', UPLOAD_LIMITS.bytesPerAccount, 100 * UPLOAD_LIMITS.bytesPerAccount);
+  const fileBytesSetting = options.maxFileBytes ?? envBytes('TALA_DECK_UPLOAD_MAX_BYTES', UPLOAD_DEFAULTS.fileBytes, UPLOAD_LIMITS.fileBytes);
+  const accountBytesSetting = options.maxAccountBytes ?? envBytes('TALA_DECK_UPLOAD_ACCOUNT_BYTES', UPLOAD_DEFAULTS.accountBytes, 100 * UPLOAD_LIMITS.bytesPerAccount);
   /** Settings that are set but cannot be read (names only). While there is one, nothing is taken. */
   const badSettings = [fileBytesSetting === null ? 'TALA_DECK_UPLOAD_MAX_BYTES' : '', accountBytesSetting === null ? 'TALA_DECK_UPLOAD_ACCOUNT_BYTES' : ''].filter(Boolean);
   const maxFileBytes = badSettings.length ? 0 : Math.min(fileBytesSetting ?? 0, UPLOAD_LIMITS.fileBytes);
@@ -309,6 +318,8 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
   const sendGraceMs = options.sendGraceMs ?? 120_000;
   const sendBytesPerSecond = options.sendBytesPerSecond ?? 32 * 1024;
   const sendWithinMs = (bytes: number) => sendGraceMs + Math.ceil((bytes / sendBytesPerSecond) * 1000);
+  /** A connection that takes nothing for this long has its answer let go (the kernel's own 30 s when not set). */
+  const stallMs = options.sendStallMs;
   const readingBytesPerAccount = options.readingBytesPerAccount ?? 16 * 1024 * 1024;
   const pictureBytesPerAccount = options.pictureBytesPerAccount ?? 96 * 1024 * 1024;
   const sessionMinutes = options.sessionMinutes ?? 24 * 60;
@@ -355,6 +366,19 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
   /* ---------------- rows ---------------- */
   const getRow = (db: Database, ownerId: string, id: string): UploadRow | null =>
     (db.prepare('SELECT * FROM decks_uploads WHERE id = ? AND owner_id = ?').get(id, ownerId) as UploadRow | undefined) ?? null;
+  /**
+   * The same row without what the file was read into, which can be megabytes: for the routes that only send, write
+   * or draw. A picture or a download does not fetch a deck's whole reading to find out whose it is.
+   */
+  const getRowWithoutReading = (db: Database, ownerId: string, id: string): Omit<UploadRow, 'base_json'> | null =>
+    (db
+      .prepare('SELECT id, owner_id, title, file_name, kind, original_sha256, original_bytes, edits_json, slide_count, changed_slides, rev, created_at, updated_at FROM decks_uploads WHERE id = ? AND owner_id = ?')
+      .get(id, ownerId) as Omit<UploadRow, 'base_json'> | undefined) ?? null;
+  /** Only whose it is and which file: for a picture, and for the uploaded file itself. */
+  const getFileRow = (db: Database, ownerId: string, id: string): Pick<UploadRow, 'id' | 'owner_id' | 'kind' | 'file_name' | 'original_sha256' | 'original_bytes'> | null =>
+    (db.prepare('SELECT id, owner_id, kind, file_name, original_sha256, original_bytes FROM decks_uploads WHERE id = ? AND owner_id = ?').get(id, ownerId) as
+      | Pick<UploadRow, 'id' | 'owner_id' | 'kind' | 'file_name' | 'original_sha256' | 'original_bytes'>
+      | undefined) ?? null;
   const getSession = (db: Database, ownerId: string, id: string, now: string): SessionRow | null =>
     (db.prepare('SELECT * FROM decks_upload_sessions WHERE id = ? AND owner_id = ? AND expires_at > ?').get(id, ownerId, now) as SessionRow | undefined) ?? null;
   const receivedOf = (db: Database, sessionId: string): number[] =>
@@ -545,7 +569,7 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
         let inspection: DeckInspection;
         try {
           // The joined file is handed to the worker and comes back with its reading: it is in memory once.
-          ({ inspection, file } = await work.take(joined, session.sha256));
+          ({ inspection, file } = await work.take(joined, session.sha256, user.id));
         } catch (err) {
           if (err instanceof UploadRefused) return fail(err.reason as UploadRefusalReason);
           if (!(err instanceof UploadWorkError)) throw err;
@@ -641,7 +665,7 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
       /** The file exactly as it was uploaded: the same bytes, the same SHA-256. */
       'decks.uploads.original': (ctx, { params }) => {
         const user = requireUser(ctx);
-        const row = getRow(ctx.db, user.id, params.uploadId);
+        const row = getFileRow(ctx.db, user.id, params.uploadId);
         if (!row) throw notFound();
         // A download holds a whole file in memory while it is sent: one account cannot ask for them without end.
         if (!ctx.services.rateLimit.take(`deck-download:${user.id}`, downloadsPerMinute, 60)) throw new HttpError('rate_limited', MESSAGES.tooManyDownloads, { retryAfterSeconds: 60 });
@@ -661,14 +685,14 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
           binary: new Uint8Array(0),
           contentType: CONTENT_TYPES[row.kind],
           filename: safeFileName(row.file_name, 'slides.pptx'),
-          held: { release: held.release, withinMs: sendWithinMs(stored.size), pieces: { bytes: stored.size, next } },
+          held: { release: held.release, withinMs: sendWithinMs(stored.size), stallMs, pieces: { bytes: stored.size, next } },
         };
       },
 
       /** The uploaded file with the saved changes written in. Always a .pptx that opens for editing. */
       'decks.uploads.pptx': async (ctx, { params }) => {
         const user = requireUser(ctx);
-        const row = getRow(ctx.db, user.id, params.uploadId);
+        const row = getRowWithoutReading(ctx.db, user.id, params.uploadId);
         if (!row) throw notFound();
         if (!ctx.services.rateLimit.take(`deck-download:${user.id}`, downloadsPerMinute, 60)) throw new HttpError('rate_limited', MESSAGES.tooManyDownloads, { retryAfterSeconds: 60 });
         // Room for a file the size of the uploaded one is taken before any work is done; the edited file's own
@@ -679,15 +703,24 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
         try {
           // Written in a worker of its own, like the reading: with a time and a memory limit. The uploaded file is
           // fetched when this download's turn has come.
-          ({ pptx } = await work.write(() => {
-            const file = fileOf(ctx.db, row.original_sha256);
-            if (!file) throw notFound();
-            return file;
-          }, JSON.parse(row.edits_json) as DeckEdits));
+          // The worker checks the file against its checksum before it writes from it: it was put back together
+          // from stored pieces.
+          ({ pptx } = await work.write(
+            () => {
+              const file = fileOf(ctx.db, row.original_sha256);
+              if (!file) throw notFound();
+              return file;
+            },
+            JSON.parse(row.edits_json) as DeckEdits,
+            row.original_sha256,
+            user.id
+          ));
         } catch (err) {
           held.release();
           if (err instanceof HttpError) throw err;
           const reason = err instanceof UploadRefused ? err.reason : err instanceof UploadWorkError ? `stopped: ${err.kind}` : 'error';
+          // The stored file is not the file that was uploaded any more: that is the database's, and somebody has to look.
+          if (reason === 'checksum_mismatch') ctx.log.error('deck_upload_file_damaged', { uploadId: row.id });
           ctx.log.error('deck_upload_export_failed', { uploadId: row.id, reason });
           throw new HttpError('unavailable', err instanceof UploadWorkError && err.kind === 'busy' ? MESSAGES.busy : MESSAGES.cannotBuild, { reason: 'export_failed' });
         }
@@ -699,13 +732,13 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
           binary: pptx,
           contentType: CONTENT_TYPES.presentation,
           filename: `${safeFileName(row.title, 'slides').replace(/\.(pptx|potx|ppsx)$/i, '')}-tala.pptx`,
-          held: { release: held.release, withinMs: sendWithinMs(pptx.length) },
+          held: { release: held.release, withinMs: sendWithinMs(pptx.length), stallMs },
         };
       },
 
       'decks.uploads.render': async (ctx, { params }) => {
         const user = requireUser(ctx);
-        const row = getRow(ctx.db, user.id, params.uploadId);
+        const row = getRowWithoutReading(ctx.db, user.id, params.uploadId);
         if (!row) throw notFound();
         const current = previewInfo(ctx.db, row);
         const edits = JSON.parse(row.edits_json) as DeckEdits;
@@ -730,18 +763,23 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
         const drawing = (async () => {
           try {
             // The file with her changes is written in a worker of its own, then drawn by the drawing service.
-            const { pptx } = await work.write(() => {
-              const file = fileOf(db, row.original_sha256);
-              if (!file) throw new RenderError('failed', 'the uploaded file is gone');
-              return file;
-            }, edits);
+            const { pptx } = await work.write(
+              () => {
+                const file = fileOf(db, row.original_sha256);
+                if (!file) throw new RenderError('failed', 'the uploaded file is gone');
+                return file;
+              },
+              edits,
+              row.original_sha256,
+              user.id
+            );
             const pictures = await renderer.render(pptx, edits.slides.length);
             if (pictures.length !== edits.slides.length) throw new RenderError('failed', 'page count');
             const bytes = pictures.reduce((n, p) => n + p.length, 0);
             if (bytes > pictureBytesPerAccount) throw new RenderError('failed', 'pictures larger than an account may keep');
             db.transaction(() => {
               // Only if the upload is still this account's and still at the version that was drawn.
-              const still = getRow(db, user.id, row.id);
+              const still = getRowWithoutReading(db, user.id, row.id);
               if (!still || still.rev !== row.rev) return;
               db.prepare('DELETE FROM decks_upload_previews WHERE upload_id = ?').run(row.id);
               // Pictures can be drawn again, so they are kept like a cache: those of the files she opened longest
@@ -765,6 +803,7 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
             // The reason is one of the renderer's or the worker's own short phrases, never text from the file.
             const kind = err instanceof RenderError ? err.kind : err instanceof UploadWorkError && err.kind === 'busy' ? 'busy' : 'failed';
             const reason = err instanceof RenderError ? err.reason : err instanceof UploadRefused ? `could not write the file (${err.reason})` : err instanceof UploadWorkError ? `could not write the file (stopped: ${err.kind})` : 'error';
+            if (err instanceof UploadRefused && err.reason === 'checksum_mismatch') log.error('deck_upload_file_damaged', { uploadId: row.id });
             if (kind === 'unavailable') {
               // Nothing is drawn another way. The server says so for a while instead of trying on every request.
               noPicturesUntil = Date.now() + renderRetryMs;
@@ -776,6 +815,10 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
           } finally {
             rendering = false;
             drawn.set(user.id, [...recentDrawings(user.id, Date.now()), { at: Date.now(), ms: Date.now() - startedAt }]);
+            // What is remembered of accounts that have not drawn for a while is let go: none of this grows with
+            // the number of accounts a server has seen.
+            if (drawn.size > 512) for (const other of [...drawn.keys()]) recentDrawings(other, Date.now());
+            if (lastDrawnFor.size > 4096) for (const [other, at] of [...lastDrawnFor]) if (Date.now() - at > 600_000) lastDrawnFor.delete(other);
           }
         })();
         // A large deck can take longer to draw than a request should stay open. Past this point the editor is told
@@ -792,14 +835,14 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
       },
 
       'decks.uploads.preview': (ctx, { params }) => {
-        const row = getRow(ctx.db, requireUser(ctx).id, params.uploadId);
+        const row = getFileRow(ctx.db, requireUser(ctx).id, params.uploadId);
         if (!row) throw notFound();
         const picture = ctx.db.prepare('SELECT bytes FROM decks_upload_previews WHERE upload_id = ? AND slide_id = ?').get(row.id, params.slideId) as { bytes: Buffer } | undefined;
         if (!picture) throw new HttpError('not_found', MESSAGES.noPicture, { reason: 'preview_not_found' });
         // Pictures are counted like downloads: an editor asks for many at once, and each waits for its client.
         const held = hold(row.owner_id, picture.bytes.length);
         if (!held) throw noRoomToSend();
-        return { binary: fromBlob(picture.bytes), contentType: 'image/jpeg', cacheControl: 'private, max-age=3600', held: { release: held.release, withinMs: sendWithinMs(picture.bytes.length) } };
+        return { binary: fromBlob(picture.bytes), contentType: 'image/jpeg', cacheControl: 'private, max-age=3600', held: { release: held.release, withinMs: sendWithinMs(picture.bytes.length), stallMs } };
       },
     },
 

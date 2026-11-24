@@ -393,7 +393,8 @@ export function createServer(options: KernelOptions): KernelServer {
         throw new Error(
           `Route ${route.name} is binary but its handler did not return a BinaryResponse.`
         );
-      return binaryResponse(result, requestId);
+      // The request's own signal says when its client has gone: a counted answer is let go at once then.
+      return binaryResponse(result, requestId, request.signal);
     }
     // Only what the contract names leaves the server: unknown keys are stripped, a wrong shape is a 500.
     const checked = spec.response.safeParse(result);

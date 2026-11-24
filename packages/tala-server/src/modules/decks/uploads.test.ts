@@ -8,6 +8,7 @@ import { createTestServer } from '../../testing';
 import type { TestServer, TestUser } from '../../testing';
 import { createDecksModule, type DecksOptions } from './index';
 import { readUploadedDeck, UploadRefused } from './upload-file';
+import { UPLOAD_DEFAULTS } from './uploads';
 import { RenderError, type DeckRenderer } from './upload-render';
 import { readZip, writeZip } from './zip';
 
@@ -78,7 +79,7 @@ test('upload: a file sent in pieces is read into slides the teacher can edit, wi
 
     const list = await t.ok('decks.uploads.list', { token: ana.token });
     assert.deepEqual(list.decks.map((d) => [d.id, d.title, d.slideCount]), [[deck.id, deck.title, 3]]);
-    assert.deepEqual(list.allowance, { fileBytes: UPLOAD_LIMITS.fileBytes, remainingBytes: UPLOAD_LIMITS.bytesPerAccount - file.length, remainingUploads: UPLOAD_LIMITS.uploadsPerAccount - 1 });
+    assert.deepEqual(list.allowance, { fileBytes: UPLOAD_DEFAULTS.fileBytes, remainingBytes: UPLOAD_DEFAULTS.accountBytes - file.length, remainingUploads: UPLOAD_LIMITS.uploadsPerAccount - 1 });
     assert.deepEqual(await t.ok('decks.uploads.get', { params: { uploadId: deck.id }, token: ana.token }), deck);
     // The session is used up, and nothing of the upload text or file name was logged.
     assert.equal((await t.call('decks.uploads.finish', { params: { sessionId: session.sessionId }, token: ana.token })).status, 404);
