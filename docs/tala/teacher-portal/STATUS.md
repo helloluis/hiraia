@@ -549,3 +549,48 @@ size, stored inspection outside the quota); those are passed to the owner as unv
 **State**: sent back to the feature owner with the evidence (bridge request `efbfec14…`). Uploads stay as a
 commit and patches, not installed. Independent of that, two questions remain Luis's: the PowerPoint application
 check, and how long uploads are kept with the privacy wording. Multi-grade is not affected and stays staged.
+
+### Lane 4: eighth hand-over, 24 Nov 2026 16:05 PH (bridge reply `4e8d6f39…`): the three blockers are closed by test
+
+The feature owner answered the rehearsal's findings: commit `c6938a492c7da81aae3657eb358f4f330c9a357f` on top of
+the seventh hand-over's commit (parent `eba4e6da9`, tree `05294460…`, 37 files), bundle sha256 `003346c5…81f0`;
+uploads alone as a patch `99b7d58a…9bbb` (tree `c2e3628a…`). Read back and equal to the owner's values; local
+branch `tala-v1-my-own-slides` now points at it. Nothing is installed on production.
+
+**What changed**: an uploaded file is no longer read or written on the web server's thread but in a worker thread
+with its own time limit, heap and a budget for the whole job; the stored original is kept and sent in pieces; large
+answers are counted while being sent; two more additive migrations (`decks:003`, `decks:004`); the sandbox hides
+`/usr/local` and the control-group tree except the job's own corner, denies `io_uring`, and sets the core limit so
+that a host's crash handler is not fed.
+
+**The whole run repeated on the same rehearsal machine** (production's kernel and systemd, Node 22.22.0):
+- Database: the previous candidate's database upgraded (stored upload back bit for bit); production's path from
+  `tala-v1-demo.13` on a fresh database (32 tables, 16 migrations, no earlier row touched); back to `tala-v1-demo.13`
+  with the new tables (clean, 0 errors) and forward (0 migrations, upload intact).
+- Sandbox as root: reinstall 18 of 18; the owner's suite `verify.mjs --slow` 100 of 100; the release owner's probe
+  in an exact copy of the installed unit: the canary under `/usr/local` is gone from sight, no other service's
+  control group is visible, the job's own ceiling is readable and not writable, `io_uring_setup` is refused, a unit
+  whose own group cannot be bound does not start, and a crash leaves nothing with apport.
+- The two files that stopped the site: the column span (also at 999,999,999,999) is read as an ordinary deck in
+  about 0.13 s with health answering within 6 ms; the 542 KB element flood is refused in 0.12 s; no restart.
+- The owner's hostile set through the real API: 28 of 28. One minute of stress at the limit production will get
+  (15 MiB per file; four accounts, 14 MB decks): health 617 asked, 0 failed, longest 492 ms; same process; memory
+  group peak 643 MB of 1 GB, never at the ceiling.
+- Service states 20 of 20 with automatic verification on; browser walk 34 of 34 in English and in Filipino;
+  multi-grade walk 19 of 19 on the combined tree; every live pack edition through the new code (206 editions, 618
+  downloads equal to their manifests, 206 teacher copies exported, 0 problems).
+- Clean export under Node 22: types clean; tests 302 core, 333 server (1 opt-in skip), 94 web; build clean.
+
+**Did not pass**: the same stress at the code's default limits (30 MiB per file) failed the script's own health bar
+on this machine (1 of 428 health checks unanswered, longest answer 7.7 s; no crash, no kill). Production is to run
+with `TALA_DECK_UPLOAD_MAX_BYTES=15728640` and `TALA_DECK_UPLOAD_ACCOUNT_BYTES=52428800`.
+
+**Second independent static reviews**: no blocker by reading. Remaining leads, passed to the owner, concern what a
+few hostile accounts could do to this feature for other teachers (keeping the single file worker, the sending count
+or the drawing slot busy), not the site or anyone's data.
+
+**State**: technically releasable from the release owner's side at the 15 MiB setting. Still open, and Luis's: the
+PowerPoint application check, and how long uploads are kept with the privacy wording. For the production window:
+`apt-get update` is probably needed first (package lists from 20 Oct), then `install.sh` (53 new packages, none
+upgraded or removed in simulation), the owner's suite with a root-only output folder (without the fork-bomb and
+memory-hog section, which held on the rehearsal machine), the three settings, deploy, and live checks.
