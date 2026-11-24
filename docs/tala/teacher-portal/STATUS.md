@@ -450,3 +450,29 @@ notes.
   enabling PPTX previews, or ship without preview pictures?"); a person opening an edited `.pptx` in real
   PowerPoint, Google Slides or WPS, or his word to ship without that; the wording of the privacy line; his word
   that the work may be committed.
+
+## 24 Nov 2026: renderer decision resolved; nothing new released
+
+Luis, relayed by the coordinator: "Yeah the sandboxed renderer makes sense". The renderer question is resolved for a
+**sandboxed production renderer with slide preview pictures kept**. Only the decision is resolved. The feature
+owner (`b11-002:f500f47c`) was resumed by the coordinator with the implementation and verification brief; the
+release owner implements none of it, receives the checksum-verified hand-off, rehearses and releases.
+
+- **Production, 24 Nov 03:25 UTC (11:25 PHT)**: `tala-v1-demo.13`, running since the release, 0 error lines, 3
+  accounts, 1 teacher copy, libraries unchanged. No branch or tag on origin moved.
+- **Host facts sent to the feature owner for the sandbox design** (b11-apps, read-only): Ubuntu 24.04.3, kernel
+  6.8, systemd 255, KVM, 4 CPUs, 11.9 GB RAM, shared with about 25 other services. **The service user cannot
+  create user or network namespaces**: `kernel.apparmor_restrict_unprivileged_userns=1` with AppArmor on; probed as
+  user `tala`, `unshare --user --map-root-user` and `unshare --net` both end in "Operation not permitted". So the
+  preview's `unshare` step would fail on production, and an unprivileged bubblewrap too, unless an AppArmor profile
+  grants it. Not installed: LibreOffice, poppler tools, bubblewrap (all available from apt). No Carlito or Caladea
+  fonts. `tala.service` has MemoryMax=1G, NoNewPrivileges, ProtectSystem=strict, no CPU limit, no network or
+  namespace restriction. A renderer inside the web process's own cgroup would share that 1 GB ceiling.
+- **Before uploads can be released** (the coordinator's list): real isolation, malformed and hostile files,
+  resource limits and timeouts enforced outside the app, tenant privacy, normal preview, edit and export; no
+  unsandboxed fallback; no seeded preview data. To be checked on a box set up like the host, then on production.
+- **Not waived by this decision, still open with their owners**: the Word and PowerPoint application checks; the
+  retention and privacy policy for uploads and its wording; the withdrawal of four Filipino Science editions; a
+  signed-in check route on production for the release owner.
+- **Multi-grade plans**: unchanged, rehearsed and ready (tree `b6125b4d…`). It waits for the feature owner's commit
+  and the Word application check. It is not held for the sandbox work.
