@@ -20,6 +20,27 @@ const ROOT_ONLY = {
   'IPAddressDeny=any': 'IPAddressDeny=any (a packet filter on the job) needs root; PrivateNetwork and RestrictAddressFamilies still apply',
 };
 
+/** The line that shows the job its own control group, in the production unit. */
+const OWN_GROUP = 'BindReadOnlyPaths=/sys/fs/cgroup/talarender.slice/%n';
+/** The line that shows the job its own program, where install.sh puts it. */
+const OWN_PROGRAM = 'BindReadOnlyPaths=/usr/local/lib/tala-render';
+
+/** The control group of the per-user service manager, under which a developer's units live. */
+export function userManagerGroup() {
+  const group = execFileSync('systemctl', ['--user', 'show', '-p', 'ControlGroup', '--value', '--', '-.slice'], { encoding: 'utf8' }).trim();
+  if (!/^\/[\w@.\-/]+$/.test(group)) throw new Error(`the per-user service manager's control group is not a plain path: ${group}`);
+  return group;
+}
+
+/**
+ * The lines with "its own control group" pointing at where this unit's group really is: under another slice, under
+ * the per-user manager (`root`), or with the unit's name written out (`unit`; a one-off unit has no `%n`).
+ */
+export function withOwnGroup(lines, { root = '', slice = 'talarender.slice', unit = '%n' } = {}) {
+  if (!lines.includes(OWN_GROUP)) throw new Error(`the unit has no line "${OWN_GROUP}" (units.mjs must follow the unit file)`);
+  return lines.map((line) => (line === OWN_GROUP ? `BindReadOnlyPaths=/sys/fs/cgroup${root}/${slice}/${unit}` : line));
+}
+
 /** `Key=Value` lines of a unit file's [Service] section, in order, comments and blanks dropped. */
 export function serviceLines(file = PRODUCTION_UNIT) {
   const lines = [];
@@ -60,7 +81,7 @@ export function developerLines({ sofficeDir, fontsDir, userland, set = [], drop 
       if (!fs.existsSync(path.join(root, need))) throw new Error(`userland ${root}: no ${need}`);
     }
     lines = lines.map((line) =>
-      line.startsWith('BindReadOnlyPaths=')
+      line.startsWith('BindReadOnlyPaths=') && line !== OWN_GROUP
         ? `BindReadOnlyPaths=${line.slice(18).split(/\s+/).filter(Boolean).map((p) => (p.startsWith('-') ? `-${root}${p.slice(1)}:${p.slice(1)}` : `${root}${p}:${p}`)).join(' ')}`
         : line
     );
@@ -68,7 +89,12 @@ export function developerLines({ sofficeDir, fontsDir, userland, set = [], drop 
     nodeInUsr = true;
     job = '/usr/local/lib/tala-render/render-job.mjs';
     differences.push(`programs, libraries and fonts come from ${root} (an unpacked copy of another machine's packages), at the production paths`);
-  } else differences.push(`the job program is read from ${here} (bound at /opt/tala-render), not /usr/local/lib/tala-render`);
+  } else {
+    // This machine has no /usr/local/lib/tala-render: the job's own corner of /usr/local is then empty.
+    if (!lines.includes(OWN_PROGRAM)) throw new Error(`the unit has no line "${OWN_PROGRAM}" (units.mjs must follow the unit file)`);
+    lines = lines.filter((line) => line !== OWN_PROGRAM);
+    differences.push(`the job program is read from ${here} (bound at /opt/tala-render), not /usr/local/lib/tala-render`);
+  }
   if (!nodeInUsr) {
     allBinds.push(`${path.dirname(path.dirname(node))}:/opt/node`);
     differences.push(`node is ${node} (bound at /opt/node)`);

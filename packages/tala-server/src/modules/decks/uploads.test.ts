@@ -480,6 +480,15 @@ test('pictures: a drawing service that is missing or unusable turns pictures off
   }
 });
 
+/** Waits for something another part of the server does in its own time (a worker, a background drawing). */
+async function until(what: () => boolean, ms = 5000): Promise<void> {
+  const stop = Date.now() + ms;
+  while (!what()) {
+    if (Date.now() > stop) throw new Error('waited too long');
+    await new Promise((resolve) => setTimeout(resolve, 5));
+  }
+}
+
 test('pictures: a drawing that takes long does not hold the request; the editor is told busy, and the pictures are there when it asks again', async () => {
   let drawn = 0;
   let finish: () => void = () => undefined;
@@ -495,29 +504,76 @@ test('pictures: a drawing that takes long does not hold the request; the editor 
   });
   try {
     const ana = await t.registerUser();
-    const ben = await t.registerUser();
     const deck = await uploaded(t, ana);
-    const his = await uploaded(t, ben, pptx({ 'docProps/core.xml': null }));
     const p = { uploadId: deck.id };
     const started = Date.now();
     assert.deepEqual(await t.ok('decks.uploads.render', { params: p, token: ana.token }), { state: 'busy', rev: null, slideIds: [] });
     assert.ok(Date.now() - started < 2000);
-    // While it is being drawn, asking again (her or anyone) starts nothing new.
+    // While it is being drawn, asking again starts nothing new.
     assert.equal((await t.ok('decks.uploads.render', { params: p, token: ana.token })).state, 'busy');
-    assert.equal((await t.ok('decks.uploads.render', { params: { uploadId: his.id }, token: ben.token })).state, 'busy');
+    await until(() => drawn === 1);
+    assert.equal((await t.ok('decks.uploads.render', { params: p, token: ana.token })).state, 'busy');
     assert.equal(drawn, 1);
     finish();
-    await new Promise((resolve) => setTimeout(resolve, 20));
+    await until(() => (t.db.prepare('SELECT COUNT(*) AS n FROM decks_upload_previews').get() as { n: number }).n === 3);
     assert.deepEqual(await t.ok('decks.uploads.render', { params: p, token: ana.token }), { state: 'ready', rev: 1, slideIds: ['s256', 's257', 's258'] });
     assert.equal(drawn, 1);
     assert.equal((await t.call('decks.uploads.preview', { params: { ...p, slideId: 's257' }, token: ana.token })).status, 200);
     // A save while a slow drawing is under way: the pictures of the older version are not kept as the new one's.
     await t.ok('decks.uploads.save', { params: p, body: { baseRev: 1, slides: [...identity(deck)].reverse() }, token: ana.token });
     assert.equal((await t.ok('decks.uploads.render', { params: p, token: ana.token })).state, 'busy');
+    await until(() => drawn === 2);
     await t.ok('decks.uploads.save', { params: p, body: { baseRev: 2, slides: identity(deck) }, token: ana.token });
     finish();
-    await new Promise((resolve) => setTimeout(resolve, 20));
+    await new Promise((resolve) => setTimeout(resolve, 60));
     assert.deepEqual((await t.ok('decks.uploads.get', { params: p, token: ana.token })).previews, { available: true, rev: 1, slideIds: ['s256', 's257', 's258'] });
+  } finally {
+    finish();
+    t.close();
+  }
+});
+
+test('pictures: the one drawing place goes to the teacher who has waited, before the one who just had it', async () => {
+  const order: string[] = [];
+  let finish: () => void = () => undefined;
+  const t = server({
+    renderWaitMs: 30,
+    renderer: {
+      render: (file, slides) =>
+        new Promise((resolve) => {
+          order.push(slides === 3 ? 'ana' : 'ben');
+          finish = () => resolve(readUploadedDeck(file).slides.map((_s, i) => new Uint8Array([0xff, 0xd8, 0xff, i])));
+        }),
+    },
+  });
+  try {
+    const ana = await t.registerUser();
+    const ben = await t.registerUser();
+    const hers = await uploaded(t, ana);
+    // His deck has two slides, so the stand-in renderer can tell whose file it was given.
+    const his = await uploaded(t, ben, pptx({ 'docProps/core.xml': null }));
+    await t.ok('decks.uploads.save', { params: { uploadId: his.id }, body: { baseRev: 1, slides: identity(his).slice(0, 2) }, token: ben.token });
+    const p = { uploadId: hers.id };
+    // Ana is being drawn for; Ben asks and is told to wait.
+    assert.equal((await t.ok('decks.uploads.render', { params: p, token: ana.token })).state, 'busy');
+    await until(() => order.length === 1);
+    assert.equal((await t.ok('decks.uploads.render', { params: { uploadId: his.id }, token: ben.token })).state, 'busy');
+    finish();
+    await until(() => (t.db.prepare('SELECT COUNT(*) AS n FROM decks_upload_previews').get() as { n: number }).n === 3);
+    // Ana changes her deck and asks again at once. The place is free, but Ben is still waiting: she is told to wait.
+    await t.ok('decks.uploads.save', { params: p, body: { baseRev: 1, slides: [...identity(hers)].reverse() }, token: ana.token });
+    assert.equal((await t.ok('decks.uploads.render', { params: p, token: ana.token })).state, 'busy');
+    assert.deepEqual(order, ['ana']);
+    // Ben asks again (as his editor does every few seconds) and is drawn for.
+    assert.equal((await t.ok('decks.uploads.render', { params: { uploadId: his.id }, token: ben.token })).state, 'busy');
+    await until(() => order.length === 2);
+    assert.deepEqual(order, ['ana', 'ben']);
+    finish();
+    await until(() => (t.db.prepare('SELECT COUNT(*) AS n FROM decks_upload_previews').get() as { n: number }).n === 5);
+    // Now it is Ana's turn again.
+    assert.equal((await t.ok('decks.uploads.render', { params: p, token: ana.token })).state, 'busy');
+    await until(() => order.length === 3);
+    assert.deepEqual(order, ['ana', 'ben', 'ana']);
   } finally {
     finish();
     t.close();

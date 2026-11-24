@@ -13,14 +13,15 @@
  * Pure TypeScript, no platform APIs: it runs unchanged on the server, in a browser and on the phone.
  */
 
+// The classes of this folder are written without TypeScript-only syntax (no parameter properties, no enums), so
+// that Node can run these files as they are in a worker thread (packages/tala-server: upload-worker.mjs).
 export class XmlError extends Error {
-  constructor(
-    message: string,
-    /** Character offset in the source where reading stopped. */
-    public readonly at: number
-  ) {
+  /** Character offset in the source where reading stopped. */
+  readonly at: number;
+  constructor(message: string, at: number) {
     super(message);
     this.name = 'XmlError';
+    this.at = at;
   }
 }
 
@@ -34,11 +35,34 @@ export interface XmlLimits {
 }
 
 export const XML_LIMITS: XmlLimits = {
-  chars: 24 * 1024 * 1024,
-  nodes: 1_500_000,
+  // The largest part of the heaviest real deck in the corpus has 1.7 million characters and 163,000 nodes.
+  chars: 8 * 1024 * 1024,
+  nodes: 250_000,
   depth: 200,
   attributes: 256,
 };
+
+/**
+ * What one whole job (reading a file, or writing one out) may still spend across ALL the parts it parses. The
+ * limits above bound one part; a file has thousands of parts, so without this a file of many large parts could
+ * take any amount of time and memory. The numbers count down; a job that runs out is refused.
+ */
+export interface XmlBudget {
+  /** Elements, text nodes and attributes still allowed. */
+  nodes: number;
+  /** Source characters still allowed. */
+  chars: number;
+}
+
+/** A budget for one job. The heaviest real deck in the corpus needs 640,000 nodes and 7 million characters; most need a hundredth of that. */
+export const xmlBudget = (nodes = 2_000_000, chars = 64 * 1024 * 1024): XmlBudget => ({ nodes, chars });
+
+export class XmlBudgetError extends XmlError {
+  constructor(at: number) {
+    super('This file is too large or too complex to read.', at);
+    this.name = 'XmlBudgetError';
+  }
+}
 
 export interface XmlAttr {
   /** As written, e.g. `r:embed`. */
@@ -94,6 +118,8 @@ export type XmlNode = XmlElement | XmlText;
 export interface XmlDoc {
   source: string;
   root: XmlElement;
+  /** Elements, text nodes and attributes in the part (what it costs to keep in memory). */
+  nodes: number;
 }
 
 const isSpace = (c: number) => c === 0x20 || c === 0x09 || c === 0x0a || c === 0x0d;
@@ -136,6 +162,13 @@ export function decodeXml(raw: string, at = 0): string {
   }
 }
 
+/** A text without the white space at its end, in one pass (a pattern like /\s+$/ can take quadratic time on a file's own text). */
+export function trimEndSpaces(text: string): string {
+  let end = text.length;
+  while (end > 0 && isSpace(text.charCodeAt(end - 1))) end--;
+  return end === text.length ? text : text.slice(0, end);
+}
+
 /** Escape text for element content. */
 export function escapeXmlText(text: string): string {
   return text.replace(/[&<>]/g, (c) => (c === '&' ? '&amp;' : c === '<' ? '&lt;' : '&gt;'));
@@ -174,11 +207,12 @@ const XML_NS = 'http://www.w3.org/XML/1998/namespace';
 const XMLNS_NS = 'http://www.w3.org/2000/xmlns/';
 
 /** Parse one XML part. Throws XmlError for anything that is not plain, well-formed, DTD-free XML within the limits. */
-export function parseXml(source: string, limits: Partial<XmlLimits> = {}): XmlDoc {
+export function parseXml(source: string, limits: Partial<XmlLimits> = {}, budget?: XmlBudget): XmlDoc {
   const lim = { ...XML_LIMITS, ...limits };
   const s = source;
   const n = s.length;
   if (n > lim.chars) throw new XmlError('This part of the file is too large to read.', 0);
+  if (budget && (budget.chars -= n) < 0) throw new XmlBudgetError(0);
   let i = s.charCodeAt(0) === 0xfeff ? 1 : 0;
   let nodes = 0;
   let root: XmlElement | null = null;
@@ -197,6 +231,7 @@ export function parseXml(source: string, limits: Partial<XmlLimits> = {}): XmlDo
   };
   const count = (at: number) => {
     if (++nodes > lim.nodes) throw new XmlError('This part of the file has too many elements.', at);
+    if (budget && --budget.nodes < 0) throw new XmlBudgetError(at);
   };
   const fail = (message: string, at: number): never => {
     throw new XmlError(message, at);
@@ -373,7 +408,7 @@ export function parseXml(source: string, limits: Partial<XmlLimits> = {}): XmlDo
   }
   if (current) throw new XmlError('This part of the file ends before its last element is closed.', n);
   if (!root) throw new XmlError('This part of the file is empty.', 0);
-  return { source: s, root };
+  return { source: s, root, nodes };
 }
 
 /* ---------------- reading the tree ---------------- */

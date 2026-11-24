@@ -11,12 +11,13 @@
  *
  * --set changes one line for a test (for example MemoryMax=64M); it cannot add a line the unit does not have.
  * Exit code: the program's own, or 1 when systemd killed it. The last line printed is a JSON summary:
- *   {"result":"success|exit-code|signal|oom-kill|timeout|...","exitCode":N,"signal":"KILL|null", "ms":N}
+ *   {"result":"success|exit-code|signal|core-dump|oom-kill|timeout|...","exitCode":N,"signal":"KILL|null","dumped":false,"ms":N}
+ * `dumped`: the kernel made a memory image of the program when it died (a core file, or a crash handler was fed).
  */
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
-import { developerLines, readArgs, serviceLines } from './units.mjs';
+import { developerLines, readArgs, serviceLines, userManagerGroup, withOwnGroup } from './units.mjs';
 
 function fail(message) {
   console.error(`sandbox-run: ${message}`);
@@ -57,13 +58,20 @@ try {
 }
 // The program replaces ExecStart; its output comes back on the pipe instead of going to the journal.
 const SKIP = /^(ExecStart|StandardInput|StandardOutput|StandardError|SyslogIdentifier|Slice)=/;
-const slice = lines.find((l) => l.startsWith('Slice='))?.slice(6);
 const unitName = `tala-render-run-${process.pid}-${Date.now().toString(36)}.service`;
+// On a server the program runs in the installed slice. In the developer set-up that slice is not installed: a
+// one-off slice of the same kind is made for it (the job's own ceilings are the same numbers).
+const slice = user ? 'talarenderrun.slice' : lines.find((l) => l.startsWith('Slice='))?.slice(6);
+if (!slice) fail('the unit names no slice');
+try {
+  // A one-off unit has no "%n": the place of its own control group is written out.
+  lines = withOwnGroup(lines, { root: user ? userManagerGroup() : '', slice, unit: unitName });
+} catch (err) {
+  fail(err.message);
+}
 const args = [
   ...(user ? ['--user'] : []),
-  '--wait', '--pipe', '--collect', `--unit=${unitName}`,
-  // In the developer set-up the slice is not installed; the job's own ceilings are the same numbers.
-  ...(slice && !user ? [`--slice=${slice}`] : []),
+  '--wait', '--pipe', '--collect', `--unit=${unitName}`, `--slice=${slice}`,
   ...lines.filter((l) => !SKIP.test(l)).flatMap((l) => ['-p', l]),
   '--', ...program,
 ];
@@ -80,6 +88,7 @@ const summary = {
   result,
   exitCode: ended?.[1] === 'exited' ? Number(ended[2]) : null,
   signal: ended && ended[1] !== 'exited' ? ended[2] : null,
+  dumped: ended?.[1] === 'dumped' || result === 'core-dump',
   cpu: stderr.match(/^CPU time consumed: (.+)$/m)?.[1] ?? null,
   ms: Date.now() - started,
 };

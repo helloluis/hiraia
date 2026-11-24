@@ -9,7 +9,7 @@
 import { CONTENT_TYPE, NS, PptxError, PptxPackage, ownerOfRels, type PartSource } from './opc';
 import { textBodyText } from './text';
 import { placeholderFrames, walkSlide, type KeptKind, type PlaceholderFrames, type SlideBlock, type SlideObject, type SlideSize } from './walk';
-import { attr, descendants, kid, kids, path, textOf, XmlError, type XmlDoc, type XmlElement } from './xml';
+import { attr, descendants, kid, kids, path, textOf, XmlBudgetError, XmlError, type XmlDoc, type XmlElement } from './xml';
 
 export const PPTX_LIMITS = {
   slides: 400,
@@ -18,6 +18,14 @@ export const PPTX_LIMITS = {
   paragraphsPerBlock: 400,
   paragraphChars: 8000,
   notesParagraphs: 400,
+  /** Things on one slide that are only carried along and listed (the count of each kind stays exact). */
+  objectsPerSlide: 1000,
+  /**
+   * What reading a deck may come to in all: every word of every block, every name, and a small charge per block
+   * and object. It is stored with the upload and sent to the editor, so it is bounded as a whole. The heaviest real
+   * deck in the corpus comes to about 300,000.
+   */
+  inspectionChars: 2_000_000,
 } as const;
 
 /** Things in the file that the editor does not change. Each is counted with the slides it is on (0 = the deck). */
@@ -133,9 +141,9 @@ export function indexDeck(pkg: PptxPackage): DeckIndex & { kind: DeckInspection[
     seen.add(id);
     seenParts.add(rel.target);
     slides.push({ id: `s${id}`, sldId, relId, part: rel.target });
+    if (slides.length > PPTX_LIMITS.slides) fail('too_many_slides', 'This file has too many slides.');
   }
   if (!slides.length) fail('no_slides', 'This file has no slides.');
-  if (slides.length > PPTX_LIMITS.slides) fail('too_many_slides', 'This file has too many slides.');
   const notesMaster = pkg.rels(mainPart).find((r) => r.kind === 'notesMaster' && r.target && pkg.has(r.target))?.target ?? null;
   return { mainPart, presentation, size, slides, notesMaster, kind };
 }
@@ -151,12 +159,15 @@ export function notesBody(doc: XmlDoc): XmlElement | null {
   return null;
 }
 
+/** The notes page a slide had in the uploaded file. */
 export const notesPartOf = (pkg: PptxPackage, slidePart: string): string | null =>
-  pkg.rels(slidePart).find((r) => r.kind === 'notesSlide' && r.target && pkg.has(r.target))?.target ?? null;
+  pkg.sourceRels(slidePart).find((r) => r.kind === 'notesSlide' && r.target && pkg.sourceHas(r.target))?.target ?? null;
 
 /** Turn any reader failure into the one error type callers handle. */
 export function asPptxError(err: unknown): PptxError {
   if (err instanceof PptxError) return err;
+  // Past a limit of size or work: the file may be sound, it is more than is read here.
+  if (err instanceof XmlBudgetError || (err instanceof XmlError && /too (large|many)|nested too deeply/.test(err.message))) return new PptxError('too_large', 'This file is too large or too complex to read here.');
   if (err instanceof XmlError) return new PptxError('damaged', 'A part of this file is not valid XML.');
   return new PptxError('damaged', 'This file could not be read.');
 }
@@ -180,6 +191,17 @@ export function inspectDeck(source: PartSource | PptxPackage): DeckInspection {
     const slides: InspectedSlide[] = [];
     let textBlocks = 0;
     let editableBlocks = 0;
+    // The whole result is stored and sent to the editor: it has one size limit, counted as it is built.
+    let size = 0;
+    const weigh = (chars: number) => {
+      size += chars;
+      if (size > PPTX_LIMITS.inspectionChars) fail('too_large', 'This file has too much text to edit here.');
+    };
+    const weighParagraphs = (paragraphs: string[]) => {
+      let chars = 8 * paragraphs.length;
+      for (const p of paragraphs) chars += p.length;
+      weigh(chars);
+    };
 
     deck.slides.forEach((s, index) => {
       const number = index + 1;
@@ -189,6 +211,8 @@ export function inspectDeck(source: PartSource | PptxPackage): DeckInspection {
       const walked = walkSlide(doc, deck.size, frames);
       if (walked.blocks.length > PPTX_LIMITS.blocksPerSlide) fail('too_large', 'A slide of this file has too much text to edit here.');
       const blocks = walked.blocks.map((b) => {
+        weigh(64 + b.info.name.length);
+        weighParagraphs(b.info.paragraphs);
         const tooLong = b.info.paragraphs.length > PPTX_LIMITS.paragraphsPerBlock || b.info.paragraphs.some((p) => p.length > PPTX_LIMITS.paragraphChars);
         return tooLong ? { ...b.info, editable: false } : b.info;
       });
@@ -204,7 +228,8 @@ export function inspectDeck(source: PartSource | PptxPackage): DeckInspection {
       const rels = pkg.rels(s.part);
       if (rels.some((r) => r.kind === 'comments' || /comment/i.test(r.kind))) note('comments', number);
       for (const r of rels) if (r.external) note(r.kind === 'hyperlink' ? 'externalLink' : 'linkedFile', number);
-      const blockers = [...new Set(rels.filter((r) => !r.external && !SHAREABLE.has(r.kind) && !/comment/i.test(r.kind)).map((r) => r.kind))];
+      // Kinds of relationship are names from the file: a handful, each kept short.
+      const blockers = [...new Set(rels.filter((r) => !r.external && !SHAREABLE.has(r.kind) && !/comment/i.test(r.kind)).map((r) => clip(r.kind, 60)))].slice(0, 20);
 
       const layoutPart = rels.find((r) => r.kind === 'slideLayout' && r.target)?.target ?? null;
       let layoutName = '';
@@ -219,6 +244,7 @@ export function inspectDeck(source: PartSource | PptxPackage): DeckInspection {
         const body = notesBody(pkg.xml(notesPart));
         if (body) {
           const t = textBodyText(body);
+          weighParagraphs(t.paragraphs);
           const fits = t.paragraphs.length <= PPTX_LIMITS.notesParagraphs && t.paragraphs.every((p) => p.length <= PPTX_LIMITS.paragraphChars);
           notes = { exists: true, paragraphs: t.paragraphs, editable: t.editable && fits };
         } else notes = { exists: true, paragraphs: [], editable: false };
@@ -226,14 +252,17 @@ export function inspectDeck(source: PartSource | PptxPackage): DeckInspection {
       if (!notes.editable && !notes.exists) note('noNotesPage', number);
 
       const titleBlock = blocks.find((b) => b.role === 'title') ?? blocks.find((b) => b.paragraphs.some((p) => p.trim()));
+      const objects = walked.objects.filter((o) => o.kind !== 'footer').slice(0, PPTX_LIMITS.objectsPerSlide);
+      weigh(256 + 96 * objects.length);
       slides.push({
         id: s.id,
         number,
-        title: clip((titleBlock?.paragraphs.join(' ') ?? '').replace(/\s+/g, ' ').trim(), 160),
+        // Only the start of the title's words is looked at: a title is short, a block of text may not be.
+        title: clip(clip((titleBlock?.paragraphs ?? []).slice(0, 8).map((p) => clip(p, 400)).join(' '), 1600).replace(/\s+/g, ' ').trim(), 160),
         hidden: walked.hidden,
         layoutName,
         blocks,
-        objects: walked.objects.filter((o) => o.kind !== 'footer'),
+        objects,
         notes,
         duplicateBlockers: blockers,
         animations: walked.animations,

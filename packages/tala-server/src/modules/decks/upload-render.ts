@@ -87,7 +87,7 @@ const FRAME = { report: 0x01, picture: 0x02, stats: 0x03, failed: 0x7e, done: 0x
 /** The job's reasons for ending without pictures, by number (render-job.mjs STATUS). */
 const STATUS_NAMES = ['ok', 'bad request', 'file too large', 'sandbox check failed', 'programs missing', 'archive refused', 'could not convert', 'out of time', 'page count', 'bad picture', 'job error'];
 const SERVICE_PROBLEMS = new Set([3, 4]);
-export const RENDER_LIMITS = { slides: 400, width: 2048, height: 4096, reportBytes: 64 * 1024, pictureBytes: 2 * 1024 * 1024, totalBytes: 128 * 1024 * 1024 } as const;
+export const RENDER_LIMITS = { slides: 400, width: 2048, height: 4096, reportBytes: 64 * 1024, pictureBytes: 2 * 1024 * 1024, totalBytes: 64 * 1024 * 1024 } as const;
 
 /** Width and height of a JPEG from its frame header, or null when the bytes are not a whole JPEG. */
 export function jpegSize(bytes: Uint8Array): { width: number; height: number } | null {

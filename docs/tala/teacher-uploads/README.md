@@ -138,17 +138,81 @@ The service, its installer, its checks, what was tested and what was not: `packa
 ## Safety of the upload itself
 
 - Signed-in accounts with a confirmed email only; 20 upload starts per hour; 40 files and 200 MB per account;
-  30 MB per file (`TALA_DECK_UPLOAD_MAX_BYTES`, `TALA_DECK_UPLOAD_ACCOUNT_BYTES`).
+  30 MB per file (`TALA_DECK_UPLOAD_MAX_BYTES`, `TALA_DECK_UPLOAD_ACCOUNT_BYTES`). A size setting that is set but
+  is not a plain number of bytes turns uploads off and says so in the log; it is never guessed.
 - Before anything is unpacked: extension, declared size, SHA-256 of what arrived, first bytes (ZIP, not OLE2 or
-  PDF). Unpacking is capped (400 MB inflated, 4,000 entries, 200× ratio, 24 MB per XML part).
+  PDF). The archive has to be a plain one: no name twice, no entry whose own header says something else than the
+  directory, no two entries sharing bytes. Unpacking is capped (400 MB inflated, 4,000 entries, 200× ratio).
+- **The web server's own thread never reads or writes an uploaded file.** Reading a new upload, and writing the
+  edited file for a download or a drawing, each run in a worker thread that is started for that one job
+  (`upload-jobs.ts`, `upload-worker.mjs`): with a time limit (10 s to read, 20 s to write), a memory limit of its
+  own (192 MiB), one job at a time for the whole server and a short queue. A job that is stopped at a limit is
+  "this file is more than is read here"; the server goes on answering everybody else. There is no code path that
+  reads a file on the server's thread instead.
+- **Every job has a budget for the whole of it**, not only limits for each part (table below). A file cannot be
+  small to send and endless to read, and an edit cannot make a file grow without end.
+- **A file is in memory once, and only while a job works on it.** A new upload is put together from its pieces
+  when its turn has come, handed to the worker (not copied to it) and comes back with its reading, its checksum
+  taken again after the reading. It is stored in pieces of 512 KiB. "The file I uploaded" is sent from the
+  database a piece at a time, as the connection takes it: it is never in memory whole for a download.
+- **What is on its way to clients is counted.** The edited file and the slide pictures do exist whole while they
+  are sent, and a client can take as long as it likes. The routes count these bytes for everybody and for each
+  account, hand such an answer out in pieces, and cut it short when it is not taken in time; past the count the
+  next one is told to come back.
 - The reader refuses macros and ActiveX (by content type and relationship, not by file name), encrypted and signed
   packages, Strict OOXML, part names that escape the package or collide, UTF-16 or invalid UTF-8 XML, DTDs.
 - Nothing in the file is executed, converted in place or followed: external links and linked files are kept as
   text and never opened.
-- A refused file is not kept in any form. File names, slide text and notes are never logged.
+- A refused file is not kept in any form. File names, slide text and notes are never logged. Nothing a worker
+  prints is passed on, and of a worker's failure only a short code is logged.
 - Every SQL statement that reads or writes an upload, an unfinished upload, a piece or a picture names the owner.
   Another teacher's id answers "not found", exactly like an id that does not exist. Deleting an account removes
   its uploads, unfinished uploads and pictures; merging two accounts moves them.
+
+### The limits, and what real files need
+
+Measured on the corpus (99 files; the 86 the reader takes are real decks from bug reports and web crawls).
+
+| What | Limit | The most any of the 86 real decks needs |
+|---|---|---|
+| One part the reader opens, whatever its name | 8 MiB; 250,000 elements; 200 levels deep; a list (relationships, content types) 40,000 entries | 163,290 elements |
+| Everything one job parses | 2,000,000 elements; 64 MiB of text; 96 MiB unpacked | 636,650 elements; 6.7 million characters |
+| What a deck is read into (and stored as) | 2,000,000 characters; 400 slides; 600 text boxes and 1,000 other things a slide | 306,000 characters |
+| What one job writes | 24 MiB of new or changed parts; the edited file 48 MiB at most | 29.0 MB, for a 27.7 MB deck with every text box changed and every slide copied |
+| A job's time and memory | 10 s to read, 20 s to write; 192 MiB | 392 ms to read, 1435 ms for that heaviest change; every deck is read with 128 MiB, one is not with 96 |
+| On its way to clients at one moment | 96 MiB for everybody, 48 MiB for one account (an uploaded file counts as one piece, 512 KiB: it is sent from the database); an answer may take 2 minutes and the time a 32 KiB/s connection needs | |
+| Kept for an account beside its files | what its files were read into: 16 MiB; pictures: 96 MiB (those of the files opened longest ago make room); two unfinished uploads, within the file allowance | |
+| Requests of one account | 20 upload starts an hour; 30 downloads a minute; 60 drawings and 3 minutes of drawing time in ten minutes | |
+
+What the web process holds at the worst, measured, not estimated (`uploads-hostile-http.mjs --stress 60`): four
+accounts at once, each with a deck near the largest size, sitting on downloads of the original and of the edited
+file, downloading, uploading more (another large file, and the heaviest file the reader still takes) and having
+slides drawn, for a minute, against a site under the host's ceiling (`MemoryMax=1G`, no swap):
+
+| Largest file taken | Most the web process held | Most its whole memory group held (the process, the database's file cache, connections) | The group at its ceiling | Killed for memory | Its health route meanwhile |
+|---|---|---|---|---|---|
+| 30 MiB (when nothing is set) | 735 MiB | 1024 MiB of 1024 | 243 times | none | 628 asked, none failed, 604 ms at the longest |
+| 15 MiB (`TALA_DECK_UPLOAD_MAX_BYTES=15728640`) | 635 MiB | 786 MiB of 1024 | never | none | 635 asked, none failed, 284 ms at the longest |
+
+**Read plainly: with 30 MiB files that stress puts the service AT its ceiling.** Nothing was killed, because what
+filled the group beyond the process itself was the database's file cache, which the kernel takes back when asked;
+but a service that the kernel has to squeeze hundreds of times a minute has no room left. With 15 MiB files the
+group stayed 238 MiB below the ceiling. So under `MemoryMax=1G` the first release should take 15 MiB files (what
+`deploy/tala.env.example` suggests); 30 MiB files want more memory for the service. Which of the two is the
+release owner's to set.
+
+What the process itself holds is mostly this: itself (about 200 MiB); one worker at its own limit (192 MiB of heap
+and 32 for new objects) while it reads the heaviest file it accepts; one drawing (the file sent, up to 48 MiB, and
+the pictures back, up to 64); what is on its way to clients (up to 96); one file with a job (up to 30, and up to
+48 written). The same run before files were handed over instead of copied, and before originals were sent in
+pieces, held 876 MiB. An ordinary heavy run is far below either: every hostile file, a 20 MB upload and ten
+clients sitting on its original held 484 MiB at the most.
+
+What is NOT bounded here, and is true of every route of the site, old and new: a client that opens hundreds of
+connections and takes its answers slowly makes the server hold each answer until it is taken. The uploads' own
+large answers (downloads, pictures) are counted as described; its JSON answers are not (the largest, a deck as
+read, is 2 MB at most; of the 86 real decks nine in ten are under 24 KB and the largest is 306 KB). A limit on
+connections for each address belongs at the proxy in front of the site.
 
 ## Evidence (all re-runnable; numbers from 21 Nov 2026)
 
@@ -167,11 +231,16 @@ and LibreOffice exports, fuzzer cases, macro files), plus one invented lesson de
 | A 29 MB deck (near the limit) through the API and the browser | taken in 56 pieces; server check 160 ms, export 27 ms; in the browser, open for editing 2.1 s after choosing the file (local network) |
 | Browser walk, English and Filipino, desktop and phone (`uploads-walk.mjs`) | 40 of 40 checks each: upload, refusals, kept report, words, notes, table cell, move, copy, remove, undo/redo, pictures follow, reload, both downloads, list, delete, phone layout, a second teacher refused everywhere |
 | The walk's downloads read by python-pptx (`pptx-walk-verify.py`) | 11 of 11 each: words and notes as typed; picture, chart with its workbook, table, hidden slide, transitions, layouts and positions as uploaded |
-| Unit and server tests (24 Nov) | With this lane alone on `tala-v1-demo.13`: core 271, server 313 (+1 opt-in), web 89, all passing; type-checks clean; production build clean. The browser walk in English and Filipino and the check of its downloads were repeated on 24 Nov with the sandboxed drawing service behind the app (40/40 each, 11/11 each) |
-| **The sandboxed drawing service, from outside and inside** (`deploy/render/verify.mjs --slow`, 24 Nov) | 93 of 93 checks, with this machine's LibreOffice 26.8 and again with the Ubuntu 24.04 packages the host will get (LibreOffice 24.2.7, Node 22.22.0). Ordinary decks drawn. 31 hostile or broken files each refused, failed or killed in bounded time, with the service working afterwards and a canary file, port and socket on the machine never reached. A hostile program in the job's own box could read none of 29 host paths and devices, write nowhere but its scratch space, reach no network and no socket of the host, gain no privilege, and was stopped at every ceiling for real (memory at 752 of 768 MiB, 127 of 128 processes, a fork bomb, 384 MiB of scratch, 256 MiB per file, 100 s of processor time, 120 s of run time). No process and no file of a job outlived it |
-| The real-file corpus through the server's drawing path into the sandbox (24 Nov) | every deck the reader takes was drawn: 86 of 86 (545 slides), with both LibreOffice versions; slowest 55 s and 22 s, most memory 587 and 505 MiB, inside the ceilings |
-| The web app with the service behind it (`uploads-render-states.mjs`, 24 Nov) | 20 of 20: pictures only for their owner; two teachers at the same moment; a job killed in the middle of a drawing; the service stopped (saving, both downloads and new uploads still work) and started again. Also a drawing that systemd kills at a 6 s ceiling, and one that gives up by itself: 4 of 4 each. The web process never started a program |
-| In a browser: the service stops while she is editing (24 Nov) | 6 of 6: the old picture gives way to her words in their boxes, the editor asks once and stops asking, saving goes on, and pictures return when the service is back |
+| Unit and server tests (24 Nov, second round) | With this lane alone on `tala-v1-demo.13`: core 282, server 333 (+1 opt-in), web 89, all passing; with both lanes: core 302, server 333 (+1), web 94; type-checks clean; production build clean. The browser walk in English and Filipino and the check of its downloads were repeated with the final build and the sandboxed drawing service behind the app (40/40 and 40/40; downloads 11/11 and 11/11) |
+| **Files and edits made to stop the site** (24 Nov, second round) | 20 hostile files (`hostile-files.ts`), among them rebuilds of the two files the release owner stopped a rehearsal server with (a table cell "spanning" 4,000,000,000 columns; seven slides of 1,400,000 empty elements). Each comes to the end written beside it, a deck like any other or a plain refusal, at three levels: the reader alone (`pptx-hostile.test.ts`, 11 tests); the worker and the routes of a test server (`uploads-hostile.test.ts`, `uploads-sending.test.ts`: slowest 743 ms, the server's thread never held longer than 12 ms; the worker stopped at its time limit and at its memory limit, with the next file read as ever); and a running site through its HTTP API under the host's 1 GiB memory ceiling (`uploads-hostile-http.mjs`: 31 of 31; its health route asked 92 times meanwhile, never failing, 66 ms at the longest). The worker alone was also run with the host's Node 22.22.0 (`hostile-worker.ts`: all as expected) |
+| The reader before and after this round, on the 99 real files (24 Nov) | Same verdict on 98; the other is a fuzzer file refused both times, now for a plainer reason. For all 86 decks that are taken: what is read is identical, and the bytes written with no change and with the heaviest change an editor can ask for are identical |
+| The real files through the HTTP API with files stored in pieces (`uploads-corpus-http.mjs`, 24 Nov, second round) | 101 files: 101 agree with the reader alone (84 taken, 17 refused); the uploaded file back bit for bit 84 of 84; an edit saved, exported and read back 84 of 84; 16 sent in several pieces; problems: none |
+| Uploads made before files were stored in pieces (the preview's database, migrated in place) | 1 of 1 uploads made before the change come back whole; the migration's own statements are also run in a test on a file of three pieces |
+| **Everything at once, at the limits** (`uploads-hostile-http.mjs --stress 60`, 24 Nov, second round) | 4 accounts with 29 MB decks for 60 s under a 1 GiB ceiling: 61 more uploads, 43 downloads started and left; errors none; the health route never failed (604 ms at the longest); the web process held 735 MiB at the most and was not killed, but its memory group as a whole was at its ceiling 243 times. With the largest file set to 15 MiB: 635 MiB for the process, 786 MiB for the group, the ceiling never reached |
+| **The sandboxed drawing service, from outside and inside** (`deploy/render/verify.mjs --slow`, 24 Nov, second round) | 97 of 97 checks with this machine's LibreOffice 26.8 and 97 of 97 with the Ubuntu 24.04 packages the host will get (LibreOffice 24.2.7, Node 22.22.0). Ordinary decks drawn. 31 hostile or broken files each refused, failed or killed in bounded time, with the service working afterwards and a canary file, port and socket on the machine never reached. A hostile program in the job's own box could read none of 29 host paths and devices, write nowhere but its scratch space, reach no network and no socket of the host, gain no privilege, use no `io_uring`, see no control group but its own and nothing in `/usr/local` but its own program, and was stopped at every ceiling for real (memory at 752 of 768 MiB, 127 of 128 processes, a fork bomb, 384 MiB of scratch, 256 MiB per file, 100 s of processor time, 120 s of run time). A crash left no memory image. No process and no file of a job outlived it |
+| The real-file corpus through the server's drawing path into the sandbox (24 Nov, second round) | every deck the reader takes was drawn: 86 of 86 and 86 of 86 (545 slides), with the two LibreOffice versions; slowest 57 s and 23 s, most memory 591 and 505 MiB, inside the ceilings |
+| The web app with the service behind it (`uploads-render-states.mjs`, 24 Nov, second round) | 20/20: pictures only for their owner; two teachers at the same moment; a job killed in the middle of a drawing; the service stopped (saving, both downloads and new uploads still work) and started again. Also a drawing that systemd kills at a 6 s ceiling, and one that gives up by itself: 4/4 and 4/4. The web process never started a program. Run on a server that verifies accounts by itself, as the host does |
+| In a browser: the service stops while she is editing (24 Nov) | 6/6: the old picture gives way to her words in their boxes, the editor asks once and stops asking, saving goes on, and pictures return when the service is back |
 
 **Not checked:** opening the edited files in Microsoft PowerPoint, Google Slides or WPS (none is available on the
 build machine), and no validation with Microsoft's Open XML SDK. python-pptx and LibreOffice are the two
@@ -183,12 +252,12 @@ independent readers used. This is the first thing to do by hand: STATUS.md.
 |---|---|
 | Engine (pure TypeScript, no I/O) | `packages/tala-core/src/pptx/` — `xml.ts` (offset-keeping reader), `opc.ts` (package, relationships, content types), `text.ts` (paragraph splices), `walk.ts` (blocks and geometry), `inspect.ts` (safety gate, what is in the file), `apply.ts` (edits → package) |
 | Contract | `packages/tala-core/src/contracts/deck-uploads.ts`; routes `decks.uploads.*` in `contracts/api.ts` |
-| Server | `packages/tala-server/src/modules/decks/` — `uploads.ts` (routes, storage, owner checks), `upload-file.ts` (bytes ↔ engine), `upload-render.ts` (the web app's end of the drawing socket), `zip.ts` (raw pass-through added) |
+| Server | `packages/tala-server/src/modules/decks/` — `uploads.ts` (routes, storage, owner checks, what is on its way to clients), `upload-jobs.ts` and `upload-worker.mjs` (one worker thread a job, with its limits), `upload-file.ts` (bytes ↔ engine, the job's budget), `upload-render.ts` (the web app's end of the drawing socket), `zip.ts` (raw pass-through; one name once, no shared bytes, a ceiling on what is written). Stored files are in `decks_upload_file_pieces` (512 KiB a row). In the kernel: `http.ts`, `types.ts` (a binary answer its route keeps count of: handed out in pieces, from memory or from a source, with a word when it has gone) |
 | Drawing service | `packages/tala-server/deploy/render/` — `render-job.mjs` (one sandboxed job), `tala-render@.service`, `tala-render.socket`, `talarender.slice`, `install.sh`, `verify.mjs`, `sandbox-run.mjs`, `hostile.py`, `dev-units.mjs` (a developer's machine), `README.md` |
 | Web | `packages/tala-web/src/features/slides/` — `UploadsScreen.tsx`, `UploadEditor.tsx`, `useUploadEditor.ts`, `upload-model.ts`; `src/data/uploads.ts`; routes `/library/mine`, `/slides/mine/[uploadId]` |
 | Strings | `packages/tala-web/src/i18n/parts/uploads.en.ts`, `uploads.fil.ts` (Filipino has had the Filipino owner's editorial pass; teacher review is open) |
-| Tests | `tala-core/src/pptx/pptx.test.ts`, `tala-server/src/modules/decks/uploads.test.ts`, `upload-render.test.ts`, `tala-web/src/features/slides/upload-model.test.ts` |
-| Evidence tools | `packages/tala-server/scripts/decks/` (`pptx-corpus.ts`, `pptx-fidelity.py`, `pptx-roundtrip-lo.py`, `pptx-walk-verify.py`, `pptx-boxes.py`, `render-deck.ts`, `make-sample-deck.py`), `packages/tala-web/scripts/uploads-walk.mjs`, `uploads-corpus-http.mjs`, `uploads-render-states.mjs`; `packages/tala-server/deploy/render/verify.mjs` |
+| Tests | `tala-core/src/pptx/pptx.test.ts`, `pptx-hostile.test.ts`; `tala-server/src/modules/decks/uploads.test.ts`, `uploads-hostile.test.ts`, `uploads-sending.test.ts`, `upload-render.test.ts` (and `hostile-files.ts`, the hostile files themselves); `tala-web/src/features/slides/upload-model.test.ts` |
+| Evidence tools | `packages/tala-server/scripts/decks/` (`pptx-corpus.ts`, `pptx-fidelity.py`, `pptx-roundtrip-lo.py`, `pptx-walk-verify.py`, `pptx-boxes.py`, `render-deck.ts`, `make-sample-deck.py`, `hostile-files.ts`, `hostile-worker.ts`), `packages/tala-web/scripts/uploads-walk.mjs`, `uploads-corpus-http.mjs`, `uploads-render-states.mjs`, `uploads-hostile-http.mjs`; `packages/tala-server/deploy/render/verify.mjs` |
 
 ## Running it
 
@@ -208,7 +277,18 @@ python packages/tala-server/scripts/decks/pptx-walk-verify.py <outDir>/walk-en.j
 # real files, engine alone and through the API
 pnpm --filter @hiraia/tala-server exec tsx scripts/decks/pptx-corpus.ts <corpus-dir> report.json --out variants/
 pnpm exec tsx scripts/uploads-corpus-http.mjs http://127.0.0.1:3411 <corpus-dir> report.json http.json --db /tmp/tala-uploads.sqlite
+
+# files and edits made to stop the site
+pnpm --filter @hiraia/tala-core exec tsx --test src/pptx/pptx-hostile.test.ts              # the reader alone
+pnpm --filter @hiraia/tala-server exec tsx --test "src/modules/decks/uploads-*.test.ts"    # worker and routes
+pnpm --filter @hiraia/tala-server exec tsx scripts/decks/hostile-worker.ts                 # the worker alone, any Node
+pnpm --filter @hiraia/tala-server exec tsx scripts/decks/hostile-files.ts <new folder>     # the files as files
+pnpm exec tsx scripts/uploads-hostile-http.mjs http://127.0.0.1:3411 out.json [--db ...] [--server-pid PID] [--file own.pptx]...
 ```
+
+The last one sends every hostile file, and any file given with `--file`, to a running site while it asks the
+site's health route ten times a second; it also sits on downloads of a 20 MB deck. A server that confirms
+accounts by mail needs `--db` (the link is read from its outbox); one with `TALA_AUTH_AUTO_VERIFY=1` does not.
 
 `TALA_DECKS_PREVIEW_SHARED_USER=1` is for a developer's machine only: there the job can only run as the developer,
 and the web app refuses such a job unless it is a local server that asks for it by name. On a server the service
@@ -223,11 +303,12 @@ nothing any more; the server says so once in its log if one is still set.
    `packages/tala-server/deploy/render/README.md`). How slides are drawn in production was decided on 24 Nov (a
    sandboxed renderer, pictures kept) and the service is built and tested, without root; the end of that README
    lists exactly what is left for a root run on the host to show.
-3. **Move file reading off the request thread.** Reading and writing a deck now runs inside the web process. It is
-   fast (160 ms for 29 MB) but costs memory for a moment: about 140 MB for a 15 MB file (200 → 340 MB) and about
-   250 MB for a near-limit 29 MB file (measured: 190 → 424 MB,
-   back to 170 MB idle), against a 1 GB service limit. Use the same isolated worker pattern as the class-list
-   reader, or lower `TALA_DECK_UPLOAD_MAX_BYTES` for the first release.
+3. **Node 22.18 or newer on the host** (it has 22.22.0). File reading is off the request thread since 24 Nov: each
+   job runs in a worker thread, like the class-list reader, and the worker runs the reader's TypeScript sources as
+   they are, which older Node versions cannot. A server whose Node cannot says so at start
+   (`deck_upload_reader_unavailable` in the log) and takes no file: reading is never done another way. The
+   sources have to be there at run time (`packages/tala-server/src/modules/decks/`, `packages/tala-core/src/pptx/`),
+   as they are where the release is built in its own folder.
 4. **Move stored files out of SQLite.** Originals are stored as rows (once per distinct file). That is simple and
    transactional, and right for a preview; at scale they belong on disk or object storage, and the database file
    does not shrink after deletes.

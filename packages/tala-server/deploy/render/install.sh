@@ -110,7 +110,8 @@ cat <<EOF
 
 Installed. Pictures are still OFF for teachers. To finish:
   1. the whole check (about two minutes, add --slow for the real time ceilings):
-       /usr/bin/node $HERE/verify.mjs --socket /run/tala-render/render.sock --out /var/tmp/tala-render-verify
+       /usr/bin/node $HERE/verify.mjs --socket /run/tala-render/render.sock --out /root/tala-render-verify
+     (--out is a folder of root's own: the check refuses one that another user owns or can write to)
   2. add to /etc/tala/tala.env:   TALA_DECKS_PREVIEW_SOCKET=/run/tala-render/render.sock
      and restart the web app in the release window.
 Turn pictures off again at any time: systemctl stop tala-render.socket (the editor keeps working on the words).

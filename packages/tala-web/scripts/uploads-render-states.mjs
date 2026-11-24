@@ -6,16 +6,19 @@
 // failed drawing and nothing more; the web process never starts a program of its own to draw (there is no other
 // way to a picture); and afterwards everything works as before.
 //
-//   pnpm exec tsx scripts/uploads-render-states.mjs <baseUrl> <out.json> --db <TALA_DB_PATH> --deck <small.pptx> --slow-deck <deck that takes seconds.pptx>
+//   pnpm exec tsx scripts/uploads-render-states.mjs <baseUrl> <out.json> [--db <TALA_DB_PATH>] --deck <small.pptx> --slow-deck <deck that takes seconds.pptx>
 //        --socket-unit tala-render.socket --job-units 'tala-render@*.service' [--user] [--server-pid PID] [--only stopped,killed,slow,turns]
 //
+// --db            the running server's database: only needed where a new account has to confirm its address by
+//                 mail (the link is read from the mail outbox). A server with TALA_AUTH_AUTO_VERIFY=1 needs none.
 // --user          the drawing service runs under the per-user service manager (deploy/render/dev-units.mjs)
 // --server-pid    the web process: its children are listed at every step (there must never be one that draws)
 // --slow-only     the service this server talks to was started with a tiny time limit: only check that a drawing
 //                 that runs out of time is a failed drawing (see deploy/render/README.md, "slow")
 //
 // Local or staging servers only: it creates two accounts (fictional, @example.com), confirms them from the mail
-// outbox in --db, and deletes its uploads again. It stops and starts the drawing service, so not on a live site.
+// outbox in --db where that is needed, and deletes its uploads again. It stops and starts the drawing service, so
+// not on a live site.
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { createRequire } from 'node:module';
@@ -35,7 +38,7 @@ const socketUnit = opt('socket-unit');
 const jobUnits = opt('job-units');
 const serverPid = opt('server-pid');
 const retryMs = Number(opt('retry-ms') || 30_000);
-if (!base || !outFile || !dbPath || !deckFile || !slowFile || !socketUnit || !jobUnits) throw new Error('usage: see the top of this file');
+if (!base || !outFile || !deckFile || !slowFile || !socketUnit || !jobUnits) throw new Error('usage: see the top of this file');
 if (!/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(base)) throw new Error('local servers only (this script creates accounts and stops the drawing service)');
 const systemctl = (...args) => execFileSync('systemctl', [...(flag('user') ? ['--user'] : []), ...args], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 const sha = (b) => createHash('sha256').update(b).digest('hex');
@@ -79,13 +82,17 @@ async function teacher(n) {
   };
   const client = createTalaClient({ baseUrl: base, fetch: fetchWithCookies, validateResponses: true });
   const email = `teacher.render.${stamp}.${n}@example.com`;
-  await client.call('auth.register', { body: { email, password: `tala-render-${stamp}-Aa1!`, displayName: `Render check teacher ${n} (test)`, uiLanguage: 'en', deviceLabel: 'render check' } });
-  const Database = require('better-sqlite3');
-  const db = new Database(dbPath, { readonly: true });
-  const row = db.prepare("select vars from core_mail_outbox where to_email=? and template='verify_email' order by rowid desc limit 1").get(email);
-  db.close();
-  if (!row) throw new Error('no verification mail in the outbox (is --db the running server’s database?)');
-  await client.call('auth.verifyEmail', { body: { token: JSON.parse(row.vars).link.split('#token=')[1] } });
+  const registered = await client.call('auth.register', { body: { email, password: `tala-render-${stamp}-Aa1!`, displayName: `Render check teacher ${n} (test)`, uiLanguage: 'en', deviceLabel: 'render check' } });
+  // A server that verifies accounts by itself (TALA_AUTH_AUTO_VERIFY=1) sends no mail: there is nothing to confirm.
+  if (!registered.user.emailVerified) {
+    if (!dbPath) throw new Error('this server wants new accounts confirmed by mail: give --db <the running server’s database> so the link can be read from its outbox');
+    const Database = require('better-sqlite3');
+    const db = new Database(dbPath, { readonly: true });
+    const row = db.prepare("select vars from core_mail_outbox where to_email=? and template='verify_email' order by rowid desc limit 1").get(email);
+    db.close();
+    if (!row) throw new Error('no verification mail in the outbox (is --db the running server’s database?)');
+    await client.call('auth.verifyEmail', { body: { token: JSON.parse(row.vars).link.split('#token=')[1] } });
+  }
   const binary = async (path, cookies = true) => {
     const res = cookies ? await fetchWithCookies(`${base}/api/v1${path}`) : await fetch(`${base}/api/v1${path}`);
     return { status: res.status, type: res.headers.get('content-type') ?? '', bytes: new Uint8Array(await res.arrayBuffer()) };
@@ -170,16 +177,31 @@ try {
       made.push([ben, k.deck.id]);
       const started = Date.now();
       const pending = ben.renderWaiting(k.deck.id);
-      await sleep(2500);
-      let killed = 'no job was running';
-      try {
-        systemctl('kill', '--signal=KILL', jobUnits);
-        killed = 'killed';
-      } catch (err) {
-        killed = String(err.stderr ?? err.message).trim().split('\n')[0];
+      // Wait until a job is really running, then kill it. What counts is that the job that was drawing is gone:
+      // systemctl can report an error for a unit that is already ending (its other processes vanish while it is
+      // still sending them the signal), so its word is noted, not relied on.
+      const running = () => systemctl('list-units', '--type=service', '--state=running', '--no-legend', '--plain', jobUnits).split('\n').map((l) => l.trim().split(/\s+/)[0]).filter(Boolean);
+      let jobs = [];
+      for (let i = 0; i < 100 && !jobs.length; i++) {
+        await sleep(100);
+        jobs = running();
       }
+      await sleep(1500);
+      let said = 'systemctl kill: ok';
+      try {
+        if (jobs.length) systemctl('kill', '--signal=KILL', ...jobs);
+      } catch (err) {
+        said = `systemctl kill said: ${String(err.stderr ?? err.message).trim().split('\n')[0]}`;
+      }
+      let left = jobs;
+      for (let i = 0; i < 50 && left.length; i++) {
+        await sleep(100);
+        const now = running();
+        left = jobs.filter((j) => now.includes(j));
+      }
+      const killed = !jobs.length ? 'no job was running' : left.length ? `still running: ${left.join(' ')}` : 'killed';
       const r = await pending;
-      check('a job killed in the middle of a drawing is a failed drawing, at once', killed === 'killed' && r.state === 'failed' && Date.now() - started < 30_000, `${killed}; ${r.state} after ${Date.now() - started} ms`);
+      check('a job killed in the middle of a drawing is a failed drawing, at once', killed === 'killed' && r.state === 'failed' && Date.now() - started < 30_000, `${killed} (${jobs.join(' ') || 'none'}; ${said}); ${r.state} after ${Date.now() - started} ms`);
       check('no half-drawn pictures were kept', (await ben.get(k.deck.id)).previews.slideIds.length === 0);
       check('the site is healthy and still says it draws', (await healthy()) && (await ben.get(k.deck.id)).previews.available === true);
       await ana.saveReversed(a.deck.id);

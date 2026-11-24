@@ -8,12 +8,15 @@
  * survive an edit.
  *
  * `applyEdits` is a pure function of (uploaded file, edits): the same two always give the same result.
+ *
+ * It reads a slide only when an edit names it, from the package's view of the file as uploaded (so the order of
+ * the work cannot change its result), and it counts what it writes against the package's limit before writing it.
  */
-import { CONTENT_TYPE, NS, PptxError, PptxPackage, dirOf, nextPartName, relsNameOf, relativeTarget, type Relationship } from './opc';
+import { CONTENT_TYPE, NS, PptxError, PptxPackage, dirOf, nextPartName, relsNameOf, relativeTarget } from './opc';
 import { indexDeck, notesBody, notesPartOf, PPTX_LIMITS, type DeckInspection } from './inspect';
 import { textBodySplices, tidyParagraphText } from './text';
-import { placeholderFrames, walkSlide, type PlaceholderFrames } from './walk';
-import { applySplices, attr, attrNode, descendants, escapeXmlAttr, escapeXmlText, kid, parseXml, type Splice, type XmlDoc } from './xml';
+import { NO_PLACEHOLDER_FRAMES, walkSlide } from './walk';
+import { applySplices, attr, attrNode, descendants, escapeXmlAttr, escapeXmlText, kid, kids, type Splice, type XmlDoc } from './xml';
 
 export interface SlideEdit {
   /** Unique in the deck. An original slide keeps its id (`s256`); a copy has its own (`c` + letters and digits). */
@@ -37,12 +40,27 @@ export const noEdits = (inspection: Pick<DeckInspection, 'slides'>): DeckEdits =
 
 const sameList = (a: string[], b: string[]) => a.length === b.length && a.every((x, i) => x === b[i]);
 
+/** The slides of an inspection by id, each with its blocks by id (looked up many times; never searched). */
+function slidesById(inspection: Pick<DeckInspection, 'slides'>) {
+  const blocks = new Map<string, Map<string, DeckInspection['slides'][number]['blocks'][number]>>();
+  const base = new Map(inspection.slides.map((s) => [s.id, s]));
+  const blocksOf = (slideId: string) => {
+    let m = blocks.get(slideId);
+    if (!m) {
+      m = new Map((base.get(slideId)?.blocks ?? []).map((b) => [b.id, b]));
+      blocks.set(slideId, m);
+    }
+    return m;
+  };
+  return { base, blocksOf };
+}
+
 /**
  * Drop everything from a set of edits that changes nothing (text equal to the file's), so a stored state says only
  * what really differs. Pure; uses the inspection, not the file.
  */
 export function normaliseEdits(inspection: Pick<DeckInspection, 'slides'>, edits: DeckEdits): DeckEdits {
-  const base = new Map(inspection.slides.map((s) => [s.id, s]));
+  const { base, blocksOf } = slidesById(inspection);
   return {
     slides: edits.slides.map((e) => {
       const src = base.get(e.source);
@@ -50,7 +68,7 @@ export function normaliseEdits(inspection: Pick<DeckInspection, 'slides'>, edits
       if (src && e.text) {
         const text: Record<string, string[]> = {};
         for (const [blockId, paragraphs] of Object.entries(e.text)) {
-          const block = src.blocks.find((b) => b.id === blockId);
+          const block = blocksOf(e.source).get(blockId);
           const tidy = (paragraphs.length ? paragraphs : ['']).map(tidyParagraphText);
           if (block && !sameList(tidy, block.paragraphs)) text[blockId] = tidy;
         }
@@ -73,11 +91,10 @@ export function changedSlideCount(edits: DeckEdits): number {
 
 /** Why a set of edits cannot be applied to this deck, or null when it can. Pure; uses the inspection only. */
 export function invalidEdits(inspection: Pick<DeckInspection, 'slides'>, edits: DeckEdits): string | null {
-  const base = new Map(inspection.slides.map((s) => [s.id, s]));
+  const { base, blocksOf } = slidesById(inspection);
   if (!edits.slides.length) return 'no_slides';
   if (edits.slides.length > PPTX_LIMITS.slides) return 'too_many_slides';
   const ids = new Set<string>();
-  const primary = new Set<string>();
   for (const e of edits.slides) {
     if (!SLIDE_EDIT_ID.test(e.id)) return 'bad_slide_id';
     if (ids.has(e.id)) return 'duplicate_slide_id';
@@ -85,10 +102,9 @@ export function invalidEdits(inspection: Pick<DeckInspection, 'slides'>, edits: 
     const src = base.get(e.source);
     if (!src) return 'unknown_slide';
     if (e.id.startsWith('s') && e.id !== e.source) return 'bad_slide_id';
-    if (e.id === e.source) primary.add(e.source);
-    else if (src.duplicateBlockers.length) return 'slide_cannot_be_copied';
+    if (e.id !== e.source && src.duplicateBlockers.length) return 'slide_cannot_be_copied';
     for (const [blockId, paragraphs] of Object.entries(e.text ?? {})) {
-      const block = src.blocks.find((b) => b.id === blockId);
+      const block = blocksOf(e.source).get(blockId);
       if (!block) return 'unknown_block';
       if (!block.editable) return 'block_not_editable';
       if (paragraphs.length > PPTX_LIMITS.paragraphsPerBlock || paragraphs.some((p) => p.length > PPTX_LIMITS.paragraphChars)) return 'text_too_long';
@@ -153,14 +169,19 @@ function fail(message: string): never {
   throw new PptxError('invalid_edit', message);
 }
 
+/** Relationship kinds a copy of a slide may simply point at too. Anything else (a chart, a diagram) stops a copy. */
+const COPYABLE = new Set(['slideLayout', 'image', 'hyperlink', 'slide', 'audio', 'video', 'media', 'tags', 'notesSlide']);
+
 /**
  * Apply edits to an opened package (the uploaded file). The package is changed in place; write it out from
- * `pkg.entries()`. Throws PptxError('invalid_edit') for edits that do not fit this file.
+ * `pkg.entries()`. Throws PptxError('invalid_edit') for edits that do not fit this file, and
+ * PptxError('too_large') for edits that would write more than the package's limit.
  */
 export function applyEdits(pkg: PptxPackage, edits: DeckEdits): ApplyReport {
   const deck = indexDeck(pkg);
   const sources = new Map(deck.slides.map((s) => [s.id, s]));
   if (!edits.slides.length) fail('A deck needs at least one slide.');
+  if (edits.slides.length > PPTX_LIMITS.slides) fail('A deck cannot have this many slides.');
   const ids = new Set<string>();
   for (const e of edits.slides) {
     if (!SLIDE_EDIT_ID.test(e.id) || ids.has(e.id) || !sources.has(e.source)) fail('The edits name a slide this file does not have.');
@@ -172,27 +193,6 @@ export function applyEdits(pkg: PptxPackage, edits: DeckEdits): ApplyReport {
   for (const e of edits.slides) if (e.id === e.source) primary.set(e.source, e);
   for (const e of edits.slides) if (!primary.has(e.source)) primary.set(e.source, e);
 
-  // Everything is read from the file as uploaded, before anything is written.
-  const frameCache = new Map<string, PlaceholderFrames>();
-  const original = new Map<
-    string,
-    { part: string; doc: XmlDoc; frames: PlaceholderFrames; rels: Relationship[]; relsText: string | null; notesPart: string | null; notesDoc: XmlDoc | null; notesRelsText: string | null; notesRels: Relationship[] }
-  >();
-  for (const s of deck.slides) {
-    const relsName = relsNameOf(s.part);
-    const notesPart = notesPartOf(pkg, s.part);
-    original.set(s.id, {
-      part: s.part,
-      doc: pkg.xml(s.part),
-      frames: placeholderFrames(pkg, s.part, frameCache),
-      rels: pkg.rels(s.part),
-      relsText: pkg.has(relsName) ? pkg.text(relsName) : null,
-      notesPart,
-      notesDoc: notesPart ? pkg.xml(notesPart) : null,
-      notesRelsText: notesPart && pkg.has(relsNameOf(notesPart)) ? pkg.text(relsNameOf(notesPart)) : null,
-      notesRels: notesPart ? pkg.rels(notesPart) : [],
-    });
-  }
   const mainRelsBefore = new Set(pkg.rels(deck.mainPart).map((r) => r.id));
   // What the file referred to as uploaded: after slides are removed, only parts that were referred to and no
   // longer are go with them. A part nothing ever pointed at is not ours to judge; it stays.
@@ -201,25 +201,29 @@ export function applyEdits(pkg: PptxPackage, edits: DeckEdits): ApplyReport {
   const report: ApplyReport = { partsChanged: [], partsRemoved: [], linksRemoved: [], slides: edits.slides.length };
   const newTypes: Array<{ part: string; type: string }> = [];
   const taken = new Set<string>();
+  const spend = (chars: number) => pkg.spend(chars);
 
-  const textSplices = (src: NonNullable<ReturnType<typeof original.get>>, e: SlideEdit): Splice[] => {
+  /** The splices that put an edit's words into its slide, against the slide's text as uploaded. */
+  const textSplices = (doc: XmlDoc, e: SlideEdit): Splice[] => {
     if (!e.text || !Object.keys(e.text).length) return [];
-    const walked = walkSlide(src.doc, deck.size, src.frames);
+    // Only the words matter here, not where they sit: no layout is read.
+    const blocks = new Map(walkSlide(doc, deck.size, NO_PLACEHOLDER_FRAMES).blocks.map((b) => [b.info.id, b]));
     const splices: Splice[] = [];
     for (const [blockId, paragraphs] of Object.entries(e.text)) {
-      const block = walked.blocks.find((b) => b.info.id === blockId);
+      const block = blocks.get(blockId);
       if (!block || !block.info.editable) fail('The edits change text this file does not let Tala change.');
-      splices.push(...textBodySplices(src.doc, block.txBody, paragraphs.length ? paragraphs : ['']));
+      for (const s of textBodySplices(doc, block.txBody, paragraphs.length ? paragraphs : [''], spend)) splices.push(s);
     }
     return splices;
   };
-  const notesText = (src: NonNullable<ReturnType<typeof original.get>>, e: SlideEdit): string | null => {
-    // The notes page of this slide after the edit, or null when it stays (or there is none to write).
-    if (!src.notesDoc) return null;
-    if (!e.notes) return src.notesDoc.source;
-    const body = notesBody(src.notesDoc);
+  /** The notes page of a slide after the edit, or null when the slide had none. */
+  const notesText = (notesPart: string | null, e: SlideEdit): string | null => {
+    if (!notesPart) return null;
+    if (!e.notes) return pkg.sourceText(notesPart);
+    const doc = pkg.sourceXml(notesPart);
+    const body = notesBody(doc);
     if (!body) fail('The notes page of a slide has no notes box.');
-    return applySplices(src.notesDoc.source, textBodySplices(src.notesDoc, body, e.notes.length ? e.notes : ['']));
+    return applySplices(doc.source, textBodySplices(doc, body, e.notes.length ? e.notes : [''], spend));
   };
   const addNotesPage = (slidePart: string, paragraphs: string[]) => {
     if (!deck.notesMaster) fail('This deck has no notes pages to add notes to.');
@@ -239,70 +243,70 @@ export function applyEdits(pkg: PptxPackage, edits: DeckEdits): ApplyReport {
   const copies: Array<{ edit: SlideEdit; part: string; relId: string; number: number }> = [];
   let nextNumber = Math.max(255, ...deck.slides.map((s) => Number(s.id.slice(1)))) + 1;
   for (const e of edits.slides) {
-    const src = original.get(e.source)!;
+    const src = sources.get(e.source)!;
+    const notesPart = notesPartOf(pkg, src.part);
     if (primary.get(e.source) === e) {
       partOf.set(e.id, src.part);
-      const splices = textSplices(src, e);
-      if (splices.length) pkg.patch(src.part, splices);
+      if (e.text && Object.keys(e.text).length) {
+        const splices = textSplices(pkg.sourceXml(src.part), e);
+        if (splices.length) pkg.patch(src.part, splices);
+      }
       if (e.notes) {
-        if (src.notesPart) pkg.write(src.notesPart, notesText(src, e)!);
+        if (notesPart) pkg.write(notesPart, notesText(notesPart, e)!);
         else addNotesPage(src.part, e.notes);
       }
       continue;
     }
     // A copy of the slide: its own slide part (and notes page), pointing at the same layout, pictures and media.
-    const blocked = src.rels.filter((r) => !r.external && !['slideLayout', 'image', 'hyperlink', 'slide', 'audio', 'video', 'media', 'tags', 'notesSlide'].includes(r.kind) && !/comment/i.test(r.kind));
-    if (blocked.length) fail('A slide with a chart, diagram or embedded file cannot be copied here yet.');
+    const srcRels = pkg.sourceRels(src.part);
+    if (srcRels.some((r) => !r.external && !COPYABLE.has(r.kind) && !/comment/i.test(r.kind))) fail('A slide with a chart, diagram or embedded file cannot be copied here yet.');
     const part = nextPartName(pkg, `${dirOf(src.part)}/slide`, '.xml', taken);
     taken.add(part);
     partOf.set(e.id, part);
-    let xml = applySplices(src.doc.source, textSplices(src, e));
+    const doc = pkg.sourceXml(src.part);
+    const splices = textSplices(doc, e);
     // PowerPoint gives every slide its own creation id; a copy must not share its original's.
-    const copyDoc = parseXml(xml, pkg.limits.xml);
-    const idSplices: Splice[] = [];
-    for (const d of descendants(copyDoc.root)) {
-      if (d.ns !== NS.P14 || d.local !== 'creationId' || d.parent?.parent?.parent !== copyDoc.root) continue;
-      const val = attrNode(d, 'val');
-      if (val) idSplices.push({ start: val.valueStart, end: val.valueEnd, text: String((mix(`${val.value}:${e.id}`) % 4294967000) + 1) });
+    for (const ext of kids(kid(doc.root, NS.P, 'extLst') ?? doc.root, NS.P, 'ext')) {
+      for (const d of kids(ext, NS.P14, 'creationId')) {
+        const val = attrNode(d, 'val');
+        if (val) splices.push({ start: val.valueStart, end: val.valueEnd, text: String((mix(`${val.value}:${e.id}`) % 4294967000) + 1) });
+      }
     }
-    xml = applySplices(xml, idSplices);
-    pkg.write(part, xml);
+    pkg.write(part, applySplices(doc.source, splices));
     newTypes.push({ part, type: CONTENT_TYPE.slide });
 
     // Its relationships: the original's, without comments, and with its own notes page.
     let notesCopy: string | null = null;
-    const copiedNotes = notesText(src, e);
-    if (copiedNotes !== null && src.notesPart) {
-      notesCopy = nextPartName(pkg, `${dirOf(src.notesPart)}/notesSlide`, '.xml', taken);
+    const copiedNotes = notesText(notesPart, e);
+    if (copiedNotes !== null && notesPart) {
+      notesCopy = nextPartName(pkg, `${dirOf(notesPart)}/notesSlide`, '.xml', taken);
       taken.add(notesCopy);
       pkg.write(notesCopy, copiedNotes);
       newTypes.push({ part: notesCopy, type: CONTENT_TYPE.notesSlide });
-      if (src.notesRelsText !== null) {
+      const notesRelsName = relsNameOf(notesPart);
+      if (pkg.sourceHas(notesRelsName)) {
         const relSplices: Splice[] = [];
-        for (const r of src.notesRels) {
+        for (const r of pkg.sourceRels(notesPart)) {
           if (r.kind !== 'slide' || r.external) continue;
-          const t = attrNode(r.el, 'Target')!;
-          relSplices.push({ start: t.valueStart, end: t.valueEnd, text: escapeXmlAttr(relativeTarget(notesCopy, part)) });
+          relSplices.push({ start: r.at.targetStart, end: r.at.targetEnd, text: escapeXmlAttr(relativeTarget(notesCopy, part)) });
         }
-        pkg.write(relsNameOf(notesCopy), applySplices(src.notesRelsText, relSplices));
+        pkg.write(relsNameOf(notesCopy), applySplices(pkg.sourceText(notesRelsName), relSplices));
       }
     }
-    if (src.relsText !== null) {
+    const relsName = relsNameOf(src.part);
+    if (pkg.sourceHas(relsName)) {
       const relSplices: Splice[] = [];
-      for (const r of src.rels) {
-        if (/comment/i.test(r.kind)) relSplices.push({ start: r.el.start, end: r.el.end, text: '' });
+      for (const r of srcRels) {
+        if (/comment/i.test(r.kind)) relSplices.push({ start: r.at.start, end: r.at.end, text: '' });
         else if (r.kind === 'notesSlide' && !r.external) {
-          if (notesCopy) {
-            const t = attrNode(r.el, 'Target')!;
-            relSplices.push({ start: t.valueStart, end: t.valueEnd, text: escapeXmlAttr(relativeTarget(part, notesCopy)) });
-          } else relSplices.push({ start: r.el.start, end: r.el.end, text: '' });
+          if (notesCopy) relSplices.push({ start: r.at.targetStart, end: r.at.targetEnd, text: escapeXmlAttr(relativeTarget(part, notesCopy)) });
+          else relSplices.push({ start: r.at.start, end: r.at.end, text: '' });
         }
       }
-      pkg.write(relsNameOf(part), applySplices(src.relsText, relSplices));
+      pkg.write(relsNameOf(part), applySplices(pkg.sourceText(relsName), relSplices));
     }
-    if (e.notes && !src.notesPart) addNotesPage(part, e.notes);
-    const [relId] = pkg.editRels(deck.mainPart, [{ type: REL.slide, target: part }]);
-    copies.push({ edit: e, part, relId: relId!, number: nextNumber++ });
+    if (e.notes && !notesPart) addNotesPage(part, e.notes);
+    copies.push({ edit: e, part, relId: '', number: nextNumber++ });
   }
 
   // 2. Slides that are gone.
@@ -310,6 +314,16 @@ export function applyEdits(pkg: PptxPackage, edits: DeckEdits): ApplyReport {
   const removedParts = new Set(removed.map((s) => s.part));
   const removedNumbers = new Set(removed.map((s) => s.id.slice(1)));
   const removedRelIds = new Set(removed.map((s) => s.relId));
+
+  // The presentation's relationships, once: the copies in, the removed slides out.
+  if (copies.length || removed.length) {
+    const relIds = pkg.editRels(
+      deck.mainPart,
+      copies.map((c) => ({ type: REL.slide, target: c.part })),
+      [...removedRelIds].filter((id) => mainRelsBefore.has(id))
+    );
+    copies.forEach((c, i) => (c.relId = relIds[i]!));
+  }
 
   // 3. The presentation's own lists: slide order, sections, custom shows.
   const sameOrder = !copies.length && !removed.length && edits.slides.every((e, i) => deck.slides[i]?.id === e.id);
@@ -320,6 +334,8 @@ export function applyEdits(pkg: PptxPackage, edits: DeckEdits): ApplyReport {
     const relAttr = first.attrs.find((a) => a.ns === NS.R && a.local === 'id')!.name;
     const source = deck.presentation.source;
     const copyByEdit = new Map(copies.map((c) => [c.edit, c]));
+    const copiesOf = new Map<string, typeof copies>();
+    for (const c of copies) copiesOf.set(c.edit.source, [...(copiesOf.get(c.edit.source) ?? []), c]);
     const children = edits.slides
       .map((e) => {
         const copy = copyByEdit.get(e);
@@ -335,7 +351,7 @@ export function applyEdits(pkg: PptxPackage, edits: DeckEdits): ApplyReport {
         const number = attr(d, 'id') ?? '';
         if (removedNumbers.has(number)) splices.push({ start: d.start, end: d.end, text: '' });
         else {
-          const here = copies.filter((c) => c.edit.source === `s${number}`).map((c) => `<${d.name} id="${c.number}"/>`).join('');
+          const here = (copiesOf.get(`s${number}`) ?? []).map((c) => `<${d.name} id="${c.number}"/>`).join('');
           if (here) splices.push({ start: d.end, end: d.end, text: here });
         }
       } else if (d.ns === NS.P && d.local === 'sld' && d.parent?.local === 'sldLst' && removedRelIds.has(attr(d, 'id', NS.R) ?? '')) {
@@ -345,10 +361,9 @@ export function applyEdits(pkg: PptxPackage, edits: DeckEdits): ApplyReport {
     pkg.patch(deck.mainPart, splices);
   }
   if (removed.length) {
-    pkg.editRels(deck.mainPart, [], [...removedRelIds].filter((id) => mainRelsBefore.has(id)));
     for (const s of removed) {
-      const src = original.get(s.id)!;
-      for (const part of [s.part, relsNameOf(s.part), ...(src.notesPart ? [src.notesPart, relsNameOf(src.notesPart)] : [])]) pkg.remove(part);
+      const notesPart = notesPartOf(pkg, s.part);
+      for (const part of [s.part, relsNameOf(s.part), ...(notesPart ? [notesPart, relsNameOf(notesPart)] : [])]) pkg.remove(part);
     }
     // A link on another slide that jumped to a removed slide would dangle: the link goes, its words stay.
     for (const e of edits.slides) {
@@ -375,7 +390,11 @@ export function applyEdits(pkg: PptxPackage, edits: DeckEdits): ApplyReport {
     for (const name of pkg.names()) if (!keep.has(name) && reachableBefore?.has(name)) pkg.remove(name);
     dropTypes = [...before].filter((n) => !pkg.has(n));
   }
-  dropTypes.push(...removed.flatMap((s) => [s.part, ...(original.get(s.id)!.notesPart ? [original.get(s.id)!.notesPart!] : [])]));
+  for (const s of removed) {
+    dropTypes.push(s.part);
+    const notesPart = notesPartOf(pkg, s.part);
+    if (notesPart) dropTypes.push(notesPart);
+  }
   if (deck.kind !== 'presentation') newTypes.push({ part: deck.mainPart, type: CONTENT_TYPE.presentation });
   if (newTypes.length || dropTypes.length) pkg.editContentTypes(newTypes, dropTypes);
 

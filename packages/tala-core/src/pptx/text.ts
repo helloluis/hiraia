@@ -9,7 +9,14 @@
  * in a bold sentence leaves a bold sentence; untouched paragraphs are not rewritten at all.
  */
 import { NS } from './opc';
-import { cleanXmlText, escapeXmlText, kid, type Splice, type XmlDoc, type XmlElement } from './xml';
+import { cleanXmlText, escapeXmlText, kid, trimEndSpaces, type Splice, type XmlDoc, type XmlElement } from './xml';
+
+/**
+ * Called with the size of what is about to be written, before it is built. New text is written in the formatting
+ * of the text it continues, and that formatting comes from the file: a file may hold megabytes of it, repeated
+ * for every line a teacher types. The caller's counter refuses a job that would write too much.
+ */
+export type Spend = (chars: number) => void;
 
 export interface ParaToken {
   kind: 'run' | 'br';
@@ -193,11 +200,15 @@ function retext(doc: XmlDoc, para: ParaModel, next: string): Piece[] {
 }
 
 /** The whole paragraph element rewritten for new text. Everything outside its runs is copied from the file. */
-export function paragraphXml(doc: XmlDoc, para: ParaModel, next: string): string {
+export function paragraphXml(doc: XmlDoc, para: ParaModel, next: string, spend?: Spend): string {
   const el = para.el;
   const prefix = el.prefix;
-  const open = el.selfClosing ? `${doc.source.slice(el.start, el.end - 2).replace(/\s+$/, '')}>` : doc.source.slice(el.start, el.openEnd);
+  const open = el.selfClosing ? `${trimEndSpaces(doc.source.slice(el.start, el.end - 2))}>` : doc.source.slice(el.start, el.openEnd);
   const pieces = retext(doc, para, next);
+  // What this paragraph will be, counted before it is built.
+  let size = el.end - el.start + 64;
+  for (const x of pieces) size += x.from ? x.from.el.end - x.from.el.start : x.rPr.length + x.text.length + 2 * prefix.length + 32;
+  spend?.(size);
   let end = src(doc, para.endRPr);
   // A paragraph emptied of its words keeps the size and font it had, the way PowerPoint leaves it.
   if (!end && next === '' && para.tokens.length) {
@@ -208,12 +219,15 @@ export function paragraphXml(doc: XmlDoc, para: ParaModel, next: string): string
 }
 
 /** A new paragraph that looks like `like`: its paragraph properties and the formatting of its first run. */
-export function paragraphLikeXml(doc: XmlDoc, like: ParaModel, text: string): string {
+export function paragraphLikeXml(doc: XmlDoc, like: ParaModel, text: string, spend?: Spend): string {
   const el = like.el;
   const q = (local: string) => (el.prefix ? `${el.prefix}:${local}` : local);
-  const open = el.selfClosing ? `${doc.source.slice(el.start, el.end - 2).replace(/\s+$/, '')}>` : doc.source.slice(el.start, el.openEnd);
+  const open = el.selfClosing ? `${trimEndSpaces(doc.source.slice(el.start, el.end - 2))}>` : doc.source.slice(el.start, el.openEnd);
   const first = like.tokens.find((t) => t.kind === 'run');
   const rPr = first ? src(doc, first.rPr) : like.endRPr ? renamed(doc, like.endRPr, 'rPr') : '';
+  let lines = 1;
+  for (let i = text.indexOf('\n'); i >= 0; i = text.indexOf('\n', i + 1)) lines++;
+  spend?.(open.length + (like.pPr ? like.pPr.end - like.pPr.start : 0) + text.length + 2 * lines * (rPr.length + 2 * el.prefix.length + 32) + 64);
   let body = '';
   text.split('\n').forEach((segment, i) => {
     if (i > 0) body += rPr ? `<${q('br')}>${rPr}</${q('br')}>` : `<${q('br')}/>`;
@@ -260,7 +274,7 @@ export function alignParagraphs(original: string[], next: string[]): ParagraphOp
  * changes. Throws when the body holds a paragraph that cannot be rewritten: the caller offers such a body
  * read-only.
  */
-export function textBodySplices(doc: XmlDoc, txBody: XmlElement, next: string[]): Splice[] {
+export function textBodySplices(doc: XmlDoc, txBody: XmlElement, next: string[], spend?: Spend): Splice[] {
   const paras = readTextBody(txBody);
   if (!paras.length) throw new Error('A text body has no paragraphs.');
   if (paras.some((p) => !p.editable)) throw new Error('This text cannot be edited.');
@@ -272,12 +286,12 @@ export function textBodySplices(doc: XmlDoc, txBody: XmlElement, next: string[])
   let cursor = paras[0]!.el.start;
   for (const op of ops) {
     if (op.kind === 'add') {
-      splices.push({ start: cursor, end: cursor, text: paragraphLikeXml(doc, paras[op.like]!, op.text) });
+      splices.push({ start: cursor, end: cursor, text: paragraphLikeXml(doc, paras[op.like]!, op.text, spend) });
       continue;
     }
     const para = paras[op.from]!;
     used.add(op.from);
-    if (op.kind === 'edit' && op.text !== para.text) splices.push({ start: para.el.start, end: para.el.end, text: paragraphXml(doc, para, op.text) });
+    if (op.kind === 'edit' && op.text !== para.text) splices.push({ start: para.el.start, end: para.el.end, text: paragraphXml(doc, para, op.text, spend) });
     cursor = para.el.end;
   }
   paras.forEach((para, i) => {

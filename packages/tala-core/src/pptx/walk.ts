@@ -148,45 +148,66 @@ const family = (type: string): string => (type === 'ctrTitle' ? 'title' : type =
 
 const AUTOMATIC = new Set(['dt', 'ftr', 'sldNum', 'hdr']);
 
-/** Where a placeholder sits when the slide does not say: its layout's placeholder, then the master's. */
-export interface PlaceholderFrames {
-  layout: Array<{ ph: Placeholder; rect: Rect | null }>;
-  master: Array<{ ph: Placeholder; rect: Rect | null }>;
+interface Frame {
+  ph: Placeholder;
+  rect: Rect | null;
 }
 
-function framesOf(doc: XmlDoc | null): Array<{ ph: Placeholder; rect: Rect | null }> {
+/** The placeholders of one layout or master, findable by index and by kind without looking through them all. */
+interface FrameSet {
+  /** The first placeholder with each `idx`. */
+  byIdx: Map<string, Frame>;
+  /** The first placeholder of each family (title, body, …). */
+  byFamily: Map<string, Frame>;
+}
+
+/** Where a placeholder sits when the slide does not say: its layout's placeholder, then the master's. */
+export interface PlaceholderFrames {
+  layout: FrameSet;
+  master: FrameSet;
+}
+
+const NO_FRAMES: FrameSet = { byIdx: new Map(), byFamily: new Map() };
+
+/** For a walk that needs the words and not where they sit (writing edits back): no layout is read. */
+export const NO_PLACEHOLDER_FRAMES: PlaceholderFrames = { layout: NO_FRAMES, master: NO_FRAMES };
+
+function framesOf(doc: XmlDoc | null): FrameSet {
   const tree = path(doc?.root, [NS.P, 'cSld'], [NS.P, 'spTree']);
-  if (!tree) return [];
-  const out: Array<{ ph: Placeholder; rect: Rect | null }> = [];
-  for (const sp of kids(tree, NS.P)) {
-    if (sp.local !== 'sp' && sp.local !== 'pic') continue;
+  if (!tree) return NO_FRAMES;
+  const set: FrameSet = { byIdx: new Map(), byFamily: new Map() };
+  for (const sp of tree.children) {
+    if (sp.kind !== 'el' || sp.ns !== NS.P || (sp.local !== 'sp' && sp.local !== 'pic')) continue;
     const ph = placeholderOf(sp);
-    if (ph) out.push({ ph, rect: rectOf(path(sp, [NS.P, 'spPr'], [NS.A, 'xfrm'])) });
+    if (!ph) continue;
+    const frame = { ph, rect: rectOf(path(sp, [NS.P, 'spPr'], [NS.A, 'xfrm'])) };
+    if (ph.idx !== null && !set.byIdx.has(ph.idx)) set.byIdx.set(ph.idx, frame);
+    if (!set.byFamily.has(family(ph.type))) set.byFamily.set(family(ph.type), frame);
   }
-  return out;
+  return set;
 }
 
 /** The layout and master a slide (or notes page) inherits from, read once per layout. */
 export function placeholderFrames(pkg: PptxPackage, slidePart: string, cache: Map<string, PlaceholderFrames>): PlaceholderFrames {
-  const layoutPart = pkg.rels(slidePart).find((r) => r.kind === 'slideLayout' && r.target)?.target ?? null;
+  const layoutPart = pkg.sourceRels(slidePart).find((r) => r.kind === 'slideLayout' && r.target)?.target ?? null;
   const key = layoutPart ?? '';
   const hit = cache.get(key);
   if (hit) return hit;
-  let frames: PlaceholderFrames = { layout: [], master: [] };
-  if (layoutPart && pkg.has(layoutPart)) {
-    const masterPart = pkg.rels(layoutPart).find((r) => r.kind === 'slideMaster' && r.target)?.target ?? null;
-    frames = { layout: framesOf(pkg.xml(layoutPart)), master: masterPart && pkg.has(masterPart) ? framesOf(pkg.xml(masterPart)) : [] };
+  let frames: PlaceholderFrames = { layout: NO_FRAMES, master: NO_FRAMES };
+  // The layout and master are read as uploaded: an edit never changes them.
+  if (layoutPart && pkg.sourceHas(layoutPart)) {
+    const masterPart = pkg.sourceRels(layoutPart).find((r) => r.kind === 'slideMaster' && r.target)?.target ?? null;
+    frames = { layout: framesOf(pkg.sourceXml(layoutPart)), master: masterPart && pkg.sourceHas(masterPart) ? framesOf(pkg.sourceXml(masterPart)) : NO_FRAMES };
   }
   cache.set(key, frames);
   return frames;
 }
 
 function inheritedRect(ph: Placeholder, frames: PlaceholderFrames): Rect | null {
-  const inLayout =
-    (ph.idx !== null ? frames.layout.find((f) => f.ph.idx === ph.idx) : undefined) ?? frames.layout.find((f) => family(f.ph.type) === family(ph.type));
+  const inLayout = (ph.idx !== null ? frames.layout.byIdx.get(ph.idx) : undefined) ?? frames.layout.byFamily.get(family(ph.type));
   if (inLayout?.rect) return inLayout.rect;
   const type = inLayout ? inLayout.ph.type : ph.type;
-  return frames.master.find((f) => family(f.ph.type) === family(type))?.rect ?? null;
+  return frames.master.byFamily.get(family(type))?.rect ?? null;
 }
 
 const nameOf = (el: XmlElement): string => {
@@ -271,9 +292,10 @@ export function walkSlide(doc: XmlDoc, size: SlideSize, frames: PlaceholderFrame
           const h = num(tr, 'h') ?? 0;
           let x = rect?.x ?? 0;
           kids(tr, NS.A, 'tc').forEach((tc, c) => {
-            const span = Math.max(1, num(tc, 'gridSpan') ?? 1);
+            // A cell cannot span past the grid, whatever number the file gives (it may give any).
+            const last = Math.min(widths.length, c + Math.max(1, num(tc, 'gridSpan') ?? 1));
             let w = 0;
-            for (let k = c; k < c + span; k++) w += widths[k] ?? 0;
+            for (let k = c; k < last; k++) w += widths[k]!;
             const merged = attr(tc, 'hMerge') === '1' || attr(tc, 'vMerge') === '1';
             const txBody = kid(tc, NS.A, 'txBody');
             if (txBody && !merged) addBlock(txBody, 'cell', `${name || 'Table'} R${r + 1}C${c + 1}`.slice(0, 120), rect ? toBox({ x, y, cx: w, cy: h }, xf, size) : null);

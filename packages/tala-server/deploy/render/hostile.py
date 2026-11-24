@@ -15,6 +15,7 @@ and no system call that would change the host if it went through (no clock, host
     hostile.py sleep         do nothing for ever
     hostile.py files         open files until it is refused
     hostile.py orphans       leave processes behind that try to outlive the job, and files in every writable place
+    hostile.py crash         die of a memory fault, as a broken LibreOffice would
 
 Python's standard library only.
 """
@@ -121,6 +122,56 @@ def own_cgroup():
         return '/sys/fs/cgroup' + f.read().strip().split('::', 1)[1]
 
 
+def other_groups():
+    """Control groups and their files that are not on the way to this program's own group."""
+    own = own_cgroup()
+    found = []
+    for root, dirs, files in os.walk('/sys/fs/cgroup'):
+        inside = root == own or root.startswith(own + '/')
+        for d in dirs:
+            p = os.path.join(root, d)
+            if not (inside or own == p or own.startswith(p + '/')):
+                found.append(p)
+        if not inside:
+            found.extend(os.path.join(root, f) for f in files)
+        if len(found) > 200:
+            break
+    if not found:
+        raise FileNotFoundError(errno.ENOENT, 'none in sight')
+    return f'{len(found)} in sight, e.g. {sorted(found)[0]}'
+
+
+def usr_local():
+    """Anything under /usr/local that is not the job's own program folder."""
+    found = []
+    for root, dirs, files in os.walk('/usr/local'):
+        for name in dirs + files:
+            p = os.path.join(root, name)
+            if p == '/usr/local/lib' or p == '/usr/local/lib/tala-render' or p.startswith('/usr/local/lib/tala-render/'):
+                continue
+            found.append(p)
+        if len(found) > 200:
+            break
+    if not found:
+        raise FileNotFoundError(errno.ENOENT, 'nothing but its own program')
+    return f'{len(found)} in sight, e.g. {sorted(found)[0]}'
+
+
+def io_uring(number, *args):
+    """A system call of the io_uring family. EPERM means the box refused the call itself."""
+    libc.syscall.restype = ctypes.c_long
+    ctypes.set_errno(0)
+    r = libc.syscall(number, *args)
+    e = ctypes.get_errno()
+    if r >= 0:
+        if number == 425:
+            os.close(r)
+        return 'the call went through'
+    if e in (errno.EPERM, errno.ENOSYS):
+        raise OSError(e, os.strerror(e))
+    return f'the call reached the kernel ({errno.errorcode.get(e, e)})'
+
+
 def survey(argv):
     opts = {'--canary': [], '--tcp': [], '--unix': [], '--pid': []}
     i = 0
@@ -138,13 +189,18 @@ def survey(argv):
               '/proc/1/environ', '/proc/1/root', '/proc/kcore', '/dev/kmsg', '/dev/mem', '/dev/sda', '/dev/nvme0n1', '/dev/vda', '/sys/kernel/debug'] + opts['--canary']:
         attempt('read', p, lambda p=p: read_path(p))
     # What the kernel tells about itself and the machine (no file of anybody's): reported, and judged by the tester.
-    for p in ['/proc/1/cmdline', '/proc/sys/kernel/hostname', '/proc/kallsyms', '/proc/meminfo', '/sys/firmware', '/sys/class/net', '/sys/fs/cgroup/system.slice']:
+    for p in ['/proc/1/cmdline', '/proc/sys/kernel/hostname', '/proc/kallsyms', '/proc/meminfo', '/sys/firmware', '/sys/class/net']:
         attempt('kernel-info', p, lambda p=p: read_path(p))
     for pid in opts['--pid']:
         for leaf in ['environ', 'root', 'cwd', 'mem', 'maps']:
             attempt('read-other-process', f'/proc/{pid}/{leaf}', lambda p=f'/proc/{pid}/{leaf}': read_path(p))
     visible = [n for n in os.listdir('/proc') if n.isdigit()]
     say(kind='processes-in-sight', count=len(visible))
+    # The host's other services by name, and the administrator's own programs: neither is the job's to see.
+    attempt('other-groups', 'control groups other than its own', other_groups)
+    attempt('other-groups', '/sys/fs/cgroup/system.slice', lambda: read_path('/sys/fs/cgroup/system.slice'))
+    attempt('other-groups', '/sys/fs/cgroup/cgroup.procs (the root group)', lambda: read_path('/sys/fs/cgroup/cgroup.procs'))
+    attempt('usr-local', 'anything in /usr/local but its own program', usr_local)
 
     # 2. Write where nothing may be written. (The scratch space is the one place that must work.)
     for d in ['/', '/usr', '/usr/bin', '/usr/local/lib', '/etc', '/etc/fonts', '/var', '/var/tmp', '/dev', '/dev/shm', '/run', '/home', '/opt', '/proc', '/sys']:
@@ -186,6 +242,10 @@ def survey(argv):
     for pid in opts['--pid']:
         attempt('other-process', f'signal process {pid} of the tester (signal 0)', lambda pid=pid: os.kill(int(pid), 0) or 'allowed')
     attempt('privilege', 'raise own file-size limit', lambda: raise_limit())
+    params = ctypes.create_string_buffer(120)
+    attempt('io-uring', 'io_uring_setup', lambda: io_uring(425, 4, params))
+    attempt('io-uring', 'io_uring_enter', lambda: io_uring(426, -1, 0, 0, 0, None, 0))
+    attempt('io-uring', 'io_uring_register', lambda: io_uring(427, -1, 0, None, 0))
     for cmd in (['/usr/bin/sudo', '-n', 'true'], ['/usr/bin/su', '-c', 'true'], ['/usr/bin/newuidmap'], ['/usr/bin/mount', '-t', 'tmpfs', 'none', SCRATCH], ['/usr/bin/ping', '-c', '1', '-W', '1', '127.0.0.1']):
         attempt('setuid-program', ' '.join(cmd), lambda cmd=cmd: run_ok(cmd))
     say(kind='end')
@@ -383,7 +443,16 @@ def orphans():
     say(kind='end')
 
 
-MODES = {'survey': survey, 'memory': memory, 'processes': processes, 'storm': storm, 'disk': disk, 'bigfile': bigfile, 'cpu': cpu, 'sleep': sleep, 'files': files, 'orphans': orphans}
+def crash():
+    """Dies the way a broken program does. Whether the kernel made a memory image of it is for the tester to see."""
+    say(kind='crash', pid=os.getpid(), cwd=os.getcwd())
+    os.chdir(SCRATCH)
+    signal.signal(signal.SIGSEGV, signal.SIG_DFL)
+    os.kill(os.getpid(), signal.SIGSEGV)
+    time.sleep(5)
+
+
+MODES = {'survey': survey, 'memory': memory, 'processes': processes, 'storm': storm, 'disk': disk, 'bigfile': bigfile, 'cpu': cpu, 'sleep': sleep, 'files': files, 'orphans': orphans, 'crash': crash}
 
 if __name__ == '__main__':
     mode = sys.argv[1] if len(sys.argv) > 1 else ''

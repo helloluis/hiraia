@@ -8,6 +8,10 @@ the job, the systemd units that are its sandbox, the installer, and the checks.
 Decided by Luis on 24 Nov 2026: a sandboxed renderer, with the pictures kept. What is and is not verified is in
 the last section; read it before a release.
 
+The release owner installed the first version as root on a machine set up like the host on 24 Nov: it passed
+their six checks, and their own probe found three things a job could still see or do (all of `/usr/local`, the
+host's control-group tree, `io_uring`). This version closes them; the job checks the first two itself.
+
 ```
 web app (tala.service, user tala)                 no code that starts LibreOffice or any other program
    │  socket file /run/tala-render/render.sock    0660 root:tala, no network port
@@ -30,20 +34,24 @@ tala-render@N.service  in talarender.slice           made for this file, gone wh
 | Its own user, no privileges | `User=tala-render` (owns nothing, in no other group), `PrivateUsers`, `NoNewPrivileges`, no capabilities, `RestrictSUIDSGID`, `RestrictNamespaces` | kernel |
 | No network at all | `PrivateNetwork` (its own empty network), `RestrictAddressFamilies=AF_UNIX`, `IPAddressDeny=any` | kernel |
 | Sees programs and fonts, nothing else | `TemporaryFileSystem=/:ro` (an empty root), then read-only binds of `/usr`, `/etc/fonts`, `/etc/libreoffice`, `/etc/ld.so.cache`, the font cache. `/var/lib/tala`, `/etc/tala`, `/home`, `/run`, `/etc/passwd` are not hidden: they are not there | kernel (mount namespace) |
+| Of the administrator's own programs, only its own | `/usr/local` is an empty read-only folder with one thing bound into it: `/usr/local/lib/tala-render` | kernel (mount namespace) |
+| Of the host's other services, nothing | `/sys/fs/cgroup` (the control-group tree: every service by name, with its memory and its process numbers) is an empty read-only folder with one thing bound into it: the job's own group, read-only | kernel (mount namespace) |
 | One place to write | `/tmp`: 384 MiB in memory, 8192 files, no programs can be run from it; made for the job, gone with it. `/dev/shm` and `/run` are replaced by empty read-only ones. (The job's private message-queue folder, `/dev/mqueue`, exists too: it holds no files, a few hundred KB of queues at most, and goes with the job) | kernel |
 | Memory | `MemoryMax=768M`, no swap; over it, the whole job is killed | kernel (cgroup) |
 | Processes | `TasksMax=128` | kernel (cgroup) |
 | Processor | `CPUQuota=100%` (one core), `LimitCPU=100` s, low priority | kernel |
-| File size, open files | `LimitFSIZE=256 MiB`, `LimitNOFILE=512`, no core dumps | kernel |
+| File size, open files | `LimitFSIZE=256 MiB`, `LimitNOFILE=512` | kernel |
+| A crash leaves nothing | `LimitCORE=1`: no core file, and the kernel starts no crash handler (apport, systemd-coredump) for the job | kernel |
 | Run time | the job gives up at 100 s; `RuntimeMaxSec=120` kills whatever is left | job, then systemd |
-| System calls | `@system-service` minus privileged and resource-changing ones | kernel (seccomp) |
+| System calls | `@system-service` minus privileged and resource-changing ones, and minus `io_uring` | kernel (seccomp) |
 | Other processes | sees none but its own (`ProtectProc=invisible`), cannot trace or signal any | kernel |
 | Nothing outlives it | `KillMode=control-group`, `KillSignal=SIGKILL`; scratch, IPC and network are the job's own | systemd, kernel |
 | One file at a time | `MaxConnections=1`: two teachers' files are never in the drawing user at once | systemd |
 
 The job **checks all of this itself** (`selfCheck` in `render-job.mjs`) before it reads a byte of the file: not root,
 no capabilities, no-new-privileges and a system-call filter in force, no network device but its own loopback and
-no way to open a connection, none of a list of host paths in sight, exactly one writable place that is in memory,
+no way to open a connection, none of a list of host paths in sight, nothing in `/usr/local` but its own program,
+nothing of the control-group tree but the way to its own group, exactly one writable place that is in memory,
 small, empty and made for this job, no other user's or job's process in sight, finite ceilings on memory, swap,
 processes, processor, file size and open files, and no stray environment variable. If one check fails it answers
 "sandbox check failed" with the names of the failed checks and draws nothing. There is no switch to turn the
@@ -89,8 +97,12 @@ Needs: systemd 252 or newer with the unified control-group hierarchy (memory, pi
 # as root, in the release's tree
 packages/tala-server/deploy/render/install.sh --dry-run     # read what it will do
 packages/tala-server/deploy/render/install.sh               # packages, user, files, units, first check
-/usr/bin/node packages/tala-server/deploy/render/verify.mjs --socket /run/tala-render/render.sock --out /var/tmp/tala-render-verify
+/usr/bin/node packages/tala-server/deploy/render/verify.mjs --socket /run/tala-render/render.sock --out /root/tala-render-verify
 ```
+
+`--out` is a folder of root's own. The check makes it (for root alone) when it is not there, and refuses a folder
+that belongs to someone else, that others can write to, or that is a link; no result file is written through a
+link. (A folder under `/var/tmp` or `/tmp` is one another local user could prepare before root runs the check.)
 
 `install.sh` installs `libreoffice-impress-nogui poppler-utils fonts-crosextra-carlito fonts-crosextra-caladea
 fonts-liberation fonts-dejavu-core`, makes the user `tala-render`, copies the job and the units, starts the socket
@@ -121,6 +133,18 @@ app does not know `TALA_DECKS_PREVIEW_SOCKET` and ignores it.
 - The host has no Carlito or Caladea (the fonts that stand in for Calibri and Cambria, PowerPoint's defaults).
   `install.sh` installs them. A font a deck uses that the host does not have is replaced by a similar one in the
   picture; the file the teacher downloads keeps her fonts.
+- Fonts for drawing have to be installed as packages (under `/usr/share/fonts`). The job does not see
+  `/usr/local/share/fonts`: of `/usr/local` it sees its own program and nothing else.
+- LibreOffice looks for GnuPG when it starts (it runs `/usr/bin/gpg` and `gpgsm` to ask their version). With
+  Ubuntu's AppArmor profile in complain mode that is one "ALLOWED exec" line each in the kernel log per job (seen
+  by the release owner on 24 Nov). Nothing is blocked and nothing leaves the box: the programs run inside it, with
+  no network and no keys. The unit does not hide them.
+- A crash of LibreOffice: the unit sets the core limit to 1, at which the kernel neither writes a core file nor
+  starts a crash handler it is told to pipe to (read in `fs/coredump.c` of Linux 6.8; not tried by the author on a
+  machine with apport). With the earlier `LimitCORE=0` a host with apport enabled kept a report under `/var/crash`,
+  written by apport as root outside the box (seen by the release owner; production has apport masked).
+- The host's name: a job can read it with `uname` (it is not a file). systemd 255 can give a unit a host-name
+  namespace of its own (`ProtectHostname=`) but not another name in it, so the name stays.
 
 ### Do not "harden" the unit with these
 
@@ -129,6 +153,11 @@ the host's disk). On systemd 252 their read-only `/` silently takes the place of
 see the host's whole file system, read-only (tested here; `selfCheck` then refuses to draw). The empty root is
 already read-only. `MemoryDenyWriteExecute=` is left out because Node and LibreOffice make executable memory at
 run time.
+
+`ProtectControlGroups=yes`, for the same reason one level down: it is a rule for `/sys/fs/cgroup` that outranks the
+empty folder the unit puts there, so with it the whole control-group tree is readable again (tested here on 252:
+240 groups and files in sight instead of none; the order of the rules is the same in the source of 255, `MountMode`
+in `src/core/namespace.c`). The unit's two lines already make what the job sees of the tree read-only.
 
 ## Settings
 
@@ -150,11 +179,11 @@ The numbers in the unit come from drawing every real file of the corpus (86 deck
 
 | | LibreOffice 26.8 (developer machine) | LibreOffice 24.2.7 (Ubuntu 24.04 packages) |
 |---|---|---|
-| Time per deck | median 0.69 s, 90% under 4.4 s, slowest 55 s | median 0.67 s, 90% under 3.8 s, slowest 22 s |
-| Peak memory of a job | median 88 MiB, 90% under 215, most 587 MiB | median 165 MiB, 90% under 190, most 505 MiB |
+| Time per deck | median 0.68 s, 90% under 4.4 s, slowest 57 s | median 0.63 s, 90% under 3.1 s, slowest 23 s |
+| Peak memory of a job | median 89 MiB, 90% under 214, most 591 MiB | median 166 MiB, 90% under 190, most 505 MiB |
 | Largest file / most pictures | 27.7 MiB in, 5.4 MiB of pictures out | the same files |
 
-(Both runs shared the machine.) That machine has faster cores than the host. A deck that takes 55 s there may run
+(The second round's runs of 24 Nov; both shared the machine.) That machine has faster cores than the host. A deck that takes 57 s there may run
 into the 100 s limit on the host; it then has no pictures and the editor says so. The web app does not hold a
 request for longer than 20 s: it answers "busy", the drawing carries on, and the pictures are there when the
 editor asks again.
@@ -186,7 +215,7 @@ a developer's machine it checks the developer set-up (`--user`).
 | `files` | 31 hostile or broken files: not a presentation at all (8), archives that try something (12: names that climb out, absolute names, a part named twice, encryption, ZIP64, zip bombs honest and lying), content that tries something (11: a 40,000 × 40,000 picture, a billion expanding entities, 30,000 nested shapes, links to the network and to files of the host, macros, embedded objects, wrong slide counts). Each must end in bounded time, leave the service working, and never reach a canary file, port or socket on the host |
 | `protocol` | A caller that breaks the rules: not a request, unknown operation, absurd sizes, hanging up, saying nothing |
 | `turns` | Six files at the same moment: one is drawn, five are turned away at once; then each in turn gets her own |
-| `box` | `hostile.py` in the job's own box: tries to read (29 paths and devices), write (16 places), reach the network (8 ways) and the host's sockets (10), gain privileges (11 ways, 5 setuid programs), then hits every ceiling for real (memory, processes, a fork bomb, disk, file size, open files, processor time, run time) and tries to leave processes and files behind |
+| `box` | `hostile.py` in the job's own box: tries to read (29 paths and devices), write (16 places), reach the network (8 ways) and the host's sockets (10), gain privileges (11 ways, 5 setuid programs), use `io_uring` (3 calls), see any control group but its own or anything in `/usr/local` but its own program, then hits every ceiling for real (memory, processes, a fork bomb, disk, file size, open files, processor time, run time), dies of a memory fault (no memory image may be made of it), and tries to leave processes and files behind |
 
 `--slow` adds the waits at the real time ceilings (about four minutes). The exit code is 0 only when every check
 passed; `results.json` under `--out` holds every answer.
@@ -196,10 +225,15 @@ service):
 
 ```bash
 cd packages/tala-web
-pnpm exec tsx scripts/uploads-render-states.mjs http://127.0.0.1:3220 out.json --db "$TALA_DB_PATH" \
+pnpm exec tsx scripts/uploads-render-states.mjs http://127.0.0.1:3220 out.json [--db "$TALA_DB_PATH"] \
   --deck small.pptx --slow-deck a-deck-that-takes-seconds.pptx \
   --socket-unit tala-render.socket --job-units 'tala-render@*.service' --server-pid "$(systemctl show -p MainPID --value tala)"
 ```
+
+`--db` is only needed where a new account has to confirm its address by mail; a server that verifies accounts by
+itself (`TALA_AUTH_AUTO_VERIFY=1`, as on the host) needs none. The step that kills a job waits until a job is
+running, kills it, and then looks whether that job is gone; what `systemctl kill` says about a unit that is
+already ending is noted in the result, not relied on.
 
 It holds the server to: pictures only for their owner; two teachers at once (one drawn, one told "busy"); a job
 killed in the middle (a failed drawing, no half pictures, next one works); the service stopped ("no pictures
@@ -222,7 +256,7 @@ The release owner's six checks, and where each is answered:
 ```bash
 node dev-units.mjs start [--soffice-dir /path/to/libreoffice] [--fonts-dir /path/to/fonts]
 export TALA_DECKS_PREVIEW_SOCKET="$(node dev-units.mjs path)" TALA_DECKS_PREVIEW_SHARED_USER=1
-node verify.mjs --user --socket "$TALA_DECKS_PREVIEW_SOCKET" --out /tmp/verify
+node verify.mjs --user --socket "$TALA_DECKS_PREVIEW_SOCKET" --out ~/tala-render-verify
 node dev-units.mjs stop
 ```
 
@@ -234,34 +268,52 @@ says so (`isolation: "shared-user"`), and the web app refuses such a job unless 
 for it by name. It needs unprivileged user namespaces, which the production host does not give its service user:
 this set-up is for building and testing, never for a server.
 
-## What is verified, and what is not (24 Nov 2026)
+## What is verified, and what is not (24 Nov 2026, second round)
 
-Verified by the author on the build machine (Debian 12, kernel 6.1, systemd 252, per-user service manager), with
-the unit lines of this folder minus the four that need root:
+**By the release owner, as root, on a machine set up like the host** (KVM guest, Ubuntu 24.04.5, kernel 6.8,
+systemd 255.4, AppArmor, Node 22.22.0), with the FIRST version of this folder: `install.sh` for real, `verify.mjs
+--slow` 96 of 96 (so `User=`/`Group=`, `PrivateUsers`, `ProtectProc`/`ProcSubset`, `IPAddressDeny`, `RemoveIPC` and
+the socket's owner all hold there), an upgrade and a rollback of the web app, and the browser walk. Their probe is
+what found the three leaks named at the top.
 
-- with this machine's LibreOffice 26.8 and Node 24: `verify.mjs --slow`, every section;
+**By the author, with THIS version**, on the build machine (Debian 12, kernel 6.1, systemd 252, per-user service
+manager), with the unit lines of this folder minus the four that need root:
+
+- with this machine's LibreOffice 26.8 and Node 24: `verify.mjs --slow`, every section, 97 of 97;
 - with the **Ubuntu 24.04 packages the host will get** (LibreOffice 24.2.7, poppler 24.02, fonts, Python 3.12,
   sudo/su/ping) and Node 22.22.0, unpacked into a folder that takes the place of `/usr`, `/etc/fonts` and
-  `/etc/libreoffice` at the production paths, with the production `ExecStart`: `verify.mjs --slow`, every
-  section, and the whole corpus (86 of 86 decks drawn);
+  `/etc/libreoffice` at the production paths, with the production `ExecStart` and the job in
+  `/usr/local/lib/tala-render` as `install.sh` puts it: `verify.mjs --slow`, every section, 97 of 97; and
+  the whole corpus (86 of 86 decks drawn);
 - the same userland with every non-process entry of `/proc` made unreadable (what `ProcSubset=pid` does on a
-  server): probe and drawings still pass;
+  server): probe and drawings still pass (18 of 18);
+- the three new probes are real: run outside any box, each reports what a box has to hide (hundreds of control
+  groups, hundreds of entries in `/usr/local`, `io_uring` calls that go through); in the box each is stopped. With
+  `ProtectControlGroups=yes` put back beside the new lines, the box shows the whole control-group tree again;
+- a crash in the box: with the unit's `LimitCORE=1` systemd reports a plain signal and no memory image; with the
+  limit lifted, a core dump. (This machine writes core files; it has no piped crash handler.)
 - the web app with the service behind it: server tests, the browser walk in English and Filipino, and
-  `uploads-render-states.mjs` including a job that systemd kills at a 6 s run-time ceiling and one that gives up
-  by itself;
+  `uploads-render-states.mjs` (20/20 on a site that verifies accounts by itself, as the host does;
+  20/20 on one that confirms them by mail), including a job that systemd kills at a 6 s run-time
+  ceiling and one that gives up by itself;
 - the unit files: `systemd-analyze verify` (no complaint but this machine's missing `/usr/bin/node`), and
-  `systemd-analyze security --offline`: exposure 0.7, "SAFE".
+  `systemd-analyze security --offline`.
 
 **Not verified by the author, because it needs root and the host:**
 
-- `install.sh` has never run for real (only `--dry-run`).
-- The four root-only lines: `User=`/`Group=tala-render` (here the job ran as the developer), `RemoveIPC=`,
-  `IPAddressDeny=any`; and the socket's owner and group.
-- `ProtectProc=invisible` and `ProcSubset=pid` as root's manager applies them, and so the result "sees no process
-  but its own". `selfCheck` tests exactly this on every job: if the host does not deliver it, the job refuses.
-- systemd 255 and kernel 6.8 (the host) instead of 252 and 6.1; Ubuntu's AppArmor with LibreOffice's profile
-  loaded; Ubuntu's own Node package instead of the nodejs.org build.
-- Real load: how the host behaves with drawing beside its other services.
+- **This version has not been installed or run as root, and not on systemd 255.** As root the check has three
+  more lines than here (it "sees no process but its own", cannot signal the tester, reads no kernel tables): 100
+  with `--slow`.
+- How systemd 255 applies the two new pairs of lines (`/usr/local`, `/sys/fs/cgroup`). Read in its source
+  (`src/core/namespace.c` of v255): rules for one path are ordered by kind and the first wins, a temporary file
+  system outranks the implicit rule `ProtectKernelTunables=` has for `/sys/fs/cgroup` and is outranked by
+  `ProtectControlGroups=`; sources of binds are taken from the host's own tree. That is the behaviour seen here
+  on 252. If the host does it differently the job's own check (`usr-local-hidden`, `control-groups-hidden`, and
+  the ceilings it reads from its own group) fails and no picture is drawn.
+- `LimitCORE=1` against a real piped crash handler (apport, systemd-coredump). Read in `fs/coredump.c` of Linux
+  6.8; the `box` section's crash check shows it on a machine that has one.
+- The four root-only lines and `ProtectProc`/`ProcSubset` with this version (unchanged since the root run above).
+- Ubuntu's own Node package instead of the nodejs.org build; real load beside the host's other services.
 
 For each of these the design answers the same way: the job re-checks its box on the host, on every job, and
 draws nothing if the box is not whole. `verify.mjs` as root on a box set up like the host is the test that

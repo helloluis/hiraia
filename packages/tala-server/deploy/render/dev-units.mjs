@@ -28,7 +28,7 @@
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
-import { developerLines, here, readArgs } from './units.mjs';
+import { developerLines, here, readArgs, userManagerGroup, withOwnGroup } from './units.mjs';
 
 function fail(message) {
   console.error(`dev-units: ${message}`);
@@ -79,6 +79,8 @@ if (command === 'stop') {
 let dev;
 try {
   dev = developerLines({ sofficeDir: options.sofficeDir, fontsDir: options.fontsDir, userland: options.userland, set: options.set, drop: options.drop, add: options.add, binds: options.bind, stateDir });
+  // The job's own control group is under the per-user manager here, in this set-up's own slice.
+  dev.lines = withOwnGroup(dev.lines, { root: userManagerGroup(), slice });
 } catch (err) {
   fail(err.message);
 }

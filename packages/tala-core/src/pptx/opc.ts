@@ -6,16 +6,15 @@
  * Parts are kept as the bytes they arrived as. A part is decoded, parsed or rewritten only when something asks,
  * which is what lets an export return every untouched part byte for byte.
  */
-import { applySplices, attr, escapeXmlAttr, kids, parseXml, type Splice, type XmlDoc, type XmlElement, type XmlLimits } from './xml';
+import { applySplices, attr, escapeXmlAttr, kids, parseXml, trimEndSpaces, type Splice, type XmlBudget, type XmlDoc, type XmlElement, type XmlLimits } from './xml';
 
 export class PptxError extends Error {
-  constructor(
-    /** Stable reason code; the server maps it to a plain-language message. */
-    public readonly code: PptxErrorCode,
-    message: string
-  ) {
+  /** Stable reason code; the server maps it to a plain-language message. */
+  readonly code: PptxErrorCode;
+  constructor(code: PptxErrorCode, message: string) {
     super(message);
     this.name = 'PptxError';
+    this.code = code;
   }
 }
 
@@ -83,7 +82,8 @@ export interface Relationship {
   external: boolean;
   /** Resolved part name for an internal target; null for an external one. */
   target: string | null;
-  el: XmlElement;
+  /** Where it stands in the text of its relationships part: the whole element, and the value of its Target. */
+  at: { start: number; end: number; targetStart: number; targetEnd: number };
 }
 
 export interface PackageLimits {
@@ -91,9 +91,23 @@ export interface PackageLimits {
   /** Longest part name accepted. */
   nameLength: number;
   xml: Partial<XmlLimits>;
+  /** What the whole job may parse, across every part (xml.ts). Shared and counted down; absent = no job limit. */
+  budget?: XmlBudget;
+  /** Nodes a relationships part or the content types may have (they are lists, not slides). */
+  listNodes: number;
+  /** Most characters a job may write as new or changed parts, all together. */
+  writtenChars: number;
+  /** The same in bytes, as the parts are stored (a character can take three). */
+  writtenBytes: number;
+  /** Parsed parts kept at hand. When they hold more nodes than this, the oldest are let go (and read again if asked for). */
+  cachedNodes: number;
+  /** The text of the parsed parts kept at hand, counted the same way: a part can be a few nodes and megabytes of text. */
+  cachedChars: number;
+  /** Relationships kept at hand, counted the same way. */
+  cachedRels: number;
 }
 
-export const PACKAGE_LIMITS: PackageLimits = { parts: 4000, nameLength: 240, xml: {} };
+export const PACKAGE_LIMITS: PackageLimits = { parts: 4000, nameLength: 240, xml: {}, listNodes: 40_000, writtenChars: 32 * 1024 * 1024, writtenBytes: 24 * 1024 * 1024, cachedNodes: 200_000, cachedChars: 16 * 1024 * 1024, cachedRels: 50_000 };
 
 export const dirOf = (part: string): string => {
   const slash = part.lastIndexOf('/');
@@ -106,10 +120,12 @@ export const relsNameOf = (part: string): string => {
 };
 /** The part a `…/_rels/x.rels` file belongs to ('' for the package itself), or null when the name is not a rels part. */
 export function ownerOfRels(relsName: string): string | null {
-  const m = /^(?:(.*)\/)?_rels\/([^/]*)\.rels$/.exec(relsName);
-  if (!m) return null;
-  const dir = m[1] ?? '';
-  const base = m[2] ?? '';
+  if (!relsName.endsWith('.rels')) return null;
+  const slash = relsName.lastIndexOf('/');
+  const folder = slash < 0 ? '' : relsName.slice(0, slash);
+  const base = relsName.slice(slash + 1, relsName.length - 5);
+  if (folder !== '_rels' && !folder.endsWith('/_rels')) return null;
+  const dir = folder === '_rels' ? '' : folder.slice(0, folder.length - 6);
   return base === '' ? (dir === '' ? '' : null) : dir ? `${dir}/${base}` : base;
 }
 
@@ -152,20 +168,41 @@ export function isSafePartName(name: string, maxLength = PACKAGE_LIMITS.nameLeng
 const utf8 = new TextDecoder('utf-8', { fatal: true });
 const utf8Encoder = new TextEncoder();
 export const encodeUtf8 = (text: string): Uint8Array => utf8Encoder.encode(text);
+/** How many bytes a text is in UTF-8, or a little more: counted without making the bytes. */
+export function utf8Length(text: string): number {
+  let n = text.length;
+  for (let i = 0; i < text.length; i++) {
+    const c = text.charCodeAt(i);
+    if (c > 0x7f) n += c > 0x7ff ? 2 : 1;
+  }
+  return n;
+}
 
 /**
  * A package being read and, possibly, changed. Changes are recorded as whole new part contents; `entries()` then
  * lists what the new file holds, with `changed: false` for every part still exactly as it arrived.
+ *
+ * Two views of every part: as it stands now (`text`, `xml`, `rels`) and as it was uploaded, whatever has been
+ * written since (`sourceText`, `sourceXml`, `sourceRels`). Writing an edit reads the uploaded view, so the order in
+ * which slides are written cannot change what a later slide is copied from.
+ *
+ * Memory: a parsed part is large (about 280 bytes a node), so only the most recently used ones are kept. A deck of
+ * hundreds of heavy slides is read one slide at a time, never held whole.
  */
 export class PptxPackage {
   private readonly original: Map<string, () => Uint8Array> = new Map();
   /** Parts written or replaced since the package was opened; null = removed. */
   private readonly written: Map<string, Uint8Array | null> = new Map();
   private readonly order: string[] = [];
-  private readonly textCache: Map<string, string> = new Map();
-  private readonly xmlCache: Map<string, XmlDoc> = new Map();
-  private readonly relsCache: Map<string, Relationship[]> = new Map();
+  /** Parsed parts, least recently used first. `u:` = as uploaded, `w:` = as written since. */
+  private readonly docs: Map<string, XmlDoc> = new Map();
+  private docNodes = 0;
+  private docChars = 0;
+  private readonly relsCache: Map<string, { list: Relationship[]; byId: Map<string, Relationship> }> = new Map();
+  private relsCached = 0;
   private contentTypes: { doc: XmlDoc; defaults: Map<string, string>; overrides: Map<string, { type: string; el: XmlElement }> } | null = null;
+  private charsWritten = 0;
+  private bytesWritten = 0;
   readonly limits: PackageLimits;
 
   constructor(source: PartSource, limits: Partial<PackageLimits> = {}) {
@@ -188,6 +225,11 @@ export class PptxPackage {
     return w !== undefined ? w !== null : this.original.has(name);
   }
 
+  /** Whether the uploaded file had this part. */
+  sourceHas(name: string): boolean {
+    return this.original.has(name);
+  }
+
   /** Part names as the file would hold them now, in their original order (new parts last). */
   names(): string[] {
     return this.order.filter((n) => this.has(n));
@@ -201,39 +243,92 @@ export class PptxPackage {
     return read();
   }
 
+  private sourceBytes(name: string): Uint8Array {
+    const read = this.original.get(name);
+    if (!read) throw new PptxError('damaged', `This file is missing a part it refers to (${name.slice(0, 80)}).`);
+    return read();
+  }
+
+  /** Which state of a part a cache entry holds. A part that was never written is the same in both views. */
+  private key(name: string, uploaded: boolean): string {
+    return uploaded || !this.written.has(name) ? `u:${name}` : `w:${name}`;
+  }
+
+  private decode(name: string, uploaded: boolean): string {
+    const held = this.docs.get(this.key(name, uploaded));
+    if (held) return held.source;
+    const b = uploaded ? this.sourceBytes(name) : this.bytes(name);
+    if (b.length >= 2 && ((b[0] === 0xff && b[1] === 0xfe) || (b[0] === 0xfe && b[1] === 0xff)))
+      throw new PptxError('unreadable_text', 'This file stores its text in a way Tala cannot read (UTF-16).');
+    try {
+      return utf8.decode(b);
+    } catch {
+      throw new PptxError('unreadable_text', 'This file has text that is not valid UTF-8.');
+    }
+  }
+
+  private parsed(name: string, uploaded: boolean): XmlDoc {
+    const key = this.key(name, uploaded);
+    const held = this.docs.get(key);
+    if (held) {
+      // Most recently used last.
+      this.docs.delete(key);
+      this.docs.set(key, held);
+      return held;
+    }
+    const isList = name === '[Content_Types].xml' || ownerOfRels(name) !== null;
+    const limits = isList ? { ...this.limits.xml, nodes: Math.min(this.limits.listNodes, this.limits.xml.nodes ?? this.limits.listNodes) } : this.limits.xml;
+    const doc = parseXml(this.decode(name, uploaded), limits, this.limits.budget);
+    this.docs.set(key, doc);
+    this.docNodes += doc.nodes;
+    this.docChars += doc.source.length;
+    for (const [k, d] of this.docs) {
+      if ((this.docNodes <= this.limits.cachedNodes && this.docChars <= this.limits.cachedChars) || k === key) break;
+      this.docs.delete(k);
+      this.docNodes -= d.nodes;
+      this.docChars -= d.source.length;
+    }
+    return doc;
+  }
+
   /** A part as text. Only UTF-8 is read (what PowerPoint, Google Slides, LibreOffice and WPS all write). */
   text(name: string): string {
-    let t = this.textCache.get(name);
-    if (t === undefined) {
-      const b = this.bytes(name);
-      if (b.length >= 2 && ((b[0] === 0xff && b[1] === 0xfe) || (b[0] === 0xfe && b[1] === 0xff)))
-        throw new PptxError('unreadable_text', 'This file stores its text in a way Tala cannot read (UTF-16).');
-      try {
-        t = utf8.decode(b);
-      } catch {
-        throw new PptxError('unreadable_text', 'This file has text that is not valid UTF-8.');
-      }
-      this.textCache.set(name, t);
-    }
-    return t;
+    return this.decode(name, false);
+  }
+
+  /** The part as text, as it was uploaded. */
+  sourceText(name: string): string {
+    return this.decode(name, true);
   }
 
   xml(name: string): XmlDoc {
-    let doc = this.xmlCache.get(name);
-    if (!doc) {
-      doc = parseXml(this.text(name), this.limits.xml);
-      this.xmlCache.set(name, doc);
-    }
-    return doc;
+    return this.parsed(name, false);
+  }
+
+  /** The part parsed, as it was uploaded. */
+  sourceXml(name: string): XmlDoc {
+    return this.parsed(name, true);
+  }
+
+  /** Count what this job generates. A job that writes more than its limit is refused, before the text is built where that is known. */
+  spend(chars: number): void {
+    this.charsWritten += chars;
+    if (this.charsWritten > this.limits.writtenChars) throw new PptxError('too_large', 'These changes make the file too large to write here.');
   }
 
   /** Replace or create a part. */
   write(name: string, data: Uint8Array | string): void {
     if (!isSafePartName(name, this.limits.nameLength)) throw new PptxError('unsafe_part_name', 'Refusing to write a part with an unsafe name.');
+    this.spend(data.length);
+    // In bytes as well: the text is not turned into bytes at all when it cannot fit (a character is three at most).
+    const room = this.limits.writtenBytes - this.bytesWritten;
+    if (typeof data === 'string' && data.length * 3 > room && utf8Length(data) > room) throw new PptxError('too_large', 'These changes make the file too large to write here.');
+    const bytes = typeof data === 'string' ? encodeUtf8(data) : data;
+    this.bytesWritten += bytes.length;
+    if (this.bytesWritten > this.limits.writtenBytes) throw new PptxError('too_large', 'These changes make the file too large to write here.');
     if (!this.original.has(name) && !this.written.has(name)) this.order.push(name);
-    this.written.set(name, typeof data === 'string' ? encodeUtf8(data) : data);
     this.forget(name);
-    if (typeof data === 'string') this.textCache.set(name, data);
+    this.written.set(name, bytes);
   }
 
   /** Apply splices to an XML part's own source. */
@@ -243,15 +338,23 @@ export class PptxPackage {
 
   remove(name: string): void {
     if (!this.has(name)) return;
-    this.written.set(name, null);
     this.forget(name);
+    this.written.set(name, null);
   }
 
+  /** Let go of what is held of a part as written (what is held of it as uploaded stays valid: that never changes). */
   private forget(name: string): void {
-    this.textCache.delete(name);
-    this.xmlCache.delete(name);
-    const owner = ownerOfRels(name);
-    if (owner !== null) this.relsCache.delete(owner);
+    const doc = this.docs.get(`w:${name}`);
+    if (doc) {
+      this.docs.delete(`w:${name}`);
+      this.docNodes -= doc.nodes;
+      this.docChars -= doc.source.length;
+    }
+    const rels = this.relsCache.get(`w:${name}`);
+    if (rels) {
+      this.relsCache.delete(`w:${name}`);
+      this.relsCached -= rels.list.length;
+    }
     if (name === '[Content_Types].xml') this.contentTypes = null;
   }
 
@@ -282,7 +385,7 @@ export class PptxPackage {
         } else if (el.local === 'Override') {
           const part = attr(el, 'PartName');
           const type = attr(el, 'ContentType');
-          if (part && type) overrides.set(part.replace(/^\//, '').toLowerCase(), { type, el });
+          if (part && type) overrides.set((part.startsWith('/') ? part.slice(1) : part).toLowerCase(), { type, el });
         }
       }
       this.contentTypes = { doc, defaults, overrides };
@@ -333,47 +436,67 @@ export class PptxPackage {
 
   /* ---------------- relationships ---------------- */
 
-  /** Relationships of a part ('' = the package itself). A part with no relationships file has none. */
-  rels(part: string): Relationship[] {
-    let list = this.relsCache.get(part);
-    if (list) return list;
-    list = [];
+  private relsOf(part: string, uploaded: boolean): { list: Relationship[]; byId: Map<string, Relationship> } {
     const name = part === '' ? '_rels/.rels' : relsNameOf(part);
-    if (this.has(name)) {
-      const doc = this.xml(name);
+    const key = this.key(name, uploaded);
+    const held = this.relsCache.get(key);
+    if (held) return held;
+    const list: Relationship[] = [];
+    const byId = new Map<string, Relationship>();
+    const exists = (n: string) => (uploaded ? this.original.has(n) : this.has(n));
+    if (exists(name)) {
+      const doc = this.parsed(name, uploaded);
       if (doc.root.ns !== NS.REL || doc.root.local !== 'Relationships') throw new PptxError('damaged', 'A relationships part of this file is damaged.');
-      const seen = new Set<string>();
       for (const el of kids(doc.root, NS.REL, 'Relationship')) {
         const id = attr(el, 'Id');
         const type = attr(el, 'Type');
-        const rawTarget = attr(el, 'Target');
-        if (!id || !type || rawTarget === null) continue;
-        if (seen.has(id)) throw new PptxError('damaged', 'A relationships part of this file uses the same id twice.');
-        seen.add(id);
+        const targetAttr = el.attrs.find((a) => a.local === 'Target' && !a.prefix);
+        if (!id || !type || !targetAttr) continue;
+        if (byId.has(id)) throw new PptxError('damaged', 'A relationships part of this file uses the same id twice.');
+        const rawTarget = targetAttr.value;
         const external = attr(el, 'TargetMode') === 'External';
         let target: string | null = null;
         if (!external) {
           target = resolveTarget(part, rawTarget);
           // Targets are URIs; some writers percent-encode what the ZIP stores literally.
-          if (target !== null && !this.has(target) && target.includes('%')) {
+          if (target !== null && !exists(target) && target.includes('%')) {
             try {
               const decoded = decodeURIComponent(target);
-              if (this.has(decoded)) target = decoded;
+              if (exists(decoded)) target = decoded;
             } catch {
               /* keep the literal target */
             }
           }
         }
-        list.push({ id, type, kind: type.slice(type.lastIndexOf('/') + 1), rawTarget, external, target, el });
+        const r: Relationship = { id, type, kind: type.slice(type.lastIndexOf('/') + 1), rawTarget, external, target, at: { start: el.start, end: el.end, targetStart: targetAttr.valueStart, targetEnd: targetAttr.valueEnd } };
+        list.push(r);
+        byId.set(id, r);
       }
     }
-    this.relsCache.set(part, list);
-    return list;
+    const entry = { list, byId };
+    this.relsCache.set(key, entry);
+    this.relsCached += list.length;
+    for (const [k, e] of this.relsCache) {
+      if (this.relsCached <= this.limits.cachedRels || k === key) break;
+      this.relsCache.delete(k);
+      this.relsCached -= e.list.length;
+    }
+    return entry;
+  }
+
+  /** Relationships of a part ('' = the package itself). A part with no relationships file has none. */
+  rels(part: string): Relationship[] {
+    return this.relsOf(part, false).list;
+  }
+
+  /** The part's relationships as uploaded. */
+  sourceRels(part: string): Relationship[] {
+    return this.relsOf(part, true).list;
   }
 
   rel(part: string, id: string | null | undefined): Relationship | null {
     if (!id) return null;
-    return this.rels(part).find((r) => r.id === id) ?? null;
+    return this.relsOf(part, false).byId.get(id) ?? null;
   }
 
   /**
@@ -408,12 +531,11 @@ export class PptxPackage {
     const doc = this.xml(name);
     const splices: Splice[] = [];
     const gone = new Set(removeIds);
-    for (const r of existing) if (gone.has(r.id)) splices.push({ start: r.el.start, end: r.el.end, text: '' });
+    for (const r of existing) if (gone.has(r.id)) splices.push({ start: r.at.start, end: r.at.end, text: '' });
     if (added) {
       if (doc.root.selfClosing) {
         // <Relationships …/> → open it up.
-        const open = doc.source.slice(doc.root.start, doc.root.end - 2).replace(/\s+$/, '');
-        splices.length = 0;
+        const open = trimEndSpaces(doc.source.slice(doc.root.start, doc.root.end - 2));
         this.write(name, `${doc.source.slice(0, doc.root.start)}${open}>${added}</${doc.root.name}>${doc.source.slice(doc.root.end)}`);
         return ids;
       }
@@ -427,8 +549,7 @@ export class PptxPackage {
   retargetRel(part: string, id: string, newTarget: string): void {
     const r = this.rel(part, id);
     if (!r) return;
-    const a = r.el.attrs.find((x) => x.local === 'Target' && !x.prefix)!;
-    this.patch(part === '' ? '_rels/.rels' : relsNameOf(part), [{ start: a.valueStart, end: a.valueEnd, text: escapeXmlAttr(relativeTarget(part, newTarget)) }]);
+    this.patch(part === '' ? '_rels/.rels' : relsNameOf(part), [{ start: r.at.targetStart, end: r.at.targetEnd, text: escapeXmlAttr(relativeTarget(part, newTarget)) }]);
   }
 
   private ensureRelsContentType(): void {

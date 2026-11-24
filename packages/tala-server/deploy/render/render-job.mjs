@@ -190,6 +190,10 @@ async function selfCheck() {
   facts.etc = readDir('/etc');
   facts.visible = CONFIG.forbidden.filter((p) => !hidden(p));
   need(facts.visible.length === 0, 'host-files-hidden');
+  // /usr/local is the administrator's own corner of the host: of it, the job may see its own program and nothing else.
+  const local = readDir('/usr/local');
+  facts.usrLocal = local === null ? [] : local.flatMap((entry) => (entry === 'lib' ? (readDir('/usr/local/lib') ?? ['?']).map((e) => `lib/${e}`) : [entry])).slice(0, 40);
+  need(facts.usrLocal.every((entry) => entry === 'lib/tala-render'), 'usr-local-hidden');
 
   // Nowhere to write but the scratch space, which is in memory, small and made for this job. Every mount point is
   // tried. A mount "of the job" is one that was made inside its own mount namespace: the kernel marks everything
@@ -240,6 +244,21 @@ async function selfCheck() {
   // Ceilings the kernel enforces: this job's own control group and its resource limits.
   const cgPath = mine.split('\n').map((l) => l.split(':')).find((p) => p[0] === '0')?.[2] ?? null;
   const cg = (file) => (cgPath ? readText(path.join('/sys/fs/cgroup', cgPath, file))?.trim() ?? null : null);
+  // Of the control-group tree (every service of the host, by name, with what it uses) the job sees the way down to
+  // its own group and nothing beside it: at each level above, the next step is the only thing there.
+  const beside = [];
+  let level = '/sys/fs/cgroup';
+  for (const step of (cgPath ?? '').split('/').filter(Boolean)) {
+    const entries = readDir(level);
+    if (entries === null) {
+      beside.push(`${level} cannot be listed`);
+      break;
+    }
+    for (const entry of entries) if (entry !== step) beside.push(path.join(level, entry));
+    level = path.join(level, step);
+  }
+  facts.otherGroups = beside.slice(0, 20);
+  need(Boolean(cgPath) && cgPath !== '/' && beside.length === 0, 'control-groups-hidden');
   const limitsText = readText('/proc/self/limits') ?? '';
   const soft = (label) => (limitsText.match(new RegExp(`^${label}\\s+(\\S+)`, 'm')) ?? [])[1] ?? null;
   facts.limits = {
@@ -260,7 +279,8 @@ async function selfCheck() {
   need(isCount(L.fileBytes) && Number(L.fileBytes) <= BOX.fileBytes, 'file-size-ceiling');
   need(isCount(L.openFiles) && Number(L.openFiles) <= BOX.openFiles, 'open-files-ceiling');
   need(isCount(L.cpuSeconds) && Number(L.cpuSeconds) <= BOX.cpuSeconds, 'cpu-time-ceiling');
-  need(L.coreBytes === '0', 'no-core-dumps');
+  // 1 is what the unit sets: no core file, and no crash handler outside the box is started (see the unit file).
+  need(L.coreBytes === '0' || L.coreBytes === '1', 'no-core-dumps');
 
   // No secret can ride in on the environment (names only are reported).
   facts.environment = Object.keys(env).filter((k) => !ENV_OK.has(k) && !ENV_OK_PREFIXES.some((p) => k.startsWith(p))).sort();

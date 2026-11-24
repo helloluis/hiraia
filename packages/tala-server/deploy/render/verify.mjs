@@ -6,7 +6,7 @@
  * only things it leaves are the result files under --out.
  *
  *   on a server, as root, against the installed service:
- *       node verify.mjs --socket /run/tala-render/render.sock --out /var/tmp/tala-render-verify
+ *       node verify.mjs --socket /run/tala-render/render.sock --out /root/tala-render-verify
  *   on a developer's machine, against `dev-units.mjs start` (give the same --soffice-dir/--fonts-dir/--userland):
  *       node verify.mjs --user --socket "$(node dev-units.mjs path)" [--soffice-dir DIR] [--fonts-dir DIR] --out DIR
  *
@@ -16,6 +16,10 @@
  *
  * Exit code 0 only when every check passed. results.json holds every answer in full; pictures of the ordinary
  * decks are written beside it for a look by eye.
+ *
+ * --out must be a folder of your own that nobody else can write to (it is made, for you alone, when it is not
+ * there). A folder that belongs to someone else, that others can write to, or that is a link is refused, and no
+ * result file is written through a link: run as root, this script must not be steerable by another local user.
  *
  * What "passed" means for a hostile file: the job refused it, failed on it, or was killed for it, in bounded time,
  * and the service answered the next request. A hostile file that is simply drawn (because LibreOffice ignored the
@@ -38,7 +42,34 @@ if (!SOCKET) {
   process.exit(2);
 }
 const OUT = options.out ? path.resolve(options.out) : null;
-if (OUT) fs.mkdirSync(OUT, { recursive: true });
+if (OUT) {
+  const refuse = (why) => {
+    console.error(`verify.mjs: --out ${OUT} ${why}. Give a folder of your own that others cannot write to (for root: one under /root).`);
+    process.exit(2);
+  };
+  let st = null;
+  try {
+    st = fs.lstatSync(OUT);
+  } catch (err) {
+    if (err.code !== 'ENOENT') refuse(`cannot be looked at (${err.code})`);
+  }
+  if (st === null) {
+    fs.mkdirSync(OUT, { recursive: true, mode: 0o700 });
+    st = fs.lstatSync(OUT);
+  }
+  if (st.isSymbolicLink() || !st.isDirectory()) refuse('is not a folder (a link is not followed)');
+  if (st.uid !== process.getuid()) refuse('belongs to another user');
+  if (st.mode & 0o022) refuse('can be written to by others');
+}
+/** A result file: never through a link, whatever is in the folder. */
+function writeOut(name, data) {
+  const fd = fs.openSync(path.join(OUT, name), fs.constants.O_WRONLY | fs.constants.O_CREAT | fs.constants.O_TRUNC | fs.constants.O_NOFOLLOW, 0o600);
+  try {
+    fs.writeFileSync(fd, data);
+  } finally {
+    fs.closeSync(fd);
+  }
+}
 const ONLY = options.only ? new Set(String(options.only).split(',')) : null;
 const wanted = (section) => !ONLY || ONLY.has(section);
 const SLOW = process.argv.includes('--slow');
@@ -338,7 +369,7 @@ async function sectionProbe() {
   check('probe', 'nothing of the host in sight', Array.isArray(rep.visible) && rep.visible.length === 0, rep.visible?.join(',') || `root: ${rep.root?.join(' ')}; etc: ${rep.etc?.join(' ')}`);
   check('probe', 'one place to write, in memory, small and empty', rep.writable?.length >= 1 && rep.writable.filter((w) => w.type === 'tmpfs').length === 1 && rep.scratchEntries === 0, rep.writable?.map((w) => `${w.path} ${w.type} ${w.bytes === null ? '?' : Math.round(w.bytes / MiB)} MiB`).join('; '));
   const L = rep.limits ?? {};
-  check('probe', 'ceilings on memory, swap, processes, processor, file size, open files, core dumps', [L.memoryBytes, L.processes, L.fileBytes, L.openFiles, L.cpuSeconds].every((v) => /^\d+$/.test(String(v))) && L.swapBytes === '0' && L.coreBytes === '0', `memory ${Math.round(Number(L.memoryBytes) / MiB)} MiB, swap ${L.swapBytes}, processes ${L.processes}, cpu ${L.cpu}, cpu time ${L.cpuSeconds} s, file ${Math.round(Number(L.fileBytes) / MiB)} MiB, open files ${L.openFiles}`);
+  check('probe', 'ceilings on memory, swap, processes, processor, file size, open files, core dumps', [L.memoryBytes, L.processes, L.fileBytes, L.openFiles, L.cpuSeconds].every((v) => /^\d+$/.test(String(v))) && L.swapBytes === '0' && (L.coreBytes === '0' || L.coreBytes === '1'), `memory ${Math.round(Number(L.memoryBytes) / MiB)} MiB, swap ${L.swapBytes}, processes ${L.processes}, cpu ${L.cpu}, cpu time ${L.cpuSeconds} s, file ${Math.round(Number(L.fileBytes) / MiB)} MiB, open files ${L.openFiles}`);
   check('probe', 'no stray environment (no secret can ride in)', Array.isArray(rep.environment) && rep.environment.length === 0, rep.environment?.join(','));
   if (USER) {
     check('probe', 'developer set-up: the job says it shares its user (the web app refuses that outside a developer machine)', rep.isolation === 'shared-user', rep.isolation);
@@ -366,7 +397,7 @@ async function sectionDraw() {
     const fits = sizes.length === c.pages && sizes.every((s) => s && (c.want[0] === null || s.width === c.want[0]) && Math.abs(s.height - c.want[1]) <= 2 && s.width <= (c.width ?? 1280));
     check('draw', c.name, outcome(r) === 'drawn' && r.count === c.pages && fits, `${outcome(r)}; ${sizes[0] ? `${sizes[0].width}x${sizes[0].height}` : 'no picture'} x${r.pictures.length}; ${r.ms} ms; peak ${r.stats?.peakBytes ? Math.round(r.stats.peakBytes / MiB) : '?'} MiB`);
     record.sections.draw.push({ name: c.name, outcome: outcome(r), ms: r.ms, stats: r.stats, sizes });
-    if (OUT) r.pictures.forEach((p, i) => fs.writeFileSync(path.join(OUT, `draw-${c.name.replace(/[^a-z0-9]+/gi, '-').slice(0, 30)}-${i + 1}.jpg`), p));
+    if (OUT) r.pictures.forEach((p, i) => writeOut(`draw-${c.name.replace(/[^a-z0-9]+/gi, '-').slice(0, 30)}-${i + 1}.jpg`, p));
   }
 }
 
@@ -542,6 +573,16 @@ async function sectionBox(canary) {
   verdict('unix-socket', 'cannot open any socket of the host (system bus, service manager, journal, the drawing door itself, the tester\'s)');
   verdict('privilege', 'cannot become root, change its root, mount, make namespaces or devices, trace or signal the first process, or lift a limit');
   verdict('setuid-program', 'privileged programs of the host give it nothing (sudo, su, mount, ping)');
+  verdict('io-uring', 'cannot set up or use io_uring');
+  verdict('other-groups', 'of the control-group tree it sees its own group only: no other service by name, and nobody else\'s numbers');
+  const hostLocal = (() => {
+    try {
+      return fs.readdirSync('/usr/local').length;
+    } catch {
+      return 0;
+    }
+  })();
+  check('box', 'of /usr/local it sees its own program and nothing else', tried('usr-local') > 0 && got('usr-local').length === 0, `${L.find((l) => l.kind === 'usr-local')?.detail}; this host's /usr/local has ${hostLocal} entries${USER && !options.userland ? ' (developer set-up: the job program is not there either)' : ''}`);
   const info = L.filter((l) => l.kind === 'kernel-info');
   const sight = L.find((l) => l.kind === 'processes-in-sight')?.count;
   if (USER) {
@@ -550,7 +591,7 @@ async function sectionBox(canary) {
   } else {
     check('box', 'sees no process but its own', typeof sight === 'number' && sight <= 3 && !info.find((l) => l.what === '/proc/1/cmdline')?.allowed, `${sight} in sight`);
     verdict('other-process', 'cannot signal the tester\'s process');
-    check('box', 'of the kernel\'s own information it sees no host name, no memory table and no other service\'s group', !info.some((l) => l.allowed && ['/proc/sys/kernel/hostname', '/proc/meminfo', '/proc/kallsyms'].includes(l.what)), `readable: ${info.filter((l) => l.allowed).map((l) => l.what).join(', ') || 'none'}`);
+    check('box', 'of the kernel\'s own files it reads no host name, no memory table and no symbol table', !info.some((l) => l.allowed && ['/proc/sys/kernel/hostname', '/proc/meminfo', '/proc/kallsyms'].includes(l.what)), `readable: ${info.filter((l) => l.allowed).map((l) => l.what).join(', ') || 'none'}`);
   }
   check('box', 'its environment holds nothing but the job\'s own settings', (self.environment ?? []).every((n) => /^(PATH|LANG|HOME|USER|LOGNAME|SHELL|INVOCATION_ID|MANAGERPID|TALA_RENDER_\w+|SYSTEMD_\w+|JOURNAL_\w+|MEMORY_PRESSURE_\w+|LISTEN_\w+)$/.test(n)), (self.environment ?? []).join(' '));
 
@@ -584,6 +625,16 @@ async function sectionBox(canary) {
     check('box', `run time at the installed ceiling (${unitNumber('RuntimeMaxSec')} s)`, waitReal.summary.result === 'timeout' && Math.abs(waitReal.ms / 1000 - unitNumber('RuntimeMaxSec')) < 15, `${waitReal.summary.result} after ${Math.round(waitReal.ms / 1000)} s`);
   } else note('skipped without --slow: processor time and run time at the installed ceilings (about four minutes)');
 
+  // A crash: nothing of the program's memory may be kept, in the box or (through a crash handler) outside it.
+  const crash = inBox('crash');
+  check('box', 'a program that crashes leaves no memory image: no core file, and no crash handler of the host is fed', crash.summary.signal === 'SEGV' && crash.summary.dumped === false && crash.summary.result === 'signal', `${crash.summary.result} ${crash.summary.signal ?? ''}${crash.summary.dumped ? ' (the kernel made a memory image)' : ''}; this host's core_pattern: ${(() => {
+    try {
+      return fs.readFileSync('/proc/sys/kernel/core_pattern', 'utf8').trim().slice(0, 60);
+    } catch {
+      return 'not readable';
+    }
+  })()}`);
+
   // Nothing outlives a job.
   const orphans = inBox('orphans').lines.find((l) => l.kind === 'orphans') ?? { pids: [] };
   await sleep(1500);
@@ -593,7 +644,7 @@ async function sectionBox(canary) {
   check('box', 'files a job left behind are not there for the next job', Array.isArray(after.scratch) && after.scratch.length === 0, `left in: ${orphans.files_left_in?.join(',')}; next job's scratch: ${JSON.stringify(after.scratch)}`);
   const strays = ['/dev/shm', '/tmp', '/var/tmp', '/run'].filter((d) => fs.existsSync(path.join(d, 'left-behind')) || (fs.existsSync(d) && fs.readdirSync(d).some((n) => /^(fill-\d+|\.hostile-\d+)$/.test(n))));
   check('box', 'and nothing of them is on the host', strays.length === 0, strays.join(',') || 'checked /dev/shm, /tmp, /var/tmp, /run');
-  record.sections.box.ceilings = { memory: memory.summary, lastMib, processes: p, storm: storm.summary, disk: fills, files, big, fds, cpu: cpu.summary, wait: wait.summary, orphans };
+  record.sections.box.ceilings = { memory: memory.summary, lastMib, processes: p, storm: storm.summary, disk: fills, files, big, fds, cpu: cpu.summary, wait: wait.summary, crash: crash.summary, orphans };
   const back = await ready();
   check('box', 'after all of that the service draws as before', back.ok, `answered after ${back.ms} ms`);
 }
@@ -645,6 +696,6 @@ record.finished = new Date().toISOString();
 record.checks = checks;
 record.passed = checks.length - failed.length;
 record.failed = failed.length;
-if (OUT) fs.writeFileSync(path.join(OUT, 'results.json'), JSON.stringify(record, null, 1));
+if (OUT) writeOut('results.json', JSON.stringify(record, null, 1));
 console.log(`\n${checks.length - failed.length} of ${checks.length} checks passed${failed.length ? `; FAILED: ${failed.map((c) => `${c.section}: ${c.name}`).join(' | ')}` : ''}`);
 process.exit(failed.length ? 1 : 0);

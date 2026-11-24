@@ -6,11 +6,12 @@
 //   - one edit is saved (new words in the first editable text box, slides in reverse order) and the edited download
 //     is read back: same number of slides, reversed, with the new words where they were typed.
 //
-//   pnpm exec tsx scripts/uploads-corpus-http.mjs <baseUrl> <corpusDir> <corpus-report.json> <out.json> --db <TALA_DB_PATH>
+//   pnpm exec tsx scripts/uploads-corpus-http.mjs <baseUrl> <corpusDir> <corpus-report.json> <out.json> [--db <TALA_DB_PATH>]
 //
 // Local servers only: it creates accounts (fictional, @example.com; one per 15 files because an account may start
 // 20 uploads an hour) and deletes every upload again. --db is where the server keeps its local mail outbox, read
-// only to confirm each account's email the way the link in the email would.
+// only to confirm each account's email the way the link in the email would; a server that verifies accounts by
+// itself (TALA_AUTH_AUTO_VERIFY=1) needs none.
 import { createHash } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
@@ -23,7 +24,7 @@ const { readUploadedDeck } = await import('../../tala-server/src/modules/decks/u
 const argv = process.argv.slice(2);
 const [base, corpusDir, reportFile, outFile] = argv;
 const dbPath = argv.includes('--db') ? argv[argv.indexOf('--db') + 1] : '';
-if (!base || !corpusDir || !reportFile || !outFile || !dbPath) throw new Error('usage: uploads-corpus-http.mjs <baseUrl> <corpusDir> <corpus-report.json> <out.json> --db <TALA_DB_PATH>');
+if (!base || !corpusDir || !reportFile || !outFile) throw new Error('usage: uploads-corpus-http.mjs <baseUrl> <corpusDir> <corpus-report.json> <out.json> [--db <TALA_DB_PATH>]');
 if (!/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(base)) throw new Error('local servers only (this script creates accounts)');
 const sha = (b) => createHash('sha256').update(b).digest('hex');
 const engine = new Map(JSON.parse(readFileSync(reportFile, 'utf8')).results.map((r) => [r.file, r]));
@@ -41,13 +42,16 @@ async function teacher(n) {
   };
   const client = createTalaClient({ baseUrl: base, fetch: fetchWithCookies, validateResponses: true });
   const email = `teacher.corpus.${stamp}.${n}@example.com`;
-  await client.call('auth.register', { body: { email, password: `tala-corpus-${stamp}-Aa1!`, displayName: `Corpus teacher ${n} (test)`, uiLanguage: 'en', deviceLabel: 'corpus run' } });
-  const Database = require('better-sqlite3');
-  const db = new Database(dbPath, { readonly: true });
-  const row = db.prepare("select vars from core_mail_outbox where to_email=? and template='verify_email' order by rowid desc limit 1").get(email);
-  db.close();
-  if (!row) throw new Error('no verification mail in the outbox (is --db the running server’s database?)');
-  await client.call('auth.verifyEmail', { body: { token: JSON.parse(row.vars).link.split('#token=')[1] } });
+  const registered = await client.call('auth.register', { body: { email, password: `tala-corpus-${stamp}-Aa1!`, displayName: `Corpus teacher ${n} (test)`, uiLanguage: 'en', deviceLabel: 'corpus run' } });
+  if (!registered.user.emailVerified) {
+    if (!dbPath) throw new Error('this server wants new accounts confirmed by mail: give --db <the running server’s database> so the link can be read from its outbox');
+    const Database = require('better-sqlite3');
+    const db = new Database(dbPath, { readonly: true });
+    const row = db.prepare("select vars from core_mail_outbox where to_email=? and template='verify_email' order by rowid desc limit 1").get(email);
+    db.close();
+    if (!row) throw new Error('no verification mail in the outbox (is --db the running server’s database?)');
+    await client.call('auth.verifyEmail', { body: { token: JSON.parse(row.vars).link.split('#token=')[1] } });
+  }
   const binary = async (path) => {
     const res = await fetchWithCookies(`${base}/api/v1${path}`);
     return { status: res.status, bytes: new Uint8Array(await res.arrayBuffer()), name: res.headers.get('content-disposition') ?? '' };
