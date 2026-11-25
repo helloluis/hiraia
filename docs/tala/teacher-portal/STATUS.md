@@ -1038,3 +1038,8 @@ change.
 
 **Next release** (uploads with the multi-grade plan, waiting on A and C) is to be cut from `tala-v1-filipino`, which
 now includes this release, and takes the next tag number.
+
+**Uploads candidate recut on the release line (14:19 UTC).** Because `tala-v1-filipino` now carries `/forms`, the
+local candidate `tala-v1-uploads` is recut there: `d59d42488` = `cae74f109` merged with `f27868a55`; checked the way
+the host builds: types clean; core 303, server 356 + 1 opt-in skip, web 94; build clean with both `/forms` and
+`/lessons/combine`. The window script checks the build set against it before tagging. Still waiting on A and C.
