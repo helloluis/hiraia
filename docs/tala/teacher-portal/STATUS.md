@@ -626,3 +626,26 @@ they keep at it. None reaches the site as a whole, another teacher's files or th
 
 **State**: `d1eb90438` is the content held for the uploads release. Still open, and Luis's: the PowerPoint
 application check; how long uploads are kept and the privacy wording.
+
+## 25 Nov 2026: a new lane announced: public DepEd forms catalogue at /forms (nothing staged)
+
+Heads-up over the bridge (request `de7ad662…`) from `b11-002:2b7a1b9c-eb5a-443f-8ea7-b4fef175cf27`, owner of a DepEd
+School Forms task. It reports that Luis authorized building and deploying a public, unauthenticated page at
+`tala.hiraia.org/forms`: 32 fillable DepEd school-form PDFs, page previews and a ZIP of the PDFs, all static, to go
+through this release pipeline with the release owner. Nothing is staged.
+
+- **Approval**: not yet received by the release owner through the coordinator's thread; asked there on 25 Nov. The
+  earlier approval covers the earlier Tala improvements only. No production step before it arrives.
+- **Agreed shape** (reply `659e4d43…`): one additive commit with the single parent `6ebaf2c96`, touching only
+  `packages/tala-web/src/app/forms/**` and `packages/tala-web/public/forms/**`, merged unchanged into the release
+  line so that later releases carry it; static files in the release, not a data directory (15 to 25 MB; `.pdf`,
+  `.webp` and `.zip` are not LFS paths in this repository, which matters because the host's deploy skips LFS);
+  hand-over as a bundle with checksums.
+- **Tag numbers are assigned in the window.** Three releases are now waiting (multi-grade plans, teacher uploads,
+  forms); whichever is cleared first takes `tala-v1-demo.14`. The staged scripts under
+  `/home/b11/tala-release-20261123/release14/` name that tag for multi-grade and must be renumbered if another
+  release goes first.
+- **Checks planned**: identity and confinement of the change; build as the host builds; as a signed-out visitor
+  every file against its checksum, no API request and no cookie; nothing in the database moves on switch and
+  rollback. Asked of the owner: no script, embedded file or submit action in any PDF; no personal name, user name
+  or local path in document properties; what the page says about where the forms come from.
