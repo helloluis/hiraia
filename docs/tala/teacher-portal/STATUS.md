@@ -649,3 +649,42 @@ through this release pipeline with the release owner. Nothing is staged.
   every file against its checksum, no API request and no cookie; nothing in the database moves on switch and
   rollback. Asked of the owner: no script, embedded file or submit action in any PDF; no personal name, user name
   or local path in document properties; what the page says about where the forms come from.
+
+## 25 Nov 2026: Luis's four numbered answers, mapped to the four original questions
+
+**The answers** (Luis, 25 Nov 2026 12:27 Manila, relayed by the coordinator, verbatim):
+
+1. Keep all user files in a R2 folder for now
+2. Same thing here, keep them in R2 indefinitely
+3. That's fine
+4. Make a test account for yourself and use it thoroughly to do your testing
+
+**The questions they answer.** The coordinator directed that the numbers be applied to the numbered list in the
+release owner's report that opens "The renderer decision is recorded as resolved: sandboxed, with preview pictures
+kept" and not to any later list. That report is in the release owner's own session transcript (assistant message
+of 2026-11-24T03:30:41Z, 11:30 Manila); its section "Remaining choices" reads, verbatim:
+
+1. **Word and PowerPoint application checks.** This blocks the multi-grade release now and uploads later. Options:
+   a person opens the sample files (link, expires 30 Nov); Luis lets me import them into his Google Drive and check
+   them in Google Docs and Slides, removing the files afterwards; Luis says to ship without the check.
+2. **How long uploads are kept, and the privacy line.** This blocks uploads only. Options: keep each file until the
+   teacher deletes it or her account (the owner's proposal), with Luis's wording; or a different rule.
+3. **Withdraw four Filipino Science editions that lost safety directions.** This blocks nothing else. Options:
+   withdraw them (my recommendation and the Science source owner's request; English stays, reversible), or keep
+   them live as labelled drafts.
+4. **Signed-in checks on production.** This blocks my live verification of every signed-in feature, current and
+   coming. Options: Beanie runs the checklist with its test account; an approved way for me to use that account;
+   or permission for a temporary test account that I delete afterwards.
+
+**Mapping and what each resolves**
+
+| # | Question | Luis's answer | Resolved? |
+|---|---|---|---|
+| 1 | Word and PowerPoint application checks | "Keep all user files in a R2 folder for now" | **No.** The answer picks none of the three options; it is a storage instruction (taken up under 2). The application checks stay open: `waiting_for_user`, question unchanged. Nothing is waived. |
+| 2 | How long uploads are kept, and the privacy line | "Same thing here, keep them in R2 indefinitely" | **Yes, the rule**: all Tala user files in private Cloudflare R2 storage, no automatic expiry. An explicit delete by the teacher still deletes. The privacy wording was not given: to be drafted from this rule and shown to Luis. |
+| 3 | Withdraw four Filipino Science editions that lost safety directions | "That's fine" | **Yes, for exactly this**: the recommended option, withdrawal of the Filipino editions of Grade 6 Term 3 Week 8, Grade 3 Term 3 Week 2, Grade 3 Term 3 Week 11 and Grade 7 Term 3 Week 6; English stays; reversible. It is applied to nothing else: not to the application checks, the forms page or any other operation. |
+| 4 | Signed-in checks on production | "Make a test account for yourself and use it thoroughly to do your testing" | **Yes**: a dedicated, clearly labelled test account for the release owner, synthetic content only. |
+
+Why the numbers are read against this list and no other: answers 2 and 4 fit questions 2 and 4 of this list word
+for word (how long uploads are kept; a test account), and only this report has four items with the test account
+last.
