@@ -987,3 +987,16 @@ uploads would have failed at the first teacher's file. Nothing existing on the h
   38/38. The rehearsal folder in R2 is empty again (0 objects); the machine is powered off.
 - The window script (`/home/b11/tala-takeover-20261125/release-uploads/window-uploads.sh` on b11-dev) uses the new
   place and checks the build set against `50f0868bd` before tagging.
+
+## 25 Nov 2026 14:11 UTC: Luis approves the public forms page (question B resolved)
+
+**Luis, relayed by the coordinator in thread `ddb4d22d` (25 Nov 2026, about 22:10 Manila), verbatim:** "No just publish
+all the forms, stop overthinking their usefulness, I'm just publishing them so I have a discussion point with
+possible partners". The coordinator's note: this is Luis's explicit approval in the coordinator thread to publish
+the prepared forms-only change `f425585bc503cbafe9e4a79929c1a33625f10839` at `tala.hiraia.org/forms`,
+unauthenticated, with all 32 PDFs; these are partner-discussion materials, and further usefulness reviews or
+current-version certification are not release prerequisites; keep the existing notices without expanding the work.
+
+**waiting_for_user, updated**: B is **resolved** (approved). Still open: A (Word and PowerPoint application checks)
+and C (the privacy line's words); D and E stay optional. The forms release goes first and takes `tala-v1-demo.14`;
+the uploads release with the multi-grade plan takes the next number.
