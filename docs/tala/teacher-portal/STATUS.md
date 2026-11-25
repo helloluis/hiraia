@@ -1000,3 +1000,41 @@ current-version certification are not release prerequisites; keep the existing n
 **waiting_for_user, updated**: B is **resolved** (approved). Still open: A (Word and PowerPoint application checks)
 and C (the privacy line's words); D and E stay optional. The forms release goes first and takes `tala-v1-demo.14`;
 the uploads release with the multi-grade plan takes the next number.
+
+## Public forms catalogue on production: 2026-11-25 14:14–14:17 UTC (22:14–22:17 PHT) — `tala-v1-demo.14`
+
+**Authority.** Luis's approval above (question B), relayed by the coordinator in thread `ddb4d22d`.
+
+**Release.** Tag `tala-v1-demo.14` (tag object `31d920f16391d78b2ba6fd3f97c731d794704768`) on commit
+`40b6f201edb13ff3aabc5432d8ef55393321180b` = the approval note `4a2895b5e` merged with the forms owner's commit
+`f425585bc503cbafe9e4a79929c1a33625f10839`, unchanged. Its build set equals the candidate checked the way the host
+builds (`585232d1e`); against `tala-v1-demo.13` nothing outside `src/app/forms/` and `public/forms/` differs. Pushed:
+branch `tala-v1-forms`, the tag, and `tala-v1-filipino`, which now fast-forwards to the release commit, so that
+**every later release carries `/forms`**.
+
+**Window** (shared deploy lock held 14:14:01–14:16:56 UTC; no other work in flight): backup
+`/var/backups/tala/20261125T141441Z` on the host (database `integrity_check` ok, 26 tables counted, settings copy
+equal to the live one, previous release, library hashes; checksums verified); `/opt/tala/deploy.sh tala-v1-demo.14`
+14:14:45–14:15:12 (build, switch, restart, health), live since **14:15:11 UTC**; no migration, no setting, no data
+change.
+
+**Verified live** (14:15–14:17 UTC):
+- health `0.1.0+tala-v1-demo.14`, production; release commit on the host `40b6f201e…`; 0 restarts.
+- `https://tala.hiraia.org/forms` signed out: 200, **32 forms**, the "unofficial copies" notice, no cookie set.
+- **All 123 public files** fetched anonymously and **byte-identical** to the owner's manifest (`SHA256SUMS`
+  `cbf0b783…`): 32 PDFs (`application/pdf`), 89 previews (`image/webp`), the ZIP, one text file. The ZIP holds
+  exactly the 32 published PDFs, byte for byte.
+- A fresh headless browser, desktop and phone: 32 cards; 91 of 91 pictures load (the 57 previews sit in closed
+  sections and load when opened); 0 console errors; 0 failed requests; 0 cookies; no sideways scrolling. Requests go
+  to `tala.hiraia.org` and to `static.cloudflareinsights.com`: Cloudflare's own analytics beacon, added at its edge to
+  every page of the site (seen on `/sign-in` too), not part of this release.
+- Private pages stay private: the contract's 17 private GET routes all answer **401** signed out; with the release
+  owner's test account sign-in works, the Science (262 weeks) and Mathematics (6) indexes and its private copy
+  answer 200, and after sign-out the session is refused (401).
+- Host: 0 error lines, 0 server errors since the start; no table's row count changed (26 tables); both libraries'
+  checksums unchanged.
+
+**Rollback**: `sudo -n ssh b11-apps /opt/tala/deploy.sh tala-v1-demo.13` (code only; nothing to restore).
+
+**Next release** (uploads with the multi-grade plan, waiting on A and C) is to be cut from `tala-v1-filipino`, which
+now includes this release, and takes the next tag number.
