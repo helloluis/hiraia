@@ -39,7 +39,7 @@ export class UploadWorkError extends Error {
  * For `write` and `take`, bytes that were fetched this way are HANDED to the worker, not copied: whoever fetched
  * them must not use them afterwards. (`read` gives the worker a copy.)
  */
-export type UploadBytes = Uint8Array | (() => Uint8Array);
+export type UploadBytes = Uint8Array | (() => Uint8Array | Promise<Uint8Array>);
 
 /**
  * Every job may say whose it is (`who`: an account's id, never anything of the file). Jobs with no owner named are
@@ -53,7 +53,17 @@ export interface UploadWork {
    * reading, so the file is in memory once and nowhere twice. The worker takes the checksum before it reads and
    * again afterwards; only a file that is still the one announced comes back.
    */
-  take(file: () => Uint8Array, sha256: string, who?: string): Promise<{ inspection: DeckInspection; file: Uint8Array }>;
+  /**
+   * `keep` (storing the file somewhere else than this server, e.g. object storage), when given, runs inside the
+   * same turn at the one place, so that a file on its way to storage holds the place as its reading did: one whole
+   * file in memory at a time for the whole server, whatever the storage's speed. What it gives back is `kept`.
+   */
+  take<T = never>(
+    file: () => Uint8Array | Promise<Uint8Array>,
+    sha256: string,
+    who?: string,
+    keep?: (taken: { inspection: DeckInspection; file: Uint8Array }) => Promise<T>
+  ): Promise<{ inspection: DeckInspection; file: Uint8Array; kept?: T }>;
   /**
    * The file with the edits written in. Throws UploadRefused or UploadWorkError. `sha256`: what the file has to be
    * (it was put back together from stored pieces); a file that is not is refused as `checksum_mismatch`.
@@ -61,6 +71,12 @@ export interface UploadWork {
   write(file: UploadBytes, edits: DeckEdits, sha256?: string, who?: string): Promise<{ pptx: Uint8Array; report: ApplyReport }>;
   /** Whether a worker can start and load the reader at all. Resolves to null when it can, else to why not. */
   check(): Promise<string | null>;
+  /**
+   * Work of the server's own that needs a whole file in memory (moving a stored file to object storage): it waits
+   * for a turn at the same one place, like a teacher's job, under its own name. Optional: without it the work runs
+   * at once.
+   */
+  exclusive?<T>(who: string, job: () => Promise<T>): Promise<T>;
 }
 
 export interface UploadWorkOptions {
@@ -218,8 +234,8 @@ export function uploadWorkers(options: UploadWorkOptions = {}): UploadWork {
    * The bytes as the worker is given them: exactly the file and nothing around it. (Handing bytes to a worker
    * copies the whole block of memory they are a view of.)
    */
-  const bytesOf = (file: UploadBytes): { bytes: Uint8Array; ours: boolean } => {
-    const bytes = typeof file === 'function' ? file() : file;
+  const bytesOf = async (file: UploadBytes): Promise<{ bytes: Uint8Array; ours: boolean }> => {
+    const bytes = typeof file === 'function' ? await file() : file;
     if (bytes.byteOffset === 0 && bytes.byteLength === bytes.buffer.byteLength) return { bytes, ours: typeof file === 'function' };
     return { bytes: bytes.slice(), ours: true };
   };
@@ -227,22 +243,24 @@ export function uploadWorkers(options: UploadWorkOptions = {}): UploadWork {
   return {
     read: (file, sha256, who = '') =>
       turn(who, async () => {
-        const result = await run({ kind: 'read', bytes: bytesOf(file).bytes, sha256 }, readMs);
+        const result = await run({ kind: 'read', bytes: (await bytesOf(file)).bytes, sha256 }, readMs);
         return result.ok && result.kind === 'read' ? result.inspection : refused(result);
       }),
-    take: (file, sha256, who = '') =>
+    take: (file, sha256, who = '', keep) =>
       turn(who, async () => {
-        const result = await run({ kind: 'read', bytes: bytesOf(file).bytes, sha256 }, readMs, true);
+        const result = await run({ kind: 'read', bytes: (await bytesOf(file)).bytes, sha256 }, readMs, true);
         if (!result.ok || result.kind !== 'read') return refused(result);
         if (result.sha256 !== sha256) throw new UploadWorkError('fault', 'the file was not the same after it was read');
-        return { inspection: result.inspection, file: result.bytes };
+        const taken = { inspection: result.inspection, file: result.bytes };
+        return keep ? { ...taken, kept: await keep(taken) } : taken;
       }),
     write: (file, edits, sha256, who = '') =>
       turn(who, async () => {
-        const { bytes, ours } = bytesOf(file);
+        const { bytes, ours } = await bytesOf(file);
         const result = await run({ kind: 'write', bytes, edits, sha256 }, writeMs, ours);
         return result.ok && result.kind === 'write' ? { pptx: result.pptx, report: result.report } : refused(result);
       }),
+    exclusive: (who, job) => turn(who, job),
     check: () =>
       turn('', async () => {
         try {

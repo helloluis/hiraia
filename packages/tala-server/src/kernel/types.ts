@@ -122,9 +122,12 @@ export interface BinaryResponse {
    *
    * `pieces`: the answer is not in memory at all. It is `bytes` long and is fetched a piece at a time (`next`
    * gives the next piece, then null) as the connection takes it; `binary` is then left empty. Ending early, or
-   * with more than `bytes`, cuts the answer short like running out of time does.
+   * with more than `bytes`, cuts the answer short like running out of time does. `next` may answer later (a
+   * piece fetched from object storage): while it is being waited for, the connection is not counted as stalled,
+   * and the answer's own `withinMs` still holds. A piece that cannot be had (`next` throws or rejects) cuts the
+   * answer short too.
    */
-  held?: { release(): void; withinMs: number; stallMs?: number; pieces?: { bytes: number; next(): Uint8Array | null } };
+  held?: { release(): void; withinMs: number; stallMs?: number; pieces?: { bytes: number; next(): Uint8Array | null | Promise<Uint8Array | null> } };
 }
 
 export interface Migration {

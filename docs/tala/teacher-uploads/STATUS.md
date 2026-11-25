@@ -1,7 +1,27 @@
 # My own slides (teacher uploads): status
 
-**As of 24 Nov 2026.** What the feature is, how it works and the evidence: [README.md](README.md). The drawing
-service: [`packages/tala-server/deploy/render/README.md`](../../../packages/tala-server/deploy/render/README.md).
+**As of 24 Nov 2026**, with one addition of 25 Nov (next section). What the feature is, how it works and the
+evidence: [README.md](README.md). The drawing service:
+[`packages/tala-server/deploy/render/README.md`](../../../packages/tala-server/deploy/render/README.md).
+
+## 25 Nov 2026: files kept in private R2 storage (built by the release owner)
+
+Luis, 25 Nov, 12:27 Manila: "Keep all user files in a R2 folder for now" and "keep them in R2 indefinitely". This
+lane's owner (b11-002 `f500f47c`) took the inventory and designed the change, then reached its usage limit (it
+resets on 1 Dec) before writing it. Under Luis's instruction to finish this work in Fable's place, the release owner
+(b11-dev `12af59a8`, Opus) wrote it on top of `d1eb90438`, following that design point by point, as one further
+commit; the multi-grade lane is untouched, and so are the drawing service, its units and the 15 MiB / 50 MiB limits.
+What it does, the settings, the key renewal and the checks: [`deploy/r2/README.md`](../../../packages/tala-server/deploy/r2/README.md).
+
+- Every upload is one object at `<prefix>teachers/<account>/uploads/<upload>/original`, written with no overwrite,
+  read back and checked before it is recorded; downloads are checked against the SHA-256 before their last piece;
+  deletes of a file or an account remove its objects (retried until done); nothing else removes anything.
+- Staging and production take no upload without the R2 settings; never the database instead.
+- Tests: the full server suite as before (338 passing, 1 opt-in skip) plus 5 signer tests against AWS's published
+  examples and 13 storage tests against a fake S3 server (outages, hangs, 5xx, lost and corrupted answers, expired
+  and renewed keys mid-upload, mid-download and mid-delete, a changed object, carry-over, restart). On real R2
+  (`tala/rehearsal/`): the server's own client, all checks passed; key expiry and renewal without a restart.
+- For this lane's owner to review when it is back; nothing it holds was changed.
 
 | | |
 |---|---|
@@ -144,7 +164,9 @@ Left as they are, with the reason:
    title on slide 1, the copy on slide 2, the added line and the notes on "What we will learn", the last cell of
    the table, the chart (double-click it: its data should open), the hidden "Answer key" slide, the fade on the
    first slides.
-2. **How long uploads are kept, and the words that say so** (blocks the release of this lane). *What should the
+2. **How long uploads are kept, and the words that say so.** The rule is DECIDED (Luis, 25 Nov: in R2,
+   indefinitely, until the teacher deletes the file or her account). Still open: his approval of the drafted words
+   (`up.private`, English and the Filipino owner's version). The original question was: *What should the
    privacy text tell a teacher about the PowerPoint files she uploads: how long Tala keeps them, who can see them,
    and when they are deleted?* What the code does today: a file, its edits and its pictures are private to the
    account, kept until the teacher deletes the file or her account, and removed with either; unfinished uploads

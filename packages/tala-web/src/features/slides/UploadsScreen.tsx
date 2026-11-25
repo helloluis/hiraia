@@ -119,9 +119,9 @@ export function UploadsScreen() {
             </p>
           </>
         )}
-        <p className="inline-flex items-center gap-1.5 text-small text-forestMuted">
-          <Icon name="lock" size={14} />
-          {t('up.private')}
+        <p className="flex items-start gap-1.5 text-small text-forestMuted" data-upload-privacy>
+          <Icon name="lock" size={14} className="mt-[0.2em] shrink-0" />
+          <span>{t('up.private')}</span>
         </p>
       </section>
       {problem && (

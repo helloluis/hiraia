@@ -160,8 +160,11 @@ The service, its installer, its checks, what was tested and what was not: `packa
   small to send and endless to read, and an edit cannot make a file grow without end.
 - **A file is in memory once, and only while a job works on it.** A new upload is put together from its pieces
   when its turn has come, handed to the worker (not copied to it) and comes back with its reading, its checksum
-  taken again after the reading. It is stored in pieces of 512 KiB. "The file I uploaded" is sent from the
-  database a piece at a time, as the connection takes it: it is never in memory whole for a download.
+  taken again after the reading. It is kept in Tala's **private object storage** (since 25 Nov: one object per
+  upload in a private R2 bucket, written without overwriting, read back and checked before it is recorded; see
+  [`deploy/r2/README.md`](../../../packages/tala-server/deploy/r2/README.md)), or on a developer machine in the
+  database in pieces of 512 KiB. "The file I uploaded" is sent a piece at a time, as the connection takes it, its
+  checksum checked before the last piece leaves: it is never in memory whole for a download.
 - **What is on its way to clients is counted.** The edited file and the slide pictures do exist whole while they
   are sent, and a client can take as long as it likes. The routes count these bytes for everybody and for each
   account and hand such an answer out in pieces; past the count the next one is told to come back. An answer is
@@ -266,7 +269,7 @@ independent readers used. This is the first thing to do by hand: STATUS.md.
 |---|---|
 | Engine (pure TypeScript, no I/O) | `packages/tala-core/src/pptx/` — `xml.ts` (offset-keeping reader), `opc.ts` (package, relationships, content types), `text.ts` (paragraph splices), `walk.ts` (blocks and geometry), `inspect.ts` (safety gate, what is in the file), `apply.ts` (edits → package) |
 | Contract | `packages/tala-core/src/contracts/deck-uploads.ts`; routes `decks.uploads.*` in `contracts/api.ts` |
-| Server | `packages/tala-server/src/modules/decks/` — `uploads.ts` (routes, storage, owner checks, what is on its way to clients), `upload-jobs.ts` and `upload-worker.mjs` (one worker thread a job, with its limits), `upload-file.ts` (bytes ↔ engine, the job's budget), `upload-render.ts` (the web app's end of the drawing socket), `zip.ts` (raw pass-through; one name once, no shared bytes, a ceiling on what is written). Stored files are in `decks_upload_file_pieces` (512 KiB a row). In the kernel: `http.ts`, `types.ts` and one line of `server.ts` (a binary answer its route keeps count of: handed out in pieces, from memory or from a source, let go when its client has gone or stops taking it, with a word to the route when it has gone) |
+| Server | `packages/tala-server/src/modules/decks/` — `uploads.ts` (routes, storage, owner checks, what is on its way to clients), `upload-jobs.ts` and `upload-worker.mjs` (one worker thread a job, with its limits), `upload-file.ts` (bytes ↔ engine, the job's budget), `upload-render.ts` (the web app's end of the drawing socket), `zip.ts` (raw pass-through; one name once, no shared bytes, a ceiling on what is written). Stored files are objects in private R2 storage (`r2.ts`, `s3-sign.ts`; `decks_upload_objects` records every object written or still to be removed), or on a developer machine `decks_upload_file_pieces` (512 KiB a row). In the kernel: `http.ts`, `types.ts` and one line of `server.ts` (a binary answer its route keeps count of: handed out in pieces, from memory or from a source, let go when its client has gone or stops taking it, with a word to the route when it has gone) |
 | Drawing service | `packages/tala-server/deploy/render/` — `render-job.mjs` (one sandboxed job), `tala-render@.service`, `tala-render.socket`, `talarender.slice`, `install.sh`, `verify.mjs`, `sandbox-run.mjs`, `hostile.py`, `dev-units.mjs` (a developer's machine), `README.md` |
 | Web | `packages/tala-web/src/features/slides/` — `UploadsScreen.tsx`, `UploadEditor.tsx`, `useUploadEditor.ts`, `upload-model.ts`; `src/data/uploads.ts`; routes `/library/mine`, `/slides/mine/[uploadId]` |
 | Strings | `packages/tala-web/src/i18n/parts/uploads.en.ts`, `uploads.fil.ts` (Filipino has had the Filipino owner's editorial pass; teacher review is open) |
@@ -323,10 +326,9 @@ nothing any more; the server says so once in its log if one is still set.
    (`deck_upload_reader_unavailable` in the log) and takes no file: reading is never done another way. The
    sources have to be there at run time (`packages/tala-server/src/modules/decks/`, `packages/tala-core/src/pptx/`),
    as they are where the release is built in its own folder.
-4. **Move stored files out of SQLite.** A file is stored once, in rows of 512 KiB. That is simple and
-   transactional, and right for a first release; at scale files belong on disk or object storage, and the
-   database file does not shrink after deletes.
+4. ~~Move stored files out of SQLite.~~ Done 25 Nov: files are kept in private R2 storage (Luis, 25 Nov: "Keep all
+   user files in a R2 folder for now"); older databases' files are moved there and checked before their pieces go.
 5. **Filipino:** the editorial pass on `uploads.fil.ts` is done (23 Nov); review by a Filipino-speaking teacher is open.
-6. **How long uploads are kept, and the words that say so in the privacy text**: Luis's decision (the question is
-   in STATUS.md). Today a file, its edits and its pictures are kept until the teacher deletes the file or her
-   account.
+6. **How long uploads are kept**: decided by Luis on 25 Nov ("keep them in R2 indefinitely"): until the teacher
+   deletes the file or her account, never by itself. **The words on the screen** (`up.private`) are a draft
+   waiting for his approval.

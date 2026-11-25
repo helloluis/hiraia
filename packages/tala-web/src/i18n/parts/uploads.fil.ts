@@ -15,7 +15,8 @@ export const uploadsFil = {
   'up.libraryTitle': 'Sarili mong slides',
   'up.libraryBody': 'May sarili ka bang slides o template? I-upload ang PowerPoint file at i-edit dito.',
   'up.libraryAction': 'Buksan ang slides ko',
-  'up.private': 'Ikaw lang ang makakakita ng mga file mo rito',
+  // Ang Filipino owner (b11-002:7964278f), 25 Nov 2026, mula sa English draft na hinihintay pa ang pag-apruba ni Luis.
+  'up.private': 'Nakatabi sa pribadong storage ng Tala ang mga file na in-upload mo. Hindi makikita ng ibang guro ang mga ito. Mananatili roon ang mga file hanggang burahin mo ang mga ito o ang account mo.',
   'up.choose': 'Mag-upload ng PowerPoint file',
   'up.chooseHint': '.pptx, .potx o .ppsx, hanggang {mb} MB. Itatabi ng Tala ang orihinal mong file.',
   'up.drop': 'Puwede mo ring i-drag ang file dito',

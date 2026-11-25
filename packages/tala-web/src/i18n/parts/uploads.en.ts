@@ -6,7 +6,8 @@ export const uploadsEn = {
   'up.libraryTitle': 'Your own slides',
   'up.libraryBody': 'Have slides or a template of your own? Upload the PowerPoint file and edit it here.',
   'up.libraryAction': 'Open my own slides',
-  'up.private': 'Only you can see these',
+  // Luis's rule of 25 Nov 2026 (kept in private storage, no automatic expiry, until she deletes them). Wording drafted, waiting for his approval.
+  'up.private': "Files you upload are kept in Tala's private storage. Other teachers can't see them. They stay until you delete them or your account.",
   'up.choose': 'Upload a PowerPoint file',
   'up.chooseHint': '.pptx, .potx or .ppsx, up to {mb} MB. Your file is kept exactly as you upload it.',
   'up.drop': 'Or drop the file here',

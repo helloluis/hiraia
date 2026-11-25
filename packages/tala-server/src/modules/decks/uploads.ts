@@ -12,12 +12,14 @@
  * - The file arrives in pieces (JSON + base64, like every other request), so a dropped connection resumes.
  * File names, slide text and notes are never logged.
  */
+import { createHash } from 'node:crypto';
 import { UPLOAD_LIMITS } from '@hiraia/tala-core/contracts';
 import type { UploadedDeck, UploadedDeckSummary, UploadRefusalReason, UploadSlideEdit } from '@hiraia/tala-core/contracts';
 import { changedSlideCount, invalidEdits, noEdits, normaliseEdits, type DeckEdits, type DeckInspection } from '@hiraia/tala-core/pptx';
 import type { Database } from 'better-sqlite3';
-import { HttpError, requireUser, type BaseDeps, type Migration, type ServerModule } from '../../kernel/types';
-import { UPLOAD_ZIP_LIMITS, UploadRefused } from './upload-file';
+import { HttpError, requireUser, type BaseDeps, type Logger, type Migration, type ServerModule } from '../../kernel/types';
+import { credentialsFile, objectStore, storageSettingFromEnv, StoreError, uploadObjectKey, type ObjectStore, type R2Settings, type StorageSetting } from './r2';
+import { sha256Hex, UPLOAD_ZIP_LIMITS, UploadRefused } from './upload-file';
 import { UploadWorkError, uploadWorkers, type UploadWork } from './upload-jobs';
 import { RenderError, rendererFromEnv, retiredRenderSettings, type DeckRenderer } from './upload-render';
 
@@ -75,6 +77,15 @@ export interface UploadOptions {
   sessionMinutes?: number;
   /** Uploads one account may start per hour. */
   startsPerHour?: number;
+  /**
+   * Where uploaded files are kept. Default: from the environment (r2.ts, `storageSettingFromEnv`): a private
+   * object-storage bucket when the TALA_R2_* settings are given; the database on a developer's machine with none;
+   * no uploads at all in staging or production without them, or with any of them missing or unusable. Tests may
+   * hand in a store of their own (`{ kind: 'r2', settings, store }`).
+   */
+  storage?: StorageSetting | { kind: 'r2'; settings: R2Settings; store: ObjectStore };
+  /** How often the background work runs (objects still to be removed, files still to be moved out of the database), ms. */
+  storageTickMs?: number;
   /** Times one account may have its slides drawn in ten minutes (the editor redraws after a save). */
   rendersPerTenMinutes?: number;
 }
@@ -163,6 +174,33 @@ INSERT INTO decks_upload_file_pieces (sha256, idx, bytes)
 UPDATE decks_upload_files SET bytes = x'';
 `,
   },
+  {
+    // Files kept in object storage (r2.ts): an upload's object name, or NULL while its file is still in
+    // decks_upload_file_pieces. And every object this server has started to write or still has to remove, so that
+    // a crash or a failed request never leaves an object nobody knows of, nor a record without its object. Nothing
+    // lists or sweeps the bucket; only an explicit delete of an upload or of an account removes an object.
+    id: 'decks:005_upload_objects',
+    sql: `
+ALTER TABLE decks_uploads ADD COLUMN object_key TEXT;
+CREATE TABLE decks_upload_objects (
+  key TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  upload_id TEXT NOT NULL,
+  sha256 TEXT NOT NULL,
+  bytes INTEGER NOT NULL,
+  -- writing: being written and checked; stored: an upload's file; removing: to be removed (retried until done)
+  state TEXT NOT NULL CHECK (state IN ('writing', 'stored', 'removing')),
+  attempts INTEGER NOT NULL DEFAULT 0,
+  next_try_at TEXT NOT NULL,
+  -- 1: a write whose outcome is not known (it may still land), so it is removed twice, ten minutes apart
+  uncertain INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+) STRICT;
+CREATE INDEX decks_upload_objects_due ON decks_upload_objects (state, next_try_at);
+CREATE INDEX decks_upload_objects_owner ON decks_upload_objects (owner_id);
+`,
+  },
 ];
 
 /** Bytes in one piece of a stored file (decks:004). */
@@ -183,6 +221,8 @@ interface UploadRow {
   rev: number;
   created_at: string;
   updated_at: string;
+  /** The file's object in storage; null while it is in the database's pieces. */
+  object_key: string | null;
 }
 interface SessionRow {
   id: string;
@@ -195,6 +235,9 @@ interface SessionRow {
   created_at: string;
   expires_at: string;
 }
+
+/** Whose an upload is and which file: for a picture, and for the uploaded file itself. */
+type FileRow = Pick<UploadRow, 'id' | 'owner_id' | 'kind' | 'file_name' | 'original_sha256' | 'original_bytes' | 'object_key'>;
 
 const MESSAGES = {
   off: 'Uploading your own slides is turned off on this server for now.',
@@ -214,6 +257,8 @@ const MESSAGES = {
   cannotApply: 'These changes do not fit the file. Reload the slides and try again.',
   cannotBuild: 'We could not prepare this download. Please try again later.',
   noPicture: 'There is no picture of this slide yet.',
+  storageUpload: 'The upload did not finish: the place where Tala keeps files did not answer. Nothing you sent is lost. Please try again in a few minutes.',
+  storageDownload: 'This file cannot be fetched right now. It is kept safely. Please try again in a few minutes.',
 } as const;
 
 /** Plain words for every reason a file is not taken (English; the web app has its own in both languages). */
@@ -363,6 +408,91 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
   let noPicturesUntil = 0;
   const draws = () => renderer !== null && Date.now() >= noPicturesUntil;
 
+  /* ---------------- where the files are kept ---------------- */
+  /**
+   * `objects`: the private bucket, when files go there (r2.ts). Null: they stay in the database's pieces (a
+   * developer's machine and the tests), or uploads are off (`storageOff` says why; staging and production with a
+   * setting missing). The module is made before the server starts, so the store finds the server's log later.
+   */
+  const storageSetting = options.storage ?? storageSettingFromEnv();
+  let moduleLog: Logger | null = null;
+  const objects: ObjectStore | null = (() => {
+    if (storageSetting.kind !== 'r2') return null;
+    if ('store' in storageSetting) return (storageSetting as { store: ObjectStore }).store;
+    const { settings } = storageSetting;
+    return objectStore(settings, { credentials: credentialsFile(settings.credentialsFile, { log: () => moduleLog }), log: () => moduleLog });
+  })();
+  const objectPrefix = storageSetting.kind === 'r2' ? storageSetting.settings.prefix : '';
+  const storageOff = storageSetting.kind === 'off' ? storageSetting.problems : [];
+  const storageTickMs = options.storageTickMs ?? 30_000;
+  /** Asks the background work to run now (an object to remove). Set when the module starts. */
+  let kick = () => {};
+  const keyFor = (ownerId: string, uploadId: string) => uploadObjectKey(objectPrefix, ownerId, uploadId);
+  const storageUnavailable = (reason: 'upload_storage_unavailable' | 'download_storage_unavailable') =>
+    new HttpError('unavailable', reason === 'upload_storage_unavailable' ? MESSAGES.storageUpload : MESSAGES.storageDownload, { reason, retryAfterSeconds: 60 });
+  /** What a store failure says in the log: its kind and the store's own short code, never a name or a key. */
+  const storeFailure = (err: StoreError) => ({ kind: err.kind, ...(err.status ? { status: err.status } : {}), ...(err.code ? { code: err.code } : {}) });
+  interface ObjectRef {
+    key: string;
+    ownerId: string;
+    uploadId: string;
+    sha256: string;
+    bytes: number;
+  }
+  /**
+   * An object to be removed, retried until it is gone. `uncertain`: a write whose outcome is not known (it may
+   * still land after the removal), so it is removed again ten minutes later.
+   */
+  const markRemoving = (db: Database, o: ObjectRef, uncertain: boolean, at: string) =>
+    db
+      .prepare(
+        `INSERT INTO decks_upload_objects (key, owner_id, upload_id, sha256, bytes, state, attempts, next_try_at, uncertain, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, 'removing', 0, ?, ?, ?, ?)
+         ON CONFLICT(key) DO UPDATE SET state = 'removing', next_try_at = excluded.next_try_at, uncertain = MAX(uncertain, excluded.uncertain), updated_at = excluded.updated_at`
+      )
+      .run(o.key, o.ownerId, o.uploadId, o.sha256, o.bytes, at, uncertain ? 1 : 0, at, at);
+  /**
+   * Writes a file to the bucket under a name that must be new, reads it back and checks it. Recorded first as
+   * "writing", so that whatever happens from here a later run knows of the object. On any failure what may have
+   * reached the store is marked for removal and the error is thrown: the caller keeps what it had (a finished
+   * upload's pieces, a file still in the database).
+   */
+  const putChecked = async (db: Database, log: Logger, o: Omit<ObjectRef, 'bytes'> & { file: Uint8Array }, at: () => string): Promise<void> => {
+    if (!objects) throw new StoreError('unavailable', undefined, 'not_configured');
+    const ref: ObjectRef = { key: o.key, ownerId: o.ownerId, uploadId: o.uploadId, sha256: o.sha256, bytes: o.file.length };
+    db.prepare(
+      `INSERT INTO decks_upload_objects (key, owner_id, upload_id, sha256, bytes, state, attempts, next_try_at, uncertain, created_at, updated_at) VALUES (?, ?, ?, ?, ?, 'writing', 0, ?, 1, ?, ?)`
+    ).run(ref.key, ref.ownerId, ref.uploadId, ref.sha256, ref.bytes, at(), at(), at());
+    let existed = false;
+    try {
+      try {
+        await objects.putNew(o.key, o.file, o.sha256);
+      } catch (err) {
+        if (!(err instanceof StoreError && err.kind === 'exists')) throw err;
+        // The name is new for every upload, so this is our own earlier write whose answer was lost. It is taken
+        // only if it is exactly this file (checked below); it is never overwritten.
+        existed = true;
+      }
+      await objects.verify(o.key, ref.bytes, o.sha256);
+    } catch (err) {
+      if (existed && err instanceof StoreError && err.kind === 'damaged') {
+        // Somebody else's bytes under a name that should be ours: left alone, never removed by us.
+        db.prepare("DELETE FROM decks_upload_objects WHERE key = ? AND state = 'writing'").run(o.key);
+        log.error('deck_upload_object_name_taken', { uploadId: o.uploadId });
+        throw new StoreError('unavailable', undefined, 'name_taken');
+      }
+      markRemoving(db, ref, !(err instanceof StoreError && (err.kind === 'refused' || err.kind === 'damaged')), at());
+      kick();
+      throw err;
+    }
+  };
+  /** A stored file whole, wherever it is: for a job that has to read all of it. The worker checks it again. */
+  const wholeFile = async (db: Database, row: Pick<UploadRow, 'original_sha256' | 'original_bytes' | 'object_key'>): Promise<Uint8Array | null> => {
+    if (row.object_key === null) return fileOf(db, row.original_sha256);
+    if (!objects) throw new StoreError('unavailable', undefined, 'not_configured');
+    return objects.readWhole(row.object_key, row.original_bytes, row.original_sha256);
+  };
+
   /* ---------------- rows ---------------- */
   const getRow = (db: Database, ownerId: string, id: string): UploadRow | null =>
     (db.prepare('SELECT * FROM decks_uploads WHERE id = ? AND owner_id = ?').get(id, ownerId) as UploadRow | undefined) ?? null;
@@ -372,13 +502,11 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
    */
   const getRowWithoutReading = (db: Database, ownerId: string, id: string): Omit<UploadRow, 'base_json'> | null =>
     (db
-      .prepare('SELECT id, owner_id, title, file_name, kind, original_sha256, original_bytes, edits_json, slide_count, changed_slides, rev, created_at, updated_at FROM decks_uploads WHERE id = ? AND owner_id = ?')
+      .prepare('SELECT id, owner_id, title, file_name, kind, original_sha256, original_bytes, edits_json, slide_count, changed_slides, rev, created_at, updated_at, object_key FROM decks_uploads WHERE id = ? AND owner_id = ?')
       .get(id, ownerId) as Omit<UploadRow, 'base_json'> | undefined) ?? null;
   /** Only whose it is and which file: for a picture, and for the uploaded file itself. */
-  const getFileRow = (db: Database, ownerId: string, id: string): Pick<UploadRow, 'id' | 'owner_id' | 'kind' | 'file_name' | 'original_sha256' | 'original_bytes'> | null =>
-    (db.prepare('SELECT id, owner_id, kind, file_name, original_sha256, original_bytes FROM decks_uploads WHERE id = ? AND owner_id = ?').get(id, ownerId) as
-      | Pick<UploadRow, 'id' | 'owner_id' | 'kind' | 'file_name' | 'original_sha256' | 'original_bytes'>
-      | undefined) ?? null;
+  const getFileRow = (db: Database, ownerId: string, id: string): FileRow | null =>
+    (db.prepare('SELECT id, owner_id, kind, file_name, original_sha256, original_bytes, object_key FROM decks_uploads WHERE id = ? AND owner_id = ?').get(id, ownerId) as FileRow | undefined) ?? null;
   const getSession = (db: Database, ownerId: string, id: string, now: string): SessionRow | null =>
     (db.prepare('SELECT * FROM decks_upload_sessions WHERE id = ? AND owner_id = ? AND expires_at > ?').get(id, ownerId, now) as SessionRow | undefined) ?? null;
   const receivedOf = (db: Database, sessionId: string): number[] =>
@@ -393,10 +521,10 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
     const expired = db.prepare('SELECT id FROM decks_upload_sessions WHERE expires_at <= ?').all(now) as Array<{ id: string }>;
     for (const s of expired) dropSession(db, s.id);
   };
-  /** Stored files no upload refers to any more. */
+  /** Files in the database that no upload still kept there refers to (an upload whose file is in the bucket does not). */
   const sweepFiles = (db: Database) => {
-    db.prepare('DELETE FROM decks_upload_file_pieces WHERE sha256 NOT IN (SELECT original_sha256 FROM decks_uploads)').run();
-    db.prepare('DELETE FROM decks_upload_files WHERE sha256 NOT IN (SELECT original_sha256 FROM decks_uploads)').run();
+    db.prepare('DELETE FROM decks_upload_file_pieces WHERE sha256 NOT IN (SELECT original_sha256 FROM decks_uploads WHERE object_key IS NULL)').run();
+    db.prepare('DELETE FROM decks_upload_files WHERE sha256 NOT IN (SELECT original_sha256 FROM decks_uploads WHERE object_key IS NULL)').run();
   };
   /** A stored file whole, put together from its pieces: for a job that has to read all of it (never for a download). */
   const fileOf = (db: Database, sha256: string): Uint8Array | null => {
@@ -474,7 +602,8 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
       'decks.uploads.begin': (ctx, { body }) => {
         const user = requireUser(ctx);
         if (!user.emailVerified) throw new HttpError('forbidden', MESSAGES.verify, { reason: 'email_not_verified' });
-        if (badSettings.length) throw new HttpError('unavailable', MESSAGES.off, { reason: 'uploads_off' });
+        // A size setting that cannot be read, or nowhere private to keep the file: nothing is taken.
+        if (badSettings.length || storageOff.length) throw new HttpError('unavailable', MESSAGES.off, { reason: 'uploads_off' });
         const fileName = oneLine(body.fileName).slice(0, UPLOAD_LIMITS.fileName);
         const wrong = extensionProblem(fileName);
         if (wrong) throw refuse(wrong);
@@ -525,6 +654,7 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
 
       'decks.uploads.finish': async (ctx, { params }) => {
         const user = requireUser(ctx);
+        if (badSettings.length || storageOff.length) throw new HttpError('unavailable', MESSAGES.off, { reason: 'uploads_off' });
         const nowIso = ctx.now().toISOString();
         const session = getSession(ctx.db, user.id, params.sessionId, nowIso);
         if (!session) throw sessionGone();
@@ -566,11 +696,91 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
           file = fromBlob(whole);
           return file;
         };
+        /** What the file was read into, and her allowance checked again: time has passed while the file was read. */
+        const prepared = (inspection: DeckInspection, size: number) => {
+          if (!getSession(ctx.db, user.id, session.id, ctx.now().toISOString())) throw sessionGone();
+          const base = { size: inspection.size, slides: inspection.slides, features: inspection.features, totals: inspection.totals };
+          const baseJson = JSON.stringify(base);
+          const baseBytes = Buffer.byteLength(baseJson);
+          const usedNow = usage(ctx.db, user.id);
+          // What the file was read into is kept too, and has a total of its own for each account.
+          if (usedNow.uploads >= maxUploads || usedNow.bytes + size > maxAccountBytes || usedNow.reading + baseBytes > readingBytesPerAccount) fail('quota');
+          const title = (inspection.title || session.file_name.replace(/\.[A-Za-z0-9]{1,8}$/, '')).slice(0, UPLOAD_LIMITS.title);
+          return { baseJson, baseBytes, edits: noEdits(inspection), title };
+        };
+        /** The upload's row and the end of its session, in one transaction; in the database mode with its pieces. */
+        const record = (id: string, inspection: DeckInspection, prep: ReturnType<typeof prepared>, size: number, objectKey: string | null, pieces: Uint8Array | null) => {
+          const at = ctx.now().toISOString();
+          ctx.db.transaction(() => {
+            if (pieces && !ctx.db.prepare('SELECT 1 FROM decks_upload_files WHERE sha256 = ?').get(session.sha256)) {
+              // Stored once for each distinct file, in pieces.
+              ctx.db.prepare("INSERT INTO decks_upload_files (sha256, bytes, size) VALUES (?, x'', ?)").run(session.sha256, pieces.length);
+              const put = ctx.db.prepare('INSERT INTO decks_upload_file_pieces (sha256, idx, bytes) VALUES (?, ?, ?)');
+              for (let i = 0, off = 0; off < pieces.length; i++, off += FILE_PIECE_BYTES) put.run(session.sha256, i, toBlob(pieces.subarray(off, off + FILE_PIECE_BYTES)));
+            }
+            // Its object was given up meanwhile (her account was deleted while it was being written): not recorded.
+            if (objectKey && ctx.db.prepare("UPDATE decks_upload_objects SET state = 'stored', uncertain = 0, updated_at = ? WHERE key = ? AND state = 'writing'").run(at, objectKey).changes !== 1) throw sessionGone();
+            ctx.db
+              .prepare(
+                `INSERT INTO decks_uploads (id, owner_id, title, file_name, kind, original_sha256, original_bytes, base_json, base_bytes, edits_json, slide_count, changed_slides, rev, created_at, updated_at, object_key)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1, ?, ?, ?)`
+              )
+              .run(id, user.id, prep.title, session.file_name, inspection.kind, session.sha256, size, prep.baseJson, prep.baseBytes, JSON.stringify(prep.edits), inspection.slides.length, nowIso, nowIso, objectKey);
+            dropSession(ctx.db, session.id);
+          })();
+        };
         let inspection: DeckInspection;
+        let id: string;
         try {
-          // The joined file is handed to the worker and comes back with its reading: it is in memory once.
-          ({ inspection, file } = await work.take(joined, session.sha256, user.id));
+          if (objects) {
+            // Object storage: the file is written to the bucket under a name of its own, read back and checked
+            // INSIDE the job's turn at the one place (one whole file in memory at a time for the whole server),
+            // and only then recorded. If anything fails her pieces stay: finishing again resumes from them.
+            const taken = await work.take(joined, session.sha256, user.id, async ({ inspection: read, file: bytes }) => {
+              const prep = prepared(read, bytes.length);
+              const newId = ctx.newId();
+              const ref = { key: keyFor(user.id, newId), ownerId: user.id, uploadId: newId, sha256: session.sha256 };
+              await putChecked(ctx.db, ctx.log, { ...ref, file: bytes }, () => ctx.now().toISOString());
+              // Nothing is awaited from here to the record, so no other request comes between these checks and it.
+              const giveUp = () => {
+                markRemoving(ctx.db, { ...ref, bytes: bytes.length }, false, ctx.now().toISOString());
+                kick();
+              };
+              if (!getSession(ctx.db, user.id, session.id, ctx.now().toISOString())) {
+                giveUp();
+                throw sessionGone();
+              }
+              const usedNow = usage(ctx.db, user.id);
+              if (usedNow.uploads >= maxUploads || usedNow.bytes + bytes.length > maxAccountBytes || usedNow.reading + prep.baseBytes > readingBytesPerAccount) {
+                giveUp();
+                fail('quota');
+              }
+              try {
+                record(newId, read, prep, bytes.length, ref.key, null);
+              } catch (err) {
+                giveUp();
+                throw err;
+              }
+              return newId;
+            });
+            inspection = taken.inspection;
+            // A job place that does not run `keep` has stored nothing: never recorded as if it had.
+            if (taken.kept === undefined) throw new UploadWorkError('fault', 'the file was not kept');
+            id = taken.kept;
+          } else {
+            // The joined file is handed to the worker and comes back with its reading: it is in memory once.
+            ({ inspection, file } = await work.take(joined, session.sha256, user.id));
+            const prep = prepared(inspection, file.length);
+            id = ctx.newId();
+            record(id, inspection, prep, file.length, null, file);
+          }
         } catch (err) {
+          if (err instanceof HttpError) throw err;
+          if (err instanceof StoreError) {
+            // Nothing about the file and nothing lost: her pieces are kept, and she can finish again.
+            ctx.log.error('deck_upload_store_failed', storeFailure(err));
+            throw storageUnavailable('upload_storage_unavailable');
+          }
           if (err instanceof UploadRefused) return fail(err.reason as UploadRefusalReason);
           if (!(err instanceof UploadWorkError)) throw err;
           // Stopped at a limit: the file is more than is read here. That is a refusal like any other.
@@ -579,35 +789,7 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
           if (err.kind === 'fault') ctx.log.error('deck_upload_reader_failed', { detail: err.detail });
           throw new HttpError('unavailable', err.kind === 'busy' ? MESSAGES.busy : MESSAGES.notNow, { reason: err.kind === 'busy' ? 'upload_busy' : 'upload_reader_unavailable' });
         }
-        const id = ctx.newId();
-        const base = { size: inspection.size, slides: inspection.slides, features: inspection.features, totals: inspection.totals };
-        const edits = noEdits(inspection);
-        const title = (inspection.title || session.file_name.replace(/\.[A-Za-z0-9]{1,8}$/, '')).slice(0, UPLOAD_LIMITS.title);
-        // Time has passed while the file was read: the upload may have been finished or cancelled by another
-        // request, and her allowance may have been used.
-        const stillOpen = getSession(ctx.db, user.id, session.id, ctx.now().toISOString());
-        if (!stillOpen) throw sessionGone();
-        const usedNow = usage(ctx.db, user.id);
-        const baseJson = JSON.stringify(base);
-        const baseBytes = Buffer.byteLength(baseJson);
-        // What the file was read into is kept too, and has a total of its own for each account.
-        if (usedNow.uploads >= maxUploads || usedNow.bytes + file.length > maxAccountBytes || usedNow.reading + baseBytes > readingBytesPerAccount) fail('quota');
-        ctx.db.transaction(() => {
-          // Stored once for each distinct file, in pieces.
-          if (!ctx.db.prepare('SELECT 1 FROM decks_upload_files WHERE sha256 = ?').get(session.sha256)) {
-            ctx.db.prepare("INSERT INTO decks_upload_files (sha256, bytes, size) VALUES (?, x'', ?)").run(session.sha256, file.length);
-            const put = ctx.db.prepare('INSERT INTO decks_upload_file_pieces (sha256, idx, bytes) VALUES (?, ?, ?)');
-            for (let i = 0, at = 0; at < file.length; i++, at += FILE_PIECE_BYTES) put.run(session.sha256, i, toBlob(file.subarray(at, at + FILE_PIECE_BYTES)));
-          }
-          ctx.db
-            .prepare(
-              `INSERT INTO decks_uploads (id, owner_id, title, file_name, kind, original_sha256, original_bytes, base_json, base_bytes, edits_json, slide_count, changed_slides, rev, created_at, updated_at)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1, ?, ?)`
-            )
-            .run(id, user.id, title, session.file_name, inspection.kind, session.sha256, file.length, baseJson, baseBytes, JSON.stringify(edits), inspection.slides.length, nowIso, nowIso);
-          dropSession(ctx.db, session.id);
-        })();
-        ctx.log.info('deck_uploaded', { uploadId: id, bytes: file.length, slides: inspection.slides.length, kind: inspection.kind });
+        ctx.log.info('deck_uploaded', { uploadId: id, bytes: session.bytes, slides: inspection.slides.length, kind: inspection.kind, kept: objects ? 'object storage' : 'database' });
         return detail(ctx.db, getRow(ctx.db, user.id, id)!);
       },
 
@@ -650,25 +832,84 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
       'decks.uploads.delete': (ctx, { params }) => {
         const user = requireUser(ctx);
         const removed = ctx.db.transaction(() => {
-          const done = ctx.db.prepare('DELETE FROM decks_uploads WHERE id = ? AND owner_id = ?').run(params.uploadId, user.id).changes === 1;
-          if (done) {
-            ctx.db.prepare('DELETE FROM decks_upload_previews WHERE upload_id = ?').run(params.uploadId);
-            sweepFiles(ctx.db);
-          }
-          return done;
+          const row = getFileRow(ctx.db, user.id, params.uploadId);
+          if (!row) return false;
+          ctx.db.prepare('DELETE FROM decks_uploads WHERE id = ? AND owner_id = ?').run(row.id, user.id);
+          ctx.db.prepare('DELETE FROM decks_upload_previews WHERE upload_id = ?').run(row.id);
+          // Her file in the bucket is removed with it: at once when the store answers, else retried until it is gone.
+          if (row.object_key) markRemoving(ctx.db, { key: row.object_key, ownerId: user.id, uploadId: row.id, sha256: row.original_sha256, bytes: row.original_bytes }, false, ctx.now().toISOString());
+          sweepFiles(ctx.db);
+          return true;
         })();
         if (!removed) throw notFound();
+        kick();
         ctx.log.info('deck_upload_deleted', { uploadId: params.uploadId });
         return { ok: true as const };
       },
 
       /** The file exactly as it was uploaded: the same bytes, the same SHA-256. */
-      'decks.uploads.original': (ctx, { params }) => {
+      'decks.uploads.original': async (ctx, { params }) => {
         const user = requireUser(ctx);
         const row = getFileRow(ctx.db, user.id, params.uploadId);
         if (!row) throw notFound();
         // A download holds a whole file in memory while it is sent: one account cannot ask for them without end.
         if (!ctx.services.rateLimit.take(`deck-download:${user.id}`, downloadsPerMinute, 60)) throw new HttpError('rate_limited', MESSAGES.tooManyDownloads, { retryAfterSeconds: 60 });
+        if (row.object_key !== null) {
+          // From the bucket, a piece of 512 KiB at a time as her connection takes it, like from the database. The
+          // first piece is fetched before answering, so a store that does not answer is a plain "try again", not a
+          // download that breaks off; the whole file's SHA-256 is checked before its last piece is sent, so a
+          // changed object never arrives as if it were her file.
+          if (!objects) throw storageUnavailable('download_storage_unavailable');
+          const store = objects;
+          const key = row.object_key;
+          const size = row.original_bytes;
+          const held = hold(user.id, FILE_PIECE_BYTES);
+          if (!held) throw noRoomToSend();
+          const hash = createHash('sha256');
+          let at = 0;
+          const fetchPiece = async (): Promise<Uint8Array> => {
+            const piece = await store.readRange(key, at, Math.min(size, at + FILE_PIECE_BYTES) - 1);
+            hash.update(piece);
+            at += piece.length;
+            if (at === size && hash.digest('hex') !== row.original_sha256) throw new StoreError('damaged', undefined, 'checksum');
+            return piece;
+          };
+          const { log } = ctx;
+          const failed = (err: unknown) => {
+            if (err instanceof StoreError && (err.kind === 'damaged' || err.kind === 'missing')) log.error('deck_upload_file_damaged', { uploadId: row.id, where: 'object storage', kind: err.kind });
+            else if (err instanceof StoreError) log.warn('deck_upload_store_failed', { during: 'download', ...storeFailure(err) });
+          };
+          let first: Uint8Array | null;
+          try {
+            first = await fetchPiece();
+          } catch (err) {
+            held.release();
+            failed(err);
+            if (err instanceof StoreError && (err.kind === 'damaged' || err.kind === 'missing')) throw new HttpError('unavailable', MESSAGES.cannotBuild, { reason: 'original_unreadable' });
+            if (err instanceof StoreError) throw storageUnavailable('download_storage_unavailable');
+            throw err;
+          }
+          const next = async (): Promise<Uint8Array | null> => {
+            if (first) {
+              const p = first;
+              first = null;
+              return p;
+            }
+            if (at >= size) return null;
+            try {
+              return await fetchPiece();
+            } catch (err) {
+              failed(err);
+              throw err;
+            }
+          };
+          return {
+            binary: new Uint8Array(0),
+            contentType: CONTENT_TYPES[row.kind],
+            filename: safeFileName(row.file_name, 'slides.pptx'),
+            held: { release: held.release, withinMs: sendWithinMs(size), stallMs, pieces: { bytes: size, next } },
+          };
+        }
         const stored = ctx.db.prepare('SELECT size FROM decks_upload_files WHERE sha256 = ?').get(row.original_sha256) as { size: number } | undefined;
         if (!stored || stored.size !== row.original_bytes) throw notFound();
         // Sent a piece at a time from the database, as her connection takes it: the file is never in memory whole
@@ -706,8 +947,8 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
           // The worker checks the file against its checksum before it writes from it: it was put back together
           // from stored pieces.
           ({ pptx } = await work.write(
-            () => {
-              const file = fileOf(ctx.db, row.original_sha256);
+            async () => {
+              const file = await wholeFile(ctx.db, row);
               if (!file) throw notFound();
               return file;
             },
@@ -718,6 +959,14 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
         } catch (err) {
           held.release();
           if (err instanceof HttpError) throw err;
+          if (err instanceof StoreError) {
+            if (err.kind === 'damaged' || err.kind === 'missing') {
+              ctx.log.error('deck_upload_file_damaged', { uploadId: row.id, where: 'object storage', kind: err.kind });
+              throw new HttpError('unavailable', MESSAGES.cannotBuild, { reason: 'export_failed' });
+            }
+            ctx.log.warn('deck_upload_store_failed', { during: 'export', ...storeFailure(err) });
+            throw storageUnavailable('download_storage_unavailable');
+          }
           const reason = err instanceof UploadRefused ? err.reason : err instanceof UploadWorkError ? `stopped: ${err.kind}` : 'error';
           // The stored file is not the file that was uploaded any more: that is the database's, and somebody has to look.
           if (reason === 'checksum_mismatch') ctx.log.error('deck_upload_file_damaged', { uploadId: row.id });
@@ -764,8 +1013,8 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
           try {
             // The file with her changes is written in a worker of its own, then drawn by the drawing service.
             const { pptx } = await work.write(
-              () => {
-                const file = fileOf(db, row.original_sha256);
+              async () => {
+                const file = await wholeFile(db, row);
                 if (!file) throw new RenderError('failed', 'the uploaded file is gone');
                 return file;
               },
@@ -800,6 +1049,13 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
             })();
             return { state: 'ready' as const, ...previewInfo(db, row) };
           } catch (err) {
+            // The bucket did not answer: like a busy place, the editor asks again later. (A file that is not what was
+            // recorded is logged for somebody to look at.)
+            if (err instanceof StoreError) {
+              if (err.kind === 'damaged' || err.kind === 'missing') log.error('deck_upload_file_damaged', { uploadId: row.id, where: 'object storage', kind: err.kind });
+              else log.warn('deck_upload_store_failed', { during: 'drawing', ...storeFailure(err) });
+              return { state: err.kind === 'unavailable' ? ('busy' as const) : ('failed' as const), ...current };
+            }
             // The reason is one of the renderer's or the worker's own short phrases, never text from the file.
             const kind = err instanceof RenderError ? err.kind : err instanceof UploadWorkError && err.kind === 'busy' ? 'busy' : 'failed';
             const reason = err instanceof RenderError ? err.reason : err instanceof UploadRefused ? `could not write the file (${err.reason})` : err instanceof UploadWorkError ? `could not write the file (stopped: ${err.kind})` : 'error';
@@ -846,22 +1102,145 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
       },
     },
 
-    /** A deleted account takes its uploads, unfinished uploads and pictures with it (PRIV-6). */
+    /**
+     * A deleted account takes its uploads, unfinished uploads and pictures with it (PRIV-6), and every object of it
+     * in the bucket, those being written included: marked here, inside the deletion's transaction, and removed by
+     * the background work at once and again until each is gone.
+     */
     onAccountDeleted: (deps: BaseDeps, userId) => {
-      const ids = deps.db.prepare('SELECT id FROM decks_uploads WHERE owner_id = ?').all(userId) as Array<{ id: string }>;
-      for (const { id } of ids) deps.db.prepare('DELETE FROM decks_upload_previews WHERE upload_id = ?').run(id);
+      const at = deps.now().toISOString();
+      const ids = deps.db.prepare('SELECT id, object_key, original_sha256, original_bytes FROM decks_uploads WHERE owner_id = ?').all(userId) as Array<{ id: string; object_key: string | null; original_sha256: string; original_bytes: number }>;
+      for (const u of ids) {
+        deps.db.prepare('DELETE FROM decks_upload_previews WHERE upload_id = ?').run(u.id);
+        if (u.object_key) markRemoving(deps.db, { key: u.object_key, ownerId: userId, uploadId: u.id, sha256: u.original_sha256, bytes: u.original_bytes }, false, at);
+      }
+      deps.db.prepare("UPDATE decks_upload_objects SET state = 'removing', next_try_at = ?, updated_at = ? WHERE owner_id = ? AND state <> 'removing'").run(at, at, userId);
       deps.db.prepare('DELETE FROM decks_uploads WHERE owner_id = ?').run(userId);
       const sessions = deps.db.prepare('SELECT id FROM decks_upload_sessions WHERE owner_id = ?').all(userId) as Array<{ id: string }>;
       for (const s of sessions) dropSession(deps.db, s.id);
       sweepFiles(deps.db);
+      // After the deletion's transaction has been committed.
+      setImmediate(() => kick());
     },
-    /** Two accounts of one teacher joined: the uploads follow. */
+    /**
+     * Two accounts of one teacher joined: the uploads follow. Their objects keep their names (under the account
+     * that uploaded them); the name is only where the bytes are, and who may have them is the database's.
+     */
     onAccountMerged: (deps: BaseDeps, fromUserId, toUserId) => {
       deps.db.prepare('UPDATE decks_uploads SET owner_id = ? WHERE owner_id = ?').run(toUserId, fromUserId);
       deps.db.prepare('UPDATE decks_upload_sessions SET owner_id = ? WHERE owner_id = ?').run(toUserId, fromUserId);
+      deps.db.prepare('UPDATE decks_upload_objects SET owner_id = ? WHERE owner_id = ?').run(toUserId, fromUserId);
     },
-    /** Unfinished uploads do not linger. */
+    /** Unfinished uploads do not linger; objects still to be removed are removed; files still in the database move to the bucket. */
     start: (deps) => {
+      moduleLog = deps.log;
+      // Where files are kept, said once at start (never the endpoint: it names the account; never a key).
+      if (storageSetting.kind === 'r2') deps.log.info('deck_upload_storage', { where: 'object storage', bucket: storageSetting.settings.bucket, prefix: objectPrefix || '(none)', region: storageSetting.settings.region });
+      else if (storageSetting.kind === 'database') deps.log.info('deck_upload_storage', { where: 'database', note: 'a developer machine: no TALA_R2_* setting' });
+      else deps.log.error('deck_upload_storage_off', { problems: storageOff.join('; '), effect: 'no uploads are taken, and files already in object storage cannot be fetched, until this is put right' });
+      let stopped = false;
+      let working = false;
+      let saidStillDown = 0;
+      /** Legacy files that could not be moved because they are not what was recorded: said once, left in place. */
+      const unmovable = new Set<string>();
+      const at = () => deps.now().toISOString();
+      const removeDue = async () => {
+        if (!objects) return;
+        // A write that has been "writing" for a quarter of an hour belongs to a request that is long gone (a crash).
+        deps.db
+          .prepare("UPDATE decks_upload_objects SET state = 'removing', uncertain = 1, next_try_at = ?, updated_at = ? WHERE state = 'writing' AND updated_at < ?")
+          .run(at(), at(), new Date(deps.now().getTime() - 15 * 60_000).toISOString());
+        const due = deps.db
+          .prepare("SELECT key, upload_id, uncertain, attempts FROM decks_upload_objects WHERE state = 'removing' AND next_try_at <= ? ORDER BY next_try_at LIMIT 25")
+          .all(at()) as Array<{ key: string; upload_id: string; uncertain: number; attempts: number }>;
+        for (const o of due) {
+          if (stopped) return;
+          try {
+            await objects.remove(o.key);
+          } catch (err) {
+            if (stopped) return;
+            // Resting after a failure a moment ago: nothing was asked, so nothing is counted; the next run tries.
+            if (err instanceof StoreError && err.code === 'resting') return;
+            const attempts = o.attempts + 1;
+            const waitMs = Math.min(30_000 * 2 ** Math.min(attempts, 7), 3_600_000);
+            deps.db.prepare('UPDATE decks_upload_objects SET attempts = ?, next_try_at = ?, updated_at = ? WHERE key = ?').run(attempts, new Date(deps.now().getTime() + waitMs).toISOString(), at(), o.key);
+            if (attempts === 1 || attempts % 10 === 0) deps.log.warn('deck_upload_object_removal_waiting', { uploadId: o.upload_id, attempts, ...(err instanceof StoreError ? storeFailure(err) : { kind: 'error' }) });
+            if (err instanceof StoreError && err.kind === 'unavailable') return;
+            continue;
+          }
+          if (stopped) return;
+          if (o.uncertain) {
+            // A write whose answer was lost may still land after this removal: once more, ten minutes from now.
+            deps.db.prepare("UPDATE decks_upload_objects SET uncertain = 0, attempts = 0, next_try_at = ?, updated_at = ? WHERE key = ? AND state = 'removing'").run(new Date(deps.now().getTime() + 10 * 60_000).toISOString(), at(), o.key);
+          } else deps.db.prepare("DELETE FROM decks_upload_objects WHERE key = ? AND state = 'removing'").run(o.key);
+          deps.log.info('deck_upload_object_removed', { uploadId: o.upload_id, again: o.uncertain === 1 });
+        }
+      };
+      /** One file still kept in the database (an older database, or one from a developer machine) moves to the bucket. */
+      const carryOver = async () => {
+        if (!objects) return;
+        const legacy = (deps.db.prepare('SELECT id, owner_id, original_sha256, original_bytes FROM decks_uploads WHERE object_key IS NULL ORDER BY created_at, rowid').all() as Array<{ id: string; owner_id: string; original_sha256: string; original_bytes: number }>).find((u) => !unmovable.has(u.id));
+        if (!legacy) return;
+        const run = work.exclusive ?? (<T>(_who: string, job: () => Promise<T>) => job());
+        await run('server:carry-over', async () => {
+          if (stopped) return;
+          const file = fileOf(deps.db, legacy.original_sha256);
+          if (!file || file.length !== legacy.original_bytes || sha256Hex(file) !== legacy.original_sha256) {
+            unmovable.add(legacy.id);
+            deps.log.error('deck_upload_file_damaged', { uploadId: legacy.id, where: 'database', effect: 'left where it is, not moved' });
+            return;
+          }
+          const ref = { key: keyFor(legacy.owner_id, legacy.id), ownerId: legacy.owner_id, uploadId: legacy.id, sha256: legacy.original_sha256 };
+          try {
+            await putChecked(deps.db, deps.log, { ...ref, file }, at);
+          } catch (err) {
+            if (!stopped) deps.log.warn('deck_upload_carry_over_waiting', { uploadId: legacy.id, ...(err instanceof StoreError ? storeFailure(err) : { kind: 'error' }) });
+            return;
+          }
+          if (stopped) return;
+          deps.db.transaction(() => {
+            // Deleted while it was being written: the object goes too.
+            if (deps.db.prepare('UPDATE decks_uploads SET object_key = ? WHERE id = ? AND object_key IS NULL').run(ref.key, legacy.id).changes !== 1) {
+              markRemoving(deps.db, { ...ref, bytes: file.length }, false, at());
+              return;
+            }
+            deps.db.prepare("UPDATE decks_upload_objects SET state = 'stored', uncertain = 0, updated_at = ? WHERE key = ? AND state = 'writing'").run(at(), ref.key);
+            // Its pieces go only now that the object has been read back, and only when no upload still kept in
+            // the database needs the same bytes.
+            sweepFiles(deps.db);
+          })();
+          deps.log.info('deck_upload_carried_over', { uploadId: legacy.id, bytes: legacy.original_bytes });
+        });
+      };
+      const work_ = async () => {
+        if (working || stopped || !objects) return;
+        working = true;
+        try {
+          await removeDue();
+          if (!stopped) await carryOver();
+          const h = objects.health();
+          if (!stopped && h.down && h.downSince !== null && Date.now() - saidStillDown > 5 * 60_000 && Date.now() - h.downSince > 60_000) {
+            saidStillDown = Date.now();
+            const count = (sql: string) => (deps.db.prepare(sql).get() as { n: number }).n;
+            deps.log.warn('deck_upload_storage_still_unavailable', {
+              downMinutes: Math.round((Date.now() - h.downSince) / 60_000),
+              removalsWaiting: count("SELECT COUNT(*) AS n FROM decks_upload_objects WHERE state = 'removing'"),
+              filesStillInDatabase: count('SELECT COUNT(*) AS n FROM decks_uploads WHERE object_key IS NULL'),
+              effect: 'new uploads and downloads of uploaded files are refused with "try again"; deletes are recorded and carried out when the store answers',
+            });
+          }
+        } catch (err) {
+          if (!stopped && !(err instanceof UploadWorkError)) deps.log.error('deck_upload_storage_work_failed', { error: err instanceof Error ? err.name : 'error' });
+        } finally {
+          working = false;
+        }
+      };
+      kick = () => {
+        if (!stopped) setImmediate(() => void work_());
+      };
+      const storageTimer = setInterval(() => void work_(), storageTickMs);
+      storageTimer.unref?.();
+      kick();
       // Settings of the earlier drawing, which ran LibreOffice from this process: they do nothing any more.
       const retired = retiredRenderSettings();
       if (retired.length) deps.log.warn('deck_upload_render_settings_ignored', { names: retired.join(','), use: 'TALA_DECKS_PREVIEW_SOCKET' });
@@ -879,7 +1258,12 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
         }
       }, 10 * 60_000);
       timer.unref?.();
-      return () => clearInterval(timer);
+      return () => {
+        stopped = true;
+        kick = () => {};
+        clearInterval(storageTimer);
+        clearInterval(timer);
+      };
     },
   };
 }

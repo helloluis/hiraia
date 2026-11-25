@@ -212,8 +212,8 @@ function heldBody(binary: Uint8Array, held: NonNullable<BinaryResponse['held']>,
     stalled = setTimeout(() => cut(controller, 'This download was not being taken and was stopped.'), stallMs);
     (stalled as { unref?: () => void }).unref?.();
   };
-  /** The next piece: a copy cut from the block of memory, or what the source gives. Null at the end. */
-  const next = (): Uint8Array | null => {
+  /** The next piece: a copy cut from the block of memory, or what the source gives (perhaps later). Null at the end. */
+  const next = (): Uint8Array | null | Promise<Uint8Array | null> => {
     if (held.pieces) return at >= total ? null : held.pieces.next();
     if (bytes === null || at >= total) return null;
     return bytes.slice(at, Math.min(total, at + HELD_PIECE_BYTES));
@@ -234,14 +234,22 @@ function heldBody(binary: Uint8Array, held: NonNullable<BinaryResponse['held']>,
         (timer as { unref?: () => void }).unref?.();
         waitForNextPiece(controller);
       },
-      pull(controller) {
+      async pull(controller) {
         if (over) return;
         let piece: Uint8Array | null;
         try {
-          piece = next();
+          const coming = next();
+          if (coming instanceof Promise) {
+            // The wait is on the source now, not on the connection: it is not a stall. (The source has its own
+            // time limit, and `withinMs` still ends the whole answer.)
+            clearTimeout(stalled);
+            piece = await coming;
+          } else piece = coming;
         } catch {
           piece = null;
         }
+        // Let go while the piece was on its way (the client left, the time was up): nothing more is sent.
+        if (over) return;
         // A source that ends early, or gives more than it said, is not sent on as if it were the whole answer.
         if (piece === null || piece.length === 0 || at + piece.length > total) {
           letGo();
