@@ -896,3 +896,70 @@ says no public `/forms` release unless that authorization is recovered there.
 | C | The privacy line on the upload screen, drafted from Luis's rule (EN; Filipino from the Filipino owner after): "Files you upload are kept in Tala's private storage. Other teachers can't see them. They stay until you delete them or your account." | Luis | uploads release |
 | D | The uploads owner's question: should class-list files a teacher imports (pupils' names) also be kept in R2, or stay read and discarded as now (owner advises as now)? | Luis | none now; until answered, as now |
 | E | The uploads owner's question: did "user files" mean saving each Word or PowerPoint file a teacher downloads? Nothing downloaded is stored today. | Luis | none now; until answered, nothing stored |
+
+## 25 Nov 2026 11:05–11:47 UTC: the R2 change built, checked on real R2 and rehearsed (not deployed)
+
+**Identity.** Commit `e6e23c1670f5db7a0e289876cdfa9603c5c26446`, parent `d1eb90438`, tree `c75458f8e4044d105083db5e94f3df8d767a7fbe`, 22
+files; local branch `tala-v1-uploads-r2`, worktree `/home/b11/code/tala-wt/r2`. Release candidate (local, not pushed,
+not tagged): branch `tala-v1-uploads` = `5e5195963`, the notes tip merged with it; it differs from `e6e23c167` only in
+notes and deploy tooling. It carries the multi-grade commit `de6bd222e` beneath the uploads commits.
+
+**What it does** (the feature owner's design; details in `packages/tala-server/deploy/r2/README.md`): one object per
+upload at `<prefix>teachers/<account>/uploads/<upload>/original` in `hiraia-archive`, written with no overwrite,
+read back and checked before it is recorded; downloads checked against the SHA-256 before their last piece; delete
+of a file or an account removes its objects, retried until done; nothing expires, lists or sweeps; staging and
+production take no upload without the settings. Keys: 24 h, one prefix, renewed every six hours from b11-dev by
+`deploy/r2/renew-r2-keys.py` + `tala-r2-renew.timer` (lingering is on for `b11`). The sandbox and limits unchanged.
+
+**Checked the way the host builds** (Node 22.23.4, frozen install, lockfile the same as the live release): types
+clean; tests core 303/303, server 356 + 1 opt-in skip (the earlier 338 + 1, plus 5 Signature V4 tests against AWS's
+published examples and 13 storage tests against a fake S3 server), web 94/94; production build clean.
+
+**Real R2, `tala/rehearsal/`, the server's own client, synthetic bytes** (`scripts/decks/r2-check.ts`): 12 of 12,
+twice (with a key from the earlier tool and one from the new kit): write with `If-None-Match` and Content-MD5, read
+back whole and in 512 KiB pieces, 412 on a second write, a wrong checksum is "damaged", 403 outside the prefix,
+removed, 404. A 45-second key refused after its end (403 `SignatureDoesNotMatch`); with a renewed file renamed into
+place the next request succeeded, no restart.
+
+**Rehearsal machine** (Ubuntu 24.04.5, systemd 255.4-1ubuntu8.18 and Node 22.22.0 as on production; kernel
+6.8.0-149 there against 6.8.0-147 on production; built as `deploy.sh` builds; tunnels only):
+- **No R2 setting, staging**: migration `decks:005_upload_objects` applied (17 migrations, 33 tables);
+  `deck_upload_storage_off` logged; a new upload refused `503 uploads_off`; an upload kept in the database by the
+  earlier candidate still downloaded.
+- **R2 on**: key installed by the kit's own install step (root:tala 0640, checksum equal); that earlier upload
+  (648,274 bytes) moved to R2, read back, its database pieces removed; `r2-verify.ts` as the service user: ok.
+- **The owner's browser walk, real slide pictures**: English 38/38, Filipino 38/38 (the original byte for byte from
+  R2; another teacher 404 on all six routes, an empty list).
+- **Hostile set and one minute of stress at 15 MiB**: first run 34/36: health slow 10 of 845 times (longest 4.36 s)
+  with the measuring thread's own timer 3.84 s late (CPU pressure in the VM avg60 15 %, on the devbox 18 %); the
+  control on `d1eb90438` right after: 36/36 (longest 253 ms); the candidate again: 36/36 (1,025 health answers, the
+  longest 160 ms, timer at most 20 ms late; memory group peak 521 MB of 1 GiB; no kill, no restart). Not reproduced;
+  recorded as it happened, not explained away.
+- **Drawing service states**: 20/20 (service stopped: saving, the edited download and the original, identical).
+- **Live outage** (the VM's HTTPS egress blocked): finishing answered `503 upload_storage_unavailable` after 11.1 s
+  with every piece kept; downloads `503 download_storage_unavailable` at once; health 2 ms; saving 200; delete 200.
+  Restored: finishing again resumed from the pieces, the file back byte for byte; log: unavailable once, back once.
+- **Expired key on the running site**: the next download `503`, logged as refused 403; the kit renewed the file,
+  the next request 200 with the same bytes, 0 restarts.
+- **Rollback**: `tala-v1-demo.13` started clean (0 errors; the uploads' tables untouched; its routes absent), then
+  forward: 0 migrations, 0 errors, both objects verified ok.
+- **Cleanup**: every rehearsal upload deleted through the API; their objects removed by the server; the outage's
+  uncertain write removed a second time ten minutes later (11:46:38); the table of intents empty; R2 lists 0 objects
+  under `tala/rehearsal/`. The rehearsal machine is powered off again.
+
+**The release candidate `5e5195963`, checked the way the host builds**: the same results (types clean; core 303,
+server 356 + 1 opt-in skip, web 94; build clean with `/lessons/combine`).
+
+**Left for a later release**: the cosmetic cover defect found on production (a wrapped title's last line under the
+DRAFT label: the cover's text box ends at 6.5 in, the label starts at 6.25 in). The fix (end the text above the label
+when it is shown) moves every draft cover in every teacher's copy and download, so it gets its own visual check
+rather than riding along with these rehearsed releases.
+
+**Not repeated, because the code is byte for byte the same as round 9**: the sandbox (`deploy/render/**` and
+`upload-render.ts`: 100 of 100 as root), the multi-grade walk (19/19) and the 206 pack editions (no multi-grade,
+packs or library code changed; the only web change is the privacy line).
+
+**Still waiting** (asked once today): A (Word and PowerPoint application checks) and C (the privacy line's words).
+The Filipino version of C came from the Filipino owner (bridge `4a8729cc…`): "Nakatabi sa pribadong storage ng Tala
+ang mga file na in-upload mo. Hindi makikita ng ibang guro ang mga ito. Mananatili roon ang mga file hanggang
+burahin mo ang mga ito o ang account mo." Both texts are in the candidate as drafts.
