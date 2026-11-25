@@ -1122,3 +1122,18 @@ them. They stay until you delete them or your account." FIL (the Filipino owner)
 Tala ang mga file na in-upload mo. Hindi makikita ng ibang guro ang mga ito. Mananatili roon ang mga file hanggang
 burahin mo ang mga ito o ang account mo." When answered: the window's stages (apt and the sandbox installer, the
 key, the settings, deploy, verify, the key-renewal timer on b11-dev) in about 45 minutes.
+
+## 25 Nov 2026 23:45 UTC: Luis approves the upload privacy wording (C resolved); the uploads release is authorized
+
+**Luis, relayed by the coordinator in thread `ddb4d22d`, verbatim:** "C looks good to go". The coordinator's note:
+Luis approves the upload-screen privacy wording and authorizes the prepared teacher-uploads release; A remains
+waived, not passed; reconcile candidate `086463ce5` with the current release and deploy through the established
+backup, release and rollback process; preserve the public forms page, the multi-grade features and private
+authentication; no unrelated curriculum work; no further business approval is needed for this scope.
+
+- **C — resolved: approved.** The words on the upload screen (`up.private`) as drafted: EN "Files you upload are
+  kept in Tala's private storage. Other teachers can't see them. They stay until you delete them or your account.";
+  FIL (the Filipino owner) "Nakatabi sa pribadong storage ng Tala ang mga file na in-upload mo. Hindi makikita ng ibang
+  guro ang mga ito. Mananatili roon ang mga file hanggang burahin mo ang mga ito o ang account mo."
+- **waiting_for_user: none for this release.** A stays waived (not passed). D and E stay optional (defaults: class
+  lists read and discarded; no download stored).
