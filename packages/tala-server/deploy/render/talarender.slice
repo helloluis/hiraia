@@ -1,0 +1,16 @@
+# Tala slide pictures: what drawing may use in total. Goes to /etc/systemd/system/talarender.slice (install.sh).
+#
+# A slice of its own at the top level (the name has no dash on purpose: "tala-render.slice" would sit inside a
+# "tala.slice"). The web app is not in it: a job that hits a ceiling is killed and the site does not notice.
+# One job runs at a time, so these equal the job's own ceilings; they also hold if that ever changes. Drawing gives
+# way to every other service when the host is busy.
+[Unit]
+Description=Tala slide pictures: ceiling for everything drawing uses
+
+[Slice]
+MemoryMax=768M
+MemorySwapMax=0
+TasksMax=160
+CPUQuota=100%
+CPUWeight=20
+IOWeight=20

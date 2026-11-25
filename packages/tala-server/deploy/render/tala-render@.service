@@ -1,0 +1,118 @@
+# Tala slide pictures: ONE drawing job, in a sandbox. Goes to /etc/systemd/system/tala-render@.service (install.sh).
+#
+# Started only by tala-render.socket, once per connection of the web app, and gone when the job ends. There is no
+# long-running renderer. A job turns one teacher's PowerPoint file into pictures with LibreOffice; the file is
+# untrusted and LibreOffice is assumed to be exploitable, so the job gets:
+#   - a user of its own (tala-render) that owns nothing and runs nothing else; no privileges, none to be gained
+#   - no network of any kind
+#   - a root file system that holds programs and fonts only, read-only. /var/lib/tala, /etc/tala, /home, /run and
+#     every other service's files are not hidden from it: they are not there. Of /usr/local (the administrator's own
+#     programs) and of the control-group tree (every service's name and numbers) it sees its own corner only
+#   - one place to write: /tmp, a small space in memory that is made for the job and disappears with it
+#   - ceilings on memory, processes, processor time, file size and run time that the kernel and systemd enforce
+# One job at a time (the socket allows one connection), so a job never shares its user with another teacher's job.
+#
+# render-job.mjs checks every one of these from the inside before it reads the file and refuses to draw if one is
+# missing. So a mistake in this unit, or a line this systemd applies differently, turns pictures off; it never
+# turns the sandbox off. README.md in this folder says how each line was tested.
+#
+# DO NOT add ProtectSystem=, ReadOnlyPaths=/ or DynamicUser= (which forces ProtectSystem=strict). On systemd 252
+# their read-only "/" takes the place of the empty root below, and the job would see the host's whole file system
+# (tested; render-job.mjs then refuses to draw). The root below is already read-only and has nothing to protect.
+[Unit]
+Description=Tala slide pictures: one sandboxed drawing job
+CollectMode=inactive-or-failed
+
+[Service]
+ExecStart=/usr/bin/node /usr/local/lib/tala-render/render-job.mjs
+Slice=talarender.slice
+StandardInput=null
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=tala-render
+Environment=LANG=C.UTF-8
+Environment=TALA_RENDER_SOFFICE=/usr/lib/libreoffice/program/soffice.bin
+Environment=TALA_RENDER_PDFTOPPM=/usr/bin/pdftoppm
+Environment=TALA_RENDER_PDFINFO=/usr/bin/pdfinfo
+
+# ---- who the job is
+User=tala-render
+Group=tala-render
+PrivateUsers=yes
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+AmbientCapabilities=
+RestrictSUIDSGID=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+LockPersonality=yes
+KeyringMode=private
+RemoveIPC=yes
+UMask=0077
+
+# ---- what the job sees
+# An empty root, then only these, read-only.
+TemporaryFileSystem=/:ro
+BindReadOnlyPaths=/usr /bin /sbin /lib /lib64
+# /usr/local is the administrator's own corner of the host (scripts and tools of this machine). The job sees its own
+# program there and nothing else. (So fonts for drawing are installed as packages, under /usr/share/fonts.)
+TemporaryFileSystem=/usr/local:ro,nosuid,nodev,size=64k,nr_inodes=16,mode=0555
+BindReadOnlyPaths=/usr/local/lib/tala-render
+BindReadOnlyPaths=/etc/fonts /etc/ld.so.cache -/etc/libreoffice -/var/cache/fontconfig
+# The one place to write: in memory, small, gone with the job. Its pages count against MemoryMax below.
+TemporaryFileSystem=/tmp:rw,nosuid,nodev,noexec,size=384M,nr_inodes=8192,mode=1777
+# /dev/shm would be the host's own shared memory folder, and /run a second, unbounded place to write: both are
+# replaced by empty read-only ones.
+TemporaryFileSystem=/dev/shm:ro,nosuid,nodev,noexec,size=64k,nr_inodes=8,mode=0555
+TemporaryFileSystem=/run:ro,nosuid,nodev,noexec,size=64k,nr_inodes=8,mode=0555
+PrivateMounts=yes
+PrivateDevices=yes
+PrivateIPC=yes
+ProtectProc=invisible
+ProcSubset=pid
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+# The control-group tree names every service of the host and shows what each one uses. The job sees its own group
+# in it, read-only (render-job.mjs reads its ceilings there), and nothing else: not its slice, not another service.
+# These two lines take the place of ProtectControlGroups=yes, which makes the tree read-only but leaves all of it
+# readable. Do not add ProtectControlGroups= back: it is a rule for the same path and would win over the first line.
+TemporaryFileSystem=/sys/fs/cgroup:ro,nosuid,nodev,noexec,size=64k,nr_inodes=16,mode=0555
+BindReadOnlyPaths=/sys/fs/cgroup/talarender.slice/%n
+ProtectClock=yes
+
+# ---- no network
+PrivateNetwork=yes
+RestrictAddressFamilies=AF_UNIX
+IPAddressDeny=any
+
+# ---- system calls: what an ordinary service needs, minus privileged ones and ones that change resource limits
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources
+# io_uring is a second way into the kernel's file and network code that the lists above let through. Nothing here
+# needs it (Node falls back to its thread pool).
+SystemCallFilter=~io_uring_setup io_uring_enter io_uring_register
+SystemCallErrorNumber=EPERM
+
+# ---- ceilings for the job (talarender.slice holds the same line for everything drawing ever uses)
+MemoryMax=768M
+MemorySwapMax=0
+TasksMax=128
+CPUQuota=100%
+LimitCPU=100
+LimitFSIZE=268435456
+LimitNOFILE=512
+# 1, not 0: a crashed LibreOffice must leave nothing behind, and its memory holds a teacher's slides. With 0 the
+# kernel writes no core FILE but still starts a crash handler it is told to pipe to (apport, systemd-coredump),
+# which runs as root outside this box and keeps the memory image. A limit of exactly 1 is the kernel's own "do
+# not" for such handlers (fs/coredump.c), and too small for any file.
+LimitCORE=1
+# A job that is still there after this long is killed, with everything it started.
+RuntimeMaxSec=120
+TimeoutStopSec=5
+KillMode=control-group
+KillSignal=SIGKILL
+OOMPolicy=kill
+OOMScoreAdjust=900
+Nice=10

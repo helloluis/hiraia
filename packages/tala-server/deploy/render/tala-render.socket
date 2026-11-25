@@ -1,0 +1,21 @@
+# Tala slide pictures: the door. Goes to /etc/systemd/system/tala-render.socket (install.sh).
+#
+# A socket file, not a port: nothing on the network can reach it. Only root and the group of the web app may open
+# it (0660 root:tala). Each connection is one drawing job in its own tala-render@.service. ONE at a time: while a
+# job runs, another connection is turned away at once (the web app answers "busy" and the editor tries again a
+# little later). That is on purpose: two teachers' files are never in the machine's drawing user at the same time.
+[Unit]
+Description=Tala slide pictures: the door for drawing jobs (web app only)
+
+[Socket]
+ListenStream=%t/tala-render/render.sock
+SocketUser=root
+SocketGroup=tala
+SocketMode=0660
+DirectoryMode=0755
+Accept=yes
+MaxConnections=1
+RemoveOnStop=yes
+
+[Install]
+WantedBy=sockets.target

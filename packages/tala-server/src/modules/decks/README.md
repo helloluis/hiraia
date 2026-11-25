@@ -68,6 +68,10 @@ and drawings.
 Migration `decks:001_init` creates `decks_decks` and `decks_media` (both `STRICT`). It is additive: an older
 release simply ignores the two tables. No new directory, environment variable or setting on the host.
 
+Teachers' own uploaded files (`uploads.ts`, migrations `decks:002`–`decks:005`) are kept in a private R2 bucket
+(`r2.ts`, `s3-sign.ts`, settings `TALA_R2_*`), one object per upload; `decks_upload_objects` records every object
+written or still to be removed. See `packages/tala-server/deploy/r2/README.md`.
+
 ## Tests
 
 `decks.test.ts` (routes, two teachers, conflicts, library snapshots, the download, account hooks), `pptx.test.ts`

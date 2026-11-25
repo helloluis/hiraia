@@ -1,0 +1,11 @@
+# Every six hours (keys last 24): three renewals can fail before uploads stop. Catches up after downtime.
+[Unit]
+Description=Renew the Tala web server's R2 keys every six hours
+
+[Timer]
+OnCalendar=*-*-* 00/6:17:00
+RandomizedDelaySec=120
+Persistent=true
+
+[Install]
+WantedBy=timers.target

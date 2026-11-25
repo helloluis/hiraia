@@ -1,5 +1,6 @@
 import type { StringKey } from './en';
 import { slidesFil } from './parts/slides.fil';
+import { uploadsFil } from './parts/uploads.fil';
 import { uiFil } from './parts/ui.fil';
 import { weekFil } from './parts/week.fil';
 import { combineFil } from './parts/combine.fil';
@@ -980,4 +981,5 @@ export const fil = {
   ...weekFil,
   ...combineFil,
   ...slidesFil,
+  ...uploadsFil,
 } satisfies Record<StringKey, string>;

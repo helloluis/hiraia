@@ -45,8 +45,10 @@ import {
   type DeckSeed,
   type DeckStore,
 } from './store';
+import { createUploads, type UploadOptions } from './uploads';
 
-export type DecksOptions = PacksOptions;
+/** `uploads`: limits and the picture renderer for a teacher's own uploaded files (uploads.ts). */
+export type DecksOptions = PacksOptions & { uploads?: UploadOptions };
 
 const MESSAGES = {
   notFound: 'We could not find this copy of the slides.',
@@ -97,6 +99,8 @@ const notFound = () => new HttpError('not_found', MESSAGES.notFound, { reason: '
 
 export function createDecksModule(options: DecksOptions = {}): ServerModule {
   const lib = packLibrary(options);
+  // A teacher's own uploaded PowerPoint files: their own tables and routes, the same owner-only rule.
+  const uploads = createUploads(options.uploads);
 
   /** Everything a copy takes from the library's current original; throws plainly when it cannot be copied now. */
   const seedFromLibrary = (
@@ -220,8 +224,10 @@ export function createDecksModule(options: DecksOptions = {}): ServerModule {
 
   return {
     name: 'decks',
-    migrations: decksMigrations,
+    migrations: [...decksMigrations, ...uploads.migrations],
+    start: uploads.start,
     handlers: {
+      ...uploads.handlers,
       'decks.list': (ctx) => ({ decks: storeFor(ctx.db).list(requireUser(ctx).id) }),
 
       'decks.create': (ctx, { body }) => {
@@ -397,10 +403,12 @@ export function createDecksModule(options: DecksOptions = {}): ServerModule {
     onAccountDeleted: (deps, userId) => {
       const store = storeFor(deps.db);
       if (store.removeOwner(userId) > 0) store.sweepMedia();
+      uploads.onAccountDeleted?.(deps, userId);
     },
     /** Two accounts of one teacher joined: the copies follow (both are kept when each had one of the same pack). */
     onAccountMerged: (deps, fromUserId, toUserId) => {
       storeFor(deps.db).moveOwner(fromUserId, toUserId);
+      uploads.onAccountMerged?.(deps, fromUserId, toUserId);
     },
   };
 }

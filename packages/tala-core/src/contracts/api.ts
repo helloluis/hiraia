@@ -13,6 +13,17 @@ import { CalendarPreset, CheckSummary, CurriculumIndex, CurriculumPack } from '.
 import { PackDetail, PackIndex, PackLang, PackSubject } from './packs';
 import { DeckCreateRequest, DeckDetail, DeckList, DeckSaveRequest, DeckSaveResult } from './decks';
 import {
+  UploadBeginRequest,
+  UploadChunkRequest,
+  UploadChunkResult,
+  UploadedDeck,
+  UploadedDeckList,
+  UploadRenderResult,
+  UploadSaveRequest,
+  UploadSaveResult,
+  UploadSession,
+} from './deck-uploads';
+import {
   ArtifactDetail,
   ArtifactSearchQuery,
   ArtifactSummary,
@@ -641,6 +652,106 @@ export const API = {
   'decks.pptx': route({
     method: 'GET',
     path: '/decks/:deckId/pptx',
+    auth: 'user',
+    owner: 'decks',
+    response: z.unknown(),
+    binary: true,
+  }),
+
+  /*
+   * deck uploads — a teacher's own PowerPoint file, edited in Tala (contracts/deck-uploads.ts). Owner-only.
+   * The file travels in pieces (JSON, base64) so a weak connection resumes instead of starting again.
+   */
+  'decks.uploads.list': route({
+    method: 'GET',
+    path: '/deck-uploads',
+    auth: 'user',
+    owner: 'decks',
+    response: UploadedDeckList,
+  }),
+  'decks.uploads.begin': route({
+    method: 'POST',
+    path: '/deck-upload-sessions',
+    auth: 'user',
+    owner: 'decks',
+    body: UploadBeginRequest,
+    response: UploadSession,
+  }),
+  /** One piece of the file. Sending a piece again is harmless. */
+  'decks.uploads.chunk': route({
+    method: 'PUT',
+    path: '/deck-upload-sessions/:sessionId/chunks/:index',
+    auth: 'user',
+    owner: 'decks',
+    body: UploadChunkRequest,
+    response: UploadChunkResult,
+  }),
+  /** All pieces are in: check the file and read it. A refused file answers `invalid_input` with `details.reason`. */
+  'decks.uploads.finish': route({
+    method: 'POST',
+    path: '/deck-upload-sessions/:sessionId/finish',
+    auth: 'user',
+    owner: 'decks',
+    response: UploadedDeck,
+  }),
+  'decks.uploads.cancel': route({
+    method: 'DELETE',
+    path: '/deck-upload-sessions/:sessionId',
+    auth: 'user',
+    owner: 'decks',
+    response: Ok,
+  }),
+  'decks.uploads.get': route({
+    method: 'GET',
+    path: '/deck-uploads/:uploadId',
+    auth: 'user',
+    owner: 'decks',
+    response: UploadedDeck,
+  }),
+  'decks.uploads.save': route({
+    method: 'PUT',
+    path: '/deck-uploads/:uploadId',
+    auth: 'user',
+    owner: 'decks',
+    body: UploadSaveRequest,
+    response: UploadSaveResult,
+  }),
+  'decks.uploads.delete': route({
+    method: 'DELETE',
+    path: '/deck-uploads/:uploadId',
+    auth: 'user',
+    owner: 'decks',
+    response: Ok,
+  }),
+  /** The file exactly as it was uploaded. */
+  'decks.uploads.original': route({
+    method: 'GET',
+    path: '/deck-uploads/:uploadId/original',
+    auth: 'user',
+    owner: 'decks',
+    response: z.unknown(),
+    binary: true,
+  }),
+  /** The uploaded file with the saved changes written in. */
+  'decks.uploads.pptx': route({
+    method: 'GET',
+    path: '/deck-uploads/:uploadId/pptx',
+    auth: 'user',
+    owner: 'decks',
+    response: z.unknown(),
+    binary: true,
+  }),
+  /** Draw pictures of the slides as saved now (only where the server is set up to). */
+  'decks.uploads.render': route({
+    method: 'POST',
+    path: '/deck-uploads/:uploadId/render',
+    auth: 'user',
+    owner: 'decks',
+    response: UploadRenderResult,
+  }),
+  'decks.uploads.preview': route({
+    method: 'GET',
+    path: '/deck-uploads/:uploadId/previews/:slideId',
     auth: 'user',
     owner: 'decks',
     response: z.unknown(),

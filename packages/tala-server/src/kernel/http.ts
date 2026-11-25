@@ -143,7 +143,7 @@ export function jsonResponse(
   return new Response(JSON.stringify(body), { status, headers });
 }
 
-export function binaryResponse(result: BinaryResponse, requestId: string): Response {
+export function binaryResponse(result: BinaryResponse, requestId: string, gone?: AbortSignal): Response {
   const headers = baseHeaders(requestId);
   headers.set(
     'content-type',
@@ -158,8 +158,118 @@ export function binaryResponse(result: BinaryResponse, requestId: string): Respo
   // Only a private, time-limited policy may replace the default: never a shared cache, never forever.
   if (result.cacheControl && /^private, max-age=\d{1,7}$/.test(result.cacheControl))
     headers.set('cache-control', result.cacheControl);
+  if (result.held) {
+    headers.set('content-length', String(result.held.pieces ? result.held.pieces.bytes : result.binary.length));
+    return new Response(heldBody(result.binary, result.held, gone), { status: 200, headers });
+  }
   // Copy into a fresh ArrayBuffer-backed view so the Response owns its bytes.
   return new Response(new Uint8Array(result.binary), { status: 200, headers });
+}
+
+/** Bytes of a counted answer handed to the connection at a time. */
+const HELD_PIECE_BYTES = 64 * 1024;
+/** How long a connection may go without asking for the next piece before the answer is let go. */
+const HELD_STALL_MS = 30_000;
+
+/**
+ * The body of an answer its route keeps count of (`BinaryResponse.held`): pieces are made only as the connection
+ * asks for them, each a copy, so what waits in the connection's own buffers is a piece and not the whole answer.
+ */
+function heldBody(binary: Uint8Array, held: NonNullable<BinaryResponse['held']>, gone?: AbortSignal): ReadableStream<Uint8Array> {
+  const total = held.pieces ? held.pieces.bytes : binary.length;
+  const stallMs = held.stallMs ?? HELD_STALL_MS;
+  let bytes: Uint8Array | null = held.pieces ? null : binary;
+  let at = 0;
+  let over = false;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  let stalled: ReturnType<typeof setTimeout> | undefined;
+  let onGone: (() => void) | undefined;
+  const letGo = () => {
+    if (over) return;
+    over = true;
+    bytes = null;
+    clearTimeout(timer);
+    clearTimeout(stalled);
+    if (onGone) gone?.removeEventListener('abort', onGone);
+    try {
+      held.release();
+    } catch {
+      /* a route's bookkeeping must not break an answer */
+    }
+  };
+  /** Let go and break the answer off: its room is free from this moment, whatever the connection does next. */
+  const cut = (controller: ReadableStreamDefaultController<Uint8Array>, why: string) => {
+    if (over) return;
+    letGo();
+    try {
+      controller.error(new Error(why));
+    } catch {
+      /* the stream is already closed or broken off */
+    }
+  };
+  const waitForNextPiece = (controller: ReadableStreamDefaultController<Uint8Array>) => {
+    clearTimeout(stalled);
+    stalled = setTimeout(() => cut(controller, 'This download was not being taken and was stopped.'), stallMs);
+    (stalled as { unref?: () => void }).unref?.();
+  };
+  /** The next piece: a copy cut from the block of memory, or what the source gives (perhaps later). Null at the end. */
+  const next = (): Uint8Array | null | Promise<Uint8Array | null> => {
+    if (held.pieces) return at >= total ? null : held.pieces.next();
+    if (bytes === null || at >= total) return null;
+    return bytes.slice(at, Math.min(total, at + HELD_PIECE_BYTES));
+  };
+  return new ReadableStream<Uint8Array>(
+    {
+      start(controller) {
+        if (total === 0) {
+          letGo();
+          controller.close();
+          return;
+        }
+        // A client that left before its answer was ready (the job took a while): nothing is held for it.
+        if (gone?.aborted) return cut(controller, 'The client has gone.');
+        onGone = () => cut(controller, 'The client has gone.');
+        gone?.addEventListener('abort', onGone, { once: true });
+        timer = setTimeout(() => cut(controller, 'This download took too long and was stopped.'), held.withinMs);
+        (timer as { unref?: () => void }).unref?.();
+        waitForNextPiece(controller);
+      },
+      async pull(controller) {
+        if (over) return;
+        let piece: Uint8Array | null;
+        try {
+          const coming = next();
+          if (coming instanceof Promise) {
+            // The wait is on the source now, not on the connection: it is not a stall. (The source has its own
+            // time limit, and `withinMs` still ends the whole answer.)
+            clearTimeout(stalled);
+            piece = await coming;
+          } else piece = coming;
+        } catch {
+          piece = null;
+        }
+        // Let go while the piece was on its way (the client left, the time was up): nothing more is sent.
+        if (over) return;
+        // A source that ends early, or gives more than it said, is not sent on as if it were the whole answer.
+        if (piece === null || piece.length === 0 || at + piece.length > total) {
+          letGo();
+          controller.error(new Error('This download could not be read to its end.'));
+          return;
+        }
+        controller.enqueue(piece);
+        at += piece.length;
+        if (at >= total) {
+          letGo();
+          controller.close();
+        } else waitForNextPiece(controller);
+      },
+      cancel() {
+        letGo();
+      },
+    },
+    // Nothing is made ahead of being asked for.
+    { highWaterMark: 0 }
+  );
 }
 
 export function errorResponse(

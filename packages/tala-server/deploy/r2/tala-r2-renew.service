@@ -1,0 +1,10 @@
+# b11-dev, user unit of b11: install fresh 24-hour R2 keys for tala.hiraia.org (deploy/r2/README.md).
+[Unit]
+Description=Renew the Tala web server's R2 keys on b11-apps (one prefix of hiraia-archive, 24 h)
+After=network-online.target
+
+[Service]
+Type=oneshot
+# The parent credential stays on b11-dev; only keys for tala/production/ travel, on ssh's standard input.
+ExecStart=%h/.venvs/hiraia-publish/bin/python -I %h/.local/share/tala-r2/renew-r2-keys.py --parent %h/code/hiraia/.env.cloudflare.local --prefix tala/production/ --ttl-hours 24 --install-on b11-apps
+TimeoutStartSec=180

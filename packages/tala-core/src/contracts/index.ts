@@ -9,3 +9,4 @@ export * from './api';
 export * from './client';
 export * from './packs';
 export * from './decks';
+export * from './deck-uploads';

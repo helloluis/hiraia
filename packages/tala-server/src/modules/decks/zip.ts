@@ -52,6 +52,8 @@ interface CentralEntry {
   compressedSize: number;
   size: number;
   localOffset: number;
+  /** Where the entry's stored bytes begin (after its local header). */
+  dataStart: number;
 }
 
 export interface ZipArchive {
@@ -62,6 +64,12 @@ export interface ZipArchive {
   read(name: string): Uint8Array;
   /** An entry as UTF-8 text. */
   text(name: string): string;
+  /** An entry as stored (not inflated), to carry it into another archive unchanged. */
+  raw(name: string): ZipRawEntry;
+  /** The size an entry inflates to, as the directory states it (checked when the entry is read); -1 for no such entry. */
+  sizeOf(name: string): number;
+  /** Total bytes the archive's directory says it inflates to. */
+  declaredBytes: number;
 }
 
 /** Open an archive held in memory. Throws ZipError for anything that is not a plain, sane ZIP. */
@@ -112,7 +120,8 @@ export function readZip(
     const localOffset = buf.readUInt32LE(p + 42);
     if (p + 46 + nameLen + extraLen + commentLen > end)
       throw new ZipError('The ZIP directory is damaged.');
-    const name = buf.toString('utf8', p + 46, p + 46 + nameLen);
+    const nameAt = p + 46;
+    const name = buf.toString('utf8', nameAt, nameAt + nameLen);
     p += 46 + nameLen + extraLen + commentLen;
     if (name.endsWith('/')) continue; // a folder entry carries nothing
     if (flags & 0x1) throw new ZipError('Encrypted ZIP files are not supported.');
@@ -123,18 +132,29 @@ export function readZip(
     declared += size;
     if (declared > maxBytes)
       throw new ZipError('This ZIP file would unpack to more than is allowed.');
-    if (!entries.has(name)) names.push(name);
-    entries.set(name, { name, method, crc, compressedSize, size, localOffset });
+    // One name, one entry. With two, one program reads the first and another the second: what is checked here
+    // would not be what PowerPoint opens.
+    if (entries.has(name)) throw new ZipError('This ZIP file names an entry twice.');
+    // The entry's own header must say the same as the directory, for the same reason.
+    const h = localOffset;
+    if (h + 30 > cdOffset || buf.readUInt32LE(h) !== SIG_LOCAL) throw new ZipError('A ZIP entry is damaged.');
+    const localNameLen = buf.readUInt16LE(h + 26);
+    const dataStart = h + 30 + localNameLen + buf.readUInt16LE(h + 28);
+    if (dataStart + compressedSize > cdOffset) throw new ZipError('A ZIP entry is damaged.');
+    if (localNameLen !== nameLen || buf.compare(buf, nameAt, nameAt + nameLen, h + 30, h + 30 + nameLen) !== 0 || buf.readUInt16LE(h + 8) !== method)
+      throw new ZipError('A ZIP entry is described differently in two places.');
+    names.push(name);
+    entries.set(name, { name, method, crc, compressedSize, size, localOffset, dataStart });
   }
+  // No two entries may share bytes. A file that points many names at the same bytes is small to send and would be
+  // copied out once per name when the edited file is written.
+  const spans = [...entries.values()].map((e) => [e.localOffset, e.dataStart + e.compressedSize] as const).sort((a, b) => a[0] - b[0]);
+  for (let i = 1; i < spans.length; i++) if (spans[i]![0] < spans[i - 1]![1]) throw new ZipError('Entries of this ZIP file overlap.');
 
   const read = (name: string): Uint8Array => {
     const e = entries.get(name);
     if (!e) throw new ZipError(`The ZIP file has no entry "${name}".`);
-    const h = e.localOffset;
-    if (h + 30 > buf.length || buf.readUInt32LE(h) !== SIG_LOCAL)
-      throw new ZipError('A ZIP entry is damaged.');
-    const start = h + 30 + buf.readUInt16LE(h + 26) + buf.readUInt16LE(h + 28);
-    if (start + e.compressedSize > buf.length) throw new ZipError('A ZIP entry is damaged.');
+    const start = e.dataStart;
     const raw = buf.subarray(start, start + e.compressedSize);
     let out: Buffer;
     if (e.method === 0) {
@@ -152,26 +172,59 @@ export function readZip(
     return new Uint8Array(out.buffer, out.byteOffset, out.byteLength);
   };
 
+  const raw = (name: string): ZipRawEntry => {
+    const e = entries.get(name);
+    if (!e) throw new ZipError(`The ZIP file has no entry "${name}".`);
+    return {
+      method: e.method,
+      crc: e.crc,
+      size: e.size,
+      bytes: new Uint8Array(buf.buffer, buf.byteOffset + e.dataStart, e.compressedSize),
+    };
+  };
+
   return {
     names,
     has: (name) => entries.has(name),
     read,
     text: (name) => Buffer.from(read(name)).toString('utf8'),
+    raw,
+    sizeOf: (name) => entries.get(name)?.size ?? -1,
+    declaredBytes: declared,
   };
+}
+
+/** An entry exactly as it is stored in an archive: still compressed, with the size and CRC its directory states. */
+export interface ZipRawEntry {
+  method: number;
+  crc: number;
+  size: number;
+  bytes: Uint8Array;
 }
 
 export interface ZipInput {
   /** Forward slashes, no leading slash, never a folder. */
   name: string;
-  data: Uint8Array | string;
+  /** New content. Ignored when `raw` is given. */
+  data?: Uint8Array | string;
+  /**
+   * An entry carried over from another archive without being inflated: its stored bytes go out exactly as they
+   * came in. This is how an edited deck keeps every untouched part bit for bit, whatever it is.
+   */
+  raw?: ZipRawEntry;
 }
 
-/** Build an archive. Entries are written in the order given; a name may appear only once. */
-export function writeZip(files: ZipInput[]): Uint8Array {
+/**
+ * Build an archive. Entries are written in the order given; a name may appear only once.
+ * `maxBytes`: the archive is given up, with a ZipError, as soon as it would be larger than this.
+ */
+export function writeZip(files: ZipInput[], limits: { maxBytes?: number } = {}): Uint8Array {
+  const maxBytes = limits.maxBytes ?? 0xfffffffe;
   if (files.length > 0xfffe) throw new ZipError('Too many entries for a ZIP file.');
   const seen = new Set<string>();
   const chunks: Buffer[] = [];
   const central: Buffer[] = [];
+  let centralBytes = 0;
   let offset = 0;
   for (const f of files) {
     if (
@@ -185,18 +238,33 @@ export function writeZip(files: ZipInput[]): Uint8Array {
     if (seen.has(f.name)) throw new ZipError(`"${f.name}" appears twice.`);
     seen.add(f.name);
     const name = Buffer.from(f.name, 'utf8');
-    const data =
-      typeof f.data === 'string'
-        ? Buffer.from(f.data, 'utf8')
-        : Buffer.from(f.data.buffer, f.data.byteOffset, f.data.byteLength);
-    // PNG is already deflated inside: storing it costs no size and no time.
-    const store = data.length === 0 || /\.(png|jpe?g|webp)$/i.test(f.name);
-    const body = store ? data : deflateRawSync(data, { level: 9 });
-    const crc = crc32(data);
     // Bit 11: the name is UTF-8 (only set when it is not plain ASCII).
     // eslint-disable-next-line no-control-regex
     const flags = /^[\x00-\x7f]*$/.test(f.name) ? 0 : 0x0800;
-    const method = store ? 0 : 8;
+    let body: Buffer;
+    let crc: number;
+    let method: number;
+    let data: { length: number };
+    if (f.raw) {
+      if (f.raw.method !== 0 && f.raw.method !== 8)
+        throw new ZipError('This ZIP file uses a compression method that is not supported.');
+      body = Buffer.from(f.raw.bytes.buffer, f.raw.bytes.byteOffset, f.raw.bytes.byteLength);
+      crc = f.raw.crc >>> 0;
+      method = f.raw.method;
+      data = { length: f.raw.size };
+    } else {
+      const input = f.data ?? '';
+      const plain =
+        typeof input === 'string'
+          ? Buffer.from(input, 'utf8')
+          : Buffer.from(input.buffer, input.byteOffset, input.byteLength);
+      // PNG is already deflated inside: storing it costs no size and no time.
+      const store = plain.length === 0 || /\.(png|jpe?g|webp)$/i.test(f.name);
+      body = store ? plain : deflateRawSync(plain, { level: 9 });
+      crc = crc32(plain);
+      method = store ? 0 : 8;
+      data = plain;
+    }
     if (offset > 0xfffffffe || data.length > 0xfffffffe || body.length > 0xfffffffe)
       throw new ZipError('Too large for a ZIP file.');
 
@@ -228,7 +296,10 @@ export function writeZip(files: ZipInput[]): Uint8Array {
     dir.writeUInt16LE(name.length, 28);
     dir.writeUInt32LE(offset, 42);
     central.push(dir, name);
+    centralBytes += dir.length + name.length;
     offset += 30 + name.length + body.length;
+    // Counted with the directory it will need, as it grows: nothing larger than allowed is ever put together.
+    if (offset + centralBytes + 22 > maxBytes) throw new ZipError('This archive would be larger than is allowed.');
   }
   const cd = Buffer.concat(central);
   if (offset + cd.length > 0xfffffffe) throw new ZipError('Too large for a ZIP file.');
