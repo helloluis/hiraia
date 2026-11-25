@@ -963,3 +963,27 @@ packs or library code changed; the only web change is the privacy line).
 The Filipino version of C came from the Filipino owner (bridge `4a8729cc…`): "Nakatabi sa pribadong storage ng Tala
 ang mga file na in-upload mo. Hindi makikita ng ibang guro ang mga ito. Mananatili roon ang mga file hanggang
 burahin mo ang mga ito o ang account mo." Both texts are in the candidate as drafts.
+
+### 11:48–11:57 UTC: a production difference the rehearsal machine hid, fixed and rehearsed again
+
+Preparing the window, the release owner read production's `/etc/tala`: **0700 root:root** (the rehearsal machine
+had 0755). The web server runs as `tala` and reads its R2 key file itself (to take renewed keys without a restart),
+so a key at `/etc/tala/r2-credentials.json`, the place agreed on 25 Nov, could never have been read on production:
+uploads would have failed at the first teacher's file. Nothing existing on the host is changed for it instead:
+
+- **Commit `f27868a55d1853ce0e868d3d1837e2628d4509cb`** (on `e6e23c167`, tree `62a05b43f60d869faea7a010e19e1188a0645123`):
+  the key lives in a folder of its own, `/etc/tala-r2` (root:tala 0750; file root:tala 0640); the renewal kit makes
+  the folder and refuses an install that the user `tala` cannot read; the server reads the key once at start and
+  says "cannot be reached by this server's user" when a folder bars it. Tests: server 356 + 1 opt-in skip (one more
+  check inside the credentials test), core 303, web 94.
+- **Release candidate `tala-v1-uploads` = `50f0868bd`** (local; notes tip `360448ff7` + `f27868a55`), checked the way
+  the host builds: types clean; core 303, server 356 + 1, web 94; build clean.
+- **Rehearsal machine set like production** (`/etc/tala` 0700 root:root): with the key at the old place the server
+  logged at start `deck_upload_storage_keys_unusable: the credentials file cannot be reached by this server's user`
+  (the failure production would have had, now visible at start); the kit installed the key in `/etc/tala-r2`
+  (folder root:tala 0750, file root:tala 0640, checked readable by `tala`, checksum equal); after the setting and a
+  restart the key was read at start; `r2-check.ts` as the user `tala` with only the `TALA_R2_*` settings, given on
+  standard input (so the endpoint is on no command line): 12 of 12 on real R2; the owner's English browser walk
+  38/38. The rehearsal folder in R2 is empty again (0 objects); the machine is powered off.
+- The window script (`/home/b11/tala-takeover-20261125/release-uploads/window-uploads.sh` on b11-dev) uses the new
+  place and checks the build set against `50f0868bd` before tagging.
