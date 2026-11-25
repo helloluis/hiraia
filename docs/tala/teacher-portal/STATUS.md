@@ -796,3 +796,63 @@ pupil, no real teacher's data. Production went from 3 to 4 accounts and from 1 t
   which is not an application check.
 - Cross-account checks used the one other private copy that exists on production only as a target that must
   answer 404; it was never opened. No second account was made.
+
+## 25 Nov 2026: takeover of the release owner's role by b11-dev:12af59a8 (Opus), replacing bcd615b4 (Fable)
+
+**Why.** Luis, relayed by the coordinator (thread `ddb4d22d`): "Assign Opus to finish off this work in Fable's place".
+`bcd615b4` hit a 529 (about 12:54 Manila), resumed, then ran out of usage credits after its R2 test (about 18:00
+Manila). It is idle with no pending permission. Its session, worktrees, evidence folders, approvals and attempt
+history are kept as they are; it is **not resumed** and is not a second writer. From now on the coordinator and
+single production release owner is `b11-dev:12af59a8-bcb2-4b40-af9b-da62a716244d`. A takeover, not a restart.
+
+**Ground truth at 10:24 UTC (18:24 PHT)**, read before any edit: `https://tala.hiraia.org/api/v1/health` answers
+`0.1.0+tala-v1-demo.13`, production; `tala.service` active, same process since 23 Nov 10:06:26 UTC, MemoryMax 1 GB;
+0 error lines since the withdrawal window; no renderer unit and no R2 setting on the host; deploy lock free; this
+worktree clean and equal to `origin/tala-v1-filipino` (`749d89c10`).
+
+**Carried over unchanged**: the mapping of Luis's four answers (section above); the withdrawal of four Filipino
+editions (done once at 09:47:49 UTC; not repeated, not undone); the release owner's test account (not duplicated;
+credentials stay in `~/.config/tala-release-test/`); multi-grade staged as `de6bd222e` (local branch
+`tala-v1-multigrade`); uploads held as `d1eb90438` (fallback `c6938a492`), 15 MiB per file, 50 MiB per account.
+
+**Owners told of the takeover** (10:31 UTC; replies now go to `12af59a8`): uploads and multi-grade `b11-002:f500f47c`
+(bridge `0b55d794…`, with one question: is the R2 change being built), forms `b11-002:2b7a1b9c` (`ee3e6f53…`),
+Filipino `b11-002:7964278f` (`43f1052b…`), Science source `b11-dev:0a1a3e5f` (Paseo message). The forms hand-over
+`118c66ca…` (10:14 UTC) reached `bcd615b4` after its credits ran out and was never answered; it is taken up below.
+
+## 25 Nov 2026: R2 storage for teachers' files: scope, bucket, and the key route proven on real R2
+
+Recovered from `bcd615b4`'s evidence (`/home/b11/tala-release-20261125/r2/` on b11-dev) and its bridge record; not
+recorded here before its credits ran out.
+
+- **Scope, from the feature owner's inventory** (bridge reply `b97b336e…`, 12:45 PH, read at `d1eb90438`; accepted
+  as the basis in `825b8319…`): the server keeps exactly one kind of file a teacher brings, the uploaded deck of
+  lane A (`.pptx`, `.potx`, `.ppsx`). It goes to R2, one object per upload at
+  `<TALA_R2_PREFIX>teachers/<account id>/uploads/<upload id>/original`; the database keeps the record, SHA-256, size
+  and key. Lane B (multi-grade) stores no file: its Word file is made in the browser. Nothing live stores a file.
+  Pictures of uploaded slides are a cache (never the only copy); drawings in teacher copies of pack decks are
+  Hiraia's own; plans, combined plans, edits and copies are database records; downloads (edited `.pptx`, pack
+  `.pptx`, plan PDF, account export, Word) are made on request and never stored. Explicit delete of an upload and
+  account deletion remove the objects; nothing else does. Two questions from the owner go to Luis: class-list
+  files (kept in R2, or read and discarded as now; owner advises as now) and whether downloads were meant to be
+  saved. Until he answers, neither changes.
+- **Bucket and folders (read-only look, 09:56 UTC)**: `hiraia-archive`, private (no public address, no custom
+  domain), only the default "abort unfinished multipart uploads after 7 days" lifecycle rule (no object expiry),
+  lock rules only on `objects/sha256/` and `snapshots/`, so deletes work under `tala/`. Folders `tala/production/`
+  (host) and `tala/rehearsal/` (rehearsal). No bucket, rule or other prefix was changed.
+- **Keys**: short-lived, derived locally (no network call) from the parent credential in the main checkout's
+  `.env.cloudflare.local` (names only: `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_ENDPOINT`), the same way as
+  `tools/reference-archive/mint_credentials.py`, limited to ONE prefix of `hiraia-archive`, object read-write (or
+  read-only), at most 24 h. Tool: `r2/mint-tala-r2.py` (refuses any other bucket or prefix; never prints a value;
+  output file 0600, never overwritten). Renewal from b11-dev to `/etc/tala/r2-credentials.json` (root:tala 0640,
+  replaced by rename) is the planned route; a bucket-scoped key that does not expire may replace it later.
+- **Route test on real R2, 09:59–10:00 UTC** (`route-test-20261125T095920Z-b7576e7e.txt`), synthetic 64 KiB object
+  under `tala/rehearsal/route-probe/…`: write 200; read back the same bytes; HEAD 200; a second write with
+  `If-None-Match: *` refused 412 and the first bytes kept; range 206; outside the folder (production folder, the
+  archive's folder, a look-alike prefix, bucket root, another bucket) 403 for read and write; bucket and account
+  listing 403; listing inside the folder allowed (not to be relied on); missing name 404; read-only key reads but
+  cannot write or delete (403); a 40-second key works, then after expiry is refused 403 (`SignatureDoesNotMatch`,
+  not `ExpiredToken`); delete 204, then 404; delete of a missing name also 204. The probe object is gone.
+- **State at 10:30 UTC**: the R2 change is NOT built. The owner's branch is still `d1eb90438` and no `TALA_R2` code
+  exists in its tree, although `825b8319…` (04:46 UTC) said build on the inventory and `cec15faa…` (10:01 UTC) sent
+  the measured facts. Asked the owner why (`0b55d794…`).
