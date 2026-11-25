@@ -1108,3 +1108,17 @@ the candidate checked the way the host builds (`875c6fc4f`: types clean; core 27
 records and stay readable). Evidence on b11-dev: `/home/b11/tala-takeover-20261125/release-mg/`.
 
 **Still open**: C (the upload privacy wording) — the uploads release waits only on it.
+
+**After demo.15 (22:55 UTC).** The uploads candidate is recut on the release line that now carries `/forms` and the
+multi-grade plan: `tala-v1-uploads` = `086463ce5` (`a6fecee2d` merged with `f27868a55`), checked the way the host
+builds: types clean; core 303, server 356 + 1 opt-in skip, web 94; build clean with `/forms` and `/lessons/combine`.
+The window script (`/home/b11/tala-takeover-20261125/release-uploads/window-uploads.sh`) checks its build set against
+it before tagging. The uploads/multi-grade owner (`b11-002:f500f47c`, at its usage limit until 1 Dec) was sent a
+record of both releases and of the R2 commits to review (bridge `e9cf9e9b…`).
+
+**waiting_for_user — the ONE remaining blocker**: **C**, the privacy line on the upload screen (owner: Luis; blocks:
+the uploads release only). Draft EN: "Files you upload are kept in Tala's private storage. Other teachers can't see
+them. They stay until you delete them or your account." FIL (the Filipino owner): "Nakatabi sa pribadong storage ng
+Tala ang mga file na in-upload mo. Hindi makikita ng ibang guro ang mga ito. Mananatili roon ang mga file hanggang
+burahin mo ang mga ito o ang account mo." When answered: the window's stages (apt and the sandbox installer, the
+key, the settings, deploy, verify, the key-renewal timer on b11-dev) in about 45 minutes.
