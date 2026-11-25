@@ -856,3 +856,43 @@ recorded here before its credits ran out.
 - **State at 10:30 UTC**: the R2 change is NOT built. The owner's branch is still `d1eb90438` and no `TALA_R2` code
   exists in its tree, although `825b8319…` (04:46 UTC) said build on the inventory and `cec15faa…` (10:01 UTC) sent
   the measured facts. Asked the owner why (`0b55d794…`).
+
+## 25 Nov 2026 10:40 UTC: the uploads owner is blocked until 1 Dec; the R2 change is built by the release owner
+
+**What stopped lane A.** The feature owner `b11-002:f500f47c` runs on Fable. Read on its host (its own Paseo log,
+read-only, because the bridge's `messages` request fails on this Paseo version): after `825b8319…` (04:46 UTC) it
+designed the whole R2 change, then stopped on `API Error: 529 Overloaded`; woken by `cec15faa…` (10:01 UTC) it
+refined the design and stopped on **"You've hit your Fable limit · resets Dec 1, 4am (Asia/Manila)"**; the takeover
+notice `0b55d794…` met the same limit. No line of the R2 change was written (branch still `d1eb90438`). Its design
+is kept privately on b11-dev (`/home/b11/tala-takeover-20261125/uploads-owner-log-tail400.txt`, 0600).
+
+**Decision (release owner, under Luis's "Assign Opus to finish off this work in Fable's place").** Rather than wait
+six days or start a replacement worker, the release owner implements the R2 change itself, following the owner's
+inventory and design point by point, as a further commit on top of `d1eb90438` (lane B untouched): worktree
+`/home/b11/code/tala-wt/r2`, local branch `tala-v1-uploads-r2`. The owner's commits, branches and worktree are not
+touched; when it is back it reviews the commit like any hand-over. The sandbox, its units and the 15 MiB / 50 MiB
+limits stay exactly as rehearsed.
+
+**Forms (lane of `b11-002:2b7a1b9c`): verified, held for the go-ahead.** Hand-over `118c66ca…` read back over the
+pinned route: bundle sha256 `fa5bb2fd…` (10,230,376 bytes), `SHA256SUMS` `cbf0b783…`, `EVIDENCE.SHA256SUMS`
+`373dc813…`, all equal to the owner's values; `git bundle verify` clean; commit `f425585bc`, tree `bc43c58a…`, one
+parent `6ebaf2c96`, 126 paths, all added, all under `packages/tala-web/src/app/forms/`,
+`packages/tala-web/public/forms/` or `docs/tala/forms/README.md`. Local release candidate `tala-v1-forms` =
+`585232d1e` (notes tip merged with it; differs from the owner's commit only in notes and deploy tooling). Checked the
+way the host builds (Node 22.23.4, frozen install, lockfile the same as the live release): types clean in all three
+packages; tests core 250/250, server 288 (+1 opt-in skip), web 82/82; production build clean with the static
+`/forms` route; the 123 public files byte-identical to the owner's manifest and nothing else. Its own build on a
+scratch database, signed out: `/forms` 200 with the "unofficial copies" notice, the ZIP and a PDF served
+byte-identical, `/api/v1/decks` 401, no cookie set. Not deployed: the forms owner recorded with `bcd615b4` that the
+release owner deploys after Luis's go-ahead reaches it in the coordinator's thread, and the brief of this takeover
+says no public `/forms` release unless that authorization is recovered there.
+
+**waiting_for_user (asked once, in the coordinator's thread `ddb4d22d`, 25 Nov ~10:50 UTC)**
+
+| # | Exact question | Owner | Dependent work |
+|---|---|---|---|
+| A | Original question 1, unchanged: Word and PowerPoint application checks. A person opens the samples (index link, expires 30 Nov) in Word / PowerPoint, Google Docs / Slides or WPS; or Luis says to ship without the check. | Luis | multi-grade release; uploads release |
+| B | Go-ahead for the public `/forms` page, here in this thread. | Luis | forms release |
+| C | The privacy line on the upload screen, drafted from Luis's rule (EN; Filipino from the Filipino owner after): "Files you upload are kept in Tala's private storage. Other teachers can't see them. They stay until you delete them or your account." | Luis | uploads release |
+| D | The uploads owner's question: should class-list files a teacher imports (pupils' names) also be kept in R2, or stay read and discarded as now (owner advises as now)? | Luis | none now; until answered, as now |
+| E | The uploads owner's question: did "user files" mean saving each Word or PowerPoint file a teacher downloads? Nothing downloaded is stored today. | Luis | none now; until answered, nothing stored |
