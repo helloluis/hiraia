@@ -1069,3 +1069,42 @@ explicitly waived rather than passed; C (the upload privacy wording) is not answ
   "Files you upload are kept in Tala's private storage. Other teachers can't see them. They stay until you delete them
   or your account."; FIL from the Filipino owner). Owner: Luis. Blocks: the uploads release only. D and E stay
   optional (defaults: class lists read and discarded; no download stored).
+
+## Multi-grade plan on production: 2026-11-25 22:51–22:53 UTC (26 Nov 06:51–06:53 PHT) — `tala-v1-demo.15`
+
+**Authority.** Luis's 23 Nov request (the agreed Tala improvements) and his 26 Nov waiver of the Word application
+check (A), the feature's only remaining gate.
+
+**Release.** Tag `tala-v1-demo.15` (tag object `616e11cc19643906b4b6fbd956f31946fe582321`) on commit
+`7673204c2e7e2c764e8260fcfaaf23e0de152c4b` = notes `230762496` merged with the owner's commit
+`de6bd222ead05526f6aec325efee092cc5f4937a` (tree `b6125b4d…`, the rehearsed tree), unchanged. Its build set equals
+the candidate checked the way the host builds (`875c6fc4f`: types clean; core 270, server 288 + 1 opt-in skip, web
+87; build clean with `/forms` and `/lessons/combine`); against `demo.14`, 31 files differ, all in `tala-core` and
+`tala-web`. `tala-v1-filipino` now fast-forwards to it, so later releases keep it (and `/forms`).
+
+**Window** (lock held 22:51:12–22:53:28 UTC; nothing else in flight): backup `/var/backups/tala/20261125T225143Z`
+(database integrity ok, 26 tables, settings copy equal, previous release `demo.14`; checksums verified);
+`deploy.sh tala-v1-demo.15` 22:51:46–22:52:11, live since **22:52:10 UTC**; no migration, setting or data change.
+
+**Verified live:**
+- health `0.1.0+tala-v1-demo.15`; host release commit `7673204c2…`; 0 restarts; 0 error lines; 0 server errors.
+- `/forms` kept: 32 cards, all 123 files byte-identical to the manifest, the ZIP the 32 PDFs; `/lessons/combine` 200;
+  the 17 private GET routes 401 signed out; no table's row count changed; both libraries unchanged.
+- **Signed in, with the release owner's test account** (the owner's walk, production variant: it signs in to the
+  existing account, leaves its profile and active year alone, and adds two rooms marked "synthetic test" with real
+  pack lessons; the browser part is the owner's own): **20/20** — the way to Combine on Lessons; each grade's lesson
+  offered and chosen; the period shared (5 min together, 18 + 17 with the teacher, 5 together); "All grades
+  together"; one combined draft in the editor (shared start, one turn per grade, shared finish); her note kept after
+  a reload, on the server and on a second browser; the source lessons unchanged; the print sheet offers A4 and long
+  bond with the table layout chosen; Download as Word made on the device; the table print on A4 and long bond;
+  three grades with one left empty; phone; Filipino; no browser errors.
+- **The files it produced, by the owner's checker** (python-docx, pypdf; a parser check — the Word application
+  check was WAIVED, not done): **19/19** — the `.docx` opens, a column per grade, one row per time block in order,
+  the heading row repeats, her note, the source lessons, A4 portrait, the draft and AI-draft labels, curriculum
+  references; PDFs on A4 (595 × 842 pt, 9 pages) and long bond (612 × 936 pt, 8 pages; three grades landscape
+  936 × 612, 11 pages), each with the session table, the note and signature lines.
+
+**Rollback**: `sudo -n ssh b11-apps /opt/tala/deploy.sh tala-v1-demo.14` (code only; combined plans are ordinary plan
+records and stay readable). Evidence on b11-dev: `/home/b11/tala-takeover-20261125/release-mg/`.
+
+**Still open**: C (the upload privacy wording) — the uploads release waits only on it.
