@@ -1052,3 +1052,20 @@ the host builds: types clean; core 303, server 356 + 1 opt-in skip, web 94; buil
 content types; the ZIP exactly the 32 PDFs; all 32 PDFs pass its field-count and fill-save-reopen checks; all 89
 previews decode; all 18 existing pages identical to its snapshot of 10:15 UTC; private pages go to `/sign-in`; the
 17 private GET routes answer 401. It reports to Luis itself.
+
+## 25 Nov 2026 ~22:45 UTC (26 Nov ~06:45 Manila): Luis answers A — the application check is WAIVED (not passed)
+
+**Luis, relayed by the coordinator in thread `ddb4d22d`, verbatim:** "You can ship without it". The coordinator's note:
+this answers A; Luis authorizes skipping the Word/PowerPoint sample check; record A as resolved with the check
+explicitly waived rather than passed; C (the upload privacy wording) is not answered by this message.
+
+- **A — resolved: WAIVED.** No person opened the sample `.docx` or `.pptx` files in Microsoft Word, PowerPoint,
+  Google Docs/Slides or WPS. What was checked instead stays exactly what it was: structure checks, the project's
+  own readers, python-pptx and LibreOffice (rehearsals of 23–25 Nov). Nothing here should be read as "Word-checked"
+  or "PowerPoint-checked".
+- **What it unblocks.** The multi-grade plan (its only gate was A) is released next, on its own, on top of the live
+  release (`tala-v1-demo.14` with `/forms`). Teacher uploads also no longer wait on A.
+- **waiting_for_user, still open:** **C** — the privacy line on the upload screen, drafted from Luis's rule (EN:
+  "Files you upload are kept in Tala's private storage. Other teachers can't see them. They stay until you delete them
+  or your account."; FIL from the Filipino owner). Owner: Luis. Blocks: the uploads release only. D and E stay
+  optional (defaults: class lists read and discarded; no download stored).
