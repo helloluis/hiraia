@@ -688,3 +688,111 @@ of 2026-11-24T03:30:41Z, 11:30 Manila); its section "Remaining choices" reads, v
 Why the numbers are read against this list and no other: answers 2 and 4 fit questions 2 and 4 of this list word
 for word (how long uploads are kept; a test account), and only this report has four items with the test account
 last.
+
+## Four Filipino Science editions withdrawn on production: 2026-11-25 09:47–09:51 UTC (17:47–17:51 PHT)
+
+**Authority.** Luis's answer 3 ("That's fine") to original question 3 ("Withdraw four Filipino Science editions that
+lost safety directions"), as mapped in the section above; the Science source owner (`b11-dev:0a1a3e5f`) asked for
+it on 23 Nov and the release owner recommended it. The order, with the question and the answer verbatim, is
+`filipino-withdrawals-20261125.json` in this folder. The answer was applied to these four editions and nothing else.
+
+**What changed.** The Filipino editions of `sci26-g6-t3-w08`, `sci26-g3-t3-w02`, `sci26-g3-t3-w11` and
+`sci26-g7-t3-w06` are no longer in the live Science library: the site lists that language of those weeks as not
+built and serves no page, file, picture or copy of it. Their English editions are untouched. Every other file of the
+library is byte-identical to what was live before. No code, setting, database row or Mathematics file changed; the
+service was not restarted (same process since 23 Nov 10:06 UTC). The running release stays `tala-v1-demo.13`.
+
+| | before | after |
+|---|---|---|
+| library version | 2026-11-23 | 2026-11-25 |
+| `SHA256SUMS` sha256 | `6f949e3a69183652…` | `03b33ec024cbad185653e52307faa8d54f8b103756967fe76dc205f4e6a156a9` |
+| files | 11,917 | 11,680 (238 removed, one record added) |
+| editions live (draft / needs fixes / approved) | 36 / 170 / 0 | 35 / 167 / 0 |
+| not built | 314 | 318 |
+| weeks open / with both languages | 103 / 103 | 103 / 99 |
+
+The week `sci26-g6-t3-w08` is now labelled by its English edition (needs fixes) because the Filipino draft was the
+better-labelled of the two; no label of a remaining edition changed and nothing was approved.
+
+**How.** `packages/tala-server/deploy/science-overlay/withdraw-editions.py` (base = a checksum-verified copy of the
+live library, order = the file above) wrote the reduced library and `WITHDRAWAL-RECORD.json`, which names each of
+the 238 removed files with its checksum. Before the window the result was validated with the live release's own
+code: 202 editions, 606 downloads and 202 private copies with 0 problems; the four Filipino editions answer 404 for
+detail, download, picture and copy, their English 200. On the host the new library was assembled beside the live one
+with hard links (no second copy of its 920 MB), the four editions' folders removed, the three changed files copied in
+and compared with the staged ones, `sha256sum -c` clean, owners and modes as before, then swapped with two renames
+at 09:47:49 UTC under the shared deploy lock (held 09:47:11–09:51:31 UTC).
+
+**Backup and undo.** `/var/backups/tala/20261125T094735Z/` on the host: the database (integrity ok), the settings,
+the index and checksum list as they were, `withdrawn-editions.tar` (the 238 removed files) and the library from
+before 23 Nov (`packs-prev-older-da7d4abf`, moved there so that one previous library stays beside the live one).
+`/var/lib/tala/packs.prev` is now the library that was live until this window (`6f949e3a…`). Undo, no restart:
+`mv /var/lib/tala/packs /var/lib/tala/packs.withdrawn && mv /var/lib/tala/packs.prev /var/lib/tala/packs`.
+
+**Verified on the live site** (09:48–09:51 UTC, the release owner's test account and a signed-out visitor): the
+index is the new one and parses (35 / 167 / 0, 318 not built, 103 weeks open, 99 with both languages); each of the
+four Filipino editions answers 404 for detail, download and picture to a signed-in teacher while its English opens
+and downloads; 35 downloads of nine other editions (five Science, four Mathematics) are still the same bytes as
+before; a visitor still gets no draft content; the test account's private copy opens, its original still available.
+Host: 0 error lines, 0 server-error responses since the swap; accounts 4, teachers' copies 2, as before. No teacher's
+copy or lesson on production depended on a withdrawn edition (checked before the window).
+
+**To put an edition back later**: the corrected Filipino edition comes from the Filipino owner through
+`overlay-filipino.py` like any revised edition; all four are on the holds list of 23 Nov
+(`filipino-overlay-holds-20261123.json`), so an overlay run does not re-release them by accident.
+
+## Signed-in checks on production with the release owner's test account: 2026-11-25 04:39–04:51 UTC (12:39–12:51 PHT)
+
+**Authority.** Luis's answer 4 ("Make a test account for yourself and use it thoroughly to do your testing").
+
+**The account.** One account, made through the public registration page on 25 Nov 04:39:30 UTC, display name
+"Fable Release Test (synthetic)", an `@example.com` address. Its credentials are on the release owner's machine
+only (`~/.config/tala-release-test/`, owner-only), never in this repository, a report or a message. It holds
+synthetic content only: one class ("Grade 5 Test Section (synthetic)" at "Release Test School (synthetic)"), five
+lessons taken from a Grade 5 Science week, and one private copy of an English Science deck with test edits. No
+pupil, no real teacher's data. Production went from 3 to 4 accounts and from 1 to 2 teachers' copies.
+
+**Release under test**: `tala-v1-demo.13` as live. Scripts, screenshots (59) and downloaded files are in
+`/home/b11/tala-release-20261123/prodtest/` on the release owner's machine.
+
+**Passed**
+
+- Registration through the public page; sign-in through the sign-in form; a wrong password is refused (401); the
+  session knows who it is; sign-out asks for confirmation and then the session is gone (401).
+- Library, through the API (56 of 56 checks): the Science index (262 weeks, 103 open) and the Mathematics index
+  (6 weeks, 12 drafts) load and parse; ten representative editions open (six Science and four Mathematics, English
+  and Filipino among them), each labelled a draft with no teacher review claimed; all 38 of their downloads (33.6 MB) are the
+  server's own files byte for byte; slide pictures are served; a signed-out visitor gets no draft content, no
+  download and no copy.
+- Library, in the browser: every main screen opens without an error (9 of 9); the slides viewer; Present on an
+  original (the slide counter moves 1 / 56, 2 / 56, 3 / 56) and on a private copy.
+- "Edit my copy": a private copy is made, an edit is saved (revision 1 to 2), read back, and the original stays
+  untouched; a save from an older version is refused (409); autosave in the editor survives a reload; the copy
+  exports as a PowerPoint file that holds the typed words and the draft label; the list holds only this account's
+  copies; another teacher's copy cannot be read or exported from this account (404, 404).
+- Class set-up through the wizard; "Use these lessons for my class" adds the week's five lessons; the lesson
+  editor opens with its AI-draft notice.
+- Print: the lesson's print page as A4 (594.96 × 841.92 pt) and as long bond (612 × 936 pt), three pages each; "PDF
+  from server" downloads.
+- The Filipino interface on the same screens; "Download my data"; phone-size screens with no sideways scrolling.
+- Throughout: 0 browser errors; the host logged 0 error lines and 0 server-error responses.
+
+**Failed**
+
+- One cosmetic defect, in the slide engine (the release owner's lane): on a cover slide a long title that wraps
+  runs under the "DRAFT — not yet reviewed by a teacher" label. The label stays readable; the teacher's last line
+  is cut. Seen in the editor and in Present on the private copy. To be fixed in the next release.
+
+**Not performed on production, and why**
+
+- AI lesson generation (costs money per call; not needed to verify this release).
+- Community posting (would publish test text to real teachers), class-list import (takes pupils' names; only
+  synthetic ones would be allowed and the feature is unchanged), password change and reset, account deletion
+  (the account is kept for coming releases), Google sign-in (switched off on production).
+- Teacher uploads and multi-grade plans: not released yet, so not on production. They were exercised on the
+  rehearsal machine only, which is not a production check.
+- Opening the exported PowerPoint, Word and PDF files in Microsoft Office, Google or WPS applications: not done
+  (original question 1 is still open). The files were checked by structure and by this project's own readers,
+  which is not an application check.
+- Cross-account checks used the one other private copy that exists on production only as a target that must
+  answer 404; it was never opened. No second account was made.
