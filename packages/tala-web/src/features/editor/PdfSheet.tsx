@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useT } from '@/i18n';
 import { useSession } from '@/data/session';
 import { getClient } from '@/data/client';
-import { printHtml, renderPlanHtml, renderPlanText } from '@/data/print';
+import { downloadBytes, printHtml, renderPlanDocx, renderPlanHtml, renderPlanText } from '@/data/print';
 import { Banner, Button, Choice, Sheet, Waiting } from '@/components/ui';
 import type { PlanEditor } from './usePlanEditor';
 
@@ -25,11 +25,15 @@ export function PdfSheet({
   const router = useRouter();
   const { network } = useSession();
   const [paper, setPaper] = useState<'a4' | 'long'>('a4');
+  // A multi-grade plan prints as a table (a column per grade) unless the teacher asks for the list.
+  const [layout, setLayout] = useState<'table' | 'stack'>('table');
+  const [wordFailed, setWordFailed] = useState(false);
   const [failed, setFailed] = useState(false);
   const [copied, setCopied] = useState(false);
   const [serverBusy, setServerBusy] = useState<AbortController | null>(null);
 
   if (!ed.plan || !ed.template) return null;
+  const multigrade = ed.template.kind === 'multigrade';
   const year =
     ed.ws.years.find((y) => y.id === ed.cls?.schoolYearId) ?? ed.ws.activeYear ?? undefined;
   const input = {
@@ -42,14 +46,25 @@ export function PdfSheet({
     paper,
     lang,
     competencies: ed.competencies,
+    layout: multigrade ? layout : undefined,
   };
 
+  const word = async () => {
+    await ed.flushAll();
+    let ok = false;
+    try {
+      ok = downloadBytes(renderPlanDocx(input));
+    } catch {
+      ok = false;
+    }
+    setWordFailed(!ok);
+  };
   const viaBrowser = async () => {
     await ed.flushAll();
     const ok = printHtml(renderPlanHtml(input));
     if (!ok) setFailed(true);
   };
-  const plainPage = () => router.push(`/lessons/${ed.plan!.id}/print?paper=${paper}`);
+  const plainPage = () => router.push(`/lessons/${ed.plan!.id}/print?paper=${paper}${multigrade ? `&layout=${layout}` : ''}`);
   const copyText = async () => {
     const text = renderPlanText(input);
     try {
@@ -99,6 +114,17 @@ export function PdfSheet({
           { value: 'long', label: t('pdf.long') },
         ]}
       />
+      {multigrade && (
+        <Choice
+          label={t('mg.print.layout')}
+          value={layout}
+          onChange={setLayout}
+          options={[
+            { value: 'table', label: t('mg.print.table') },
+            { value: 'stack', label: t('mg.print.stack') },
+          ]}
+        />
+      )}
       {failed && <Banner kind="warn">{t('pdf.failed')}</Banner>}
       <Button variant="primary" full onClick={() => void viaBrowser()}>
         {t('pdf.browser')}
@@ -107,10 +133,16 @@ export function PdfSheet({
       <Button full onClick={plainPage}>
         {t('pdf.plain')}
       </Button>
+      <Button full onClick={() => void word()} data-download-word>
+        {t('mg.print.word')}
+      </Button>
+      <p className="text-small text-forestMuted -mt-2">{t('mg.print.wordHint')}</p>
+      {wordFailed && <Banner kind="warn">{t('mg.print.wordFailed')}</Banner>}
       <Button full onClick={() => void copyText()}>
         {copied ? `✓ ${t('pdf.copied')}` : t('pdf.copyText')}
       </Button>
-      {serverBusy ? (
+      {/* The server's PDF knows only the list layout, so it is not offered for a table. */}
+      {multigrade && layout === 'table' ? null : serverBusy ? (
         <Waiting label={t('common.waiting')} onCancel={() => serverBusy.abort()} />
       ) : (
         <Button

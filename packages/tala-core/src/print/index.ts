@@ -19,10 +19,21 @@ export interface RenderPlanOptions {
   teacherName: string;
   paper: 'a4' | 'long';
   lang: Lang;
-  competencyLookup?: (id: string) => Pick<Competency, 'code' | 'text'> | string | null | undefined;
+  competencyLookup?: (
+    id: string
+  ) => (Pick<Competency, 'code' | 'text'> & { source?: Competency['source'] | null }) | string | null | undefined;
   /** V1 content contains no image fields. Kept for the common fallback call shape. */
   includeImages?: boolean;
+  /**
+   * How a multi-grade plan is set on the page. 'stack' (the default, and what a phone shows) lists each time block
+   * with its groups under it. 'table' prints the session as a grid, one column per grade group and one saying who
+   * the teacher is with, sets per-grade sections side by side, and adds each competency's source reference.
+   * Plans on other templates ignore it.
+   */
+  layout?: 'stack' | 'table';
 }
+import { TABLE_CSS, TABLE_WORDS, flowTableHtml, groupsTableHtml, type TableDeps } from './table';
+export { TABLE_WORDS, flowColumnWidths, teacherFocus, teacherIsHere } from './table';
 const printInk = colors.printInk;
 const escape = (s: string | number) =>
   String(s).replace(
@@ -228,9 +239,33 @@ function rich(blocks: RichText): string {
     )
     .join('');
 }
+/** A multi-grade plan asked for as a table (see RenderPlanOptions.layout). */
+const asTable = (o: RenderPlanOptions): boolean => o.layout === 'table' && o.template.kind === 'multigrade';
+const tableDeps = (o: RenderPlanOptions): TableDeps => ({ lang: o.lang, escape, rich, groups: groups(o), words: labels[o.lang] });
+/**
+ * Each tagged competency with where it comes from: the stored record's text and its source document, edition and
+ * page, so a printed plan can be checked against the guide. Text is never taken from anywhere but the lookup.
+ */
+export function competencyReferences(o: RenderPlanOptions): Array<{ group: string | null; text: string; reference: string | null }> {
+  const w = TABLE_WORDS[o.lang];
+  return Object.entries(o.plan.competencies).flatMap(([groupId, ids]) =>
+    ids.map((competencyId) => {
+      const c = o.competencyLookup?.(competencyId);
+      const group = groups(o).find((g) => g.id === groupId)?.label ?? null;
+      if (!c) return { group, text: competencyId, reference: null };
+      if (typeof c === 'string') return { group, text: c, reference: null };
+      const s = c.source;
+      const reference = s?.document ? `${s.document}${s.edition ? ` (${s.edition})` : ''}${s.page ? `, ${w.page} ${s.page}` : ''}` : null;
+      return { group, text: `${c.code ? `${c.code} — ` : ''}${c.text}`, reference };
+    })
+  );
+}
 function contentHtml(c: SectionContent, o: RenderPlanOptions): string {
   const l = labels[o.lang];
   const groupLabel = (id: string) => groupName(o, id);
+  if (asTable(o) && c.type === 'pergroup') return groupsTableHtml(c.groups, tableDeps(o));
+  if (asTable(o) && c.type === 'multigrade')
+    return `${c.note?.trim() ? `<p class="session-note">${escape(c.note)}</p>` : ''}${flowTableHtml(c.blocks, tableDeps(o))}`;
   switch (c.type) {
     case 'text':
       return rich(c.blocks);
@@ -322,6 +357,8 @@ function postClassText(c: SectionContent, o: RenderPlanOptions): string {
 }
 function postClassHtml(c: SectionContent, o: RenderPlanOptions): string {
   const ruled = '<div class="writing-space"><div></div><div></div><div></div></div>';
+  if (c.type === 'pergroup' && asTable(o))
+    return groupsTableHtml(c.groups, tableDeps(o), (id) => !richTextPlainText(c.groups[id] ?? []).trim());
   if (c.type === 'pergroup')
     return groups(o)
       .map(
@@ -335,17 +372,26 @@ function postClassHtml(c: SectionContent, o: RenderPlanOptions): string {
 export function renderPlanHtml(o: RenderPlanOptions): string {
   const [width, height] = printPageSize(o),
     l = labels[o.lang];
-  const css = `@font-face{font-family:${fonts.display};src:url(data:font/ttf;base64,${frauncesBase64}) format('truetype');font-weight:600;font-style:normal}@page{size:${width}pt ${height}pt;margin:14mm 12mm 18mm}*{box-sizing:border-box}html{color:${printInk};background:${colors.white};font-family:${fonts.bodyWebStack};font-size:10pt;line-height:1.4}body{margin:0}h1{font-family:${fonts.display},${fonts.displayWebStack};font-size:19pt;margin:0 0 8pt}h2{font-size:12pt;border-bottom:1pt solid currentColor;margin:14pt 0 6pt;break-after:avoid}h3{font-size:10pt;margin:8pt 0 3pt;break-after:avoid}p{margin:3pt 0;white-space:pre-wrap;overflow-wrap:anywhere}ul,ol{padding-left:18pt}li,td,th{overflow-wrap:anywhere}table{width:100%;border-collapse:collapse;table-layout:fixed}th,td{border:.6pt solid currentColor;padding:5pt;vertical-align:top;text-align:left}thead{display:table-header-group}tr{break-inside:auto}th{font-weight:600}.metadata{display:flex;flex-wrap:wrap;gap:3pt 16pt;margin-bottom:10pt}.metadata div{min-width:40%}.signatures{display:flex;justify-content:space-between;gap:24pt;margin-top:30pt;break-inside:avoid}.signatures div{width:45%;padding-top:8pt;border-top:.6pt solid currentColor}footer{margin-top:18pt;border-top:.6pt solid currentColor;padding-top:6pt;font-size:8pt;break-inside:avoid}footer svg{width:16pt;height:16pt;vertical-align:middle;margin-right:5pt}.draft{position:fixed;inset:40% 0 auto;text-align:center;font-size:72pt;font-weight:bold;opacity:.1;transform:rotate(-30deg);pointer-events:none;z-index:0}header,main,footer{position:relative;z-index:1}.notice{font-size:8pt;margin:0 0 6pt}.step{break-inside:auto}.group{border-left:1pt solid currentColor;padding-left:8pt;margin:8pt 0}.group h4{margin:4pt 0}.writing-space{break-inside:avoid}.writing-space div{height:20pt;border-bottom:.5pt solid currentColor}.session-note{margin-bottom:10pt}@media print{html,body{background:${colors.white};color:${printInk}}}`;
-  return `<!doctype html><html lang="${o.lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escape(o.plan.title)}</title><style>${css}</style></head><body>${o.plan.state === 'draft' ? '<div class="draft" aria-hidden="true">DRAFT</div>' : ''}<header><p class="notice">${l.notice}</p><h1>${escape(o.plan.title || o.template.name[o.lang])}</h1><div class="metadata">${headerFields(
+  const css = `@font-face{font-family:${fonts.display};src:url(data:font/ttf;base64,${frauncesBase64}) format('truetype');font-weight:600;font-style:normal}@page{size:${width}pt ${height}pt;margin:14mm 12mm 18mm}*{box-sizing:border-box}html{color:${printInk};background:${colors.white};font-family:${fonts.bodyWebStack};font-size:10pt;line-height:1.4}body{margin:0}h1{font-family:${fonts.display},${fonts.displayWebStack};font-size:19pt;margin:0 0 8pt}h2{font-size:12pt;border-bottom:1pt solid currentColor;margin:14pt 0 6pt;break-after:avoid}h3{font-size:10pt;margin:8pt 0 3pt;break-after:avoid}p{margin:3pt 0;white-space:pre-wrap;overflow-wrap:anywhere}ul,ol{padding-left:18pt}li,td,th{overflow-wrap:anywhere}table{width:100%;border-collapse:collapse;table-layout:fixed}th,td{border:.6pt solid currentColor;padding:5pt;vertical-align:top;text-align:left}thead{display:table-header-group}tr{break-inside:auto}th{font-weight:600}.metadata{display:flex;flex-wrap:wrap;gap:3pt 16pt;margin-bottom:10pt}.metadata div{min-width:40%}.ending{break-inside:avoid}.signatures{display:flex;justify-content:space-between;gap:24pt;margin-top:30pt;break-inside:avoid}.signatures div{width:45%;padding-top:8pt;border-top:.6pt solid currentColor}footer{margin-top:18pt;border-top:.6pt solid currentColor;padding-top:6pt;font-size:8pt;break-inside:avoid}footer svg{width:16pt;height:16pt;vertical-align:middle;margin-right:5pt}.draft{position:fixed;inset:40% 0 auto;text-align:center;font-size:72pt;font-weight:bold;opacity:.1;transform:rotate(-30deg);pointer-events:none;z-index:0}header,main,.ending{position:relative;z-index:1}.notice{font-size:8pt;margin:0 0 6pt}.step{break-inside:auto}.group{border-left:1pt solid currentColor;padding-left:8pt;margin:8pt 0}.group h4{margin:4pt 0}.writing-space{break-inside:avoid}.writing-space div{height:20pt;border-bottom:.5pt solid currentColor}.session-note{margin-bottom:10pt}@media print{html,body{background:${colors.white};color:${printInk}}}`;
+  return `<!doctype html><html lang="${o.lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escape(o.plan.title)}</title><style>${css}${asTable(o) ? TABLE_CSS : ''}</style></head><body>${o.plan.state === 'draft' ? '<div class="draft" aria-hidden="true">DRAFT</div>' : ''}<header><p class="notice">${l.notice}</p><h1>${escape(o.plan.title || o.template.name[o.lang])}</h1><div class="metadata">${headerFields(
     o
   )
     .map(([label, value]) => `<div><strong>${escape(label)}:</strong> ${escape(value)}</div>`)
     .join('')}</div></header><main>${
-    competencyLines(o).length
-      ? `<section><h2>${l.competencies}</h2><ul>${competencyLines(o)
-          .map((c) => `<li>${escape(c)}</li>`)
+    asTable(o) && o.plan.aiDraft ? `<p class="ai-draft">${escape(TABLE_WORDS[o.lang].aiDraft)}</p>` : ''
+  }${
+    asTable(o) && competencyReferences(o).length
+      ? `<section><h2>${l.competencies}</h2><ul class="references">${competencyReferences(o)
+          .map(
+            (c) =>
+              `<li>${c.group ? `<strong>${escape(c.group)}:</strong> ` : ''}${escape(c.text)}${c.reference ? ` <em>[${escape(c.reference)}]</em>` : ''}</li>`
+          )
           .join('')}</ul></section>`
-      : ''
+      : !asTable(o) && competencyLines(o).length
+        ? `<section><h2>${l.competencies}</h2><ul>${competencyLines(o)
+            .map((c) => `<li>${escape(c)}</li>`)
+            .join('')}</ul></section>`
+        : ''
   }${orderedSections(o)
     .map(
       ({ label, section, postClass }, i, all) =>
@@ -353,7 +399,7 @@ export function renderPlanHtml(o: RenderPlanOptions): string {
     )
     .join(
       ''
-    )}<div class="signatures"><div>${l.prepared}</div><div>${l.checked}</div></div></main><footer>${hiraiaGlyphSvg}${footer(o).map(escape).join('<br>')}</footer></body></html>`;
+    )}</main><div class="ending"><div class="signatures"><div>${l.prepared}</div><div>${l.checked}</div></div><footer>${hiraiaGlyphSvg}${footer(o).map(escape).join('<br>')}</footer></div></body></html>`;
 }
 export function renderPlanText(o: RenderPlanOptions): string {
   const l = labels[o.lang];
@@ -378,3 +424,12 @@ export function renderPlanText(o: RenderPlanOptions): string {
     .filter((x, i, all) => x || all[i - 1])
     .join('\n');
 }
+
+/* Shared with the Word export (../docx), so paper and document are built from the same parts. */
+export {
+  labels as PRINT_LABELS,
+  groups as printGroups,
+  headerFields as printHeaderFields,
+  footer as printFooter,
+  orderedSections as printOrderedSections,
+};

@@ -19,6 +19,7 @@ import {
 } from '@/components/ui';
 import { Icon } from '@/components/icons';
 import { LibraryNudge } from '@/features/library/LibraryNudge';
+import { isMultigradeClass } from './combine-model';
 
 const PAGE = 20;
 
@@ -63,6 +64,15 @@ export function LessonsScreen() {
           </LinkButton>
         }
       />
+      {!ws.loading && ws.classes.some(isMultigradeClass) && (
+        <p className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1" data-mg-entry>
+          <LinkButton href="/lessons/combine">
+            <Icon name="layers" size={20} />
+            {t('mg.entry')}
+          </LinkButton>
+          <span className="text-small text-forestMuted">{t('mg.entryHint')}</span>
+        </p>
+      )}
       {ws.loading ? (
         <Placeholder rows={5} />
       ) : ws.plans.filter((p) => p.state !== 'archived').length === 0 ? (
