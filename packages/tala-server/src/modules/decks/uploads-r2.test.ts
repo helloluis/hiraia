@@ -6,7 +6,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash, randomBytes } from 'node:crypto';
-import { chmodSync, mkdtempSync, renameSync, rmSync, writeFileSync } from 'node:fs';
+import { chmodSync, mkdirSync, mkdtempSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { UPLOAD_LIMITS } from '@hiraia/tala-core/contracts';
@@ -112,11 +112,11 @@ const pieces = (t: TestServer) => (t.db.prepare('SELECT COUNT(*) AS n FROM decks
 /* ---------------- settings and keys ---------------- */
 
 test('settings: nothing set is the database on a developer machine and OFF in staging and production; partial or unusable settings are off everywhere', () => {
-  const ok = { TALA_R2_ENDPOINT: 'https://acc.r2.cloudflarestorage.com', TALA_R2_BUCKET: 'hiraia-archive', TALA_R2_PREFIX: 'tala/production/', TALA_R2_CREDENTIALS_FILE: '/etc/tala/r2-credentials.json' };
+  const ok = { TALA_R2_ENDPOINT: 'https://acc.r2.cloudflarestorage.com', TALA_R2_BUCKET: 'hiraia-archive', TALA_R2_PREFIX: 'tala/production/', TALA_R2_CREDENTIALS_FILE: '/etc/tala-r2/r2-credentials.json' };
   assert.deepEqual(storageSettingFromEnv({}), { kind: 'database' });
   assert.equal(storageSettingFromEnv({ TALA_ENV: 'production' }).kind, 'off');
   assert.equal(storageSettingFromEnv({ TALA_ENV: 'staging' }).kind, 'off');
-  assert.deepEqual(storageSettingFromEnv({ TALA_ENV: 'production', ...ok }), { kind: 'r2', settings: { endpoint: 'https://acc.r2.cloudflarestorage.com', bucket: 'hiraia-archive', prefix: 'tala/production/', region: 'auto', credentialsFile: '/etc/tala/r2-credentials.json' } });
+  assert.deepEqual(storageSettingFromEnv({ TALA_ENV: 'production', ...ok }), { kind: 'r2', settings: { endpoint: 'https://acc.r2.cloudflarestorage.com', bucket: 'hiraia-archive', prefix: 'tala/production/', region: 'auto', credentialsFile: '/etc/tala-r2/r2-credentials.json' } });
   const problems = (env: Record<string, string>) => {
     const s = storageSettingFromEnv(env);
     return s.kind === 'off' ? s.problems.join(' | ') : `not off: ${s.kind}`;
@@ -175,6 +175,21 @@ test('credentials file: strict fields, never readable by every user, read again 
     assert.equal(keys.current().accessKeyId, KEY1.accessKeyId);
     assert.ok(logged.includes('deck_upload_storage_keys_unusable'));
     assert.ok(!JSON.stringify(logged).includes(KEY1.secretAccessKey));
+    // In a folder this user may not enter (as /etc/tala, 0700 root, would be for the web server's user): said plainly.
+    if (process.getuid?.() !== 0) {
+      const shut = join(dir, 'shut');
+      mkdirSync(shut);
+      const inside = keysFile(shut, KEY1);
+      chmodSync(shut, 0o000);
+      const problems: string[] = [];
+      const plog = { info: () => {}, warn: () => {}, debug: () => {}, error: (_e: string, f: { problem: string }) => problems.push(f.problem) };
+      try {
+        assert.throws(() => credentialsFile(inside, { log: () => plog as never }).current(), (e: unknown) => e instanceof StoreError && e.kind === 'refused');
+        assert.match(problems.join(' | '), /cannot be reached by this server's user/);
+      } finally {
+        chmodSync(shut, 0o700);
+      }
+    }
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

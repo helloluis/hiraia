@@ -3,7 +3,7 @@
 
 Derived locally from the parent R2 credential (an HS256 token signed with its secret, as
 tools/reference-archive/mint_credentials.py does it; no network request), then either written to a new local file
-(0600, never overwritten) or installed on the production host as /etc/tala/r2-credentials.json (root:tala 0640,
+(0600, never overwritten) or installed on the production host as /etc/tala-r2/r2-credentials.json (folder root:tala 0750, file root:tala 0640,
 replaced by rename, so the web server reads it again without a restart). Never prints a credential value: only
 what is not secret (bucket, prefix, scope, issue and end times) and whether the installed file matches.
 
@@ -31,7 +31,9 @@ PREFIX_RE = re.compile(r"tala/(production|rehearsal)/\Z")
 ENDPOINT_RE = re.compile(r"https://([0-9a-f]{32})(?:\.(eu|us|fedramp))?\.r2\.cloudflarestorage\.com/?\Z")
 ACCOUNT_RE = re.compile(r"[0-9a-f]{32}\Z")
 KEYS = {"R2_ENDPOINT", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY", "R2_SESSION_TOKEN", "CLOUDFLARE_ACCOUNT_ID", "R2_ACCOUNT_ID"}
-HOST_FILE = "/etc/tala/r2-credentials.json"
+# A folder of its own: /etc/tala is root-only (0700), and the web server (user tala) reads this file itself.
+HOST_DIR = "/etc/tala-r2"
+HOST_FILE = HOST_DIR + "/r2-credentials.json"
 SSH = ["sudo", "-n", "ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=20"]
 
 
@@ -94,7 +96,9 @@ def derive(endpoint, account, access, secret, bucket, prefix, ttl):
 INSTALL = r"""set -eu
 umask 077
 getent group tala >/dev/null
-d=/etc/tala; f=$(mktemp "$d/.r2-credentials.XXXXXXXX")
+d=/etc/tala-r2
+install -d -o root -g tala -m 0750 "$d"
+f=$(mktemp "$d/.r2-credentials.XXXXXXXX")
 trap 'rm -f "$f"' EXIT
 cat > "$f"
 chown root:tala "$f"; chmod 0640 "$f"; sync "$f"
@@ -102,6 +106,8 @@ mv -f "$f" "$d/r2-credentials.json"; trap - EXIT
 sync "$d"
 stat -c '%U:%G %a' "$d/r2-credentials.json"
 sha256sum "$d/r2-credentials.json" | cut -c1-64
+stat -c '%U:%G %a' "$d"
+runuser -u tala -- test -r "$d/r2-credentials.json" && echo readable-by-tala || echo NOT-readable-by-tala
 """
 
 
@@ -148,14 +154,18 @@ def main():
         command = via + ["bash -c " + shlex.quote(INSTALL)]
     r = subprocess.run(command, input=body, capture_output=True, timeout=120)
     lines = r.stdout.decode("utf-8", "replace").split()
-    if r.returncode != 0 or len(lines) < 3:
+    if r.returncode != 0 or len(lines) < 6:
         fail(f"install on the host failed (exit {r.returncode})")
-    owner_mode, installed = f"{lines[0]} {lines[1]}", lines[2]
+    owner_mode, installed, dir_mode, readable = f"{lines[0]} {lines[1]}", lines[2], f"{lines[3]} {lines[4]}", lines[5]
     if owner_mode != "root:tala 640":
         fail(f"the installed file has owner and mode {owner_mode}, not root:tala 640")
+    if dir_mode != "root:tala 750":
+        fail(f"its folder has owner and mode {dir_mode}, not root:tala 750")
     if installed != digest:
         fail("the installed file is not the file that was sent")
-    print(json.dumps({"status": "installed", "host": a.install_on or "(rehearsal)", "file": HOST_FILE, "ownerMode": "root:tala 0640", "matches": True, **report}))
+    if readable != "readable-by-tala":
+        fail("the web server's user cannot read the installed file")
+    print(json.dumps({"status": "installed", "host": a.install_on or "(rehearsal)", "file": HOST_FILE, "ownerMode": "root:tala 0640", "folder": "root:tala 0750", "readableByService": True, "matches": True, **report}))
 
 
 if __name__ == "__main__":

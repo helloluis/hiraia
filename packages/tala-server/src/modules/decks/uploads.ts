@@ -18,7 +18,7 @@ import type { UploadedDeck, UploadedDeckSummary, UploadRefusalReason, UploadSlid
 import { changedSlideCount, invalidEdits, noEdits, normaliseEdits, type DeckEdits, type DeckInspection } from '@hiraia/tala-core/pptx';
 import type { Database } from 'better-sqlite3';
 import { HttpError, requireUser, type BaseDeps, type Logger, type Migration, type ServerModule } from '../../kernel/types';
-import { credentialsFile, objectStore, storageSettingFromEnv, StoreError, uploadObjectKey, type ObjectStore, type R2Settings, type StorageSetting } from './r2';
+import { credentialsFile, objectStore, storageSettingFromEnv, StoreError, uploadObjectKey, type CredentialSource, type ObjectStore, type R2Settings, type StorageSetting } from './r2';
 import { sha256Hex, UPLOAD_ZIP_LIMITS, UploadRefused } from './upload-file';
 import { UploadWorkError, uploadWorkers, type UploadWork } from './upload-jobs';
 import { RenderError, rendererFromEnv, retiredRenderSettings, type DeckRenderer } from './upload-render';
@@ -416,11 +416,14 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
    */
   const storageSetting = options.storage ?? storageSettingFromEnv();
   let moduleLog: Logger | null = null;
+  /** The key file, when this module reads one itself (not when a test hands in a store): checked once at start. */
+  let keys: CredentialSource | null = null;
   const objects: ObjectStore | null = (() => {
     if (storageSetting.kind !== 'r2') return null;
     if ('store' in storageSetting) return (storageSetting as { store: ObjectStore }).store;
     const { settings } = storageSetting;
-    return objectStore(settings, { credentials: credentialsFile(settings.credentialsFile, { log: () => moduleLog }), log: () => moduleLog });
+    keys = credentialsFile(settings.credentialsFile, { log: () => moduleLog });
+    return objectStore(settings, { credentials: keys, log: () => moduleLog });
   })();
   const objectPrefix = storageSetting.kind === 'r2' ? storageSetting.settings.prefix : '';
   const storageOff = storageSetting.kind === 'off' ? storageSetting.problems : [];
@@ -1138,6 +1141,13 @@ export function createUploads(options: UploadOptions = {}): Pick<ServerModule, '
       if (storageSetting.kind === 'r2') deps.log.info('deck_upload_storage', { where: 'object storage', bucket: storageSetting.settings.bucket, prefix: objectPrefix || '(none)', region: storageSetting.settings.region });
       else if (storageSetting.kind === 'database') deps.log.info('deck_upload_storage', { where: 'database', note: 'a developer machine: no TALA_R2_* setting' });
       else deps.log.error('deck_upload_storage_off', { problems: storageOff.join('; '), effect: 'no uploads are taken, and files already in object storage cannot be fetched, until this is put right' });
+      // The key file is read once now, so that a file this server cannot read is in the log at start, not at the
+      // first teacher's upload (the problem is logged by the reader; nothing here is a value).
+      try {
+        (keys as CredentialSource | null)?.current();
+      } catch {
+        /* logged as deck_upload_storage_keys_unusable */
+      }
       let stopped = false;
       let working = false;
       let saidStillDown = 0;

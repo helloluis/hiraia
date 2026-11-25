@@ -178,8 +178,10 @@ export function credentialsFile(path: string, options: { checkEveryMs?: number; 
     let st;
     try {
       st = statSync(path);
-    } catch {
-      return problem('the credentials file cannot be found', false);
+    } catch (err) {
+      // A folder this server's user may not enter looks like a missing file to it: say which.
+      const code = (err as NodeJS.ErrnoException).code;
+      return problem(code === 'EACCES' ? "the credentials file cannot be reached by this server's user (check the folder's and the file's owner and mode)" : 'the credentials file cannot be found', false);
     }
     if (!st.isFile()) return problem('the credentials file is not a regular file', true);
     if (st.mode & 0o004) return problem('the credentials file can be read by every user of the machine', true);

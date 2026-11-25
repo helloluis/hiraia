@@ -23,7 +23,7 @@ Luis; nothing about them changes here.
 | `TALA_R2_BUCKET` | `hiraia-archive` | private: no public address, no custom domain, no object expiry rule; its lock rules cover only `objects/sha256/` and `snapshots/` |
 | `TALA_R2_PREFIX` | `tala/production/` (rehearsals: `tala/rehearsal/`) | joined to the name as it is; each folder ends in `/`; required outside a developer machine |
 | `TALA_R2_REGION` | `auto` | |
-| `TALA_R2_CREDENTIALS_FILE` | `/etc/tala/r2-credentials.json` | root:tala 0640 |
+| `TALA_R2_CREDENTIALS_FILE` | `/etc/tala-r2/r2-credentials.json` | file root:tala 0640 in a folder root:tala 0750 of its own: `/etc/tala` is root-only (0700) on the host, and the web server, running as `tala`, reads this file itself (to pick up renewed keys without a restart) |
 
 In staging and production, with none of these set, or any of them missing or unusable, **no upload is taken** and
 the log says why once at start (`deck_upload_storage_off`). Files are never kept in the database instead. Only
@@ -42,8 +42,9 @@ b11-dev from the parent R2 credential, which never leaves b11-dev:
     ~/.venvs/hiraia-publish/bin/python -I renew-r2-keys.py --parent /home/b11/code/hiraia/.env.cloudflare.local \
         --prefix tala/production/ --ttl-hours 24 --install-on b11-apps
 
-It sends the key on ssh's standard input over the pinned root route, writes it beside the old file, sets root:tala
-0640, renames it into place and checks that the installed file is the one sent. It prints no value.
+It sends the key on ssh's standard input over the pinned root route, makes the folder `/etc/tala-r2` (root:tala 0750)
+when it is not there, writes the key beside the old file, sets root:tala 0640, renames it into place, and checks that
+the installed file is the one sent and that the user `tala` can read it. It prints no value.
 
 **Renewal**: `tala-r2-renew.timer` (a user timer of `b11` on b11-dev; lingering is on) runs it every six hours for
 keys that last 24 hours: three renewals in a row can fail before uploads stop. Install:
