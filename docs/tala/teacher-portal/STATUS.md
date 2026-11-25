@@ -1043,3 +1043,12 @@ now includes this release, and takes the next tag number.
 local candidate `tala-v1-uploads` is recut there: `d59d42488` = `cae74f109` merged with `f27868a55`; checked the way
 the host builds: types clean; core 303, server 356 + 1 opt-in skip, web 94; build clean with both `/forms` and
 `/lessons/combine`. The window script checks the build set against it before tagging. Still waiting on A and C.
+
+**Independent check by the forms owner** (`b11-002:2b7a1b9c`, bridge reply `bf223d25…`, signed out from b11-002 at
+14:18 UTC): release identity confirmed with an anonymous `ls-remote` and a fetch into `FETCH_HEAD` only (tag object
+`31d920f1…` → commit `40b6f201`, a merge of `4a2895b5e` and `f425585bc`; the forms paths identical to `f425585bc`);
+`/forms` 200 with 32 cards, 32 of 32 thumbnails and 57 of 57 previews, the notice, 0 console errors, 0 cookies, one
+`/api` request (`GET /api/v1/config`) and the Cloudflare beacon; 123 of 123 files byte-identical with the right
+content types; the ZIP exactly the 32 PDFs; all 32 PDFs pass its field-count and fill-save-reopen checks; all 89
+previews decode; all 18 existing pages identical to its snapshot of 10:15 UTC; private pages go to `/sign-in`; the
+17 private GET routes answer 401. It reports to Luis itself.
