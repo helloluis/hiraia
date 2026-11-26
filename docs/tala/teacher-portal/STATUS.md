@@ -1395,3 +1395,56 @@ against that report and this ledger: they agree, no discrepancy):
 | 2 | "Can we have a spare second account on production to test that accounts can't see each other's files and that account deletion works?" | (3): one disposable production account for cross-teacher isolation and account-deletion removal of uploads | **Yes.** ONE disposable synthetic production account (never a real teacher's), used with the existing test account on synthetic files only (owner allowed; another teacher and signed-out refused; private R2), then deleted through the app to prove the explicit-deletion cleanup in the database, the API and R2. |
 
 **waiting_for_user: both cleared.** No other question is mapped to this answer.
+
+## Grade 1 Language + Senior High Effective Communication on production: 2026-11-26 07:08 UTC (15:08 PHT) — `tala-v1-demo.18`
+
+**Authority.** Luis's "1. Yes" (rq_bkgebqxp, question 1 above). Release owner b11-dev:12af59a8.
+
+**What.** Two curriculum packs of the held harvest, byte for byte (branch `tala-v1`, 53ae53b1d), and one test; no code
+change (the server and web app already named and served both areas). Commit `515a54137f81` on `tala-v1-language-shs`
+(parent: the notes tip e63140812), tag object `ce17c636…`. **Curriculum only: no teaching packs exist for these
+subjects, and the Library offers none.**
+
+| Pack | Competencies (T1/T2/T3) | Source (as archived) |
+|---|---|---|
+| `language-bow-2026-g1` (Grade 1, elementary) | 141 (46/46/49) | LANGUAGE — Grade 1, edition 2026-04-23, 14 pp, SHA-256 `24157544…` |
+| `shs-effective-communication-bow-2026-g11` (Grade 11, senior high core; fixed over three terms) | 44 (20/14/10) | EFFECTIVE COMMUNICATION — Grade 11, edition 2026-04-17, 13 pp, SHA-256 `c0837f6b…` |
+
+Every entry carries its content and performance standards, domain, term (no weeks: the sources give none), page, link
+and the file's SHA-256; no codes. **Source fidelity, all 185 entries** (not a sample): both PDFs have exactly the
+recorded SHA-256; 183 entries are printed word for word on the named page, 2 run across a page break (SHS T1 #6 pages
+3–4, T3 #1 pages 9–10; the footer and running header fall between the halves). Page numbers are the PDF's own: the
+printed footers start after the cover ("Page 2 of 12" is PDF page 3), as in the English packs.
+
+**Before the window:** commit check as the host builds (frozen install, types 0 errors, tests core 303/303, server 358
+pass + 1 skipped, web 97/97, production build); on a local production build: the new walk 33/33 and its files 9/9, the
+English walk 34/34.
+
+**Window** (lock held 07:07:40–07:11:16 UTC): push of the branch and tag; backup `/var/backups/tala/20261126T070806Z`
+(integrity ok, 33 tables, checksums verified); `deploy.sh tala-v1-demo.18` 07:08:10–07:08:37, exit 0, "healthy on
+tala-v1-demo.18", 0 restarts.
+
+**Verified live:** health `0.1.0+tala-v1-demo.18`; 10 public pages 200; the 22 private GET routes 401 signed out;
+`/forms` 123 files identical to the manifest; the curriculum served: English G2–10 (1,218), Reading and Literacy G1 (83),
+Science G3–10 (322), Language G1 (141, 46/46/49), Effective Communication G11 (44, 20/14/10), each new entry with page,
+link and file hash; 0 migrations, 0 error lines, 0 server errors, 128 MB; 33 tables, 0 rows changed; both teaching
+libraries (Science, Mathematics) unchanged; 20 curriculum pack files, the two new ones byte-identical to the commit
+(`284546c7…`, `1a11a8d2…`); R2 store check passed. **Signed in with the test account:** the new walk **34/34** —
+Setup offers Language (Grade 1) and Effective Communication (Grade 11) and starts each from its pack (46 of 46, 14 of
+14), says plainly where a grade has no pack; This Week shows their topics; a new Effective Communication lesson starts
+with the day's competency; the picker lists the term's 14, filters, shows all 44, the standards word for word and the
+source (document, edition, page, link); her choice survives a reload and is on the server; print A4 and long bond and
+Word carry the competencies; a Grade 1 Language lesson prints and downloads as Word; the Library offers no Language or
+Effective Communication packs and still has Science and Mathematics; Community filters by both; Filipino screen; phone;
+no errors — and its files **9/9** by parser. The English walk again: **35/35**, files **4/4** (multi-grade, Science,
+Library, Community).
+
+**Not performed:** Word/PowerPoint application checks (parsers only); any teacher review. The walks added synthetic
+rooms and lessons to the test account only ("… synthetic test").
+
+**Observed, unchanged:** This Week's "Needs attention" line says "may not fit this quarter" although the calendar has
+terms (existing wording). Test fix only: subject lines on This Week are capitals with a no-break space before the dot;
+the English walk's week check was reading mixed-case "Science" elsewhere on the page and now reads the subject line.
+
+**Rollback:** `sudo -n ssh b11-apps /opt/tala/deploy.sh tala-v1-demo.17` (code only; nothing to undo in data). Evidence:
+`/home/b11/tala-takeover-20261125/release-language-shs/`.
