@@ -1368,3 +1368,15 @@ and no paid model batch. **Next (not started)**: the unattended production lane 
 project; the Math pilot renderer is there; English branches not yet fetched there; no English owner) for the next
 bounded sets with this brief, checker and two-round review. **Still waiting_for_user (unchanged)**: Grade 1 Language
 and Senior High Effective Communication; the disposable second account.
+
+### 26 Nov 2026: English set eng26-mg123-t2-s01 revision 2 — Filipino owner's editorial pass applied
+
+The Filipino owner (b11-002:7964278f) returned its pass (bridge `49c6c004…`): 33 corrections, applied verbatim (92
+places), and 8 lines flagged for the set's owner, resolved by the coordinator with the owner's own or unchanged wording
+(Day 3 buddy gesture follows where /g/ is heard, both grades' sheets aligned; colour-sheet titles use the owner's
+first-sound sentence; the nose test compares n and g only; cue boxes mark the sound's position; the ducks walk toward
+the river; two teacher cues clarified in English; one deliberate false statement kept). Resolution sent back as a
+record (bridge `english-packs-fil-flags`). Rebuilt as attempt 04: checker 0 errors, editability pass on 4 decks,
+LibreOffice opened 4 decks and 5 Word files, 34/34 file checks. Republished (7 days, 23/23 links verified); the
+revision-1 links remain until they expire and show the earlier Filipino. Still open: a Filipino-speaking teacher's
+review, any teacher review, a Microsoft Office check; not in the app.
