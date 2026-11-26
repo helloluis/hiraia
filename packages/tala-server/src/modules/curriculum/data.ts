@@ -5,6 +5,38 @@ import { CalendarPreset, CurriculumPack, type CurriculumIndex } from '@hiraia/ta
 import { packId } from '@hiraia/tala-core/curriculum';
 import type { CurriculumService } from '../../kernel/types';
 
+/**
+ * Display names of learning areas, as DepEd names the subjects in its Budgets of Work.
+ * Subject names that DepEd itself leaves in English or as an acronym are not translated.
+ */
+const LEARNING_AREA_NAMES: Record<string, { en: string; fil: string }> = {
+  science: { en: 'Science', fil: 'Agham' },
+  mathematics: { en: 'Mathematics', fil: 'Matematika' },
+  english: { en: 'English', fil: 'English' },
+  filipino: { en: 'Filipino', fil: 'Filipino' },
+  language: { en: 'Language', fil: 'Language' },
+  'reading-and-literacy': { en: 'Reading and Literacy', fil: 'Reading and Literacy' },
+  kindergarten: { en: 'Kindergarten', fil: 'Kindergarten' },
+  'shs-general-mathematics': { en: 'General Mathematics', fil: 'General Mathematics' },
+  'shs-general-science': { en: 'General Science', fil: 'General Science' },
+  'shs-life-and-career-skills': { en: 'Life and Career Skills', fil: 'Life and Career Skills' },
+  'shs-effective-communication': { en: 'Effective Communication', fil: 'Effective Communication' },
+  'shs-mabisang-komunikasyon': { en: 'Mabisang Komunikasyon', fil: 'Mabisang Komunikasyon' },
+  'shs-pag-aaral-ng-kasaysayan-at-lipunang-pilipino': {
+    en: 'Pag-aaral ng Kasaysayan at Lipunang Pilipino',
+    fil: 'Pag-aaral ng Kasaysayan at Lipunang Pilipino',
+  },
+  makabansa: { en: 'Makabansa', fil: 'Makabansa' },
+  'araling-panlipunan': { en: 'Araling Panlipunan', fil: 'Araling Panlipunan' },
+  gmrc: { en: 'GMRC', fil: 'GMRC' },
+  'values-education': { en: 'Values Education', fil: 'Values Education' },
+  mapeh: { en: 'MAPEH', fil: 'MAPEH' },
+  'epp-afa-fcs-ia': { en: 'EPP: AFA, FCS, IA', fil: 'EPP: AFA, FCS, IA' },
+  'epp-ict': { en: 'EPP: ICT', fil: 'EPP: ICT' },
+  'tle-afa-fcs-ia': { en: 'TLE: AFA, FCS, IA', fil: 'TLE: AFA, FCS, IA' },
+  'tle-ict': { en: 'TLE: ICT', fil: 'TLE: ICT' },
+};
+
 export interface CurriculumData {
   index: CurriculumIndex;
   packs: Map<string, CurriculumPack>;
@@ -81,12 +113,21 @@ export function loadCurriculumData(
           ? 'elementary'
           : Number(p.grade) <= 10
             ? 'jhs'
-            : 'shs_core';
+            : p.areaKind === 'elective'
+              ? 'shs_tvl'
+              : 'shs_core';
     const key = p.learningAreaId;
-    const name =
-      p.learningAreaId === 'science'
-        ? { en: 'Science', fil: 'Agham' }
-        : { en: 'Mathematics (sample data)', fil: 'Matematika (halimbawang datos)' };
+    const fixture = p.curriculumVersion.startsWith('fixture-');
+    const known = LEARNING_AREA_NAMES[p.learningAreaId] ??
+      p.areaName ?? {
+        en: p.learningAreaId,
+        fil: p.learningAreaId,
+      };
+    // Sourced packs win the label; an area that exists only as fixtures stays marked as sample data.
+    const name = fixture
+      ? { en: `${known.en} (sample data)`, fil: `${known.fil} (halimbawang datos)` }
+      : known;
+    if (!fixture && areaGroups.has(key)) areaGroups.get(key)!.name = name;
     const area = areaGroups.get(key) ?? {
       id: p.learningAreaId,
       name,
@@ -98,7 +139,7 @@ export function loadCurriculumData(
     if (!area.grades.includes(p.grade)) area.grades.push(p.grade);
     areaGroups.set(key, area);
   }
-  const stageOrder = ['kinder', 'elementary', 'jhs', 'shs_core'];
+  const stageOrder = ['kinder', 'elementary', 'jhs', 'shs_core', 'shs_tvl'];
   for (const area of areaGroups.values()) {
     area.grades.sort((a, b) => (a === 'K' ? 0 : Number(a)) - (b === 'K' ? 0 : Number(b)));
     area.stages!.sort((a, b) => stageOrder.indexOf(a) - stageOrder.indexOf(b));

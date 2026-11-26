@@ -281,22 +281,29 @@ test('curriculum: the real Science packs are served and the demo fixtures are no
       competencyCount: number;
     }>;
   };
+  const science = index.packs.filter((p) => p.learningAreaId === 'science');
   assert.deepEqual(
-    index.packs.map((p) => p.grade).sort((a, b) => Number(a) - Number(b)),
+    science.map((p) => p.grade).sort((a, b) => Number(a) - Number(b)),
     ['3', '4', '5', '6', '7', '8', '9', '10']
   );
   assert.ok(
-    index.packs.every((p) => p.learningAreaId === 'science' && p.competencyCount > 0),
-    'only Science is loaded for the demo'
+    index.packs.every((p) => p.competencyCount > 0),
+    'every listed pack has competencies'
   );
+  // Fixture packs are identified by their ids, not by words that can legitimately occur in source text
+  // ("demonstrate" in a quoted standard).
   assert.ok(
-    !JSON.stringify(index)
-      .toLowerCase()
-      .match(/fixture|demo/),
+    index.packs.every((p) => !/^(fixture|demo)[-:.]/i.test(p.packId)),
     'no fixture pack is listed'
   );
+  const areas = (index as unknown as { learningAreas: Array<{ id: string; name: { en: string } }> })
+    .learningAreas;
+  assert.ok(
+    areas.every((a) => !/sample data|fixture/i.test(a.name.en) && !/^(fixture|demo)/i.test(a.id)),
+    'no learning area is labelled as sample data'
+  );
 
-  const grade4 = index.packs.find((p) => p.grade === '4')!;
+  const grade4 = science.find((p) => p.grade === '4')!;
   const pack = await send('GET', `/curriculum/packs/${encodeURIComponent(grade4.packId)}`);
   assert.equal(pack.status, 200);
   assert.equal((pack.json.competencies as unknown[]).length, grade4.competencyCount);

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import { gzipSync } from 'node:zlib';
 import assert from 'node:assert/strict';
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import {
@@ -17,14 +17,23 @@ import { createCurriculumModule, loadCurriculumData } from './index';
 import { buildSampleClass } from '@hiraia/tala-core/sample';
 import { createTestServer } from '@hiraia/tala-server/testing';
 
+const sourcePackCount = readdirSync(new URL('../../../data/packs/', import.meta.url)).filter(
+  (name) => name.endsWith('.json')
+).length;
+
 test('all source packs validate, carry pages and preserve distinct versions without fixture leakage', () => {
   const data = loadCurriculumData();
   CurriculumIndex.parse(data.index);
-  assert.equal(data.packs.size, 8);
-  assert.equal(data.index.learningAreas.length, 1);
-  assert.deepEqual(data.index.learningAreas[0]!.stages, ['elementary', 'jhs']);
+  assert.equal(data.packs.size, sourcePackCount);
+  const science = data.index.learningAreas.find((a) => a.id === 'science')!;
+  assert.deepEqual(science.name, { en: 'Science', fil: 'Agham' });
+  assert.deepEqual(science.stages, ['elementary', 'jhs']);
+  // No sourced learning area may carry the sample-data label.
+  for (const a of data.index.learningAreas) assert.ok(!a.name.en.includes('sample data'), a.id);
   assert.equal(
-    [...data.packs.values()].reduce((n, p) => n + p.competencyCount, 0),
+    [...data.packs.values()]
+      .filter((p) => p.learningAreaId === 'science')
+      .reduce((n, p) => n + p.competencyCount, 0),
     322
   );
   for (const p of data.packs.values()) {
@@ -38,9 +47,13 @@ test('all source packs validate, carry pages and preserve distinct versions with
       assert.ok(c.source.page! > 0);
       assert.ok(c.source.url);
       assert.ok(c.source.document);
-      assert.ok(c.source.edition);
-      assert.ok(c.contentStandard);
-      assert.ok(c.performanceStandard);
+      if (p.learningAreaId === 'tle-afa-food-and-beverage-processing') {
+        assert.equal(c.source.edition, null); // No update date is printed in this source.
+      } else assert.ok(c.source.edition);
+      if (p.learningAreaId === 'science') {
+        assert.ok(c.contentStandard);
+        assert.ok(c.performanceStandard);
+      }
       assert.equal(c.code, null);
     }
   }
@@ -57,7 +70,7 @@ test('all source packs validate, carry pages and preserve distinct versions with
 });
 test('demo packs require explicit opt-in and are visibly synthetic', () => {
   const data = loadCurriculumData(undefined, true);
-  assert.equal(data.packs.size, 12);
+  assert.equal(data.packs.size, sourcePackCount + 4);
   for (const p of data.packs.values())
     if (p.curriculumVersion.startsWith('fixture-'))
       assert.ok(p.competencies.every((c) => c.text.startsWith('SAMPLE DATA ONLY')));
@@ -76,7 +89,7 @@ test('public curriculum and calendar routes run through the real kernel', async 
   const t = createTestServer({ modules: [createCurriculumModule()] });
   try {
     const index = await t.ok('curriculum.index');
-    assert.equal(index.packs.length, 12);
+    assert.equal(index.packs.length, sourcePackCount + 4);
     for (const meta of index.packs) {
       const response = await t.request(
         'GET',
@@ -205,8 +218,11 @@ test('production excludes fixtures even with the legacy opt-in, while local incl
     config: { environment: 'production', publicOrigin: 'https://tala.test' },
   });
   try {
-    assert.equal((await t.ok('curriculum.index')).packs.length, 8);
-    assert.equal(t.services.curriculum.versionFor('2026-2027', '2', 'mathematics'), null);
+    assert.equal((await t.ok('curriculum.index')).packs.length, sourcePackCount);
+    assert.equal(
+      t.services.curriculum.versionFor('2026-2027', '2', 'mathematics'),
+      null
+    );
     for (const packId of ['missing', 'fixture-demo-v1:2:mathematics']) {
       const result = await t.call('curriculum.pack', { params: { packId } });
       assert.equal(result.status, 404);
@@ -273,7 +289,7 @@ test('one module instance keeps staging and production catalogues isolated', asy
       ]),
       []
     );
-    assert.equal((await staging.ok('curriculum.index')).packs.length, 12);
+    assert.equal((await staging.ok('curriculum.index')).packs.length, sourcePackCount + 4);
     assert.deepEqual(staging.errors, []);
     assert.deepEqual(production.errors, []);
   } finally {
@@ -357,6 +373,8 @@ test('shared offline sample syncs as real records with complete locked-plan sect
 test('revision two carries short labels and source week ranges without inventing fixture weeks', () => {
   const data = loadCurriculumData(undefined, true);
   for (const pack of data.packs.values()) {
+    if (pack.learningAreaId !== 'science' && !pack.curriculumVersion.startsWith('fixture-'))
+      continue;
     assert.equal(pack.dataRevision, 2);
     for (const c of pack.competencies) {
       assert.ok(c.shortTitle!.split(/\s+/).length <= 4);
@@ -387,4 +405,47 @@ test('revision two carries short labels and source week ranges without inventing
     assert.ok(matching.length);
     assert.ok(matching.every((c) => c.weekFrom === from && c.weekTo === to));
   }
+});
+
+test('English G2-10 and Grade 1 Reading and Literacy: the 2026 Budgets of Work as printed, term-placed, with their sources', () => {
+  const data = loadCurriculumData();
+  const areas = new Map(data.index.learningAreas.map((a) => [a.id, a]));
+  assert.deepEqual(areas.get('english')!.name, { en: 'English', fil: 'English' });
+  assert.deepEqual(areas.get('english')!.grades, ['2', '3', '4', '5', '6', '7', '8', '9', '10']);
+  assert.deepEqual(areas.get('english')!.stages, ['elementary', 'jhs']);
+  assert.deepEqual(areas.get('reading-and-literacy')!.name, { en: 'Reading and Literacy', fil: 'Reading and Literacy' });
+  assert.deepEqual(areas.get('reading-and-literacy')!.grades, ['1']);
+  const counts: Record<string, number> = {};
+  for (const p of data.packs.values()) {
+    if (p.learningAreaId !== 'english' && p.learningAreaId !== 'reading-and-literacy') continue;
+    counts[`${p.learningAreaId}:${p.grade}`] = p.competencyCount;
+    assert.equal(p.formatVersion, 2);
+    assert.equal(p.placement, 'term'); // the source places competencies in terms only; weeks are the teacher's call
+    assert.equal(p.edition, '2026-04-23');
+    assert.deepEqual(p.schoolYears, ['2026-2027']);
+    assert.equal(p.sourceDocuments!.length, 1);
+    const doc = p.sourceDocuments![0]!;
+    assert.match(doc.sha256, /^[0-9a-f]{64}$/);
+    for (const c of p.competencies) {
+      assert.equal(c.code, null); // no older quarter codes are attached to the three-term competencies
+      assert.ok(c.termIndex >= 1 && c.termIndex <= 3);
+      assert.equal(c.weekFrom, undefined);
+      assert.equal(c.textLang, 'en');
+      assert.ok(c.contentStandard);
+      assert.equal(c.source.edition, '2026-04-23');
+      assert.equal(c.source.sha256, doc.sha256);
+      assert.ok(c.source.page! >= 1 && c.source.page! <= doc.pages!);
+      assert.equal(c.source.url, doc.url);
+      assert.ok(c.shortTitle && c.shortTitleSource && c.shortTitleDerivation);
+    }
+  }
+  assert.deepEqual(counts, {
+    'english:10': 76, 'english:2': 174, 'english:3': 193, 'english:4': 176, 'english:5': 186,
+    'english:6': 164, 'english:7': 82, 'english:8': 86, 'english:9': 81, 'reading-and-literacy:1': 83,
+  });
+  assert.equal(data.service.versionFor('2026-2027', '2', 'english'), 'english-bow-2026');
+  assert.equal(data.service.versionFor('2026-2027', '10', 'english'), 'english-bow-2026');
+  assert.equal(data.service.versionFor('2026-2027', '1', 'english'), null); // Grade 1 has Reading and Literacy instead
+  assert.equal(data.service.versionFor('2026-2027', '1', 'reading-and-literacy'), 'reading-and-literacy-bow-2026');
+  assert.equal(data.service.versionFor('2026-2027', '11', 'english'), null);
 });
