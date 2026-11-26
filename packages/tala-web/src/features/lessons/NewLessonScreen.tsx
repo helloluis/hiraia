@@ -6,7 +6,7 @@ import { useT } from '@/i18n';
 import { useSession } from '@/data/session';
 import { isoDate, newId } from '@/data/ids';
 import { useTimeline } from '@/data/timeline';
-import { curriculumVersionFor } from '@/data/curriculum';
+import { curriculumVersionOf } from '@/data/curriculum';
 import { defaultTemplateFor, newPlan } from '@/data/plans';
 import { topicLabel } from '@/data/topics';
 import {
@@ -78,7 +78,14 @@ export function NewLessonScreen() {
       const curriculumVersion =
         track?.curriculumVersion ??
         (firstId ? (tl.competencyById.get(firstId)?.id.split('.')[0] ?? null) : null) ??
-        curriculumVersionFor(index, ws.activeYear?.label ?? null);
+        curriculumVersionOf(
+          index,
+          ws.activeYear?.label ?? null,
+          cls?.gradeGroups.find((g) => assignment?.gradeGroupIds.includes(g.id))?.grade ??
+            cls?.gradeGroups[0]?.grade ??
+            '',
+          assignment?.learningAreaId ?? null
+        );
       const { plan, sections } = newPlan({
         template,
         cls,

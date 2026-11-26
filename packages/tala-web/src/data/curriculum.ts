@@ -76,14 +76,29 @@ export async function loadPreset(
   );
 }
 
-/** The curriculum version in force for a school-year label, from the index. */
-export function curriculumVersionFor(
+/**
+ * The curriculum version in force for ONE grade and learning area in a school year. Every learning area has its own
+ * version (science-bow-2026, english-bow-2026, reading-and-literacy-bow-2026, …), so there is no single version for a
+ * whole school year. Chosen the way the server's `versionFor` chooses: sourced packs before sample data, then the
+ * newest data revision. A year with no pack in force falls back to the packs of that grade and area of any year.
+ */
+export function curriculumVersionOf(
   index: CurriculumIndex | null,
-  yearLabel: string | null
+  yearLabel: string | null,
+  grade: string,
+  learningAreaId: string | null
 ): string | null {
-  if (!index || !index.packs.length) return null;
-  const inForce = yearLabel ? index.packs.find((p) => p.schoolYears.includes(yearLabel)) : null;
-  return (inForce ?? index.packs[0]!).curriculumVersion;
+  if (!index || !learningAreaId) return null;
+  const all = index.packs.filter((p) => p.grade === grade && p.learningAreaId === learningAreaId);
+  const inForce = yearLabel ? all.filter((p) => p.schoolYears.includes(yearLabel)) : [];
+  const best = [...(inForce.length ? inForce : all)].sort(
+    (a, b) =>
+      Number(a.curriculumVersion.startsWith('fixture-')) -
+        Number(b.curriculumVersion.startsWith('fixture-')) ||
+      b.dataRevision - a.dataRevision ||
+      a.curriculumVersion.localeCompare(b.curriculumVersion)
+  )[0];
+  return best?.curriculumVersion ?? null;
 }
 
 export function packIdFor(
@@ -92,14 +107,23 @@ export function packIdFor(
   grade: string,
   learningAreaId: string | null
 ): string | null {
-  if (!learningAreaId) return null;
-  const version = curriculumVersionFor(index, yearLabel);
-  if (!version) return null;
-  const exists = index!.packs.some(
-    (p) =>
-      p.curriculumVersion === version && p.grade === grade && p.learningAreaId === learningAreaId
-  );
-  return exists ? makePackId(version, grade, learningAreaId) : null;
+  const version = curriculumVersionOf(index, yearLabel, grade, learningAreaId);
+  return version && learningAreaId ? makePackId(version, grade, learningAreaId) : null;
+}
+
+/**
+ * The packs that hold a plan's tagged competencies, whatever the plan's own learning area: a multi-grade session made
+ * from each grade's own lesson can carry Grade 1 Reading and Literacy beside Grade 2–3 English. A competency id
+ * starts with its pack's version, learning area and grade (`<version>.<area>.g<grade>.`, contracts/curriculum.ts).
+ */
+export function packIdsOfCompetencies(index: CurriculumIndex | null, competencyIds: string[]): string[] {
+  if (!index || !competencyIds.length) return [];
+  const ids = new Set<string>();
+  for (const p of index.packs) {
+    const prefix = `${p.curriculumVersion}.${p.learningAreaId}.g${p.grade}.`;
+    if (competencyIds.some((id) => id.startsWith(prefix))) ids.add(p.packId);
+  }
+  return [...ids].sort();
 }
 
 /** Pack ids needed for a set of classes and assignments. */

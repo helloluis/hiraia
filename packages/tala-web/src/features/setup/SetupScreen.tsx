@@ -23,7 +23,7 @@ import {
   useCurriculumIndex,
   loadPack,
   packIdFor,
-  curriculumVersionFor,
+  curriculumVersionOf,
 } from '@/data/curriculum';
 import { getClient } from '@/data/client';
 import { isoDate, newId } from '@/data/ids';
@@ -325,13 +325,14 @@ export function SetupScreen() {
         archived: false,
       };
       ops.push({ op: 'put', entity: 'class', data: cls });
-      const version = curriculumVersionFor(index, year.label);
       for (const s of subjects) {
         const a = draftAssignment(s, cls.id, year);
         ops.push({ op: 'put', entity: 'assignment', data: a });
         if (curriculum === 'none') continue;
         for (const gid of s.groupIds) {
           const chosen = starts?.find((x) => x.subjectId === s.id && x.groupId === gid);
+          const grade = groups.find((x) => x.id === gid)?.grade ?? null;
+          const version = grade ? curriculumVersionOf(index, year.label, grade, s.learningAreaId) : null;
           for (const term of year.terms) {
             const isCurrent = term.startDate <= today && term.endDate >= today;
             const track: PacingTrack = {

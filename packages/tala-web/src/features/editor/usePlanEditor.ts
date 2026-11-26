@@ -21,7 +21,7 @@ import type {
 } from '@hiraia/tala-core/contracts';
 import { useRecord, useRecords, useWorkspace } from '@/data/records';
 import { useSession } from '@/data/session';
-import { packIdFor, useCurriculumIndex, usePacks } from '@/data/curriculum';
+import { packIdFor, packIdsOfCompetencies, useCurriculumIndex, usePacks } from '@/data/curriculum';
 import { newId, nowIso } from '@/data/ids';
 import { lockProblems, templateById, type LockProblem } from '@/data/plans';
 import { sampleCompetenciesFor } from '@/data/sample';
@@ -111,15 +111,16 @@ export function usePlanEditor(planId: string) {
     }));
   }, [plan, cls]);
   const packIds = useMemo(() => {
-    if (!plan?.learningAreaId) return [];
+    if (!plan) return [];
     const year = ws.years.find((y) => y.id === cls?.schoolYearId) ?? ws.activeYear;
     return [
-      ...new Set(
-        groups
+      ...new Set([
+        ...groups
           .map((g) => packIdFor(index, year?.label ?? null, g.grade, plan.learningAreaId))
-          .filter((x): x is string => !!x)
-      ),
-    ];
+          .filter((x): x is string => !!x),
+        ...packIdsOfCompetencies(index, Object.values(plan.competencies).flat()),
+      ]),
+    ].sort();
   }, [plan, groups, index, ws.years, ws.activeYear, cls]);
   const { competencies: packCompetencies } = usePacks(packIds);
   const competencies = useMemo(
