@@ -449,3 +449,71 @@ test('English G2-10 and Grade 1 Reading and Literacy: the 2026 Budgets of Work a
   assert.equal(data.service.versionFor('2026-2027', '1', 'reading-and-literacy'), 'reading-and-literacy-bow-2026');
   assert.equal(data.service.versionFor('2026-2027', '11', 'english'), null);
 });
+
+test('Grade 1 Language and Senior High Effective Communication: the 2026 Budgets of Work as printed, term-placed, with their sources', () => {
+  const data = loadCurriculumData();
+  const areas = new Map(data.index.learningAreas.map((a) => [a.id, a]));
+  assert.deepEqual(areas.get('language')!.name, { en: 'Language', fil: 'Language' });
+  assert.deepEqual(areas.get('language')!.grades, ['1']);
+  assert.deepEqual(areas.get('language')!.stages, ['elementary']);
+  // DepEd's own subject name; the pack prints it in capitals, the app shows it as a title.
+  assert.deepEqual(areas.get('shs-effective-communication')!.name, {
+    en: 'Effective Communication',
+    fil: 'Effective Communication',
+  });
+  assert.deepEqual(areas.get('shs-effective-communication')!.grades, ['11']);
+  assert.deepEqual(areas.get('shs-effective-communication')!.stages, ['shs_core']);
+  const want = {
+    'language:1': { count: 141, terms: [46, 46, 49], edition: '2026-04-23' },
+    'shs-effective-communication:11': { count: 44, terms: [20, 14, 10], edition: '2026-04-17' },
+  } as const;
+  const seen: string[] = [];
+  for (const p of data.packs.values()) {
+    const key = `${p.learningAreaId}:${p.grade}` as keyof typeof want;
+    if (!(key in want)) continue;
+    seen.push(key);
+    assert.equal(p.competencyCount, want[key].count, key);
+    assert.deepEqual(
+      [1, 2, 3].map((t) => p.competencies.filter((c) => c.termIndex === t).length),
+      want[key].terms,
+      key
+    );
+    assert.equal(p.formatVersion, 2);
+    assert.equal(p.placement, 'term'); // the source places competencies in terms only; weeks are the teacher's call
+    assert.equal(p.edition, want[key].edition);
+    assert.deepEqual(p.schoolYears, ['2026-2027']);
+    assert.equal(p.sourceDocuments!.length, 1);
+    const doc = p.sourceDocuments![0]!;
+    assert.match(doc.sha256, /^[0-9a-f]{64}$/);
+    for (const c of p.competencies) {
+      assert.equal(c.code, null); // the 2026 budgets print no codes; no older quarter code is attached
+      assert.ok(c.termIndex >= 1 && c.termIndex <= 3);
+      assert.equal(c.weekFrom, undefined);
+      assert.equal(c.textLang, 'en');
+      assert.ok(c.contentStandard && c.performanceStandard);
+      assert.equal(c.source.edition, want[key].edition);
+      assert.equal(c.source.sha256, doc.sha256);
+      assert.ok(c.source.page! >= 1 && c.source.page! <= doc.pages!);
+      assert.equal(c.source.url, doc.url);
+      assert.ok(c.shortTitle && c.shortTitleSource && c.shortTitleDerivation);
+    }
+  }
+  assert.deepEqual(seen.sort(), Object.keys(want).sort());
+  const shs = [...data.packs.values()].find((p) => p.learningAreaId === 'shs-effective-communication')!;
+  assert.equal(shs.areaKind, 'core');
+  assert.deepEqual(shs.scheduling?.eligibleGrades, ['11']);
+  assert.equal(shs.scheduling?.termAssignment, 'fixed');
+  assert.equal(data.service.versionFor('2026-2027', '1', 'language'), 'language-bow-2026');
+  assert.equal(data.service.versionFor('2026-2027', '1', 'reading-and-literacy'), 'reading-and-literacy-bow-2026');
+  assert.equal(data.service.versionFor('2026-2027', '2', 'language'), null);
+  assert.equal(
+    data.service.versionFor('2026-2027', '11', 'shs-effective-communication'),
+    'shs-effective-communication-bow-2026'
+  );
+  assert.equal(data.service.versionFor('2026-2027', '12', 'shs-effective-communication'), null);
+  // Nothing else of the held harvest comes with them.
+  assert.deepEqual(
+    [...new Set([...data.packs.values()].map((p) => p.learningAreaId))].sort(),
+    ['english', 'language', 'reading-and-literacy', 'science', 'shs-effective-communication']
+  );
+});
