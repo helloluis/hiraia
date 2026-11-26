@@ -283,11 +283,13 @@ export const fil = {
   'editor.competencies': 'Mga competency',
   'editor.pickCompetency': 'Pumili',
   'editor.noCompetency': 'Wala pang napiling competency',
-  'editor.standards': 'Mga pamantayan at pinagmulan',
-  'editor.contentStandard': 'Pamantayang pangnilalaman',
-  'editor.performanceStandard': 'Pamantayan sa pagganap',
-  'editor.source': 'Pinagmulan',
-  'editor.sourcePage': 'pahina {n}',
+  // In English until the Filipino owner's editorial pass (PRD: Filipino interface text is written or reviewed by a
+  // fluent speaker who teaches, never machine-translated and shipped). Requested 26 Nov 2026.
+  'editor.standards': 'Standards and source',
+  'editor.contentStandard': 'Content standard',
+  'editor.performanceStandard': 'Performance standard',
+  'editor.source': 'Source',
+  'editor.sourcePage': 'page {n}',
   'editor.customObjectives': 'Mga layunin mo',
   'editor.customObjectivesHint': 'Isang layunin bawat linya.',
   'editor.duration': 'Tagal',
