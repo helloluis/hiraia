@@ -1199,3 +1199,116 @@ uploads candidate (`c6938a492`, `d1eb90438`). Evidence on b11-dev: `/home/b11/ta
 account; A stays waived (no Word/PowerPoint application check was done); D and E stay at their defaults; the
 uploads owner (`b11-002:f500f47c`, back 1 Dec) to review the R2 commits. Next in line: Luis's English curriculum
 release (26 Nov 07:44 Manila), serialized after this window through the same lock, backup and rollback.
+
+## 26 Nov 2026 07:44 Manila: Luis asks for the English curriculum on production
+
+**Luis, relayed by the coordinator in thread `ddb4d22d` (request `rq_yjubeeyt`), verbatim:** "We were supposed to push
+the English curriculum work to production as well, I think let's do that now". The coordinator's approval: release the
+EXISTING English curriculum work (it supersedes the earlier Math-only/English-deferred limit) after the uploads window,
+through the same lock, backup and rollback; separate curriculum inventories from complete packs; no regeneration, no
+paid or model batch, no copying of the multi-grade example, no third-party readings; bounded integration so that it is
+usable in the teacher views; verify signed in with the test account.
+
+**What existed (inventory, 26 Nov).** The only English work is the curriculum harvest held on local branch `tala-v1`
+(`53ae53b1d`, 14 Nov): DepEd 2026 Three-Term Budgets of Work as Tala curriculum packs, format 2. The uploads owner's
+"Math-English curriculum" lane wrote no English plan (its own record: "not written"). No English teaching packs (plans,
+slides, readings, worksheets, assessments) exist anywhere. Released scope, as held, byte for byte:
+
+| Pack | Grade | Competencies (T1/T2/T3) | Source (edition, pages, SHA-256 of the archived DepEd PDF) |
+|---|---|---|---|
+| `reading-and-literacy-bow-2026` | 1 | 83 (30/26/27) | READING AND LITERACY — Grade 1 (2026-04-23, 13 pp, `b3d8b8c4…`) |
+| `english-bow-2026` | 2 | 174 (47/61/66) | ENGLISH — Grade 2 (2026-04-23, 23 pp, `56e4447d…`) |
+| | 3 | 193 (68/64/61) | ENGLISH — Grade 3 (26 pp, `32d90fd1…`) |
+| | 4 | 176 (52/63/61) | ENGLISH — Grade 4 (26 pp, `ce2c3d99…`) |
+| | 5 | 186 (66/62/58) | ENGLISH — Grade 5 (26 pp, `f9ce7843…`) |
+| | 6 | 164 (56/54/54) | ENGLISH — Grade 6 (26 pp, `a066a6f4…`) |
+| | 7 | 82 (22/33/27) | ENGLISH — Grade 7 (15 pp, `420cc3f9…`) |
+| | 8 | 86 (27/27/32) | ENGLISH — Grade 8 (15 pp, `19d0a0ee…`) |
+| | 9 | 81 (30/34/17) | ENGLISH — Grade 9 (15 pp, `9755113d…`) |
+| | 10 | 76 (31/28/17) | ENGLISH — Grade 10 (15 pp, `75a2a201…`) |
+
+Every entry: the competency text as printed, content standard (performance standard where printed: all but 61 of
+Grade 2's), domain, term (1–3; **term placement only**: the source gives no weeks, so weeks are the teacher's or the
+pacing's call), page and URL, the source file's SHA-256, a derived short title (Hiraia's label, open to correction; the
+official text stays the only wording). **No DepEd codes**: the 2026 budgets print none, and no older quarter code (such
+as the example's `EN3…`/`RL1…-II-…`) is attached. **Not released**: Grade 1 Language (141; a separate learning area, not
+English), Senior High Effective Communication (G11, 44), and the rest of the held harvest (Filipino, Mathematics,
+Makabansa, GMRC, AP, MAPEH, EPP/TLE, Kindergarten, senior high): still held.
+
+**Source fidelity (checked 26 Nov).** All ten source PDFs on `tala-v1` have exactly the SHA-256 the packs record. A fixed
+sample of 120 entries (12 per pack): 114 word for word on the named page; 3 bullet lists that run onto the next page
+(G7 T3 #5, G8 T2 #6, G9 T2 #15; the pack names the first page); 3 rows decoded from the printed verb-tense / pronoun
+matrix that continues onto the next page (G4 T3 #36 and #42, G5 T3 #31: every heading is printed, e.g. "using tenses of
+verbs → simple → future", but the pack names page 10 where the group starts, the row is on page 11). Nothing found
+that is not in the source. Evidence: `/home/b11/tala-takeover-20261125/release-english/fidelity/`.
+
+## English curriculum on production: 2026-11-26 00:37–00:41 UTC (08:37–08:41 PHT) — `tala-v1-demo.17`
+
+**Release.** Tag `tala-v1-demo.17` (tag object `515ec935744f504a7481bfa79bb0d5422a781f89`) on commit
+`7d4b798f1c4df7ae793ebd84c960e4c76f3ef35a`, branch `tala-v1-english` = the notes tip `486533196` (demo.16 + ledger) and:
+- `2418af122` the ten packs (byte for byte from `tala-v1`), the held branch's additive pack-format-2 contract fields (so
+  edition, page, SHA-256 and the source documents reach the app), learning areas named from a map (the loader called
+  anything that was not Science "Mathematics (sample data)"), the format ADR, server tests adapted to this data set.
+- `17d27d0d7` **a fix the English data needed**: the web app took ONE curriculum version per school year (the first
+  pack listed). English sorts before Science, so Science weeks, lesson competencies and setup starts would have looked
+  in the English version and found nothing (shown by a control run of the data-only commit: Setup found 0 of 11 Science
+  G4 and 0 of 26 Reading and Literacy starts). The version is now chosen per grade and learning area, like the server's
+  `versionFor`. The lesson editor also loads the packs of the competencies a plan carries, so a multi-grade session made
+  from each grade's own lesson (Grade 1 Reading and Literacy beside Grade 2–3 English, as in the DepEd example) shows,
+  prints and exports competencies instead of ids. The competency picker gains a closed "Standards and source" line per
+  competency: content and performance standards and the source document, edition and page, linked to DepEd's file.
+- `3e0cc0e04`, `7d4b798f1` the picker's five labels on the Filipino screen: the Filipino owner's wording (bridge
+  `bae96467`, answering `78c75875`): "Mga standard at sanggunian", "Content standard", "Performance standard",
+  "Sanggunian", "pahina {n}". Review by a Filipino-speaking teacher is still open.
+
+Checked the way the host builds (`7d4b798f1`): lockfile unchanged; types clean; core 303, server 357 + 1 opt-in skip, web
+97 (3 new: per-area versions with English listed first, mixed-area plans); build clean. Local rehearsal of the walk
+below on the same build: 34/34. Against demo.16, 22 files differ in the build set (core contract, server data and
+curriculum module, web curriculum helpers, setup, new lesson, editor, picker, strings); no migration, setting, host
+package or library change.
+
+**Window** (lock held 00:37:56–00:41:12 UTC; nothing else in flight): backup `/var/backups/tala/20261126T003824Z`
+(integrity ok, 33 tables, settings copy equal, previous release `demo.16`; checksums verified); `deploy.sh
+tala-v1-demo.17` 00:38:26–00:38:52, live since **00:38:52 UTC**.
+
+**Verified live:**
+- health `0.1.0+tala-v1-demo.17`; ten public pages 200; the 22 private GET routes 401 signed out; `/forms` kept (123
+  files byte-identical, the ZIP the 32 PDFs); 0 migrations, 0 error lines, 0 server errors, 125 MB; 33 tables, none
+  changed; both teaching libraries unchanged; the uploads store's `r2-check` passed (and the key timer renewed on its
+  own at 00:18:57). The public curriculum route serves English G2–10 (9 packs, 1,218), Reading and Literacy G1 (83),
+  Science G3–10 unchanged (8 packs, 322); the English G2 pack arrives with standards, edition, page and SHA-256.
+- **Signed in, with the release owner's test account** (`english-walk.mjs`; it adds two rooms marked "synthetic
+  test": Grade 4 Luna with English and Science, Grades 1–3 Bonifacio with English for Grades 2–3 and Reading and
+  Literacy for Grade 1, pacing tracks, and each grade's own lesson of the day): **35/35** — Setup offers English and
+  Reading and Literacy for Grades 1–2 (Science only once Grade 4 is added) and proposes starts from each pack (English
+  G2 61/61, Reading and Literacy G1 26/26, Science G4 11/11, English G4 63/63; "no pack" said plainly for English G1
+  and Reading and Literacy G2; nothing saved); This Week shows the English topics and, beside them, the Science
+  topics; a new English lesson starts with the day's competency; the picker lists this term's 63 Grade 4 competencies,
+  narrows by a word (20 of 63 for "sentences"), shows all 176 with "All"; the standards and the source of a competency
+  word for word and linked; her added competency kept after a reload and on the server; the A4 print lists the
+  competencies; Word made on the device; "All grades together" takes Grade 1 Reading and Literacy and Grades 2–3
+  English into one plan with a turn per grade and all six competencies by their wording (never ids), printed on long
+  bond as a table with each source, and as Word; a Science lesson still shows its competencies; the Library keeps its
+  Science and six Mathematics weeks and offers no English packs; Community filters by English and by Reading and
+  Literacy; the Filipino screen; a phone; no browser or server errors.
+- **The files it produced, by a parser** (python-docx, pypdf; no Word application was used): **8/8** — the Grade 4
+  `.docx` and A4 PDF (595 × 842 pt) carry both competencies; the Grades 1–3 `.docx` carries the six competencies, a
+  column per grade and each source document and edition, no ids; the long-bond PDF (936 × 612 pt, 3 pages) carries all
+  six.
+- **Private data**: since the backup only the test account's records changed (2 classes, 4 subjects, 15 pacing tracks,
+  6 lessons, 51 sections); every other account's records are identical to the backup (owner, kind, id, revision,
+  sequence, times), their sessions unchanged.
+
+**Rollback**: `sudo -n ssh b11-apps /opt/tala/deploy.sh tala-v1-demo.16` (code and in-repo curriculum data only; lessons
+already tagged with English competencies keep their ids and would show them as ids until forward again). Evidence on
+b11-dev: `/home/b11/tala-takeover-20261125/release-english/` (window script, verify log, walk JSON, screenshots,
+downloaded files, fidelity log, rehearsal and control runs).
+
+**What a teacher gets, and what is still missing.** English is **curriculum only**: competencies, standards, terms and
+sources in Setup, This Week, new lessons, the picker, multi-grade plans, print and Word. There are **no English teaching
+packs** (no ready plans, slides, readings, worksheets or assessments) and none are claimed; making them is new content
+work that needs its own decision (readings need rights cleared; nothing from the uploaded example is used). Open: a
+Filipino-speaking teacher's review of the five labels; Grade 1 Language and Senior High Effective Communication (held,
+say if wanted); single-grade prints show competency wording without the source line (the table print has it; as for
+Science); the existing "Needs attention" line says competencies "may not fit this quarter" although the calendar is in
+terms (wording older than this release, left alone); the matrix rows above name the page where their group starts.
