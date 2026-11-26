@@ -1312,3 +1312,27 @@ Filipino-speaking teacher's review of the five labels; Grade 1 Language and Seni
 say if wanted); single-grade prints show competency wording without the source line (the table print has it; as for
 Science); the existing "Needs attention" line says competencies "may not fit this quarter" although the calendar is in
 terms (wording older than this release, left alone); the matrix rows above name the page where their group starts.
+
+## 26 Nov 2026 10:13 Manila: Luis approves English teaching packs, on his verbal clearance
+
+**Luis, relayed by the coordinator in thread `ddb4d22d` (request `rq_shaxgina`), verbatim:** "Yes and we already have
+verbal clearance to build English language packs". It answers question 1 of the demo.17 report ("Should we make
+English teaching packs? That is new content work, and readings would need rights cleared.").
+
+- **Decision: English teaching-pack creation is APPROVED.** It supersedes, for this work, the earlier English
+  curriculum-only / no-new-content limit. Not to be asked again; no blanket written-clearance gate.
+- **Clearance, as recorded:** user-provided **verbal** clearance (Luis's statement, accepted in good faith), not an
+  independently inspected written licence. Kept: each source's own restrictions and credits; the uploaded 33-page
+  multi-grade example is for evaluation and is not republished; no unrelated commercial passage is assumed covered.
+  Materials are original, covered by the clearance, or from other permitted (openly licensed) sources, credited. A
+  specific source that turns out not to be covered gets one precise question; it does not stop other authoring.
+- **First acceptance artifact:** a complete Grade 1 Reading and Literacy + Grades 2–3 English multi-grade pack (Luis's
+  example's shape), without narrowing the English program to those grades. Term-level curriculum: any week sequence is
+  Tala's proposal, labelled as such; no DepEd week mapping or old quarter code is invented.
+- **Placement:** coordination, release and production stay with the release owner on b11-dev; long-running unattended
+  pack production goes to b11-002 through the bridge. No overnight batch on b11-dev, no unbounded paid batch, no
+  default to the old DeepSeek route. Drafts are labelled AI drafts, not teacher-approved, and are not called deployed
+  until released through the lock, backup and rollback pipeline.
+- **Still waiting_for_user (unchanged):** (2) release Grade 1 Language (141) and Senior High Effective Communication (44)?
+  (3) may the release owner create one disposable production account to prove cross-teacher isolation and account-
+  deletion removal of uploads on production?
