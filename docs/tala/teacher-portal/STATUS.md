@@ -1137,3 +1137,65 @@ authentication; no unrelated curriculum work; no further business approval is ne
   guro ang mga ito. Mananatili roon ang mga file hanggang burahin mo ang mga ito o ang account mo."
 - **waiting_for_user: none for this release.** A stays waived (not passed). D and E stay optional (defaults: class
   lists read and discarded; no download stored).
+
+## Teacher uploads on production: 2026-11-25 23:45 – 26 Nov 00:03 UTC (26 Nov 07:45–08:03 PHT) — `tala-v1-demo.16`
+
+**Authority.** Luis's "C looks good to go" (above): the privacy wording approved and the uploads release authorized.
+
+**Release.** Tag `tala-v1-demo.16` (tag object `53502cf3563210b568123ff07a8c2937fa06aa94`) on commit
+`5979b40ec4bd0c50ecc4879dcd5cd79ba8ff2b62` (tree `cf062251…`) = notes `257538f04` merged with the R2 commits
+(`e6e23c167`, `f27868a55`) on the owner's uploads line. Its build set equals the candidate checked the way the host
+builds (`086463ce5`: types clean; core 303, server 356 + 1 opt-in skip, web 94; build clean with `/forms` and
+`/lessons/combine`). `tala-v1-filipino` now fast-forwards to it, so later releases keep uploads, multi-grade and `/forms`.
+
+**Window** (lock held 23:45:46–00:03:08 UTC; nothing else in flight):
+- backup `/var/backups/tala/20261125T234620Z` (database integrity ok, settings copy, previous release `demo.15`, rows,
+  library hashes; checksums verified).
+- the drawing service: `apt-get` with a simulation gate (53 new packages, 0 upgrades, 0 removals; needrestart
+  suspended), `install.sh` **18/18**. `verify.mjs` without the box section **61/63**: both failures are in "turns" and
+  come from one drawing instance (`tala-render@101-…`) that stayed 63 s after answering "ok" and held the single slot,
+  so six simultaneous files were all turned away (and the scratch check had nothing to compare). Watched reruns:
+  draw 8/8, turns 5/5, no instance stayed. Cause not found. Effect is availability only (the editor says "busy" and
+  tries again; `RuntimeMaxSec=120` ends any instance) — **open item**.
+- key: a 24 h key for `tala/production/` only, `/etc/tala-r2/r2-credentials.json` (folder root:tala 0750, file
+  root:tala 0640), read back equal, readable by `tala`. Settings: the five `TALA_R2_*` names (endpoint over stdin),
+  15 MiB per file, 50 MiB per account, the drawing socket; an unsigned request to the store is refused (HTTP 400).
+- `deploy.sh tala-v1-demo.16` 23:56:14–23:56:39, live since **23:56:39 UTC**.
+
+**Verified live:**
+- health `0.1.0+tala-v1-demo.16`; seven public pages 200; the **22** private GET routes 401 signed out; `/forms` kept
+  (123 files byte-identical to the manifest, the ZIP the 32 PDFs); migrations `decks:002`–`005` applied; the storage
+  line says object storage, `hiraia-archive`, `tala/production/`; 0 error lines, 0 server errors, 130 MB; 33 tables
+  (26 before): only `kernel_migrations` changed (13 → 17), the seven new uploads tables empty; both libraries
+  unchanged. `r2-check` on production with the service's own client and key: **12/12** (no overwrite, a wrong
+  checksum refused, a name outside the prefix refused for writing and reading, removal checked).
+- **Signed in, with the release owner's test account** (the feature's own walk, production copy: credentials from
+  the environment, no second account): **EN 37/37** — the approved privacy line word for word; a macro file refused
+  before sending, the same file renamed refused by the server, a non-PowerPoint refused, nothing of them kept; upload
+  to the editor in 1.4 s; real slide pictures from the sandboxed service in 2.2 s; the edit summary and what is only
+  carried along; autosave, the picture following the words, a table cell, move, copy, remove, undo, redo; everything
+  kept after a reload; the server holds her differences; the edited `.pptx`; **the uploaded file byte for byte**
+  (read back from R2); a second file opened and **deleted from the editor's menu** (404); phone; no console errors;
+  no unexpected failed request. **FIL 35/35** (the Filipino line and refusal messages word for word; byte for byte).
+- **On the host, through the server's client**: the kept file's object equals its record (63,274 bytes, SHA-256),
+  under `tala/production/teachers/<account>/uploads/<upload>/original` as designed, its intent "stored", no file bytes
+  in the database; the object of the file deleted in the editor is **gone (404)**; an anonymous request for the kept
+  object's address is refused (HTTP 400). After deleting the kept file through the API: 404 on it and its original,
+  her list empty, **all three objects gone (404)**, 0 rows in the uploads, intents, pictures and sessions tables.
+- **Access, with one account**: signed out, all seven routes of a real file (read, original, edited file, picture,
+  list, change, delete) 401 and the file untouched; signed in, an id that is not hers 404; a made-up session 401; the
+  key reaches only its prefix. **Not proven on production**: another teacher's attempts (rehearsal walks EN/FIL 38/38
+  include them: list, read, download, picture, change and delete all 404) and removal on account deletion (tests and
+  rehearsal) — both need a second, disposable production account, which no one has authorized.
+- **Key renewal**: `tala-r2-renew.timer` (user `b11` on b11-dev, every 6 h at :17, persistent) enabled and run once at
+  00:02:02 → keys until 2026-11-27 00:02 UTC; the running server read the new file without a restart
+  (`deck_upload_storage_keys_read`), and a walk after it passed **31/31**.
+
+**Rollback**: `sudo -n ssh b11-apps /opt/tala/deploy.sh tala-v1-demo.15` (code only; it ignores the R2 settings and
+leaves the uploads tables alone; objects and records stay and are found again when going forward). Never an earlier
+uploads candidate (`c6938a492`, `d1eb90438`). Evidence on b11-dev: `/home/b11/tala-takeover-20261125/release-uploads/`.
+
+**Open after demo.16**: the lingering drawing instance (above); the two production-only proofs that need a second
+account; A stays waived (no Word/PowerPoint application check was done); D and E stay at their defaults; the
+uploads owner (`b11-002:f500f47c`, back 1 Dec) to review the R2 commits. Next in line: Luis's English curriculum
+release (26 Nov 07:44 Manila), serialized after this window through the same lock, backup and rollback.
