@@ -1380,3 +1380,18 @@ record (bridge `english-packs-fil-flags`). Rebuilt as attempt 04: checker 0 erro
 LibreOffice opened 4 decks and 5 Word files, 34/34 file checks. Republished (7 days, 23/23 links verified); the
 revision-1 links remain until they expire and show the earlier Filipino. Still open: a Filipino-speaking teacher's
 review, any teacher review, a Microsoft Office check; not in the app.
+
+## 26 Nov 2026 14:46 Manila: Luis answers "1. Yes 2. Yes" (rq_bkgebqxp): both open questions approved
+
+**Luis, relayed by the coordinator in thread `ddb4d22d` (request `rq_bkgebqxp`, 26 Nov 2026 14:46 Asia/Manila),
+verbatim:** "1. Yes 2. Yes"
+
+**Mapping** (the coordinator mapped it after reading the release owner's latest report; the release owner checked it
+against that report and this ledger: they agree, no discrepancy):
+
+| # | Question as returned in the latest report | Same question earlier in this ledger | Answer and what it allows |
+|---|---|---|---|
+| 1 | "Should Grade 1 Language and SHS Effective Communication be released?" | (2): Grade 1 Language (141) and Senior High Effective Communication (G11, 44) | **Yes.** Release the two held curriculum packs, unchanged from the harvest, through the lock, backup and rollback pipeline. Curriculum only: no teaching packs exist for them. Not a release of any other held area or of the English draft teaching packs. |
+| 2 | "Can we have a spare second account on production to test that accounts can't see each other's files and that account deletion works?" | (3): one disposable production account for cross-teacher isolation and account-deletion removal of uploads | **Yes.** ONE disposable synthetic production account (never a real teacher's), used with the existing test account on synthetic files only (owner allowed; another teacher and signed-out refused; private R2), then deleted through the app to prove the explicit-deletion cleanup in the database, the API and R2. |
+
+**waiting_for_user: both cleared.** No other question is mapped to this answer.
