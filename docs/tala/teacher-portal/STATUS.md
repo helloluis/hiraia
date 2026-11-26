@@ -1448,3 +1448,80 @@ the English walk's week check was reading mixed-case "Science" elsewhere on the 
 
 **Rollback:** `sudo -n ssh b11-apps /opt/tala/deploy.sh tala-v1-demo.17` (code only; nothing to undo in data). Evidence:
 `/home/b11/tala-takeover-20261125/release-language-shs/`.
+
+## Cross-account isolation and account deletion on production: 2026-11-26 07:17:54–07:21:50 UTC — one disposable synthetic account, made and deleted
+
+**Authority.** Luis's "2. Yes" (rq_bkgebqxp, question 2). Live release `tala-v1-demo.18`; the shared deploy lock was
+held for the whole test.
+
+**Inventory first.** Production had 4 accounts: two synthetic ones on a reserved test domain — Beanie's
+`beanie-reg-20261120-1205@example.com` (20 Nov) and the release owner's test account
+`fable-release-test-20261125@example.com` (Luis's answer 4 of 25 Nov) — and two others (not listed). No earlier
+disposable second account existed. The test account before: 0 uploads, 1 slide copy (sci26-g5-t3-w07; left untouched).
+
+**Accounts.** A = the release owner's test account (kept). B = ONE disposable account,
+`tala-disposable-isolation-20261126@example.com`, "Disposable Isolation Check (synthetic)", registered through the
+public route (auto-verified), id `ac4e703b…`. Its password was generated into an owner-only file on b11-dev, never
+printed, and the file was destroyed after the deletion.
+
+**Synthetic fixtures, for each account:** a PowerPoint upload (the invented "Parts of a Plant" test file), edited,
+slide pictures drawn by the sandboxed renderer; an unfinished upload; a slide copy of the English Grade 3 Term 2 Week 10
+Science pack, edited; a synthetic class and lesson plan with a revision.
+
+**Isolation, executed on production** (the API routes the app uses; for each account's things, the other account and
+a signed-out caller):
+- upload: read, original file (from R2), edited file (export), slide picture, draw pictures, change (a valid body, even
+  with `force`), delete → the other teacher **404**, signed out **401**;
+- unfinished upload: send a piece, finish, cancel → 404 / 401;
+- slide copy: read, PowerPoint export, drawing, change (valid body, `force`), reset, delete → 404 / 401;
+- lesson plan: server PDF, a past revision → 404 / 401; the revisions list → signed out 401, and for the other teacher
+  an empty list byte-identical to the answer for a plan that never existed (the list is scoped to the caller: nothing
+  shown, nothing to tell apart);
+- the other teacher's lists, account export and sync pull hold none of the owner's ids; signed out, the lists, export
+  and pull are 401; a made-up session token 401;
+- each owner still reads everything, unchanged (same rev and title; the original byte for byte from R2; the edited
+  file; a picture; the copy's PowerPoint and drawing; the plan's PDF and revisions). Control: the same valid change
+  body saves on the caller's own file, so the 404s are ownership, not shape.
+- **Private R2** (on the host, with the server's own key, the two synthetic accounts' folders only): each upload is one
+  object under its owner's folder, whole (size and SHA-256); each folder held exactly its own object; the object's
+  address without a key is refused (HTTP 400 InvalidArgument, no bytes).
+
+**Deletion, executed.** Before deleting, the signed-in account was confirmed as B by id and address (not A); a wrong
+password was refused (403, nothing deleted); B deleted itself through the app (`POST /account/delete` with its
+password) at 07:20:19 UTC; its session then answered 401 ("This account was deleted.") and sign-in 401. Read back:
+- **Database:** no row in any table mentions B's id, B's address or any of its upload, session, copy, plan or class ids
+  (before: 35 rows by account id in 8 tables, 7 slide pictures, its address once). Removed exactly: `core_users` 1,
+  `core_records` 14, `core_sync_mutations` 15, `core_plan_revisions` 1, `decks_decks` 1, `decks_uploads` 1,
+  `decks_upload_previews` 7, `decks_upload_sessions` 1, `decks_upload_objects` 1. Log: `account_deleted` (5 modules),
+  `deck_upload_object_removed` at once; the object row was gone within 12 s.
+- **R2:** B's object 404; B's folder 0 objects.
+- **API:** B's upload, original and copy answer A 404; its former plan's revisions give the never-existed answer.
+- **A intact:** A's rows unchanged in every table by the deletion; A signs in; its file byte for byte from R2, its copy,
+  its plan; the rows of the other accounts unchanged in every table.
+- **What deliberately remains:** `core_ended_tokens` +1 (a session token's hash, reason `account_deleted`, no account
+  id: an old device is told the account was deleted), a hashed failed-sign-in counter from my own after-deletion
+  sign-in check, hashed rate-limit counters. No plain id or address remains.
+- **The policy as built:** in one transaction the deletion removes the account, its sessions, synced records,
+  revisions and sync log, slide copies (and drawings no copy shows any more), uploads with their pictures and
+  unfinished uploads, generation jobs, roster drafts, community posts and AI quota (past AI spend is kept as a monthly
+  sum without the account); R2 objects are marked and removed by the background work at once, retried until gone.
+
+**Clean-up of A's test fixtures:** its test upload, test copy and unfinished upload deleted through the app (404 after;
+R2 object 404; A's folder 0 objects). A is back to 0 uploads and its one earlier copy. Left in A: the labelled
+synthetic class and lesson of this test ("Grade 6 – Isolation (A, synthetic test)") and the walks' synthetic rooms.
+
+**Before → after the whole test:** 4 → 4 accounts; 27 of 33 tables identical; the other accounts' rows unchanged in
+every table (the six tables that differ hold A's labelled test lesson and hashed session/sign-in counters); server 0
+error lines, 0 server errors, 0 warnings, 0 restarts; both teaching libraries unchanged.
+
+**Checks:** 83 recorded by the test script, 74 passed. The 9 that failed are test-design errors, none a product defect,
+each superseded by a corrected check that passed: 2 fixture runs picked a week with no English pack (no copy was made,
+checked; redone 2/2); 4 change attempts sent bodies that failed validation (400 before any lookup; redone with valid
+bodies 4/4, plus 2 controls); 3 revisions-list probes expected 404 (the list is caller-scoped; confirmed identical to
+a never-existed plan, 3/3). Plus the host's R2 and database read-backs above.
+
+**Not performed:** class-list import and AI generation jobs across accounts (pupil names; paid calls), community
+posting, account merge, Google sign-in (off), password reset (no mail service), the R2 removal retry path (removal
+succeeded at once), attempts through the browser UI (the API was used directly), Office application checks. The
+rehearsal-machine results of 24–25 Nov are not counted as production evidence. Evidence (no secrets):
+`/home/b11/tala-takeover-20261125/isolation-20261126/`.
