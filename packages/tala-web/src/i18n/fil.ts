@@ -283,13 +283,13 @@ export const fil = {
   'editor.competencies': 'Mga competency',
   'editor.pickCompetency': 'Pumili',
   'editor.noCompetency': 'Wala pang napiling competency',
-  // In English until the Filipino owner's editorial pass (PRD: Filipino interface text is written or reviewed by a
-  // fluent speaker who teaches, never machine-translated and shipped). Requested 26 Nov 2026.
-  'editor.standards': 'Standards and source',
+  // The Filipino owner's wording, 26 Nov 2026 (bridge bae96467): the two standard names stay as the picker prints
+  // them; "Sanggunian" as in Tala's other reference labels. Review by a Filipino-speaking teacher is still open.
+  'editor.standards': 'Mga standard at sanggunian',
   'editor.contentStandard': 'Content standard',
   'editor.performanceStandard': 'Performance standard',
-  'editor.source': 'Source',
-  'editor.sourcePage': 'page {n}',
+  'editor.source': 'Sanggunian',
+  'editor.sourcePage': 'pahina {n}',
   'editor.customObjectives': 'Mga layunin mo',
   'editor.customObjectivesHint': 'Isang layunin bawat linya.',
   'editor.duration': 'Tagal',
