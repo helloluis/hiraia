@@ -1336,3 +1336,35 @@ English teaching packs? That is new content work, and readings would need rights
 - **Still waiting_for_user (unchanged):** (2) release Grade 1 Language (141) and Senior High Effective Communication (44)?
   (3) may the release owner create one disposable production account to prove cross-teacher isolation and account-
   deletion removal of uploads on production?
+
+## 26 Nov 2026: English teaching packs — first set built and checked (not released in the app)
+
+**Set `eng26-mg123-t2-s01`**: one multi-grade week, Grade 1 Reading and Literacy + Grades 2–3 English, the shape of
+Luis's example (nothing taken from it). Original story *Seven Ducks in the Rain*; five 60-minute combined periods
+(Tala's proposal) in a fixed rotation — whole class, then each grade with the teacher in turn while the others work
+alone or as buddies, then whole class. Grade 1 works in its first language (Filipino as the worked L1, letters n and g),
+as its competencies require. Competencies (Term 2, Tala set 1 — a proposed sequence, no DepEd weeks or codes claimed):
+Grade 1 R&L t2.1, t2.3, t2.15, t2.16; Grade 2 English t2.1, t2.2, t2.4, t2.38, t2.39; Grade 3 English t2.2, t2.3,
+t2.40, t2.41 — all taught and assessed.
+
+**Artifacts** (workspace `/home/b11/tala-english-packs/`, delivery `delivery/tala-english-eng26-mg123-t2-s01-20261126`,
+archive SHA-256 in `delivery/published-20261126.json`): five combined plans (Tala's multi-grade template, exported
+with the app's own print and Word code: DOCX, A4, long bond), four editable decks with notes (100 slides), three
+grades' lesson plans, teacher guide with a merged print list, readings and cards booklet, 49 worksheets in tiers,
+answer keys, Day 5 checks with oral record sheets. Published for 7 days through the report relay
+(`https://lnj.b11.dev/reports/<token>`, expires about 2026-12-03 05:00 UTC); 23/23 links verified (HTTP 200, same SHA-256).
+
+**Checks**: deterministic checker 0 errors (ids, time blocks, minutes, coverage, keys, decodability: Grade 2 reader all
+CVC or 8 sight words; Grade 3 passage all 17 targets; Grade 1 reader only the allowed letters); independent Opus review
+in two rounds (r1: 5 must, 20 should, 16 nice, all acted on; r2: 19 fixed, 6 partly, 0 open, plus 2 must and 3 should,
+fixed); 33/33 file parser checks; LibreOffice opened all 4 decks and 5 Word files; Tala's editability audit passes on
+all decks; coordinator's visual inspection of contact sheets. **Not done**: teacher review, Microsoft Office check,
+classroom trial; the 285 Filipino lines wait for the Filipino owner's editorial pass (bridge `15afb687…`); six Grade 1
+words are teacher sketches (no Hiraia drawing).
+
+**Release state**: not in the Tala app (files only). Production unchanged (`tala-v1-demo.17`). Workers: four authors
+and one reviewer, Claude Opus 5.5 subagents on b11-dev, attended, bounded; nothing was run unattended or overnight,
+and no paid model batch. **Next (not started)**: the unattended production lane on b11-002 (registered `hiraia`
+project; the Math pilot renderer is there; English branches not yet fetched there; no English owner) for the next
+bounded sets with this brief, checker and two-round review. **Still waiting_for_user (unchanged)**: Grade 1 Language
+and Senior High Effective Communication; the disposable second account.
