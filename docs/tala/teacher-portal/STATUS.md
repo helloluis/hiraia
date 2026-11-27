@@ -1696,3 +1696,13 @@ final build (the earlier three are used, ~US$0.0016 each).
 - Four pre-existing loading flashes seen in the motion recordings are logged above as follow-ups (two more added by the
   hand-off: This Week's empty state for a moment after a reload; "This lesson is not on this device" for a moment
   before sync).
+- **Combined candidate verified (17:20 Manila): `f3e6f52a9`.** Local production build, one
+  database, real DeepSeek then broken keys: Lesson Plan 33/33, slides 46/46 over six phases, weekend 51/51, English
+  34/34, Language/SHS 33/33, multi-grade 19/19 (race fixed), motion walk 88/88 (reorder 41, reduced motion 15, next-step
+  cue 31, seed 1; the reduced-motion phase's one draft went to the real provider here, not a stand-in), broken keys:
+  Materials 6/6, queued offline 5/5, slides 4/4, device full 5/5 — 324 checks, all passed; 15 real model calls,
+  US$0.069; no secret in either server log. Evidence: the motion owner's page (in its hand-off) and the section sheet's
+  new waiting state https://lnj.b11.dev/reports/d6dca7a73aac9148c82266d2cc4db7f5492b4e04ea52bd0d211c6cd3303ae001
+  (7 days). **waiting_for_user (asked once):** "Include the interface motion work in the release too? If yes, I deploy
+  `f3e6f52a9` (the six items + motion) instead of `0f7b8b38b` (the six items alone)." Both still need Luis's go-ahead
+  to deploy at all.
