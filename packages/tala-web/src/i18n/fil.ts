@@ -1184,16 +1184,18 @@ export const fil = {
   'pp.ai.appliedNew':
     'Nasa aralin na ang slides. Iyo ang mga ito at puwede mong i-edit ayon sa gusto mo.',
   'pp.session.about': 'Tungkol sa mga slide',
-  // Motion and AI status (Nov 27). DRAFT wording by the motion task: the Filipino owner (b11-002:7964278f) has not
-  // reviewed these lines yet.
+  // Motion and AI status (Nov 27). Wording as passed by the Filipino owner (b11-002:7964278f), 27 Nov 2026,
+  // bridge 74372ed4: four lines kept as drafted, five reworded.
   'ai.status.sending': 'Ipinapadala ang kahilingan mo…',
   'ai.status.queued': 'Nakapila ang kahilingan mo. Sisimulan ito ng Tala kapag tapos na ang nauna.',
-  'ai.status.running': 'Natanggap ang kahilingan mo. Isinusulat na ito ng Tala.',
-  'ai.status.still': 'Isinusulat pa ng Tala. Walang mababago sa aralin mo habang hindi pa ito handa.',
-  'ai.status.longer': 'Isinusulat pa rin. Salamat sa paghihintay.',
+  'ai.status.running': 'Natanggap na ang kahilingan mo. Nagsusulat na ang Tala.',
+  'ai.status.still':
+    'Nagsusulat pa ang Tala. Wala itong babaguhin sa aralin mo habang ginagawa ang draft.',
+  'ai.status.longer': 'Ginagawa pa rin ang draft. Salamat sa paghihintay.',
   'ai.status.slow': 'Mas matagal ito kaysa karaniwan. Puwede kang maghintay pa o kanselahin ito.',
   'ai.status.slowBackground':
-    'Mas matagal ito kaysa karaniwan. Puwede kang maghintay pa, o magpatuloy muna sa ibang gawain.',
-  'ai.status.offline': 'Walang koneksyon ngayon. Patuloy itong titingnan ng Tala.',
+    'Mas matagal ito kaysa karaniwan. Puwede kang maghintay pa o magpatuloy sa ibang gawain habang ginagawa pa rin ng Tala ang draft.',
+  'ai.status.offline':
+    'Walang koneksyon ngayon. Patuloy na titingnan ng Tala kung bumalik na ang koneksyon.',
   'ai.status.elapsed': '{time} na ang lumipas',
 } satisfies Record<StringKey, string>;
