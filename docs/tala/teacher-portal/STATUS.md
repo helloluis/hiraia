@@ -1659,3 +1659,8 @@ hers; pre-filled parts are replaced and never reported as kept (unit test; clean
 `applyDraft`, used by background full drafts); the motion owner re-runs its queued-draft browser check on the fix.
 The release question above stands, now for `0f7b8b38b`. Its nine status captions went to the Filipino owner (batch 3,
 bridge 2db386b4).
+- **Browser check of the `applyDraft` fix (motion owner, its branch rebased onto `0f7b8b38b`): 8/8** — a draft queued
+  after the pre-filled template is written (one job, one model call; objectives and materials are the model's; no
+  "your own text was kept"); "Queue it" after a failure asks again and writes the draft; a lesson with one objective
+  she wrote keeps it, the rest drafted, the banner names Objectives. Model replaced by a labelled local stand-in;
+  the real-provider runs are those above.
