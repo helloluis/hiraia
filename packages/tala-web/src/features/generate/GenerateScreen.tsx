@@ -17,7 +17,7 @@ import { useSession } from '@/data/session';
 import { getClient } from '@/data/client';
 import { newId } from '@/data/ids';
 import {
-  applyGenerationJob,
+  applyDraft,
   buildGenerationInput,
   enqueue,
   hasObjectives,
@@ -179,8 +179,18 @@ export function GenerateScreen() {
         const sections = (await engine.list('plan_section'))
           .filter((s) => s.data.planId === ed.plan!.id)
           .map((s) => s.data);
-        await applyGenerationJob(engine, fresh, sections, finished, newId);
-        router.replace(`/lessons/${ed.plan.id}?drafted=1`);
+        // The draft fills every part the teacher has not written herself and keeps hers (release owner's
+        // `applyDraft`); the lesson then names the parts that were kept.
+        const { applied, kept } = await applyDraft(engine, fresh, sections, finished, newId);
+        if (applied)
+          router.replace(
+            `/lessons/${ed.plan.id}?drafted=1${kept.length ? `&kept=${kept.join(',')}` : ''}`
+          );
+        else {
+          // Every part was her own text: nothing was replaced, and the page says so instead of opening the lesson.
+          setPhase('form');
+          setError(t('gen.keptAll'));
+        }
       } else if (finished.status === 'cancelled') {
         setPhase('form');
         setError(t('gen.cancelled'));
@@ -244,7 +254,9 @@ export function GenerateScreen() {
       confirmedSectionIds: [],
       createdAt: new Date().toISOString(),
     });
-    router.replace(`/lessons/${ed.plan.id}?queued=1`);
+    // Online, "Run in background" is her own choice (the lesson says the draft will appear); without a connection
+    // the request is waiting to be sent, and the lesson says that instead.
+    router.replace(`/lessons/${ed.plan.id}?${online ? 'background' : 'queued'}=1`);
   };
 
   // Leaving this page while Tala is still writing does not withdraw the request (Cancel does that). It is handed to

@@ -880,20 +880,33 @@ try {
           titles = await procedureTitles(d);
         }
         const rows = jobsOf('draftQueue');
+        await d.page.waitForTimeout(1500);
+        const afterQ = {
+          objectives: await d.page.locator('section[aria-labelledby="s-objectives"] input').evaluateAll((els) => els.map((e) => e.value)),
+          materials: await d.page.locator('section[aria-labelledby="s-materials"] input').evaluateAll((els) => els.map((e) => e.value)),
+          says: await d.page.locator('main [role="status"], main [role="alert"]').allInnerTexts().then((x) => x.filter(Boolean)),
+        };
+        // The teacher typed nothing in this lesson: every part came from the pre-filled template.
+        judge(`${SIM}: after that queued draft the lesson does not call the pre-filled template “your own text”`, !afterQ.says.some((x) => x.includes(en['gen.keptOwnText'].split('{sections}')[0].trim())), `says: ${afterQ.says.join(' | ') || '(nothing)'}; objectives ${JSON.stringify(afterQ.objectives.map((x) => x.slice(0, 40)))}; materials ${JSON.stringify(afterQ.materials)}`);
         judge(`${SIM}: a request that could not reach Tala opens the pre-filled template, and once Tala can be reached the draft is written into the lesson (one request, one model call)`, prefilled.length >= 1 && titles.includes('STAND-IN review') && rows.length === 1 && rows[0].status === 'done' && st.calls - callsQ === 1, `objectives pre-filled meanwhile: ${prefilled.length}; model calls ${st.calls - callsQ}; jobs ${JSON.stringify(rows)}; procedure after 80 s: ${titles.join(' | ') || '(still the empty pre-filled step)'}`);
       }
 
-      /* ---- G. a lesson that already has the teacher's own objective (recorded as it is today) ---- */
+      /* ---- G. a lesson that already has the teacher's own objective ---- */
       if (want('G')) {
+        st.mode = 'ok';
         st.delayMs = 2500;
         startBtn = await openGenerate(d, 'draftOwn');
         await startBtn.click();
-        await d.page.waitForTimeout(9000);
+        const arrived = await d.page.waitForURL(drafted, { timeout: 30000 }).then(() => true).catch(() => false);
+        await d.page.waitForTimeout(1500);
         const says = await d.page.locator('main [role="status"], main [role="alert"]').allInnerTexts().then((x) => x.filter(Boolean));
-        await openLesson(d, 'draftOwn');
-        const own = await d.page.locator('section[aria-labelledby="s-objectives"] input').first().inputValue().catch(() => '');
-        check(`${SIM}: the teacher’s own objective is still exactly what she wrote after a draft was asked for`, own === OWN_OBJECTIVE, own);
-        note(`${SIM}: what the draft page said for that lesson (release owner’s decision pending: today the whole draft is refused when one part has the teacher’s own text)`, says.slice(-2).join(' | '));
+        const url = new URL(d.page.url());
+        if (!arrived) await openLesson(d, 'draftOwn');
+        const own = await d.page.locator('section[aria-labelledby="s-objectives"] input').evaluateAll((els) => els.map((e) => e.value));
+        const titles = await procedureTitles(d);
+        check(`${SIM}: the teacher’s own objective is still exactly what she wrote after a draft was asked for`, own.length === 1 && own[0] === OWN_OBJECTIVE, own.join(' | '));
+        judge(`${SIM}: the rest of that lesson is drafted, and the lesson says which part of hers was kept`, arrived && url.searchParams.get('kept') === 'objectives' && titles.includes('STAND-IN review') && says.some((x) => x.includes('Objectives')), `${url.pathname}${url.search}; procedure ${titles.join(' | ') || '(empty)'}; says: ${says.slice(-3).join(' | ')}`);
+        await shot(d, 'g1-own-text-kept', true);
       }
       await d.ctx.close();
 
@@ -913,6 +926,7 @@ try {
         await shot(ph, 'h1-writing');
         st.release();
         const ok = await ph.page.waitForURL(drafted, { timeout: 30000 }).then(() => true).catch(() => false);
+        await ph.page.getByText(fil['gen.done']).first().waitFor({ timeout: 8000 }).catch(() => {});
         check(`${SIM}, phone, Filipino: the draft arrives and the lesson opens`, ok && (await ph.page.getByText(fil['gen.done']).count()) >= 1, `${new URL(ph.page.url()).pathname}${new URL(ph.page.url()).search}; says ${JSON.stringify(await ph.page.locator('[role="status"], [role="alert"]').allInnerTexts().then((x) => x.filter(Boolean).slice(0, 4)))}`);
         await ph.ctx.close();
       }
