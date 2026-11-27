@@ -287,6 +287,12 @@
   .tala-cue > svg {
     display: block;
   }
+  /* Never on paper. */
+  @media print {
+    .tala-cue {
+      display: none;
+    }
+  }
   .tala-cue[data-cue-pointing='right'] {
     --cue-x: 6px;
   }

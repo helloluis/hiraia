@@ -14,14 +14,16 @@
 //             model), loading rows, colour changes
 //   ai-real   one real draft with the provider the server was started with (needs --real; counted and bounded)
 //   reduced   the same screens with prefers-reduced-motion: reduce
-//   record    short recordings (WebM) and frame strips for the report
+//   record    short recordings of the real screen (WebM by the browser; GIF and a frame strip when FFMPEG_PATH and
+//             SHARP_PATH are given). `--label before` records the same clips on the build before the change.
 //
 //   tsx scripts/motion-walk.mjs <phase> http://127.0.0.1:PORT <outDir> --db <TALA_DB_PATH> [--real] [--label before|after]
 //
 // Local servers only: it creates an account. Everything typed or seeded is invented (@example.com).
 import { createRequire } from 'node:module';
+import { execFileSync } from 'node:child_process';
 import { createServer } from 'node:http';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const require = createRequire(import.meta.url);
@@ -1241,6 +1243,286 @@ try {
       st.release();
       await st.close();
     }
+  }
+  if (phase === 'ai-real') {
+    /* ---- REAL PROVIDER: the server was started with its real keys. Bounded: two full drafts, no more. ---- */
+    if (!flag('real')) throw new Error('ai-real asks the REAL provider the server was started with. Pass --real. It makes at most two full drafts.');
+    const usage = () => {
+      const d = db();
+      const total = d.prepare('select count(*) n, coalesce(sum(cost),0) cost, coalesce(sum(input_tokens),0) i, coalesce(sum(output_tokens),0) o from llm_usage').get();
+      const jobs = d.prepare("select status, json_extract(input,'$.kind') kind, json_extract(job,'$.result.provider') provider, json_extract(job,'$.result.model') model, json_extract(job,'$.failure.reason') reason from generation_jobs order by rowid").all();
+      d.close();
+      return { total, jobs };
+    };
+    const u0 = usage();
+    const drafted = (u) => u.pathname.startsWith('/lessons/') && u.searchParams.get('drafted') === '1';
+    for (const [key, what] of [['draftReal', 'a single-grade lesson'], ['draftRealMulti', 'a multi-grade session']]) {
+      const s = await open('desktop', 'en', { recordVideo: { dir: join(out, 'video', 'raw'), size: { width: 1366, height: 900 } } });
+      const startBtn = await openGenerate(s, key);
+      await startBtn.scrollIntoViewIfNeeded();
+      await watchAi(s);
+      const t0 = Date.now();
+      await startBtn.click();
+      await s.page.locator('.tala-ai').waitFor({ timeout: 8000 });
+      // One screenshot each time the words change, for as long as it really takes.
+      const seen = [];
+      while (Date.now() - t0 < 240000) {
+        const now = await aiState(s);
+        if (!now || now.old) break;
+        if (!seen.includes(now.status)) {
+          seen.push(now.status);
+          await s.page.locator('.tala-ai').scrollIntoViewIfNeeded().catch(() => {});
+          await s.page.screenshot({ path: join(out, 'shots', `real-${key}-${seen.length}-${now.status}-${label}.png`) });
+        }
+        await s.page.waitForTimeout(350);
+      }
+      const arrived = await s.page.waitForURL(drafted, { timeout: 20000 }).then(() => true).catch(() => false);
+      const secs = ((Date.now() - t0) / 1000).toFixed(1);
+      const log = await aiLog(s);
+      const says = await s.page.locator('main [role="status"], main [role="alert"]').allInnerTexts().then((x) => x.filter(Boolean)).catch(() => []);
+      const legal = ['sending/sending', 'queued/queued', 'running/running', 'running/still', 'running/longer', 'running/slow', 'queued/slow', 'gone'];
+      check(`REAL PROVIDER, ${what}: the waiting state followed the real request (${log.filter((x) => x.caption).length} lines) and was taken away when it ended, after ${secs} s`, log.length >= 2 && log.every((x) => legal.includes(x.state)) && log[log.length - 1].state === 'gone' && new Set(log.filter((x) => x.height).map((x) => x.height)).size === 1, log.map((x) => `${(x.t / 1000).toFixed(1)} s ${x.state}${x.caption ? ` “${x.caption}”` : ''}`).join(' → '));
+      await s.page.waitForTimeout(2000);
+      let filled = '';
+      if (arrived) {
+        if (key === 'draftRealMulti') {
+          const blocks = await snap(s, 'block');
+          filled = `${blocks.order.length} time blocks: ${blocks.order.join(' | ')}`;
+          check(`REAL PROVIDER, ${what}: the draft arrived and the Session Flow has its time blocks`, blocks.order.length >= 2, filled);
+        } else {
+          const steps = await s.page.locator('section[aria-labelledby="s-procedure"] input').evaluateAll((els) => els.map((e) => e.value));
+          filled = `procedure: ${steps.join(' | ')}`;
+          check(`REAL PROVIDER, ${what}: the draft arrived and the Procedure has its steps (written by the real model, not the stand-in)`, steps.length >= 2 && !steps.some((x) => x.includes('STAND-IN')), filled);
+        }
+        await shot(s, `real-${key}-drafted`, true);
+      } else check(`REAL PROVIDER, ${what}: the draft arrived`, false, `page: ${new URL(s.page.url()).pathname}; says: ${says.slice(-2).join(' | ')}`);
+      const video = s.page.video();
+      await s.ctx.close();
+      if (video) {
+        const to = join(out, 'video', `real-${key}-${label}.webm`);
+        renameSync(await video.path(), to);
+        note(`REAL PROVIDER, ${what}: recording of the whole wait`, to);
+      }
+    }
+    const u1 = usage();
+    note('REAL PROVIDER: what these two drafts used', `${u1.total.n - u0.total.n} model calls; ${u1.total.i - u0.total.i} tokens in, ${u1.total.o - u0.total.o} out; US$ ${(u1.total.cost - u0.total.cost).toFixed(5)} by the server's own price table; jobs: ${JSON.stringify(u1.jobs.slice(u0.jobs.length))}`);
+    check('REAL PROVIDER: no more than two requests were made by this phase', u1.jobs.length - u0.jobs.length <= 2, `${u1.jobs.length - u0.jobs.length} job(s)`);
+  }
+  if (phase === 'record') {
+    /* ---- recordings of the real screen. The browser writes WebM; GIF and a strip of frames are made from it. ---- */
+    const isNew = label !== 'before';
+    const only = option('only') ? option('only').split(',') : null;
+    const want = (k) => !only || only.includes(k);
+    const SIZE = { desktop: { width: 1280, height: 800 }, phone: { width: 390, height: 844 } };
+    const made = [];
+    /** Record `fn` in a fresh signed-in window, then turn the recording into a GIF and a strip of frames. */
+    async function clip(name, view, lang, fn, extra = {}) {
+      const s = await open(view, lang, { viewport: SIZE[view], deviceScaleFactor: 1, recordVideo: { dir: join(out, 'video', 'raw'), size: SIZE[view] }, ...extra });
+      const signedInAt = Date.now();
+      let trimFrom = 0;
+      try {
+        // Only what happens after `mark()` belongs to the clip (sign-in and loading are cut from the GIF and the strip).
+        await fn(s, () => (trimFrom = (Date.now() - signedInAt) / 1000));
+      } finally {
+        const video = s.page.video();
+        const startedAgo = Date.now();
+        await s.ctx.close();
+        if (video) {
+          const webm = join(out, 'video', `${name}-${label}.webm`);
+          renameSync(await video.path(), webm);
+          const entry = { name, label, view, lang, webm };
+          if (process.env.FFMPEG_PATH && process.env.SHARP_PATH) {
+            try {
+              const sharp = (await import(process.env.SHARP_PATH)).default;
+              const dir = join(out, 'video', 'frames', `${name}-${label}`);
+              rmSync(dir, { recursive: true, force: true });
+              mkdirSync(dir, { recursive: true });
+              // The recording began before sign-in: skip to the mark (the sign-in itself takes about four seconds more).
+              const all = join(dir, 'f-%04d.png');
+              execFileSync(process.env.FFMPEG_PATH, ['-hide_banner', '-loglevel', 'error', '-i', webm, '-r', '12', all]);
+              const files = readdirSync(dir).sort();
+              const total = files.length;
+              // Frames are 1/12 s apart; the clip is the tail of the recording that follows the mark, with a second
+              // of lead-in (the recorder stops a little before the window is closed).
+              const tail = Math.max(1, Math.round(((startedAgo - signedInAt) / 1000 - trimFrom + 1.2) * 12));
+              const use = files.slice(Math.max(0, total - tail));
+              const width = view === 'phone' ? 300 : 640;
+              const bufs = await Promise.all(use.map((f) => sharp(join(dir, f)).resize(width).png().toBuffer()));
+              const gif = join(out, 'video', `${name}-${label}.gif`);
+              // Each frame keeps its own colours (a shared palette tints the frames where a card is in flight).
+              writeFileSync(gif, await sharp(bufs, { join: { animated: true } }).gif({ delay: bufs.map(() => 83), loop: 0, interFrameMaxError: 0, interPaletteMaxError: 0, dither: 0 }).toBuffer());
+              entry.gif = gif;
+              entry.frames = use.length;
+              rmSync(dir, { recursive: true, force: true });
+            } catch (err) {
+              entry.gifError = String(err).slice(0, 200);
+            }
+          }
+          made.push(entry);
+        }
+      }
+    }
+    const st = await startStandin(Number(option('standin-port', '3339')));
+    try {
+      const up = (lang, n) => moveLabel(lang, 'block', 'up', n);
+      const down = (lang, n) => moveLabel(lang, 'block', 'down', n);
+      const centre = async (s, name, at = 0.42) => {
+        const b = s.page.getByRole('button', { name, exact: true });
+        await b.scrollIntoViewIfNeeded();
+        await b.evaluate((el, at) => window.scrollBy(0, el.getBoundingClientRect().top - window.innerHeight * at), at);
+        await s.page.waitForTimeout(700);
+        return b;
+      };
+      if (want('reorder-desktop'))
+        await clip('reorder-desktop', 'desktop', 'en', async (s, mark) => {
+          await openLesson(s, 'multigrade');
+          let b = await centre(s, up('en', 3));
+          mark();
+          await s.page.waitForTimeout(900);
+          let box = await b.boundingBox();
+          await s.page.mouse.move(box.x + box.width / 2, box.y + box.height / 2, { steps: 8 });
+          await s.page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+          await s.page.waitForTimeout(2200);
+          b = s.page.getByRole('button', { name: down('en', 2), exact: true });
+          box = await b.boundingBox();
+          await s.page.mouse.move(box.x + box.width / 2, box.y + box.height / 2, { steps: 8 });
+          await s.page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+          await s.page.waitForTimeout(2600);
+        });
+      if (want('reorder-phone'))
+        await clip('reorder-phone', 'phone', 'en', async (s, mark) => {
+          await openLesson(s, 'multigrade');
+          let b = await centre(s, up('en', 3), 0.3);
+          mark();
+          await s.page.waitForTimeout(900);
+          let box = await b.boundingBox();
+          await s.page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2);
+          await s.page.waitForTimeout(2200);
+          b = s.page.getByRole('button', { name: down('en', 2), exact: true });
+          box = await b.boundingBox();
+          await s.page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2);
+          await s.page.waitForTimeout(2600);
+        }, { isMobile: true, hasTouch: true });
+      if (isNew && want('reorder-keyboard'))
+        await clip('reorder-keyboard', 'desktop', 'en', async (s, mark) => {
+          await openLesson(s, 'multigrade');
+          const b = await centre(s, up('en', 3));
+          await b.focus();
+          mark();
+          await s.page.waitForTimeout(900);
+          await s.page.keyboard.press('Enter');
+          await s.page.waitForTimeout(1700);
+          await s.page.keyboard.press('Enter'); // reaches the top: focus passes to the Down arrow
+          await s.page.waitForTimeout(1900);
+          await s.page.keyboard.press('Enter');
+          await s.page.waitForTimeout(1700);
+          await s.page.keyboard.press('Enter');
+          await s.page.waitForTimeout(2200);
+        });
+      if (isNew && want('reorder-reduced'))
+        await clip('reorder-reduced-motion', 'desktop', 'en', async (s, mark) => {
+          await openLesson(s, 'multigrade');
+          let b = await centre(s, up('en', 3));
+          mark();
+          await s.page.waitForTimeout(900);
+          let box = await b.boundingBox();
+          await s.page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+          await s.page.waitForTimeout(2200);
+          b = s.page.getByRole('button', { name: down('en', 2), exact: true });
+          box = await b.boundingBox();
+          await s.page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+          await s.page.waitForTimeout(2400);
+        }, { reducedMotion: 'reduce' });
+      if (isNew && want('cue-draft-phone'))
+        await clip('cue-draft-phone', 'phone', 'en', async (s, mark) => {
+          await forgetCues(s, true);
+          mark();
+          await s.page.goto(`${base}/generate?planId=${acct.plans.draftPlain.planId}`, { waitUntil: 'domcontentloaded' });
+          await s.page.waitForTimeout(4200);
+        }, { isMobile: true, hasTouch: true });
+      if (isNew && want('cue-week'))
+        await clip('cue-this-week', 'desktop', 'en', async (s, mark) => {
+          await forgetCues(s, true);
+          mark();
+          await s.page.goto(`${base}/week`, { waitUntil: 'domcontentloaded' });
+          await s.page.waitForTimeout(4200);
+        });
+      if (isNew && want('cue-lock'))
+        await clip('cue-lock', 'desktop', 'en', async (s, mark) => {
+          await forgetCues(s, true);
+          await openLesson(s, 'procedure');
+          const assess = s.page.locator('section[aria-labelledby="s-assessment"] [contenteditable="true"]').first();
+          await assess.scrollIntoViewIfNeeded();
+          await assess.click();
+          mark();
+          await s.page.keyboard.type('Each learner names two things a plant needs.', { delay: 55 });
+          await s.page.waitForTimeout(4200);
+          await s.page.evaluate(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
+          await s.page.waitForTimeout(1500);
+          // Leave the lesson as seeded.
+          await assess.scrollIntoViewIfNeeded();
+          await assess.click();
+          await s.page.keyboard.press('Control+A');
+          await s.page.keyboard.press('Delete');
+          await s.page.waitForTimeout(3000);
+        });
+      if (want('ai-waiting'))
+        await clip('ai-waiting-standin', 'desktop', 'en', async (s, mark) => {
+          st.mode = 'ok';
+          st.delayMs = 23000;
+          if (isNew) await forgetCues(s, true);
+          const b = await openGenerate(s, 'draftPlain');
+          await b.scrollIntoViewIfNeeded();
+          mark();
+          await s.page.waitForTimeout(1200);
+          await b.click();
+          await s.page.waitForURL((u) => u.pathname.startsWith('/lessons/') && u.searchParams.get('drafted') === '1', { timeout: 60000 });
+          await s.page.waitForTimeout(3000);
+        });
+      if (isNew && want('ai-failure'))
+        await clip('ai-failure-standin', 'desktop', 'en', async (s, mark) => {
+          st.mode = 'error';
+          st.delayMs = 2500;
+          const b = await openGenerate(s, 'draftRetry');
+          await b.scrollIntoViewIfNeeded();
+          mark();
+          await s.page.waitForTimeout(800);
+          await b.click();
+          await s.page.getByText(en['gen.failed.providers_unavailable']).waitFor({ timeout: 60000 });
+          await s.page.waitForTimeout(2500);
+        });
+      if (isNew && want('ai-phone-fil'))
+        await clip('ai-waiting-phone-filipino-standin', 'phone', 'fil', async (s, mark) => {
+          st.mode = 'ok';
+          st.delayMs = 7000;
+          await forgetCues(s, true);
+          const b = await openGenerate(s, 'draftPlain');
+          await b.scrollIntoViewIfNeeded();
+          mark();
+          await s.page.waitForTimeout(800);
+          await b.tap();
+          await s.page.waitForURL((u) => u.pathname.startsWith('/lessons/') && u.searchParams.get('drafted') === '1', { timeout: 60000 });
+          await s.page.waitForTimeout(2500);
+        }, { isMobile: true, hasTouch: true });
+      if (isNew && want('sheet'))
+        await clip('sheet-and-toast', 'desktop', 'en', async (s, mark) => {
+          await s.page.goto(`${base}/lessons/${acct.plans.multigrade.planId}`, { waitUntil: 'networkidle' });
+          await s.page.waitForTimeout(1500);
+          mark();
+          await s.page.getByRole('button', { name: en['editor.moreActions'], exact: true }).click();
+          await s.page.waitForTimeout(1500);
+          await s.page.keyboard.press('Escape');
+          await s.page.waitForTimeout(700);
+          await s.page.goto(`${base}/lessons/${acct.plans.multigrade.planId}?drafted=1`, { waitUntil: 'domcontentloaded' });
+          await s.page.waitForTimeout(3500);
+        });
+    } finally {
+      st.release();
+      await st.close();
+    }
+    rmSync(join(out, 'video', 'raw'), { recursive: true, force: true });
+    writeFileSync(join(out, `recordings-${label}.json`), JSON.stringify(made, null, 1));
+    for (const m of made) check(`recorded ${m.name} (${m.view}, ${m.lang})`, existsSync(m.webm) && !m.gifError, `${m.webm}${m.gif ? ` · ${m.gif} (${m.frames} frames)` : ''}${m.gifError ? ` · GIF failed: ${m.gifError}` : ''}`);
   }
   if (phase === 'reduced') {
     /* ---- the teacher's device asks for reduced motion: nothing travels, everything still works ---- */
