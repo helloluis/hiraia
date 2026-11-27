@@ -17,6 +17,13 @@ export const enumerateSessions: PacingEngine['enumerateSessions'] = (
   );
   // Weeks are anchored to Monday of the school year's first week, not device locale.
   const anchor = ordinal(year.startDate) - ((weekday(year.startDate) + 6) % 7);
+  // A date can hold class when the school teaches on that weekday (teachingWeekdays, normally Monday to Friday)
+  // or when this subject's own timetable has a slot on it: a Saturday or Sunday class the teacher chose is a real
+  // class day. A timetable with only school weekdays is unaffected; make-up days still follow `followsWeekday`.
+  const classWeekdays = new Set([
+    ...year.teachingWeekdays,
+    ...assignment.slots.map((s) => s.weekday),
+  ]);
   for (const date of datesBetween(from, to)) {
     const events = relevant.filter(
       (d) =>
@@ -28,8 +35,7 @@ export const enumerateSessions: PacingEngine['enumerateSessions'] = (
     const makeup = events.some((d) => d.kind === 'makeup');
     if (
       !makeup &&
-      (events.some((d) => NON_TEACHING_KINDS.includes(d.kind)) ||
-        !year.teachingWeekdays.includes(weekday(date)))
+      (events.some((d) => NON_TEACHING_KINDS.includes(d.kind)) || !classWeekdays.has(weekday(date)))
     )
       continue;
     const week = Math.floor((ordinal(date) - anchor) / 7);

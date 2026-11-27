@@ -8,6 +8,19 @@ year's opening week. A make-up day uses `followsWeekday` (null means its real
 weekday), ignores rotation for that explicit make-up, and only touches the given
 assignmentIds when set. Zero-minute shortened periods are omitted.
 
+Class days: a date can hold class when its weekday is one of the school year's
+`teachingWeekdays` (normally Monday to Friday) or the assignment's own timetable
+has a slot on that weekday. A Saturday or Sunday class the teacher put in the
+timetable is therefore a real class day: it gets sessions, competencies, buffer,
+assessment, marks and realignment like any weekday. The rule is per assignment,
+so it adds no session to another subject, and a timetable with only school
+weekdays is unchanged (`weekend.test.ts` keeps snapshots taken before the rule).
+No school-year record is rewritten. A weekend session sits in the seven-day
+published-week bin of its date (in a term that starts on a Monday, Saturday and
+Sunday belong to the week of the Monday before them); there are no official
+weekend week or day codes, so which competency lands on a weekend session is
+the engine's proposal, and clients label it as Tala's suggestion.
+
 ## Setup and ordinary computation
 
 1. Resolve the teacher/Hiraia defaults before passing `defaults`; track.params wins.
