@@ -134,6 +134,17 @@
 @keyframes tala-inner-ring-out {
   to { box-shadow: inset 0 0 0 2px transparent; }
 }
+@keyframes tala-fade-in {
+  from { opacity: 0; }
+}
+@keyframes tala-ai-slide {
+  from { translate: -100% 0; }
+  to { translate: 250% 0; }
+}
+@keyframes tala-ai-breathe {
+  0%, 100% { opacity: 0.5; scale: 0.9; }
+  50% { opacity: 1; scale: 1; }
+}
 
 @layer components {
   /* --- Reordering blocks and steps (src/components/motion/useReorderMotion.ts) --- */
@@ -171,5 +182,36 @@
       linear-gradient(var(--c-white), var(--c-white));
     box-shadow: inset 0 0 0 2px rgb(var(--c-talaTeal-rgb) / 0.8);
     animation: tala-inner-ring-out 800ms var(--tala-ease) 500ms both;
+  }
+
+  /* --- While Tala writes (src/components/motion/AiStatus.tsx) ---
+     Runs only while a request is open: the component is removed when it ends. Transform and opacity only. */
+  .tala-ai-bar > span {
+    animation: tala-ai-slide 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+  .tala-ai-mark {
+    display: inline-flex;
+    animation: tala-ai-breathe 1.8s ease-in-out infinite;
+  }
+  .tala-ai-caption {
+    animation: tala-fade-in var(--tala-base) var(--tala-ease) both;
+  }
+  /* Waiting its turn: slower and paler than writing. */
+  .tala-ai[data-ai-phase='queued'] .tala-ai-bar > span {
+    animation-duration: 2.6s;
+    opacity: 0.55;
+  }
+  /* No connection: nothing is claimed to be moving. */
+  .tala-ai[data-ai-status='offline'] .tala-ai-bar > span,
+  .tala-ai[data-ai-status='offline'] .tala-ai-mark {
+    animation-play-state: paused;
+    opacity: 0.35;
+  }
+  /* Reduced motion: a full, pale bar (a still third of a bar would read as "one third done"). */
+  @media (prefers-reduced-motion: reduce) {
+    .tala-ai-bar > span {
+      width: 100%;
+      opacity: 0.35;
+    }
   }
 }

@@ -7,7 +7,9 @@
 //   seed      register a local teacher, a multi-grade class and a single-grade class, and their lessons
 //   reorder   Session Flow blocks and Procedure steps: movement, identity, focus, persistence, failed saves
 //   cue       the next-step arrow: where it appears, how long, what it never does
-//   ai-mock   SIMULATED job states (the browser's requests to /generation are answered by this script, labelled)
+//   ai-standin  the waiting state against the REAL Tala server, job queue, polling and cancel, with a SIMULATED MODEL:
+//             the server is started with its lesson route on a local stand-in endpoint that this script answers
+//             (--standin-port, default 3339). Every check from this phase is labelled as using the stand-in model.
 //   ai-real   one real draft with the provider the server was started with (needs --real; counted and bounded)
 //   reduced   the same screens with prefers-reduced-motion: reduce
 //   record    short recordings (WebM) and frame strips for the report
@@ -16,6 +18,7 @@
 //
 // Local servers only: it creates an account. Everything typed or seeded is invented (@example.com).
 import { createRequire } from 'node:module';
+import { createServer } from 'node:http';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -25,7 +28,7 @@ const [phase, base, out] = argv;
 const flag = (name) => argv.includes(`--${name}`);
 const option = (name, fallback = '') => (argv.includes(`--${name}`) ? argv[argv.indexOf(`--${name}`) + 1] : fallback);
 const dbPath = option('db');
-const PHASES = ['seed', 'reorder', 'cue', 'ai-mock', 'ai-real', 'reduced', 'record'];
+const PHASES = ['seed', 'reorder', 'cue', 'ai-standin', 'ai-real', 'reduced', 'record'];
 if (!PHASES.includes(phase) || !/^http:\/\/127\.0\.0\.1:\d+$/.test(base ?? '') || !out || !dbPath)
   throw new Error(`usage: motion-walk.mjs <${PHASES.join('|')}> http://127.0.0.1:PORT <outDir> --db <path>`);
 const label = option('label', 'after');
@@ -79,6 +82,7 @@ const finish = () => {
 
 /* ------------------------------------------------ seed, through the real API and sync engine */
 const p = (text) => [{ t: 'p', spans: [{ text }] }];
+const OWN_OBJECTIVE = 'The teacher’s own objective: every learner touches a real seed today.';
 if (phase === 'seed') {
   const email = `teacher.motionwalk.${stamp}@example.com`;
   const password = `Tala-mw-${stamp}-Aa1!`;
@@ -155,14 +159,18 @@ if (phase === 'seed') {
     plans.procedure.stepIds = steps.map((s) => s.id);
     plans.procedure.stepTitles = steps.map((s) => s.title);
   }
-  // 3. Lessons with nothing written yet, for the AI draft: one keeps a teacher's own objective (it must survive).
-  for (const key of ['draftMock', 'draftReal']) {
-    const made = newPlan({ template: defaultTemplateFor(single, aSingle), cls: single, assignment: aSingle, dates: [today], language: 'en', competencies: { [single.gradeGroups[0].id]: g4.comps.slice(2, 4).map((c) => c.id) }, curriculumVersion: g4.meta.curriculumVersion, newId, title: `Grade 4 Science: ${g4.comps[2]?.shortTitle ?? 'lesson'} (synthetic test, ${key})` });
-    const sections = made.sections.map((s) => (s.key === 'objectives' ? { ...s, content: { type: 'list', items: ['The teacher’s own objective: every learner touches a real seed today.'] }, editedByTeacher: true } : s));
+  // 3. Lessons to draft with AI. `draftOwn` already has one objective the teacher wrote herself; the others are empty.
+  for (const key of ['draftPlain', 'draftRetry', 'draftCancel', 'draftAway', 'draftQueue', 'draftOwn', 'draftReal', 'draftRealMulti']) {
+    const multiGrade = key === 'draftRealMulti';
+    const cls = multiGrade ? multi : single;
+    const asg = multiGrade ? aMulti : aSingle;
+    const competencies = multiGrade ? { [gid4]: g4.comps.slice(1, 2).map((c) => c.id), [gid5]: g5.comps.slice(1, 2).map((c) => c.id) } : { [single.gradeGroups[0].id]: g4.comps.slice(2, 4).map((c) => c.id) };
+    const made = newPlan({ template: defaultTemplateFor(cls, asg), cls, assignment: asg, dates: [today], language: 'en', competencies, curriculumVersion: g4.meta.curriculumVersion, newId, title: `${multiGrade ? 'Grades 4 and 5' : 'Grade 4'} Science: ${g4.comps[2]?.shortTitle ?? 'lesson'} (synthetic test, ${key})` });
+    const sections = made.sections.map((s) => (key === 'draftOwn' && s.key === 'objectives' ? { ...s, content: { type: 'list', items: [OWN_OBJECTIVE] }, editedByTeacher: true } : s));
     await save(key, made.plan, sections);
   }
   await syncAll(engine);
-  check('seed: a local teacher, a multi-grade class and a single-grade class, a four-block Session Flow, a four-step Procedure and two lessons to draft', (await engine.status()).pending === 0, JSON.stringify(Object.fromEntries(Object.entries(plans).map(([k, v]) => [k, v.planId]))));
+  check('seed: a local teacher, a multi-grade class and a single-grade class, a four-block Session Flow, a four-step Procedure and eight lessons to draft', (await engine.status()).pending === 0, JSON.stringify(Object.fromEntries(Object.entries(plans).map(([k, v]) => [k, v.planId]))));
   writeFileSync(accountFile, JSON.stringify({ email, password, plans, groups: { gid4, gid5 }, classIds: { single: single.id, multi: multi.id } }, null, 1));
   finish();
 }
@@ -332,6 +340,154 @@ async function measureMove(s, { kind, dir, position, via, settleMs = 1800, place
     outsideShift: Math.max(0, ...after.sections.map((x) => { const b = before.sections.find((y) => y[0] === x[0]); return b ? Math.max(Math.abs(b[1] - x[1]), Math.abs(b[2] - x[2])) : 0; })),
   };
 }
+/* ------------------------------------------------ the stand-in model (SIMULATED) */
+/**
+ * Answers the Tala server's own `/chat/completions` call in place of a cloud model. Only the model's answer is
+ * simulated: the request, the job, its queued/running/done/failed/cancelled states, the time-out, the cancel and the
+ * browser are the real ones. It reads the lesson request out of the server's prompt and writes an answer the server's
+ * checks accept (the exact objective texts, the class's own materials, minutes that add up), marked STAND-IN.
+ */
+function balanced(text, from, open, close) {
+  const start = text.indexOf(open, from);
+  let depth = 0, inString = false;
+  for (let i = start; i >= 0 && i < text.length; i++) {
+    const ch = text[i];
+    if (inString) { if (ch === '\\') i++; else if (ch === '"') inString = false; continue; }
+    if (ch === '"') inString = true;
+    else if (ch === open) depth++;
+    else if (ch === close && --depth === 0) return text.slice(start, i + 1);
+  }
+  throw new Error('stand-in: could not read the request from the prompt');
+}
+/** The server hands each variable to the model as `UNTRUSTED_DATA {"name":…,"value":"<JSON text>"}`. */
+function promptVariable(prompt, name) {
+  for (let at = prompt.indexOf('UNTRUSTED_DATA'); at >= 0; at = prompt.indexOf('UNTRUSTED_DATA', at + 1)) {
+    const wrapped = JSON.parse(balanced(prompt, at, '{', '}'));
+    if (wrapped.name === name) return JSON.parse(wrapped.value);
+  }
+  throw new Error(`stand-in: the prompt has no "${name}"`);
+}
+function standinAnswer(prompt) {
+  const input = promptVariable(prompt, 'input');
+  const schema = promptVariable(prompt, 'schema');
+  const objectives = input.gradeGroups.flatMap((g) => (input.resolvedObjectives?.[g.id] ?? []).filter((t) => !(input.competencies[g.id] ?? []).includes(t)).map((t) => { const id = (input.competencies[g.id] ?? []).find((x) => t.startsWith(`${x}:`)); return id ? t.slice(id.length + 1).trimStart() : t; })).concat(input.customObjectives ?? []);
+  const T = input.timeBudgetMinutes;
+  const para = (text) => [{ t: 'p', spans: [{ text }] }];
+  const make = (spec) => {
+    if (spec.key === 'objectives') return { type: 'list', items: objectives.length ? objectives : ['STAND-IN objective'] };
+    if (spec.key === 'materials') return { type: 'list', items: (input.classProfile.materials ?? []).slice(0, 2) };
+    if (spec.key === 'procedure') return { type: 'procedure', steps: [['STAND-IN review', 5], ['STAND-IN activity', T - 15], ['STAND-IN closing', 10]].map(([title, minutes], i) => ({ id: `standin-${stamp}-${i + 1}`, title, minutes, body: para(`STAND-IN text for step ${i + 1}.`) })) };
+    if (spec.key === 'assessment') return { type: 'text', blocks: para(`STAND-IN assessment. ${objectives.join(' ')}`) };
+    return spec.contentType === 'list' ? { type: 'list', items: ['STAND-IN item'] } : { type: 'text', blocks: para(`STAND-IN text for ${spec.key}.`) };
+  };
+  return { title: 'STAND-IN draft', sections: schema.map((spec) => ({ key: spec.key, content: make(spec) })) };
+}
+async function startStandin(port) {
+  const st = { mode: 'ok', delayMs: 3000, calls: 0, answered: 0, aborted: 0, open: 0, errors: [], pending: [] };
+  const server = createServer((req, res) => {
+    if (req.method !== 'POST' || !req.url.endsWith('/chat/completions')) return void res.writeHead(404).end();
+    let body = '';
+    req.on('data', (c) => (body += c));
+    req.on('end', () => {
+      st.calls++;
+      st.open++;
+      const mode = st.mode;
+      let over = false;
+      const end = (status, payload) => {
+        if (over) return;
+        over = true;
+        st.open--;
+        st.answered++;
+        res.writeHead(status, { 'content-type': 'application/json' }).end(JSON.stringify(payload));
+      };
+      res.on('close', () => { if (!over) { over = true; st.open--; st.aborted++; } });
+      const answer = () => {
+        try {
+          if (mode === 'error') return end(500, { error: { code: 'other', message: 'stand-in error' } });
+          const content = mode === 'garbage' ? 'this is not JSON' : JSON.stringify(standinAnswer(JSON.parse(body).messages[0].content));
+          end(200, { choices: [{ message: { content }, finish_reason: 'stop' }], usage: { prompt_tokens: 100, completion_tokens: 100 } });
+        } catch (err) {
+          st.errors.push(String(err));
+          console.log(`stand-in could not answer: ${String(err).slice(0, 200)}`);
+          if (process.env.MW_DUMP_PROMPT) writeFileSync(process.env.MW_DUMP_PROMPT, body);
+          end(500, { error: { code: 'other' } });
+        }
+      };
+      if (mode === 'hang') return; // never answers: the server's own time-out ends the wait
+      const timer = setTimeout(answer, st.delayMs);
+      st.pending.push(() => { clearTimeout(timer); answer(); });
+    });
+  });
+  await new Promise((resolve, reject) => server.once('error', reject).listen(port, '127.0.0.1', resolve));
+  /** Answer whatever is waiting now (the walk has seen what it wanted to see). */
+  st.release = () => { for (const f of st.pending.splice(0)) f(); };
+  st.close = () => new Promise((resolve) => server.close(resolve));
+  return st;
+}
+/** The waiting state as drawn. Works on the build before the change too (there it finds the old one-line state). */
+const aiState = (s) => s.page.evaluate((working) => {
+  const el = document.querySelector('.tala-ai');
+  if (!el) {
+    const old = [...document.querySelectorAll('[role="status"]')].find((x) => x.textContent.includes(working));
+    return old ? { old: true, text: old.textContent.trim(), running: document.getAnimations().filter((a) => a.playState === 'running').length } : null;
+  }
+  const bar = el.querySelector('.tala-ai-bar > span');
+  const mark = el.querySelector('.tala-ai-mark');
+  const cap = el.querySelector('[role="status"]');
+  const cancel = [...el.querySelectorAll('button')][0];
+  return {
+    phase: el.dataset.aiPhase, status: el.dataset.aiStatus, caption: cap?.textContent.trim() ?? '', live: cap?.getAttribute('aria-live'), atomic: cap?.getAttribute('aria-atomic'),
+    elapsed: el.querySelector('[data-ai-elapsed]')?.textContent.trim() ?? '', elapsedHidden: el.querySelector('[data-ai-elapsed]')?.getAttribute('aria-hidden'),
+    barAnim: bar ? getComputedStyle(bar).animationName : null, barState: bar ? getComputedStyle(bar).animationPlayState : null, barWidth: bar ? Math.round(bar.getBoundingClientRect().width) : null, trackWidth: bar ? Math.round(bar.parentElement.getBoundingClientRect().width) : null, barHidden: bar?.parentElement.getAttribute('aria-hidden'),
+    markAnim: mark ? getComputedStyle(mark).animationName : null, markState: mark ? getComputedStyle(mark).animationPlayState : null,
+    height: Math.round(el.getBoundingClientRect().height * 10) / 10, cancelHeight: cancel ? Math.round(cancel.getBoundingClientRect().height) : null,
+    sideways: document.documentElement.scrollWidth > window.innerWidth + 1,
+  };
+}, L(s.lang)['gen.working'].slice(0, 12));
+/** Every change of the waiting state while it is on screen: when, which state, which words, how tall, where the next button is. */
+const watchAi = (s) => s.page.evaluate(() => {
+  const mw = window.__mwx;
+  mw.aiLog = [];
+  const t0 = Date.now();
+  let last = '';
+  clearInterval(mw.aiTimer);
+  mw.aiTimer = setInterval(() => {
+    const el = document.querySelector('.tala-ai');
+    const cur = el ? `${el.dataset.aiPhase}/${el.dataset.aiStatus}` : 'gone';
+    if (cur === last) return;
+    last = cur;
+    const next = el?.nextElementSibling;
+    mw.aiLog.push({ t: Date.now() - t0, state: cur, caption: el?.querySelector('[role="status"]')?.textContent.trim() ?? null, height: el ? Math.round(el.getBoundingClientRect().height * 10) / 10 : null, nextTop: next ? Math.round((next.getBoundingClientRect().top + window.scrollY) * 10) / 10 : null });
+  }, 40);
+});
+const aiLog = (s) => s.page.evaluate(() => window.__mwx.aiLog ?? []);
+/** Where the bar's moving piece and the mark are drawn, every frame for `ms`. */
+const sampleAi = (s, ms) => s.page.evaluate((ms) => new Promise((resolve) => {
+  const bar = document.querySelector('.tala-ai-bar > span');
+  const mark = document.querySelector('.tala-ai-mark');
+  const out = [];
+  const t0 = performance.now();
+  const tick = (now) => {
+    out.push([bar ? Math.round(bar.getBoundingClientRect().left * 10) / 10 : null, mark ? Math.round(parseFloat(getComputedStyle(mark).opacity) * 100) / 100 : null]);
+    if (now - t0 < ms) requestAnimationFrame(tick);
+    else resolve({ frames: out.length, barPositions: new Set(out.map((x) => x[0])).size, markLevels: new Set(out.map((x) => x[1])).size });
+  };
+  requestAnimationFrame(tick);
+}), ms);
+const jobsOf = (planKey) => {
+  const d = db();
+  const rows = d.prepare("select status, json_extract(job,'$.failure.reason') reason from generation_jobs where json_extract(input,'$.planId')=? order by rowid").all(acct.plans[planKey].planId);
+  d.close();
+  return rows;
+};
+const openGenerate = async (s, planKey) => {
+  await s.page.goto(`${base}/generate?planId=${acct.plans[planKey].planId}`, { waitUntil: 'networkidle', timeout: 120000 });
+  await s.page.waitForTimeout(1500);
+  return s.page.getByRole('button', { name: L(s.lang)['gen.start'], exact: true });
+};
+const waitAi = (s, status, timeout = 15000) => s.page.waitForFunction((st) => document.querySelector('.tala-ai')?.dataset.aiStatus === st, status, { timeout });
+const SIM = 'STAND-IN MODEL';
+
 const brief = (m) => `${m.framesOnTheWay} frames on the way (${m.distinctOnTheWay} distinct positions) over ${m.durationMs} ms (${m.durationMs ? Math.round((m.framesOnTheWay / m.durationMs) * 1000) : 0} drawn per second in this headless browser); the neighbour travelled ${m.otherTravel} px; the pressed card strayed ${m.heldDrift.toFixed(2)} px; page scrolled ${m.scrollBy} px in ${m.scrollSteps} steps; bar ${m.barLayouts} layouts`;
 const swapped = (order, i, j) => { const o = [...order]; [o[i], o[j]] = [o[j], o[i]]; return o; };
 /** `before` runs of this walk only record what the old build does; `after` runs judge. */
@@ -499,6 +655,272 @@ try {
     m = await measureMove(p2, { kind: 'step', dir: 'up', position: 2, via: 'keyboard' });
     check('Procedure: moved back by keyboard; at the top, focus is on the step’s other arrow', JSON.stringify(m.after.order) === JSON.stringify(steps) && (label === 'before' || m.after.active === moveLabel('en', 'step', 'down', 1)), `${m.after.order.join(' | ')}; focus on ${m.after.active}`);
     await p2.ctx.close();
+  }
+  if (phase === 'ai-standin') {
+    const st = await startStandin(Number(option('standin-port', '3339')));
+    const isNew = label !== 'before';
+    // --only A,C,Q runs some scenarios (letters as in the comments below); everything by default.
+    const only = option('only') ? option('only').split(',') : null;
+    const want = (k) => !only || only.includes(k);
+    const drafted = (u) => u.pathname.startsWith('/lessons/') && u.searchParams.get('drafted') === '1';
+    const procedureTitles = (s) => s.page.locator('section[aria-labelledby="s-procedure"] input').evaluateAll((els) => els.map((e) => e.value));
+    try {
+      const d = await open('desktop', 'en');
+      // The browser's request that creates the job is held back 0.9 s (a network delay only: it still reaches the
+      // real server), so the moment before the server has answered can be seen.
+      let holdCreate = 900;
+      // …and, for one scenario, dropped altogether (the request never reaches the server, as on a dead connection).
+      let dropCreate = false;
+      await d.ctx.route('**/api/v1/generation/jobs', async (route) => {
+        if (route.request().method() !== 'POST') return route.continue();
+        if (dropCreate) return route.abort('connectionfailed');
+        if (holdCreate) await new Promise((r) => setTimeout(r, holdCreate));
+        await route.continue();
+      });
+
+      let startBtn;
+      /* ---- A. asked → sent → being written → in the lesson ---- */
+      if (want('A')) {
+      st.mode = 'ok';
+      st.delayMs = 7000;
+      startBtn = await openGenerate(d, 'draftPlain');
+      await shot(d, 'a0-form');
+      const calls0 = st.calls;
+      const jobs0 = jobsOf('draftPlain').length;
+      await watchAi(d);
+      await startBtn.click();
+      await startBtn.click({ timeout: 250 }).catch(() => {}); // a second press, as fast as a hand can
+      if (!isNew) {
+        await d.page.getByText(en['gen.working']).waitFor({ timeout: 8000 });
+        await d.page.waitForTimeout(2500);
+        const old = await aiState(d);
+        note(`(before the change) ${SIM}: while Tala writes, the page shows one line beside a still grey dot — nothing moves and the words never change`, `“${old?.text}”; animations running on the page: ${old?.running}`);
+        await shot(d, 'a1-writing');
+        await d.page.waitForURL(drafted, { timeout: 30000 });
+        note(`(before the change) ${SIM}: two fast presses`, `${jobsOf('draftPlain').length - jobs0} job(s) on the server, ${st.calls - calls0} call(s) to the model`);
+      } else {
+        await d.page.locator('.tala-ai').waitFor({ timeout: 3000 });
+        const s0 = await aiState(d);
+        check(`${SIM}: the waiting state appears at once and says the request is being sent (the server has not answered yet)`, s0.status === 'sending' && s0.caption === en['ai.status.sending'], `${s0.phase}: “${s0.caption}”`);
+        await waitAi(d, 'running');
+        const s1 = await aiState(d);
+        check(`${SIM}: once the server reports the job as running, it says the request arrived and Tala is writing`, s1.phase === 'running' && s1.caption === en['ai.status.running'], `${s1.phase}: “${s1.caption}”`);
+        const motion = await sampleAi(d, 900);
+        check(`${SIM}: the working bar and the mark really move while the request is open (drawn frame by frame)`, motion.barPositions >= 10 && motion.markLevels >= 4 && s1.barAnim === 'tala-ai-slide' && s1.barState === 'running' && s1.markAnim === 'tala-ai-breathe', `${motion.frames} frames: ${motion.barPositions} bar positions, ${motion.markLevels} mark levels`);
+        await d.page.waitForTimeout(2200);
+        const s2 = await aiState(d);
+        check(`${SIM}: the time really waited is shown and counts up`, /^\d+:\d\d so far$/.test(s1.elapsed) && /^\d+:\d\d so far$/.test(s2.elapsed) && s1.elapsed !== s2.elapsed, `${s1.elapsed} → ${s2.elapsed}`);
+        check(`${SIM}: for a screen reader the caption is one polite live region; the ticking time and the bar are hidden from it`, s1.live === 'polite' && s1.atomic === 'true' && s1.elapsedHidden === 'true' && s1.barHidden === 'true', JSON.stringify({ live: s1.live, time: s1.elapsedHidden, bar: s1.barHidden }));
+        const bg = await d.page.getByRole('button', { name: en['gen.background'], exact: true }).boundingBox();
+        check(`${SIM}: Cancel and “Run in background” stay available and touch-sized`, s1.cancelHeight >= 44 && bg && bg.height >= 44, `Cancel ${s1.cancelHeight} px, Run in background ${bg ? Math.round(bg.height) : 0} px`);
+        await shot(d, 'a1-writing');
+        await d.page.waitForURL(drafted, { timeout: 30000 });
+        await d.page.waitForTimeout(1500);
+        const log = await aiLog(d);
+        const order = log.map((x) => x.state);
+        const legal = ['sending/sending', 'queued/queued', 'running/running', 'gone'];
+        check(`${SIM}: the states came in the request’s own order and the waiting state was taken away when the draft arrived`, order.every((x) => legal.includes(x)) && order.join(' ').replace(' queued/queued', '').endsWith('sending/sending running/running gone'), order.map((x, i) => `${log[i].t} ms ${x}`).join(' → '));
+        check(`${SIM}: the words changed only when the state did (${log.filter((x) => x.caption).length} lines in all: nothing to flood a screen reader)`, log.filter((x) => x.caption).length <= 3);
+        check(`${SIM}: nothing moved when the words changed (the box kept its height and the button below kept its place)`, new Set(log.filter((x) => x.height).map((x) => x.height)).size === 1 && new Set(log.filter((x) => x.nextTop).map((x) => x.nextTop)).size === 1, JSON.stringify(log.filter((x) => x.height).map((x) => [x.height, x.nextTop])));
+        const toast = await d.page.getByText(en['gen.done']).count();
+        const titles = await procedureTitles(d);
+        check(`${SIM}: the draft is in the lesson, the page says “${en['gen.done']}”, and no working animation is left behind`, toast >= 1 && titles.includes('STAND-IN review') && (await aiState(d)) === null && (await d.page.evaluate(() => document.getAnimations().filter((a) => String(a.animationName ?? '').startsWith('tala-ai')).length)) === 0, titles.join(' | '));
+        const jobs = jobsOf('draftPlain').slice(jobs0);
+        check(`${SIM}: two fast presses made exactly one request (one job on the server, one call to the model)`, jobs.length === 1 && jobs[0].status === 'done' && st.calls - calls0 === 1, `${JSON.stringify(jobs)}; model calls ${st.calls - calls0}`);
+        await shot(d, 'a2-drafted', true);
+      }
+      }
+
+      /* ---- B. a slow answer, in real time: after 20 s the words change, nothing else does ---- */
+      if (isNew && want('B')) {
+        st.delayMs = 24000;
+        startBtn = await openGenerate(d, 'draftPlain');
+        await watchAi(d);
+        const t0 = Date.now();
+        await startBtn.click();
+        await waitAi(d, 'still', 30000);
+        const waited = Date.now() - t0;
+        const s3 = await aiState(d);
+        check(`${SIM}, REAL time: after 20 seconds of really waiting the caption changes to the reassurance, and the bar is still moving`, waited >= 19500 && waited <= 23000 && s3.caption === en['ai.status.still'] && s3.barState === 'running', `after ${(waited / 1000).toFixed(1)} s: “${s3.caption}” · ${s3.elapsed}`);
+        await shot(d, 'b1-still-writing');
+        await d.page.waitForURL(drafted, { timeout: 30000 });
+        const log = await aiLog(d);
+        check(`${SIM}, REAL time: through all of it the box and the buttons stayed exactly where they were`, new Set(log.filter((x) => x.height).map((x) => x.height)).size === 1 && new Set(log.filter((x) => x.nextTop).map((x) => x.nextTop)).size === 1, log.map((x) => `${(x.t / 1000).toFixed(1)} s ${x.state}`).join(' → '));
+      }
+
+      /* ---- C. the model fails: the real failure is shown and the waiting state stops ---- */
+      if (want('C')) {
+      st.mode = 'error';
+      st.delayMs = 1500;
+      startBtn = await openGenerate(d, 'draftRetry');
+      const jobsC = jobsOf('draftRetry').length;
+      await startBtn.click();
+      await d.page.getByText(en['gen.failed.providers_unavailable']).waitFor({ timeout: 60000 });
+      const failedJobs = jobsOf('draftRetry').slice(jobsC);
+      const afterFail = await aiState(d);
+      check(`${SIM} (the model answers with an error): the page says the writing service is not answering, offers the template, and the waiting state is gone`, afterFail === null && failedJobs.length === 1 && failedJobs[0].status === 'failed' && failedJobs[0].reason === 'providers_unavailable' && (await d.page.getByRole('button', { name: en['gen.usePrefilled'], exact: true }).count()) === 1, JSON.stringify(failedJobs));
+      await shot(d, 'c1-failed');
+      // “Queue it” after that failure: the model works again. The queue must ask AGAIN, not be handed the old failure.
+      {
+        st.mode = 'ok';
+        st.delayMs = 1500;
+        const callsQ = st.calls;
+        const jobsQ = jobsOf('draftRetry').length;
+        await d.page.getByRole('button', { name: en['gen.keepWaiting'], exact: true }).click();
+        await d.page.waitForURL((u) => u.pathname.startsWith('/lessons/'), { timeout: 15000 });
+        // The background runner looks every 20 s: give it three rounds.
+        let titles = [];
+        for (let i = 0; i < 70 && !titles.includes('STAND-IN review'); i++) {
+          await d.page.waitForTimeout(1000);
+          titles = await procedureTitles(d);
+        }
+        const rows = jobsOf('draftRetry').slice(jobsQ);
+        const notice = await d.page.getByText(en['gen.failed.providers_unavailable']).count();
+        judge(`${SIM}: “Queue it” after a failure asks the model again (a new request) and that draft is written into the lesson — it is not handed the old failure back`, st.calls - callsQ === 1 && rows.length === 1 && rows[0].status === 'done' && titles.includes('STAND-IN review') && notice === 0, `model calls after “Queue it”: ${st.calls - callsQ}; new jobs ${JSON.stringify(rows)}; procedure in the lesson: ${titles.join(' | ') || '(empty)'}; failure notices in the lesson: ${notice}`);
+      }
+
+      }
+
+      /* ---- T. the model never answers: the server's own time-out ends it (REAL time-out) ---- */
+      if (want('T')) {
+      st.mode = 'hang';
+      startBtn = await openGenerate(d, 'draftPlain');
+      const jobsT = jobsOf('draftPlain').length;
+      const tHang = Date.now();
+      await startBtn.click();
+      await d.page.getByText(en['gen.failed.providers_unavailable']).waitFor({ timeout: 120000 });
+      const hung = jobsOf('draftPlain').slice(jobsT);
+      check(`${SIM} (the model never answers): the server gives up by its own time-out and the page shows that failure; the waiting state does not run on`, (await aiState(d)) === null && hung.length === 1 && hung[0].status === 'failed', `${((Date.now() - tHang) / 1000).toFixed(1)} s until the failure was shown; ${JSON.stringify(hung)}`);
+
+      }
+
+      /* ---- D. cancel, then ask again ---- */
+      if (want('D')) {
+      st.mode = 'ok';
+      st.delayMs = 20000;
+      startBtn = await openGenerate(d, 'draftCancel');
+      const jobsD = jobsOf('draftCancel').length;
+      const aborted0 = st.aborted;
+      await startBtn.click();
+      if (isNew) await waitAi(d, 'running');
+      else await d.page.getByText(en['gen.working']).waitFor({ timeout: 8000 });
+      await d.page.waitForTimeout(1200);
+      await d.page.getByRole('button', { name: en['common.cancel'], exact: true }).click();
+      await d.page.getByText(en['gen.cancelled']).waitFor({ timeout: 10000 });
+      await d.page.waitForTimeout(1500);
+      const cancelled = jobsOf('draftCancel').slice(jobsD);
+      check(`${SIM}: Cancel ends the request for real — the page says nothing was changed, the job is cancelled on the server and the model call was dropped`, (await aiState(d)) === null && cancelled.length === 1 && cancelled[0].status === 'cancelled' && st.aborted - aborted0 === 1, `${JSON.stringify(cancelled)}; model calls dropped ${st.aborted - aborted0}`);
+      await shot(d, 'd1-cancelled');
+      // Ask again on the same page: it must be a NEW request, not the cancelled one handed back.
+      st.delayMs = 4000;
+      await d.page.getByRole('button', { name: en['gen.start'], exact: true }).click();
+      const again = await d.page.waitForURL(drafted, { timeout: 30000 }).then(() => true).catch(() => false);
+      const afterAgain = jobsOf('draftCancel').slice(jobsD);
+      judge(`${SIM}: asking again after a cancel starts a new request and the draft arrives`, again && afterAgain.length === 2 && afterAgain[1].status === 'done', `${JSON.stringify(afterAgain)}; page: ${new URL(d.page.url()).pathname}${new URL(d.page.url()).search}; says: ${JSON.stringify(await d.page.locator('[role="status"], [role="alert"]').allInnerTexts().then((x) => x.filter(Boolean).slice(0, 3)))}`);
+
+      }
+
+      /* ---- E. the connection drops while waiting ---- */
+      if (isNew && want('E')) {
+        st.delayMs = 60000;
+        startBtn = await openGenerate(d, 'draftPlain');
+        await startBtn.click();
+        await waitAi(d, 'running');
+        await d.ctx.setOffline(true);
+        await waitAi(d, 'offline', 20000);
+        const off = await aiState(d);
+        check(`${SIM}: when the connection drops the page says so and stops claiming movement (bar and mark paused)`, off.caption === en['ai.status.offline'] && off.barState === 'paused' && off.markState === 'paused', `“${off.caption}” · bar ${off.barState}`);
+        await shot(d, 'e1-offline');
+        await d.ctx.setOffline(false);
+        await waitAi(d, 'running', 45000);
+        st.release();
+        const back = await d.page.waitForURL(drafted, { timeout: 30000 }).then(() => true).catch(() => false);
+        check(`${SIM}: when the connection is back the page goes on waiting and the draft arrives (the request was never lost)`, back, new URL(d.page.url()).pathname + new URL(d.page.url()).search);
+      }
+
+      /* ---- F. the teacher leaves the page while Tala is still writing ---- */
+      if (want('F')) {
+        st.mode = 'ok';
+        st.delayMs = 6000;
+        startBtn = await openGenerate(d, 'draftAway');
+        await startBtn.click();
+        if (isNew) await waitAi(d, 'running');
+        else await d.page.waitForTimeout(2000);
+        // She goes to This Week by the side rail.
+        await d.page.getByRole('link', { name: en['nav.week'], exact: true }).first().click();
+        await d.page.waitForURL((u) => u.pathname.startsWith('/week'), { timeout: 15000 });
+        const gone = isNew ? (await aiState(d)) === null : true;
+        // Watch where she is for the next 40 s (the model answers after 6 s; the background runner looks every 20 s).
+        const places = new Set();
+        for (let i = 0; i < 40; i++) {
+          await d.page.waitForTimeout(1000);
+          places.add(new URL(d.page.url()).pathname);
+        }
+        const awayJobs = jobsOf('draftAway');
+        await openLesson(d, 'draftAway');
+        const titles = await procedureTitles(d);
+        judge(`${SIM}: leaving the page while Tala writes takes the waiting state away, never pulls her back to the lesson, and the draft is in the lesson when she opens it (one job, written once)`, gone && [...places].join() === '/week' && awayJobs.length === 1 && awayJobs[0].status === 'done' && titles.filter((x) => x === 'STAND-IN review').length === 1, `she was on: ${[...places].join(', ')}; jobs ${JSON.stringify(awayJobs)}; procedure: ${titles.join(' | ') || '(empty)'}`);
+      }
+
+      /* ---- Q. the request cannot reach Tala: it is kept on the device and written when Tala can be reached ---- */
+      if (want('Q')) {
+        st.mode = 'ok';
+        st.delayMs = 1500;
+        const callsQ = st.calls;
+        startBtn = await openGenerate(d, 'draftQueue');
+        dropCreate = true; // SIMULATED dead connection for this one call
+        await startBtn.click();
+        await d.page.waitForURL((u) => u.pathname.startsWith('/lessons/'), { timeout: 60000 });
+        await d.page.waitForTimeout(1500);
+        const prefilled = await d.page.locator('section[aria-labelledby="s-objectives"] input').evaluateAll((els) => els.map((e) => e.value));
+        dropCreate = false;
+        let titles = [];
+        for (let i = 0; i < 80 && !titles.includes('STAND-IN review'); i++) {
+          await d.page.waitForTimeout(1000);
+          titles = await procedureTitles(d);
+        }
+        const rows = jobsOf('draftQueue');
+        judge(`${SIM}: a request that could not reach Tala opens the pre-filled template, and once Tala can be reached the draft is written into the lesson (one request, one model call)`, prefilled.length >= 1 && titles.includes('STAND-IN review') && rows.length === 1 && rows[0].status === 'done' && st.calls - callsQ === 1, `objectives pre-filled meanwhile: ${prefilled.length}; model calls ${st.calls - callsQ}; jobs ${JSON.stringify(rows)}; procedure after 80 s: ${titles.join(' | ') || '(still the empty pre-filled step)'}`);
+      }
+
+      /* ---- G. a lesson that already has the teacher's own objective (recorded as it is today) ---- */
+      if (want('G')) {
+        st.delayMs = 2500;
+        startBtn = await openGenerate(d, 'draftOwn');
+        await startBtn.click();
+        await d.page.waitForTimeout(9000);
+        const says = await d.page.locator('main [role="status"], main [role="alert"]').allInnerTexts().then((x) => x.filter(Boolean));
+        await openLesson(d, 'draftOwn');
+        const own = await d.page.locator('section[aria-labelledby="s-objectives"] input').first().inputValue().catch(() => '');
+        check(`${SIM}: the teacher’s own objective is still exactly what she wrote after a draft was asked for`, own === OWN_OBJECTIVE, own);
+        note(`${SIM}: what the draft page said for that lesson (release owner’s decision pending: today the whole draft is refused when one part has the teacher’s own text)`, says.slice(-2).join(' | '));
+      }
+      await d.ctx.close();
+
+      /* ---- H. phone, Filipino ---- */
+      if (isNew && want('H')) {
+        const ph = await open('phone', 'fil');
+        st.mode = 'ok';
+        st.delayMs = 9000;
+        const b = await openGenerate(ph, 'draftPlain');
+        await b.scrollIntoViewIfNeeded();
+        await b.tap();
+        await waitAi(ph, 'running');
+        const f = await aiState(ph);
+        const bg = await ph.page.getByRole('button', { name: fil['gen.background'], exact: true }).boundingBox();
+        check(`${SIM}, phone, Filipino: the same waiting state in Filipino, nothing wider than the screen, Cancel and the background button touch-sized`, f.caption === fil['ai.status.running'] && !f.sideways && f.cancelHeight >= 44 && bg && bg.height >= 44 && f.barState === 'running', `“${f.caption}” · ${f.elapsed}`);
+        await ph.page.locator('.tala-ai').scrollIntoViewIfNeeded();
+        await shot(ph, 'h1-writing');
+        st.release();
+        const ok = await ph.page.waitForURL(drafted, { timeout: 30000 }).then(() => true).catch(() => false);
+        check(`${SIM}, phone, Filipino: the draft arrives and the lesson opens`, ok && (await ph.page.getByText(fil['gen.done']).count()) >= 1, `${new URL(ph.page.url()).pathname}${new URL(ph.page.url()).search}; says ${JSON.stringify(await ph.page.locator('[role="status"], [role="alert"]').allInnerTexts().then((x) => x.filter(Boolean).slice(0, 4)))}`);
+        await ph.ctx.close();
+      }
+      check(`${SIM}: the stand-in answered every call it was asked to answer (no error of its own)`, st.errors.length === 0, st.errors.slice(0, 2).join(' | '));
+    } finally {
+      st.release();
+      await st.close();
+    }
   }
   if (phase === 'reduced') {
     /* ---- the teacher's device asks for reduced motion: nothing travels, everything still works ---- */

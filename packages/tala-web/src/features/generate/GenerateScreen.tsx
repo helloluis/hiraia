@@ -24,6 +24,8 @@ import {
 import { errorKey } from '@/data/errors';
 import { topicLabel } from '@/data/topics';
 import { usePlanEditor } from '@/features/editor/usePlanEditor';
+import { AiStatus } from '@/components/motion/AiStatus';
+import { type AiPhase } from '@/components/motion/ai-status';
 import {
   Banner,
   Button,
@@ -34,7 +36,6 @@ import {
   Placeholder,
   Select,
   TextArea,
-  Waiting,
 } from '@/components/ui';
 
 type Phase = 'form' | 'working' | 'failed';
@@ -59,6 +60,11 @@ export function GenerateScreen() {
   const [busy, setBusy] = useState(false);
   const ctrl = useRef<AbortController | null>(null);
   const jobRef = useRef<GenerationJob | null>(null);
+  /** Where the open request really is (not answered yet, waiting its turn, being written) and when it was asked. */
+  const [aiPhase, setAiPhase] = useState<AiPhase>('sending');
+  const [startedAt, setStartedAt] = useState(0);
+  /** One request at a time: a second press while one is open does nothing. */
+  const inFlight = useRef(false);
   const online = network.online && network.rung !== 'offline' && network.rung !== 'readonly';
 
   useEffect(() => {
@@ -124,17 +130,26 @@ export function GenerateScreen() {
   };
 
   const start = async () => {
-    if (!engine || !ed.plan || !input) return;
+    if (inFlight.current || !engine || !ed.plan || !input) return;
     setError(null);
     if (!hasObjectives(input)) return setError(t('gen.needsCompetency'));
     if (!online) return void openPrefilled(true);
+    inFlight.current = true;
+    jobRef.current = null;
+    setAiPhase('sending');
+    setStartedAt(Date.now());
     setPhase('working');
     const c = new AbortController();
     ctrl.current = c;
+    // The waiting state shows the job's own status; a finished status ends it instead of being shown.
+    const follow = (j: GenerationJob) => {
+      jobRef.current = j;
+      if (j.status === 'queued' || j.status === 'running') setAiPhase(j.status);
+    };
     try {
       const job = await getClient().call('generation.create', { body: input, signal: c.signal });
-      jobRef.current = job;
-      const finished = await pollJob(getClient(), job.id, c.signal, (j) => (jobRef.current = j));
+      follow(job);
+      const finished = await pollJob(getClient(), job.id, c.signal, follow);
       if (finished.status === 'done') {
         const fresh = (await engine.get('plan', ed.plan.id))?.data ?? ed.plan;
         const sections = (await engine.list('plan_section'))
@@ -164,6 +179,8 @@ export function GenerateScreen() {
         message: err instanceof TalaApiError ? t(errorKey(err)) : '',
       });
       setPhase('failed');
+    } finally {
+      inFlight.current = false;
     }
   };
 
@@ -342,7 +359,14 @@ export function GenerateScreen() {
 
       {phase === 'working' && (
         <>
-          <Waiting label={t('gen.working')} onCancel={() => void cancel()} />
+          <AiStatus
+            phase={aiPhase}
+            startedAt={startedAt}
+            label={t('gen.working')}
+            onCancel={() => void cancel()}
+            canBackground
+            reachable={network.online && network.rung !== 'offline'}
+          />
           <Button full onClick={() => void background()}>
             {t('gen.background')}
           </Button>

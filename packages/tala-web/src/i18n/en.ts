@@ -1096,6 +1096,18 @@ export const en = {
   'pp.ai.now': 'Now',
   'pp.ai.appliedNew': 'The slides are in. Change anything you like; they are yours.',
   'pp.session.about': 'About these slides',
+  // Motion and AI status (Nov 27): what the screen says while Tala is writing. Each line follows a real state of the
+  // request (sent, waiting its turn, being written) or the time actually waited; none is a made-up step.
+  'ai.status.sending': 'Sending your request…',
+  'ai.status.queued': 'Waiting in line. Tala starts yours when the one before it is done.',
+  'ai.status.running': 'Your request arrived. Tala is writing now.',
+  'ai.status.still': 'Still writing. Nothing in your lesson changes until it is ready.',
+  'ai.status.longer': 'Still working. Thank you for waiting.',
+  'ai.status.slow': 'This is taking longer than usual. You can keep waiting or cancel.',
+  'ai.status.slowBackground':
+    'This is taking longer than usual. You can keep waiting, or let it finish in the background.',
+  'ai.status.offline': 'No connection right now. Tala will keep checking.',
+  'ai.status.elapsed': '{time} so far',
 } as const;
 
 export type StringKey = keyof typeof en;
