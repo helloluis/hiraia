@@ -1849,3 +1849,7 @@ owner integrates; deploying needs Luis's own go-ahead (demo.19's approval does n
   "check the Science before class"; a page number, not a page copy; offline named as the Android app, weak signal
   only (item 26 resolved); learners may record that both balls land together. Item 31's longer line is the copy
   owner's call; any later Filipino change goes back to the Filipino owner.
+- **27 Nov 23:23 Manila:** homepage batch 1 applied by the homepage owner exactly as answered; batch 2 (one line: the
+  no-number sentence shown until the Library answers) relayed to the Filipino owner (bridge `d12265f1…`). Asked in the
+  same message, for the APP (release owner's lane): should the multi-grade label `carryOn` ("Ituloy ang gawain nang
+  kayo lang:") become the reviewer's "Ituloy ninyo ang sariling gawain:"? A change would ship in a later app release.
