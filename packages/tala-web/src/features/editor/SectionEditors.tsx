@@ -35,8 +35,10 @@ interface Props<C extends SectionContent> {
   /** Class time for the Session Flow / procedure timeline bar. */
   durationMinutes?: number;
   /**
-   * False while the lesson's records are still loading and `content` is a blank stand-in. The "just changed" ring
-   * only watches from the first settled content, so opening a lesson never rings what it has just loaded.
+   * False while `content` is a blank stand-in for a part whose stored record is not on screen (still loading, or not
+   * created yet). The "just changed" ring only watches from the first stored content, so opening a lesson never rings
+   * what it has just loaded. The screen's own `loading` flag cannot say this: it is already false while the section
+   * records are still arriving.
    */
   settled?: boolean;
 }
