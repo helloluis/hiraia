@@ -317,4 +317,18 @@ test('27 Nov: a full draft keeps the parts the teacher wrote herself and fills t
   const before = (await engine.get('plan', plan.id))!.data;
   const all = await applyDraft(engine, before, (await engine.list('plan_section')).map((s) => s.data).map((s) => s.key === 'materials' ? { ...s, editedByTeacher: true } : s), job([['objectives', { type: 'list', items: ['x'] }]]), newId);
   assert.deepEqual(all, { applied: false, kept: ['objectives'] });
+  // Tala's own pre-filled template (hand-written origin, never edited by her) is not "her text": the draft replaces it.
+  const engine2 = engineFor();
+  const prefilled = newPlan({ template: dlp, cls: single, assignment: null, dates: [], language: 'en', competencies: { g2: ['sci.g2.1'] }, newId });
+  const pf = prefilled.sections.map((s) =>
+    s.key === 'objectives' || s.key === 'materials'
+      ? { ...s, origin: 'manual' as const, editedByTeacher: false, content: { type: 'list' as const, items: [s.key === 'objectives' ? 'Describe solids' : 'chalkboard'] } }
+      : s
+  );
+  await engine2.batch([{ op: 'put', entity: 'plan', data: prefilled.plan }, ...pf.map((s) => ({ op: 'put' as const, entity: 'plan_section' as const, data: s }))]);
+  const out2 = await applyDraft(engine2, prefilled.plan, pf, job([['objectives', { type: 'list', items: ['AI objective'] }], ['materials', { type: 'list', items: ['chalkboard', 'crayons'] }]]), newId);
+  assert.deepEqual(out2, { applied: true, kept: [] });
+  const stored2 = await engine2.list('plan_section');
+  assert.deepEqual((stored2.find((s) => s.data.key === 'objectives')!.data.content as { items: string[] }).items, ['AI objective']);
+  assert.deepEqual((stored2.find((s) => s.data.key === 'materials')!.data.content as { items: string[] }).items, ['chalkboard', 'crayons']);
 });

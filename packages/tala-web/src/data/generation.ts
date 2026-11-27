@@ -4,7 +4,7 @@
  * `section_revision` (LLM-4), plan marked AI draft. Failures land on the pre-filled template; offline → queued.
  */
 import { applyGeneratedSections, blankSections } from '@hiraia/tala-core/plan';
-import { buildPrefilledDraft, sectionHasContent } from '@hiraia/tala-core/generation';
+import { buildPrefilledDraft } from '@hiraia/tala-core/generation';
 import {
   BUILTIN_TEMPLATES,
   TalaApiError,
@@ -152,8 +152,8 @@ export async function applyGenerationJob(
 
 /**
  * A full draft over a lesson that already has the teacher's own text (27 Nov 2026): it fills every part she has not
- * written and keeps hers — the same rule as applyGeneratedSections (edited by her, or written by hand, and not
- * confirmed) — instead of failing the whole draft. Returns the parts kept; `applied` is false when every generated
+ * written and keeps hers (the parts she edited) instead of failing the whole draft; Tala's own pre-filled template is
+ * not hers and is replaced (found by the motion task owner, 27 Nov). Returns the parts kept; `applied` is false when every generated
  * part was hers (nothing is written and the plan is not marked an AI draft).
  */
 export async function applyDraft(
@@ -164,19 +164,16 @@ export async function applyDraft(
   newId: () => string
 ): Promise<{ applied: boolean; kept: string[] }> {
   if (job.status !== 'done' || !job.result) throw new Error('Job is not done.');
-  const own = new Set(
-    sections
-      .filter(
-        (s) =>
-          s.planId === plan.id &&
-          (s.editedByTeacher || (s.origin === 'manual' && sectionHasContent(s.content)))
-      )
-      .map((s) => s.key)
-  );
+  // Hers = what she edited. Tala's own pre-filled template (prefillPlan: hand-written origin, never edited by her) is
+  // not her text: the draft replaces it (confirmed for tala-core's guard) and it is never reported as kept.
+  const own = new Set(sections.filter((s) => s.planId === plan.id && s.editedByTeacher).map((s) => s.key));
   const kept = job.result.sections.map((s) => s.key).filter((k) => own.has(k));
   const usable = job.result.sections.filter((s) => !own.has(s.key));
   if (!usable.length) return { applied: false, kept };
-  await applyGenerationJob(engine, plan, sections, { ...job, result: { ...job.result, sections: usable } }, newId);
+  const replaceable = sections
+    .filter((s) => s.planId === plan.id && !s.editedByTeacher && usable.some((u) => u.key === s.key))
+    .map((s) => s.id);
+  await applyGenerationJob(engine, plan, sections, { ...job, result: { ...job.result, sections: usable } }, newId, replaceable);
   return { applied: true, kept };
 }
 
