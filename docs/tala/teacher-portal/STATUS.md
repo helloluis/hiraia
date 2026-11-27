@@ -1563,3 +1563,30 @@ empty list passes, is saved over the section as a success ("Part rewritten"), an
 
 **Ledger:** 1 running (root cause found) · 2 running (worker P) · 3 running (worker P) · 4 running (worker W) ·
 5 running · 6 running.
+
+### 27 Nov 2026 ~13:20 Manila: items 1, 5, 6 built and verified locally (branch `tala-v1-lesson-feedback`, not deployed)
+
+- **Item 1 (Materials "Rewrite with AI" silent failure) — fixed, commits 94039e89c, e2534953d.** Server: a
+  Materials rewrite for a class with no listed resources is refused before any job or model call (`invalid_input`,
+  reason `no_class_resources`); a part that comes back empty fails as the new reason `empty_output`. Sheet: says
+  what is missing and lets the teacher list the class's materials right there (saved to the class), one request at
+  a time, every failure at the top with Try again, an empty answer never applied, cancel reported. A rewrite queued
+  offline that fails is shown in its lesson (never dropped). An empty Materials section in a class without listed
+  materials says why. Local walk with the REAL provider (DeepSeek, same models as production): prerequisite → rewrite
+  in 2.7 s → items only from the class list → two fast clicks = one request → kept after reload and on the server →
+  class materials saved; existing lesson rewritten with the previous version kept in History; provider down (broken
+  keys): the message at the top of the phone sheet, Try again safe, materials unchanged, both jobs failed; offline
+  queued + provider down: the notice in the lesson. Tests: core +1, server +2 (and the old test that expected an
+  empty Materials answer to succeed now uses a class with resources), web +5.
+- **Item 5 (title scrollbar) — fixed, 94039e89c.** The title field grows with its text (the three-line cap and its
+  inner scrollbar are gone; a locked title is no longer clipped); the header gives the title the free width. Measured
+  at phone, foldable, desktop and 200% zoom, English, Filipino and one unbroken 126-letter word: all text visible, no
+  inner scrollbar, no sideways scroll, 28 px type.
+- **Item 6 (section actions) — fixed, 94039e89c + 700bc1fe1.** Every pre-class section: Rewrite with AI at the top
+  right (short "Rewrite"/"Isulat ulit" label below 840 px, full name for screen readers), Required right after the
+  title (on a narrow phone it wraps directly under the title, never under the actions); post-class parts have no AI.
+  Measured at the same widths and languages: no overlap, no sideways scroll, touch-sized; keyboard focus reaches the
+  button, which names its section, and Enter opens that section's sheet.
+- Regression: the English release walk on this branch 34/34. Filipino lines for these items: the Filipino owner's
+  pass applied (bridge 85a08f60: 6 rewordings, 4 OK; one later line still a draft).
+- Items 2, 3 (worker P) and 4 (worker W): running.
