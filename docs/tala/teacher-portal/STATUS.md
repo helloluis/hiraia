@@ -1853,3 +1853,8 @@ owner integrates; deploying needs Luis's own go-ahead (demo.19's approval does n
   no-number sentence shown until the Library answers) relayed to the Filipino owner (bridge `d12265f1…`). Asked in the
   same message, for the APP (release owner's lane): should the multi-grade label `carryOn` ("Ituloy ang gawain nang
   kayo lang:") become the reviewer's "Ituloy ninyo ang sariling gawain:"? A change would ship in a later app release.
+- **27 Nov 23:3x Manila:** the Filipino owner answered batch 2 (bridge `2e41a780…`): item 36 OK (the homepage candidate
+  has no unreviewed Filipino line); the APP label `carryOn` becomes "Ituloy ang sariling gawain" (stored without the
+  colon; the combiner adds it). Made by the release owner: `637d135d9` on local branch `tala-v1-carryon-fil` (one line in
+  `tala-core/src/plan/combine-words.ts`; tsc clean, core tests 326/326), to ship with the homepage so its Filipino
+  planner picture matches the app. New combined plans only; teachers' saved plans keep their text. Not deployed.
