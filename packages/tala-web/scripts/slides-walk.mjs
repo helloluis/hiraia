@@ -451,6 +451,77 @@ async function failure() {
   await d.ctx.close();
 }
 
+/* ------------------------------------------------ phases: failure2 (broken keys) → retry (real keys) → stale */
+async function failure2() {
+  const d = await open('desktop');
+  const planId = state.plans.day2;
+  const before = await client.call('decks.get', { params: { deckId: state.scienceDeck } });
+  await goLesson(d, planId);
+  await d.page.locator('[data-rewrite]').first().click();
+  await d.page.locator('[data-scope="slide"]').check();
+  const thumb = d.page.locator('dialog[open] [data-slide-thumb]').nth(2);
+  state.retrySlide = await thumb.getAttribute('data-slide-thumb');
+  saveState();
+  await thumb.click();
+  await d.page.locator('[data-rewrite-go]').click();
+  const failed = await waitProposal(d, 240000);
+  check('a one-slide request with the providers failing ends in a visible failure', failed === 'providers_unavailable', failed ?? 'no failure shown');
+  const after = await client.call('decks.get', { params: { deckId: state.scienceDeck } });
+  check('…and the slides are unchanged', after.deck.rev === before.deck.rev);
+  await d.ctx.close();
+}
+
+async function retry() {
+  const d = await open('desktop');
+  const planId = state.plans.day2;
+  const before = await client.call('decks.get', { params: { deckId: state.scienceDeck } });
+  const revsBefore = (await client.call('decks.revisions', { params: { deckId: state.scienceDeck } })).revisions.length;
+  await goLesson(d, planId);
+  const banner = d.page.locator('[data-ai-failed]');
+  await banner.waitFor({ timeout: 30000 });
+  check('back on the working server, the earlier failure still says what happened, with Try again', (await banner.getByRole('button', { name: en['pp.ai.retry'] }).count()) === 1);
+  await shot(d, 'g1-retry-before');
+  await banner.getByRole('button', { name: en['pp.ai.retry'] }).click();
+  await d.page.locator('[data-scope="slide"]').check();
+  await d.page.locator(`dialog[open] [data-slide-thumb="${state.retrySlide}"]`).click();
+  await d.page.locator('[data-rewrite-go]').click();
+  const failed = await waitProposal(d);
+  check('“Try again” for the same slide answers a proposal now (real model)', !failed, failed ?? '');
+  await shot(d, 'g2-retry-proposal');
+  await d.page.locator('[data-ai-use]').click();
+  await d.page.waitForTimeout(4000);
+  const after = await client.call('decks.get', { params: { deckId: state.scienceDeck } });
+  const changed = after.deck.slides.filter((x) => JSON.stringify(x) !== JSON.stringify(before.deck.slides.find((y) => y.id === x.id)));
+  check('using it changes that slide (and its answer slide, if any) and nothing else', changed.length >= 1 && changed.every((x) => x.id === state.retrySlide || x.revealOf === state.retrySlide), changed.map((x) => `${x.id} ${x.kind}`).join(', '));
+  const revsAfter = (await client.call('decks.revisions', { params: { deckId: state.scienceDeck } })).revisions;
+  check('…with the slides as they were kept as an earlier version', revsAfter.length === revsBefore + 1 && revsAfter[0].reason === 'ai', `${revsBefore} → ${revsAfter.length}`);
+  await shot(d, 'g3-retry-applied');
+  await d.ctx.close();
+}
+
+async function staleCue() {
+  const planId = state.plans.day2;
+  const engine = await engineFor();
+  const proc = (await engine.list('plan_section')).find((x) => x.data.planId === planId && x.data.key === 'procedure');
+  const steps = proc.data.content.steps.map((st, i) => (i === 0 ? { ...st, body: [...st.body, p('Learners also name one plant from our school garden that we eat.')] } : st));
+  await engine.put('plan_section', { ...proc.data, content: { ...proc.data.content, steps } });
+  check('another device changes the lesson’s first step, and it reaches the server', await pushAll(engine));
+  const revBefore = (await client.call('decks.get', { params: { deckId: state.scienceDeck } })).deck.rev;
+  for (const view of ['phone', 'desktop']) {
+    const s = await open(view);
+    await goLesson(s, planId);
+    const cue = s.page.locator('[data-stale-cue]');
+    await cue.waitFor({ timeout: 30000 }).catch(() => {});
+    const box = await cue.boundingBox();
+    const height = VIEW[view].viewport.height;
+    check(`${view}: the cue that the lesson changed is on the first screen`, box && box.y + Math.min(box.height, 80) < height, box ? `top ${Math.round(box.y)} of ${height}` : 'no cue');
+    await shot(s, 'h1-stale-first-screen');
+    await s.ctx.close();
+  }
+  const revAfter = (await client.call('decks.get', { params: { deckId: state.scienceDeck } })).deck.rev;
+  check('nothing was regenerated or overwritten because of it', revAfter === revBefore, `rev ${revBefore} → ${revAfter}`);
+}
+
 /* ------------------------------------------------ multi-grade sessions */
 async function combine(s, classId, allGrades) {
   await s.page.goto(`${base}/lessons/combine?classId=${classId}&date=${state.walkDate}`, { waitUntil: 'networkidle', timeout: 120000 });
@@ -573,6 +644,9 @@ try {
       else if (phase === 'session2') await session2();
       else if (phase === 'session3') await session3();
       else if (phase === 'fil') await filipino();
+      else if (phase === 'failure2') await failure2();
+      else if (phase === 'retry') await retry();
+      else if (phase === 'stale') await staleCue();
       else throw new Error(`unknown phase ${phase}`);
     } finally {
       await browser.close();

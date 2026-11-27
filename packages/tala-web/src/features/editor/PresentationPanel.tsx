@@ -351,12 +351,6 @@ function SingleLessonSlides({ ed, pres, adopt, reload }: { ed: PlanEditor; pres:
         </p>
       </div>
 
-      <Callout tint="plain" icon="pencil" className="bg-white">
-        <p className="max-w-measure" data-align-cue>
-          <strong>{t('pp.align.title')}</strong> {t(fromPack ? 'pp.align.pack' : 'pp.align.lesson')}
-        </p>
-      </Callout>
-
       {pres.stale && (
         <div data-stale-cue>
           <Banner
@@ -378,6 +372,12 @@ function SingleLessonSlides({ ed, pres, adopt, reload }: { ed: PlanEditor; pres:
           </Banner>
         </div>
       )}
+      <Callout tint="plain" icon="pencil" className="bg-white">
+        <p className="max-w-measure" data-align-cue>
+          <strong>{t('pp.align.title')}</strong> {t(fromPack ? 'pp.align.pack' : 'pp.align.lesson')}
+        </p>
+      </Callout>
+
       {notice && <Banner kind="warn" action={<Button variant="quiet" onClick={() => setNotice(null)}>{t('common.close')}</Button>}>{notice}</Banner>}
       {(ai.phase === 'working' || ai.phase === 'starting') && <Working ai={ai} onStop={() => void ai.discard()} />}
       <Trouble ai={ai} onRetry={() => setSheet('rewrite')} />
