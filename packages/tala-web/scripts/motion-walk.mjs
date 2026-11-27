@@ -163,9 +163,19 @@ if (phase === 'seed') {
     await save('procedure', made.plan, sections);
     plans.procedure.stepIds = steps.map((s) => s.id);
     plans.procedure.stepTitles = steps.map((s) => s.title);
+    // 2b. The same lesson again, kept for the Lock-cue recording: no phase rewrites it with AI. (A lesson that an AI
+    //     rewrite has touched says "Drafted by AI. Read it through…", and the arrow to Lock is rightly withheld there.)
+    const copy = newPlan({ template: defaultTemplateFor(single, aSingle), cls: single, assignment: aSingle, dates: [today], language: 'en', competencies: { [single.gradeGroups[0].id]: g4.comps.slice(0, 2).map((c) => c.id) }, curriculumVersion: g4.meta.curriculumVersion, newId, title: 'Grade 4 Science: what plants need (synthetic test, second copy)' });
+    const copySteps = steps.map((x) => ({ ...x, id: newId() }));
+    await save('lockCue', copy.plan, copy.sections.map((s) => {
+      if (s.key === 'procedure') return { ...s, content: { type: 'procedure', steps: copySteps }, editedByTeacher: true };
+      if (s.key === 'objectives') return { ...s, content: { type: 'list', items: ['Name what plants need to grow.'] }, editedByTeacher: true };
+      if (s.key === 'materials') return { ...s, content: { type: 'list', items: ['hand lens', 'seed packets'] }, editedByTeacher: true };
+      return s;
+    }));
   }
   // 3. Lessons to draft with AI. `draftOwn` already has one objective the teacher wrote herself; the others are empty.
-  for (const key of ['draftPlain', 'draftRetry', 'draftCancel', 'draftAway', 'draftQueue', 'draftOwn', 'draftReal', 'draftRealMulti']) {
+  for (const key of ['draftPlain', 'draftRetry', 'draftCancel', 'draftAway', 'draftQueue', 'draftOwn', 'draftReal', 'draftRealMulti', 'draftLineA', 'draftLineB']) {
     const multiGrade = key === 'draftRealMulti';
     const cls = multiGrade ? multi : single;
     const asg = multiGrade ? aMulti : aSingle;
@@ -179,7 +189,7 @@ if (phase === 'seed') {
     await save('draftNoObjective', made.plan, made.sections);
   }
   await syncAll(engine);
-  check('seed: a local teacher, a multi-grade class and a single-grade class, a four-block Session Flow, a four-step Procedure and nine lessons to draft', (await engine.status()).pending === 0, JSON.stringify(Object.fromEntries(Object.entries(plans).map(([k, v]) => [k, v.planId]))));
+  check('seed: a local teacher, a multi-grade class and a single-grade class, a four-block Session Flow, a four-step Procedure (twice) and eleven lessons to draft', (await engine.status()).pending === 0, JSON.stringify(Object.fromEntries(Object.entries(plans).map(([k, v]) => [k, v.planId]))));
   writeFileSync(accountFile, JSON.stringify({ email, password, plans, groups: { gid4, gid5 }, classIds: { single: single.id, multi: multi.id } }, null, 1));
   finish();
 }
@@ -285,6 +295,16 @@ const shot = async (s, name, fullPage = false) => {
   await s.page.evaluate(() => document.fonts.ready).catch(() => {});
   await s.page.waitForTimeout(300);
   await s.page.screenshot({ path: join(out, 'shots', `${name}-${s.view}-${s.lang}-${label}.png`), fullPage });
+};
+/** A screenshot taken WHILE the next-step arrow is on screen (faded in), or the news that it never came. */
+const arrowShot = async (s, name, withinMs = 8000) => {
+  const cue = s.page.locator('.tala-cue').first();
+  const seen = await cue.waitFor({ state: 'attached', timeout: withinMs }).then(() => true).catch(() => false);
+  if (!seen) return { seen, detail: `no arrow within ${withinMs} ms` };
+  await s.page.waitForTimeout(450);
+  const still = await cue.evaluate((el) => `${el.getAttribute('data-cue')}, ${el.getAttribute('data-cue-place')}, pointing ${el.getAttribute('data-cue-pointing')}, opacity ${getComputedStyle(el).opacity}`).catch(() => null);
+  await s.page.screenshot({ path: join(out, 'shots', `${name}-${s.view}-${s.lang}-${label}.png`) });
+  return { seen: Boolean(still), detail: still ?? 'the arrow had gone before the screenshot' };
 };
 const snap = (s, kind) => s.page.evaluate(([k, p]) => window.__mwx.snapshot(k, p), [kind, cardPattern(s.lang, kind)]);
 const moveLabel = (lang, kind, dir, n) => L(lang)[`editor.move${kind === 'block' ? 'Block' : 'Step'}${dir === 'up' ? 'Up' : 'Down'}`].replace('{n}', String(n));
@@ -796,7 +816,13 @@ try {
       c = await watchCue(t, generate('draftPlain'));
       check('tall window: the button is on screen, so the arrow sits on the button’s own empty end and points at its label', c.shown && c.facts.place === 'inside-start' && c.facts.pointing === 'right' && c.travelX >= 4 && c.travelX <= 8, cueBrief(c));
       check('tall window: it covers no words; the only control under it is the button itself, which still takes the click', c.facts.words.length === 0 && JSON.stringify(c.facts.controls) === JSON.stringify([en['gen.start']]) && c.facts.takesTheClick === false && c.facts.underneath === en['gen.start'], `words: ${JSON.stringify(c.facts.words)}; controls: ${JSON.stringify(c.facts.controls)}; a click there lands on: ${c.facts.underneath}`);
-      await shot(t, 'n1-cue-on-button');
+      // The screenshot is taken on a second showing, while the arrow is on screen (the first showing was being measured,
+      // and a screenshot taken after it shows a page without an arrow).
+      await forgetCues(t, true);
+      await t.page.goto(base + generate('draftPlain'), { waitUntil: 'domcontentloaded', timeout: 120000 });
+      const n1 = await arrowShot(t, 'n1-cue-on-button');
+      check('tall window: the screenshot was taken while the arrow was on the button', n1.seen, n1.detail);
+      await t.page.waitForTimeout(2200);
       // If the control moves after the arrow was placed (content arriving late above it), the arrow must not stay
       // behind. The move is made by the walk here: 48 px of space put in above the button while the arrow shows.
       await forgetCues(t, true);
@@ -881,7 +907,12 @@ try {
         c = await watchCue(lk, `/lessons/${acct.plans.procedure.planId}`);
         check(`lesson, ${view}: opened when it can already be locked, the arrow sits beside Lock, points at it and covers nothing`, c.shown && c.facts.key === 'lesson.lock' && c.facts.place !== 'edge' && c.facts.words.length === 0 && c.facts.controls.length === 0 && c.facts.takesTheClick === false, `${cueBrief(c)}; words ${JSON.stringify(c.facts?.words)}; controls ${JSON.stringify(c.facts?.controls)}`);
         if (view === 'desktop') {
-          await shot(lk, 'n3-lock-ready');
+          // The screenshot on a further showing, while the arrow is beside Lock.
+          await forgetCues(lk, true);
+          await lk.page.goto(`${base}/lessons/${acct.plans.procedure.planId}`, { waitUntil: 'domcontentloaded' });
+          const n3 = await arrowShot(lk, 'n3-lock-ready');
+          check('lesson, desktop: the screenshot was taken while the arrow was beside Lock', n3.seen, n3.detail);
+          await lk.page.waitForTimeout(2200);
           // A sheet over the page: no arrow at a control behind it.
           await forgetCues(lk);
           await lk.page.goto(`${base}/lessons/${acct.plans.procedure.planId}`, { waitUntil: 'domcontentloaded' });
@@ -1086,8 +1117,10 @@ try {
         await d.page.waitForTimeout(1500);
         const log = await aiLog(d);
         const order = log.map((x) => x.state);
-        const legal = ['sending/sending', 'queued/queued', 'running/running', 'gone'];
-        check(`${SIM}: the states came in the request’s own order and the waiting state was taken away when the draft arrived`, order.every((x) => legal.includes(x)) && order.join(' ').replace(' queued/queued', '').endsWith('sending/sending running/running gone'), order.map((x, i) => `${log[i].t} ms ${x}`).join(' → '));
+        // "queued/sending": the job is queued (every new job is, for an instant) and the line still says it is being sent.
+        const legal = ['sending/sending', 'queued/sending', 'queued/queued', 'running/running', 'gone'];
+        check(`${SIM}: the states came in the request’s own order and the waiting state was taken away when the draft arrived`, order.every((x) => legal.includes(x)) && order.join(' ').replace(' queued/sending', '').replace(' queued/queued', '').endsWith('sending/sending running/running gone'), order.map((x, i) => `${log[i].t} ms ${x}`).join(' → '));
+        check(`${SIM}: with nothing ahead of it the page never says “waiting in line”, though the server reported the job as queued for a moment`, order.includes('queued/sending') && !log.some((x) => x.caption === en['ai.status.queued']), log.filter((x) => x.caption).map((x) => `${x.t} ms “${x.caption}”`).join(' → '));
         check(`${SIM}: the words changed only when the state did (${log.filter((x) => x.caption).length} lines in all: nothing to flood a screen reader)`, log.filter((x) => x.caption).length <= 3);
         check(`${SIM}: nothing moved when the words changed (the box kept its height and the button below kept its place)`, new Set(log.filter((x) => x.height).map((x) => x.height)).size === 1 && new Set(log.filter((x) => x.nextTop).map((x) => x.nextTop)).size === 1, JSON.stringify(log.filter((x) => x.height).map((x) => [x.height, x.nextTop])));
         const toast = await d.page.getByText(en['gen.done']).count();
@@ -1174,6 +1207,38 @@ try {
         judge(`${SIM}: “Queue it” after a failure asks the model again (a new request) and that draft is written into the lesson — it is not handed the old failure back`, st.calls - callsQ === 1 && rows.length === 1 && rows[0].status === 'done' && titles.includes('STAND-IN review') && notice === 0, `model calls after “Queue it”: ${st.calls - callsQ}; new jobs ${JSON.stringify(rows)}; procedure in the lesson: ${titles.join(' | ') || '(empty)'}; failure notices in the lesson: ${notice}`);
       }
 
+      }
+
+      /* ---- L. a real line: a second request while the first is still being written ----
+         The server writes one draft at a time. Only now is "waiting in line" true, and only now may it be said. */
+      if (isNew && acct.plans.draftLineA && want('L')) {
+        st.mode = 'ok';
+        st.delayMs = 7000;
+        const first = await open('desktop', 'en');
+        const firstBtn = await openGenerate(first, 'draftLineA');
+        startBtn = await openGenerate(d, 'draftLineB');
+        await startBtn.scrollIntoViewIfNeeded();
+        await firstBtn.click();
+        await waitAi(first, 'running', 15000);
+        await watchAi(d);
+        await startBtn.click();
+        await waitAi(d, 'queued', 15000);
+        const onServer = { first: jobsOf('draftLineA').at(-1)?.status, second: jobsOf('draftLineB').at(-1)?.status };
+        const inLine = await aiState(d);
+        await d.page.locator('.tala-ai').scrollIntoViewIfNeeded();
+        await shot(d, 'l1-waiting-in-line');
+        check(`${SIM}: with another draft still being written, the second request says it is waiting in line — and at that moment the first job really is running on the server and the second really is queued`, inLine.caption === en['ai.status.queued'] && onServer.first === 'running' && onServer.second === 'queued' && inLine.barState === 'running', `caption “${inLine.caption}”; on the server: first job ${onServer.first}, second job ${onServer.second}`);
+        await waitAi(d, 'running', 40000);
+        const firstWhenSecondBegan = jobsOf('draftLineA').at(-1)?.status;
+        await d.page.waitForURL(drafted, { timeout: 60000 });
+        await d.page.waitForTimeout(1200);
+        const log = await aiLog(d);
+        const order = log.map((x) => x.state);
+        const heard = log.find((x) => x.state === 'queued/sending');
+        const said = log.find((x) => x.state === 'queued/queued');
+        check(`${SIM}: the line is said only once the request has been found waiting for longer than one look at the job (about a second and a half), never in the instant every new request spends queued`, Boolean(heard && said) && said.t - heard.t >= 1400 && said.t - heard.t <= 2600, order.map((x, i) => `${log[i].t} ms ${x}`).join(' → '));
+        check(`${SIM}: when the first draft is done the second is written (“${en['ai.status.running']}”), then arrives; each request made one job`, order.indexOf('running/running') > order.indexOf('queued/queued') && order.at(-1) === 'gone' && firstWhenSecondBegan === 'done' && jobsOf('draftLineB').at(-1)?.status === 'done' && jobsOf('draftLineA').length === 1 && jobsOf('draftLineB').length === 1, `first job was ${firstWhenSecondBegan} when the second began; second job ${jobsOf('draftLineB').at(-1)?.status}; jobs ${jobsOf('draftLineA').length} + ${jobsOf('draftLineB').length}`);
+        await first.ctx.close();
       }
 
       /* ---- T. the model never answers: the server's own time-out ends it (REAL time-out) ---- */
@@ -1369,7 +1434,7 @@ try {
       const secs = ((Date.now() - t0) / 1000).toFixed(1);
       const log = await aiLog(s);
       const says = await s.page.locator('main [role="status"], main [role="alert"]').allInnerTexts().then((x) => x.filter(Boolean)).catch(() => []);
-      const legal = ['sending/sending', 'queued/queued', 'running/running', 'running/still', 'running/longer', 'running/slow', 'queued/slow', 'gone'];
+      const legal = ['sending/sending', 'queued/sending', 'queued/queued', 'running/running', 'running/still', 'running/longer', 'running/slow', 'queued/slow', 'gone'];
       check(`REAL PROVIDER, ${what}: the waiting state followed the real request (${log.filter((x) => x.caption).length} lines) and was taken away when it ended, after ${secs} s`, log.length >= 2 && log.every((x) => legal.includes(x.state)) && log[log.length - 1].state === 'gone' && new Set(log.filter((x) => x.height).map((x) => x.height)).size === 1, log.map((x) => `${(x.t / 1000).toFixed(1)} s ${x.state}${x.caption ? ` “${x.caption}”` : ''}`).join(' → '));
       await s.page.waitForTimeout(2000);
       let filled = '';
@@ -1404,6 +1469,7 @@ try {
     const want = (k) => !only || only.includes(k);
     const SIZE = { desktop: { width: 1280, height: 800 }, phone: { width: 390, height: 844 } };
     const made = [];
+    const arrows = [];
     /** Record `fn` in a fresh signed-in window, then turn the recording into a GIF and a strip of frames. */
     async function clip(name, view, lang, fn, extra = {}) {
       const s = await open(view, lang, { viewport: SIZE[view], deviceScaleFactor: 1, recordVideo: { dir: join(out, 'video', 'raw'), size: SIZE[view] }, ...extra });
@@ -1522,30 +1588,42 @@ try {
           await s.page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
           await s.page.waitForTimeout(2400);
         }, { reducedMotion: 'reduce' });
+      // A clip that is meant to show the next-step arrow says whether the arrow was really drawn while it recorded,
+      // and where (a recording without it must not pass as one with it).
+      const arrowSeen = async (s, name, withinMs) => {
+        const t0 = Date.now();
+        const cue = s.page.locator('.tala-cue').first();
+        const seen = await cue.waitFor({ state: 'attached', timeout: withinMs }).then(() => true).catch(() => false);
+        const where = seen ? await cue.evaluate((el) => `${el.getAttribute('data-cue')}, ${el.getAttribute('data-cue-place')}, pointing ${el.getAttribute('data-cue-pointing')}`).catch(() => 'gone before it could be read') : 'no arrow';
+        arrows.push({ name, seen, detail: `${where}${seen ? `, ${Date.now() - t0} ms after the wait began` : ` within ${withinMs} ms`}` });
+        await s.page.waitForTimeout(Math.max(0, withinMs - (Date.now() - t0)));
+      };
       if (isNew && want('cue-draft-phone'))
         await clip('cue-draft-phone', 'phone', 'en', async (s, mark) => {
           await forgetCues(s, true);
           mark();
           await s.page.goto(`${base}/generate?planId=${acct.plans.draftPlain.planId}`, { waitUntil: 'domcontentloaded' });
-          await s.page.waitForTimeout(4200);
+          await arrowSeen(s, 'cue-draft-phone', 4200);
         }, { isMobile: true, hasTouch: true });
       if (isNew && want('cue-week'))
         await clip('cue-this-week', 'desktop', 'en', async (s, mark) => {
           await forgetCues(s, true);
           mark();
           await s.page.goto(`${base}/week`, { waitUntil: 'domcontentloaded' });
-          await s.page.waitForTimeout(4200);
+          await arrowSeen(s, 'cue-this-week', 4200);
         });
       if (isNew && want('cue-lock'))
         await clip('cue-lock', 'desktop', 'en', async (s, mark) => {
           await forgetCues(s, true);
-          await openLesson(s, 'procedure');
+          // The lesson kept for this clip (an account seeded before it existed falls back to the Procedure lesson,
+          // which shows no arrow once an AI rewrite has touched it: the check below then says so).
+          await openLesson(s, acct.plans.lockCue ? 'lockCue' : 'procedure');
           const assess = s.page.locator('section[aria-labelledby="s-assessment"] [contenteditable="true"]').first();
           await assess.scrollIntoViewIfNeeded();
           await assess.click();
           mark();
           await s.page.keyboard.type('Each learner names two things a plant needs.', { delay: 55 });
-          await s.page.waitForTimeout(4200);
+          await arrowSeen(s, 'cue-lock', 4200);
           await s.page.evaluate(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
           await s.page.waitForTimeout(1500);
           // Leave the lesson as seeded.
@@ -1611,6 +1689,7 @@ try {
     }
     rmSync(join(out, 'video', 'raw'), { recursive: true, force: true });
     writeFileSync(join(out, `recordings-${label}.json`), JSON.stringify(made, null, 1));
+    for (const a of arrows) check(`the next-step arrow was drawn while ${a.name} was recorded`, a.seen, a.detail);
     for (const m of made) check(`recorded ${m.name} (${m.view}, ${m.lang})`, existsSync(m.webm) && !m.gifError, `${m.webm}${m.gif ? ` · ${m.gif} (${m.frames} frames)` : ''}${m.gifError ? ` · GIF failed: ${m.gifError}` : ''}`);
   }
   if (phase === 'reduced') {
