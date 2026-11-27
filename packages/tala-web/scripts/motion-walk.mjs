@@ -12,7 +12,8 @@
 //             (--standin-port, default 3339). Every check from this phase is labelled as using the stand-in model.
 //   surfaces  the small things: a sheet and a toast arriving, the ring on a part that was just rewritten (stand-in
 //             model), loading rows, colour changes
-//   ai-real   one real draft with the provider the server was started with (needs --real; counted and bounded)
+//   ai-real   real drafts with the provider the server was started with (needs --real; counted and bounded: two full
+//             drafts, or one with --only draftReal or --only draftRealMulti)
 //   reduced   the same screens with prefers-reduced-motion: reduce
 //   record    short recordings of the real screen (WebM by the browser; GIF and a frame strip when FFMPEG_PATH and
 //             SHARP_PATH are given). `--label before` records the same clips on the build before the change.
@@ -1342,7 +1343,9 @@ try {
     };
     const u0 = usage();
     const drafted = (u) => u.pathname.startsWith('/lessons/') && u.searchParams.get('drafted') === '1';
+    const onlyReal = option('only') ? option('only').split(',') : null;
     for (const [key, what] of [['draftReal', 'a single-grade lesson'], ['draftRealMulti', 'a multi-grade session']]) {
+      if (onlyReal && !onlyReal.includes(key)) continue;
       const s = await open('desktop', 'en', { recordVideo: { dir: join(out, 'video', 'raw'), size: { width: 1366, height: 900 } } });
       const startBtn = await openGenerate(s, key);
       await startBtn.scrollIntoViewIfNeeded();
@@ -1391,7 +1394,7 @@ try {
       }
     }
     const u1 = usage();
-    note('REAL PROVIDER: what these two drafts used', `${u1.total.n - u0.total.n} model calls; ${u1.total.i - u0.total.i} tokens in, ${u1.total.o - u0.total.o} out; US$ ${(u1.total.cost - u0.total.cost).toFixed(5)} by the server's own price table; jobs: ${JSON.stringify(u1.jobs.slice(u0.jobs.length))}`);
+    note(`REAL PROVIDER: what ${onlyReal && onlyReal.length === 1 ? 'this draft' : 'these two drafts'} used`, `${u1.total.n - u0.total.n} model calls; ${u1.total.i - u0.total.i} tokens in, ${u1.total.o - u0.total.o} out; US$ ${(u1.total.cost - u0.total.cost).toFixed(5)} by the server's own price table; jobs: ${JSON.stringify(u1.jobs.slice(u0.jobs.length))}`);
     check('REAL PROVIDER: no more than two requests were made by this phase', u1.jobs.length - u0.jobs.length <= 2, `${u1.jobs.length - u0.jobs.length} job(s)`);
   }
   if (phase === 'record') {
