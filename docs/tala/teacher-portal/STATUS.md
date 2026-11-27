@@ -1675,3 +1675,24 @@ Seen by the motion task owner in its recordings, not caused by any current branc
   language applies until the profile loads).
 Both stay open; neither changes saved data. The motion owner was allowed one more real-provider full draft on its
 final build (the earlier three are used, ~US$0.0016 each).
+
+#### 27 Nov 2026 17:04 Manila: motion task hand-off received; combined candidate staged separately
+
+- **Hand-off** from the motion task owner (Fable `b11-dev:b3a74512`): branch `tala-v1-motion`, range
+  `0f7b8b38b..a1fd881ed` (20 commits, fast-forward on the six-item candidate; last app commit c6b5967d5), hand-off
+  note `docs/tala/motion/README.md`. Its checks: unit core 326, server 376 + 1 skipped, web 169; motion walk 149/149
+  on c6b5967d5 (reorder 41, reduced motion 15, cue 31, surfaces 12, AI waiting state with a stand-in model 35,
+  recordings 15); the release owner's no-model walks green on its build; real provider 4 full drafts + 2 rewrites,
+  US$0.0079 answered. Evidence page (unlisted, expires 4 Dec): in the hand-off message.
+- **Review by the release owner:** shared-file hunks exactly as agreed (ui.tsx two data attributes; EditorScreen Lock
+  cue and `settled` prop; WeekParts cue; nine i18n keys with the Filipino owner's wording; one additive CSS block);
+  listeners, timers and animation frames cleaned up; prefers-reduced-motion honoured; no server or core file touched.
+- **Combined branch** `tala-v1-lesson-feedback-motion` (worktree `tala-wt/combined`) = `a1fd881ed` +
+  `f3e6f52a9` (release owner: the section rewrite sheet shows the real waiting state through `<AiStatus>`; the
+  multi-grade walk waits for the blocks). Clean export check green (core 326, server 376 + 1 skipped, web 169, build).
+  Full walk suite running on it.
+- **Approvals stay separate:** the six-item candidate stays `0f7b8b38b` (question asked above); the motion work
+  needs Luis's own go-ahead (asked once, with the verified combined candidate).
+- Four pre-existing loading flashes seen in the motion recordings are logged above as follow-ups (two more added by the
+  hand-off: This Week's empty state for a moment after a reload; "This lesson is not on this device" for a moment
+  before sync).
