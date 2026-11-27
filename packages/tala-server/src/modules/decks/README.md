@@ -80,3 +80,46 @@ from the committed sample library with this module's own writer and invented dra
 
 Opt-in checks against real built decks on a development machine (not part of the suite): set
 `TALA_DECKS_REAL_DECK_DIR` to one built language version for the reader test.
+
+## A lesson's presentation (27 Nov 2026)
+
+Luis: "Presentations should be displayed prominently in the Lesson Plan view … There should be an AI regeneration
+button on the slides too." and "Multigrade presentations should be dynamically assembled in the Lesson Plan view."
+Code: `lessons.ts` (routes, AI runner, downloads), `lesson-store.ts` (tables), `slides-ai.ts` (model input/output),
+prompts `prompts/slides/deck.v1.md` and `prompts/slides/slide.v1.md`; pure parts in `packages/tala-core/src/decks`
+(`lesson.ts`, `assemble.ts`). The web panel is `packages/tala-web/src/features/editor/PresentationPanel.tsx`.
+
+| Route | What |
+|---|---|
+| `decks.lesson.get` `GET /plans/:planId/presentation` | The lesson's slides (its day of a pack copy, or its own deck), `stale`, and the AI request in progress or waiting, if any. A multi-grade session answers `kind: 'session'` and its `parts` (each grade's own lesson and slides). |
+| `decks.lesson.link` `POST /plans/:planId/presentation` | Use my copy of a pack (made when I have none) for this lesson, and which day is the lesson's (0 = whole deck). Refused (`lesson_has_slides`) when the lesson has its own AI slides. |
+| `decks.lesson.unlink` `DELETE /plans/:planId/presentation` | A pack copy stays among my copies; slides made from this lesson are removed (with their versions). |
+| `decks.lesson.checked` `POST …/checked` | The teacher says the slides still fit the changed lesson: `stale` clears. |
+| `decks.lesson.source` `PUT …/sources/:groupId` | Which of my lessons is a grade's part of a session (`planId: null`: let Tala find it again). |
+| `decks.lesson.pptx` `GET …/pptx` | The lesson's slides only, or the session put together now from the saved plan (decks/assemble.ts), as PowerPoint. |
+| `decks.ai.start` `POST …/ai` | `scope`: `new` (slides for a lesson that has none), `lesson` (rewrite all of the lesson's slides), `slide` (one slide). Answers the request already in progress for the lesson instead of starting another. Refused before any model call for an empty lesson, a session plan, a whole-week link (`choose_day`) or generation switched off. |
+| `decks.ai.get` `GET …/ai/:jobId` | `queued` → `running` → `ready` (a proposal) or `failed` (a reason: disabled, providers_unavailable, invalid_output, quota_exceeded, budget_exceeded, interrupted, gone). |
+| `decks.ai.apply` `POST …/ai/:jobId/apply` | Writes the proposal: the deck as it was is kept in `decks_revisions` first, in the same transaction. Refused (`slides_changed`) when the slides it replaces changed since, unless `force`. A second apply changes nothing. |
+| `decks.ai.discard` `POST …/ai/:jobId/discard` | "Keep mine" (also dismisses a failure). |
+| `decks.revisions` `GET /decks/:deckId/revisions` | Earlier versions, newest first (20 kept). |
+| `decks.restore` `POST /decks/:deckId/revisions/:revisionId/restore` | Puts one back; the deck as it is is kept as an earlier version first. |
+
+The model writes words only (`slides-ai.ts`): ids, days, every check's answer slide and pictures are the server's; a
+picture is one of the deck's own drawings by slug or none (an unknown slug is dropped). The input is the CURRENT
+SAVED lesson, read through `records.planSnapshot` (pre-class sections only; competency wording from the curriculum
+service). Features `slides.generate` (quota bucket `full`) and `slides.rewrite` (bucket `section`), routes
+`TALA_LLM_ROUTE_SLIDES_GENERATE` / `TALA_LLM_ROUTE_SLIDES_REWRITE` (default `cloud`). Each request id goes into the
+gateway's cache key, so asking again gives a new suggestion rather than the cached one.
+
+Staleness: the link keeps the SHA-256 of `lessonDigestSource` (title, language, grades, competencies, typed
+objectives, pre-class sections). Linking, applying a whole-lesson rewrite and "they still fit" record the lesson as
+it was then; a one-slide rewrite does not. A different hash later is a cue only.
+
+Slides made from a lesson (`origin = 'lesson'`, `pack_id = ''`) are full decks like any copy (edit, present,
+download, revisions) but have no library original (no reset) and are not listed by `decks.list` (the Library's
+"your copies"); the lesson that made them is how they are reached.
+
+Migration `decks:006_lesson_presentations` adds `origin`, `subject`, `source_plan_id` to `decks_decks` (defaults keep
+every existing row a pack copy) and `decks_plan_links`, `decks_revisions`, `decks_ai_jobs`, `decks_session_sources`.
+Additive. `decks.reset` now keeps the copy as it was as an earlier version first; `decks.delete` removes a deck's
+links, versions and open proposals. Account deletion and merging cover the new tables.

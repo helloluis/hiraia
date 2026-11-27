@@ -5,8 +5,18 @@
  * a deck its shape (cover, day dividers, credits) stay where they are.
  */
 import { DECK_LIMITS } from '@hiraia/tala-core/contracts';
-import type { Deck, DeckSlide, PackDetail, PackLang, SlideKind } from '@hiraia/tala-core/contracts';
-import { layoutDeck, layoutInputFromDeck, layoutInputFromPack, slideChanged, type SlideLayout, type TextItem } from '@hiraia/tala-core/decks';
+import type { Deck, DeckSlide, LessonSlides, PackDetail, PackLang, Plan, PlanSection, SessionPart, SlideKind } from '@hiraia/tala-core/contracts';
+import {
+  assembleSession,
+  layoutDeck,
+  layoutInputFromDeck,
+  layoutInputFromPack,
+  sessionInputFromParts,
+  slideChanged,
+  type AssembledSession,
+  type SlideLayout,
+  type TextItem,
+} from '@hiraia/tala-core/decks';
 
 /* ---------------- what the viewer shows ---------------- */
 
@@ -50,7 +60,8 @@ export function viewOfPack(detail: PackDetail, mediaUrl: (slug: string) => strin
   return view;
 }
 
-type DeckForLayout = Pick<Deck, 'id' | 'title' | 'language' | 'grade' | 'term' | 'week' | 'sourceApproved' | 'credits' | 'slides'>;
+type DeckForLayout = Pick<Deck, 'id' | 'title' | 'language' | 'grade' | 'term' | 'week' | 'sourceApproved' | 'credits' | 'slides'> &
+  Partial<Pick<Deck, 'origin' | 'subject'>>;
 
 /**
  * A teacher's copy. `editing` keeps empty text boxes so there is somewhere to click. `baseSlides` (the slides as
@@ -71,6 +82,54 @@ export function viewOfDeck(
     mediaUrl,
   };
 }
+
+/**
+ * One lesson's slides as the lesson uses them (its day of a pack copy and the credits, or its own deck), laid out
+ * exactly as the deck lays them out, so the plan view, presenting and the lesson's download look alike.
+ */
+export function viewOfLessonSlides(ls: LessonSlides, mediaUrl: (slug: string) => string): DeckView {
+  const input = layoutInputFromDeck(ls);
+  return {
+    key: `lesson:${ls.deckId}:${ls.rev}:${ls.slides.length}:${ls.slides[0]?.id ?? ''}`,
+    kind: 'copy',
+    title: ls.title,
+    language: ls.language,
+    approved: ls.sourceApproved,
+    layouts: layoutDeck({ ...input, personalCopy: ls.edited }),
+    mediaUrl,
+  };
+}
+
+/**
+ * A multi-grade session's slides, put together now from the plan as it is on this device and each grade's slides
+ * (decks/assemble.ts, the function the server's download uses). `mediaUrl` turns a grade deck's drawing into a URL.
+ */
+export function viewOfSession(
+  args: { plan: Plan; sections: PlanSection[]; parts: SessionPart[] },
+  deckMediaUrl: (deckId: string, slug: string) => string
+): { view: DeckView; assembled: AssembledSession } {
+  const assembled = assembleSession(sessionInputFromParts(args));
+  const layouts = layoutDeck(assembled.layout);
+  const stamp = args.parts.map((p) => `${p.groupId}:${p.slides?.deckId ?? '-'}:${p.slides?.rev ?? 0}`).join(',');
+  return {
+    view: {
+      key: `session:${args.plan.id}:${stamp}:${layouts.length}`,
+      kind: 'copy',
+      title: args.plan.title,
+      language: args.plan.language,
+      approved: assembled.layout.approved,
+      layouts,
+      mediaUrl: (key) => {
+        const m = assembled.media[key];
+        return m ? deckMediaUrl(m.deckId, m.slug) : '';
+      },
+    },
+    assembled,
+  };
+}
+
+/** Kinds AI can rewrite one at a time (covers, day openers and credits are fixed; an answer slide goes with its question). */
+export const rewritable = (s: Pick<DeckSlide, 'kind'>): boolean => s.kind !== 'cover' && s.kind !== 'day' && s.kind !== 'credits' && s.kind !== 'reveal';
 
 /** The words of the slide's title box ('' when the slide has none). */
 export function slideTitle(layout: SlideLayout): string {

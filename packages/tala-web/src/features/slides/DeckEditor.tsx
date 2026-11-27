@@ -18,7 +18,7 @@ import { useSession } from '@/data/session';
 import { deckFailure, deckMediaUrl, deckPptxUrl, deleteDeck, forgetDecks, useDeck } from '@/data/decks';
 import { StatusChip } from '@/components/editorial';
 import { Icon, type IconName } from '@/components/icons';
-import { Banner, Button, LinkButton, Placeholder, Sheet, Toast, cx } from '@/components/ui';
+import { Banner, Button, LinkButton, Placeholder, Sheet, Sparkle, Toast, cx } from '@/components/ui';
 import { DeckFields } from './DeckFields';
 import {
   ADDABLE_KINDS,
@@ -42,6 +42,11 @@ import {
   type AddableKind,
 } from './deck-model';
 import { LocalIcon } from './local-icons';
+import { AiProposalSheet } from './AiProposalSheet';
+import { RevisionsSheet } from './RevisionsSheet';
+import { RETRYABLE, TROUBLE_KEY } from './ai-words';
+import { rewritable } from './deck-model';
+import { useSlidesAi } from './useSlidesAi';
 import { Presenter, type PresenterHandle } from './Presenter';
 import { SlideThumb, kindCaption, slideName } from './SlideThumb';
 import { SlideView, type SlideEditing } from './SlideView';
@@ -71,7 +76,7 @@ export function DeckEditorScreen({ deckId }: { deckId: string }) {
     if (status === 'signedOut') router.replace('/sign-in');
   }, [status, router]);
   const deck = useDeck(status === 'signedIn' ? deckId : null);
-  if (deck.detail) return <DeckEditor key={deck.detail.deck.id} initial={deck.detail} startSlideId={params.get('slide')} />;
+  if (deck.detail) return <DeckEditor key={deck.detail.deck.id} initial={deck.detail} startSlideId={params.get('slide')} planId={params.get('plan')} />;
   return (
     <main className="mx-auto flex min-h-dvh w-full max-w-[40rem] flex-col justify-center gap-4 px-4 py-10">
       {status !== 'signedIn' || deck.loading || !deck.failed ? (
@@ -152,7 +157,11 @@ function Op({ icon, children, onClick, disabled, tone }: { icon: IconName; child
 
 const ADD_ICON: Record<AddableKind, IconName> = { concept: 'lessons', question: 'help', activity: 'checklist', vocabulary: 'book' };
 
-function DeckEditor({ initial, startSlideId }: { initial: DeckDetail; startSlideId: string | null }) {
+/**
+ * `planId`: the editor was opened from a lesson plan (its slides panel). Back goes to the lesson, and a slide can be
+ * rewritten with AI from that lesson (the server checks the lesson uses this very deck).
+ */
+function DeckEditor({ initial, startSlideId, planId }: { initial: DeckDetail; startSlideId: string | null; planId: string | null }) {
   const { t } = useT();
   const router = useRouter();
   const ed: Editor = useDeckEditor(initial);
@@ -175,7 +184,7 @@ function DeckEditor({ initial, startSlideId }: { initial: DeckDetail; startSlide
   }, [ed.slides, selectedId]);
 
   const [active, setActive] = useState<EditField | null>(null);
-  const [sheet, setSheet] = useState<'add' | 'drawing' | 'reset' | 'delete' | 'more' | null>(null);
+  const [sheet, setSheet] = useState<'add' | 'drawing' | 'reset' | 'delete' | 'more' | 'revisions' | 'ai' | null>(null);
   const [toast, setToast] = useState<{ message: string; undo?: boolean } | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [working, setWorking] = useState<'download' | 'reset' | 'delete' | 'conflict' | null>(null);
@@ -342,7 +351,24 @@ function DeckEditor({ initial, startSlideId }: { initial: DeckDetail; startSlide
     a.click();
     a.remove();
   };
-  const packHref = `/library/${deck.packId}?tab=slides&lang=${deck.language}`;
+  const lessonDeck = deck.origin === 'lesson';
+  const packHref = planId ? `/lessons/${encodeURIComponent(planId)}` : lessonDeck ? '/lessons' : `/library/${deck.packId}?tab=slides&lang=${deck.language}`;
+  // Rewriting one slide with AI, from the lesson the editor was opened from.
+  const ai = useSlidesAi(planId, {
+    beforeStart: () => ed.flush(),
+    onApplied: () => {
+      setSheet(null);
+      void ed.loadServer().then(() => setToast({ message: t('pp.ed.aiApplied') }));
+    },
+  });
+  useEffect(() => {
+    if (ai.phase === 'ready') setSheet('ai');
+  }, [ai.phase]);
+  const proposalView = useMemo(
+    () => (ai.job?.proposal ? viewOfDeck({ ...deck, id: `proposal-${ai.job.id}`, slides: ai.job.proposal.slides }, mediaUrl) : null),
+    [ai.job, deck, mediaUrl]
+  );
+  const rewriteSlide = () => void ai.start('slide', { slideId: slide.id, deckId: deck.id });
   const startOver = async () => {
     setWorking('reset');
     const ok = await ed.startOver();
@@ -371,22 +397,25 @@ function DeckEditor({ initial, startSlideId }: { initial: DeckDetail; startSlide
   const canPutBack = Boolean(base) && isChanged;
   const drawingHidden = Boolean(slide.image) && !mcq && layout && !layout.picture;
   const thumbMark = (id: string) => (ed.changed.has(id) ? <span className="ml-auto h-2 w-2 shrink-0 self-center rounded-full bg-talaTeal" title={t('sl.ed.changed')} aria-label={t('sl.ed.changed')} /> : undefined);
-  const groupName = (g: (typeof groups)[number]) => (g.part === 'intro' ? t('sl.group.intro') : g.part === 'about' ? t('sl.group.about') : t('sl.group.day', { n: g.day }));
+  const groupName = (g: (typeof groups)[number]) =>
+    g.part === 'intro' ? t(lessonDeck ? 'pp.ed.lessonGroup' : 'sl.group.intro') : g.part === 'about' ? t('sl.group.about') : t('sl.group.day', { n: g.day });
   const trouble = ed.state === 'offline' || ed.state === 'error' || ed.state === 'signedOut' || ed.state === 'refused' || ed.state === 'gone' || (ed.state === 'conflict' && conflictLater);
 
   return (
     <div className="flex min-h-dvh flex-col bg-cream text-forest" style={{ ['--bar-h' as string]: `${barH}px` }}>
       <header ref={bar} className="sticky top-0 z-30 border-b border-hairline bg-white">
         <div className="mx-auto flex w-full max-w-[104rem] items-center gap-1 px-2 py-1.5 wide:gap-2 wide:px-5">
-          <Link href={packHref} aria-label={t('sl.ed.back')} title={t('sl.ed.back')} className="inline-flex h-12 shrink-0 items-center gap-1.5 rounded px-2 font-medium text-talaTeal hover:bg-cream">
+          <Link href={packHref} aria-label={t(planId ? 'pp.ed.backLesson' : 'sl.ed.back')} title={t(planId ? 'pp.ed.backLesson' : 'sl.ed.back')} className="inline-flex h-12 shrink-0 items-center gap-1.5 rounded px-2 font-medium text-talaTeal hover:bg-cream">
             <Icon name="arrowLeft" size={22} />
-            <span className="hidden wide:inline">{t('sl.ed.backShort')}</span>
+            <span className="hidden wide:inline">{t(planId ? 'pp.ed.backLessonShort' : 'sl.ed.backShort')}</span>
           </Link>
           <div className="min-w-0 flex-1">
             <p className="kicker hidden items-center gap-1.5 text-talaTeal wide:flex">
               <Icon name="pencil" size={13} strokeWidth={2.2} />
               <span className="truncate">
-                {t('sl.view.mine')} · {t('lib.grade', { grade: deck.grade })} · {t('lib.term', { term: deck.term })} · {t('lib.week', { week: deck.week })}
+                {lessonDeck
+                  ? [t('pp.madeWithAi'), t('lib.grade', { grade: deck.grade }), deck.subject].filter(Boolean).join(' · ')
+                  : `${t('sl.view.mine')} · ${t('lib.grade', { grade: deck.grade })} · ${t('lib.term', { term: deck.term })} · ${t('lib.week', { week: deck.week })}`}
               </span>
             </p>
             <input
@@ -463,7 +492,7 @@ function DeckEditor({ initial, startSlideId }: { initial: DeckDetail; startSlide
             {notice}
           </Banner>
         )}
-        {!ed.detail.original.available ? (
+        {lessonDeck ? null : !ed.detail.original.available ? (
           <Banner kind="info">{t('sl.ed.original.gone')}</Banner>
         ) : ed.detail.original.updated ? (
           <Banner kind="info" action={<LinkButton href={packHref}>{t('sl.ed.original.see')}</LinkButton>}>
@@ -561,7 +590,42 @@ function DeckEditor({ initial, startSlideId }: { initial: DeckDetail; startSlide
             <Op icon="trash" tone="danger" onClick={remove} disabled={!canDelete(ed.slides, slide.id)}>
               {t('sl.ed.op.delete')}
             </Op>
+            {planId && !locked && rewritable(slide) && (
+              <Button variant="ai" className="shrink-0 whitespace-nowrap" onClick={rewriteSlide} disabled={ai.busy} data-rewrite-slide>
+                <Sparkle /> {t('pp.ed.rewriteSlide')}
+              </Button>
+            )}
           </div>
+          {(ai.phase === 'starting' || ai.phase === 'working') && (
+            <p role="status" className="flex items-center gap-2 text-small text-forestMuted" data-ai-working>
+              <LocalIcon name="spinner" size={16} className="animate-spin" />
+              {t('pp.ai.workingSlide')}
+              <Button variant="quiet" onClick={() => void ai.discard()}>
+                {t('common.cancel')}
+              </Button>
+            </p>
+          )}
+          {ai.phase === 'failed' && ai.trouble && (
+            <div data-ai-failed={ai.trouble}>
+              <Banner
+                kind="error"
+                action={
+                  <span className="flex flex-wrap gap-2">
+                    {RETRYABLE.has(ai.trouble) && (
+                      <Button variant="primary" onClick={rewriteSlide}>
+                        {t('pp.ai.retry')}
+                      </Button>
+                    )}
+                    <Button variant="quiet" onClick={() => void ai.discard()}>
+                      {t('common.close')}
+                    </Button>
+                  </span>
+                }
+              >
+                {t(TROUBLE_KEY[ai.trouble])}
+              </Banner>
+            </div>
+          )}
           {isAnchor(slide) && !locked && (
             <p className="flex items-start gap-2 text-small text-forestMuted">
               <Icon name="lock" size={16} className="mt-0.5" />
@@ -637,7 +701,9 @@ function DeckEditor({ initial, startSlideId }: { initial: DeckDetail; startSlide
         )}
       </Sheet>
 
-      <Sheet open={sheet === 'more'} onClose={() => setSheet(null)} title={t('sl.ed.more')}>
+      {/* The More sheet hands over to another sheet (start over, delete, earlier versions). Its dialog's own close event
+          arrives after that switch, so it may only clear the sheet while it is still the one showing. */}
+      <Sheet open={sheet === 'more'} onClose={() => setSheet((s) => (s === 'more' ? null : s))} title={t('sl.ed.more')}>
         <div className="flex flex-col gap-2">
           <div className="grid grid-cols-2 gap-2 wide:hidden">
             <Button onClick={ed.undo} disabled={!ed.canUndo}>
@@ -653,10 +719,16 @@ function DeckEditor({ initial, startSlideId }: { initial: DeckDetail; startSlide
             <Icon name="download" size={20} />
             {t('sl.download')}
           </Button>
-          <Button full onClick={() => setSheet('reset')}>
+          <Button full onClick={() => setSheet('revisions')} data-revisions-open>
             <Icon name="restore" size={20} />
-            {t('sl.ed.reset')}
+            {t('pp.rev.open')}
           </Button>
+          {!lessonDeck && (
+            <Button full onClick={() => setSheet('reset')}>
+              <Icon name="restore" size={20} />
+              {t('sl.ed.reset')}
+            </Button>
+          )}
           <Button full variant="danger" onClick={() => setSheet('delete')}>
             <Icon name="trash" size={20} />
             {t('sl.ed.delete')}
@@ -736,6 +808,25 @@ function DeckEditor({ initial, startSlideId }: { initial: DeckDetail; startSlide
       >
         <span className="sr-only">{t('sl.ed.title')}</span>
       </Sheet>
+
+      <RevisionsSheet
+        deckId={deck.id}
+        open={sheet === 'revisions'}
+        onClose={() => setSheet(null)}
+        beforeRestore={() => ed.flush()}
+        onRestored={() => {
+          void ed.loadServer().then(() => setToast({ message: t('pp.rev.restored') }));
+        }}
+      />
+      <AiProposalSheet
+        ai={ai}
+        view={proposalView}
+        scope="slide"
+        replacing={1}
+        open={sheet === 'ai' && (ai.phase === 'ready' || ai.phase === 'applying' || ai.phase === 'conflict')}
+        onClose={() => setSheet(null)}
+        current={ai.job?.proposal ? { layouts: viewOfDeck({ ...deck, slides: ed.slides }, mediaUrl, { baseSlides: ed.detail.baseSlides }).layouts.filter((l) => ai.job!.proposal!.replaces.includes(l.id)), mediaUrl } : null}
+      />
 
       <Toast
         message={toast?.message ?? null}

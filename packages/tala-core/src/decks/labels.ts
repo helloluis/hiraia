@@ -19,6 +19,16 @@ export interface DeckLabels {
   sectionIntro: string;
   sectionAbout: string;
   sectionDay: string;
+  /*
+   * Tala's own decks (not the pack renderer's): slides made with AI from a teacher's lesson plan, and multi-grade
+   * sessions put together from several decks (27 Nov 2026). FILIPINO: first drafts, for the Filipino owner's review.
+   */
+  /** Credits line for slides made with AI from the teacher's own lesson plan. */
+  creditsAi: string;
+  /** Cover label of slides made with AI from a lesson plan. */
+  aiDraftBadge: string;
+  /** Footer of a lesson's own deck. */
+  lessonFooter: (grade: string, subject: string) => string;
 }
 
 export const DECK_LABELS: Record<PackLang, DeckLabels> = {
@@ -35,6 +45,9 @@ export const DECK_LABELS: Record<PackLang, DeckLabels> = {
     sectionIntro: 'Introduction',
     sectionAbout: 'About this deck',
     sectionDay: 'Day',
+    creditsAi: "Made with AI from the teacher's lesson plan; not checked by Hiraia",
+    aiDraftBadge: 'DRAFT — made with AI from the lesson plan',
+    lessonFooter: (g, subject) => `Grade ${g} ${subject}`.trim(),
   },
   fil: {
     chip: { question: 'Tuklasin', concept: 'Suriin', vocabulary: 'Mga bagong salita', activity: 'Gawain', check: 'Subukin', reveal: 'Sagot', summary: 'Isaisip', exit: 'Tayahin' },
@@ -49,5 +62,8 @@ export const DECK_LABELS: Record<PackLang, DeckLabels> = {
     sectionIntro: 'Panimula',
     sectionAbout: 'Tungkol sa deck',
     sectionDay: 'Araw',
+    creditsAi: 'Ginawa ng AI mula sa lesson plan ng guro. Hindi ito sinuri ng Hiraia.',
+    aiDraftBadge: 'DRAFT — ginawa ng AI mula sa lesson plan',
+    lessonFooter: (g, subject) => `Grade ${g} ${subject}`.trim(),
   },
 };

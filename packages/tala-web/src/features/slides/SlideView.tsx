@@ -39,7 +39,7 @@ const FONT_CSS = [
   FIT('TalaFit DejaVu', 700, ['DejaVu Sans Bold', 'DejaVuSans-Bold'], 72.8),
 ].join('');
 /** Fixed one-line labels (kind chip, day number, draft badge): they grow rather than wrap if a fallback font is wider. */
-const ONE_LINE = new Set(['kind label', 'day label', 'draft label']);
+const ONE_LINE = new Set(['kind label', 'day label', 'draft label', 'grade label']);
 const MARGIN = 0.6;
 /**
  * Office sets Calibri (and its twin Carlito) with a line of 1.22 em and its letters low in that line; a browser

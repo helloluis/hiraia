@@ -30,6 +30,7 @@ import { RegenSheet } from './RegenSheet';
 import { regenBlocker } from './regen-logic';
 import { clearFailure, FAILURE_EVENT, listFailures, type QueuedFailure } from '@/data/generation';
 import type { StringKey } from '@/i18n';
+import { PresentationPanel } from './PresentationPanel';
 import { PostSheet } from '@/features/community/PostSheet';
 import { Toast } from '@/components/ui';
 
@@ -191,6 +192,7 @@ export function EditorScreen({ planId }: { planId: string }) {
             ? `${t('editor.saved')} · ${t('editor.waitingToSend')}`
             : t('editor.saved')}
       </p>
+      <PresentationPanel ed={ed} />
 
       {locked && plan.lock && (
         <Banner kind="info">
