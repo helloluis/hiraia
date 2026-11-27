@@ -1843,3 +1843,9 @@ owner integrates; deploying needs Luis's own go-ahead (demo.19's approval does n
   `d1s7`: its title, lines and teacher notes are about dropping a stone (EN "The stone falls without a push", FIL "bato"),
   but its picture is a falling mango (`falling-mango-gravity`). The science is right; the words and the picture disagree.
   Found by the homepage owner; its screenshot shows a teacher's corrected copy on a local server, the live pack unchanged.
+- **27 Nov 22:27 Manila:** the Filipino owner answered homepage batch 1 (bridge `4f94a29f…`): 19 items reworded (23
+  lines), 11 flags, the rest OK; relayed verbatim to the homepage owner
+  (`/home/b11/tala-takeover-20261125/bridge/home-fil-batch1-answer.md`, sha256 `258ad4b9…`). Accuracy points kept:
+  "check the Science before class"; a page number, not a page copy; offline named as the Android app, weak signal
+  only (item 26 resolved); learners may record that both balls land together. Item 31's longer line is the copy
+  owner's call; any later Filipino change goes back to the Filipino owner.
