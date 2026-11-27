@@ -577,6 +577,7 @@ export function Sheet({
   return (
     <dialog
       ref={ref}
+      data-sheet=""
       onClose={onClose}
       onCancel={(e) => {
         e.preventDefault();
@@ -632,6 +633,7 @@ export function Toast({
   return (
     <div
       role="status"
+      data-toast=""
       className="fixed bottom-20 wide:bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 rounded bg-forest text-cream px-4 py-3 shadow max-w-[calc(100vw-2rem)]"
     >
       <span>{message}</span>

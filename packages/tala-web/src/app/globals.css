@@ -145,6 +145,12 @@
   0%, 100% { opacity: 0.5; scale: 0.9; }
   50% { opacity: 1; scale: 1; }
 }
+@keyframes tala-sheet-in {
+  from { opacity: 0; translate: 0 14px; }
+}
+@keyframes tala-pulse {
+  50% { opacity: 0.5; }
+}
 /* In, two small nudges towards the control, out: 1.8 s in all (CUE_LIFETIME_MS in NextStepCue.tsx). */
 @keyframes tala-cue {
   0% { opacity: 0; translate: 0 0; }
@@ -156,7 +162,47 @@
   100% { opacity: 0; translate: 0 0; }
 }
 
+@layer base {
+  /* Hover, press and state colours change over a blink instead of snapping. Colour only: nothing moves. */
+  a, button, summary, input, select, textarea {
+    transition: background-color var(--tala-fast) ease-out, border-color var(--tala-fast) ease-out,
+      color var(--tala-fast) ease-out, filter var(--tala-fast) ease-out;
+  }
+  /* The base rule above does not reach a dialog's backdrop: reduced motion switches its fade off here. */
+  @media (prefers-reduced-motion: reduce) {
+    dialog::backdrop { animation: none !important; }
+  }
+}
+
 @layer components {
+  /* --- Sheets and toasts arrive instead of popping in (attributes set in src/components/ui.tsx) ---
+     `translate`, not `transform`: the sheet's own centring on wide screens is a transform and stays as it is.
+     They are there and usable from the first frame; nothing waits for the movement. */
+  dialog[data-sheet][open] {
+    animation: tala-sheet-in var(--tala-base) var(--tala-ease) both;
+  }
+  dialog[data-sheet][open]::backdrop {
+    animation: tala-fade-in var(--tala-base) ease-out both;
+  }
+  [data-toast] {
+    animation: tala-rise-in var(--tala-base) var(--tala-ease) both;
+  }
+  /* Grey loading rows breathe while something is loading (they were still). Reduced motion: still, as before. */
+  .placeholder {
+    animation: tala-pulse 1.6s ease-in-out infinite;
+  }
+  /* What a "more" row reveals fades in. */
+  details.disclosure[open] > :not(summary) {
+    animation: tala-fade-in 160ms var(--tala-ease) both;
+  }
+  /* A part that was just replaced from outside (AI rewrite, earlier version, other device): the same ring as a
+     block that was just moved. Reduced motion: the ring stays still until the mark is removed. */
+  [data-just-changed] {
+    outline: 2px solid rgb(var(--c-talaTeal-rgb) / 0.55);
+    outline-offset: 4px;
+    animation: tala-ring-out 900ms var(--tala-ease) 600ms both;
+  }
+
   /* --- Reordering blocks and steps (src/components/motion/useReorderMotion.ts) --- */
   /* The item being moved rides above the one it passes; opaque, so the other never shows through it. */
   [data-reorder-lifted] {

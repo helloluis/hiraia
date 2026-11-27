@@ -18,6 +18,7 @@ import {
 import { FlowTimeline } from './FlowTimeline';
 import { weekdayReference } from '@/features/setup/days';
 import { useReorderMotion } from '@/components/motion/useReorderMotion';
+import { useJustChanged } from '@/components/motion/useJustChanged';
 import { RichTextEditor, RichTextView } from './RichTextEditor';
 
 export interface GroupInfo {
@@ -37,7 +38,25 @@ interface Props<C extends SectionContent> {
 
 type Of<T extends SectionContent['type']> = Extract<SectionContent, { type: T }>;
 
+/**
+ * A part's editor. When its content is replaced by something the teacher did not type here (an AI rewrite that was
+ * applied, an earlier version put back, an edit from her other device) it is ringed for a moment, so she sees where
+ * the change landed. Her own typing never sets it off.
+ */
 export function SectionEditor(p: Props<SectionContent>) {
+  const { changed, mine } = useJustChanged(JSON.stringify(p.content));
+  const onChange = (c: SectionContent) => {
+    mine(JSON.stringify(c));
+    p.onChange(c);
+  };
+  return (
+    <div data-just-changed={changed ? '' : undefined} className="rounded">
+      <SectionBody {...p} onChange={onChange} />
+    </div>
+  );
+}
+
+function SectionBody(p: Props<SectionContent>) {
   switch (p.content.type) {
     case 'text':
       return (

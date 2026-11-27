@@ -10,6 +10,8 @@
 //   ai-standin  the waiting state against the REAL Tala server, job queue, polling and cancel, with a SIMULATED MODEL:
 //             the server is started with its lesson route on a local stand-in endpoint that this script answers
 //             (--standin-port, default 3339). Every check from this phase is labelled as using the stand-in model.
+//   surfaces  the small things: a sheet and a toast arriving, the ring on a part that was just rewritten (stand-in
+//             model), loading rows, colour changes
 //   ai-real   one real draft with the provider the server was started with (needs --real; counted and bounded)
 //   reduced   the same screens with prefers-reduced-motion: reduce
 //   record    short recordings (WebM) and frame strips for the report
@@ -28,7 +30,7 @@ const [phase, base, out] = argv;
 const flag = (name) => argv.includes(`--${name}`);
 const option = (name, fallback = '') => (argv.includes(`--${name}`) ? argv[argv.indexOf(`--${name}`) + 1] : fallback);
 const dbPath = option('db');
-const PHASES = ['seed', 'reorder', 'cue', 'ai-standin', 'ai-real', 'reduced', 'record'];
+const PHASES = ['seed', 'reorder', 'cue', 'ai-standin', 'surfaces', 'ai-real', 'reduced', 'record'];
 if (!PHASES.includes(phase) || !/^http:\/\/127\.0\.0\.1:\d+$/.test(base ?? '') || !out || !dbPath)
   throw new Error(`usage: motion-walk.mjs <${PHASES.join('|')}> http://127.0.0.1:PORT <outDir> --db <path>`);
 const label = option('label', 'after');
@@ -860,6 +862,106 @@ try {
       }
     }
   }
+  if (phase === 'surfaces') {
+    const st = await startStandin(Number(option('standin-port', '3339')));
+    const isNew = label !== 'before';
+    /** Every frame for `ms`: where the open sheet (or the toast) is drawn and how opaque. Start it, act, then await it. */
+    const watchBox = (s, selector, ms) => s.page.evaluate(([selector, ms]) => new Promise((resolve) => {
+      const out = [];
+      const t0 = performance.now();
+      const tick = (now) => {
+        const el = document.querySelector(selector);
+        if (el) { const r = el.getBoundingClientRect(); out.push([Math.round(now - t0), Math.round(r.top * 10) / 10, Math.round(parseFloat(getComputedStyle(el).opacity) * 100) / 100]); }
+        if (now - t0 < ms) requestAnimationFrame(tick);
+        else resolve(out);
+      };
+      requestAnimationFrame(tick);
+    }), [selector, ms]);
+    const arrival = (frames) => {
+      if (!frames.length) return { frames: 0 };
+      const rest = frames[frames.length - 1];
+      const moving = frames.filter((f) => Math.abs(f[1] - rest[1]) > 0.5 || f[2] < 0.99);
+      return { frames: frames.length, framesOnTheWay: moving.length, took: moving.length ? moving[moving.length - 1][0] - frames[0][0] : 0, from: frames[0][1], to: rest[1], startOpacity: frames[0][2], endOpacity: rest[2] };
+    };
+    try {
+      for (const view of ['desktop', 'phone']) {
+        const s = await open(view, 'en');
+        await openLesson(s, 'procedure');
+        /* ---- a sheet arrives ---- */
+        const sheetSelector = isNew ? 'dialog[data-sheet][open]' : 'dialog[open]';
+        const watching = watchBox(s, sheetSelector, 900);
+        await s.page.getByRole('button', { name: en['editor.moreActions'], exact: true }).click();
+        const a = arrival(await watching);
+        const usable = await s.page.locator('dialog[open]').getByText(en['editor.pdf'], { exact: true }).isVisible();
+        judge(`${view}: a sheet arrives over a short moment (it rises a little and fades in) and is then exactly where it always was`, a.framesOnTheWay >= 4 && a.took >= 100 && a.took <= 350 && a.startOpacity < 0.6 && a.endOpacity === 1 && Math.abs(a.from - a.to) >= 4 && Math.abs(a.from - a.to) <= 16 && usable, JSON.stringify(a));
+        if (view === 'desktop') await shot(s, 's1-sheet');
+        await s.page.keyboard.press('Escape');
+        await s.page.waitForTimeout(300);
+        check(`${view}: Escape still closes the sheet at once and focus returns to the page`, (await s.page.locator('dialog[open]').count()) === 0);
+
+        /* ---- a toast arrives ---- */
+        await s.page.goto(`${base}/lessons/${acct.plans.procedure.planId}?drafted=1`, { waitUntil: 'domcontentloaded', timeout: 120000 });
+        const toastFrames = await watchBox(s, isNew ? '[data-toast]' : '[role="status"].fixed', 4000);
+        const tArr = arrival(toastFrames.slice(0, Math.max(1, toastFrames.findIndex((f, i) => i > 0 && f[2] === 1 && Math.abs(f[1] - toastFrames[toastFrames.length - 1][1]) < 0.5) + 12)));
+        judge(`${view}: a toast arrives over a short moment and settles where it always was`, tArr.framesOnTheWay >= 4 && tArr.took >= 100 && tArr.took <= 400 && tArr.endOpacity === 1, JSON.stringify(tArr));
+        await s.page.waitForTimeout(500);
+
+        if (view === 'desktop') {
+          /* ---- typing never sets off the "just changed" ring ---- */
+          const assess = s.page.locator('section[aria-labelledby="s-assessment"] [contenteditable="true"]').first();
+          await assess.scrollIntoViewIfNeeded();
+          await assess.click();
+          let rings = 0;
+          for (const ch of 'Each learner names two things.') {
+            await s.page.keyboard.type(ch);
+            rings += await s.page.locator('[data-just-changed]').count();
+            await s.page.waitForTimeout(40);
+          }
+          await s.page.waitForTimeout(1600); // past the save and the record coming back from the device store
+          rings += await s.page.locator('[data-just-changed]').count();
+          check('desktop: her own typing never marks a part as “just changed” (not while typing, not when the save comes back)', rings === 0, `marks seen: ${rings}`);
+
+          /* ---- an AI rewrite (STAND-IN MODEL) lands: that part is ringed for a moment ---- */
+          st.mode = 'ok';
+          st.delayMs = 1200;
+          await s.page.getByRole('button', { name: `${en['gen.regen']}: Procedure`, exact: true }).click();
+          const sheet = s.page.locator('dialog[open]');
+          await sheet.waitFor({ timeout: 10000 });
+          await sheet.getByRole('button', { name: en['gen.regenConfirm'], exact: true }).click();
+          await s.page.getByText(en['gen.regenDone']).waitFor({ timeout: 60000 });
+          const marked = await s.page.evaluate(() => [...document.querySelectorAll('[data-just-changed]')].map((el) => { const cs = getComputedStyle(el); return { section: el.closest('section')?.getAttribute('aria-labelledby'), outline: cs.outlineStyle, animation: cs.animationName }; }));
+          const titles = await s.page.locator('section[aria-labelledby="s-procedure"] input').evaluateAll((els) => els.map((e) => e.value));
+          await shot(s, 's2-part-rewritten');
+          await s.page.waitForTimeout(2200);
+          const after = await s.page.locator('[data-just-changed]').count();
+          judge(`desktop, ${SIM}: when “Rewrite with AI” lands, the rewritten part (and only that part) is ringed for a moment, then the ring is gone`, marked.length === 1 && marked[0].section === 's-procedure' && marked[0].outline === 'solid' && marked[0].animation === 'tala-ring-out' && after === 0 && titles.includes('STAND-IN review'), `${JSON.stringify(marked)}; left after 2.2 s: ${after}; procedure: ${titles.join(' | ')}`);
+
+          /* ---- colour changes and loading rows ---- */
+          const styles = await s.page.evaluate(() => {
+            const b = [...document.querySelectorAll('button')].find((x) => x.offsetParent);
+            const probe = document.createElement('div');
+            probe.className = 'placeholder';
+            document.body.appendChild(probe);
+            const out = { button: getComputedStyle(b).transitionDuration.split(',')[0].trim(), buttonProps: getComputedStyle(b).transitionProperty, placeholder: getComputedStyle(probe).animationName };
+            probe.remove();
+            return out;
+          });
+          judge('desktop: hover and press colours change over a blink (0.12 s, colour only), and loading rows breathe', styles.button === '0.12s' && !/transform|all|height|width|margin|padding/.test(styles.buttonProps) && styles.placeholder === 'tala-pulse', JSON.stringify(styles));
+          // Put the Assessment back to empty, as seeded.
+          const again = s.page.locator('section[aria-labelledby="s-assessment"] [contenteditable="true"]').first();
+          await again.scrollIntoViewIfNeeded();
+          await again.click();
+          await s.page.keyboard.press('Control+A');
+          await s.page.keyboard.press('Delete');
+          await s.page.waitForTimeout(3500);
+        }
+        await s.ctx.close();
+      }
+    } finally {
+      st.release();
+      await st.close();
+    }
+  }
   if (phase === 'ai-standin') {
     const st = await startStandin(Number(option('standin-port', '3339')));
     const isNew = label !== 'before';
@@ -1172,6 +1274,63 @@ try {
     m = await measureMove(r, { kind: 'block', dir: 'down', position: 2, via: 'mouse' });
     check('reduced motion: moved back to the seeded order (a down move holds the pressed block too)', JSON.stringify(m.after.order) === JSON.stringify(start) && m.heldDrift <= 1, m.after.order.join(' | '));
     await r.page.waitForTimeout(3000);
+
+    /* ---- the next-step arrow: there, still, and gone after the same two seconds ---- */
+    await forgetCues(r, true);
+    const c = await watchCue(r, `/generate?planId=${acct.plans.draftPlain.planId}`);
+    check('reduced motion: the next-step arrow appears without fading or nudging (fully there from its first frame, never moves) and is removed after about two seconds', c.shown && c.facts.animation === 'none' && c.startOpacity === 1 && c.endOpacity === 1 && c.opacityLevels === 1 && c.travelX === 0 && c.travelY === 0 && c.lifetime >= 1500 && c.lifetime <= 2300 && c.after.left === 0, cueBrief(c));
+
+    /* ---- a sheet opens in place ---- */
+    await openLesson(r, 'multigrade');
+    const sheetFrames = r.page.evaluate(() => new Promise((resolve) => {
+      const out = [];
+      const t0 = performance.now();
+      const tick = (now) => {
+        const el = document.querySelector('dialog[data-sheet][open]');
+        if (el) out.push([Math.round(el.getBoundingClientRect().top * 10) / 10, parseFloat(getComputedStyle(el).opacity), getComputedStyle(el).animationName, getComputedStyle(el, '::backdrop').animationName]);
+        if (now - t0 < 700) requestAnimationFrame(tick);
+        else resolve(out);
+      };
+      requestAnimationFrame(tick);
+    }));
+    await r.page.getByRole('button', { name: en['editor.moreActions'], exact: true }).click();
+    const sf = await sheetFrames;
+    check('reduced motion: a sheet is simply there (same place and fully opaque in every frame; no animation on it or its backdrop)', sf.length > 5 && new Set(sf.map((f) => f[0])).size === 1 && sf.every((f) => f[1] === 1 && f[2] === 'none' && f[3] === 'none'), `${sf.length} frames; positions ${[...new Set(sf.map((f) => f[0]))].join(', ')}; animation ${sf[0]?.[2]} / backdrop ${sf[0]?.[3]}`);
+    await r.page.keyboard.press('Escape');
+
+    /* ---- while Tala writes (STAND-IN MODEL): nothing moves, the words and the time still update ---- */
+    const st = await startStandin(Number(option('standin-port', '3339')));
+    try {
+      st.mode = 'ok';
+      st.delayMs = 6000;
+      const b = await openGenerate(r, 'draftPlain');
+      await watchAi(r);
+      await b.click();
+      await waitAi(r, 'running');
+      const a1 = await aiState(r);
+      const motion = await sampleAi(r, 700);
+      await r.page.waitForTimeout(2100);
+      const a2 = await aiState(r);
+      check(`reduced motion, ${SIM}: while Tala writes the bar and the mark stand still (a full, pale bar — not a third of one)`, a1.barAnim === 'none' && a1.markAnim === 'none' && motion.barPositions === 1 && motion.markLevels === 1 && a1.barWidth === a1.trackWidth, `bar ${a1.barWidth} of ${a1.trackWidth} px; ${motion.frames} frames: ${motion.barPositions} bar position, ${motion.markLevels} mark level`);
+      check(`reduced motion, ${SIM}: the caption still follows the request and the time still counts`, a1.caption === en['ai.status.running'] && a1.elapsed !== a2.elapsed, `“${a1.caption}” · ${a1.elapsed} → ${a2.elapsed}`);
+      await r.page.waitForURL((u) => u.pathname.startsWith('/lessons/') && u.searchParams.get('drafted') === '1', { timeout: 30000 });
+      await r.page.waitForTimeout(800);
+      const toast = await r.page.evaluate(() => { const el = document.querySelector('[data-toast]'); return el ? getComputedStyle(el).animationName : null; });
+      check(`reduced motion, ${SIM}: the draft arrives as usual, and the toast is simply there`, toast === 'none', `toast animation: ${toast}`);
+    } finally {
+      st.release();
+      await st.close();
+    }
+    const styles = await r.page.evaluate(() => {
+      const b = [...document.querySelectorAll('button')].find((x) => x.offsetParent);
+      const probe = document.createElement('div');
+      probe.className = 'placeholder';
+      document.body.appendChild(probe);
+      const out = { button: getComputedStyle(b).transitionDuration.split(',')[0].trim(), placeholder: getComputedStyle(probe).animationName };
+      probe.remove();
+      return out;
+    });
+    check('reduced motion: colour changes are immediate and loading rows are still', styles.button === '0s' && styles.placeholder === 'none', JSON.stringify(styles));
     await r.ctx.close();
   }
 } catch (err) {
