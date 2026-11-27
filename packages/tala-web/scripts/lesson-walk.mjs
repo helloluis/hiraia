@@ -16,7 +16,7 @@ const require = createRequire(import.meta.url);
 const argv = process.argv.slice(2);
 const [phase, base, out] = argv;
 const dbPath = argv.includes('--db') ? argv[argv.indexOf('--db') + 1] : '';
-if (!['seed', 'success', 'failure'].includes(phase) || !/^http:\/\/127\.0\.0\.1:\d+$/.test(base ?? '') || !out || !dbPath)
+if (!['seed', 'success', 'failure', 'queued'].includes(phase) || !/^http:\/\/127\.0\.0\.1:\d+$/.test(base ?? '') || !out || !dbPath)
   throw new Error('usage: lesson-walk.mjs <seed|success|failure> http://127.0.0.1:PORT <outDir> --db <path>');
 const { createTalaClient } = await import('@hiraia/tala-core/contracts');
 const { createSyncEngine, createMemoryStore } = await import('@hiraia/tala-core/sync');
@@ -366,6 +366,34 @@ try {
     const jobs = jobsFor(acct.plans.existing.planId).slice(-2);
     check('item 1: both failed requests are recorded as failed (providers_unavailable), none as done', jobs.length === 2 && jobs.every((j) => j.status === 'failed' && j.reason === 'providers_unavailable'), JSON.stringify(jobs));
     await p.ctx.close();
+  }
+  if (phase === 'queued') {
+    // Asked while offline, run in the background when back online, failed (broken keys): shown in the lesson.
+    const q = await open('desktop', 'en');
+    await q.page.goto(`${base}/lessons/${acct.plans.existing.planId}`, { waitUntil: 'networkidle', timeout: 120000 });
+    await q.page.waitForTimeout(2000);
+    const before = await materialItems(q);
+    await q.ctx.setOffline(true);
+    await q.page.waitForTimeout(1500);
+    await aiButton(q, 'Learning Resources').click();
+    const sheet = q.page.locator('dialog[open]');
+    await sheet.waitFor({ timeout: 15000 });
+    await sheet.getByRole('button', { name: en['gen.keepWaiting'], exact: true }).click();
+    await q.page.getByText(en['gen.queued']).waitFor({ timeout: 15000 });
+    check('item 1 (offline): the rewrite is queued and the teacher is told so', true, en['gen.queued'].slice(0, 60));
+    await q.ctx.setOffline(false);
+    const banner = q.page.getByText(en['gen.queuedFailed'].split('“')[0].trim(), { exact: false });
+    await banner.first().waitFor({ timeout: 120000 });
+    const text = await banner.first().innerText();
+    check('item 1 (queued, provider down): back online, the failed rewrite is shown in the lesson with its part and reason', text.includes('Learning Resources') && text.includes(en['gen.failed.providers_unavailable'].split('.')[0]), text);
+    await shot(q, 'i1-08-queued-failed');
+    check('item 1 (queued): the teacher’s materials are unchanged', JSON.stringify(await materialItems(q)) === JSON.stringify(before));
+    await q.page.getByRole('button', { name: en['common.close'], exact: true }).first().click();
+    await q.page.waitForTimeout(800);
+    await q.page.reload({ waitUntil: 'networkidle', timeout: 120000 });
+    await q.page.waitForTimeout(2000);
+    check('item 1 (queued): once closed, the notice stays closed after a reload', (await q.page.getByText(en['gen.queuedFailed'].split('“')[0].trim(), { exact: false }).count()) === 0);
+    await q.ctx.close();
   }
 } catch (e) {
   check(`the ${phase} phase ran to the end`, false, String(e?.stack ?? e).slice(0, 380));

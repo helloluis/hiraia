@@ -209,3 +209,25 @@ test('prefillPlan fills empty sections from the pre-filled template and never to
   };
   assert.equal(assessment.blocks[0]?.spans[0]?.text, 'mine');
 });
+
+test('27 Nov fix: a queued request that ends without a result is kept for the lesson to show, never dropped silently', async () => {
+  const { recordFailure, listFailures, clearFailure, failureReason } = await import('./generation');
+  const { TalaApiError } = await import('@hiraia/tala-core/contracts');
+  const store = new Map<string, unknown>();
+  const cache = {
+    get: async <T,>(k: string) => (store.has(k) ? (store.get(k) as T) : null),
+    set: async <T,>(k: string, v: T) => void store.set(k, v),
+    remove: async (k: string) => void store.delete(k),
+    keys: async () => [...store.keys()],
+    clear: async () => store.clear(),
+  };
+  await recordFailure(cache, { id: 'q1', planId: 'p1', sectionKey: 'materials', reason: 'empty_output', at: 'x' });
+  await recordFailure(cache, { id: 'q2', planId: 'p2', sectionKey: null, reason: 'providers_unavailable', at: 'y' });
+  await recordFailure(cache, { id: 'q1', planId: 'p1', sectionKey: 'materials', reason: 'empty_output', at: 'z' });
+  assert.deepEqual((await listFailures(cache)).map((f) => f.id), ['q2', 'q1']);
+  await clearFailure(cache, 'q2');
+  assert.deepEqual((await listFailures(cache)).map((f) => f.id), ['q1']);
+  assert.equal(failureReason(new TalaApiError('invalid_input', 'x', 400, { reason: 'no_class_resources' })), 'no_class_resources');
+  assert.equal(failureReason(new TalaApiError('invalid_input', 'x', 400)), 'invalid_input');
+  assert.equal(failureReason(new Error('boom')), 'providers_unavailable');
+});

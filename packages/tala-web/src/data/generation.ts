@@ -288,3 +288,43 @@ export async function updateQueued(
     (await listQueue(cache)).map((x) => (x.id === id ? { ...x, ...patch } : x))
   );
 }
+
+/* ---------- failures of queued requests: kept on the device until the teacher has seen them (27 Nov 2026) ---------- */
+
+/** A queued or background request that ended without a usable result. Shown in its lesson; never dropped silently. */
+export interface QueuedFailure {
+  id: string;
+  planId: string;
+  sectionKey: string | null;
+  reason: string;
+  at: string;
+}
+
+const FAILED_KEY = 'generation.failed';
+/** Fired on window when a failure is recorded, so an open lesson shows it at once. */
+export const FAILURE_EVENT = 'tala:generation-failed';
+
+export async function listFailures(cache: KvCache): Promise<QueuedFailure[]> {
+  return (await cache.get<QueuedFailure[]>(FAILED_KEY)) ?? [];
+}
+export async function recordFailure(cache: KvCache, failure: QueuedFailure): Promise<void> {
+  const list = (await listFailures(cache)).filter((f) => f.id !== failure.id);
+  await cache.set(FAILED_KEY, [...list, failure].slice(-20));
+  if (typeof window !== 'undefined') window.dispatchEvent(new Event(FAILURE_EVENT));
+}
+export async function clearFailure(cache: KvCache, id: string): Promise<void> {
+  await cache.set(
+    FAILED_KEY,
+    (await listFailures(cache)).filter((f) => f.id !== id)
+  );
+}
+/** The reason to show for an error that ended a queued request (the same words as the sheet uses). */
+export function failureReason(err: unknown): string {
+  if (err instanceof TalaApiError) {
+    const detail = (err.details as { reason?: string } | undefined)?.reason;
+    if (detail === 'no_class_resources') return 'no_class_resources';
+    if (err.code === 'quota_exceeded' || err.code === 'rate_limited') return 'quota_exceeded';
+    return 'invalid_input';
+  }
+  return 'providers_unavailable';
+}

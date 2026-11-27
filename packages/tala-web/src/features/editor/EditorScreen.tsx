@@ -28,6 +28,8 @@ import { PdfSheet } from './PdfSheet';
 import { MoreSheet } from './MoreSheet';
 import { RegenSheet } from './RegenSheet';
 import { regenBlocker } from './regen-logic';
+import { clearFailure, FAILURE_EVENT, listFailures, type QueuedFailure } from '@/data/generation';
+import type { StringKey } from '@/i18n';
 import { PostSheet } from '@/features/community/PostSheet';
 import { Toast } from '@/components/ui';
 
@@ -51,8 +53,18 @@ export function EditorScreen({ planId }: { planId: string }) {
   const [toast, setToast] = useState<string | null>(() =>
     search.get('drafted') ? 'drafted' : search.get('queued') ? 'queued' : null
   );
-  const { config } = useSession();
+  const { config, cache } = useSession();
   const canGenerate = config?.features.generation !== false;
+  // Rewrites asked for while offline (or left running) that ended without a result: shown here until dismissed.
+  const [failures, setFailures] = useState<QueuedFailure[]>([]);
+  useEffect(() => {
+    if (!cache) return;
+    const load = () =>
+      void listFailures(cache).then((all) => setFailures(all.filter((f) => f.planId === planId)));
+    load();
+    window.addEventListener(FAILURE_EVENT, load);
+    return () => window.removeEventListener(FAILURE_EVENT, load);
+  }, [cache, planId]);
 
   useEffect(() => {
     if (plan && title === null) setTitle(plan.title);
@@ -195,6 +207,30 @@ export function EditorScreen({ planId }: { planId: string }) {
       )}
       {plan.conflictCopyOf && <Banner kind="warn">{t('editor.conflictCopy')}</Banner>}
       {plan.aiDraft && <Banner kind="warn">{t('editor.aiDraftBanner')}</Banner>}
+      {failures.map((f) => (
+        <Banner
+          key={f.id}
+          kind="warn"
+          action={
+            <Button
+              variant="quiet"
+              onClick={() => {
+                if (cache) void clearFailure(cache, f.id);
+                setFailures((xs) => xs.filter((x) => x.id !== f.id));
+              }}
+            >
+              {t('common.close')}
+            </Button>
+          }
+        >
+          {t('gen.queuedFailed', {
+            section: f.sectionKey
+              ? (template.sections.find((x) => x.key === f.sectionKey)?.label[lang] ?? f.sectionKey)
+              : t('gen.title'),
+            reason: failureText(f.reason, t),
+          })}
+        </Banner>
+      ))}
       {conflicts.length > 0 && (
         <Banner
           kind="warn"
@@ -550,6 +586,13 @@ function ConflictVersion({
       </div>
     </div>
   );
+}
+
+const FAILURE_REASONS = ['providers_unavailable', 'invalid_output', 'quota_exceeded', 'budget_exceeded', 'disabled', 'invalid_input', 'empty_output'];
+/** The words for why a queued rewrite was not made: the same as the rewrite sheet uses. */
+function failureText(reason: string, t: (k: StringKey) => string): string {
+  if (reason === 'no_class_resources') return t('gen.materials.needResources');
+  return FAILURE_REASONS.includes(reason) ? t(`gen.failed.${reason}` as StringKey) : t('gen.failed');
 }
 
 /**

@@ -9,7 +9,16 @@ import { TalaApiError } from '@hiraia/tala-core/contracts';
 import { useSession } from '@/data/session';
 import { getClient } from '@/data/client';
 import { newId } from '@/data/ids';
-import { applyGenerationJob, dequeue, listQueue, TERMINAL, updateQueued } from '@/data/generation';
+import {
+  applyGenerationJob,
+  dequeue,
+  failureReason,
+  listQueue,
+  recordFailure,
+  TERMINAL,
+  updateQueued,
+} from '@/data/generation';
+import { usableResult } from '@/features/editor/regen-logic';
 
 const TICK_MS = 20_000;
 
@@ -34,7 +43,13 @@ export function GenerationRunner() {
             }
             const job = await client.call('generation.get', { params: { jobId } });
             if (!TERMINAL.includes(job.status)) continue;
-            if (job.status === 'done') {
+            const sectionKey = item.input.kind === 'section' ? (item.input.sectionKey ?? null) : null;
+            const failed = (reason: string) =>
+              recordFailure(cache, { id: item.id, planId: item.planId, sectionKey, reason, at: new Date().toISOString() });
+            if (job.status === 'done' && sectionKey && !usableResult(job, sectionKey)) {
+              // An empty part is never written over the teacher's text (27 Nov 2026); she is told instead.
+              await failed('empty_output');
+            } else if (job.status === 'done') {
               const planRec = await engine.get('plan', item.planId);
               if (planRec && !planRec.deletedAt && planRec.data.state === 'draft') {
                 const sections = (await engine.list('plan_section'))
@@ -50,12 +65,21 @@ export function GenerationRunner() {
                 );
               }
             }
-            // failed / cancelled: the pre-filled template is already in place; drop the request.
+            // failed: kept for the lesson to show (never a silent drop); cancelled was the teacher's own choice.
+            if (job.status === 'failed') await failed(job.failure?.reason ?? 'providers_unavailable');
             await dequeue(cache, item.id);
           } catch (err) {
-            // Permanent refusals leave the queue; anything retryable waits for the next tick.
-            if (err instanceof TalaApiError && !err.retryable && err.code !== 'unauthenticated')
+            // Permanent refusals leave the queue and are shown in the lesson; anything retryable waits for the next tick.
+            if (err instanceof TalaApiError && !err.retryable && err.code !== 'unauthenticated') {
+              await recordFailure(cache, {
+                id: item.id,
+                planId: item.planId,
+                sectionKey: item.input.kind === 'section' ? (item.input.sectionKey ?? null) : null,
+                reason: failureReason(err),
+                at: new Date().toISOString(),
+              });
               await dequeue(cache, item.id);
+            }
           }
         }
       } finally {
