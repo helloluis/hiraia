@@ -17,6 +17,7 @@ import {
 } from './blocks';
 import { FlowTimeline } from './FlowTimeline';
 import { weekdayReference } from '@/features/setup/days';
+import { useReorderMotion } from '@/components/motion/useReorderMotion';
 import { RichTextEditor, RichTextView } from './RichTextEditor';
 
 export interface GroupInfo {
@@ -122,6 +123,8 @@ function ProcedureEditor({
   const steps = content.steps;
   const set = (next: typeof steps) => onChange({ type: 'procedure', steps: next });
   const total = steps.reduce((n, s) => n + (s.minutes || 0), 0);
+  // Movement only: the order is still changed by `move` and saved as before.
+  const motion = useReorderMotion(steps.map((s) => s.id));
   return (
     <div className="flex flex-col gap-3">
       {durationMinutes ? (
@@ -133,75 +136,114 @@ function ProcedureEditor({
             tintIndex: null,
           }))}
           duration={durationMinutes}
+          movedId={motion.movedId}
         />
       ) : null}
-      {steps.map((s, k) => (
-        <div
-          key={s.id}
-          className="rounded border border-hairline bg-cream/50 p-4 flex flex-col gap-3"
-        >
-          <div className="flex items-center justify-between gap-2">
-            <strong>{t('editor.step', { n: k + 1 })}</strong>
-            {!readOnly && (
-              <span className="flex flex-wrap items-center justify-end gap-2">
-                <ArrowButton
-                  direction="up"
-                  label={t('editor.moveStepUp', { n: k + 1 })}
-                  disabled={k === 0}
-                  onClick={() => set(move(steps, k, k - 1))}
+      <p className="sr-only" role="status" aria-live="polite">
+        {motion.announcement}
+      </p>
+      <div
+        ref={motion.listRef}
+        className="flex flex-col gap-3 empty:hidden [overflow-anchor:none] [--tala-lift-tint:rgb(var(--c-cream-rgb)/0.5)]"
+      >
+        {steps.map((s, k) => (
+          <div
+            key={s.id}
+            {...motion.item(s.id)}
+            className="rounded border border-hairline bg-cream/50 p-4 flex flex-col gap-3"
+          >
+            <div className="flex items-center justify-between gap-2">
+              <strong>{t('editor.step', { n: k + 1 })}</strong>
+              {!readOnly && (
+                <span className="flex flex-wrap items-center justify-end gap-2">
+                  <span {...motion.control('up')} className="contents">
+                    <ArrowButton
+                      direction="up"
+                      label={t('editor.moveStepUp', { n: k + 1 })}
+                      disabled={k === 0}
+                      onClick={() => {
+                        motion.before({
+                          id: s.id,
+                          direction: 'up',
+                          announce: t('editor.step', { n: k }),
+                        });
+                        set(move(steps, k, k - 1));
+                      }}
+                    />
+                  </span>
+                  <span {...motion.control('down')} className="contents">
+                    <ArrowButton
+                      direction="down"
+                      label={t('editor.moveStepDown', { n: k + 1 })}
+                      disabled={k === steps.length - 1}
+                      onClick={() => {
+                        motion.before({
+                          id: s.id,
+                          direction: 'down',
+                          announce: t('editor.step', { n: k + 2 }),
+                        });
+                        set(move(steps, k, k + 1));
+                      }}
+                    />
+                  </span>
+                  <Button
+                    variant="quiet"
+                    onClick={() => {
+                      motion.before();
+                      set(steps.filter((x) => x.id !== s.id));
+                    }}
+                  >
+                    {t('common.remove')}
+                  </Button>
+                </span>
+              )}
+            </div>
+            {readOnly ? (
+              <p className="font-medium">
+                {s.title} · {t('common.minutes', { n: s.minutes })}
+              </p>
+            ) : (
+              <div className="grid grid-cols-[1fr_6rem] gap-2">
+                <TextInput
+                  label={t('editor.stepTitle')}
+                  value={s.title}
+                  maxLength={200}
+                  onChange={(e) =>
+                    set(steps.map((x) => (x.id === s.id ? { ...x, title: e.target.value } : x)))
+                  }
                 />
-                <ArrowButton
-                  direction="down"
-                  label={t('editor.moveStepDown', { n: k + 1 })}
-                  disabled={k === steps.length - 1}
-                  onClick={() => set(move(steps, k, k + 1))}
+                <MinutesInput
+                  label={t('editor.minutes')}
+                  value={s.minutes}
+                  min={0}
+                  max={480}
+                  onChange={(minutes) =>
+                    set(steps.map((x) => (x.id === s.id ? { ...x, minutes } : x)))
+                  }
                 />
-                <Button variant="quiet" onClick={() => set(steps.filter((x) => x.id !== s.id))}>
-                  {t('common.remove')}
-                </Button>
-              </span>
+              </div>
+            )}
+            {readOnly ? (
+              <RichTextView value={s.body} />
+            ) : (
+              <RichTextEditor
+                value={s.body}
+                onChange={(body) => set(steps.map((x) => (x.id === s.id ? { ...x, body } : x)))}
+                label={`${label} ${k + 1}`}
+                minRows={2}
+              />
             )}
           </div>
-          {readOnly ? (
-            <p className="font-medium">
-              {s.title} · {t('common.minutes', { n: s.minutes })}
-            </p>
-          ) : (
-            <div className="grid grid-cols-[1fr_6rem] gap-2">
-              <TextInput
-                label={t('editor.stepTitle')}
-                value={s.title}
-                maxLength={200}
-                onChange={(e) =>
-                  set(steps.map((x) => (x.id === s.id ? { ...x, title: e.target.value } : x)))
-                }
-              />
-              <MinutesInput
-                label={t('editor.minutes')}
-                value={s.minutes}
-                min={0}
-                max={480}
-                onChange={(minutes) =>
-                  set(steps.map((x) => (x.id === s.id ? { ...x, minutes } : x)))
-                }
-              />
-            </div>
-          )}
-          {readOnly ? (
-            <RichTextView value={s.body} />
-          ) : (
-            <RichTextEditor
-              value={s.body}
-              onChange={(body) => set(steps.map((x) => (x.id === s.id ? { ...x, body } : x)))}
-              label={`${label} ${k + 1}`}
-              minRows={2}
-            />
-          )}
-        </div>
-      ))}
+        ))}
+      </div>
       <div className="flex items-center justify-between gap-2">
         {!readOnly && steps.length < 40 && (
-          <Button onClick={() => set([...steps, { id: newId(), title: '', minutes: 5, body: [] }])}>
+          <Button
+            onClick={() => {
+              motion.before();
+              set([...steps, { id: newId(), title: '', minutes: 5, body: [] }]);
+            }}
+          >
             + {t('editor.addStep')}
           </Button>
         )}
@@ -332,13 +374,19 @@ function MultigradeEditor({
     set(blocks.map((b) => (b.id === id ? { ...b, ...patch } : b)));
   const total = blocks.reduce((n, b) => n + b.minutes, 0);
   const [removing, setRemoving] = useState<{ block: MultigradeBlock; index: number } | null>(null);
-  const listRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement | null>(null);
+  // Movement only: the order is still changed by `move` and saved as before.
+  const motion = useReorderMotion(blocks.map((b) => b.id));
   const requestRemove = (b: MultigradeBlock, k: number) => {
     if (removalNeedsConfirm(b, info)) setRemoving({ block: b, index: k });
-    else set(blocks.filter((x) => x.id !== b.id));
+    else {
+      motion.before();
+      set(blocks.filter((x) => x.id !== b.id));
+    }
   };
   const confirmRemove = () => {
     if (!removing) return;
+    motion.before();
     set(blocks.filter((x) => x.id !== removing.block.id));
     setRemoving(null);
     // Focus returns to the block list (not to a removed element).
@@ -356,7 +404,12 @@ function MultigradeEditor({
   }));
   return (
     <div className="flex flex-col gap-3">
-      {durationMinutes ? <FlowTimeline blocks={flowBlocks} duration={durationMinutes} /> : null}
+      {durationMinutes ? (
+        <FlowTimeline blocks={flowBlocks} duration={durationMinutes} movedId={motion.movedId} />
+      ) : null}
+      <p className="sr-only" role="status" aria-live="polite">
+        {motion.announcement}
+      </p>
       {/* Pre-class note about the session as a whole (optional). */}
       {readOnly ? (
         content.note ? (
@@ -378,31 +431,53 @@ function MultigradeEditor({
         />
       )}
       <div
-        ref={listRef}
+        ref={(el) => {
+          listRef.current = el;
+          motion.listRef(el);
+        }}
         tabIndex={-1}
-        className="flex flex-col gap-3 outline-none focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-talaTeal rounded"
+        className="flex flex-col gap-3 outline-none focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-talaTeal rounded [overflow-anchor:none]"
       >
         {blocks.map((b, k) => (
           <div
             key={b.id}
+            {...motion.item(b.id)}
             className="rounded border border-hairline bg-white p-4 flex flex-col gap-4"
           >
             <div className="flex flex-wrap items-center justify-between gap-3">
               <strong className="text-[1.0625rem]">{t('editor.block', { n: k + 1 })}</strong>
               {!readOnly && (
                 <span className="flex flex-wrap items-center justify-end gap-2">
-                  <ArrowButton
-                    direction="up"
-                    label={t('editor.moveBlockUp', { n: k + 1 })}
-                    disabled={k === 0}
-                    onClick={() => set(move(blocks, k, k - 1))}
-                  />
-                  <ArrowButton
-                    direction="down"
-                    label={t('editor.moveBlockDown', { n: k + 1 })}
-                    disabled={k === blocks.length - 1}
-                    onClick={() => set(move(blocks, k, k + 1))}
-                  />
+                  <span {...motion.control('up')} className="contents">
+                    <ArrowButton
+                      direction="up"
+                      label={t('editor.moveBlockUp', { n: k + 1 })}
+                      disabled={k === 0}
+                      onClick={() => {
+                        motion.before({
+                          id: b.id,
+                          direction: 'up',
+                          announce: t('editor.block', { n: k }),
+                        });
+                        set(move(blocks, k, k - 1));
+                      }}
+                    />
+                  </span>
+                  <span {...motion.control('down')} className="contents">
+                    <ArrowButton
+                      direction="down"
+                      label={t('editor.moveBlockDown', { n: k + 1 })}
+                      disabled={k === blocks.length - 1}
+                      onClick={() => {
+                        motion.before({
+                          id: b.id,
+                          direction: 'down',
+                          announce: t('editor.block', { n: k + 2 }),
+                        });
+                        set(move(blocks, k, k + 1));
+                      }}
+                    />
+                  </span>
                   <Button
                     variant="quiet"
                     onClick={() => requestRemove(b, k)}
@@ -528,7 +603,8 @@ function MultigradeEditor({
       <div className="flex items-center justify-between gap-2">
         {!readOnly && blocks.length < 24 && (
           <Button
-            onClick={() =>
+            onClick={() => {
+              motion.before();
               set([
                 ...blocks,
                 {
@@ -543,8 +619,8 @@ function MultigradeEditor({
                     ids.map((gid) => [gid, { mode: 'shared' as const, activity: [] as RichText }])
                   ),
                 },
-              ])
-            }
+              ]);
+            }}
           >
             + {t('editor.addBlock')}
           </Button>

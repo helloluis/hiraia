@@ -109,3 +109,67 @@
   .strip::-webkit-scrollbar { display: none; }
   .strip > * { scroll-snap-align: start; }
 }
+
+/*
+ * ---------- Motion (27 Nov 2026). Additive: nothing above is changed. ----------
+ * Every movement here explains a change the teacher just made or is waiting for (PRD SIMPLE-12: no decoration),
+ * uses transform and opacity wherever something travels, and never delays an action: the new state is already there
+ * when a movement starts. The reduced-motion rule in the base layer switches all of it off, and each piece keeps a
+ * still alternative (noted beside it). Movements run from script (the reorder) ask the same setting themselves.
+ */
+:root {
+  /* One curve and three speeds for the whole app. The curve is `EASE` in src/components/motion/reorder.ts. */
+  --tala-ease: cubic-bezier(0.2, 0, 0, 1);
+  --tala-fast: 120ms;
+  --tala-base: 200ms;
+  --tala-move: 280ms;
+}
+
+@keyframes tala-rise-in {
+  from { opacity: 0; translate: 0 8px; }
+}
+@keyframes tala-ring-out {
+  to { outline-color: transparent; }
+}
+@keyframes tala-inner-ring-out {
+  to { box-shadow: inset 0 0 0 2px transparent; }
+}
+
+@layer components {
+  /* --- Reordering blocks and steps (src/components/motion/useReorderMotion.ts) --- */
+  /* The item being moved rides above the one it passes; opaque, so the other never shows through it. */
+  [data-reorder-lifted] {
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 2px 4px rgb(var(--c-forest-rgb) / 0.08), 0 14px 34px rgb(var(--c-forest-rgb) / 0.16);
+    background-image: linear-gradient(var(--tala-lift-tint, transparent), var(--tala-lift-tint, transparent)),
+      linear-gradient(var(--c-white), var(--c-white));
+  }
+  /* Where it landed: a ring that fades. Reduced motion: the ring stays still until the mark is removed. */
+  [data-reorder-settled] {
+    outline: 2px solid rgb(var(--c-talaTeal-rgb) / 0.55);
+    outline-offset: 2px;
+    animation: tala-ring-out 800ms var(--tala-ease) 500ms both;
+  }
+  /* A block that was just added. Reduced motion: it is simply there. */
+  [data-reorder-enter] {
+    animation: tala-rise-in var(--tala-base) var(--tala-ease) both;
+  }
+
+  /* --- Session Flow bar: segments glide to their new place and size --- */
+  .tala-flow-seg {
+    transition: left var(--tala-move) var(--tala-ease), width var(--tala-move) var(--tala-ease);
+  }
+  .tala-flow-part {
+    transition: width var(--tala-move) var(--tala-ease);
+  }
+  /* The segment of the block that was just moved: ringed, and opaque (the track's own colour underneath) so the
+     segment it passes does not show through. Reduced motion: the ring stays still until the mark is removed. */
+  .tala-flow-seg[data-flow-moved] {
+    z-index: 1;
+    background-image: linear-gradient(rgb(var(--c-cream-rgb) / 0.6), rgb(var(--c-cream-rgb) / 0.6)),
+      linear-gradient(var(--c-white), var(--c-white));
+    box-shadow: inset 0 0 0 2px rgb(var(--c-talaTeal-rgb) / 0.8);
+    animation: tala-inner-ring-out 800ms var(--tala-ease) 500ms both;
+  }
+}

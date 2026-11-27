@@ -3,6 +3,10 @@
  * Session Flow timeline bar: a calm pastel bar of the time blocks (one segment per block, width ∝ minutes), the
  * end-of-class mark, an unclipped brick overflow treatment, and a live "N out of M minutes" indicator (the
  * accessible source of truth, in a debounced polite live region). Sticky inside its own section only.
+ *
+ * Segments glide to their new place and size when blocks are moved or their minutes change (`tala-flow-seg`,
+ * globals.css); the block that was just moved is ringed for a moment (`movedId`). The bar itself is hidden from
+ * screen readers, so none of this is announced.
  */
 import { useEffect, useRef, useState } from 'react';
 import { useT } from '@/i18n';
@@ -12,7 +16,16 @@ import { GROUP_TINTS } from './blocks';
 
 const NEUTRAL = 'bg-sage/30';
 
-export function FlowTimeline({ blocks, duration }: { blocks: FlowBlockInput[]; duration: number }) {
+export function FlowTimeline({
+  blocks,
+  duration,
+  movedId,
+}: {
+  blocks: FlowBlockInput[];
+  duration: number;
+  /** The block the teacher just moved, for about a second. */
+  movedId?: string | null;
+}) {
   const { t } = useT();
   const model = buildFlowTimeline(blocks, duration);
   const ref = useRef<HTMLDivElement>(null);
@@ -88,18 +101,22 @@ export function FlowTimeline({ blocks, duration }: { blocks: FlowBlockInput[]; d
           return (
             <div
               key={s.id}
-              className="absolute inset-y-0"
+              data-flow-moved={s.id === movedId ? '' : undefined}
+              className="tala-flow-seg absolute inset-y-0"
               style={{ left: `${s.left * 100}%`, width: `${s.width * 100}%` }}
             >
               {insideWidth > 0 && (
                 <div
-                  className={cx('absolute inset-y-0 left-0 border-r border-white', tint)}
+                  className={cx(
+                    'tala-flow-part absolute inset-y-0 left-0 border-r border-white',
+                    tint
+                  )}
                   style={{ width: `${(insideWidth / s.width) * 100}%` }}
                 />
               )}
               {s.overflowWidth > 0 && (
                 <div
-                  className="absolute inset-y-0 right-0 border border-brick"
+                  className="tala-flow-part absolute inset-y-0 right-0 border border-brick"
                   style={{
                     width: `${(s.overflowWidth / s.width) * 100}%`,
                     backgroundImage:
