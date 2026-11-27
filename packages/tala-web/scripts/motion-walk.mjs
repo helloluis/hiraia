@@ -516,6 +516,8 @@ const openGenerate = async (s, planKey) => {
   await s.page.waitForTimeout(1500);
   return s.page.getByRole('button', { name: L(s.lang)['gen.start'], exact: true });
 };
+/** How many different lines the log holds: what a screen reader hears (an entry whose words did not change is not read again). */
+const linesSaid = (log) => new Set(log.filter((x) => x.caption).map((x) => x.caption)).size;
 const waitAi = (s, status, timeout = 15000) => s.page.waitForFunction((st) => document.querySelector('.tala-ai')?.dataset.aiStatus === st, status, { timeout });
 const SIM = 'STAND-IN MODEL';
 
@@ -1121,7 +1123,7 @@ try {
         const legal = ['sending/sending', 'queued/sending', 'queued/queued', 'running/running', 'gone'];
         check(`${SIM}: the states came in the request’s own order and the waiting state was taken away when the draft arrived`, order.every((x) => legal.includes(x)) && order.join(' ').replace(' queued/sending', '').replace(' queued/queued', '').endsWith('sending/sending running/running gone'), order.map((x, i) => `${log[i].t} ms ${x}`).join(' → '));
         check(`${SIM}: with nothing ahead of it the page never says “waiting in line”, though the server reported the job as queued for a moment`, order.includes('queued/sending') && !log.some((x) => x.caption === en['ai.status.queued']), log.filter((x) => x.caption).map((x) => `${x.t} ms “${x.caption}”`).join(' → '));
-        check(`${SIM}: the words changed only when the state did (${log.filter((x) => x.caption).length} lines in all: nothing to flood a screen reader)`, log.filter((x) => x.caption).length <= 3);
+        check(`${SIM}: the words changed only when the state did (${linesSaid(log)} lines in all: nothing to flood a screen reader)`, linesSaid(log) <= 3, log.filter((x) => x.caption).map((x) => `${x.t} ms ${x.state}`).join(' → '));
         check(`${SIM}: nothing moved when the words changed (the box kept its height and the button below kept its place)`, new Set(log.filter((x) => x.height).map((x) => x.height)).size === 1 && new Set(log.filter((x) => x.nextTop).map((x) => x.nextTop)).size === 1, JSON.stringify(log.filter((x) => x.height).map((x) => [x.height, x.nextTop])));
         const toast = await d.page.getByText(en['gen.done']).count();
         const titles = await procedureTitles(d);
@@ -1173,7 +1175,7 @@ try {
           Object.entries(seen).map(([k, v]) => `${v.at} s ${k}: “${v.caption}” (${v.elapsed})`).join(' → '));
         const arrived = await d.page.waitForURL(drafted, { timeout: 40000 }).then(() => true).catch(() => false);
         const log = await aiLog(d);
-        check(`${SIM}, REAL time: after 80 seconds the draft arrives; through all four lines the box and the buttons never moved; four lines in all for a screen reader`, arrived && new Set(log.filter((x) => x.height).map((x) => x.height)).size === 1 && new Set(log.filter((x) => x.nextTop).map((x) => x.nextTop)).size === 1 && log.filter((x) => x.caption).length <= 6, log.map((x) => `${(x.t / 1000).toFixed(1)} s ${x.state}`).join(' → '));
+        check(`${SIM}, REAL time: after 80 seconds the draft arrives; through every line the box and the buttons never moved; ${linesSaid(log)} lines in all for a screen reader`, arrived && new Set(log.filter((x) => x.height).map((x) => x.height)).size === 1 && new Set(log.filter((x) => x.nextTop).map((x) => x.nextTop)).size === 1 && log.filter((x) => x.caption).length <= 6, log.map((x) => `${(x.t / 1000).toFixed(1)} s ${x.state}`).join(' → '));
       }
 
       /* ---- C. the model fails: the real failure is shown and the waiting state stops ---- */
@@ -1440,7 +1442,7 @@ try {
       const log = await aiLog(s);
       const says = await s.page.locator('main [role="status"], main [role="alert"]').allInnerTexts().then((x) => x.filter(Boolean)).catch(() => []);
       const legal = ['sending/sending', 'queued/sending', 'queued/queued', 'running/running', 'running/still', 'running/longer', 'running/slow', 'queued/slow', 'gone'];
-      check(`REAL PROVIDER, ${what}: the waiting state followed the real request (${log.filter((x) => x.caption).length} lines) and was taken away when it ended, after ${secs} s`, log.length >= 2 && log.every((x) => legal.includes(x.state)) && log[log.length - 1].state === 'gone' && new Set(log.filter((x) => x.height).map((x) => x.height)).size === 1, log.map((x) => `${(x.t / 1000).toFixed(1)} s ${x.state}${x.caption ? ` “${x.caption}”` : ''}`).join(' → '));
+      check(`REAL PROVIDER, ${what}: the waiting state followed the real request (${linesSaid(log)} lines) and was taken away when it ended, after ${secs} s`, log.length >= 2 && log.every((x) => legal.includes(x.state)) && log[log.length - 1].state === 'gone' && new Set(log.filter((x) => x.height).map((x) => x.height)).size === 1, log.map((x) => `${(x.t / 1000).toFixed(1)} s ${x.state}${x.caption ? ` “${x.caption}”` : ''}`).join(' → '));
       await s.page.waitForTimeout(2000);
       let filled = '';
       if (arrived) {
