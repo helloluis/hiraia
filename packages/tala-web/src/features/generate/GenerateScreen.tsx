@@ -6,7 +6,12 @@
  */
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { TalaApiError, type GenerationJob, type Lang } from '@hiraia/tala-core/contracts';
+import {
+  TalaApiError,
+  type GenerationInput,
+  type GenerationJob,
+  type Lang,
+} from '@hiraia/tala-core/contracts';
 import { useT } from '@/i18n';
 import { useSession } from '@/data/session';
 import { getClient } from '@/data/client';
@@ -20,6 +25,7 @@ import {
   pollJob,
   prefillPlan,
   switchTemplate,
+  TERMINAL,
 } from '@/data/generation';
 import { errorKey } from '@/data/errors';
 import { topicLabel } from '@/data/topics';
@@ -65,6 +71,14 @@ export function GenerateScreen() {
   const [startedAt, setStartedAt] = useState(0);
   /** One request at a time: a second press while one is open does nothing. */
   const inFlight = useRef(false);
+  /**
+   * The request as sent for the attempt in progress. Every re-send of ONE attempt carries the same key, so the server
+   * answers with the same job and charges once (RES-5); the next attempt is a new request with a new key. Before, the
+   * key was fixed for the whole visit, so asking again after a cancel was handed the cancelled job back.
+   */
+  const attempt = useRef<GenerationInput | null>(null);
+  /** This screen is done with the attempt (it ended, was cancelled, or was sent to the background). */
+  const settled = useRef(true);
   const online = network.online && network.rung !== 'offline' && network.rung !== 'readonly';
 
   useEffect(() => {
@@ -114,15 +128,21 @@ export function GenerateScreen() {
         ed.template,
         ed.competencies
       );
-      if (queue)
+      if (queue) {
+        // The same request (same key) only while its outcome is still open or unknown; an attempt that has ended
+        // (the service did not answer) is asked afresh, or the queue would only be handed the old failure again.
+        const j = jobRef.current;
+        const open = attempt.current && (!j || !TERMINAL.includes(j.status));
+        settled.current = true;
         await enqueue(cache, {
           id: newId(),
           planId: ed.plan.id,
-          input,
-          jobId: jobRef.current && jobRef.current.status === 'queued' ? jobRef.current.id : null,
+          input: open ? attempt.current! : { ...input, idempotencyKey: newId() },
+          jobId: open && j && j.status === 'queued' ? j.id : null,
           confirmedSectionIds: [],
           createdAt: new Date().toISOString(),
         });
+      }
       router.replace(`/lessons/${ed.plan.id}`);
     } finally {
       setBusy(false);
@@ -135,7 +155,10 @@ export function GenerateScreen() {
     if (!hasObjectives(input)) return setError(t('gen.needsCompetency'));
     if (!online) return void openPrefilled(true);
     inFlight.current = true;
+    settled.current = false;
     jobRef.current = null;
+    const body: GenerationInput = { ...input, idempotencyKey: newId() };
+    attempt.current = body;
     setAiPhase('sending');
     setStartedAt(Date.now());
     setPhase('working');
@@ -147,9 +170,10 @@ export function GenerateScreen() {
       if (j.status === 'queued' || j.status === 'running') setAiPhase(j.status);
     };
     try {
-      const job = await getClient().call('generation.create', { body: input, signal: c.signal });
+      const job = await getClient().call('generation.create', { body, signal: c.signal });
       follow(job);
       const finished = await pollJob(getClient(), job.id, c.signal, follow);
+      settled.current = true;
       if (finished.status === 'done') {
         const fresh = (await engine.get('plan', ed.plan.id))?.data ?? ed.plan;
         const sections = (await engine.list('plan_section'))
@@ -181,15 +205,27 @@ export function GenerateScreen() {
       setPhase('failed');
     } finally {
       inFlight.current = false;
+      settled.current = true;
     }
   };
 
   const cancel = async () => {
+    settled.current = true;
+    const body = attempt.current;
     ctrl.current?.abort();
-    const j = jobRef.current;
-    if (j)
+    // Cancelled before the server's answer reached this screen: the job may exist all the same. The attempt's own key
+    // finds it (the same key returns the same job), so nothing keeps writing for a request the teacher withdrew.
+    let id = jobRef.current?.id ?? null;
+    if (!id && body)
+      id =
+        (
+          await getClient()
+            .call('generation.create', { body })
+            .catch(() => null)
+        )?.id ?? null;
+    if (id)
       await getClient()
-        .call('generation.cancel', { params: { jobId: j.id } })
+        .call('generation.cancel', { params: { jobId: id } })
         .catch(() => {});
     setPhase('form');
     setError(t('gen.cancelled'));
@@ -198,17 +234,46 @@ export function GenerateScreen() {
   const background = async () => {
     const j = jobRef.current;
     if (!engine || !ed.plan || !input) return;
+    settled.current = true;
     ctrl.current?.abort();
     await enqueue(cache, {
       id: newId(),
       planId: ed.plan.id,
-      input,
+      input: attempt.current ?? input,
       jobId: j?.id ?? null,
       confirmedSectionIds: [],
       createdAt: new Date().toISOString(),
     });
     router.replace(`/lessons/${ed.plan.id}?queued=1`);
   };
+
+  // Leaving this page while Tala is still writing does not withdraw the request (Cancel does that). It is handed to
+  // the device's queue, exactly as "Run in background" does, so the background runner writes the draft into the
+  // lesson once. Before, the closed page went on waiting by itself and then pulled the teacher back to the lesson
+  // from wherever she was; and if the tab was closed instead, the finished draft was never written.
+  const handOver = useRef<() => void>(() => {});
+  handOver.current = () => {
+    const body = attempt.current;
+    if (settled.current || !body || !ed.plan) return;
+    settled.current = true;
+    ctrl.current?.abort();
+    void enqueue(cache, {
+      id: newId(),
+      planId: ed.plan.id,
+      input: body,
+      jobId: jobRef.current?.id ?? null,
+      confirmedSectionIds: [],
+      createdAt: new Date().toISOString(),
+    });
+  };
+  useEffect(() => {
+    const onHide = () => handOver.current();
+    window.addEventListener('pagehide', onHide);
+    return () => {
+      window.removeEventListener('pagehide', onHide);
+      handOver.current();
+    };
+  }, []);
 
   if (ed.loading && !ed.plan) return <Placeholder rows={5} />;
   if (!ed.plan || !ed.template) {
