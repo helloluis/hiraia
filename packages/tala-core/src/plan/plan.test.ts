@@ -45,6 +45,37 @@ test('blank sections follow each template and validate against schemas', () => {
     );
   }
 });
+test('a blank DLL grid is Monday to Friday unless given the days the class meets (Saturday and Sunday classes)', () => {
+  const dll = BUILTIN_TEMPLATES.find((t) => t.span === 'week')!;
+  const grid = (sections: PlanSection[]) => sections.find((s) => s.key === 'weekgrid')!.content;
+  const classic = grid(blankSections(dll, plan.id, [{ id: 'group001' }], () => 'section-a'));
+  assert.deepEqual(classic.type === 'weekgrid' && classic.days.map((d) => [d.weekday, d.date]), [
+    [1, null],
+    [2, null],
+    [3, null],
+    [4, null],
+    [5, null],
+  ]);
+  const meets = [
+    { weekday: 1, date: '2026-11-23' },
+    { weekday: 3, date: '2026-11-25' },
+    { weekday: 6, date: '2026-11-28' },
+    { weekday: 7, date: '2026-11-29' },
+  ];
+  const weekend = grid(blankSections(dll, plan.id, [{ id: 'group001' }], () => 'section-b', meets));
+  assert.equal(weekend.type, 'weekgrid');
+  if (weekend.type !== 'weekgrid') return;
+  assert.deepEqual(
+    weekend.days.map((d) => [d.weekday, d.date]),
+    meets.map((d) => [d.weekday, d.date])
+  );
+  assert.ok(weekend.days.every((d) => d.body.length === 0));
+  // The other sections are unaffected by the week's days.
+  assert.deepEqual(
+    blankSections(dll, plan.id, [], () => 'x', meets).map((s) => s.key),
+    dll.sections.map((s) => s.key)
+  );
+});
 test('DOC-1 checks content, template, state and curriculum tags', () => {
   const template = {
     ...BUILTIN_TEMPLATES[0]!,
