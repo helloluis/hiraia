@@ -3,8 +3,8 @@
  *
  * The next teaching day is the first date, from today on, with at least one session on the timeline that is not
  * over yet. Today counts while a session is still running or still to come; a session with no start time counts
- * for the whole day. Weekends, holidays, suspensions and term breaks have no sessions on the timeline, so the
- * search simply rolls forward past them (three weeks ahead by default).
+ * for the whole day. Days without a session on the timeline (a weekend without classes, holidays, suspensions, term
+ * breaks) are simply rolled past (three weeks ahead by default); a Saturday or Sunday class is a teaching day.
  */
 import { addDays, isoDate, mondayOf } from '../../data/ids';
 

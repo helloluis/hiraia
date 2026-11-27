@@ -82,6 +82,25 @@ test('a pack for another week still matches the topic but promises no day', () =
   if (lib.kind === 'pack') assert.equal(lib.day, null);
 });
 
+test('a Saturday class is flagged outside the school week and gets the pack day of its place in the week', () => {
+  // Mon/Wed/Sat Science in calendar week 10 (16–22 Nov): Saturday is the third Science class of the week.
+  const week = [['16', 's1'], ['18', 's3'], ['21', 's6']].map(([d, slot]) => entry(`2026-11-${d}`, 'sci', slot!, [C10]));
+  const list = buildSessions(tl(week), index, 'en', thuEvening);
+  assert.deepEqual(list.map((s) => s.weekend), [false, false, true]);
+  const sat = list[2]!;
+  assert.equal(sat.topics[0]!.title, 'Magnets');
+  assert.match(sat.href, /^\/lessons\/new\?classId=c4&assignmentId=sci&date=2026-11-21&slotId=s6$/);
+  const lib = sat.topics[0]!.library!;
+  assert.equal(lib.kind, 'pack');
+  if (lib.kind === 'pack') assert.equal(lib.day, 3);
+});
+
+test('a sixth class in one week gets the pack without a second "Day 5"', () => {
+  const week = ['16', '17', '18', '19', '20', '21'].map((d, i) => entry(`2026-11-${d}`, 'sci', `s${i + 1}`, [C10]));
+  const days = buildSessions(tl(week), index, 'en', thuEvening).map((s) => (s.topics[0]!.library as { day: number | null }).day);
+  assert.deepEqual(days, [1, 2, 3, 4, 5, null]);
+});
+
 test('state, plan title and marking follow the timeline', () => {
   const list = buildSessions(
     tl([

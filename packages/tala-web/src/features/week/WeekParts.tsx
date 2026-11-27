@@ -191,7 +191,7 @@ function Topic({ tp, big, showGrade }: { tp: TopicView; big: boolean; showGrade:
 
 /** One lesson. `big` is the Up next card; the day rows use the calmer size. */
 export function LessonBlock({ view, big, onMark }: { view: SessionView; big: boolean; onMark: () => void }) {
-  const { t } = useT();
+  const { t, lang } = useT();
   const minutes = t('wk.minutes', { n: view.minutes });
   // Subject first only when the headline below is a topic; otherwise the subject IS the headline.
   const who = [view.hasTopic ? view.subject : null, view.className].filter(Boolean) as string[];
@@ -234,6 +234,13 @@ export function LessonBlock({ view, big, onMark }: { view: SessionView; big: boo
         <p className="mt-1 flex items-start gap-1.5 text-small text-forestMuted">
           <Icon name="lessons" size={16} className="mt-0.5" />
           <span className="min-w-0 break-words [overflow-wrap:anywhere]">{t('wk.myPlan', { title: view.planTitle })}</span>
+        </p>
+      )}
+      {/* A Saturday or Sunday class: DepEd's weeks run Monday to Friday, so its topic is Tala's suggestion. */}
+      {view.weekend && view.hasTopic && view.kind === 'lesson' && (
+        <p className="mt-2 flex items-start gap-1.5 text-small text-forestMuted" data-testid="weekend-note">
+          <Icon name="lightbulb" size={16} className="mt-0.5 shrink-0" />
+          <span className="min-w-0">{t('wk.weekend.note', { weekday: formatWeekday(view.date, lang) })}</span>
         </p>
       )}
 

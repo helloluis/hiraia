@@ -7,7 +7,8 @@
  *  - Every other day of the week is one quiet row that opens on tap.
  *  - Pacing ("Am I on pace?") and no-class days stay available, out of the way.
  *
- * The week shown by default is the week of the next teaching day, so on a weekend the teacher sees Monday.
+ * The week shown by default is the week of the next teaching day, so on a weekend without classes the teacher sees
+ * the coming Monday, and a teacher with a Saturday or Sunday class sees that day (weeks run Monday to Sunday).
  */
 import { useEffect, useMemo, useState } from 'react';
 import type { CalendarDay, TimelineEntry } from '@hiraia/tala-core/contracts';
@@ -29,6 +30,7 @@ import { RealignSheet } from './RealignSheet';
 import { DayRow, LibraryPanel, UpNext } from './WeekParts';
 import { buildSessions, packsFor, scienceGrades } from './sessions';
 import { LOOKAHEAD_DAYS, clockOf, nextTeachingDate, type Clock } from './upnext';
+import { scheduleWeekdays, weekSpan } from './weekdays';
 
 /** The device clock, refreshed twice a minute so "Up next" moves on when a lesson ends. */
 function useClock(): Clock {
@@ -124,14 +126,15 @@ export function WeekScreen() {
   // Another week: its first teaching day opens if it is still ahead; a week behind us stays closed.
   const openDate = isHome ? null : (otherDates.find((date) => date > today && weekSessions.some((s) => s.date === date)) ?? null);
 
-  // Header: the week's dates, and where they fall in the school year when the calendar knows.
-  const hasWeekend = [5, 6].some((i) => {
-    const date = addDays(weekStart, i);
-    return weekSessions.some((s) => s.date === date);
+  // Header: the week's dates, and where they fall in the school year when the calendar knows. Monday to Friday,
+  // through Saturday or Sunday for a teacher with weekend classes (or a make-up that week).
+  const span = weekSpan(weekStart, {
+    schoolWeekdays: ws.activeYear?.teachingWeekdays,
+    scheduleWeekdays: scheduleWeekdays(ws),
+    sessionDates: weekSessions.map((s) => s.date),
   });
-  const lastDay = addDays(weekStart, hasWeekend ? 6 : 4);
-  const where = termWeekFor(ws.activeYear, weekStart) ?? termWeekFor(ws.activeYear, lastDay);
-  const range = `${formatDate(weekStart, lang)} – ${formatDate(lastDay, lang)}`;
+  const where = termWeekFor(ws.activeYear, span.start) ?? termWeekFor(ws.activeYear, span.end);
+  const range = span.start === span.end ? formatDate(span.start, lang) : `${formatDate(span.start, lang)} – ${formatDate(span.end, lang)}`;
 
   // Library help: packs for the lessons still to teach this week (all of the week's lessons once it is behind us).
   const live = weekSessions.filter((s) => !s.beforeTala);
