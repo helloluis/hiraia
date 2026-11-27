@@ -4,7 +4,7 @@
  * `section_revision` (LLM-4), plan marked AI draft. Failures land on the pre-filled template; offline → queued.
  */
 import { applyGeneratedSections, blankSections } from '@hiraia/tala-core/plan';
-import { buildPrefilledDraft } from '@hiraia/tala-core/generation';
+import { buildPrefilledDraft, sectionHasContent } from '@hiraia/tala-core/generation';
 import {
   BUILTIN_TEMPLATES,
   TalaApiError,
@@ -148,6 +148,36 @@ export async function applyGenerationJob(
   ];
   await writeBatch(engine, ops);
   return applied.plan;
+}
+
+/**
+ * A full draft over a lesson that already has the teacher's own text (27 Nov 2026): it fills every part she has not
+ * written and keeps hers — the same rule as applyGeneratedSections (edited by her, or written by hand, and not
+ * confirmed) — instead of failing the whole draft. Returns the parts kept; `applied` is false when every generated
+ * part was hers (nothing is written and the plan is not marked an AI draft).
+ */
+export async function applyDraft(
+  engine: SyncEngine,
+  plan: Plan,
+  sections: PlanSection[],
+  job: GenerationJob,
+  newId: () => string
+): Promise<{ applied: boolean; kept: string[] }> {
+  if (job.status !== 'done' || !job.result) throw new Error('Job is not done.');
+  const own = new Set(
+    sections
+      .filter(
+        (s) =>
+          s.planId === plan.id &&
+          (s.editedByTeacher || (s.origin === 'manual' && sectionHasContent(s.content)))
+      )
+      .map((s) => s.key)
+  );
+  const kept = job.result.sections.map((s) => s.key).filter((k) => own.has(k));
+  const usable = job.result.sections.filter((s) => !own.has(s.key));
+  if (!usable.length) return { applied: false, kept };
+  await applyGenerationJob(engine, plan, sections, { ...job, result: { ...job.result, sections: usable } }, newId);
+  return { applied: true, kept };
 }
 
 /** Fallback (§9.4): the template pre-filled with competencies, class details and time blocks. Never overwrites teacher text. */
@@ -315,8 +345,11 @@ export interface QueuedFailure {
   id: string;
   planId: string;
   sectionKey: string | null;
+  /** A failure reason (gen.failed.*), or 'kept_teacher_text' for a draft that kept the teacher's own parts. */
   reason: string;
   at: string;
+  /** For 'kept_teacher_text': the parts that were kept. */
+  kept?: string[];
 }
 
 const FAILED_KEY = 'generation.failed';

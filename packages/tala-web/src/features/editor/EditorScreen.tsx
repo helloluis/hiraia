@@ -52,7 +52,17 @@ export function EditorScreen({ planId }: { planId: string }) {
   const [postOpen, setPostOpen] = useState(false);
   const search = useSearchParams();
   const [toast, setToast] = useState<string | null>(() =>
-    search.get('drafted') ? 'drafted' : search.get('queued') ? 'queued' : null
+    search.get('drafted')
+      ? 'drafted'
+      : search.get('background')
+        ? 'background'
+        : search.get('queued')
+          ? 'queued'
+          : null
+  );
+  // A full draft that kept the teacher's own parts says which (27 Nov 2026).
+  const [keptHere, setKeptHere] = useState<string[]>(() =>
+    (search.get('kept') ?? '').split(',').map((k) => k.trim()).filter(Boolean).slice(0, 20)
   );
   const { config, cache } = useSession();
   const canGenerate = config?.features.generation !== false;
@@ -111,6 +121,8 @@ export function EditorScreen({ planId }: { planId: string }) {
     );
   }
 
+  const sectionNames = (keys: string[]) =>
+    keys.map((k) => template.sections.find((x) => x.key === k)?.label[lang] ?? k).join(', ');
   const locked = plan.state === 'locked';
   const dates = planDates(plan);
   const subtitle = [
@@ -185,13 +197,24 @@ export function EditorScreen({ planId }: { planId: string }) {
         }
       />
 
-      <p className="text-small text-forestMuted" aria-live="polite">
-        {ed.pendingCount > 0
-          ? t('editor.saving')
-          : dirty
-            ? `${t('editor.saved')} · ${t('editor.waitingToSend')}`
-            : t('editor.saved')}
-      </p>
+      {ed.saveError ? (
+        <div role="alert" className="flex flex-wrap items-center gap-2 text-small text-forest">
+          <span className="font-medium">
+            ⚠ {t(ed.saveError === 'storage_full' ? 'editor.saveFailedStorage' : 'editor.saveFailed')}
+          </span>
+          <Button variant="quiet" onClick={() => void ed.flushAll()}>
+            {t('gen.tryAgain')}
+          </Button>
+        </div>
+      ) : (
+        <p className="text-small text-forestMuted" aria-live="polite">
+          {ed.pendingCount > 0
+            ? t('editor.saving')
+            : dirty
+              ? `${t('editor.saved')} · ${t('editor.waitingToSend')}`
+              : t('editor.saved')}
+        </p>
+      )}
       <PresentationPanel ed={ed} />
 
       {locked && plan.lock && (
@@ -209,10 +232,22 @@ export function EditorScreen({ planId }: { planId: string }) {
       )}
       {plan.conflictCopyOf && <Banner kind="warn">{t('editor.conflictCopy')}</Banner>}
       {plan.aiDraft && <Banner kind="warn">{t('editor.aiDraftBanner')}</Banner>}
+      {keptHere.length > 0 && (
+        <Banner
+          kind="info"
+          action={
+            <Button variant="quiet" onClick={() => setKeptHere([])}>
+              {t('common.close')}
+            </Button>
+          }
+        >
+          {t('gen.keptOwnText', { sections: sectionNames(keptHere) })}
+        </Banner>
+      )}
       {failures.map((f) => (
         <Banner
           key={f.id}
-          kind="warn"
+          kind={f.reason === 'kept_teacher_text' ? 'info' : 'warn'}
           action={
             <Button
               variant="quiet"
@@ -225,12 +260,14 @@ export function EditorScreen({ planId }: { planId: string }) {
             </Button>
           }
         >
-          {t('gen.queuedFailed', {
-            section: f.sectionKey
-              ? (template.sections.find((x) => x.key === f.sectionKey)?.label[lang] ?? f.sectionKey)
-              : t('gen.title'),
-            reason: failureText(f.reason, t),
-          })}
+          {f.reason === 'kept_teacher_text'
+            ? t('gen.keptOwnText', { sections: sectionNames(f.kept ?? []) })
+            : t('gen.queuedFailed', {
+                section: f.sectionKey
+                  ? (template.sections.find((x) => x.key === f.sectionKey)?.label[lang] ?? f.sectionKey)
+                  : t('gen.title'),
+                reason: failureText(f.reason, t),
+              })}
         </Banner>
       ))}
       {conflicts.length > 0 && (
@@ -515,7 +552,15 @@ export function EditorScreen({ planId }: { planId: string }) {
         onPosted={(m) => setToast(m)}
       />
       <Toast
-        message={toast === 'drafted' ? t('gen.done') : toast === 'queued' ? t('gen.queued') : toast}
+        message={
+          toast === 'drafted'
+            ? t('gen.done')
+            : toast === 'background'
+              ? t('gen.backgroundNote')
+              : toast === 'queued'
+                ? t('gen.queued')
+                : toast
+        }
         onDone={() => setToast(null)}
       />
 
@@ -590,7 +635,7 @@ function ConflictVersion({
   );
 }
 
-const FAILURE_REASONS = ['providers_unavailable', 'invalid_output', 'quota_exceeded', 'budget_exceeded', 'disabled', 'invalid_input', 'empty_output'];
+const FAILURE_REASONS = ['providers_unavailable', 'invalid_output', 'quota_exceeded', 'budget_exceeded', 'disabled', 'invalid_input', 'empty_output', 'apply_failed'];
 /** The words for why a queued rewrite was not made: the same as the rewrite sheet uses. */
 function failureText(reason: string, t: (k: StringKey) => string): string {
   if (reason === 'no_class_resources') return t('gen.materials.needResources');

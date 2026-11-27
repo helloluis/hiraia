@@ -210,8 +210,9 @@ export function assembleSession(input: SessionInput): AssembledSession {
     return {
       ...blankSlide(`x${bi}-${gi}`, bi + 1, 'activity'),
       title: g.lessonTitle === null ? w.noLessonTitle(label(g.groupId)) : w.missingTitle(label(g.groupId)),
-      lines: lines.length ? lines : [w.missingLead],
-      notes: [w.blockNote(block.label, block.minutes), g.lessonTitle === null ? w.noLessonNote(label(g.groupId)) : w.missingNote(label(g.groupId))].join('\n\n'),
+      // Projected: the block's own activity (learners see it); the instruction to the teacher stays in the notes.
+      lines,
+      notes: [w.blockNote(block.label, block.minutes), w.missingLead, g.lessonTitle === null ? w.noLessonNote(label(g.groupId)) : w.missingNote(label(g.groupId))].join('\n\n'),
       tag: label(g.groupId),
       section,
       role: 'missing',
@@ -312,8 +313,9 @@ export function assembleSession(input: SessionInput): AssembledSession {
         push({
           ...blankSlide(`m${bi}-${gi}`, day, 'activity'),
           title: w.meanwhileTitle(label(id)),
-          lines: lines.length ? lines : [w.missingLead],
-          notes: [w.blockNote(block.label, block.minutes), `${label(id)}: ${w.mode[modeOf(block, id)]}.`, ...(direct.length ? [w.withTeacher(direct.map(label).join(' + '))] : [])].join('\n'),
+          // Projected for learners: the plan's words for this block, or plainly how this grade works now.
+          lines: lines.length ? lines : [`${label(id)}: ${w.mode[modeOf(block, id)]}.`],
+          notes: [w.blockNote(block.label, block.minutes), `${label(id)}: ${w.mode[modeOf(block, id)]}.`, ...(direct.length ? [w.withTeacher(direct.map(label).join(' + '))] : []), ...(lines.length ? [] : [w.missingLead])].join('\n'),
           tag: label(id),
           section,
           role: 'meanwhile',

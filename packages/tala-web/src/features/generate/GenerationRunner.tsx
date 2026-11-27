@@ -10,6 +10,7 @@ import { useSession } from '@/data/session';
 import { getClient } from '@/data/client';
 import { newId } from '@/data/ids';
 import {
+  applyDraft,
   applyGenerationJob,
   dequeue,
   failureReason,
@@ -55,14 +56,21 @@ export function GenerationRunner() {
                 const sections = (await engine.list('plan_section'))
                   .filter((s) => s.data.planId === item.planId)
                   .map((s) => s.data);
-                await applyGenerationJob(
-                  engine,
-                  planRec.data,
-                  sections,
-                  job,
-                  newId,
-                  item.confirmedSectionIds
-                );
+                try {
+                  if (sectionKey) {
+                    await applyGenerationJob(engine, planRec.data, sections, job, newId, item.confirmedSectionIds);
+                  } else {
+                    // A full draft keeps the parts the teacher wrote herself and says which (27 Nov 2026).
+                    const { kept } = await applyDraft(engine, planRec.data, sections, job, newId);
+                    if (kept.length)
+                      await recordFailure(cache, { id: item.id, planId: item.planId, sectionKey: null, reason: 'kept_teacher_text', at: new Date().toISOString(), kept });
+                  }
+                } catch {
+                  // Never retried forever: the draft could not be put into the lesson; she is told, nothing changed.
+                  await failed('apply_failed');
+                }
+              } else if (planRec && !planRec.deletedAt) {
+                await failed('apply_failed');
               }
             }
             // failed: kept for the lesson to show (never a silent drop); cancelled was the teacher's own choice.

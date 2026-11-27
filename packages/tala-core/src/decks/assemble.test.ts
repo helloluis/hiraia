@@ -119,6 +119,11 @@ test('three grades, one without slides and one without a lesson: plain stand-in 
   }
   assert.equal(a.layout.footer, 'Grades 1, 2 and 3 · Multi-grade session');
   assert.equal(a.layout.approved, false);
+  // 27 Nov (the Filipino owner's audience check): the instruction to the teacher is in the notes, never projected.
+  for (const x of slides.filter((y) => y.role === 'missing' || y.role === 'meanwhile')) {
+    assert.ok(!x.lines.some((l) => l.includes('Teach this part from the lesson plan')), `${x.role}: ${x.lines.join(' | ')}`);
+  }
+  assert.ok(g2.notes.includes('Teach this part from the lesson plan'), g2.notes);
 });
 
 test('the slides follow the plan as it is now: a reordered turn and a rewritten task show at once', () => {

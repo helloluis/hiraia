@@ -93,7 +93,8 @@ export const slidesFil = {
   'sl.ed.more': 'Iba pa',
   'sl.ed.reset': 'Magsimula ulit mula sa orihinal',
   'sl.ed.resetTitle': 'Magsimula ulit mula sa orihinal?',
-  'sl.ed.resetBody': 'Kokopyahin ulit ang orihinal na slides ng Hiraia. Tuluyan nang mawawala ang lahat ng binago mo sa kopyang ito.',
+  'sl.ed.resetBody':
+    'Kokopyahin ulit ang orihinal na slides ng Hiraia. Itatabi ang kasalukuyan mong bersyon sa Mga naunang bersyon, kaya puwede mo itong ibalik.',
   'sl.ed.resetConfirm': 'Oo, magsimula ulit',
   'sl.ed.resetFailed': 'Hindi maibalik ang orihinal ngayon. Nakatabi pa rin ang kopya mo.',
   'sl.ed.delete': 'Burahin ang kopya ko',

@@ -549,6 +549,11 @@ export const en = {
     'Your class has no materials listed yet, so Tala cannot fill this in. Add them through Rewrite with AI or on the Class page.',
   'gen.regenShort': 'Rewrite',
   'gen.queuedFailed': 'A rewrite of “{section}” you asked for earlier was not made: {reason}',
+  'gen.keptOwnText': 'The AI draft is in. Your own text was kept in: {sections}.',
+  'gen.keptAll': 'Every part of this lesson is your own text, so the draft replaced nothing.',
+  'gen.failed.apply_failed': 'The draft arrived but could not be put into the lesson (it may be locked). Nothing was changed.',
+  'editor.saveFailed': 'Not saved on this device. Your change is still on screen; tap Try again.',
+  'editor.saveFailedStorage': 'Not saved: this device’s storage is full. Your change is still on screen; free some space, then tap Try again.',
   'gen.tryAgain': 'Try again',
   'gen.stillWorking': 'Still rewriting “{section}”. You can start another rewrite when it finishes.',
 
@@ -973,7 +978,7 @@ export const en = {
   ...uploadsEn,
   // Weekend class days (Nov 27)
   'setup.weekendHint':
-    'Tala counts Saturday and Sunday classes as class days and suggests what to teach on them. You can change it.',
+    'If you have classes on Saturday or Sunday, Tala counts them as class days and suggests what to teach. You can change the suggestion.',
   'wk.weekend.note':
     'Tala suggested this for {weekday}, because DepEd plans its weeks Monday to Friday. You can change it in your plan.',
   // Lesson presentations (Nov 27)
@@ -1073,7 +1078,8 @@ export const en = {
   'pp.ed.rewriteSlide': 'Rewrite this slide with AI',
   'pp.ed.aiApplied': 'Slide rewritten with AI. Your version is kept under Earlier versions.',
   'pp.session.title': 'Put together from each grade’s lesson',
-  'pp.session.body': 'In the order of your time blocks: start together, each grade’s turn with you (with what the others do meanwhile), finish together. When you change the plan or a grade’s slides, this changes too.',
+  'pp.session.body':
+    "Put together in the order of your time blocks: each grade's turn with you, with what the others do meanwhile, and the parts the whole class does together. Changes to this plan show here at once; changes to a grade's slides show when you come back to this page.",
   'pp.session.cover': 'Start',
   'pp.session.noLesson': 'No lesson found for this grade',
   'pp.session.noSlides': 'This lesson has no slides yet.',
@@ -1082,8 +1088,10 @@ export const en = {
   'pp.session.openLesson': 'Open the lesson',
   'pp.session.choose': 'Lesson for {grade}',
   'pp.session.auto': 'Found by Tala',
-  'pp.session.missing': '{n} grades have no slides yet: a plain slide stands in their place.',
-  'pp.session.missingOne': '1 grade has no slides yet: a plain slide stands in its place.',
+  'pp.session.missing':
+    '{n} grades have no slides yet. A plain slide stands in for them for now.',
+  'pp.session.missingOne':
+    '1 grade has no slides yet. A plain slide stands in for it for now.',
   'pp.ai.suggested': 'Suggested',
   'pp.ai.now': 'Now',
   'pp.ai.appliedNew': 'The slides are in. Change anything you like; they are yours.',

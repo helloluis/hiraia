@@ -5,6 +5,7 @@
  * Saves go to the device immediately (IndexedDB) — a connection loss never loses an edit (OFF-7).
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { saveErrorOf, type SaveError } from './save-error';
 import {
   blankContent,
   boundSectionHistory,
@@ -145,6 +146,12 @@ export function usePlanEditor(planId: string) {
   const pendingPlan = useRef<Plan | null>(null);
   const latestPlan = useRef<Plan | null>(plan);
   latestPlan.current = plan ?? latestPlan.current;
+  /**
+   * A write to this device that failed (27 Nov 2026: a full device showed "Saved" and the edit was gone after a
+   * reload). The change stays pending and on screen, the status line says it was not saved, and the next save (or Try
+   * again) writes it.
+   */
+  const [saveError, setSaveError] = useState<SaveError | null>(null);
 
   const flushSection = useCallback(
     async (id: string) => {
@@ -152,6 +159,22 @@ export function usePlanEditor(planId: string) {
       pendingSections.current.delete(id);
       sectionTimers.current.delete(id);
       if (!next || !engine) return;
+      try {
+        await writeSection(id, next);
+        setSaveError(null);
+      } catch (err) {
+        // Still pending (unless a newer edit replaced it), so the next save or Try again writes it.
+        if (!pendingSections.current.has(id)) pendingSections.current.set(id, next);
+        setSaveError(saveErrorOf(err));
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [engine, planId]
+  );
+
+  const writeSection = useCallback(
+    async (id: string, next: PlanSection) => {
+      if (!engine) return;
       const current = await engine.get('plan_section', id);
       const last = snapshotted.current.get(id) ?? 0;
       if (current && Date.now() - last > SNAPSHOT_WINDOW_MS) {
@@ -202,7 +225,14 @@ export function usePlanEditor(planId: string) {
     const next = pendingPlan.current;
     pendingPlan.current = null;
     planTimer.current = null;
-    if (next && engine) await engine.put('plan', next);
+    if (!next || !engine) return;
+    try {
+      await engine.put('plan', next);
+      setSaveError(null);
+    } catch (err) {
+      if (!pendingPlan.current) pendingPlan.current = next;
+      setSaveError(saveErrorOf(err));
+    }
   }, [engine]);
 
   const savePlan = useCallback(
@@ -242,12 +272,12 @@ export function usePlanEditor(planId: string) {
   );
 
   const flushAll = useCallback(async () => {
-    for (const id of [...sectionTimers.current.keys()]) {
+    for (const id of new Set([...sectionTimers.current.keys(), ...pendingSections.current.keys()])) {
       clearTimeout(sectionTimers.current.get(id));
       await flushSection(id);
     }
-    if (planTimer.current) {
-      clearTimeout(planTimer.current);
+    if (planTimer.current || pendingPlan.current) {
+      if (planTimer.current) clearTimeout(planTimer.current);
       await flushPlan();
     }
   }, [flushSection, flushPlan]);
@@ -342,6 +372,7 @@ export function usePlanEditor(planId: string) {
     ws,
     problems,
     pendingCount,
+    saveError,
     saveSection,
     ensureSection,
     savePlan,
@@ -353,3 +384,4 @@ export function usePlanEditor(planId: string) {
 }
 
 export type PlanEditor = ReturnType<typeof usePlanEditor>;
+

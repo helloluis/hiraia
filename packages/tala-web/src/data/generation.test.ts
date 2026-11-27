@@ -293,3 +293,28 @@ test('27 Nov: the pre-filled fallback keeps a week plan’s own days (a Mon/Wed/
   assert.deepEqual(stored.days.map((d) => [d.date, d.weekday]), [['2026-11-23', 1], ['2026-11-25', 3], ['2026-11-28', 6]]);
   assert.ok(stored.days.every((d) => d.minutes !== null), 'minutes filled from the template');
 });
+
+test('27 Nov: a full draft keeps the parts the teacher wrote herself and fills the rest; all hers → nothing written', async () => {
+  const { applyDraft } = await import('./generation');
+  const engine = engineFor();
+  const dlp = BUILTIN_TEMPLATES[0]!;
+  const single: ClassRecord = { ...cls, gradeGroups: [cls.gradeGroups[0]!] };
+  const { plan, sections } = newPlan({ template: dlp, cls: single, assignment: null, dates: [], language: 'en', competencies: { g2: ['sci.g2.1'] }, newId });
+  const mine = sections.map((s) =>
+    s.key === 'objectives' ? { ...s, editedByTeacher: true, content: { type: 'list' as const, items: ['My own objective'] } } : s
+  );
+  await engine.batch([{ op: 'put', entity: 'plan', data: plan }, ...mine.map((s) => ({ op: 'put' as const, entity: 'plan_section' as const, data: s }))]);
+  const job = (keys: Array<[string, unknown]>) => ({
+    id: 'j', status: 'done' as const, kind: 'full' as const, planId: plan.id, createdAt: 'x', finishedAt: 'y', failure: null,
+    result: { title: 'T', provider: 'deepseek', model: 'm', warnings: [], sections: keys.map(([key, content]) => ({ key, content, gen: null })) },
+  }) as never;
+  const out = await applyDraft(engine, plan, mine, job([['objectives', { type: 'list', items: ['AI objective'] }], ['materials', { type: 'list', items: ['chalkboard'] }]]), newId);
+  assert.deepEqual(out, { applied: true, kept: ['objectives'] });
+  const stored = await engine.list('plan_section');
+  assert.deepEqual((stored.find((s) => s.data.key === 'objectives')!.data.content as { items: string[] }).items, ['My own objective']);
+  assert.deepEqual((stored.find((s) => s.data.key === 'materials')!.data.content as { items: string[] }).items, ['chalkboard']);
+  // Every generated part is hers: nothing is written and the plan is not marked an AI draft.
+  const before = (await engine.get('plan', plan.id))!.data;
+  const all = await applyDraft(engine, before, (await engine.list('plan_section')).map((s) => s.data).map((s) => s.key === 'materials' ? { ...s, editedByTeacher: true } : s), job([['objectives', { type: 'list', items: ['x'] }]]), newId);
+  assert.deepEqual(all, { applied: false, kept: ['objectives'] });
+});

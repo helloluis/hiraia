@@ -88,7 +88,8 @@ export const slidesEn = {
   'sl.ed.more': 'More',
   'sl.ed.reset': 'Start over from the original',
   'sl.ed.resetTitle': 'Start over from the original?',
-  'sl.ed.resetBody': 'All your changes in this copy will be removed, and the slides will be copied again from the Hiraia original. This cannot be undone.',
+  'sl.ed.resetBody':
+    'The slides will be copied again from the Hiraia original. Your current version is kept under Earlier versions, so you can put it back.',
   'sl.ed.resetConfirm': 'Yes, start over',
   'sl.ed.resetFailed': 'The copy could not start over just now. Your copy is unchanged.',
   'sl.ed.delete': 'Delete my copy',

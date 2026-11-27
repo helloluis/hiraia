@@ -566,7 +566,13 @@ export const fil = {
   'gen.materials.sectionHint':
     'Wala pang nakalistang kagamitan para sa klaseng ito, kaya hindi pa mapupunan ng Tala ang bahaging ito. Magdagdag ng mga kagamitan sa "Isulat ulit gamit ang AI" o sa pahina ng Klase.',
   'gen.regenShort': 'Isulat ulit',
-  'gen.queuedFailed': 'Hindi nagawa ang hiniling mong pagsulat ulit ng "{section}": {reason}',
+  'gen.queuedFailed':
+    'Hindi natuloy ang nauna mong hiling na isulat ulit ang "{section}". {reason}',
+  'gen.keptOwnText': 'Nasa aralin na ang draft mula sa AI. Hindi pinalitan ang sarili mong sinulat sa: {sections}.',
+  'gen.keptAll': 'Sarili mong sinulat ang bawat bahagi ng araling ito, kaya walang pinalitan ang draft.',
+  'gen.failed.apply_failed': 'Dumating ang draft pero hindi ito mailagay sa aralin (baka naka-lock ito). Walang binago.',
+  'editor.saveFailed': 'Hindi na-save sa device na ito. Nasa screen pa ang binago mo; pindutin ang Subukan ulit.',
+  'editor.saveFailedStorage': 'Hindi na-save: puno na ang storage ng device na ito. Nasa screen pa ang binago mo; magbakante ng espasyo, saka pindutin ang Subukan ulit.',
   'gen.tryAgain': 'Subukan ulit',
   'gen.stillWorking':
     'Isinusulat pa ng Tala ang bagong bersyon ng "{section}". Puwede kang magpasulat ulit kapag tapos na ito.',
@@ -1008,107 +1014,152 @@ export const fil = {
   ...uploadsFil,
   // Weekend class days (Nov 27)
   'setup.weekendHint':
-    'Bibilangin ng Tala bilang araw ng klase ang Sabado at Linggo, at magmumungkahi ito ng ituturo sa mga araw na iyon. Puwede mo itong baguhin.',
+    'Kung may klase ka sa Sabado o Linggo, bibilangin iyon ng Tala bilang araw ng klase at magmumungkahi ng ituturo. Puwede mong baguhin ang mungkahi.',
   'wk.weekend.note':
-    'Mungkahi ito ng Tala para sa {weekday}, dahil Lunes hanggang Biyernes ang linggo sa plano ng DepEd. Puwede mo itong baguhin sa plano mo.',
+    'Lunes hanggang Biyernes ang sakop ng lingguhang plano ng DepEd, kaya iminungkahi ito ng Tala para sa {weekday}. Puwede mo itong baguhin sa plano mo.',
   // Lesson presentations (Nov 27) — FILIPINO DRAFTS for the Filipino owner's review
   'pp.kicker': 'Slides ng araling ito',
-  'pp.kickerSession': 'Slides ng klaseng ito',
+  'pp.kickerSession':
+    'Slides para sa sesyong ito',
   'pp.loadFailed': 'Hindi mabuksan ang slides. Subukan ulit.',
-  'pp.offline': 'Walang koneksyon. Kailangan ng internet ang slides. Kumonekta at subukan ulit.',
+  'pp.offline':
+    'Walang koneksyon. Kailangan ng internet para mabuksan ang slides. Kumonekta sa internet at subukan ulit.',
   'pp.retry': 'Subukan ulit',
-  'pp.linkFailed': 'Hindi maidagdag ngayon ang slides sa aralin. Subukan ulit.',
+  'pp.linkFailed':
+    'Hindi naidagdag ang slides sa aralin. Subukan ulit.',
   'pp.thumbs': 'Mga slide ng araling ito',
-  'pp.madeWithAi': 'Ginawa ng AI',
+  'pp.madeWithAi':
+    'Ginawa gamit ang AI',
   'pp.day': 'Day {n}',
-  'pp.dayLabel': 'Aling araw ng slides ng linggo ang araling ito?',
+  'pp.dayLabel':
+    'Aling araw sa slides ng buong linggo ang para sa araling ito?',
   'pp.wholeWeek': 'Buong linggo',
   'pp.edit': 'I-edit ang slides',
   'pp.none.title': 'Wala pang slides ang araling ito',
-  'pp.none.body': 'Tumutulong ang slides para masundan ng mga mag-aaral ang aralin sa TV. Gumawa na ngayon, saka baguhin para tumugma sa plano mo.',
+  'pp.none.body':
+    'Mas madaling masundan ng mga mag-aaral ang aralin kung may slides sa TV. Gumawa ng slides, saka i-edit para tumugma sa plano mo.',
   'pp.none.usePack': 'Gamitin ang slides ng “{title}”',
-  'pp.none.packDay': 'Day {n} ng slides ng linggong iyon.',
-  'pp.none.packWeek': 'Ang slides ng buong linggo. Pipiliin mo ang araw pagkatapos.',
-  'pp.none.packCopy': 'Magiging sarili mo itong kopya: ikaw lang ang makakakita at makakapagbago nito, at mananatili ang orihinal ng Hiraia.',
-  'pp.none.packDraft': 'Draft pa ang slides ng pack na ito. Hindi pa na-review ng teacher.',
+  'pp.none.packDay':
+    'Day {n} mula sa slides ng linggong iyon.',
+  'pp.none.packWeek':
+    'Slides ng buong linggo. Piliin ang araw pagkatapos idagdag ang slides.',
+  'pp.none.packCopy':
+    'Gagawa ang Tala ng sarili mong kopya. Ikaw lang ang makakakita at makakapag-edit nito sa Tala. Mananatiling gaya ng dati ang orihinal na slides ng Hiraia.',
+  'pp.none.packDraft':
+    'Draft pa ang slides ng pack na ito. Wala pang gurong nagsuri sa mga ito.',
   'pp.none.makeAi': 'Gumawa ng slides mula sa araling ito gamit ang AI',
-  'pp.none.aiHint': 'Isusulat ito ng AI mula sa naka-save mong aralin: ang mga layunin, nilalaman, hakbang at kagamitan. Makikita mo muna ang mga ito bago may ma-save.',
+  'pp.none.aiHint':
+    'Gagamitin ng AI ang mga layunin, nilalaman, hakbang at kagamitan sa naka-save mong aralin para gumawa ng slides. Makikita mo muna ang mga mungkahi. Ikaw ang pipili kung gagamitin ang mga ito sa aralin.',
   'pp.align.title': 'Itugma ang slides na ito sa lesson plan mo.',
-  'pp.align.pack': 'Sarili mong kopya ito ng slides ng pack: puwede mong palitan ang kahit anong salita, magdagdag ng sariling halimbawa, o isulat ulit gamit ang AI mula sa araling ito.',
-  'pp.align.lesson': 'Ginawa ang mga ito mula sa aralin mo at sa iyo ang mga ito: puwede mong palitan ang kahit anong salita, o isulat ulit gamit ang AI pagkatapos mong baguhin ang aralin.',
-  'pp.stale.body': 'Nagbago ang aralin mo matapos gawin ang slides na ito. Suriin ang mga ito, o isulat ulit gamit ang AI. Walang binago.',
+  'pp.align.pack':
+    'Sarili mong kopya ito ng slides ng pack. Puwede mong palitan ang kahit anong salita o magdagdag ng sariling halimbawa. Puwede mo ring gamitin ang "Isulat ulit gamit ang AI" para ibatay ang slides sa araling ito.',
+  'pp.align.lesson':
+    'Iyo ang slides na ito. Ginawa ang mga ito mula sa aralin mo. Puwede mong palitan ang kahit anong salita o gamitin ang "Isulat ulit gamit ang AI" pagkatapos baguhin ang aralin.',
+  'pp.stale.body':
+    'Nabago ang aralin mo pagkatapos gawin ang slides na ito. Suriin kung tugma pa rin ang slides o gamitin ang "Isulat ulit gamit ang AI". Walang binago sa slides mo.',
   'pp.stale.fits': 'Tugma pa rin',
   'pp.unlink.pack': 'Huwag nang gamitin ang slides na ito sa aralin',
-  'pp.unlink.packBody': 'Mawawalan ng slides ang aralin. Mananatili ang kopya mo, kasama ang mga binago mo, sa mga kopya mo sa Library.',
+  'pp.unlink.packBody':
+    'Mawawalan ng slides ang aralin. Mananatili sa Library ang kopya mo, kasama ang mga binago mo.',
   'pp.unlink.packConfirm': 'Huwag nang gamitin',
-  'pp.unlink.lesson': 'Alisin ang slides na ito',
+  'pp.unlink.lesson':
+    'Burahin ang slides na ito',
   'pp.unlink.lessonBody': 'Ginawa ang slides na ito para lang sa araling ito. Buburahin ang mga ito, kasama ang mga naunang bersyon. Mananatili ang lesson plan mo.',
-  'pp.unlink.lessonConfirm': 'Alisin ang slides',
+  'pp.unlink.lessonConfirm':
+    'Burahin ang slides',
   'pp.ai.rewrite': 'Isulat ulit gamit ang AI',
   'pp.ai.rewriteTitle': 'Isulat ulit gamit ang AI',
-  'pp.ai.rewriteBody': 'Isusulat ulit ito ng AI mula sa aralin mo ayon sa pagkaka-save nito ngayon. Makikita mo muna ang resulta, saka mo pipiliin kung gagamitin ito o mananatili ang slides mo.',
+  'pp.ai.rewriteBody':
+    'Gagamitin ng AI ang kasalukuyang naka-save na bersyon ng aralin mo. Makikita mo muna ang mungkahi at saka pipili kung iyon ang gagamitin o ang slides mo ngayon.',
   'pp.ai.scope': 'Ano ang isusulat ulit',
   'pp.ai.scopeAll': 'Lahat ng {n} slides ng araling ito',
-  'pp.ai.scopeAllHint': 'Para kapag malaki ang binago sa aralin. Itatabi ang slides mo sa Mga naunang bersyon.',
-  'pp.ai.scopeAllWeek': 'Piliin muna kung aling araw ng slides ng linggo ang araling ito.',
+  'pp.ai.scopeAllHint':
+    'Piliin ito kung malaki ang binago mo sa aralin. Kapag ginamit mo ang mungkahi, itatabi ang slides mo ngayon sa Mga naunang bersyon.',
+  'pp.ai.scopeAllWeek':
+    'Piliin muna kung aling araw sa slides ng buong linggo ang para sa araling ito.',
   'pp.ai.scopeOne': 'Isang slide',
-  'pp.ai.scopeOneHint': 'Piliin ang slide sa ibaba. Iyon lang ang magbabago.',
+  'pp.ai.scopeOneHint':
+    'Piliin ang slide sa ibaba. Iyon lang ang papalitan kung gagamitin mo ang mungkahi.',
   'pp.ai.pickSlide': 'Piliin ang slide na isusulat ulit',
   'pp.ai.instruction': 'May gusto ka bang ipaalam sa AI?',
   'pp.ai.instructionHint': 'hal. gumamit ng mas simpleng salita, magdagdag ng halimbawa mula sa barangay namin',
-  'pp.ai.notice': 'Puwedeng magkamali ang AI. Suriin ang bawat impormasyon bago ang klase.',
-  'pp.ai.rewriteAllGo': 'Isulat ulit lahat ng slides',
+  'pp.ai.notice':
+    'Puwedeng magkamali ang AI. Tiyaking tama ang lahat ng impormasyon bago gamitin sa klase.',
+  'pp.ai.rewriteAllGo':
+    'Isulat ulit ang lahat ng slides',
   'pp.ai.rewriteOneGo': 'Isulat ulit ang slide na ito',
   'pp.ai.working': 'Isinusulat ng AI ang slides mula sa aralin mo…',
   'pp.ai.workingSlide': 'Isinusulat ulit ng AI ang slide…',
   'pp.ai.seconds': '{n} s',
-  'pp.ai.offlineWaiting': 'Naputol ang koneksyon. Patuloy na titingnan ng Tala; tuloy pa rin ang ginagawa.',
+  'pp.ai.offlineWaiting':
+    'Naputol ang koneksyon. Tuloy pa rin ang paggawa ng slides. Patuloy na titingnan ng Tala kung tapos na.',
   'pp.ai.retry': 'Subukan ulit',
   'pp.ai.waiting': 'Handa nang tingnan ang mga mungkahing slide.',
   'pp.ai.look': 'Tingnan',
   'pp.ai.readyTitle': 'Mga mungkahing slide',
-  'pp.ai.readyNew': 'Gumawa ang AI ng {n} slides mula sa aralin mo. Tingnan ang bawat isa, saka gamitin o huwag gamitin.',
-  'pp.ai.readyLesson': 'Papalitan ng {n} slides na ito ang {old} slides mo sa araling ito. Itatabi ang slides mo sa Mga naunang bersyon.',
-  'pp.ai.readySlide': 'Papalitan nito ang slide. Itatabi ang bersyon mo sa Mga naunang bersyon.',
-  'pp.ai.checkFacts': 'Puwedeng magkamali ang AI. Basahin ang bawat slide at suriin ang mga impormasyon bago ang klase.',
-  'pp.ai.keepMine': 'Panatilihin ang akin',
+  'pp.ai.readyNew':
+    'Gumawa ang AI ng {n} slides mula sa aralin mo. Suriin ang bawat isa bago magpasya kung gagamitin mo ang mga ito.',
+  'pp.ai.readyLesson':
+    'Kapag ginamit mo ang mungkahi, papalitan ng {n} slides na ito ang {old} slides mo para sa araling ito. Itatabi ang pinalitang slides sa Mga naunang bersyon.',
+  'pp.ai.readySlide':
+    'Kung gagamitin mo ang mungkahi, papalitan nito ang slide. Itatabi ang bersyon mo sa Mga naunang bersyon.',
+  'pp.ai.checkFacts':
+    'Puwedeng magkamali ang AI. Basahin ang bawat slide at tiyaking tama ang lahat ng impormasyon bago gamitin sa klase.',
+  'pp.ai.keepMine':
+    'Panatilihin ang bersyon ko',
   'pp.ai.useSlides': 'Gamitin ang slides na ito',
   'pp.ai.useSlide': 'Gamitin ang slide na ito',
   'pp.ai.useAnyway': 'Gamitin pa rin ang mungkahi',
-  'pp.ai.conflict': 'Nagbago ang slides mo matapos gawin ang mungkahing ito. Gamitin pa rin ito (itatabi ang bersyon mo sa Mga naunang bersyon), o panatilihin ang sa iyo.',
-  'pp.ai.applied': 'Nandito na ang bagong slides. Itinabi ang dati mong slides sa Mga naunang bersyon.',
+  'pp.ai.conflict':
+    'Nagbago ang slides mo pagkatapos gawin ang mungkahing ito. Puwede mong gamitin pa rin ang mungkahi o panatilihin ang kasalukuyang slides mo. Kung gagamitin mo ang mungkahi, itatabi ang kasalukuyan mong bersyon sa Mga naunang bersyon.',
+  'pp.ai.applied':
+    'Nasa aralin na ang bagong slides. Nasa Mga naunang bersyon ang slides na pinalitan.',
   'pp.err.disabled': 'Naka-off ngayon ang tulong ng AI. Walang binago sa slides mo.',
   'pp.err.providers': 'Hindi sumagot ang AI. Walang binago sa slides mo. Subukan ulit mamaya.',
   'pp.err.invalid': 'Hindi magamit ang sagot ng AI. Walang binago sa slides mo. Subukan ulit.',
-  'pp.err.quota': 'Naubos mo na ang mga kahilingan sa AI ngayong araw. Walang binago sa slides mo. Subukan ulit bukas.',
+  'pp.err.quota':
+    'Naabot mo na ang limitasyon sa paggamit ng AI ngayong araw. Walang binago sa slides mo. Subukan ulit bukas.',
   'pp.err.budget': 'Naubos na ang budget para sa AI ngayong buwan. Walang binago sa slides mo.',
-  'pp.err.interrupted': 'Nag-restart ang Tala habang ginagawa ito. Walang binago. Pakisubukan ulit.',
+  'pp.err.interrupted':
+    'Nag-restart ang Tala habang ginagawa ang mungkahi. Walang binago. Subukan ulit.',
   'pp.err.gone': 'Wala na rito ang araling ito o ang slides nito. Walang binago.',
   'pp.err.offline': 'Walang koneksyon. Kumonekta sa internet at subukan ulit. Walang binago sa slides mo.',
   'pp.err.signedOut': 'Mag-sign in ulit.',
-  'pp.err.unsynced': 'Hindi pa umaabot sa Tala ang mga huling binago mo sa aralin. Kumonekta sa internet, saka subukan ulit.',
-  'pp.err.emptyLesson': 'Isulat muna ang aralin (ang mga layunin at hakbang nito). Saka makakagawa ang AI ng slides mula rito.',
-  'pp.err.chooseDay': 'Piliin muna kung aling araw ng slides ng linggo ang araling ito.',
-  'pp.err.conflict': 'Nagbago ang slides habang hinihintay ito. Isara ito at subukan ulit.',
-  'pp.err.server': 'May nangyaring mali. Walang binago sa slides mo. Subukan ulit.',
+  'pp.err.unsynced':
+    'Hindi pa natatanggap ng Tala ang mga huli mong pagbabago sa aralin. Kumonekta sa internet, saka subukan ulit.',
+  'pp.err.emptyLesson':
+    'Isulat muna ang mga layunin at hakbang ng aralin. Saka makakagawa ang AI ng slides mula rito.',
+  'pp.err.chooseDay':
+    'Piliin muna kung aling araw sa slides ng buong linggo ang para sa araling ito.',
+  'pp.err.conflict':
+    'May nabago sa slides habang naghihintay ka. Isara muna ito, saka subukan ulit.',
+  'pp.err.server':
+    'Nagkaproblema. Walang binago sa slides mo. Subukan ulit.',
   'pp.rev.open': 'Mga naunang bersyon',
   'pp.rev.title': 'Mga naunang bersyon',
-  'pp.rev.hint': 'Itinatabi ng Tala ang slides ayon sa dati nitong ayos tuwing gagamitin ang slides ng AI, ibabalik ang naunang bersyon, o uulitin ang kopya mula sa orihinal.',
+  'pp.rev.hint':
+    'Itinatabi ng Tala ang dating ayos ng slides tuwing gagamitin ang mungkahi ng AI, ibabalik ang naunang bersyon, o muling kokopyahin ang orihinal.',
   'pp.rev.none': 'Wala pang naunang bersyon.',
   'pp.rev.loadFailed': 'Hindi mabuksan ang mga naunang bersyon. Tingnan ang koneksyon at subukan ulit.',
   'pp.rev.failed': 'Hindi maibalik ang bersyong ito. Walang binago sa slides mo. Subukan ulit.',
-  'pp.rev.ai': 'Bago ginamit ang slides ng AI',
-  'pp.rev.restore': 'Bago ibinalik ang naunang bersyon',
-  'pp.rev.reset': 'Bago inulit ang kopya mula sa orihinal',
+  'pp.rev.ai':
+    'Bago gamitin ang mungkahi ng AI',
+  'pp.rev.restore':
+    'Bago ibalik ang naunang bersyon',
+  'pp.rev.reset':
+    'Bago muling kopyahin ang orihinal',
   'pp.rev.putBack': 'Ibalik ang bersyong ito',
   'pp.rev.restored': 'Naibalik ang naunang bersyon. Itinabi rin ang bersyong pinalitan nito.',
   'pp.ed.backLesson': 'Bumalik sa lesson plan',
   'pp.ed.backLessonShort': 'Lesson plan',
   'pp.ed.lessonGroup': 'Mga slide ng araling ito',
   'pp.ed.rewriteSlide': 'Isulat ulit ang slide gamit ang AI',
-  'pp.ed.aiApplied': 'Naisulat ulit ang slide gamit ang AI. Itinabi ang bersyon mo sa Mga naunang bersyon.',
-  'pp.session.title': 'Pinagsama mula sa aralin ng bawat baitang',
-  'pp.session.body': 'Ayon sa pagkakasunod ng mga bahagi ng klase mo: sabay-sabay na simula, ang oras ng bawat baitang kasama ka (at ang gawain ng iba samantala), at sabay-sabay na pagtatapos. Kapag binago mo ang plano o ang slides ng isang baitang, magbabago rin ito.',
+  'pp.ed.aiApplied':
+    'Napalitan na ng mungkahi ng AI ang slide. Makikita mo sa Mga naunang bersyon ang bersyon mo bago ito napalitan.',
+  'pp.session.title':
+    'Pinagsamang slides mula sa aralin ng bawat baitang',
+  'pp.session.body':
+    'Pinagsama ayon sa pagkakasunod ng mga bahagi ng klase mo: ang oras ng bawat baitang kasama ka, kasama ang gawain ng iba samantala, at ang mga bahaging sabay-sabay ang buong klase. Lumalabas agad dito ang mga pagbabago sa planong ito; ang mga pagbabago sa slides ng isang baitang, kapag bumalik ka sa pahinang ito.',
   'pp.session.cover': 'Simula',
   'pp.session.noLesson': 'Walang nakitang aralin para sa baitang na ito',
   'pp.session.noSlides': 'Wala pang slides ang araling ito.',
@@ -1116,11 +1167,16 @@ export const fil = {
   'pp.session.make': 'Gumawa ng slides para sa {grade} gamit ang AI',
   'pp.session.openLesson': 'Buksan ang aralin',
   'pp.session.choose': 'Aralin para sa {grade}',
-  'pp.session.auto': 'Hinanap ng Tala',
-  'pp.session.missing': '{n} baitang ang wala pang slides: may simpleng slide na pumapalit sa mga ito.',
-  'pp.session.missingOne': '1 baitang ang wala pang slides: may simpleng slide na pumapalit dito.',
+  'pp.session.auto':
+    'Nahanap ng Tala',
+  'pp.session.missing':
+    '{n} baitang ang wala pang slides. May simpleng slide muna para sa mga baitang na iyon.',
+  'pp.session.missingOne':
+    '1 baitang ang wala pang slides. May simpleng slide muna para sa baitang na iyon.',
   'pp.ai.suggested': 'Mungkahi',
-  'pp.ai.now': 'Ngayon',
-  'pp.ai.appliedNew': 'Nandito na ang slides. Baguhin ang kahit ano; sa iyo ang mga ito.',
+  'pp.ai.now':
+    'Kasalukuyang bersyon',
+  'pp.ai.appliedNew':
+    'Nasa aralin na ang slides. Iyo ang mga ito at puwede mong i-edit ayon sa gusto mo.',
   'pp.session.about': 'Tungkol sa mga slide',
 } satisfies Record<StringKey, string>;
