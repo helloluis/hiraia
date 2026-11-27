@@ -53,6 +53,12 @@ export function buildGenerationInput(a: BuildArgs): GenerationInput {
   });
   const competencies: Record<string, string[]> = {};
   for (const id of groupIds) competencies[id] = (a.plan.competencies[id] ?? []).slice(0, 12);
+  // A week plan is the classic five-day DLL, unless it was laid out on a Saturday or Sunday class: newPlan places
+  // that plan on each day the subject meets that week, so it has one session per day (Mon/Wed/Sat: three).
+  const weekDates = a.plan.placements[0]?.dates ?? [];
+  const weekdays = new Set(weekDates.map((d) => new Date(`${d}T12:00:00Z`).getUTCDay()));
+  const weekSessions =
+    weekDates.length > 1 && (weekdays.has(6) || weekdays.has(0)) ? weekdays.size : 5;
   return {
     idempotencyKey: a.idempotencyKey ?? defaultNewId(),
     kind: a.kind ?? 'full',
@@ -62,7 +68,7 @@ export function buildGenerationInput(a: BuildArgs): GenerationInput {
     subjectName: a.plan.subjectName,
     learningAreaId: a.plan.learningAreaId,
     timeBudgetMinutes: Math.max(10, Math.min(480, a.plan.durationMinutes)),
-    sessions: a.template.span === 'week' ? 5 : 1,
+    sessions: a.template.span === 'week' ? weekSessions : 1,
     gradeGroups: gradeGroups.length
       ? gradeGroups
       : [{ id: 'g1', grade: a.plan.grades[0]!, learnerCount: null }],

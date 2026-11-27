@@ -80,6 +80,50 @@ test('buildGenerationInput carries counts only, competencies per group, class pr
   assert.equal(hasObjectives({ ...input, competencies: {}, customObjectives: [] }), false);
 });
 
+test('a week plan asks for five sessions, or one per day for a Saturday or Sunday class', () => {
+  const dll = BUILTIN_TEMPLATES.find((t) => t.kind === 'dll')!;
+  const dlp = BUILTIN_TEMPLATES.find((t) => t.kind === 'dlp')!;
+  const single: ClassRecord = { ...cls, gradeGroups: [cls.gradeGroups[1]!] };
+  const subject = (weekdays: number[]) => ({
+    id: 'sci',
+    classId: 'c',
+    learningAreaId: 'science',
+    subjectName: 'Science',
+    gradeGroupIds: ['g4'],
+    language: 'fil' as const,
+    slots: weekdays.map((weekday) => ({
+      id: `sci-${weekday}`,
+      weekday,
+      startTime: null,
+      minutes: 40,
+      rotation: null,
+    })),
+  });
+  const sessions = (template: typeof dll, weekdays: number[] | null, date: string) =>
+    buildGenerationInput({
+      plan: newPlan({
+        template,
+        cls: single,
+        assignment: weekdays ? subject(weekdays) : null,
+        dates: [date],
+        language: 'fil',
+        newId,
+      }).plan,
+      cls: single,
+      template,
+      language: 'fil',
+    }).sessions;
+  // Weekday-only week plans are five sessions, as before, whatever their date.
+  assert.equal(sessions(dll, null, '2026-11-25'), 5);
+  assert.equal(sessions(dll, [1, 3, 5], '2026-11-25'), 5);
+  assert.equal(sessions(dll, [1, 2, 3, 4, 5], '2026-11-28'), 5); // a DLL made on a Saturday
+  // Week plans laid out on Saturday or Sunday classes: one session per day the subject meets.
+  assert.equal(sessions(dll, [1, 3, 6], '2026-11-25'), 3);
+  assert.equal(sessions(dll, [6, 7], '2026-11-29'), 2);
+  assert.equal(sessions(dll, [1, 2, 3, 4, 5, 6], '2026-11-23'), 6);
+  assert.equal(sessions(dlp, [1, 3, 6], '2026-11-28'), 1);
+});
+
 test('applyGenerationJob writes revisions before replacements, marks the plan AI draft, as one batch', async () => {
   const engine = engineFor();
   const mg = BUILTIN_TEMPLATES.find((t) => t.kind === 'multigrade')!;

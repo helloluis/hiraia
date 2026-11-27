@@ -4,7 +4,7 @@ import { GeneratedSection, SectionContent } from '@hiraia/tala-core';
 import { validateGeneratedSections } from '@hiraia/tala-core/generation';
 import { evaluationCases, objectivesFor } from '../../../eval/cases';
 import { fakeCompact, fakeCompactRaw } from '../../../eval/fixtures';
-import { convertCompact, lessonRequest, multigradeSchedule } from './compact';
+import { convertCompact, lessonRequest, multigradeSchedule, weekSchedule } from './compact';
 const fixture = () => {
   const c = evaluationCases[0]!;
   return { ...c.input, resolvedObjectives: objectivesFor(c.input) };
@@ -42,6 +42,55 @@ test('server rotation is exact across all group counts and budgets; every grade 
       for (const g of input.gradeGroups)
         assert.equal(schedule.filter((b) => b.teacherWith === g.grade).length, 1);
     }
+});
+test('a week plan’s schedule follows its own grid for a Saturday or Sunday class, else Monday onwards', () => {
+  const week = evaluationCases.find((c) => c.id === 'weekly-dll-fil')!;
+  const input = { ...week.input, resolvedObjectives: objectivesFor(week.input) };
+  const grid = (weekdays: number[]) => [
+    { key: 'objectives', content: { type: 'list', items: [] } },
+    {
+      key: 'weekgrid',
+      content: {
+        type: 'weekgrid',
+        days: weekdays.map((weekday, i) => ({ date: `2026-11-2${3 + i}`, weekday, body: [] })),
+      },
+    },
+  ];
+  const days = (sessions: number, source?: unknown) =>
+    weekSchedule({ ...input, sessions }, source).map((d) => d.weekday);
+  // The classic DLL, with or without its own grid: Monday to Friday, as before.
+  assert.deepEqual(days(5), [1, 2, 3, 4, 5]);
+  assert.deepEqual(days(5, grid([1, 2, 3, 4, 5])), [1, 2, 3, 4, 5]);
+  // Monday, Wednesday and Saturday; Saturday and Sunday: the plan's own days.
+  assert.deepEqual(days(3, grid([1, 3, 6])), [1, 3, 6]);
+  assert.deepEqual(days(2, grid([7, 6])), [6, 7]);
+  // A grid that does not have one day per session is not trusted.
+  assert.deepEqual(days(5, grid([1, 3, 6])), [1, 2, 3, 4, 5]);
+  assert.deepEqual(days(3, 'not a plan'), [1, 2, 3]);
+  assert.ok(
+    weekSchedule({ ...input, sessions: 3 }, grid([1, 3, 6])).every((d) => d.minutes === 40)
+  );
+  // The request tells the model those days and accepts three days back.
+  const req = lessonRequest(
+    { ...input, sessions: 3 },
+    { userId: 'teacher-001', newId, source: grid([1, 3, 6]) }
+  );
+  const vars = JSON.parse(req.vars.input!) as { sessions: number; schedule: { weekday: number }[] };
+  assert.equal(vars.sessions, 3);
+  assert.deepEqual(
+    vars.schedule.map((d) => d.weekday),
+    [1, 3, 6]
+  );
+  const wire = fakeCompactRaw({ ...input, sessions: 3 });
+  const days3 = wire.sections.find((x) => x.key === 'weekgrid')! as { days: { weekday: number }[] };
+  days3.days = days3.days.map((d, i) => ({ ...d, weekday: [1, 3, 6][i]! }));
+  const parsed = req.schema.safeParse(wire);
+  assert.equal(parsed.success, true);
+  if (parsed.success) {
+    assert.deepEqual(req.check!(parsed.data), []);
+    const out = parsed.data.sections.find((x) => x.key === 'weekgrid')!.content;
+    assert.deepEqual(out.type === 'weekgrid' && out.days.map((d) => d.weekday), [1, 3, 6]);
+  }
 });
 test('missing/duplicate slots and hallucinated objective refs are refused, never repaired silently', () => {
   const input = fixture(),
