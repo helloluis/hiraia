@@ -73,6 +73,7 @@ const MESSAGES = {
   slidesChanged: 'Your slides changed after this suggestion was made.',
   revisionNotFound: 'We could not find this earlier version.',
   deckNotFound: 'We could not find these slides.',
+  notThisDeck: 'This lesson uses other slides now. Open them from the lesson to rewrite them.',
 } as const;
 
 /** What a failed request tells the teacher (the web shows its own words for each reason; these are the server's). */
@@ -551,6 +552,8 @@ export function createLessons(kit: LessonKit) {
         if (row) throw new HttpError('conflict', MESSAGES.lessonHasSlides, { reason: 'lesson_has_slides' });
       } else {
         if (!row || !link) throw new HttpError('not_found', MESSAGES.noSlides, { reason: 'no_slides' });
+        // Asked from the slide editor: the slide must be in the deck the lesson uses (ids repeat across pack copies).
+        if (body.deckId && body.deckId !== row.id) throw new HttpError('conflict', MESSAGES.notThisDeck, { reason: 'deck_not_linked' });
         const mine = lessonSlidesOf(rowToDeck(row).slides, link.day);
         if (body.scope === 'lesson' && row.origin === 'pack' && !link.day) throw new HttpError('invalid_input', MESSAGES.chooseDay, { reason: 'choose_day' });
         if (body.scope === 'slide') {

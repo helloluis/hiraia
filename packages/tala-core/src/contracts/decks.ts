@@ -306,6 +306,8 @@ export const SlidesAiRequest = z.object({
   scope: SlidesAiScope,
   /** For `slide`: which slide. */
   slideId: DeckSlideId.optional(),
+  /** The deck the teacher is looking at (the slide editor): refused when the lesson uses another deck. */
+  deckId: Id.optional(),
   /** Optional words from the teacher ("use simpler words"). Passed to the model as data. */
   instruction: z.string().max(300).default(''),
 });

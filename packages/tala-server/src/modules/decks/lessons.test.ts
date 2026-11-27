@@ -291,6 +291,12 @@ test('rewrite one slide: the proposal replaces only it, applying keeps an earlie
     // Cover, day openers and credits are not rewritten.
     const credits = p.slides!.slides.find((s) => s.kind === 'credits')!;
     assert.equal((await ask(w.t, a, plan.id, { scope: 'slide', slideId: credits.id })).status, 400);
+    // From the slide editor of another deck (the lesson uses this one): refused, nothing asked.
+    const calls = llm.calls.length;
+    const other = await w.t.call('decks.ai.start', { params: { planId: plan.id }, body: { scope: 'slide', slideId: target.id, deckId: 'some-other-deck' }, token: a.token });
+    assert.equal(other.status, 409);
+    assert.equal((other.error?.details as { reason: string }).reason, 'deck_not_linked');
+    assert.equal(llm.calls.length, calls);
   } finally {
     w.close();
   }
