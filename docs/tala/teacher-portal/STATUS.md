@@ -1648,3 +1648,14 @@ allowance and monthly budget.
   a teacher's review; the existing pacing quirk (early topics resurface late in long terms) left for Luis.
 
 **waiting_for_user (asked once, thread ddb4d22d):** "Deploy the six Lesson Plan changes to tala.hiraia.org now? Candidate `tala-v1-lesson-feedback` @ `d4ca418e3` on top of the live demo.18; it becomes `tala-v1-demo.19`; one additive database change; rollback is demo.18; slides AI uses the existing daily AI allowance and $20 monthly budget." Prepared window (refuses to run without this approval recorded): `release-lesson-feedback/window-lesson.sh`. The separate motion task (Fable b3a74512) is not part of this release.
+
+#### 27 Nov 2026 14:00 Manila: candidate updated to `0f7b8b38b` (one fix in `applyDraft`)
+
+The motion task owner measured on its rebased branch that `applyDraft` treated Tala's own pre-filled template
+(hand-written origin, never edited by the teacher) as her text: after a queued full draft the model's objectives and
+materials were dropped and the lesson said "your own text was kept". Fixed as it suggested: only what she edited is
+hers; pre-filled parts are replaced and never reported as kept (unit test; clean export check green: core 326, server
+376 + 1 skipped, web 132, build). The browser walks of `d4ca418e3` stand for everything else (the change is confined to
+`applyDraft`, used by background full drafts); the motion owner re-runs its queued-draft browser check on the fix.
+The release question above stands, now for `0f7b8b38b`. Its nine status captions went to the Filipino owner (batch 3,
+bridge 2db386b4).
