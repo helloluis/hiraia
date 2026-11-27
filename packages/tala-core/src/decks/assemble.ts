@@ -21,9 +21,9 @@
  */
 import type { Lang } from '../contracts/common';
 import type { MultigradeBlock, RichText } from '../contracts/content';
-import type { DeckSlide } from '../contracts/decks';
+import type { DeckSlide, SessionPart } from '../contracts/decks';
 import type { PackLang } from '../contracts/packs';
-import type { Plan } from '../contracts/records';
+import type { Plan, PlanSection } from '../contracts/records';
 import { MULTIGRADE_TEMPLATE_ID } from '../plan/combine';
 import { richTextPlainText } from '../plan/text';
 import { SESSION_WORDS, type SessionMode, type SessionWords } from './assemble-words';
@@ -372,6 +372,48 @@ export function assembleSession(input: SessionInput): AssembledSession {
     media,
     blocks: outBlocks,
     missing: groupIds.filter((id) => missing.has(id)),
+  };
+}
+
+/**
+ * The session's input from a session plan and its parts (contracts/decks.ts SessionPart). The web calls this with the
+ * plan as it is on the device right now, the server with the plan as saved (for the download): the same function, so
+ * the two show the same slides for the same plan. Grades follow the plan's own groups; a group without a part has no
+ * lesson and no slides.
+ */
+export function sessionInputFromParts(args: { plan: Plan; sections: PlanSection[]; parts: SessionPart[] }): SessionInput {
+  const { plan } = args;
+  const mg = args.sections.find((s) => s.planId === plan.id && s.key === 'multigrade')?.content;
+  const groupIds = plan.gradeGroupIds.length ? plan.gradeGroupIds : args.parts.map((p) => p.groupId);
+  return {
+    title: plan.title,
+    language: plan.language,
+    subject: plan.subjectName,
+    minutes: plan.durationMinutes,
+    note: mg?.type === 'multigrade' ? (mg.note ?? '') : '',
+    blocks: mg?.type === 'multigrade' ? mg.blocks : [],
+    grades: groupIds.map((groupId, i): SessionGradeInput => {
+      const part = args.parts.find((p) => p.groupId === groupId);
+      const grade = part?.grade ?? plan.grades[i] ?? plan.grades[0] ?? '';
+      const s = part?.slides ?? null;
+      return {
+        groupId,
+        grade,
+        lessonTitle: part?.source ? part.source.title : null,
+        slides: s
+          ? {
+              deckId: s.deckId,
+              origin: s.origin,
+              language: s.language,
+              approved: s.sourceApproved,
+              reviewer: s.credits.reviewer,
+              sourcesLine: s.credits.sourcesLine,
+              edited: s.edited,
+              slides: s.slides,
+            }
+          : null,
+      };
+    }),
   };
 }
 
