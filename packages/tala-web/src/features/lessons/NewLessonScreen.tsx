@@ -2,7 +2,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { BUILTIN_TEMPLATES } from '@hiraia/tala-core/contracts';
-import { useT } from '@/i18n';
+import { formatWeekday, useT } from '@/i18n';
 import { useSession } from '@/data/session';
 import { isoDate, newId } from '@/data/ids';
 import { useTimeline } from '@/data/timeline';
@@ -20,6 +20,7 @@ import {
   TextInput,
 } from '@/components/ui';
 import { MatchingLessons } from '@/features/community/MatchingLessons';
+import { outsideSchoolWeek } from '@/features/week/weekdays';
 
 /** Create: write by hand (works offline), draft with AI (wave 2), or find in the community (wave 2). */
 export function NewLessonScreen() {
@@ -53,13 +54,17 @@ export function NewLessonScreen() {
     if (!templateTouched) setTemplateId(defaultTemplateFor(cls, assignment).id);
   }, [cls, assignment, templateTouched]);
 
+  // The class period from This Week applies to the date it came with; another date (Saturday instead of Friday)
+  // takes that day's own period, so the lesson still starts with that day's competencies.
+  const slotId = params.get('date') === date ? params.get('slotId') : null;
   const entry = tl.entries.find(
     (e) =>
       e.classId === classId &&
       e.assignmentId === assignmentId &&
       e.date === date &&
-      (!params.get('slotId') || e.slotId === params.get('slotId'))
+      (!slotId || e.slotId === slotId)
   );
+  const competencyIds = entry ? Object.values(entry.byGroup).flat() : [];
 
   const create = async (ai = false) => {
     if (!engine) return;
@@ -169,16 +174,21 @@ export function NewLessonScreen() {
           </option>
         ))}
       </Select>
-      {entry && Object.values(entry.byGroup).flat().length > 0 && (
+      {competencyIds.length > 0 && (
         <p className="text-small text-forestMuted">
           {t('editor.competencies')}:{' '}
-          {Object.values(entry.byGroup)
-            .flat()
+          {competencyIds
             .map((id) => {
               const c = tl.competencyById.get(id);
               return c ? topicLabel(c, lang).heading : id;
             })
             .join('; ')}
+        </p>
+      )}
+      {/* A Saturday or Sunday class: DepEd's weeks run Monday to Friday, so these are Tala's suggestion. */}
+      {competencyIds.length > 0 && outsideSchoolWeek(date, ws.activeYear?.teachingWeekdays) && (
+        <p className="text-small text-forestMuted" data-testid="weekend-note">
+          {t('wk.weekend.note', { weekday: formatWeekday(date, lang) })}
         </p>
       )}
       <h2 className="text-title">{t('lessons.howToStart')}</h2>

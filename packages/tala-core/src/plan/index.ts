@@ -8,9 +8,21 @@ import { sectionPlainText } from './text';
 export { sectionPlainText, richTextPlainText } from './text';
 const clone = <T>(x: T): T => JSON.parse(JSON.stringify(x)) as T;
 
+/** One day of a week plan's grid: ISO weekday (1 = Monday … 7 = Sunday) and its date, when known. */
+export interface WeekGridDay {
+  weekday: number;
+  date: string | null;
+}
+const MONDAY_TO_FRIDAY: WeekGridDay[] = [1, 2, 3, 4, 5].map((weekday) => ({ weekday, date: null }));
+
+/**
+ * `weekDays` lays out a week grid on the days the class actually meets (a Saturday or Sunday class); without it the
+ * grid is the classic Monday-to-Friday DLL.
+ */
 export function blankContent(
   type: SectionContent['type'],
-  groupIds: string[] = []
+  groupIds: string[] = [],
+  weekDays: ReadonlyArray<WeekGridDay> = []
 ): SectionContent {
   switch (type) {
     case 'text':
@@ -22,7 +34,12 @@ export function blankContent(
     case 'multigrade':
       return { type, blocks: [] };
     case 'weekgrid':
-      return { type, days: [1, 2, 3, 4, 5].map((weekday) => ({ weekday, date: null, body: [] })) };
+      return {
+        type,
+        days: (weekDays.length ? weekDays : MONDAY_TO_FRIDAY)
+          .slice(0, 7)
+          .map(({ weekday, date }) => ({ weekday, date, body: [] })),
+      };
     case 'pergroup':
       return { type, groups: Object.fromEntries(groupIds.map((id) => [id, []])) };
   }
@@ -31,7 +48,8 @@ export function blankSections(
   template: Template,
   planId: string,
   gradeGroups: ReadonlyArray<Pick<GradeGroup, 'id'>>,
-  newId: () => string
+  newId: () => string,
+  weekDays: ReadonlyArray<WeekGridDay> = []
 ): PlanSection[] {
   return template.sections.map((s) =>
     PlanSection.parse({
@@ -40,7 +58,8 @@ export function blankSections(
       key: s.key,
       content: blankContent(
         s.contentType,
-        gradeGroups.map((g) => g.id)
+        gradeGroups.map((g) => g.id),
+        weekDays
       ),
     })
   );

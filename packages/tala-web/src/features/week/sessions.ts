@@ -8,6 +8,7 @@ import { suggestPack, termWeekFor, type PackSuggestion } from '../../data/recomm
 import type { useTimeline } from '../../data/timeline';
 import { topicLabel } from '../../data/topics';
 import { ordinalInWeek, sessionOver, type Clock } from './upnext';
+import { outsideSchoolWeek } from './weekdays';
 
 /** The parts of the timeline this file reads (each is stable between renders, so callers can memoise on them). */
 type Timeline = Pick<ReturnType<typeof useTimeline>, 'entries' | 'ws' | 'competencyById'>;
@@ -54,6 +55,11 @@ export interface SessionView {
   canMark: boolean;
   /** Finished (by the clock) or on a past date. */
   over: boolean;
+  /**
+   * On a day outside the school week (a Saturday or Sunday class). DepEd's weeks run Monday to Friday, so the
+   * competency due here is Tala's suggestion; the screen says so.
+   */
+  weekend: boolean;
 }
 
 const STATE_OF = (e: TimelineEntry): SessionState =>
@@ -93,8 +99,11 @@ export function buildSessions(tl: Timeline, index: PackIndex | null, lang: Lang,
         // belongs to another subject (multi-grade rooms).
         if (science && grade && !beforeTala && index && entry.byGroupKind?.[gid] !== 'other_subject') {
           const suggestion = suggestPack(index, { grade, competencyIds: ids, term: where?.term ?? null, week: where?.week ?? null, lang });
+          // A pack has Days 1–5. A sixth class in the same week (Monday to Saturday) has no pack day of its own:
+          // it gets the pack's lessons without a day rather than a second "Day 5".
+          const nth = ordinalInWeek(timed, entry);
           library = suggestion
-            ? { kind: 'pack', suggestion, day: suggestion.sameWeek ? Math.min(5, ordinalInWeek(timed, entry)) : null }
+            ? { kind: 'pack', suggestion, day: suggestion.sameWeek && nth <= 5 ? nth : null }
             : // A lesson with a topic and no pack is said plainly; a buffer or assessment day with none stays quiet.
               ids.length
               ? { kind: 'none', grade, term: where?.term ?? comp?.termIndex ?? null }
@@ -124,6 +133,7 @@ export function buildSessions(tl: Timeline, index: PackIndex | null, lang: Lang,
           : `/lessons/new?classId=${entry.classId}&assignmentId=${entry.assignmentId}&date=${entry.date}&slotId=${entry.slotId}`,
         canMark: entry.date <= now.date && groups.length > 0,
         over: sessionOver(timing, now),
+        weekend: outsideSchoolWeek(entry.date, tl.ws.activeYear?.teachingWeekdays),
       };
     })
     .sort((a, b) => a.date.localeCompare(b.date) || (a.startTime ?? '99:99').localeCompare(b.startTime ?? '99:99') || a.subject.localeCompare(b.subject));

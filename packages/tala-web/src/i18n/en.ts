@@ -971,6 +971,11 @@ export const en = {
   ...combineEn,
   ...slidesEn,
   ...uploadsEn,
+  // Weekend class days (Nov 27)
+  'setup.weekendHint':
+    'Tala counts Saturday and Sunday classes as class days and suggests what to teach on them. You can change it.',
+  'wk.weekend.note':
+    'Tala suggested this for {weekday}, because DepEd plans its weeks Monday to Friday. You can change it in your plan.',
 } as const;
 
 export type StringKey = keyof typeof en;

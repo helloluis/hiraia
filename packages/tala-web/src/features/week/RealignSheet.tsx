@@ -12,8 +12,8 @@ import {
   undoApplied,
   type CombinedPreview,
 } from '@/data/realign';
-import { addDays } from '@/data/ids';
 import { Badge, Banner, Button, Placeholder, Sheet, TextInput, cx } from '@/components/ui';
+import { nextMakeupDate } from './weekdays';
 
 /** Preview-and-confirm realignment (§7.6, PACE-6). Default option first; apply is reversible in one step. */
 export function RealignSheet({
@@ -44,7 +44,22 @@ export function RealignSheet({
     [tl.ws, tl.competencies, tracks, tl.today, tl.defaults]
   );
   const [option, setOption] = useState<RealignmentOption | null>(null);
-  const [makeup, setMakeup] = useState(() => nextSaturday(tl.today));
+  // The next Saturday, or the next free day when the affected subjects already meet on Saturday, until the
+  // teacher picks a date herself.
+  const suggestedMakeup = useMemo(
+    () =>
+      nextMakeupDate(
+        tl.today,
+        tracks.flatMap(
+          (tr) =>
+            tl.ws.assignments.find((a) => a.id === tr.assignmentId)?.slots.map((s) => s.weekday) ??
+            []
+        )
+      ),
+    [tl.today, tl.ws.assignments, tracks]
+  );
+  const [pickedMakeup, setMakeup] = useState<string | null>(null);
+  const makeup = pickedMakeup ?? suggestedMakeup;
   const [preview, setPreview] = useState<CombinedPreview | null>(null);
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -158,14 +173,4 @@ export function RealignSheet({
       )}
     </Sheet>
   );
-}
-
-function nextSaturday(today: string): string {
-  let d = today;
-  for (let i = 0; i < 7; i++) {
-    d = addDays(today, i + 1);
-    const w = new Date(d + 'T12:00:00Z').getUTCDay();
-    if (w === 6) return d;
-  }
-  return d;
 }

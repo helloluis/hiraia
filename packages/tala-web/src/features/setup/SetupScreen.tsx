@@ -40,11 +40,11 @@ import {
   Select,
   TextInput,
   Waiting,
-  cx,
 } from '@/components/ui';
+import { DayPicker } from './DayPicker';
+import { DEFAULT_DAYS } from './days';
 
 const GRADES: GradeLevel[] = ['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
-const WEEKDAYS = [1, 2, 3, 4, 5, 6] as const;
 
 interface GroupDraft {
   id: string;
@@ -587,41 +587,13 @@ export function SetupScreen() {
                   {t('common.remove')}
                 </Button>
               </div>
-              <fieldset>
-                <legend className="font-medium mb-1">{t('setup.days')}</legend>
-                <div className="flex flex-wrap gap-2">
-                  {WEEKDAYS.map((d) => {
-                    const on = s.days.includes(d);
-                    return (
-                      <button
-                        key={d}
-                        type="button"
-                        aria-pressed={on}
-                        onClick={() =>
-                          setSubjects((ss) =>
-                            ss.map((x) =>
-                              x.id === s.id
-                                ? {
-                                    ...x,
-                                    days: on
-                                      ? x.days.filter((y) => y !== d)
-                                      : [...x.days, d].sort(),
-                                  }
-                                : x
-                            )
-                          )
-                        }
-                        className={cx(
-                          'min-h-touch min-w-touch px-3 rounded border',
-                          on ? 'bg-talaTeal text-white border-talaTeal' : 'bg-white border-hairline'
-                        )}
-                      >
-                        {weekdayShort(d, lang)}
-                      </button>
-                    );
-                  })}
-                </div>
-              </fieldset>
+              <DayPicker
+                legend={t('setup.days')}
+                days={s.days}
+                onChange={(days) =>
+                  setSubjects((ss) => ss.map((x) => (x.id === s.id ? { ...x, days } : x)))
+                }
+              />
               <div className="grid grid-cols-2 gap-2">
                 <TextInput
                   label={t('setup.minutesPerSession')}
@@ -682,7 +654,7 @@ export function SetupScreen() {
                   id: newId(),
                   learningAreaId: curriculum === 'none' ? null : learningAreaId,
                   name,
-                  days: [1, 2, 3, 4, 5],
+                  days: [...DEFAULT_DAYS],
                   minutes: '50',
                   startTime: '',
                   groupIds: groups.map((g) => g.id),
@@ -855,11 +827,4 @@ export function evenTerms(start: string, end: string): SchoolYear['terms'] {
     startDate: new Date(s + Math.round(span * i) + (i ? 86400_000 : 0)).toISOString().slice(0, 10),
     endDate: i === 3 ? end : new Date(s + Math.round(span * (i + 1))).toISOString().slice(0, 10),
   }));
-}
-
-function weekdayShort(d: number, lang: 'fil' | 'en'): string {
-  const date = new Date(Date.UTC(2024, 0, d)); // 2024-01-01 is a Monday
-  return new Intl.DateTimeFormat(lang === 'fil' ? 'fil-PH' : 'en-PH', { weekday: 'short' }).format(
-    date
-  );
 }

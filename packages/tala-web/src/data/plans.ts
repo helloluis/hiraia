@@ -15,12 +15,12 @@ import {
   type Lang,
   type Plan,
   type PlanSection,
-  type RichText,
   type SectionContent,
   type Template,
   type TemplateSection,
   type TeachingAssignment,
 } from '@hiraia/tala-core/contracts';
+import { addDays, mondayOf } from './ids';
 
 export function templateById(id: string, custom: Template[] = []): Template | null {
   return BUILTIN_TEMPLATES.find((t) => t.id === id) ?? custom.find((t) => t.id === id) ?? null;
@@ -39,10 +39,7 @@ export function emptyContent(
   gradeGroupIds: string[],
   weekDates: Array<{ date: string | null; weekday: number }> = []
 ): SectionContent {
-  const base = blankContent(type, gradeGroupIds);
-  if (base.type === 'weekgrid' && weekDates.length)
-    return { type: 'weekgrid', days: weekDates.map((d) => ({ ...d, body: [] as RichText })) };
-  return base;
+  return blankContent(type, gradeGroupIds, weekDates);
 }
 
 export function blankSections(
@@ -52,17 +49,12 @@ export function blankSections(
   newId: () => string,
   weekDates: Array<{ date: string | null; weekday: number }> = []
 ): PlanSection[] {
-  const sections = sharedBlankSections(
+  return sharedBlankSections(
     template,
     planId,
     gradeGroupIds.map((id) => ({ id })),
-    newId
-  );
-  if (!weekDates.length) return sections;
-  return sections.map((s) =>
-    s.content.type === 'weekgrid'
-      ? { ...s, content: emptyContent('weekgrid', gradeGroupIds, weekDates) }
-      : s
+    newId,
+    weekDates
   );
 }
 
@@ -122,6 +114,12 @@ export function newPlan(a: NewPlanArgs): { plan: Plan; sections: PlanSection[] }
     .map((g) => g.grade);
   const minutes = a.assignment?.slots[0]?.minutes ?? 50;
   const id = a.newId();
+  const weekDates = a.template.span === 'week' ? weekPlanDays(a.assignment, a.dates[0] ?? null) : [];
+  // A week plan for a Saturday or Sunday class is placed on each day the subject meets that week, so each of those
+  // sessions shows it and generation knows how many days the week has (buildGenerationInput). A weekday-only week
+  // plan keeps the single date it was made for, as before.
+  const meetsOnWeekend = weekDates.some((d) => d.weekday >= 6) && weekDates.every((d) => d.date);
+  const dates = meetsOnWeekend ? weekDates.map((d) => d.date!) : a.dates.slice(0, 7);
   const plan: Plan = {
     id,
     title: a.title ?? '',
@@ -135,9 +133,7 @@ export function newPlan(a: NewPlanArgs): { plan: Plan; sections: PlanSection[] }
     curriculumVersion: a.curriculumVersion ?? null,
     customObjectives: [],
     durationMinutes: minutes,
-    placements: a.cls
-      ? [{ classId: a.cls.id, assignmentId: a.assignment?.id ?? null, dates: a.dates.slice(0, 7) }]
-      : [],
+    placements: a.cls ? [{ classId: a.cls.id, assignmentId: a.assignment?.id ?? null, dates }] : [],
     state: 'draft',
     lock: null,
     submitted: null,
@@ -147,20 +143,25 @@ export function newPlan(a: NewPlanArgs): { plan: Plan; sections: PlanSection[] }
     unitId: null,
     conflictCopyOf: null,
   };
-  const weekDates = a.template.span === 'week' ? weekDatesFrom(a.dates[0] ?? null) : [];
   return { plan, sections: blankSections(a.template, id, groupIds, a.newId, weekDates) };
 }
 
-function weekDatesFrom(first: string | null): Array<{ date: string | null; weekday: number }> {
-  if (!first) return [1, 2, 3, 4, 5].map((weekday) => ({ date: null, weekday }));
-  const [y, m, d] = first.split('-').map(Number);
-  const base = new Date(Date.UTC(y!, m! - 1, d!, 12));
-  const dow = (base.getUTCDay() + 6) % 7; // 0 = Monday
-  const monday = new Date(base.getTime() - dow * 86400_000);
-  return [0, 1, 2, 3, 4].map((i) => {
-    const dt = new Date(monday.getTime() + i * 86400_000);
-    return { date: dt.toISOString().slice(0, 10), weekday: i + 1 };
-  });
+/**
+ * The days a week plan (DLL) lays out for the Monday-to-Sunday week that contains `date`. A subject that meets
+ * only on weekdays keeps the classic Monday-to-Friday grid, whatever days it meets. A subject with a Saturday or
+ * Sunday class gets the days it actually meets instead (Mon/Wed/Sat: three days), dated within that week.
+ */
+export function weekPlanDays(
+  assignment: Pick<TeachingAssignment, 'slots'> | null,
+  date: string | null
+): Array<{ date: string | null; weekday: number }> {
+  const meets = [...new Set(assignment?.slots.map((s) => s.weekday) ?? [])].sort((x, y) => x - y);
+  const weekdays = meets.some((d) => d >= 6) ? meets : [1, 2, 3, 4, 5];
+  const monday = date ? mondayOf(date) : null;
+  return weekdays.map((weekday) => ({
+    date: monday ? addDays(monday, weekday - 1) : null,
+    weekday,
+  }));
 }
 
 /** Human title fallback for lists. */

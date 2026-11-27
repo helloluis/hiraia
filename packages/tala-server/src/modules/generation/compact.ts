@@ -297,6 +297,28 @@ export function multigradeSchedule(input: DraftInput) {
     { slot: n + 2, minutes: edge, transitionMinutes: 0, teacherWith: 'all' },
   ];
 }
+/**
+ * The weekdays of a week plan's sessions. A plan laid out on the days its class meets (a Saturday or Sunday class:
+ * Monday, Wednesday and Saturday) names them in its own week grid; those are used when the grid has one day per
+ * session. Otherwise Monday onwards, as before.
+ */
+export function weekSchedule(input: DraftInput, source?: unknown) {
+  const grid = Array.isArray(source)
+    ? (source as Array<{ content?: SectionContent }>).find((s) => s?.content?.type === 'weekgrid')
+        ?.content
+    : undefined;
+  const planned =
+    grid?.type === 'weekgrid'
+      ? [...new Set(grid.days.map((d) => d.weekday))]
+          .filter((d) => Number.isInteger(d) && d >= 1 && d <= 7)
+          .sort((a, b) => a - b)
+      : [];
+  const weekdays =
+    planned.length === input.sessions
+      ? planned
+      : Array.from({ length: input.sessions }, (_, i) => i + 1);
+  return weekdays.map((weekday) => ({ weekday, minutes: input.timeBudgetMinutes }));
+}
 export function compactTemplateSchema(template: Template, input?: DraftInput) {
   const refs = input
     ? objectiveTargets(input).flatMap((g) => g.objectives.map((o) => o.ref))
@@ -606,10 +628,7 @@ export function lessonRequest(
         profile: input.classProfile,
         schedule:
           template.span === 'week'
-            ? Array.from({ length: input.sessions }, (_, i) => ({
-                weekday: i + 1,
-                minutes: input.timeBudgetMinutes,
-              }))
+            ? weekSchedule(input, opts.source)
             : input.gradeGroups.length > 1
               ? multigradeSchedule(input)
               : procedureSchedule(input),
