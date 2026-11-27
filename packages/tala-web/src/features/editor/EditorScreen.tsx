@@ -26,6 +26,7 @@ import { CompetencyPicker } from './CompetencyPicker';
 import { PdfSheet } from './PdfSheet';
 import { MoreSheet } from './MoreSheet';
 import { RegenSheet } from './RegenSheet';
+import { PresentationPanel } from './PresentationPanel';
 import { PostSheet } from '@/features/community/PostSheet';
 import { Toast } from '@/components/ui';
 
@@ -185,6 +186,7 @@ export function EditorScreen({ planId }: { planId: string }) {
             ? `${t('editor.saved')} · ${t('editor.waitingToSend')}`
             : t('editor.saved')}
       </p>
+      <PresentationPanel ed={ed} />
 
       {locked && plan.lock && (
         <Banner kind="info">
