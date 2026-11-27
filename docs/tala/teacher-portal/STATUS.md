@@ -1664,3 +1664,14 @@ bridge 2db386b4).
   "your own text was kept"); "Queue it" after a failure asks again and writes the draft; a lesson with one objective
   she wrote keeps it, the rest drafted, the banner names Objectives. Model replaced by a labelled local stand-in;
   the real-provider runs are those above.
+
+#### 27 Nov 2026: follow-ups logged (pre-existing, outside the six-item release; release owner's lane)
+
+Seen by the motion task owner in its recordings, not caused by any current branch:
+- The draft page's Competencies row shows raw competency ids for a few tenths of a second while the curriculum packs
+  load (GenerateScreen falls back to the id; since 14 Nov, 1429cae0a). Fix: a "still loading" state from the packs
+  hook so the row waits instead of showing ids.
+- After a full page reload an English-language account sees the app shell in Filipino for an instant (the default
+  language applies until the profile loads).
+Both stay open; neither changes saved data. The motion owner was allowed one more real-provider full draft on its
+final build (the earlier three are used, ~US$0.0016 each).
