@@ -9,6 +9,8 @@
  * `phase` comes from the request itself: 'sending' until `generation.create` answers, then the job's own status from
  * `pollJob(…, onTick)` ('queued' | 'running'). The caller shows this only while the request is open and takes it away
  * on done, failed, cancelled or when the screen closes, so nothing keeps running after the request has ended.
+ * Pass 'queued' as soon as the job says so: this component says "waiting in line" only once that has lasted, because
+ * every new request is queued for an instant even when nothing is ahead of it.
  *
  * Honest by construction (see ai-status.ts): no percentage, no invented step, no promise of when it ends.
  * Screen readers: the caption is a polite live region that changes a handful of times per request; the ticking time
@@ -18,7 +20,13 @@
 import { useEffect, useState } from 'react';
 import { useT } from '@/i18n';
 import { Button, Sparkle } from '@/components/ui';
-import { aiCaption, formatElapsed, type AiCaption, type AiPhase } from './ai-status';
+import {
+  QUEUE_SHOWN_AFTER_MS,
+  aiCaption,
+  formatElapsed,
+  type AiCaption,
+  type AiPhase,
+} from './ai-status';
 
 /** Every line a request can show, in the order it can show them. */
 const CAPTIONS: readonly AiCaption[] = [
@@ -57,8 +65,24 @@ export function AiStatus({
     const id = window.setInterval(() => setNow(Date.now()), 1000);
     return () => window.clearInterval(id);
   }, [startedAt]);
+  // Since when the request has been known to be queued. "Waiting in line" is said only once that has lasted longer
+  // than one look at the job takes (see QUEUE_SHOWN_AFTER_MS): every new request is queued for an instant.
+  const [queuedAt, setQueuedAt] = useState<number | null>(() =>
+    phase === 'queued' ? Date.now() : null
+  );
+  useEffect(() => {
+    if (phase !== 'queued') {
+      setQueuedAt(null);
+      return;
+    }
+    setQueuedAt((at) => at ?? Date.now());
+    // Look again just after that moment; the once-a-second tick could be most of a second late.
+    const id = window.setTimeout(() => setNow(Date.now()), QUEUE_SHOWN_AFTER_MS + 30);
+    return () => window.clearTimeout(id);
+  }, [phase]);
   const elapsedMs = Math.max(0, now - startedAt);
-  const caption = aiCaption({ phase, elapsedMs, reachable });
+  const queuedForMs = phase === 'queued' && queuedAt !== null ? Math.max(0, now - queuedAt) : 0;
+  const caption = aiCaption({ phase, elapsedMs, reachable, queuedForMs });
   const wordsFor = (c: AiCaption) =>
     c === 'slow' && canBackground ? t('ai.status.slowBackground') : t(`ai.status.${c}`);
   return (

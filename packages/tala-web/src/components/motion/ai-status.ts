@@ -2,7 +2,8 @@
  * What to say while Tala is writing (pure, tested). The words follow two things only, both real:
  *
  *  - where the request is: not yet answered by the server ("sending"), accepted and waiting for its turn ("queued":
- *    the server writes one draft at a time), or being written ("running"). These are the job's own states.
+ *    the server writes one draft at a time), or being written ("running"). These are the job's own states. One of
+ *    them is said later than it is reported: see QUEUE_SHOWN_AFTER_MS.
  *  - how long the teacher has actually been waiting.
  *
  * There is no percentage and no invented step ("reading the curriculum…"), because the server reports none. Nothing
@@ -27,18 +28,35 @@ export type AiCaption =
 export const STILL_AFTER_MS = 20_000;
 export const LONGER_AFTER_MS = 45_000;
 export const SLOW_AFTER_MS = 75_000;
+/**
+ * The server answers "queued" for every new request, and starts it within a tenth of a second when nothing is ahead
+ * of it; the screen hears of that at its next look, about a second later. Saying "waiting in line… when the one
+ * before it is done" during that second would claim a line that is not there. So the line is said only once the
+ * request has been waiting longer than one look takes. Until then the screen goes on saying it is being sent.
+ */
+export const QUEUE_SHOWN_AFTER_MS = 1_500;
 
 /** The job's status as the server reports it, or null before the server has answered. */
 export function phaseOf(status: string | null | undefined): AiPhase {
   return status === 'running' ? 'running' : status === 'queued' ? 'queued' : 'sending';
 }
 
-export function aiCaption(a: { phase: AiPhase; elapsedMs: number; reachable: boolean }): AiCaption {
+export function aiCaption(a: {
+  phase: AiPhase;
+  elapsedMs: number;
+  reachable: boolean;
+  /** How long the request has been known to be queued (0 when it is not, or has only just been). */
+  queuedForMs: number;
+}): AiCaption {
   if (!a.reachable) return 'offline';
   if (a.phase === 'sending') return 'sending';
   const waited = Number.isFinite(a.elapsedMs) ? a.elapsedMs : 0;
+  if (a.phase === 'queued') {
+    const inLine = Number.isFinite(a.queuedForMs) ? a.queuedForMs : 0;
+    if (inLine < QUEUE_SHOWN_AFTER_MS) return 'sending';
+    return waited >= SLOW_AFTER_MS ? 'slow' : 'queued';
+  }
   if (waited >= SLOW_AFTER_MS) return 'slow';
-  if (a.phase === 'queued') return 'queued';
   if (waited >= LONGER_AFTER_MS) return 'longer';
   if (waited >= STILL_AFTER_MS) return 'still';
   return 'running';
