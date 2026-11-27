@@ -1727,3 +1727,93 @@ approval for the **combined** candidate `f3e6f52a9` (the six Lesson Plan items +
 - **Reconciled before any write (09:30 UTC):** production `tala-v1-demo.18`, healthy, active since 26 Nov 07:08:36 UTC
   with 0 restarts; deploy lock free; no other agent running; the combined worktree clean at `f3e6f52a9`; the motion
   branch unchanged at `a1fd881ed` since its hand-off; notes tip `f242d6208`; no production write had started.
+
+## Lesson Plan items + motion on production: 2026-11-27 10:06–10:27 UTC (18:06–18:27 PHT) — `tala-v1-demo.19`
+
+**Authority.** Luis's "Proceed" (27 Nov 17:28 Manila, rq_fpm7ghfr), recorded above: the combined candidate `f3e6f52a9`.
+
+**Release.** Branch `tala-v1-lesson-feedback-motion` at `7388fac20` = `f3e6f52a9` + a docs-only merge of the notes
+(`f86e79b58`; the build set is byte-identical by tree hash: core, server, web, brand, lockfile). Tag `tala-v1-demo.19`
+(tag object `f9865dc7…`, commit `7388fac20d5c…`), pushed with the branch. Clean export check of `7388fac20`: 0 type
+errors, tests core 326 / server 376 + 1 skipped / web 169, production build. Lockfile unchanged from demo.18; 106 build-set
+files differ. Window `release-lesson-feedback/window-lesson.sh` (refuses without the approval line); the hiraia deploy
+lock held 10:05:52–10:27:53 UTC (free beforehand; two non-Tala agents running, neither holding it).
+- **Backup** `/var/backups/tala/20261127T100625Z` (database with integrity check ok, settings, previous release
+  demo.18, rows per table, library hashes; checksums verified). **Deploy** 10:06:32–10:07:02 UTC, `deploy.sh` exit 0,
+  "healthy on tala-v1-demo.19"; only the service restarted; 0 restarts since. **Rollback:**
+  `sudo -n ssh b11-apps /opt/tala/deploy.sh tala-v1-demo.18` (code only; demo.18 ignores the new tables and columns).
+- **Live checks:** health `0.1.0+tala-v1-demo.19`; 10 public pages 200; the contract's 26 private GET routes (4 new:
+  a lesson's presentation, its AI job, its PowerPoint, a deck's earlier versions) 401 signed out; `/forms` 123 files
+  identical to the manifest; the curriculum served unchanged (English 1,218, Language 141, Reading and Literacy 83,
+  Science 322, Effective Communication 44, every new entry with page, link and file hash); migration
+  `decks:006_lesson_presentations` applied once (10:07:01.949Z): 4 new tables, three new columns on slide copies (the
+  2 existing copies: origin `pack`); no rows changed in any existing table except `kernel_migrations`; both teaching
+  libraries unchanged; the R2 store check passed.
+
+**Signed in, the release owner's test account** — production copies of the candidate's own walks
+(`release-lesson-feedback/walk/*-prod.mjs`, made by script from the release commit: same checks, but they sign in instead
+of registering, add labelled synthetic rooms to the account's active year and read no database: requests are counted
+in the browser and jobs read through the API). Rehearsed first on a local build of `7388fac20` with an account shaped
+like the test account. Real AI where marked.
+- **Item 1, Materials: 48 checks, all passed.** The empty-materials hint; the sheet names the missing class materials
+  before sending and offers a field ("Save and rewrite" waits for it); two fast clicks made exactly one request; REAL
+  rewrite listing only the class's materials; after a reload and on the server; the typed materials saved to the class;
+  an existing lesson: "Tala chooses only from them" and the edited-part warning, REAL rewrite, the previous list kept
+  as a revision on the server. Connection dropped in the browser (simulated; no request reached the server): "No signal
+  right now. Your work is safe on this device…" at the top of the sheet, in view on a phone, with Try again; nothing
+  written; Try again ran once (REAL) and persisted. Offline: queued and told, nothing sent; back online the background
+  runner sent it once (REAL), applied, persisted, no failure notice. Device full (simulated): "Not saved" with Try
+  again, never "Saved"; saved after Try again, survives a reload.
+- **Items 5 and 6** (inside the 48): long titles wrap and grow with no inner scrollbar at phone, foldable, desktop and
+  200% zoom (English, Filipino, one unbroken word); Rewrite with AI at the top right of every pre-class section and
+  Required beside the title, no overlap, touch-sized, keyboard reachable.
+- **Items 2 and 3, slides: 47 checks, all passed.** The slides panel at the top of the Lesson Plan view; a pack day's
+  slides as her own copy with the "match your lesson plan" cue; a slide edited in the editor is saved; "Rewrite this
+  slide with AI" (REAL) proposes and writes nothing until used, then only that slide changes; Earlier versions puts her
+  words back and keeps the AI version too; Present; PowerPoint with her words and the credits; the lesson changed →
+  the stale cue, slides untouched; "Rewrite all slides" (REAL) replaces only that day's slides. An English lesson with
+  no pack: slides made with AI (REAL), kept only when she says so, labelled as AI drafts (PowerPoint too). Multi-grade:
+  a two-grade session put together from each grade's own lesson in block order (Grade 5 without slides said plainly);
+  a three-grade session (Grade 1 Reading and Literacy, Grades 2–3 English) with Grade 1's slides made from the session
+  panel (REAL); a change to the session plan on another device shows in its PowerPoint; Filipino panel.
+- **Item 4, Saturday and Sunday: first run 20/28, follow-up 34/34.** First run passed: Add a class offers all seven
+  days with the weekend note, proposes starting points, the days are saved and reach another device, the school year
+  is untouched, the week runs Monday to Sunday, Sunday's class shows its topic and label, "Later" moves to the next
+  week. Its 8 failures were the walk's premises, not the product: this account is not weekday-only (two multi-grade
+  rooms seeded on 25 Nov meet all seven days, which demo.19 now honours) and its first class has lessons without a start
+  time (Up next stays on today all day, an existing rule), so its Saturday checks read the wrong card. Follow-up run
+  (rehearsed under the same conditions), Saturday read from its own row: the class's Saturday lessons with topics and
+  the weekend note; a Saturday plan saved on Saturday with that day's competencies; the class screen keeps Science
+  Saturday+Sunday; adding Sunday to English persists with its old period ids; English shows on Sunday; the English week
+  plan is laid out Monday, Wednesday, Saturday, Sunday; the Filipino note and day picker.
+- **Motion: 85 of 87.** Moving Session Flow blocks and Procedure steps 41/41 (movement, identity, focus, persistence);
+  reduced motion 15/15 (nothing travels; one REAL draft); the next-step arrow 29/31. **Live defect (cosmetic):** on This
+  Week with a long list (29 lessons today on this account) the arrow is placed at the screen edge pointing to an
+  off-screen "Write a plan", and there it overlapped a neighbouring "Write a plan" (desktop) and a line of text (Filipino
+  phone); a later capture shows it in the left gutter over a card's border, and on the phone not shown. It lasts about
+  1.8 s and never takes the click. The live AI waiting state: "sending", then "queued" once the server held the job,
+  gone the moment the answer was in (a 1.2 s Materials rewrite), its stages from the server.
+- **Regressions:** English 35/35; Grade 1 Language + Effective Communication 34/34 and their files 9/9 by parser;
+  multi-grade lesson plans 20/20; uploads 35/35 (its upload deleted, the stored object removed).
+- **AI:** the test account made 9 model calls, US$0.0117; its allowance after: 1 full and 10 section of 5/15.
+
+**Teacher data:** every other account's rows are identical to the backup in every table (records, sync log,
+revisions, slide copies, uploads, AI jobs and usage), except one other account's session last-seen and expiry (its own
+use during the window) and hash-only counters (ended sign-ins, rate limits, the sequence); content-addressed slide
+pictures: the 15 existing rows unchanged, 9 added for the test account's new decks. The test account's earlier copy
+(sci26-g5-t3-w07) unchanged. No other account has a Saturday or Sunday slot or weekend teaching days (0 of 6 subjects,
+0 years): the weekend rule changes nothing in their weeks. Accounts 5 → 5. Logs since the deploy: 0 errors, 0 server
+errors, one known startup notice (auto-verify), no key-like string.
+
+**Evidence** (7 days, each file verified byte for byte):
+https://lnj.b11.dev/reports/73eb368e8289da4799dc2b1bcefaea8306c854f3a0cb3373e73022c31dad48b9 (35 screenshots).
+Files: `/home/b11/tala-takeover-20261125/release-lesson-feedback/prod-walk-demo19/`.
+
+**Ledger:** 1–6 deployed in `tala-v1-demo.19`; the motion task's work deployed with them.
+
+**Open follow-ups:** (1) the next-step arrow's edge placement on long lists must apply the same "covers nothing" test
+as its other places (motion task; not fixed in this release); (2) the loading flashes logged above (competency ids on the
+draft page, Filipino shell after a reload, This Week empty state, "not on this device"); (3) Microsoft Office application
+checks of the new PowerPoint files (parsers only); (4) a teacher's review; (5) the existing pacing quirk, for Luis;
+(6) the test account now holds seven-day rooms and a class without start times: weekday-only checks need their own rooms.
+**Not part of this approval and not done:** the held subjects, publishing the English draft packs, the pacing quirk.
