@@ -1525,3 +1525,41 @@ posting, account merge, Google sign-in (off), password reset (no mail service), 
 succeeded at once), attempts through the browser UI (the API was used directly), Office application checks. The
 rehearsal-machine results of 24–25 Nov are not counted as production evidence. Evidence (no secrets):
 `/home/b11/tala-takeover-20261125/isolation-20261126/`.
+
+## 27 Nov 2026 11:36 Manila: Luis's six Lesson Plan items (rq_cqeyj7c8; item 1 corrected 11:41, rq_tdngzpga) — implementation started
+
+**Luis, verbatim:** "Couple of feedback that we wanna work on immediately: 1) Lesson Plan - Materials 2) Presentations
+should be displayed prominently in the Lesson Plan view, so the teacher already knows that they need to edit it to
+coincide with their lesson plan. There should be an AI regeneration button on the slides too. 3) Multigrade
+presentations should be dynamically assembled in the Lesson Plan view. 4) Saturday and Sunday classes need to be
+supported because some schools don't have a choice when they will hold their classes. So just make it selectable and
+then just do a best-guess on what they would need to cover on that day. 5) I noticed some weird titlebar issues in the
+Lesson Plan view. A long title will get a scrollbar, when it should just wrap normally as a normal text header. 6) in
+the Lesson Plan view, the REWRITE WITH AI button should be on the top right of each section. The "required" pill
+should be right beside the title of the section." **Item 1 clarified (11:41, verbatim):** "1) Lesson Plan - Materials
+- there was something wrong with the "GENERATE WITH AI" button there but i didnt get an error message" — the task is
+to reproduce and fix that silent failure (the earlier generic materials-list assumption is withdrawn).
+
+**Authority:** implementation and testing now. Deploying this UI release is not covered by the curriculum approvals:
+the candidate will be finished and verified first, then one waiting_for_user question is recorded.
+
+**State at start:** production `tala-v1-demo.18`, healthy; base `tala-v1-filipino` 9abe019ca; no other agent running
+on b11-dev; every Tala owner on b11-002 idle (only an unrelated Let's Read agent running).
+
+**Lanes and edit scope (one integrator):**
+- Release owner, worktree `tala-wt/plan`, branch `tala-v1-lesson-feedback`: items 1, 5, 6 (Lesson Plan editor,
+  section AI sheet, lesson generation checks and prompts) and the integration of the other two lanes.
+- Worker W (internal subagent), worktree `tala-wt/weekend`, branch `tala-v1-weekend-days`: item 4 (setup, class
+  edit, This Week, pacing, plan/timeline/recommend helpers; minimal hunks in the generation input/schedule).
+- Worker P (internal subagent), worktree `tala-wt/slides`, branch `tala-v1-plan-slides`: items 2 and 3 (slide copies
+  module, slide prompts, multi-grade assembly in tala-core, slides UI, a new presentation panel the integrator mounts).
+
+**Item 1, evidence before any fix (production, metadata only, no lesson text or account shown):** all 4 Materials
+rewrites ever run on production (3 multi-grade, 1 single-grade, the latest 27 Nov 03:33 UTC) finished as `done`
+with EMPTY results (0 items; 0 characters per grade), each in about a second, and every one came from a class with no
+listed resources. Cause: every lesson prompt says "materials: ONLY exact names from profile materials/textbooks",
+and the server check rejects any other name, so a class without listed resources can only get an empty list. That
+empty list passes, is saved over the section as a success ("Part rewritten"), and nothing tells the teacher why.
+
+**Ledger:** 1 running (root cause found) · 2 running (worker P) · 3 running (worker P) · 4 running (worker W) ·
+5 running · 6 running.
