@@ -883,6 +883,8 @@ export const fil = {
     'May mga draft na teaching pack para sa {built} sa kabuuang {weeks} linggo. Gawa ng AI ang mga ito at wala pang gurong nagsuri.',
   'landing.s.cur.packsMixed':
     'May mga teaching pack para sa {built} sa kabuuang {weeks} linggo. Nakasaad sa bawat pack kung may gurong nagsuri na rito.',
+  'landing.s.cur.packsAsk':
+    'Makikita sa Library kung aling mga linggo ang may nakahandang teaching pack at kung may gurong nagsuri na rito.',
   'landing.s.cur.link': 'Buksan ang Library',
   'landing.s.cur.mapLabel': 'Mga linggo sa Science ayon sa grade at term',
   'landing.s.cur.gradeCol': 'Grade',

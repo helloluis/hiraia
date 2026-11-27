@@ -841,6 +841,8 @@ export const en = {
     'Draft lesson packs are ready for {built} of {weeks} weeks. They are AI drafts that no teacher has reviewed yet.',
   'landing.s.cur.packsMixed':
     'Lesson packs are ready for {built} of {weeks} weeks. Each pack says whether a teacher has reviewed it.',
+  'landing.s.cur.packsAsk':
+    'The Library shows which weeks have a ready-made lesson pack and whether a teacher has reviewed it.',
   'landing.s.cur.link': 'Open the Library',
   'landing.s.cur.mapLabel': 'Science weeks by grade and term',
   'landing.s.cur.gradeCol': 'Grade',

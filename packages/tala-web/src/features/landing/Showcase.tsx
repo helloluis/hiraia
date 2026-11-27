@@ -69,10 +69,12 @@ export function Showcase({ coverage = SCIENCE_COVERAGE }: { coverage?: ScienceCo
   return (
     <section id="screens" aria-labelledby="home-does" className="scroll-mt-4 px-4 py-14 wide:px-8 wide:py-24">
       <div className="mx-auto flex max-w-6xl flex-col gap-16 wide:gap-28">
-        {/* The section's name is a quiet label; the three headlines below carry the page. */}
-        <h2 id="home-does" className="kicker -mb-8 flex items-center gap-4 font-body text-forestMuted wide:-mb-14">
-          <span>{t('landing.todayTitle')}</span>
-          <span aria-hidden="true" className="h-px flex-1 bg-hairline" />
+        {/*
+          The section's name is a quiet label; the three headlines below carry the page. The rule is the heading's own
+          top border, full width: a rule drawn beside the words would slide sideways when the words change language.
+        */}
+        <h2 id="home-does" className="kicker -mb-8 border-t border-hairline pt-4 font-body text-forestMuted wide:-mb-14">
+          {t('landing.todayTitle')}
         </h2>
 
         {/* 1 — the multi-grade lesson plan: picture left, words right */}
@@ -110,15 +112,14 @@ export function Showcase({ coverage = SCIENCE_COVERAGE }: { coverage?: ScienceCo
           >
             <Lead>{t('landing.s.cur.b', { competencies: coverage.competencies })}</Lead>
             {/*
-              Packs are a different claim from the curriculum, and only what the library itself reports is said. While
-              it is being asked, the line's space is kept (nothing visible, nothing read out); with no answer the line
-              is left out altogether. A number is never shown that the library did not just give.
+              Packs are a different claim from the curriculum, and only what the library itself has just reported is
+              said with numbers. Until it answers (and when it does not: no script, no signal, an error) the line says
+              the one thing that is always true, so a number is never shown that the library did not give, and the
+              page's HTML never carries one either.
             */}
-            {packCoverage.state !== 'failed' && (
-              <p className={cx('max-w-[34rem] text-body text-forestMuted', !packs && 'invisible')} aria-hidden={packs ? undefined : true}>
-                {t(packsLine, { built: packs ? packs.built.size : coverage.weeks, weeks: coverage.weeks })}
-              </p>
-            )}
+            <p className="max-w-[34rem] text-body text-forestMuted" data-packs={packCoverage.state}>
+              {packs ? t(packsLine, { built: packs.built.size, weeks: coverage.weeks }) : t('landing.s.cur.packsAsk')}
+            </p>
             <ArrowLink href="/library">{t('landing.s.cur.link')}</ArrowLink>
           </Words>
           <div className="wide:col-span-7">
