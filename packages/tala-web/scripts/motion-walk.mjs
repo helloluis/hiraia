@@ -1056,6 +1056,33 @@ try {
         check(`${SIM}, REAL time: through all of it the box and the buttons stayed exactly where they were`, new Set(log.filter((x) => x.height).map((x) => x.height)).size === 1 && new Set(log.filter((x) => x.nextTop).map((x) => x.nextTop)).size === 1, log.map((x) => `${(x.t / 1000).toFixed(1)} s ${x.state}`).join(' → '));
       }
 
+      /* ---- S. a very slow answer, in REAL time (80 s): every line of the waiting state, in order ----
+         Needs a server whose own model time-out is longer than that (--slow says it is). */
+      if (isNew && flag('slow') && want('S')) {
+        st.mode = 'ok';
+        st.delayMs = 80000;
+        startBtn = await openGenerate(d, 'draftPlain');
+        await startBtn.scrollIntoViewIfNeeded();
+        await watchAi(d);
+        const t0 = Date.now();
+        await startBtn.click();
+        const seen = {};
+        for (const status of ['running', 'still', 'longer', 'slow']) {
+          await waitAi(d, status, 40000);
+          const now = await aiState(d);
+          seen[status] = { at: Math.round((Date.now() - t0) / 100) / 10, caption: now.caption, elapsed: now.elapsed, bar: now.barState };
+          await d.page.locator('.tala-ai').scrollIntoViewIfNeeded();
+          await shot(d, `s-slow-${status}`);
+        }
+        check(`${SIM}, REAL time: over an 80-second wait the line changes at about 20, 45 and 75 seconds — still writing, still working, longer than usual with what she can do — and the bar keeps moving`,
+          seen.running.caption === en['ai.status.running'] && seen.still.caption === en['ai.status.still'] && seen.longer.caption === en['ai.status.longer'] && seen.slow.caption === en['ai.status.slowBackground']
+            && Math.abs(seen.still.at - 20) <= 2 && Math.abs(seen.longer.at - 45) <= 2 && Math.abs(seen.slow.at - 75) <= 2 && Object.values(seen).every((x) => x.bar === 'running'),
+          Object.entries(seen).map(([k, v]) => `${v.at} s ${k}: “${v.caption}” (${v.elapsed})`).join(' → '));
+        const arrived = await d.page.waitForURL(drafted, { timeout: 40000 }).then(() => true).catch(() => false);
+        const log = await aiLog(d);
+        check(`${SIM}, REAL time: after 80 seconds the draft arrives; through all four lines the box and the buttons never moved; four lines in all for a screen reader`, arrived && new Set(log.filter((x) => x.height).map((x) => x.height)).size === 1 && new Set(log.filter((x) => x.nextTop).map((x) => x.nextTop)).size === 1 && log.filter((x) => x.caption).length <= 6, log.map((x) => `${(x.t / 1000).toFixed(1)} s ${x.state}`).join(' → '));
+      }
+
       /* ---- C. the model fails: the real failure is shown and the waiting state stops ---- */
       if (want('C')) {
       st.mode = 'error';
@@ -1096,7 +1123,7 @@ try {
       const jobsT = jobsOf('draftPlain').length;
       const tHang = Date.now();
       await startBtn.click();
-      await d.page.getByText(en['gen.failed.providers_unavailable']).waitFor({ timeout: 120000 });
+      await d.page.getByText(en['gen.failed.providers_unavailable']).waitFor({ timeout: 240000 });
       const hung = jobsOf('draftPlain').slice(jobsT);
       check(`${SIM} (the model never answers): the server gives up by its own time-out and the page shows that failure; the waiting state does not run on`, (await aiState(d)) === null && hung.length === 1 && hung[0].status === 'failed', `${((Date.now() - tHang) / 1000).toFixed(1)} s until the failure was shown; ${JSON.stringify(hung)}`);
 
