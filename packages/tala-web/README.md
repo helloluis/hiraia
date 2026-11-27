@@ -59,17 +59,25 @@ password, join another account (`account.merge`, both proofs). Every server reas
 ## Public pages
 
 - `/` — public homepage in hiraia.org's proportions: the photograph is the hero (near-full-viewport, headline card
-  laid over it), then a scroll-snap screenshot carousel, short feature headlines, "Our Promise", one get-started
-  card, and hiraia.org's footer (QVAC mark + the same disclaimer). Server-rendered; the only client state is the
-  "Open my week" swap for a signed-in visitor. Copy is Taglish in the Filipino locale.
+  laid over it), then what Tala does in three pictures (`src/features/landing/Showcase.tsx`: one lesson plan for a
+  multi-grade room, slides she can edit, the DepEd Science curriculum by week), "Our Promise", one get-started card,
+  and hiraia.org's footer (QVAC mark + the same disclaimer). Server-rendered; the client state is the "Open my week"
+  swap for a signed-in visitor and the library's answer about packs. Copy is Taglish in the Filipino locale. Design
+  notes, claims and how to check it: `docs/tala/homepage/README.md`.
   - Hero art: `assets-src/tala-hero-teacher-master.jpg` is the one master (as generated, no edits);
     `scripts/hero-build.cjs` rebuilds `public/brand/tala-hero-teacher{,-wide,-mobile}.{webp,jpg}` (1.2 % rim trim,
     3:4 phone crop around the teacher).
-  - Carousel screenshots: `scripts/demo-seed.mjs` seeds a fictional teacher through the real API and sync engine
-    (two classes incl. a Grade 3/4/5 multigrade room, invented rosters, the saved DeepSeek Friction plans), then
-    `scripts/demo-capture.mjs` captures `public/screens/*.{webp,jpg}` at 393 px @2× (encoded 786 px wide) and
-    1280 px, each scrolled to its most informative part. Run both against a local production server
-    (`TALA_ENV=local`, temp `TALA_DB_PATH`); see the headers of each script.
+  - Product pictures: `scripts/home-capture.mjs` seeds a fictional teacher per language through the real API and
+    sync engine and photographs the real lesson editor and slide editor into `public/screens/home/` (wide and phone
+    layout, English and Filipino, WebP + JPEG, with `manifest.json`). Run it against a local production server
+    (`TALA_ENV=local`, temp `TALA_DB_PATH`, the Science pack library); it calls no model. After a run, copy the sizes
+    from the manifest into `src/features/landing/shots.ts` (`showcase.test.ts` checks them and the byte budgets).
+  - Curriculum map: its numbers are generated from the shipped Science curriculum packs by
+    `scripts/home-coverage.mjs` into `src/features/landing/science-coverage.generated.ts` (`coverage.test.ts` fails
+    when the file and the packs disagree). Which weeks have a teaching pack is asked from `/api/v1/packs/index` when
+    the page is opened; no count is written into the copy.
+  - The earlier screenshot carousel and its `public/screens/*` files are retired; `scripts/demo-seed.mjs` and
+    `scripts/demo-capture.mjs` (which made them) no longer feed any page.
   - Hero is capped at 80 svh (min 520 px) with a quiet scroll cue; the footer is dark forest like hiraia.org's.
 - `/download` also shows an **experimental** "Tala with on-device AI (QVAC)" card when
   `${TALA_DOWNLOAD_DIR}/tala-with-qvac-apk.json` exists (same schema plus optional `note` and `requires`).

@@ -1,32 +1,17 @@
 'use client';
 /**
  * Public homepage at `/`. Hero in hiraia.org's proportions: a near-full-viewport photograph with the headline card
- * laid over it (card on the right because the teacher stands left of centre), then a screenshot carousel, short
- * feature headlines, Our Promise, and one get-started card. Strings only; no literal colours.
+ * laid over it (card on the right because the teacher stands left of centre), then what Tala does in three pictures
+ * (Showcase.tsx), Our Promise, and one get-started card. Strings only; no literal colours.
  */
 import Link from 'next/link';
 import { useT } from '@/i18n';
 import { useSession } from '@/data/session';
 import { LinkButton } from '@/components/ui';
-import { Carousel, type Screen } from './Carousel';
 import { Feature, PublicShell } from './PublicShell';
+import { Showcase } from './Showcase';
 
-// The library is an early preview (a few sample weeks), so it follows the features teachers can rely on today.
-const FEATURES = ['pacing', 'ai', 'roster', 'edit', 'offline', 'community', 'library'] as const;
 const PROMISES = ['free', 'offline', 'simple', 'check'] as const;
-export const SCREENS: Screen[] = [
-  { name: 'week-phone', w: 786, h: 1704, captionKey: 'landing.c.week', kind: 'phone' },
-  { name: 'library-phone', w: 786, h: 1704, captionKey: 'landing.c.library', kind: 'phone' },
-  { name: 'pack-phone', w: 786, h: 1704, captionKey: 'landing.c.pack', kind: 'phone' },
-  { name: 'slides-phone', w: 786, h: 1704, captionKey: 'landing.c.slides', kind: 'phone' },
-  { name: 'editor-phone', w: 786, h: 1704, captionKey: 'landing.c.editor', kind: 'phone' },
-  { name: 'draft-phone', w: 786, h: 1704, captionKey: 'landing.c.draft', kind: 'phone' },
-  { name: 'roster-phone', w: 786, h: 1704, captionKey: 'landing.c.roster', kind: 'phone' },
-  { name: 'print-phone', w: 786, h: 1704, captionKey: 'landing.c.print', kind: 'phone' },
-  { name: 'community-phone', w: 786, h: 1704, captionKey: 'landing.c.community', kind: 'phone' },
-  { name: 'slides-desktop', w: 1200, h: 750, captionKey: 'landing.c.mycopy', kind: 'desktop' },
-  { name: 'week-desktop', w: 1200, h: 750, captionKey: 'landing.c.desktop', kind: 'desktop' },
-];
 
 export function LandingPage() {
   const { t } = useT();
@@ -117,29 +102,8 @@ export function LandingPage() {
         </a>
       </section>
 
-      {/* SCREENS */}
-      <section id="screens" className="px-4 py-12 wide:px-8 wide:py-16 scroll-mt-4">
-        <div className="mx-auto max-w-6xl flex flex-col gap-6">
-          <h2 className="font-display text-[1.75rem] leading-tight wide:text-[2.25rem] break-words [overflow-wrap:anywhere]">
-            {t('landing.todayTitle')}
-          </h2>
-          <Carousel screens={SCREENS} />
-        </div>
-      </section>
-
-      {/* FEATURES — strong headlines, one or two sentences */}
-      <section className="px-4 pb-12 wide:px-8 wide:pb-16">
-        <div className="mx-auto max-w-6xl grid gap-4 wide:grid-cols-3">
-          {FEATURES.map((f) => (
-            <Feature
-              key={f}
-              kicker={t(`landing.f.${f}.k`)}
-              body={t(`landing.f.${f}.b`)}
-              badge={f === 'community' ? t('landing.beta') : undefined}
-            />
-          ))}
-        </div>
-      </section>
+      {/* WHAT TALA DOES — three pictures; the hero's arrow lands here (#screens) */}
+      <Showcase />
 
       {/* OUR PROMISE */}
       <section className="px-4 py-12 wide:px-8 wide:py-16 bg-forest text-cream">

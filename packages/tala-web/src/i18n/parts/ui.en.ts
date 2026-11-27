@@ -44,10 +44,6 @@ export const uiEn = {
   'nudge.title': 'Short on time? Start from a ready-made pack',
   'nudge.body': 'Lesson plans, slides and a teacher guide for the week are in the Library.',
   /* landing carousel: the new screens */
-  'landing.c.library': 'The Library: a ready-made Science pack for each week (early preview; the packs are drafts).',
-  'landing.c.pack': 'Lesson plans you can read at a glance: timed steps, and the lines to say.',
-  'landing.c.slides': 'Slides for the classroom TV. Swipe through them; every slide has teacher notes.',
-  'landing.c.mycopy': 'Make the slides yours: change the words on your own copy, then present or download it.',
   /* pack page */
   'pk.kicker': 'Grade {grade} Science · Term {term} · Week {week}',
   'pk.fact.lessons': '5 lessons · 45 minutes each',

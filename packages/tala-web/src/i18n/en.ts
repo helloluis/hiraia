@@ -803,24 +803,6 @@ export const en = {
   'landing.heroAlt':
     'A public-school teacher smiles at her class in a bamboo-walled classroom, holding a phone and lesson papers in front of a blank chalkboard, with pupils watching from their desks.',
   'landing.todayTitle': 'See what Tala can do',
-  'landing.f.roster.k': 'Class lists from any file',
-  'landing.f.roster.b':
-    'Paste names or upload the file you already keep. You check every uncertain row. Names only, never LRNs.',
-  'landing.f.pacing.k': 'This week, from the curriculum',
-  'landing.f.pacing.b': 'Science, Grades 3 to 10 today. More subjects coming.',
-  'landing.f.ai.k': 'Lesson drafts with AI',
-  'landing.f.ai.b':
-    'One plan for a multi-grade room of up to four grade levels. DeepSeek, with Qwen as backup.',
-  'landing.f.edit.k': 'Edit, lock, PDF',
-  'landing.f.edit.b':
-    'Plain text sections. Lock it when it is final and print it in A4 or long bond.',
-  'landing.f.offline.k': 'Works offline on Android',
-  'landing.f.offline.b':
-    'Your week and your lessons stay on the phone. They send themselves when the signal is back.',
-  'landing.f.community.k': 'Share with other teachers',
-  'landing.f.community.b':
-    'Post a locked lesson, copy one, make it yours. Credit stays with the author.',
-  'landing.beta': 'Beta',
   'landing.p.free.k': 'Free forever',
   'landing.p.free.b': 'No payments, no premium tier. Hiraia is not-for-profit.',
   'landing.p.offline.k': 'Works offline',
@@ -838,18 +820,36 @@ export const en = {
   'landing.scrollCue': 'See more below',
   'landing.promiseTitle': 'Our Promise',
   'landing.early': 'An early version. Free, honest, still growing.',
-  'landing.carouselLabel': 'Screens of Tala',
-  'landing.c.week': 'Your week, paced from the Science curriculum. Three grade levels in one room.',
-  'landing.c.editor':
-    'One lesson for a multi-grade room: time blocks per grade, and where the teacher is.',
-  'landing.c.draft': 'An AI draft arrives marked as a draft. You read it, fix it, lock it.',
-  'landing.c.roster': 'Paste a class list. Tala cleans it and asks you about every uncertain row.',
-  'landing.c.print': 'Lock a lesson and print it. A4 or long bond, with signature lines.',
-  'landing.c.community': 'Lessons other teachers shared (beta). Copy one and make it yours.',
-  'landing.c.desktop': 'The same week on a laptop.',
+  'landing.s.mg.k': 'Multi-grade classes',
+  'landing.s.mg.h': 'One lesson plan for every grade in the room.',
+  'landing.s.mg.b':
+    'Start together, teach one grade at a time while the others work on their own, then finish together.',
+  'landing.s.mg.alt':
+    'Tala’s lesson editor for a class of Grades 4, 5 and 6. A timeline divides the hour into time blocks. In the block shown, the teacher is with Grade 5 while Grade 4 carries on by itself.',
+  'landing.s.sl.k': 'Slides',
+  'landing.s.sl.h': 'Slides for your lesson, ready to edit.',
+  'landing.s.sl.b':
+    'Change any word, rewrite a slide with AI, then present it or download it as PowerPoint.',
+  'landing.s.sl.draft': 'AI draft: check the science before class',
+  'landing.s.sl.alt':
+    'Tala’s slide editor showing a Grade 5 Science slide about gravity, with a drawing of a falling mango. Beside the slide are boxes for changing its words and teacher notes, and buttons to rewrite it with AI, present, and download PowerPoint. A line under the slide says it comes from a draft pack no teacher has reviewed yet.',
+  'landing.s.cur.k': 'DepEd Science curriculum',
+  'landing.s.cur.h': 'Science for Grades {from} to {to}, week by week.',
+  'landing.s.cur.b':
+    '{competencies} learning competencies from DepEd’s 2026 Budget of Work, each with its page number so you can check the source.',
+  'landing.s.cur.packs':
+    'Draft lesson packs are ready for {built} of {weeks} weeks. They are AI drafts that no teacher has reviewed yet.',
+  'landing.s.cur.packsMixed':
+    'Lesson packs are ready for {built} of {weeks} weeks. Each pack says whether a teacher has reviewed it.',
+  'landing.s.cur.link': 'Open the Library',
+  'landing.s.cur.mapLabel': 'Science weeks by grade and term',
+  'landing.s.cur.gradeCol': 'Grade',
+  'landing.s.cur.cell': '{weeks} weeks, {competencies} competencies',
+  'landing.s.cur.cellPacks': '{weeks} weeks, {competencies} competencies, lesson packs for {built} weeks',
+  'landing.s.cur.legendMapped': 'Week with DepEd competencies',
+  'landing.s.cur.legendPack': 'Draft lesson pack ready',
+  'landing.s.cur.legendPackMixed': 'Lesson pack ready',
   'landing.builtWithQvac': 'Built with QVAC SDK',
-  'landing.prev': 'Previous screen',
-  'landing.next': 'Next screen',
   'download.title': 'Download the Android app',
   'download.intro':
     'The Tala app for Android keeps your week, your lessons and your PDFs on the phone, with or without signal.',
@@ -965,8 +965,6 @@ export const en = {
   'gen.adaptTitle': 'Adapt this lesson with AI',
   'gen.adaptNotice': 'AI rewrites this Hiraia lesson for your class: time, materials, grade levels and language. The original stays in History.',
   'landing.openLibrary': 'See the sample lesson packs (preview)',
-  'landing.f.library.k': 'Prepared weekly packs (early preview)',
-  'landing.f.library.b': 'A few sample DepEd Science weeks so far, each with five lesson plans, TV slides with speaker notes and a teacher guide, in English and Filipino. They are drafts: written with AI and checked by a second AI, not yet reviewed by a teacher.',
   'lib.pack.language': 'Language of the pack',
   'lib.pack.filipino': 'Filipino',
   'lib.pack.english': 'English',

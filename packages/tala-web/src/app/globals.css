@@ -317,3 +317,54 @@
     rotate: -90deg;
   }
 }
+
+/*
+ * ---------- Homepage showcase (27 Nov 2026). Additive: nothing above is changed. ----------
+ * Used only by src/features/landing (Showcase.tsx, CurriculumMap.tsx). Two small movements, both switched off by the
+ * reduced-motion rule in the base layer, and neither hides anything unless a script has asked for it.
+ */
+@layer components {
+  /* A product capture's box keeps each layout's own proportions, so the page does not move while the picture loads. */
+  .tala-landing-shot {
+    aspect-ratio: var(--shot-phone);
+  }
+  @media (min-width: 600px) {
+    .tala-landing-shot {
+      aspect-ratio: var(--shot-single);
+    }
+  }
+  @media (min-width: 840px) {
+    .tala-landing-shot {
+      aspect-ratio: var(--shot-wide);
+    }
+  }
+
+  /* A picture still below the screen rises into place once (useReveal.ts sets data-reveal; without it, nothing). */
+  .tala-landing-reveal[data-reveal] {
+    transition:
+      opacity 480ms var(--tala-ease),
+      translate 480ms var(--tala-ease);
+  }
+  .tala-landing-reveal[data-reveal='wait'] {
+    opacity: 0;
+    translate: 0 14px;
+  }
+  /* Reduced motion, and paper: a waiting picture is simply there. */
+  @media (prefers-reduced-motion: reduce) {
+    .tala-landing-reveal[data-reveal='wait'] {
+      opacity: 1;
+      translate: none;
+    }
+  }
+  @media print {
+    .tala-landing-reveal[data-reveal='wait'] {
+      opacity: 1;
+      translate: none;
+    }
+  }
+
+  /* The marks for weeks that have a pack appear when the library has answered. */
+  .tala-landing-cap {
+    animation: tala-fade-in 400ms var(--tala-ease) both;
+  }
+}

@@ -46,10 +46,6 @@ export const uiFil = {
   'nudge.title': 'Kulang sa oras? Magsimula sa pack sa Library',
   'nudge.body': 'Nasa Library ang mga lesson plan, slides at teacher guide para sa linggo.',
   /* landing carousel: the new screens */
-  'landing.c.library': 'Sa Library makikita ang mga Science pack para sa iba’t ibang linggo. Paunang preview ito at draft pa ang mga pack.',
-  'landing.c.pack': 'Madaling sundan ang lesson plan. May oras para sa bawat hakbang at may gabay sa sasabihin mo.',
-  'landing.c.slides': 'Slides para sa TV sa klase. Mag-swipe para lumipat ng slide. May teacher notes ang bawat isa.',
-  'landing.c.mycopy': 'Palitan ang mga salita sa sarili mong kopya ng slides. Puwede mo itong i-present o i-download.',
   /* pack page */
   'pk.kicker': 'Grade {grade} Science · Term {term} · Week {week}',
   'pk.fact.lessons': '5 aralin · tig-45 minuto',

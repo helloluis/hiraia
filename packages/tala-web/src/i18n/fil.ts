@@ -843,56 +843,55 @@ export const fil = {
   'landing.heroAlt':
     'Nakangiti ang guro sa harap ng klase. May hawak siyang cellphone at mga papel. Nakaupo ang mga mag-aaral at nakatingin sa kaniya.',
   'landing.todayTitle': 'Tingnan kung ano ang kaya ng Tala',
-  'landing.f.roster.k': 'Gamitin ang listahan ng klase mo',
-  'landing.f.roster.b':
-    'I-paste ang mga pangalan o i-upload ang file na gamit mo na. Ikaw ang susuri sa mga hanay na minarkahan ng Tala. Pangalan lang ang kailangan. Huwag isama ang LRN.',
-  'landing.f.pacing.k': 'Iskedyul na batay sa kurikulum',
-  'landing.f.pacing.b': 'Science para sa Grade 3 hanggang 10 muna. Susunod ang iba pang asignatura.',
-  'landing.f.ai.k': 'Mga lesson plan na may tulong ng AI',
-  'landing.f.ai.b':
-    'Gumawa ng isang plano para sa multigrade na klaseng may hanggang apat na baitang. DeepSeek ang gamit, at Qwen ang backup.',
-  'landing.f.edit.k': 'I-edit, i-lock at i-save bilang PDF',
-  'landing.f.edit.b':
-    'Madaling punan ang bawat bahagi. I-lock kapag tapos na, tapos i-print sa A4 o long bond paper.',
-  'landing.f.offline.k': 'Gumagana offline sa Android',
-  'landing.f.offline.b':
-    'Nasa cellphone mo ang iskedyul at mga aralin mo. Awtomatikong ipapadala ang mga pagbabago pagbalik ng signal.',
-  'landing.f.community.k': 'Magbahagi sa ibang guro',
-  'landing.f.community.b':
-    'I-post ang naka-lock na aralin o kumopya ng aralin para sa klase mo. Mananatili ang pagkilala sa gumawa.',
-  'landing.beta': 'Beta',
-  'landing.p.free.k': 'Palaging libre',
-  'landing.p.free.b': 'Walang bayad at walang premium na plano. Nonprofit ang Hiraia.',
-  'landing.p.offline.k': 'Gumagana offline',
-  'landing.p.offline.b': 'Gawa ang Android app para magamit kahit mahina o walang signal.',
+  'landing.p.free.k': 'Libre at mananatiling libre',
+  'landing.p.free.b': 'Walang bayad sa paggamit ng Tala at walang premium na plano. Nonprofit ang Hiraia.',
+  'landing.p.offline.k': 'Magagamit offline ang Android app',
+  'landing.p.offline.b':
+    'Madalas mahina ang signal dito, kaya ginawa namin ang Android app para magamit kahit mahina ang koneksyon.',
   'landing.p.simple.k': 'Madaling gamitin',
-  'landing.p.simple.b': 'Kung marunong kang mag-text, kaya mo ang Tala.',
-  'landing.p.check.k': 'Suriin muna ang draft',
+  'landing.p.simple.b': 'Hindi kailangan ng espesyal na kaalaman sa tech para magamit ang Tala.',
+  'landing.p.check.k': 'Draft pa lang ang gawa ng AI',
   'landing.p.check.b':
-    'Sinusuri ng Tala ang format ng draft na gawa ng AI. Ikaw ang susuri kung tama ang nilalaman bago mo i-lock.',
+    'Format lang ng draft na gawa ng AI ang sinusuri ng Tala. Ikaw ang susuri kung tama ang impormasyon bago mo i-lock ang draft.',
   'landing.getTitle': 'Gamitin sa browser o i-download ang Android app',
   'landing.footerHiraia': 'Proyekto ng Hiraia',
   'landing.footerDeped':
     'Hiraia is not affiliated with or endorsed by the Philippine Department of Education. Its alignment with the Revised K-12 Curriculum is based on information and content in the public domain, and is not guaranteed to be accurate, and has not been reviewed by the Department of Education or other public academic institutions. Although its originator has endeavoured to provide the most accurate synthesis possible of the current public school science curriculum, usage of Hiraia should be carried out at your own risk.',
 
   'landing.scrollCue': 'May iba pa sa baba',
-  'landing.promiseTitle': 'Ang pangako namin',
-  'landing.early': 'Paunang bersyon pa ito. Libre itong gamitin at patuloy pa naming pinapahusay.',
-  'landing.carouselLabel': 'Mga screen ng Tala',
-  'landing.c.week':
-    'Iskedyul para sa tatlong baitang sa isang klase, batay sa kurikulum ng Science.',
-  'landing.c.editor':
-    'May takdang oras para sa bawat baitang sa multigrade na aralin. Makikita rin kung aling grupo ang kasama ng guro.',
-  'landing.c.draft': 'May label na draft ang ginawa ng AI. Basahin, ayusin at i-lock kapag handa na.',
-  'landing.c.roster':
-    'I-paste ang listahan ng klase. Aayusin ito ng Tala at mamarkahan ang mga hanay na kailangan mong suriin.',
-  'landing.c.print': 'I-lock ang aralin at i-print sa A4 o long bond paper. May puwang para sa mga pirma.',
-  'landing.c.community':
-    'Mga araling ibinahagi ng ibang guro (beta). Kumopya ng aralin at iakma sa klase mo.',
-  'landing.c.desktop': 'Ang iskedyul ding iyon, sa laptop naman.',
+  'landing.promiseTitle': 'Ang pangako namin sa iyo',
+  'landing.early':
+    'Paunang bersyon pa lang ito. Libre itong gamitin at patuloy namin itong pinapahusay. Sinasabi namin kung ano ang kaya nitong gawin at kung saan may limitasyon.',
+  'landing.s.mg.k': 'Multigrade na klase',
+  'landing.s.mg.h': 'Isang lesson plan para sa lahat ng baitang sa klase mo.',
+  'landing.s.mg.b':
+    'Magsimula nang sabay-sabay, turuan ang bawat baitang nang isa-isa habang may sariling gawain ang iba, saka magtapos nang sabay-sabay.',
+  'landing.s.mg.alt':
+    'Lesson editor ng Tala para sa klaseng may Baitang 4, 5 at 6. Ipinapakita sa timeline ang mga bahagi ng isang oras na klase. Sa bahaging ito, kasama ng guro ang Baitang 5 habang itinutuloy ng mga nasa Baitang 4 ang sarili nilang gawain.',
+  'landing.s.sl.k': 'Slides',
+  'landing.s.sl.h': 'Slides para sa aralin mo, handa nang i‑edit.',
+  'landing.s.sl.b':
+    'Palitan ang kahit anong salita, ipasulat ulit sa AI ang isang slide, tapos i‑present o i‑download bilang PowerPoint.',
+  'landing.s.sl.draft': 'Draft mula sa AI. Suriin ang Science bago magklase.',
+  'landing.s.sl.alt':
+    'Slide editor ng Tala na nagpapakita ng Grade 5 Science slide tungkol sa gravity. May guhit ng bumabagsak na mangga sa slide. Sa tabi, may mga kahon para baguhin ang teksto at teacher notes. May mga button din para ipasulat ulit sa AI ang slide, i-present ito o i-download bilang PowerPoint. May paalala sa ilalim na galing ang slide sa draft na teaching pack na wala pang gurong nagsuri.',
+  'landing.s.cur.k': 'Kurikulum ng DepEd sa Science',
+  'landing.s.cur.h': 'Science para sa Grade {from} hanggang {to}, nakaayos ayon sa linggo.',
+  'landing.s.cur.b':
+    '{competencies} learning competency mula sa 2026 Budget of Work ng DepEd. May numero ng pahina ang bawat isa para masuri mo sa mismong dokumento.',
+  'landing.s.cur.packs':
+    'May mga draft na teaching pack para sa {built} sa kabuuang {weeks} linggo. Gawa ng AI ang mga ito at wala pang gurong nagsuri.',
+  'landing.s.cur.packsMixed':
+    'May mga teaching pack para sa {built} sa kabuuang {weeks} linggo. Nakasaad sa bawat pack kung may gurong nagsuri na rito.',
+  'landing.s.cur.link': 'Buksan ang Library',
+  'landing.s.cur.mapLabel': 'Mga linggo sa Science ayon sa grade at term',
+  'landing.s.cur.gradeCol': 'Grade',
+  'landing.s.cur.cell': '{weeks} linggo, {competencies} competency',
+  'landing.s.cur.cellPacks': '{weeks} linggo, {competencies} competency, may teaching pack para sa {built} linggo',
+  'landing.s.cur.legendMapped': 'Linggong may DepEd competency',
+  'landing.s.cur.legendPack': 'May draft na teaching pack',
+  'landing.s.cur.legendPackMixed': 'May teaching pack',
   'landing.builtWithQvac': 'Ginawa gamit ang QVAC SDK',
-  'landing.prev': 'Nakaraang screen',
-  'landing.next': 'Susunod na screen',
   'download.title': 'I-download ang Android app',
   'download.intro': 'Makikita sa cellphone mo ang iskedyul, mga aralin at PDF, may signal man o wala.',
   'download.button': 'I-download ang app ({size})',
@@ -1006,8 +1005,6 @@ export const fil = {
   'gen.adaptTitle': 'Iakma ang aralin gamit ang AI',
   'gen.adaptNotice': 'Isusulat ulit ng AI ang araling ito ng Hiraia para umangkop sa oras, kagamitan, mga baitang at wikang gamit sa klase mo. Makikita pa rin ang orihinal sa mga naunang bersyon.',
   'landing.openLibrary': 'Tingnan ang mga sample pack',
-  'landing.f.library.k': 'Mga lingguhang teaching pack (preview)',
-  'landing.f.library.b': 'Mga halimbawang linggo sa Science ng DepEd, sa English at Filipino. Bawat linggo ay may limang lesson plan, slides para sa TV na may speaker notes, at teacher guide. Draft pa ang mga ito. Ginawa gamit ang AI at binasa ng isa pang AI. Wala pang gurong nagsuri.',
   'lib.pack.language': 'Wika ng pack',
   'lib.pack.filipino': 'Filipino',
   'lib.pack.english': 'English',
