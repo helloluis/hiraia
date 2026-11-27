@@ -568,11 +568,16 @@ export const fil = {
   'gen.regenShort': 'Isulat ulit',
   'gen.queuedFailed':
     'Hindi natuloy ang nauna mong hiling na isulat ulit ang "{section}". {reason}',
-  'gen.keptOwnText': 'Nasa aralin na ang draft mula sa AI. Hindi pinalitan ang sarili mong sinulat sa: {sections}.',
-  'gen.keptAll': 'Sarili mong sinulat ang bawat bahagi ng araling ito, kaya walang pinalitan ang draft.',
-  'gen.failed.apply_failed': 'Dumating ang draft pero hindi ito mailagay sa aralin (baka naka-lock ito). Walang binago.',
-  'editor.saveFailed': 'Hindi na-save sa device na ito. Nasa screen pa ang binago mo; pindutin ang Subukan ulit.',
-  'editor.saveFailedStorage': 'Hindi na-save: puno na ang storage ng device na ito. Nasa screen pa ang binago mo; magbakante ng espasyo, saka pindutin ang Subukan ulit.',
+  'gen.keptOwnText':
+    'Nasa aralin na ang draft mula sa AI. Gaya pa rin ng dati ang sarili mong sinulat sa {sections}.',
+  'gen.keptAll':
+    'Ikaw ang sumulat ng bawat bahagi ng araling ito, kaya walang pinalitan ang draft mula sa AI.',
+  'gen.failed.apply_failed':
+    'Nagawa ang draft, pero hindi ito nailagay sa aralin. Baka naka-lock ang aralin. Walang binago.',
+  'editor.saveFailed':
+    'Hindi na-save sa device na ito ang mga binago mo. Nasa screen pa ang mga ito. Pindutin ang Subukan ulit.',
+  'editor.saveFailedStorage':
+    'Puno na ang storage ng device na ito, kaya hindi na-save ang mga binago mo. Nasa screen pa ang mga ito. Magbakante ng espasyo, saka pindutin ang Subukan ulit.',
   'gen.tryAgain': 'Subukan ulit',
   'gen.stillWorking':
     'Isinusulat pa ng Tala ang bagong bersyon ng "{section}". Puwede kang magpasulat ulit kapag tapos na ito.',
@@ -1138,7 +1143,7 @@ export const fil = {
   'pp.rev.open': 'Mga naunang bersyon',
   'pp.rev.title': 'Mga naunang bersyon',
   'pp.rev.hint':
-    'Itinatabi ng Tala ang dating ayos ng slides tuwing gagamitin ang mungkahi ng AI, ibabalik ang naunang bersyon, o muling kokopyahin ang orihinal.',
+    'Itinatabi ng Tala ang kasalukuyang bersyon ng slides bago gamitin ang mungkahi ng AI, ibalik ang naunang bersyon o muling kopyahin ang orihinal.',
   'pp.rev.none': 'Wala pang naunang bersyon.',
   'pp.rev.loadFailed': 'Hindi mabuksan ang mga naunang bersyon. Tingnan ang koneksyon at subukan ulit.',
   'pp.rev.failed': 'Hindi maibalik ang bersyong ito. Walang binago sa slides mo. Subukan ulit.',
@@ -1159,7 +1164,7 @@ export const fil = {
   'pp.session.title':
     'Pinagsamang slides mula sa aralin ng bawat baitang',
   'pp.session.body':
-    'Pinagsama ayon sa pagkakasunod ng mga bahagi ng klase mo: ang oras ng bawat baitang kasama ka, kasama ang gawain ng iba samantala, at ang mga bahaging sabay-sabay ang buong klase. Lumalabas agad dito ang mga pagbabago sa planong ito; ang mga pagbabago sa slides ng isang baitang, kapag bumalik ka sa pahinang ito.',
+    'Nakaayos ang slides ayon sa pagkakasunod ng mga bahagi sa plano mo. Makikita rito kung kailan mo tuturuan ang bawat baitang, kung ano ang gagawin ng iba habang nagtuturo ka at kung kailan sabay-sabay ang buong klase. Lumalabas agad dito ang mga pagbabago sa plano. Makikita mo ang mga pagbabago sa slides ng isang baitang pagbalik mo sa pahinang ito.',
   'pp.session.cover': 'Simula',
   'pp.session.noLesson': 'Walang nakitang aralin para sa baitang na ito',
   'pp.session.noSlides': 'Wala pang slides ang araling ito.',
