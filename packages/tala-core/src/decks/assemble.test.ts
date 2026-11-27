@@ -185,6 +185,19 @@ test('a lesson is cut into opening questions, teaching, and its summary and exit
   assert.deepEqual(p.open.map((s) => s.id), ['d2s2']);
   assert.deepEqual(p.teach.map((s) => s.id), ['d2s3', 'd2s4', 'd2s5']);
   assert.deepEqual(p.close.map((s) => s.id), ['d2s6', 'd2s7']);
+  // A lesson that ends with a check and its answer slide (as AI decks do): that pair and the summary before it close.
+  const ai = [
+    slide('na0000001', 0, 'question', 'Q'),
+    slide('na0000002', 0, 'concept', 'C'),
+    slide('na0000003', 0, 'summary', 'S'),
+    slide('na0000004', 0, 'check', 'K', { choices: ['a', 'b'] }),
+    slide('na0000005', 0, 'reveal', 'R', { revealOf: 'na0000004', correctChoice: 0 }),
+  ];
+  assert.deepEqual(lessonPhases(ai).close.map((s) => s.id), ['na0000003', 'na0000004', 'na0000005']);
+  assert.deepEqual(lessonPhases(ai).teach.map((s) => s.id), ['na0000002']);
+  // A check in the middle stays in the teaching.
+  const mid = [slide('nb0000001', 0, 'concept', 'C'), slide('nb0000002', 0, 'check', 'K', { choices: ['a', 'b'] }), slide('nb0000003', 0, 'reveal', 'R', { revealOf: 'nb0000002' }), slide('nb0000004', 0, 'summary', 'S')];
+  assert.deepEqual(lessonPhases(mid).close.map((s) => s.id), ['nb0000004']);
   // Only questions: all of it is taught.
   const q = [slide('n0001aaaa', 0, 'question', 'Q1'), slide('n0002aaaa', 0, 'question', 'Q2')];
   assert.deepEqual(lessonPhases(q).teach.length, 2);

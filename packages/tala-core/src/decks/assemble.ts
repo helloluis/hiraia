@@ -118,9 +118,13 @@ export function lessonPhases(slides: DeckSlide[]): { open: DeckSlide[]; teach: D
   const content = slides.filter((s) => s.kind !== 'cover' && s.kind !== 'day' && s.kind !== 'credits');
   let a = 0;
   while (a < content.length && a < 2 && content[a]!.kind === 'question') a++;
+  // The close: the final check (an exit ticket, or a check with its answer slide), then the summary slides before it.
   let b = content.length;
-  const isExit = (i: number) => content[i]!.kind === 'check' && content[i + 1]?.kind !== 'reveal';
-  while (b > a && (content[b - 1]!.kind === 'summary' || isExit(b - 1))) b--;
+  const last = content[b - 1];
+  const beforeLast = content[b - 2];
+  if (b - 2 >= a && last?.kind === 'reveal' && beforeLast?.kind === 'check' && last.revealOf === beforeLast.id) b -= 2;
+  else if (b - 1 >= a && last?.kind === 'check') b -= 1;
+  while (b > a && content[b - 1]!.kind === 'summary') b--;
   if (b <= a) return { open: [], teach: content, close: [] };
   return { open: content.slice(0, a), teach: content.slice(a, b), close: content.slice(b) };
 }
