@@ -1590,3 +1590,26 @@ empty list passes, is saved over the section as a success ("Part rewritten"), an
 - Regression: the English release walk on this branch 34/34. Filipino lines for these items: the Filipino owner's
   pass applied (bridge 85a08f60: 6 rewordings, 4 OK; one later line still a draft).
 - Items 2, 3 (worker P) and 4 (worker W): running.
+
+## 27 Nov 2026: separate task — interface motion and AI drafting feedback (owner: Fable agent b11-dev:b3a74512)
+
+**Luis, verbatim:** "Assign a separate Fable 5.2 agent to add some interface flourishes across the app to make it
+feel sophisticated and professional. No need to change any of the text content, just add some nice things like a
+transition animation when moving blocks within the lesson plan timetable, or floating arrows the fade in to show where
+you're supposed to go next (and fade out after a second or two). When using AI to draft a plan, there should be
+working animation and some reassuring captions so the user doesnt feel like they're just staring at the page."
+
+- **Owner:** Paseo agent `b11-dev:b3a74512-8775-42ec-95d0-8e28610a05e9` (Fable 5.2, created by the coordinator,
+  "Tala — refined motion, next-step cues and AI drafting feedback"). The release owner stays the single integrator
+  and release gate; this task is NOT part of the six Lesson Plan items and does not hold their release.
+- **Scope (coordinator):** restrained timetable reorder motion, next-step arrows that fade after 1–2 s, real AI
+  drafting loading/status/error feedback with truthful captions (no fake stages, percentages or delays), reduced
+  motion, accessibility, performance; no existing text or lesson content changed; no new features competing with the
+  Materials fix or the slide regeneration. Source and test authorization only; no deploy authority.
+- **Coordination sent (27 Nov, `paseo send`, file `motion-coordination/to-fable-1.md`):** base = `e2534953d` (the
+  integration branch with items 1/5/6); its own worktree/branch; file boundaries — its own: the timetable
+  (`SectionEditors.tsx`, `FlowTimeline.tsx`, `blocks.ts`), the full-draft page (`features/generate/*` except
+  `GenerationRunner.tsx`), new motion/cue/status components, additive animation tokens; the release owner's, worker
+  W's and worker P's files listed; `components/ui.tsx` ask-first; RegenSheet's working state swapped by the
+  integrator (or by it after rebase); next-step cues inside This Week/setup wait for worker W's merge; new captions in
+  one i18n block for the Filipino owner's review. Hand-off: verified branch + commit range to the integrator.
