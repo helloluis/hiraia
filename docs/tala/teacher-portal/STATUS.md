@@ -1817,3 +1817,21 @@ draft page, Filipino shell after a reload, This Week empty state, "not on this d
 checks of the new PowerPoint files (parsers only); (4) a teacher's review; (5) the existing pacing quirk, for Luis;
 (6) the test account now holds seven-day rooms and a class without start times: weekday-only checks need their own rooms.
 **Not part of this approval and not done:** the held subjects, publishing the English draft packs, the pacing quirk.
+
+## 27 Nov 2026 21:31 Manila: separate task — the public homepage (owner: Fable agent b11-dev:bea7a699)
+
+Per the owner's scope declaration to the release owner (13:4x UTC, citing Luis's request rq_yrx5hmd6, assigned by
+rq_uvwqkxp7, thread ddb4d22d): improve `/` below the hero (the hero stays as it is): three visual features in this order —
+the multi-grade lesson planner, the slideshow generator, the breadth of DepEd Science curriculum coverage — in place of
+the screenshot carousel and the seven feature cards; rewrite the Filipino of "Ang pangako namin". Branch
+`tala-v1-homepage` (worktree `tala-wt/home`, local), base `f2a154a08`. The owner has no deploy authority; the release
+owner integrates; deploying needs Luis's own go-ahead (demo.19's approval does not cover it). **Nothing deployed.**
+- **Shared files agreed:** only `landing.*` i18n keys (`landing.footerDeped`, the non-affiliation line, unchanged); one
+  additive block at the end of `globals.css` (after the motion block, reduced motion honoured); `PublicShell.tsx`
+  untouched. Nothing else in flight on those files (checked 13:42 UTC: only the two agents running; the arrow and
+  loading-flash follow-ups not started). New Filipino lines go to the Filipino owner through the release owner.
+- **What the page may claim** (live public API, 13:4x UTC): Science curriculum mapped for Grades 3–10 from the DepEd
+  2026 three-term Budget of Work, 322 competencies, each with its document, edition, page and link; Science teaching
+  packs for 103 of the 262 weeks (English 103, Filipino 99), every one an AI draft (0 reviewed by a teacher), opened only
+  when signed in; Mathematics: six pilot weeks; English teaching packs are not published. Not to be claimed: teacher or
+  DepEd review or affiliation, complete coverage, verified opening in Microsoft Office (parser checks only).
