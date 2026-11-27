@@ -34,6 +34,11 @@ interface Props<C extends SectionContent> {
   label: string;
   /** Class time for the Session Flow / procedure timeline bar. */
   durationMinutes?: number;
+  /**
+   * False while the lesson's records are still loading and `content` is a blank stand-in. The "just changed" ring
+   * only watches from the first settled content, so opening a lesson never rings what it has just loaded.
+   */
+  settled?: boolean;
 }
 
 type Of<T extends SectionContent['type']> = Extract<SectionContent, { type: T }>;
@@ -44,7 +49,7 @@ type Of<T extends SectionContent['type']> = Extract<SectionContent, { type: T }>
  * is ringed (globals.css), so she sees where the change landed. Her own typing never sets it off.
  */
 export function SectionEditor(p: Props<SectionContent>) {
-  const { changed, mine } = useJustChanged(JSON.stringify(p.content));
+  const { changed, mine } = useJustChanged(JSON.stringify(p.content), p.settled !== false);
   const onChange = (c: SectionContent) => {
     mine(JSON.stringify(c));
     p.onChange(c);

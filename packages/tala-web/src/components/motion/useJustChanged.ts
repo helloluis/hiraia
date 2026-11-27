@@ -17,7 +17,14 @@ export function isOutsideChange(before: string | null, now: string, own: string 
   return before !== null && before !== now && own !== now;
 }
 
-export function useJustChanged(signature: string): {
+/**
+ * `settled`: false while what is shown is not the real value yet (records still loading, a blank stand-in on screen).
+ * Watching starts with the first settled value, so a screen that opens never marks what it has just loaded.
+ */
+export function useJustChanged(
+  signature: string,
+  settled = true
+): {
   changed: boolean;
   mine: (signature: string) => void;
 } {
@@ -26,13 +33,17 @@ export function useJustChanged(signature: string): {
   const timer = useRef(0);
   const [changed, setChanged] = useState(false);
   useEffect(() => {
+    if (!settled) {
+      last.current = null;
+      return;
+    }
     const before = last.current;
     last.current = signature;
     if (!isOutsideChange(before, signature, own.current)) return;
     setChanged(true);
     window.clearTimeout(timer.current);
     timer.current = window.setTimeout(() => setChanged(false), JUST_CHANGED_MS);
-  }, [signature]);
+  }, [signature, settled]);
   useEffect(() => () => window.clearTimeout(timer.current), []);
   const mine = useCallback((s: string) => {
     own.current = s;

@@ -460,6 +460,7 @@ export function EditorScreen({ planId }: { planId: string }) {
                     groups={ed.groups}
                     label={ts.label[lang]}
                     durationMinutes={plan.durationMinutes}
+                    settled={!ed.loading}
                     onChange={(c: SectionContent) => void onChange(c)}
                   />
                 </section>

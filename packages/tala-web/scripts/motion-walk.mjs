@@ -888,6 +888,25 @@ try {
     try {
       for (const view of ['desktop', 'phone']) {
         const s = await open(view, 'en');
+        /* ---- opening a lesson rings nothing ---- */
+        const opened = [];
+        for (const how of ['open', 'reload', 'open another']) {
+          if (how === 'reload') await s.page.reload({ waitUntil: 'domcontentloaded', timeout: 120000 });
+          else await s.page.goto(`${base}/lessons/${acct.plans[how === 'open' ? 'procedure' : 'multigrade'].planId}`, { waitUntil: 'domcontentloaded', timeout: 120000 });
+          // Every frame for three seconds from the moment the page exists: any part marked or ringed is recorded.
+          opened.push(await s.page.evaluate(() => new Promise((resolve) => {
+            const seen = new Set();
+            const t0 = performance.now();
+            const tick = (now) => {
+              for (const el of document.querySelectorAll('[data-just-changed]')) seen.add(`marked ${el.closest('section')?.getAttribute('aria-labelledby') ?? '?'}`);
+              for (const card of document.querySelectorAll('section[aria-labelledby]')) if (getComputedStyle(card).outlineStyle !== 'none') seen.add(`ringed ${card.getAttribute('aria-labelledby')}`);
+              if (now - t0 < 3000) requestAnimationFrame(tick);
+              else resolve({ seen: [...seen], filled: [...document.querySelectorAll('section[aria-labelledby^="s-"]')].filter((x) => x.querySelector('input, [contenteditable="true"]')).length });
+            };
+            requestAnimationFrame(tick);
+          })));
+        }
+        judge(`${view}: opening a lesson, reloading it and opening another rings nothing — what has just loaded is not “just changed”`, opened.every((o) => o.seen.length === 0 && o.filled >= 4), JSON.stringify(opened.map((o) => o.seen)));
         await openLesson(s, 'procedure');
         /* ---- a sheet arrives ---- */
         const sheetSelector = isNew ? 'dialog[data-sheet][open]' : 'dialog[open]';
