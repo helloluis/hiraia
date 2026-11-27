@@ -5,6 +5,7 @@ import type {
   ClassProfile,
   ClassRecord,
   PacingParams,
+  PacingTrack,
   TeachingAssignment,
 } from '@hiraia/tala-core/contracts';
 import { DEFAULT_PACING_PARAMS } from '@hiraia/tala-core/contracts';
@@ -30,12 +31,13 @@ import {
   TextArea,
   TextInput,
   Toast,
-  cx,
 } from '@/components/ui';
+import { DayPicker } from '@/features/setup/DayPicker';
+import { meetingDays, slotsForDays, tracksToRepace } from './timetable';
 
 /** Class screen (PRD §8): grade groups, timetable, profile; pacing adjustments behind "Advanced" (SIMPLE-4). */
 export function ClassScreen() {
-  const { t, lang } = useT();
+  const { t } = useT();
   const router = useRouter();
   const { engine, config } = useSession();
   const ws = useWorkspace();
@@ -254,8 +256,8 @@ export function ClassScreen() {
 
       <TimetableSheet
         assignment={editingSlots}
+        tracks={ws.tracks}
         onClose={() => setEditingSlots(null)}
-        lang={lang}
         onSaved={() => setToast(t('class.saved'))}
       />
       <Sheet
@@ -354,13 +356,13 @@ function AdvancedPacing({ classId, defaults }: { classId: string; defaults: Paci
 
 function TimetableSheet({
   assignment,
+  tracks,
   onClose,
-  lang,
   onSaved,
 }: {
   assignment: TeachingAssignment | null;
+  tracks: PacingTrack[];
   onClose: () => void;
-  lang: 'fil' | 'en';
   onSaved: () => void;
 }) {
   const { t } = useT();
@@ -370,24 +372,23 @@ function TimetableSheet({
   const [start, setStart] = useState('');
   useEffect(() => {
     if (!assignment) return;
-    setDays([...new Set(assignment.slots.map((s) => s.weekday))].sort());
+    setDays(meetingDays(assignment));
     setMinutes(String(assignment.slots[0]?.minutes ?? 50));
     setStart(assignment.slots[0]?.startTime ?? '');
   }, [assignment]);
   const save = async () => {
     if (!engine || !assignment) return;
     const m = Math.max(5, Math.min(480, parseInt(minutes, 10) || 50));
-    const slots = days.map((weekday) => {
-      const existing = assignment.slots.find((s) => s.weekday === weekday);
-      return {
-        id: existing?.id ?? `${assignment.id}-${weekday}`,
-        weekday,
-        startTime: /^\d{2}:\d{2}$/.test(start) ? start : null,
-        minutes: m,
-        rotation: existing?.rotation ?? null,
-      };
-    });
-    await engine.put('assignment', { ...assignment, slots });
+    const slots = slotsForDays(assignment, days, m, start);
+    // One operation: the new days and the tracks re-proposed for them land together.
+    await engine.batch([
+      { op: 'put', entity: 'assignment', data: { ...assignment, slots } },
+      ...tracksToRepace(tracks, assignment, days).map((tr) => ({
+        op: 'put' as const,
+        entity: 'pacing_track' as const,
+        data: tr,
+      })),
+    ]);
     onSaved();
     onClose();
   };
@@ -407,33 +408,7 @@ function TimetableSheet({
         </>
       }
     >
-      <fieldset>
-        <legend className="font-medium mb-1">{t('setup.days')}</legend>
-        <div className="flex flex-wrap gap-2">
-          {[1, 2, 3, 4, 5, 6].map((d) => {
-            const on = days.includes(d);
-            const label = new Intl.DateTimeFormat(lang === 'fil' ? 'fil-PH' : 'en-PH', {
-              weekday: 'short',
-            }).format(new Date(Date.UTC(2024, 0, d)));
-            return (
-              <button
-                key={d}
-                type="button"
-                aria-pressed={on}
-                onClick={() =>
-                  setDays((ds) => (on ? ds.filter((x) => x !== d) : [...ds, d].sort()))
-                }
-                className={cx(
-                  'min-h-touch min-w-touch px-3 rounded border',
-                  on ? 'bg-talaTeal text-white border-talaTeal' : 'bg-white border-hairline'
-                )}
-              >
-                {label}
-              </button>
-            );
-          })}
-        </div>
-      </fieldset>
+      <DayPicker legend={t('setup.days')} days={days} onChange={setDays} />
       <TextInput
         label={t('setup.minutesPerSession')}
         inputMode="numeric"

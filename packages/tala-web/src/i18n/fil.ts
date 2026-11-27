@@ -989,4 +989,9 @@ export const fil = {
   ...combineFil,
   ...slidesFil,
   ...uploadsFil,
+  // Weekend class days (Nov 27)
+  'setup.weekendHint':
+    'Bibilangin ng Tala bilang araw ng klase ang Sabado at Linggo, at magmumungkahi ito ng ituturo sa mga araw na iyon. Puwede mo itong baguhin.',
+  'wk.weekend.note':
+    'Mungkahi ito ng Tala para sa {weekday}, dahil Lunes hanggang Biyernes ang linggo sa plano ng DepEd. Puwede mo itong baguhin sa plano mo.',
 } satisfies Record<StringKey, string>;
