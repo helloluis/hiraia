@@ -255,6 +255,8 @@ export function ClassScreen() {
       </details>
 
       <TimetableSheet
+        // A fresh sheet per subject: it opens on that subject's own days, never the last subject's for a frame.
+        key={editingSlots?.id ?? 'closed'}
         assignment={editingSlots}
         tracks={ws.tracks}
         onClose={() => setEditingSlots(null)}
@@ -367,15 +369,9 @@ function TimetableSheet({
 }) {
   const { t } = useT();
   const { engine } = useSession();
-  const [days, setDays] = useState<number[]>([]);
-  const [minutes, setMinutes] = useState('50');
-  const [start, setStart] = useState('');
-  useEffect(() => {
-    if (!assignment) return;
-    setDays(meetingDays(assignment));
-    setMinutes(String(assignment.slots[0]?.minutes ?? 50));
-    setStart(assignment.slots[0]?.startTime ?? '');
-  }, [assignment]);
+  const [days, setDays] = useState<number[]>(() => (assignment ? meetingDays(assignment) : []));
+  const [minutes, setMinutes] = useState(() => String(assignment?.slots[0]?.minutes ?? 50));
+  const [start, setStart] = useState(() => assignment?.slots[0]?.startTime ?? '');
   const save = async () => {
     if (!engine || !assignment) return;
     const m = Math.max(5, Math.min(480, parseInt(minutes, 10) || 50));
