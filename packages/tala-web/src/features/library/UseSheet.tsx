@@ -8,7 +8,7 @@ import { useT } from '@/i18n';
 import { useSession } from '@/data/session';
 import { useRecords } from '@/data/records';
 import { newId } from '@/data/ids';
-import { addPackToClass, weekdaysFrom } from '@/data/packs';
+import { addPackToClass, classDaysFrom } from '@/data/packs';
 import { Banner, Button, LinkButton, Select, Sheet, TextInput } from '@/components/ui';
 
 function nextMonday(): string {
@@ -37,11 +37,13 @@ export function UseSheet({ detail, onClose, onDone }: { detail: PackDetail; onCl
       .map((a) => a.data)
       .find((a) => a.classId === cls?.id && a.learningAreaId === 'science' && (!group || a.gradeGroupIds.includes(group.id))) ?? null;
 
+  // The pack's days go on the subject's own class days (a Saturday class gets a Saturday lesson, 27 Nov 2026).
+  const classWeekdays = assignment ? [...new Set(assignment.slots.map((s) => s.weekday))] : [];
   const add = async () => {
     if (!engine || !cls || !group) return;
     setBusy(true);
     try {
-      const ids = await addPackToClass({ engine, detail, cls, gradeGroupId: group.id, assignmentId: assignment?.id ?? null, weekOf, newId });
+      const ids = await addPackToClass({ engine, detail, cls, gradeGroupId: group.id, assignmentId: assignment?.id ?? null, weekOf, newId, classWeekdays });
       onDone();
       onClose();
       router.push(`/lessons/${ids[0]}`);
@@ -90,7 +92,7 @@ export function UseSheet({ detail, onClose, onDone }: { detail: PackDetail; onCl
             </Select>
           )}
           {!matching && <Banner kind="warn">{t('lib.use.gradeMismatch', { grade: detail.content.grade })}</Banner>}
-          <TextInput label={t('lib.use.week')} type="date" value={weekOf} onChange={(e) => setWeekOf(e.target.value)} hint={weekdaysFrom(weekOf).join(' · ')} />
+          <TextInput label={t('lib.use.week')} type="date" value={weekOf} onChange={(e) => setWeekOf(e.target.value)} hint={classDaysFrom(weekOf, detail.content.days.length, classWeekdays).join(' · ')} />
           <p className="text-small text-forestMuted">{t('lib.use.note')}</p>
           <p className="text-small">
             <Link href="/lessons" className="text-talaTealText underline">

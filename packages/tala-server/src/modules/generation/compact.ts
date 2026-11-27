@@ -319,6 +319,29 @@ export function weekSchedule(input: DraftInput, source?: unknown) {
       : Array.from({ length: input.sessions }, (_, i) => i + 1);
   return weekdays.map((weekday) => ({ weekday, minutes: input.timeBudgetMinutes }));
 }
+/**
+ * A week plan's days are the days the class meets (27 Nov 2026: a Mon/Wed/Sat class). The model writes one entry per
+ * scheduled session in order; the weekday numbers it returns are not trusted, the schedule's are used.
+ */
+export function withScheduledWeekdays(
+  value: LessonOutput,
+  schedule: Array<{ weekday: number }>
+): LessonOutput {
+  return {
+    ...value,
+    sections: value.sections.map((s) =>
+      s.content.type === 'weekgrid' && s.content.days.length === schedule.length
+        ? {
+            ...s,
+            content: {
+              ...s.content,
+              days: s.content.days.map((d, i) => ({ ...d, weekday: schedule[i]!.weekday })),
+            },
+          }
+        : s
+    ),
+  };
+}
 export function compactTemplateSchema(template: Template, input?: DraftInput) {
   const refs = input
     ? objectiveTargets(input).flatMap((g) => g.objectives.map((o) => o.ref))
@@ -592,7 +615,10 @@ export function lessonRequest(
   const schema = compactTemplateSchema(requestedTemplate, input).transform((raw, ctx) => {
     try {
       const value = compactSchema.parse(raw);
-      return convertCompact({ ...input, template: requestedTemplate }, value, opts.newId);
+      const converted = convertCompact({ ...input, template: requestedTemplate }, value, opts.newId);
+      return template.span === 'week'
+        ? withScheduledWeekdays(converted, weekSchedule(input, opts.source))
+        : converted;
     } catch (error) {
       ctx.addIssue({
         code: 'custom',

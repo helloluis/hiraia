@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { GenerationInput, Plan, PlanSection, type GenerationJob } from '@hiraia/tala-core';
 import { buildPrefilledDraft } from '@hiraia/tala-core/generation';
-import { generationModule, runJob } from './index';
+import { generationModule, runJob, withPlanWeekDays } from './index';
 import { fakeCompactRaw } from '../../../eval/fixtures';
 import { createLlmGateway, llmModule } from '../llm';
 import { createTestServer } from '../../testing';
@@ -674,5 +674,44 @@ test('27 Nov fix: a rewritten part that comes back empty fails as empty_output a
     } finally {
       t.close();
     }
+  }
+});
+
+test('27 Nov: a week plan has as many sessions as days in its own week grid (a Saturday-only class: one)', async () => {
+  const dll = { span: 'week' } as never;
+  const grid = (weekdays: number[]) => [{ key: 'weekgrid', content: { type: 'weekgrid', days: weekdays.map((weekday) => ({ weekday })) } }];
+  const base = { ...input(), templateId: 'tpl.dll.v1', sessions: 5 };
+  assert.equal(withPlanWeekDays(base, dll, grid([6])).sessions, 1);
+  assert.equal(withPlanWeekDays(base, dll, grid([1, 3, 6])).sessions, 3);
+  assert.equal(withPlanWeekDays(base, dll, grid([1, 2, 3, 4, 5])).sessions, 5);
+  assert.equal(withPlanWeekDays(base, dll, []).sessions, 5, 'no grid: the classic five');
+  assert.equal(withPlanWeekDays(base, { span: 'session' } as never, grid([6])).sessions, 5, 'not a week plan');
+  // Through a real job: the request the model gets names one Saturday session.
+  let seen: { sessions?: number; schedule?: Array<{ weekday: number }> } = {};
+  const capture: LlmGateway = {
+    routeFor: () => 'cloud',
+    complete: async (req) => {
+      seen = JSON.parse(req.vars.input!);
+      return { ok: false, reason: 'providers_unavailable', message: 'x' } as never;
+    },
+  };
+  const t = server(capture);
+  try {
+    const teacher = await t.registerUser();
+    const plan = Plan.parse({ ...sourcePlan(), templateId: 'tpl.dll.v1' });
+    t.services.records.put(teacher.id, 'plan', plan);
+    t.services.records.put(teacher.id, 'plan_section', PlanSection.parse({
+      id: 'grid-1', planId: plan.id, key: 'weekgrid',
+      content: { type: 'weekgrid', days: [{ date: '2026-11-28', weekday: 6, minutes: 30, body: [] }] },
+    }));
+    const job = await t.ok('generation.create', {
+      body: { ...input(), templateId: 'tpl.dll.v1', sessions: 5, kind: 'full', planId: plan.id },
+      token: teacher.token,
+    });
+    await waitFor(t, teacher.token, job.id, 'failed');
+    assert.equal(seen.sessions, 1);
+    assert.deepEqual(seen.schedule?.map((d) => d.weekday), [6]);
+  } finally {
+    t.close();
   }
 });

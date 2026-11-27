@@ -7,8 +7,8 @@
 import { useEffect, useState } from 'react';
 import { API_BASE } from '@hiraia/tala-core/contracts';
 import type { ClassRecord, PackDetail, PackFileKind, PackIndex, PackLang, PackSubject, SyncEngine } from '@hiraia/tala-core/contracts';
-import { planFromPackDay, weekdaysFrom } from './pack-plans';
-export { planFromPackDay, packVersion, weekdaysFrom } from './pack-plans';
+import { classDaysFrom, planFromPackDay } from './pack-plans';
+export { classDaysFrom, planFromPackDay, packVersion, weekdaysFrom } from './pack-plans';
 import { getClient } from './client';
 import { useSession } from './session';
 
@@ -88,8 +88,12 @@ export async function addPackToClass(args: {
   assignmentId: string | null;
   weekOf: string | null;
   newId: () => string;
+  /** The subject's class days (its timetable); the pack's days are placed on them. Empty: Monday to Friday. */
+  classWeekdays?: readonly number[];
 }): Promise<string[]> {
-  const dates = args.weekOf ? weekdaysFrom(args.weekOf) : [];
+  const dates = args.weekOf
+    ? classDaysFrom(args.weekOf, args.detail.content.days.length, args.classWeekdays ?? [])
+    : [];
   const built = args.detail.content.days.map((day, i) =>
     planFromPackDay({
       pack: args.detail.content,

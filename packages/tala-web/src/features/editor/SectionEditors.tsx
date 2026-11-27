@@ -16,6 +16,7 @@ import {
   removalNeedsConfirm,
 } from './blocks';
 import { FlowTimeline } from './FlowTimeline';
+import { weekdayReference } from '@/features/setup/days';
 import { RichTextEditor, RichTextView } from './RichTextEditor';
 
 export interface GroupInfo {
@@ -224,9 +225,10 @@ function WeekGridEditor({ content, onChange, readOnly, label }: Props<Of<'weekgr
   return (
     <div className="flex flex-col gap-3">
       {content.days.map((d, k) => {
+        // An undated day is named by its weekday (a weekend plan's sixth day reads "Saturday", not "Day 6").
         const heading = d.date
           ? `${formatWeekday(d.date, lang)} · ${formatDate(d.date, lang)}`
-          : `${t('editor.day')} ${d.weekday}`;
+          : formatWeekday(weekdayReference(d.weekday), lang);
         return (
           <div
             key={k}

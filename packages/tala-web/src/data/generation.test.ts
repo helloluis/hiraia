@@ -275,3 +275,21 @@ test('27 Nov fix: a queued request that ends without a result is kept for the le
   assert.equal(failureReason(new TalaApiError('invalid_input', 'x', 400)), 'invalid_input');
   assert.equal(failureReason(new Error('boom')), 'providers_unavailable');
 });
+
+test('27 Nov: the pre-filled fallback keeps a week plan’s own days (a Mon/Wed/Sat class is never moved to Mon–Wed)', async () => {
+  const engine = engineFor();
+  const dll = BUILTIN_TEMPLATES.find((t) => t.kind === 'dll')!;
+  const single: ClassRecord = { ...cls, gradeGroups: [cls.gradeGroups[0]!] };
+  const { plan, sections } = newPlan({ template: dll, cls: single, assignment: null, dates: [], language: 'en', competencies: { g2: ['sci.g2.1'] }, newId });
+  const grid = sections.map((s) =>
+    s.key === 'weekgrid'
+      ? { ...s, content: { type: 'weekgrid' as const, days: [1, 3, 6].map((weekday, i) => ({ date: ['2026-11-23', '2026-11-25', '2026-11-28'][i]!, weekday, minutes: null, body: [] })) } }
+      : s
+  );
+  await engine.batch([{ op: 'put', entity: 'plan', data: plan }, ...grid.map((s) => ({ op: 'put' as const, entity: 'plan_section' as const, data: s }))]);
+  const input = { ...buildGenerationInput({ plan, cls: single, template: dll, language: 'en' }), sessions: 3 };
+  await prefillPlan(engine, plan, grid, input, dll, []);
+  const stored = (await engine.list('plan_section')).find((s) => s.data.key === 'weekgrid')!.data.content as { days: Array<{ date: string | null; weekday: number; minutes: number | null }> };
+  assert.deepEqual(stored.days.map((d) => [d.date, d.weekday]), [['2026-11-23', 1], ['2026-11-25', 3], ['2026-11-28', 6]]);
+  assert.ok(stored.days.every((d) => d.minutes !== null), 'minutes filled from the template');
+});

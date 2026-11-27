@@ -160,6 +160,25 @@ export function planFromPackDay(args: {
   return { plan, sections };
 }
 
+/**
+ * The dates for a pack's days: the subject's own class days (ISO weekdays, 1 = Monday … 7 = Sunday) from the Monday
+ * of the week that contains `date`, continuing into the next weeks when the subject meets fewer days than the pack
+ * has (a Mon/Wed/Sat class: Mon, Wed, Sat, Mon, Wed). Without a timetable: Monday to Friday, as before.
+ */
+export function classDaysFrom(date: string, count: number, classWeekdays: readonly number[] = []): string[] {
+  const days = [...new Set(classWeekdays)].filter((d) => d >= 1 && d <= 7);
+  if (!days.length) return weekdaysFrom(date).slice(0, count);
+  const [y, m, d] = date.split('-').map(Number);
+  const base = new Date(Date.UTC(y!, m! - 1, d!, 12));
+  const monday = base.getTime() - ((base.getUTCDay() + 6) % 7) * 86400_000;
+  const out: string[] = [];
+  for (let i = 0; out.length < count && i < 7 * 53; i++) {
+    const day = new Date(monday + i * 86400_000);
+    if (days.includes(((day.getUTCDay() + 6) % 7) + 1)) out.push(day.toISOString().slice(0, 10));
+  }
+  return out;
+}
+
 /** School days Monday–Friday of the week that contains `date` (ISO). */
 export function weekdaysFrom(date: string): string[] {
   const [y, m, d] = date.split('-').map(Number);

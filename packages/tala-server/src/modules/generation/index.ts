@@ -118,6 +118,21 @@ function resolveInput(ctx: Ctx, input: GenerationInput) {
     prior: prior?.sections.map((s) => ({ key: s.data.key, content: s.data.content })) ?? [],
   };
 }
+/**
+ * A week plan has as many sessions as days in its own week grid (27 Nov 2026: a Saturday-only class's week plan is
+ * one Saturday; a Mon/Wed/Sat class's is three days). The browser only sees the plan's dates; the server reads the
+ * plan itself. Classic five-day grids are unchanged.
+ */
+export function withPlanWeekDays(
+  input: GenerationInput,
+  template: Template,
+  source: Array<{ key: string; content: { type: string; days?: Array<{ weekday: number }> } }>
+): GenerationInput {
+  if (template.span !== 'week') return input;
+  const grid = source.find((s) => s.content.type === 'weekgrid')?.content;
+  const days = new Set((grid?.days ?? []).map((d) => d.weekday).filter((d) => d >= 1 && d <= 7)).size;
+  return days >= 1 && days !== input.sessions ? { ...input, sessions: days } : input;
+}
 export async function runJob(ctx: Ctx, id: string): Promise<void> {
   const ownerId = requireUser(ctx).id;
   const { job, input } = read(ctx, id);
@@ -136,10 +151,11 @@ export async function runJob(ctx: Ctx, id: string): Promise<void> {
       return;
     }
     const resolved = resolveInput(ctx, input);
+    const planned = withPlanWeekDays(input, resolved.template, resolved.source);
     const promptId = `lesson/${input.kind === 'full' ? (input.gradeGroups.length > 1 ? 'multigrade' : resolved.template.span === 'week' ? 'week' : 'single') : input.kind}`;
     const result = await ctx.services.llm.complete(
       lessonRequest(
-        { ...input, template: resolved.template, resolvedObjectives: resolved.resolvedObjectives },
+        { ...planned, template: resolved.template, resolvedObjectives: resolved.resolvedObjectives },
         {
           userId: requireUser(ctx).id,
           newId: ctx.newId,

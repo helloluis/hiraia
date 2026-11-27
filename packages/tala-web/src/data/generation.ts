@@ -57,6 +57,7 @@ export function buildGenerationInput(a: BuildArgs): GenerationInput {
   // that plan on each day the subject meets that week, so it has one session per day (Mon/Wed/Sat: three).
   const weekDates = a.plan.placements[0]?.dates ?? [];
   const weekdays = new Set(weekDates.map((d) => new Date(`${d}T12:00:00Z`).getUTCDay()));
+  // (A one-day weekend class is settled on the server, which reads the plan's own week grid.)
   const weekSessions =
     weekDates.length > 1 && (weekdays.has(6) || weekdays.has(0)) ? weekdays.size : 5;
   return {
@@ -166,7 +167,19 @@ export async function prefillPlan(
   for (const d of draft.sections) {
     const existing = sections.find((s) => s.key === d.key);
     if (!existing || existing.editedByTeacher) continue;
-    const content = normaliseIds(d.content);
+    let content = normaliseIds(d.content);
+    // A week plan laid out on the days the class meets keeps them (dates and weekdays), never Monday onwards.
+    if (content.type === 'weekgrid' && existing.content.type === 'weekgrid' && existing.content.days.length) {
+      const prefilled = content.days;
+      content = {
+        type: 'weekgrid',
+        days: existing.content.days.map((day, i) => ({
+          ...day,
+          minutes: day.minutes ?? prefilled[i]?.minutes ?? null,
+          body: day.body.length ? day.body : (prefilled[i]?.body ?? []),
+        })),
+      };
+    }
     ops.push({
       op: 'put',
       entity: 'plan_section',

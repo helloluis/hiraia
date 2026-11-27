@@ -4,7 +4,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Plan, PlanSection, WeeklyPackContent, type ClassRecord } from '@hiraia/tala-core/contracts';
-import { planFromPackDay, weekdaysFrom } from './pack-plans';
+import { classDaysFrom, planFromPackDay, weekdaysFrom } from './pack-plans';
 
 const LIB = resolve(fileURLToPath(new URL('.', import.meta.url)), '../../../tala-packs/library/science-bow-2026');
 const id = existsSync(LIB) ? readdirSync(LIB).find((d) => existsSync(resolve(LIB, d, 'en', 'pack.json'))) : undefined;
@@ -45,4 +45,14 @@ test('a pack day becomes one editable, tagged DLP plan that remembers its source
       if (s) assert.equal(s.origin, 'manual');
     }
   }
+});
+
+test('27 Nov: a pack’s days go on the subject’s own class days from the chosen Monday', () => {
+  // Thursday 26 Nov 2026 → its week starts Monday 23 Nov.
+  assert.deepEqual(classDaysFrom('2026-11-26', 5, []), ['2026-11-23', '2026-11-24', '2026-11-25', '2026-11-26', '2026-11-27']);
+  assert.deepEqual(classDaysFrom('2026-11-26', 5, [1, 2, 3, 4, 5]), classDaysFrom('2026-11-26', 5, []));
+  assert.deepEqual(classDaysFrom('2026-11-26', 5, [1, 3, 6]), ['2026-11-23', '2026-11-25', '2026-11-28', '2026-11-30', '2026-12-02']);
+  assert.deepEqual(classDaysFrom('2026-11-26', 3, [6]), ['2026-11-28', '2026-12-05', '2026-12-12']);
+  assert.deepEqual(classDaysFrom('2026-11-29', 2, [7]), ['2026-11-29', '2026-12-06'], 'a Sunday stays in its own Monday-to-Sunday week');
+  assert.deepEqual(classDaysFrom('2026-11-26', 4, [6, 1, 6]), ['2026-11-23', '2026-11-28', '2026-11-30', '2026-12-05']);
 });

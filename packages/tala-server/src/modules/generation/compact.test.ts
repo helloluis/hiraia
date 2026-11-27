@@ -4,7 +4,13 @@ import { GeneratedSection, SectionContent } from '@hiraia/tala-core';
 import { validateGeneratedSections } from '@hiraia/tala-core/generation';
 import { evaluationCases, objectivesFor } from '../../../eval/cases';
 import { fakeCompact, fakeCompactRaw } from '../../../eval/fixtures';
-import { convertCompact, lessonRequest, multigradeSchedule, weekSchedule } from './compact';
+import {
+  convertCompact,
+  lessonRequest,
+  multigradeSchedule,
+  weekSchedule,
+  withScheduledWeekdays,
+} from './compact';
 const fixture = () => {
   const c = evaluationCases[0]!;
   return { ...c.input, resolvedObjectives: objectivesFor(c.input) };
@@ -302,4 +308,18 @@ test('post-class sections never reach the model or generated output; pre-class n
       ),
     /post_class_section/
   );
+});
+
+test('27 Nov: a week plan keeps the scheduled weekdays, whatever weekday numbers the model wrote', () => {
+  const day = (weekday: number, text: string) => ({ date: null, weekday, minutes: 40, body: [{ t: 'p' as const, spans: [{ text }] }] });
+  const value = {
+    title: 'Plants',
+    sections: [{ key: 'weekgrid', content: { type: 'weekgrid' as const, days: [day(1, 'a'), day(2, 'b'), day(3, 'c')] } }],
+  };
+  const fixed = withScheduledWeekdays(value, [{ weekday: 1 }, { weekday: 3 }, { weekday: 6 }]);
+  const days = (fixed.sections[0]!.content as { days: Array<{ weekday: number; body: unknown }> }).days;
+  assert.deepEqual(days.map((d) => d.weekday), [1, 3, 6]);
+  assert.deepEqual(days.map((d) => JSON.stringify(d.body)), [day(1, 'a'), day(2, 'b'), day(3, 'c')].map((d) => JSON.stringify(d.body)));
+  // A different number of days is left as it is (the length check refuses it elsewhere).
+  assert.deepEqual(withScheduledWeekdays(value, [{ weekday: 6 }]), value);
 });
