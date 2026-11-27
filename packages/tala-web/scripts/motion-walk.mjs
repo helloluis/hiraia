@@ -1424,9 +1424,14 @@ try {
         const now = await aiState(s);
         if (!now || now.old) break;
         if (!seen.includes(now.status)) {
-          seen.push(now.status);
+          // A new line fades in over a fifth of a second: the screenshot waits for that, and is taken (and named)
+          // only if the same line is still the one on screen.
           await s.page.locator('.tala-ai').scrollIntoViewIfNeeded().catch(() => {});
-          await s.page.screenshot({ path: join(out, 'shots', `real-${key}-${seen.length}-${now.status}-${label}.png`) });
+          await s.page.waitForTimeout(320);
+          const cur = await aiState(s);
+          if (!cur || cur.old || cur.status !== now.status) continue;
+          seen.push(cur.status);
+          await s.page.screenshot({ path: join(out, 'shots', `real-${key}-${seen.length}-${cur.status}-${label}.png`) });
         }
         await s.page.waitForTimeout(350);
       }
