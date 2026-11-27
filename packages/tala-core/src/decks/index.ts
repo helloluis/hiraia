@@ -3,3 +3,6 @@ export * from './fit';
 export * from './labels';
 export * from './layout';
 export * from './from-pack';
+export * from './lesson';
+export * from './assemble';
+export * from './assemble-words';

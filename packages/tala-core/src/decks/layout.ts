@@ -48,6 +48,27 @@ export interface LayoutSlideInput {
   correctChoice: number | null;
   image: { slug: string; alt: string } | null;
   notes: string;
+  /** A short label drawn as its own chip on the slide, e.g. "GRADE 2" on a multi-grade session's slides. */
+  tag?: string | null;
+  /** On a cover or day slide: the line above the title instead of "DAY n" (e.g. "12 MIN"). */
+  kicker?: string | null;
+  /** This slide's section (PowerPoint sections, the editor's groups); default: from its day. */
+  section?: string | null;
+  /** On a credits slide: its own credit lines instead of the deck's (a session gathers several decks' credits). */
+  credits?: SlideCredits | null;
+}
+
+/** What one credits slide says about the slides it is for. */
+export interface SlideCredits {
+  approved: boolean;
+  reviewer: string | null;
+  sourcesLine: string;
+  /** The slides were changed by their teacher after they were copied or made. */
+  personalCopy: boolean;
+  /** Made with AI from the teacher's own lesson plan (not a Hiraia pack). */
+  ai: boolean;
+  /** The slides show Hiraia's drawings (the art credit is printed). */
+  art: boolean;
 }
 
 export interface DeckLayoutInput {
@@ -67,6 +88,12 @@ export interface DeckLayoutInput {
   dayTitles?: Record<number, string>;
   /** Editor view: keep a slide's empty text box, so a teacher has somewhere to type. */
   editing?: boolean;
+  /** Footer words instead of the pack's "Grade n Science · Term · Week" (a lesson's deck, a multi-grade session). */
+  footer?: string;
+  /** The cover's draft label instead of the pack's (slides made with AI from a lesson). */
+  draftBadge?: string;
+  /** Slides made with AI from the teacher's lesson plan: the credits say so. */
+  ai?: boolean;
 }
 
 export type EditField = { type: 'title' } | { type: 'lines' } | { type: 'choice'; index: number };
@@ -196,7 +223,7 @@ function featurePictures(slides: LayoutSlideInput[]): Map<string, LayoutSlideInp
 
 export function layoutDeck(input: DeckLayoutInput): SlideLayout[] {
   const L = DECK_LABELS[input.language];
-  const footer = L.footer(input.grade, input.term, input.week);
+  const footer = input.footer ?? L.footer(input.grade, input.term, input.week);
   const feature = featurePictures(input.slides);
   // A drawing is shown at most twice a day (divider included) and never on two slides in a row.
   const timesShown = new Map<string, number>();
@@ -207,7 +234,7 @@ export function layoutDeck(input: DeckLayoutInput): SlideLayout[] {
     if (slug) timesShown.set(`${day}:${slug}`, (timesShown.get(`${day}:${slug}`) ?? 0) + 1);
   };
   const sectionName = (s: LayoutSlideInput) =>
-    s.day === 0 ? (s.kind === 'credits' ? L.sectionAbout : L.sectionIntro) : `${L.sectionDay} ${s.day}${input.dayTitles?.[s.day] ? `: ${input.dayTitles[s.day]}` : ''}`.slice(0, 60);
+    s.section ? s.section.slice(0, 60) : s.day === 0 ? (s.kind === 'credits' ? L.sectionAbout : L.sectionIntro) : `${L.sectionDay} ${s.day}${input.dayTitles?.[s.day] ? `: ${input.dayTitles[s.day]}` : ''}`.slice(0, 60);
 
   const out: SlideLayout[] = [];
   for (const [idx, raw] of input.slides.entries()) {
@@ -269,12 +296,27 @@ export function layoutDeck(input: DeckLayoutInput): SlideLayout[] {
       );
     };
 
+    /** The slide's own tag chip ("GRADE 2"), after the kind chip on light slides, top right on dark ones. */
+    const tagChip = (x: number, y: number, dark: boolean) => {
+      const tag = s.tag?.trim();
+      if (!tag) return;
+      const text = tag.toUpperCase().slice(0, 40);
+      const w = 0.32 + text.length * 0.115;
+      items.push(
+        textItem({
+          name: 'grade label', x: dark ? W - M - w : x, y, w, h: 0.42, size: 14, bold: true, spacing: 1.5, color: C.forest, align: 'center', valign: 'middle',
+          shape: { kind: 'roundRect', radius: 0.08, fill: C.yellow, line: null }, paragraphs: [para(text, null, 0)],
+        })
+      );
+    };
+
     if (s.kind === 'cover' || s.kind === 'day') {
       items.push({ type: 'image', name: 'Hiraia glyph', x: M, y: 0.45, w: 0.55, h: 0.55, source: { kind: 'brand', mark: 'glyph' }, alt: 'Hiraia glyph' });
       items.push({ type: 'image', name: 'Tala', x: M + 0.75, y: 0.5, w: (394 / 160) * 0.45, h: 0.45, source: { kind: 'brand', mark: 'wordmark' }, alt: 'Tala' });
-      if (s.kind === 'day')
+      if (s.kind === 'day' || s.kicker)
         // Middle-anchored, as the pack renderer draws it (pptxgenjs centres a text box unless told otherwise).
-        items.push(textItem({ name: 'day label', x: M, y: 1.45, w: 4, h: 0.5, size: 22, bold: true, spacing: 3, color: C.yellow, valign: 'middle', paragraphs: [para(`${L.day} ${s.day}`, null, 0)] }));
+        items.push(textItem({ name: 'day label', x: M, y: 1.45, w: s.kicker?.trim() ? 7.4 : 4, h: 0.5, size: 22, bold: true, spacing: 3, color: C.yellow, valign: 'middle', paragraphs: [para(s.kicker?.trim() ? s.kicker.trim().toUpperCase().slice(0, 60) : `${L.day} ${s.day}`, null, 0)] }));
+      tagChip(M, 0.5, true);
       const down = Math.min(1.2, title(s.kind === 'day' ? stripDayPrefix(s.title) : s.title, 7.4, true));
       body(s.lines, M, 4.3 + down, 7.4, 2.2 - down, { bullets: false, color: C.cream, sizes: [28, 26, 24] });
       const pic = feature.get(s.id);
@@ -284,7 +326,7 @@ export function layoutDeck(input: DeckLayoutInput): SlideLayout[] {
         items.push(
           textItem({
             name: 'draft label', x: M, y: 6.25, w: 4.6, h: 0.45, size: 16, bold: true, color: C.cream, align: 'center', valign: 'middle',
-            shape: { kind: 'roundRect', radius: 0.08, fill: C.brick, line: null }, paragraphs: [para(L.draftBadge, null, 0)],
+            shape: { kind: 'roundRect', radius: 0.08, fill: C.brick, line: null }, paragraphs: [para(input.draftBadge ?? L.draftBadge, null, 0)],
           })
         );
       out.push({
@@ -309,6 +351,7 @@ export function layoutDeck(input: DeckLayoutInput): SlideLayout[] {
           shape: { kind: 'roundRect', radius: 0.08, fill: C.teal, line: null }, paragraphs: [para(label.toUpperCase(), null, 0)],
         })
       );
+    tagChip(label ? M + 0.32 + label.length * 0.115 + 0.15 : M, 0.42, false);
     const textW = hasImg ? 6.95 : W - 2 * M;
     const done = () =>
       out.push({
@@ -318,14 +361,22 @@ export function layoutDeck(input: DeckLayoutInput): SlideLayout[] {
 
     if (s.kind === 'credits') {
       const down = Math.min(1.5, title(s.title, W - 2 * M));
+      const cr: SlideCredits = s.credits ?? {
+        approved: input.approved,
+        reviewer: input.reviewer,
+        sourcesLine: input.sourcesLine,
+        personalCopy: input.personalCopy,
+        ai: input.ai ?? false,
+        art: true,
+      };
       const fixed = [
-        input.approved ? L.creditsReviewed(input.reviewer ?? '—') : L.creditsDraft,
-        ...(input.personalCopy ? [L.creditsEdited] : []),
-        L.creditsArt,
+        cr.approved ? L.creditsReviewed(cr.reviewer ?? '—') : cr.ai ? L.creditsAi : L.creditsDraft,
+        ...(cr.personalCopy ? [L.creditsEdited] : []),
+        ...(cr.art ? [L.creditsArt] : []),
       ];
       const own = s.lines.map(cleanLine).filter(Boolean);
       body([...own, ...fixed], M, 2.35 + down, W - 2 * M, 2.9 - down, { sizes: [22, 20, 18], field: own.length });
-      if (input.sourcesLine) body([input.sourcesLine], M, 5.45, W - 2 * M, 1.0, { bullets: false, sizes: [14, 12], color: C.muted, field: false, name: 'sources' });
+      if (cr.sourcesLine) body([cr.sourcesLine], M, 5.45, W - 2 * M, 1.0, { bullets: false, sizes: [14, 12], color: C.muted, field: false, name: 'sources' });
       done();
       continue;
     }

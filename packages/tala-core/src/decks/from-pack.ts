@@ -63,10 +63,15 @@ export function layoutInputFromPack(content: WeeklyPackContent, review: Pick<Pac
  * its teacher" only when the copy really differs; without them the copy is treated as edited.
  */
 export function layoutInputFromDeck(
-  deck: Pick<Deck, 'language' | 'grade' | 'term' | 'week' | 'sourceApproved' | 'credits' | 'slides'>,
+  deck: Pick<Deck, 'language' | 'grade' | 'term' | 'week' | 'sourceApproved' | 'credits' | 'slides'> &
+    Partial<Pick<Deck, 'origin' | 'subject' | 'title'>>,
   opts: { editing?: boolean; baseSlides?: DeckSlide[] } = {}
 ): DeckLayoutInput {
   const c = opts.baseSlides ? deckChanges(deck.slides, opts.baseSlides) : null;
+  const L = DECK_LABELS[deck.language];
+  // Slides made with AI from a lesson plan: one lesson (one section), its own subject in the footer, and labels that
+  // say how they were made instead of the pack's review status.
+  const lesson = deck.origin === 'lesson';
   return {
     language: deck.language,
     grade: deck.grade,
@@ -76,9 +81,10 @@ export function layoutInputFromDeck(
     reviewer: deck.credits.reviewer,
     sourcesLine: deck.credits.sourcesLine,
     personalCopy: c ? c.changed + c.added + c.removed > 0 || c.reordered : true,
-    slides: deck.slides,
+    slides: lesson ? deck.slides.map((s) => ({ ...s, section: (deck.title ?? '').slice(0, 60) || null })) : deck.slides,
     dayTitles: Object.fromEntries(deck.slides.filter((s) => s.kind === 'day').map((s) => [s.day, s.title])),
     editing: opts.editing,
+    ...(lesson ? { footer: L.lessonFooter(deck.grade, deck.subject ?? ''), draftBadge: L.aiDraftBadge, ai: true } : {}),
   };
 }
 
