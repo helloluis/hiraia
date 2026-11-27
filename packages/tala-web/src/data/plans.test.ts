@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { BUILTIN_TEMPLATES, type ClassRecord } from '@hiraia/tala-core/contracts';
-import { lockProblems, newPlan, planDates, isSectionEmpty } from './plans';
+import { lockProblems, newPlan, planDates, isSectionEmpty, weekPlanDays } from './plans';
 import { backoffDelay, withRetry } from './retry';
 
 let n = 0;
@@ -63,6 +63,110 @@ test('newPlan builds a multigrade plan with per-group sections and a DLL with da
     ['2026-11-16', '2026-11-17', '2026-11-18', '2026-11-19', '2026-11-20']
   );
   assert.deepEqual(planDates(plan), ['2026-11-18']);
+});
+
+const subject = (weekdays: number[]) => ({
+  id: 'sci',
+  classId: 'c',
+  learningAreaId: 'science',
+  subjectName: 'Science',
+  gradeGroupIds: ['g3'],
+  language: 'fil' as const,
+  slots: weekdays.map((weekday) => ({
+    id: `sci-${weekday}`,
+    weekday,
+    startTime: null,
+    minutes: 50,
+    rotation: null,
+  })),
+});
+const gridOf = (sections: Array<{ key: string; content: unknown }>) =>
+  (sections.find((s) => s.key === 'weekgrid')!.content as { days: Array<{ date: string | null; weekday: number }> })
+    .days;
+
+test('a DLL for a weekday-only subject is the classic Monday-to-Friday grid, placed on its one date', () => {
+  const dll = BUILTIN_TEMPLATES.find((t) => t.kind === 'dll')!;
+  for (const days of [
+    [1, 2, 3, 4, 5],
+    [1, 3, 5],
+  ]) {
+    const { plan, sections } = newPlan({
+      template: dll,
+      cls,
+      assignment: subject(days),
+      dates: ['2026-11-25'],
+      language: 'en',
+      newId,
+    });
+    assert.deepEqual(
+      gridOf(sections).map((d) => [d.weekday, d.date]),
+      [
+        [1, '2026-11-23'],
+        [2, '2026-11-24'],
+        [3, '2026-11-25'],
+        [4, '2026-11-26'],
+        [5, '2026-11-27'],
+      ]
+    );
+    assert.deepEqual(planDates(plan), ['2026-11-25']);
+  }
+  assert.deepEqual(
+    weekPlanDays(null, null).map((d) => [d.weekday, d.date]),
+    [1, 2, 3, 4, 5].map((w) => [w, null])
+  );
+});
+
+test('a DLL for a Saturday or Sunday class lays out the days the subject meets and is placed on each of them', () => {
+  const dll = BUILTIN_TEMPLATES.find((t) => t.kind === 'dll')!;
+  const mws = newPlan({
+    template: dll,
+    cls,
+    assignment: subject([1, 3, 6]),
+    dates: ['2026-11-28'],
+    language: 'fil',
+    newId,
+  });
+  assert.deepEqual(
+    gridOf(mws.sections).map((d) => [d.weekday, d.date]),
+    [
+      [1, '2026-11-23'],
+      [3, '2026-11-25'],
+      [6, '2026-11-28'],
+    ]
+  );
+  assert.deepEqual(planDates(mws.plan), ['2026-11-23', '2026-11-25', '2026-11-28']);
+  assert.equal(mws.plan.placements[0]!.assignmentId, 'sci');
+  // Made from a Sunday: the week is the Monday-to-Sunday week that Sunday ends.
+  const weekend = newPlan({
+    template: dll,
+    cls,
+    assignment: subject([7, 6]),
+    dates: ['2026-11-29'],
+    language: 'fil',
+    newId,
+  });
+  assert.deepEqual(planDates(weekend.plan), ['2026-11-28', '2026-11-29']);
+  assert.deepEqual(gridOf(weekend.sections).map((d) => d.weekday), [6, 7]);
+  // Without a date the days are still the subject's own, undated.
+  assert.deepEqual(
+    weekPlanDays(subject([1, 3, 6]), null).map((d) => [d.weekday, d.date]),
+    [
+      [1, null],
+      [3, null],
+      [6, null],
+    ]
+  );
+  // A session plan for a Saturday class is just that Saturday.
+  const dlp = BUILTIN_TEMPLATES.find((t) => t.kind === 'dlp')!;
+  const one = newPlan({
+    template: dlp,
+    cls,
+    assignment: subject([1, 3, 6]),
+    dates: ['2026-11-28'],
+    language: 'fil',
+    newId,
+  });
+  assert.deepEqual(planDates(one.plan), ['2026-11-28']);
 });
 
 test('lockProblems lists empty required sections and the missing competency (DOC-1)', () => {
