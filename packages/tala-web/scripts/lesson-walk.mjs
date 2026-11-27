@@ -16,7 +16,7 @@ const require = createRequire(import.meta.url);
 const argv = process.argv.slice(2);
 const [phase, base, out] = argv;
 const dbPath = argv.includes('--db') ? argv[argv.indexOf('--db') + 1] : '';
-if (!['seed', 'success', 'failure', 'queued'].includes(phase) || !/^http:\/\/127\.0\.0\.1:\d+$/.test(base ?? '') || !out || !dbPath)
+if (!['seed', 'success', 'failure', 'queued', 'savefail'].includes(phase) || !/^http:\/\/127\.0\.0\.1:\d+$/.test(base ?? '') || !out || !dbPath)
   throw new Error('usage: lesson-walk.mjs <seed|success|failure> http://127.0.0.1:PORT <outDir> --db <path>');
 const { createTalaClient } = await import('@hiraia/tala-core/contracts');
 const { createSyncEngine, createMemoryStore } = await import('@hiraia/tala-core/sync');
@@ -394,6 +394,43 @@ try {
     await q.page.waitForTimeout(2000);
     check('item 1 (queued): once closed, the notice stays closed after a reload', (await q.page.getByText(en['gen.queuedFailed'].split('“')[0].trim(), { exact: false }).count()) === 0);
     await q.ctx.close();
+  }
+  if (phase === 'savefail') {
+    // A full device (simulated: every IndexedDB write throws the browser's own QuotaExceededError).
+    const v = await open('phone', 'en');
+    await v.page.goto(`${base}/lessons/${acct.plans.existing.planId}`, { waitUntil: 'networkidle', timeout: 120000 });
+    await v.page.waitForTimeout(2500);
+    const first = v.page.locator(`input[aria-label="${materialsLabel('en')} 1"]`);
+    const before = await first.inputValue();
+    await v.page.evaluate(() => {
+      const w = window;
+      w.__put = IDBObjectStore.prototype.put;
+      w.__add = IDBObjectStore.prototype.add;
+      const full = () => { throw new DOMException('The quota has been exceeded.', 'QuotaExceededError'); };
+      IDBObjectStore.prototype.put = full;
+      IDBObjectStore.prototype.add = full;
+    });
+    const changed = `${before} (checked ${Date.now() % 10000})`;
+    await first.fill(changed);
+    const alert = v.page.getByRole('alert').filter({ hasText: en['editor.saveFailedStorage'].slice(0, 30) });
+    await alert.first().waitFor({ timeout: 15000 });
+    const saidSaved = await v.page.getByText(en['editor.saved'], { exact: true }).count();
+    check('save fix: with the device full, the status says the change was NOT saved (storage full), never "Saved"', saidSaved === 0, await alert.first().innerText());
+    check('save fix: the change stays on screen', (await first.inputValue()) === changed);
+    await alert.first().scrollIntoViewIfNeeded();
+    await v.page.evaluate(() => window.scrollBy(0, -120));
+    await shot(v, 'save-01-not-saved');
+    await v.page.evaluate(() => { const w = window; IDBObjectStore.prototype.put = w.__put; IDBObjectStore.prototype.add = w.__add; });
+    await v.page.getByRole('button', { name: en['gen.tryAgain'], exact: true }).click();
+    await v.page.getByText(en['editor.saved'], { exact: false }).first().waitFor({ timeout: 15000 });
+    check('save fix: after space is free, Try again saves it and the status says Saved', (await v.page.getByRole('alert').filter({ hasText: en['editor.saveFailedStorage'].slice(0, 30) }).count()) === 0);
+    await v.page.waitForTimeout(1500);
+    await v.page.reload({ waitUntil: 'networkidle', timeout: 120000 });
+    await v.page.waitForTimeout(2500);
+    check('save fix: after a reload the change is there (it really was written)', (await v.page.locator(`input[aria-label="${materialsLabel('en')} 1"]`).inputValue()) === changed);
+    await v.page.locator(`input[aria-label="${materialsLabel('en')} 1"]`).fill(before);
+    await v.page.waitForTimeout(2000);
+    await v.ctx.close();
   }
 } catch (e) {
   check(`the ${phase} phase ran to the end`, false, String(e?.stack ?? e).slice(0, 380));
