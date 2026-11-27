@@ -11,7 +11,20 @@ import { z } from 'zod';
 import { Id, IsoDateTime, Lang, Ok, Page, QueryBool } from './common';
 import { CalendarPreset, CheckSummary, CurriculumIndex, CurriculumPack } from './curriculum';
 import { PackDetail, PackIndex, PackLang, PackSubject } from './packs';
-import { DeckCreateRequest, DeckDetail, DeckList, DeckSaveRequest, DeckSaveResult } from './decks';
+import {
+  DeckCreateRequest,
+  DeckDetail,
+  DeckList,
+  DeckRevisionList,
+  DeckSaveRequest,
+  DeckSaveResult,
+  LessonLinkRequest,
+  LessonPresentation,
+  SessionSourceRequest,
+  SlidesAiRequest,
+  SlidesApplyRequest,
+  SlidesJob,
+} from './decks';
 import {
   UploadBeginRequest,
   UploadChunkRequest,
@@ -656,6 +669,111 @@ export const API = {
     owner: 'decks',
     response: z.unknown(),
     binary: true,
+  }),
+
+  /*
+   * a lesson's presentation (contracts/decks.ts, 27 Nov 2026). Owner-only: the plan, the decks and every proposal are
+   * the signed-in teacher's own; anyone else's id answers `not_found`.
+   */
+  /** The lesson's slides (or a session's parts), whether the lesson changed since, and any AI request in progress. */
+  'decks.lesson.get': route({
+    method: 'GET',
+    path: '/plans/:planId/presentation',
+    auth: 'user',
+    owner: 'decks',
+    response: LessonPresentation,
+  }),
+  /** Use my copy of a pack's deck for this lesson (made when I have none) and say which day is the lesson's. */
+  'decks.lesson.link': route({
+    method: 'POST',
+    path: '/plans/:planId/presentation',
+    auth: 'user',
+    owner: 'decks',
+    body: LessonLinkRequest,
+    response: LessonPresentation,
+  }),
+  /** Stop using these slides for the lesson. A copy of a pack stays in my copies; slides made from the lesson are removed. */
+  'decks.lesson.unlink': route({
+    method: 'DELETE',
+    path: '/plans/:planId/presentation',
+    auth: 'user',
+    owner: 'decks',
+    response: Ok,
+  }),
+  /** The teacher checked the slides against the changed lesson: they still fit. */
+  'decks.lesson.checked': route({
+    method: 'POST',
+    path: '/plans/:planId/presentation/checked',
+    auth: 'user',
+    owner: 'decks',
+    response: LessonPresentation,
+  }),
+  /** Choose which of my lessons a grade's part of a multi-grade session comes from. */
+  'decks.lesson.source': route({
+    method: 'PUT',
+    path: '/plans/:planId/presentation/sources/:groupId',
+    auth: 'user',
+    owner: 'decks',
+    body: SessionSourceRequest,
+    response: LessonPresentation,
+  }),
+  /** The lesson's slides (or the session's, put together now) as an editable PowerPoint file. */
+  'decks.lesson.pptx': route({
+    method: 'GET',
+    path: '/plans/:planId/presentation/pptx',
+    auth: 'user',
+    owner: 'decks',
+    response: z.unknown(),
+    binary: true,
+  }),
+  /** Ask AI for slides made from the saved lesson. Answers the request already in progress for this lesson, if any. */
+  'decks.ai.start': route({
+    method: 'POST',
+    path: '/plans/:planId/presentation/ai',
+    auth: 'user',
+    owner: 'decks',
+    body: SlidesAiRequest,
+    response: SlidesJob,
+  }),
+  'decks.ai.get': route({
+    method: 'GET',
+    path: '/plans/:planId/presentation/ai/:jobId',
+    auth: 'user',
+    owner: 'decks',
+    response: SlidesJob,
+  }),
+  /** Use the proposal: the deck as it was is kept as an earlier version first. */
+  'decks.ai.apply': route({
+    method: 'POST',
+    path: '/plans/:planId/presentation/ai/:jobId/apply',
+    auth: 'user',
+    owner: 'decks',
+    body: SlidesApplyRequest,
+    response: LessonPresentation,
+  }),
+  /** Keep my slides: the proposal is dropped. */
+  'decks.ai.discard': route({
+    method: 'POST',
+    path: '/plans/:planId/presentation/ai/:jobId/discard',
+    auth: 'user',
+    owner: 'decks',
+    response: SlidesJob,
+  }),
+  /** Earlier versions of my deck, newest first. */
+  'decks.revisions': route({
+    method: 'GET',
+    path: '/decks/:deckId/revisions',
+    auth: 'user',
+    owner: 'decks',
+    response: DeckRevisionList,
+  }),
+  /** Put an earlier version back (the deck as it is now is kept as an earlier version first). */
+  'decks.restore': route({
+    method: 'POST',
+    path: '/decks/:deckId/revisions/:revisionId/restore',
+    auth: 'user',
+    owner: 'decks',
+    response: DeckDetail,
   }),
 
   /*

@@ -21,6 +21,10 @@ export const LlmFeature = z.enum([
   'roster.names',
   'community.moderate',
   'search.query',
+  /** Slides for a lesson made or rewritten with AI from the saved plan (decks module): a whole lesson's slides. */
+  'slides.generate',
+  /** One slide rewritten with AI from the saved plan. */
+  'slides.rewrite',
 ]);
 export type LlmFeature = z.infer<typeof LlmFeature>;
 

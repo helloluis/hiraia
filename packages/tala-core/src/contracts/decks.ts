@@ -60,8 +60,20 @@ export const DeckMedia = z.object({
 });
 export type DeckMedia = z.infer<typeof DeckMedia>;
 
+/** Printed on the credits slide: who reviewed the original (if anyone) and where its sources are listed. */
+export const DeckCredits = z.object({ reviewer: z.string().max(200).nullable(), sourcesLine: z.string().max(600) });
+export type DeckCredits = z.infer<typeof DeckCredits>;
+
+/**
+ * Where a deck's slides came from: `pack` = a teacher's copy of a pack's deck; `lesson` = slides Tala made with AI
+ * from one of the teacher's own lesson plans (a lesson with no pack: English, Reading and Literacy, Grade 11 …).
+ */
+export const DeckOrigin = z.enum(['pack', 'lesson']);
+export type DeckOrigin = z.infer<typeof DeckOrigin>;
+
 export const Deck = z.object({
   id: Id,
+  /** The pack a copy was made from; '' for a deck made from a lesson. */
   packId: z.string(),
   language: PackLang,
   /** The teacher's name for this copy; starts as the pack title. */
@@ -74,7 +86,7 @@ export const Deck = z.object({
   /** Content hash of the original this copy was made from. */
   baseContentSha256: z.string().regex(/^[0-9a-f]{64}$/),
   /** Printed on the credits slide: who reviewed the original (if anyone) and where its sources are listed. */
-  credits: z.object({ reviewer: z.string().max(200).nullable(), sourcesLine: z.string().max(600) }),
+  credits: DeckCredits,
   slides: z.array(DeckSlide).min(1).max(DECK_LIMITS.slides),
   /** Drawings this deck may show, by slug. */
   media: z.array(DeckMedia).max(80),
@@ -82,6 +94,10 @@ export const Deck = z.object({
   rev: z.number().int().min(1),
   createdAt: IsoDateTime,
   updatedAt: IsoDateTime,
+  /** Additive (27 Nov 2026). Older rows are copies of packs. */
+  origin: DeckOrigin.default('pack'),
+  /** The subject printed on a lesson's deck ('Science' for every pack copy). */
+  subject: z.string().max(120).default('Science'),
 });
 export type Deck = z.infer<typeof Deck>;
 
@@ -137,3 +153,179 @@ export const DeckSaveRequest = z.object({
   force: z.boolean().default(false),
 });
 export type DeckSaveRequest = z.infer<typeof DeckSaveRequest>;
+
+/* ===================== a lesson's presentation (Luis, 27 Nov 2026) =====================
+ * "Presentations should be displayed prominently in the Lesson Plan view, so the teacher already knows that they need
+ * to edit it to coincide with their lesson plan. There should be an AI regeneration button on the slides too."
+ * "Multigrade presentations should be dynamically assembled in the Lesson Plan view."
+ *
+ * A lesson plan (a synced record) is linked on the server to one of the teacher's own decks: her copy of the pack the
+ * lesson fits, or slides Tala made with AI from the lesson itself. AI never writes into a deck by itself: it answers a
+ * proposal the teacher looks at first; applying one keeps the deck as it was in the deck's revisions, so every earlier
+ * version can be put back. When the lesson changes after its slides were made, the presentation says so (`stale`) and
+ * changes nothing. A multi-grade session plan has no deck of its own: its slides are put together from each grade's
+ * own lesson slides, in the order of the session's time blocks (decks/assemble.ts), every time they are shown.
+ */
+
+/** Which deck a lesson plan uses, and which of its slides are the lesson's. */
+export const LessonLink = z.object({
+  planId: Id,
+  deckId: Id,
+  /** 0: every slide of the deck is this lesson's; 1–5: only that day's slides (a copy of a pack holds a whole week). */
+  day: z.number().int().min(0).max(5),
+  linkedAt: IsoDateTime,
+  /** When the slides were last made to match the lesson as it was saved then (linked, made or rewritten with AI, or checked by the teacher). */
+  matchedAt: IsoDateTime,
+});
+export type LessonLink = z.infer<typeof LessonLink>;
+
+/** One lesson's slides as the lesson uses them, with what the shared layout needs to draw them. */
+export const LessonSlides = z.object({
+  deckId: Id,
+  origin: DeckOrigin,
+  packId: z.string(),
+  language: PackLang,
+  /** The deck's name (her copy's title). */
+  title: z.string(),
+  grade: z.string(),
+  term: z.number().int(),
+  week: z.number().int(),
+  subject: z.string(),
+  sourceApproved: z.boolean(),
+  credits: DeckCredits,
+  /** The slides of this lesson, in deck order (a day's slides and the credits slide; or the whole deck). */
+  slides: z.array(DeckSlide).max(DECK_LIMITS.slides),
+  /** Slides in the whole deck. */
+  deckSlideCount: z.number().int(),
+  /** Days the deck has slides for (a copy of a pack: 1–5), for choosing which day is this lesson's. */
+  days: z.array(z.number().int().min(1).max(5)).max(5),
+  media: z.array(DeckMedia).max(80),
+  /** The deck differs from what was first copied or made (the credits then say it was edited by its teacher). */
+  edited: z.boolean(),
+  rev: z.number().int(),
+  updatedAt: IsoDateTime,
+});
+export type LessonSlides = z.infer<typeof LessonSlides>;
+
+/** One grade's part of a multi-grade session: that grade's own lesson and its slides. */
+export const SessionPart = z.object({
+  groupId: Id,
+  grade: z.string(),
+  /** The grade's own lesson the part comes from; null when none could be found (she can choose one). */
+  source: z
+    .object({
+      planId: Id,
+      title: z.string().max(200),
+      /** auto: the grade's lesson placed on the same class and day (or with the same competencies); teacher: her choice. */
+      chosen: z.enum(['auto', 'teacher']),
+    })
+    .nullable(),
+  link: LessonLink.nullable(),
+  /** Null when that lesson has no slides yet. */
+  slides: LessonSlides.nullable(),
+  /** That lesson changed after its slides were made. */
+  stale: z.boolean(),
+});
+export type SessionPart = z.infer<typeof SessionPart>;
+
+/** What an AI request covers: new slides for a lesson that has none, all of a lesson's slides, or one slide. */
+export const SlidesAiScope = z.enum(['new', 'lesson', 'slide']);
+export type SlidesAiScope = z.infer<typeof SlidesAiScope>;
+
+/** Why an AI request gave no proposal. Every one leaves the slides exactly as they were. */
+export const SlidesAiFailure = z.enum([
+  /** AI help is switched off on this server. */
+  'disabled',
+  /** No model answered (network, provider down, timeout). */
+  'providers_unavailable',
+  /** The model's answer was empty or unusable, also after a retry. */
+  'invalid_output',
+  /** Today's AI allowance for this teacher is used up. */
+  'quota_exceeded',
+  /** This month's AI budget is used up. */
+  'budget_exceeded',
+  /** The server restarted while the request was being worked on. */
+  'interrupted',
+  /** The lesson or its slides are no longer there. */
+  'gone',
+]);
+export type SlidesAiFailure = z.infer<typeof SlidesAiFailure>;
+
+export const SlidesJob = z.object({
+  id: Id,
+  planId: Id,
+  /** The deck the proposal is for; null for new slides (the deck is made when the proposal is applied). */
+  deckId: Id.nullable(),
+  scope: SlidesAiScope,
+  slideId: z.string().nullable(),
+  /** queued/running: being worked on · ready: a proposal waits for the teacher · applied/discarded: she chose · failed. */
+  status: z.enum(['queued', 'running', 'ready', 'failed', 'applied', 'discarded']),
+  createdAt: IsoDateTime,
+  finishedAt: IsoDateTime.nullable(),
+  /** ready: what would replace what. Nothing is written until the teacher applies it. */
+  proposal: z
+    .object({
+      language: PackLang,
+      slides: z.array(DeckSlide).max(DECK_LIMITS.slides),
+      /** Ids of the slides these replace (empty for new slides). */
+      replaces: z.array(z.string()).max(DECK_LIMITS.slides),
+    })
+    .nullable(),
+  failure: z.object({ reason: SlidesAiFailure, message: z.string().max(400) }).nullable(),
+});
+export type SlidesJob = z.infer<typeof SlidesJob>;
+
+export const LessonPresentation = z.object({
+  planId: Id,
+  /** `session`: a multi-grade plan; its slides are put together from `parts` every time they are shown. */
+  kind: z.enum(['lesson', 'session']),
+  link: LessonLink.nullable(),
+  slides: LessonSlides.nullable(),
+  /** The lesson changed after its slides were made to match it. A cue only: nothing is changed by it. */
+  stale: z.boolean(),
+  /** A session's grades, in the plan's order (empty for a single lesson). */
+  parts: z.array(SessionPart).max(4),
+  /** The newest AI request for this lesson that is still being worked on or waits to be looked at. */
+  job: SlidesJob.nullable(),
+});
+export type LessonPresentation = z.infer<typeof LessonPresentation>;
+
+/** Use my copy of a pack's deck for this lesson (the copy is made when I have none); `day` 0 = the whole deck. */
+export const LessonLinkRequest = z.object({
+  packId: z.string().max(40),
+  lang: PackLang,
+  day: z.number().int().min(0).max(5),
+});
+export type LessonLinkRequest = z.infer<typeof LessonLinkRequest>;
+
+/** A grade's lesson for a session part; null = let Tala find it again. */
+export const SessionSourceRequest = z.object({ planId: Id.nullable() });
+export type SessionSourceRequest = z.infer<typeof SessionSourceRequest>;
+
+export const SlidesAiRequest = z.object({
+  scope: SlidesAiScope,
+  /** For `slide`: which slide. */
+  slideId: DeckSlideId.optional(),
+  /** Optional words from the teacher ("use simpler words"). Passed to the model as data. */
+  instruction: z.string().max(300).default(''),
+});
+export type SlidesAiRequest = z.infer<typeof SlidesAiRequest>;
+
+export const SlidesApplyRequest = z.object({
+  /** Apply although the slides it replaces changed after the proposal was made (the teacher chose to). */
+  force: z.boolean().default(false),
+});
+export type SlidesApplyRequest = z.infer<typeof SlidesApplyRequest>;
+
+/** An earlier version of a deck, kept before AI slides were applied, a version was put back, or the copy started over. */
+export const DeckRevisionMeta = z.object({
+  id: Id,
+  reason: z.enum(['ai', 'restore', 'reset']),
+  createdAt: IsoDateTime,
+  title: z.string(),
+  slideCount: z.number().int(),
+});
+export type DeckRevisionMeta = z.infer<typeof DeckRevisionMeta>;
+
+export const DeckRevisionList = z.object({ revisions: z.array(DeckRevisionMeta).max(50) });
+export type DeckRevisionList = z.infer<typeof DeckRevisionList>;
