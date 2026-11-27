@@ -145,6 +145,16 @@
   0%, 100% { opacity: 0.5; scale: 0.9; }
   50% { opacity: 1; scale: 1; }
 }
+/* In, two small nudges towards the control, out: 1.8 s in all (CUE_LIFETIME_MS in NextStepCue.tsx). */
+@keyframes tala-cue {
+  0% { opacity: 0; translate: 0 0; }
+  10% { opacity: 1; }
+  28% { translate: var(--cue-x) var(--cue-y); }
+  46% { translate: 0 0; }
+  64% { translate: var(--cue-x) var(--cue-y); }
+  82% { opacity: 1; translate: 0 0; }
+  100% { opacity: 0; translate: 0 0; }
+}
 
 @layer components {
   /* --- Reordering blocks and steps (src/components/motion/useReorderMotion.ts) --- */
@@ -213,5 +223,43 @@
       width: 100%;
       opacity: 0.35;
     }
+  }
+
+  /* --- The next-step cue (src/components/motion/NextStepCue.tsx) ---
+     A hint, not a control: it takes no click and no focus. Reduced motion: it stands still, then is removed. */
+  .tala-cue {
+    --cue-x: 0px;
+    --cue-y: 0px;
+    z-index: 35;
+    width: 28px;
+    height: 28px;
+    pointer-events: none;
+    user-select: none;
+    filter: drop-shadow(0 1px 2px rgb(var(--c-forest-rgb) / 0.3));
+    animation: tala-cue 1800ms var(--tala-ease) both;
+  }
+  .tala-cue > svg {
+    display: block;
+  }
+  .tala-cue[data-cue-pointing='right'] {
+    --cue-x: 6px;
+  }
+  .tala-cue[data-cue-pointing='left'] {
+    --cue-x: -6px;
+  }
+  .tala-cue[data-cue-pointing='left'] > svg {
+    rotate: 180deg;
+  }
+  .tala-cue[data-cue-pointing='down'] {
+    --cue-y: 6px;
+  }
+  .tala-cue[data-cue-pointing='down'] > svg {
+    rotate: 90deg;
+  }
+  .tala-cue[data-cue-pointing='up'] {
+    --cue-y: -6px;
+  }
+  .tala-cue[data-cue-pointing='up'] > svg {
+    rotate: -90deg;
   }
 }

@@ -169,8 +169,12 @@ if (phase === 'seed') {
     const sections = made.sections.map((s) => (key === 'draftOwn' && s.key === 'objectives' ? { ...s, content: { type: 'list', items: [OWN_OBJECTIVE] }, editedByTeacher: true } : s));
     await save(key, made.plan, sections);
   }
+  {
+    const made = newPlan({ template: defaultTemplateFor(single, aSingle), cls: single, assignment: aSingle, dates: [today], language: 'en', competencies: {}, curriculumVersion: g4.meta.curriculumVersion, newId, title: 'Grade 4 Science: no competency chosen yet (synthetic test)' });
+    await save('draftNoObjective', made.plan, made.sections);
+  }
   await syncAll(engine);
-  check('seed: a local teacher, a multi-grade class and a single-grade class, a four-block Session Flow, a four-step Procedure and eight lessons to draft', (await engine.status()).pending === 0, JSON.stringify(Object.fromEntries(Object.entries(plans).map(([k, v]) => [k, v.planId]))));
+  check('seed: a local teacher, a multi-grade class and a single-grade class, a four-block Session Flow, a four-step Procedure and nine lessons to draft', (await engine.status()).pending === 0, JSON.stringify(Object.fromEntries(Object.entries(plans).map(([k, v]) => [k, v.planId]))));
   writeFileSync(accountFile, JSON.stringify({ email, password, plans, groups: { gid4, gid5 }, classIds: { single: single.id, multi: multi.id } }, null, 1));
   finish();
 }
@@ -186,6 +190,8 @@ const VIEW = {
   phone: { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true },
   foldable: { viewport: { width: 673, height: 841 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true },
   desktop: { viewport: { width: 1366, height: 900 }, deviceScaleFactor: 1 },
+  // A tall window: the Draft page's button is on screen without scrolling.
+  tall: { viewport: { width: 1366, height: 1400 }, deviceScaleFactor: 1 },
 };
 const L = (lang) => (lang === 'fil' ? fil : en);
 /** `^Time block \d+$` from the interface's own words, so the walk finds the cards in either language and on either build. */
@@ -488,6 +494,76 @@ const openGenerate = async (s, planKey) => {
 const waitAi = (s, status, timeout = 15000) => s.page.waitForFunction((st) => document.querySelector('.tala-ai')?.dataset.aiStatus === st, status, { timeout });
 const SIM = 'STAND-IN MODEL';
 
+/* ------------------------------------------------ the next-step cue */
+/** Every frame for `ms`: is the arrow there, where, how opaque. Armed as soon as the page exists. */
+const armCue = (s, ms) => s.page.evaluate((ms) => {
+  const mw = window.__mwx;
+  mw.cue = { frames: [], done: false, firstAt: null, facts: null };
+  const t0 = performance.now();
+  const tick = (now) => {
+    const el = document.querySelector('.tala-cue');
+    if (el) {
+      const r = el.getBoundingClientRect();
+      const cs = getComputedStyle(el);
+      mw.cue.frames.push([Math.round(now - t0), Math.round(r.left * 10) / 10, Math.round(r.top * 10) / 10, Math.round(parseFloat(cs.opacity) * 100) / 100]);
+      if (!mw.cue.facts) {
+        // Read once, the moment it is there: what it is, and what lies under the whole box it sweeps.
+        const pad = 7;
+        const box = { left: r.left - pad, top: r.top - pad, right: r.right + pad, bottom: r.bottom + pad };
+        const over = (q) => q.width > 1 && q.height > 1 && q.left < box.right && q.right > box.left && q.top < box.bottom && q.bottom > box.top;
+        const words = [];
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+          if (!n.textContent.trim() || !n.parentElement || n.parentElement.closest('.tala-cue,script,style')) continue;
+          const pcs = getComputedStyle(n.parentElement);
+          if (pcs.visibility === 'hidden' || pcs.display === 'none') continue;
+          const range = document.createRange();
+          range.selectNodeContents(n);
+          if ([...range.getClientRects()].some(over)) words.push(n.textContent.trim().slice(0, 40));
+        }
+        const controls = [...document.querySelectorAll('a,button,input,select,textarea,summary,[role="button"],[contenteditable="true"]')].filter((c) => over(c.getBoundingClientRect())).map((c) => (c.getAttribute('aria-label') || c.textContent || c.tagName).trim().slice(0, 40));
+        const under = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+        mw.cue.facts = {
+          key: el.dataset.cue, place: el.dataset.cuePlace, pointing: el.dataset.cuePointing, position: cs.position,
+          pointerEvents: cs.pointerEvents, ariaHidden: el.getAttribute('aria-hidden'), tabIndex: el.tabIndex, animation: cs.animationName,
+          takesTheClick: under === el || el.contains(under), underneath: under ? (under.getAttribute('aria-label') || under.textContent || under.tagName).trim().slice(0, 40) : null,
+          words, controls, focus: document.activeElement?.tagName ?? null,
+          inView: r.left >= 0 && r.top >= 0 && r.right <= window.innerWidth && r.bottom <= window.innerHeight,
+        };
+        mw.cue.firstAt = Math.round(now - t0);
+      }
+    }
+    if (now - t0 < ms) requestAnimationFrame(tick);
+    else mw.cue.done = true;
+  };
+  requestAnimationFrame(tick);
+}, ms);
+/** Open a page and watch it for the arrow. Returns what was drawn: when, where, how long, and what it lay over. */
+async function watchCue(s, path, { ms = 6000, during = null } = {}) {
+  await s.page.goto(base + path, { waitUntil: 'domcontentloaded', timeout: 120000 });
+  await armCue(s, ms);
+  if (during) await during();
+  await s.page.waitForFunction(() => window.__mwx.cue.done, null, { timeout: ms + 15000 });
+  const { frames, facts, firstAt } = await s.page.evaluate(() => window.__mwx.cue);
+  const after = await s.page.evaluate(() => ({ left: document.querySelectorAll('.tala-cue').length, running: document.getAnimations().filter((a) => a.animationName === 'tala-cue').length, focus: document.activeElement?.tagName ?? null }));
+  const xs = frames.map((f) => f[1]);
+  const ys = frames.map((f) => f[2]);
+  const os = frames.map((f) => f[3]);
+  return {
+    shown: frames.length > 0, firstAt, facts, after,
+    lifetime: frames.length ? frames[frames.length - 1][0] - frames[0][0] : 0,
+    travelX: frames.length ? Math.round((Math.max(...xs) - Math.min(...xs)) * 10) / 10 : 0,
+    travelY: frames.length ? Math.round((Math.max(...ys) - Math.min(...ys)) * 10) / 10 : 0,
+    opacityLevels: new Set(os).size, startOpacity: os[0] ?? null, peakOpacity: os.length ? Math.max(...os) : null, endOpacity: os[os.length - 1] ?? null,
+    frames: frames.length,
+  };
+}
+const cueBrief = (c) => (c.shown ? `at ${c.firstAt} ms, ${c.facts.place} pointing ${c.facts.pointing}, on screen ${c.lifetime} ms (${c.frames} frames), nudged ${Math.max(c.travelX, c.travelY)} px, opacity ${c.startOpacity} → ${c.peakOpacity} → ${c.endOpacity}` : 'no arrow');
+const forgetCues = (s, everything = false) => s.page.evaluate((all) => {
+  for (const k of Object.keys(sessionStorage)) if (k.startsWith('tala.cue.')) sessionStorage.removeItem(k);
+  if (all) for (const k of Object.keys(localStorage)) if (k.startsWith('tala.cue.')) localStorage.removeItem(k);
+}, everything);
+
 const brief = (m) => `${m.framesOnTheWay} frames on the way (${m.distinctOnTheWay} distinct positions) over ${m.durationMs} ms (${m.durationMs ? Math.round((m.framesOnTheWay / m.durationMs) * 1000) : 0} drawn per second in this headless browser); the neighbour travelled ${m.otherTravel} px; the pressed card strayed ${m.heldDrift.toFixed(2)} px; page scrolled ${m.scrollBy} px in ${m.scrollSteps} steps; bar ${m.barLayouts} layouts`;
 const swapped = (order, i, j) => { const o = [...order]; [o[i], o[j]] = [o[j], o[i]]; return o; };
 /** `before` runs of this walk only record what the old build does; `after` runs judge. */
@@ -655,6 +731,74 @@ try {
     m = await measureMove(p2, { kind: 'step', dir: 'up', position: 2, via: 'keyboard' });
     check('Procedure: moved back by keyboard; at the top, focus is on the step’s other arrow', JSON.stringify(m.after.order) === JSON.stringify(steps) && (label === 'before' || m.after.active === moveLabel('en', 'step', 'down', 1)), `${m.after.order.join(' | ')}; focus on ${m.after.active}`);
     await p2.ctx.close();
+  }
+  if (phase === 'cue') {
+    const generate = (key) => `/generate?planId=${acct.plans[key].planId}`;
+    const isNew = label !== 'before';
+    /* ---- the Draft page: its one next step ("Make the draft") is below the fold on a desktop and on a phone ---- */
+    const d = await open('desktop', 'en');
+    let c = await watchCue(d, generate('draftPlain'));
+    if (!isNew) {
+      const below = await d.page.getByRole('button', { name: en['gen.start'], exact: true }).evaluate((b) => b.getBoundingClientRect().top > window.innerHeight);
+      note('(before the change) the Draft page’s only primary button is below the fold on a 1366×900 desktop, and nothing points to it', `button below the fold: ${below}; arrow: ${c.shown}`);
+    } else {
+      check('desktop: on arriving at the Draft page a small arrow appears once the page has settled, at the bottom edge, pointing down to the button below the fold', c.shown && c.facts.place === 'edge' && c.facts.pointing === 'down' && c.firstAt >= 400 && c.firstAt <= 3500 && c.facts.inView, cueBrief(c));
+      check('desktop: it fades in, nudges twice towards the button and fades out after about two seconds', c.lifetime >= 1500 && c.lifetime <= 2200 && c.startOpacity <= 0.4 && c.peakOpacity === 1 && c.endOpacity <= 0.4 && c.opacityLevels >= 8 && c.travelY >= 4 && c.travelY <= 8, cueBrief(c));
+      check('desktop: it covers no words and no control', c.facts.words.length === 0 && c.facts.controls.length === 0, `words under it: ${JSON.stringify(c.facts.words)}; controls under it: ${JSON.stringify(c.facts.controls)}`);
+      check('desktop: it is a hint, not a control — it takes no click (the page under it does), no focus, and is hidden from screen readers', c.facts.pointerEvents === 'none' && c.facts.takesTheClick === false && c.facts.ariaHidden === 'true' && c.facts.tabIndex === -1 && c.facts.focus === 'BODY' && c.after.focus === 'BODY', JSON.stringify({ pointerEvents: c.facts.pointerEvents, click: c.facts.takesTheClick, ariaHidden: c.facts.ariaHidden, focus: c.after.focus }));
+      check('desktop: afterwards nothing is left of it (no element, no animation running)', c.after.left === 0 && c.after.running === 0, JSON.stringify(c.after));
+      const full = await d.page.getByRole('button', { name: en['gen.start'], exact: true }).evaluate((b) => Math.abs(b.getBoundingClientRect().width - b.parentElement.parentElement.getBoundingClientRect().width) < 1);
+      check('desktop: the button it wraps is laid out as before (full width of its column)', full);
+      // The same visit to the app: not again.
+      c = await watchCue(d, generate('draftPlain'), { ms: 4500 });
+      check('desktop: opening the page again in the same visit does not show it again', !c.shown, cueBrief(c));
+      // New visits: twice more, then never again on this device.
+      const seen = [];
+      for (let visit = 2; visit <= 5; visit++) {
+        await forgetCues(d);
+        c = await watchCue(d, generate('draftPlain'), { ms: 4500 });
+        seen.push(c.shown);
+      }
+      check('desktop: over later visits it shows twice more and then stays away for good (three showings in all on a device)', JSON.stringify(seen) === JSON.stringify([true, true, false, false]), `visits 2–5: ${seen.join(', ')}`);
+      // Typing: not while she types.
+      await forgetCues(d, true);
+      c = await watchCue(d, generate('draftPlain'), {
+        ms: 9000,
+        during: async () => {
+          const box = d.page.locator('textarea').first();
+          await box.waitFor({ timeout: 10000 });
+          await box.focus();
+          for (let i = 0; i < 14; i++) {
+            await d.page.keyboard.type('a');
+            await d.page.waitForTimeout(280);
+          }
+        },
+      });
+      check('desktop: it does not appear while she is typing; it comes once the keyboard has been quiet', c.shown && c.firstAt >= 4000 + 1300, `typing lasted about 4.0 s from arrival; ${cueBrief(c)}`);
+      check('desktop: and focus stays in the field she was typing in', c.after.focus === 'TEXTAREA', c.after.focus);
+      // State: nothing to draft from, so the button is switched off and there is no next step to point at.
+      await forgetCues(d, true);
+      c = await watchCue(d, generate('draftNoObjective'), { ms: 5000 });
+      const disabled = await d.page.getByRole('button', { name: en['gen.start'], exact: true }).isDisabled();
+      check('desktop: when the button cannot be used (no competency chosen) there is no arrow', disabled && !c.shown, `button disabled: ${disabled}; ${cueBrief(c)}`);
+    }
+    await d.ctx.close();
+    if (isNew) {
+      /* ---- a tall window: the button is on screen, the arrow sits on its empty end ---- */
+      const t = await open('tall', 'en');
+      c = await watchCue(t, generate('draftPlain'));
+      check('tall window: the button is on screen, so the arrow sits on the button’s own empty end and points at its label', c.shown && c.facts.place === 'inside-start' && c.facts.pointing === 'right' && c.travelX >= 4 && c.travelX <= 8, cueBrief(c));
+      check('tall window: it covers no words; the only control under it is the button itself, which still takes the click', c.facts.words.length === 0 && JSON.stringify(c.facts.controls) === JSON.stringify([en['gen.start']]) && c.facts.takesTheClick === false && c.facts.underneath === en['gen.start'], `words: ${JSON.stringify(c.facts.words)}; controls: ${JSON.stringify(c.facts.controls)}; a click there lands on: ${c.facts.underneath}`);
+      await shot(t, 'n1-cue-on-button');
+      await t.ctx.close();
+      /* ---- phone and foldable, both languages ---- */
+      for (const [view, lang] of [['phone', 'en'], ['phone', 'fil'], ['foldable', 'en'], ['foldable', 'fil']]) {
+        const p2 = await open(view, lang);
+        c = await watchCue(p2, generate('draftPlain'));
+        check(`${view}, ${lang}: the arrow appears clear of the bottom bar, points down, covers no words and no control, and is gone after about two seconds`, c.shown && c.facts.pointing === 'down' && c.facts.words.length === 0 && c.facts.controls.length === 0 && c.facts.inView && c.lifetime >= 1500 && c.lifetime <= 2300 && c.after.left === 0 && !(await p2.page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1)), `${cueBrief(c)}; words ${JSON.stringify(c.facts?.words)}; controls ${JSON.stringify(c.facts?.controls)}`);
+        await p2.ctx.close();
+      }
+    }
   }
   if (phase === 'ai-standin') {
     const st = await startStandin(Number(option('standin-port', '3339')));

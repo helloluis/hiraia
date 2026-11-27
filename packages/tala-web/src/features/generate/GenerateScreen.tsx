@@ -31,6 +31,7 @@ import { errorKey } from '@/data/errors';
 import { topicLabel } from '@/data/topics';
 import { usePlanEditor } from '@/features/editor/usePlanEditor';
 import { AiStatus } from '@/components/motion/AiStatus';
+import { NextStepCue } from '@/components/motion/NextStepCue';
 import { type AiPhase } from '@/components/motion/ai-status';
 import {
   Banner,
@@ -417,17 +418,27 @@ export function GenerateScreen() {
           {input && !hasObjectives(input) && (
             <Banner kind="warn">{t('gen.needsCompetency')}</Banner>
           )}
-          <Button
-            variant="primary"
-            full
-            onClick={() => void start()}
-            disabled={
-              needsMultigrade || featureOff || noAllowance || !input || !hasObjectives(input)
+          {/* The one next step on this page, often below the fold: a brief arrow points to it once it can be used. */}
+          <NextStepCue
+            show={
+              !(needsMultigrade || featureOff || noAllowance || !input || !hasObjectives(input)) &&
+              !busy
             }
-            busy={busy}
+            cueKey="generate.start"
+            prefer={['inside-start', 'inside-end', 'above', 'below']}
           >
-            {online ? t('gen.start') : t('gen.keepWaiting')}
-          </Button>
+            <Button
+              variant="primary"
+              full
+              onClick={() => void start()}
+              disabled={
+                needsMultigrade || featureOff || noAllowance || !input || !hasObjectives(input)
+              }
+              busy={busy}
+            >
+              {online ? t('gen.start') : t('gen.keepWaiting')}
+            </Button>
+          </NextStepCue>
           <Button full onClick={() => void openPrefilled(false)} disabled={busy}>
             {t('gen.usePrefilled')}
           </Button>
