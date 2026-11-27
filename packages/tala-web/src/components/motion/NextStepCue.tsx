@@ -15,7 +15,10 @@
  *    and when there is no such place it is not shown at all;
  *  - take a click, the focus or a screen reader's attention (`pointer-events: none`, `aria-hidden`, not focusable);
  *  - nag: once per visit to the app and a few times in all per device (next-cue.ts), not while a sheet is open over
- *    the control, not while she is typing, not in a background tab.
+ *    the control, not while she is typing, not in a background tab;
+ *  - sit in the wrong place: it is placed only once the control has stopped moving (content still arriving above it
+ *    pushes a control down), and it is taken away at once if the control moves afterwards or, for an arrow waiting
+ *    at the edge of the screen, once the control itself has come into view.
  * Nothing depends on it: the control is there, labelled and reachable, whether or not the arrow appears.
  * Reduced motion: the arrow stands still for the same two seconds, then is gone.
  */
@@ -43,6 +46,8 @@ const SETTLE_MS = 500;
 const QUIET_MS = 1500;
 /** If no good moment comes in this time the cue is dropped for this visit to the screen. */
 const GIVE_UP_MS = 12_000;
+/** The control must be found in the same place twice, this far apart, before the arrow is placed. */
+const STILL_MS = 150;
 
 const CONTROLS =
   'a,button,input,select,textarea,summary,label,[role="button"],[role="switch"],[contenteditable="true"]';
@@ -77,8 +82,9 @@ function isFree(box: Rect, target: HTMLElement): boolean {
         if (!own) {
           const control = el.closest(CONTROLS);
           if (control && !control.contains(target)) return false;
-          if (el.matches(PICTURES) || el.closest('svg')) return false;
         }
+        // Pictures and icons are never covered, the control's own icon included.
+        if (el.matches(PICTURES) || el.closest('svg')) return false;
         for (const node of Array.from(el.childNodes)) {
           if (node.nodeType !== Node.TEXT_NODE || !node.textContent?.trim()) continue;
           const range = document.createRange();
@@ -102,14 +108,27 @@ function hostOf(target: HTMLElement): HTMLElement {
   return document.body;
 }
 
+/** On screen means: its middle is really the control there (not off the page, not under a bar or a sheet). */
+function isOnScreen(target: HTMLElement): boolean {
+  const r = target.getBoundingClientRect();
+  const at = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+  return at !== null && (at === target || target.contains(at));
+}
+
+/** Where the control is on the page (not on the screen: scrolling the page does not change it). */
+function pageBox(target: HTMLElement): string {
+  const r = target.getBoundingClientRect();
+  return [r.left + window.scrollX, r.top + window.scrollY, r.width, r.height]
+    .map(Math.round)
+    .join(',');
+}
+
 function findPlace(target: HTMLElement, order: readonly Place[], edge: boolean): Shown | null {
   const r = target.getBoundingClientRect();
   if (r.width === 0 || r.height === 0) return null;
   const rect: Rect = { left: r.left, top: r.top, width: r.width, height: r.height };
   const view = { width: window.innerWidth, height: window.innerHeight };
-  // On screen means: its middle is really the control there (not off the page, not under a bar or a sheet).
-  const at = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
-  const onScreen = at !== null && (at === target || target.contains(at));
+  const onScreen = isOnScreen(target);
   const host = hostOf(target);
   if (onScreen) {
     const cue = choose(besideCandidates(rect, order), view, (box) => isFree(box, target));
@@ -155,15 +174,17 @@ export function NextStepCue({
     if (!show || !mayShow(memory(), cueKey)) return;
     const started = Date.now();
     let lastKey = 0;
+    let lastBox = '';
     let timer = 0;
+    let raf = 0;
     let over = false;
     const onKey = () => {
       lastKey = Date.now();
     };
     const attempt = () => {
       if (over) return;
-      const later = () => {
-        if (Date.now() - started < GIVE_UP_MS) timer = window.setTimeout(attempt, 400);
+      const later = (ms = 400) => {
+        if (Date.now() - started < GIVE_UP_MS) timer = window.setTimeout(attempt, ms);
       };
       const target = anchor.current?.firstElementChild;
       if (!(target instanceof HTMLElement) || document.visibilityState !== 'visible')
@@ -171,18 +192,40 @@ export function NextStepCue({
       if (Date.now() - lastKey < QUIET_MS) return later();
       const sheet = document.querySelector('dialog[open]');
       if (sheet && !sheet.contains(target)) return later();
+      // The control must have stopped moving: content still arriving above it would leave the arrow behind.
+      const box = pageBox(target);
+      if (box !== lastBox) {
+        lastBox = box;
+        return later(STILL_MS);
+      }
       const place = findPlace(target, order.split(',') as Place[], edge);
       // Nowhere free of words and controls: no cue. The control is on the screen without it.
       if (!place) return;
       remember(memory(), cueKey);
       setShown(place);
-      timer = window.setTimeout(() => setShown(null), CUE_LIFETIME_MS);
+      timer = window.setTimeout(() => {
+        cancelAnimationFrame(raf);
+        setShown(null);
+      }, CUE_LIFETIME_MS);
+      // While it shows: gone at once if the control moves on the page, or (an arrow at the screen's edge) once the
+      // control itself has come into view.
+      const watch = () => {
+        if (over) return;
+        if (pageBox(target) !== box || (place.cue.fixed && isOnScreen(target))) {
+          window.clearTimeout(timer);
+          setShown(null);
+          return;
+        }
+        raf = requestAnimationFrame(watch);
+      };
+      raf = requestAnimationFrame(watch);
     };
     window.addEventListener('keydown', onKey, true);
     timer = window.setTimeout(attempt, SETTLE_MS);
     return () => {
       over = true;
       window.clearTimeout(timer);
+      cancelAnimationFrame(raf);
       window.removeEventListener('keydown', onKey, true);
       setShown(null);
     };

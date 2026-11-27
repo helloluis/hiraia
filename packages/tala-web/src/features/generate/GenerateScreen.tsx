@@ -280,7 +280,11 @@ export function GenerateScreen() {
     });
   };
   useEffect(() => {
-    const onHide = () => handOver.current();
+    // A page kept whole for "back" (persisted) goes on with its own request when it returns: only a real leave
+    // hands the request over.
+    const onHide = (e: PageTransitionEvent) => {
+      if (!e.persisted) handOver.current();
+    };
     window.addEventListener('pagehide', onHide);
     return () => {
       window.removeEventListener('pagehide', onHide);

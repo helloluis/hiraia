@@ -796,7 +796,45 @@ try {
       check('tall window: the button is on screen, so the arrow sits on the button’s own empty end and points at its label', c.shown && c.facts.place === 'inside-start' && c.facts.pointing === 'right' && c.travelX >= 4 && c.travelX <= 8, cueBrief(c));
       check('tall window: it covers no words; the only control under it is the button itself, which still takes the click', c.facts.words.length === 0 && JSON.stringify(c.facts.controls) === JSON.stringify([en['gen.start']]) && c.facts.takesTheClick === false && c.facts.underneath === en['gen.start'], `words: ${JSON.stringify(c.facts.words)}; controls: ${JSON.stringify(c.facts.controls)}; a click there lands on: ${c.facts.underneath}`);
       await shot(t, 'n1-cue-on-button');
+      // If the control moves after the arrow was placed (content arriving late above it), the arrow must not stay
+      // behind. The move is made by the walk here: 48 px of space put in above the button while the arrow shows.
+      await forgetCues(t, true);
+      await t.page.goto(base + generate('draftPlain'), { waitUntil: 'domcontentloaded', timeout: 120000 });
+      await t.page.locator('.tala-cue').waitFor({ state: 'attached', timeout: 10000 });
+      await t.page.waitForTimeout(250);
+      const goneAfter = await t.page.evaluate((name) => new Promise((resolve) => {
+        const button = [...document.querySelectorAll('button')].find((b) => b.textContent.trim() === name);
+        const spacer = document.createElement('div');
+        spacer.style.height = '48px';
+        button.parentElement.before(spacer);
+        const t0 = performance.now();
+        const tick = (now) => {
+          if (!document.querySelector('.tala-cue')) return resolve(Math.round(now - t0));
+          if (now - t0 > 1200) return resolve(null);
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }), en['gen.start']);
+      check('tall window: when the button is pushed down while the arrow shows (a 48 px shift made by the walk), the arrow is taken away at once instead of staying behind', goneAfter !== null && goneAfter <= 150, `gone ${goneAfter} ms after the shift (its own time would have run about 1.3 s longer)`);
       await t.ctx.close();
+      /* ---- desktop again: the arrow at the screen's edge goes once the button itself has come into view ---- */
+      const e2 = await open('desktop', 'en');
+      await forgetCues(e2, true);
+      await e2.page.goto(base + generate('draftPlain'), { waitUntil: 'domcontentloaded', timeout: 120000 });
+      await e2.page.locator('.tala-cue').waitFor({ state: 'attached', timeout: 10000 });
+      await e2.page.waitForTimeout(250);
+      const goneOnScroll = await e2.page.evaluate(() => new Promise((resolve) => {
+        window.scrollTo(0, document.documentElement.scrollHeight);
+        const t0 = performance.now();
+        const tick = (now) => {
+          if (!document.querySelector('.tala-cue')) return resolve(Math.round(now - t0));
+          if (now - t0 > 1200) return resolve(null);
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }));
+      check('desktop: when she scrolls and the button comes into view, the arrow that was pointing down from the edge is taken away at once', goneOnScroll !== null && goneOnScroll <= 150, `gone ${goneOnScroll} ms after the scroll`);
+      await e2.ctx.close();
       /* ---- phone and foldable, both languages ---- */
       for (const [view, lang] of [['phone', 'en'], ['phone', 'fil'], ['foldable', 'en'], ['foldable', 'fil']]) {
         const p2 = await open(view, lang);
