@@ -1706,3 +1706,24 @@ final build (the earlier three are used, ~US$0.0016 each).
   (7 days). **waiting_for_user (asked once):** "Include the interface motion work in the release too? If yes, I deploy
   `f3e6f52a9` (the six items + motion) instead of `0f7b8b38b` (the six items alone)." Both still need Luis's go-ahead
   to deploy at all.
+
+## 27 Nov 2026 17:28 Manila: Luis answers "Proceed" (rq_fpm7ghfr): the combined Lesson Plan + motion release is approved
+
+Luis's complete answer: "Proceed". The coordinator mapped it (thread ddb4d22d) to an explicit, concrete deployment
+approval for the **combined** candidate `f3e6f52a9` (the six Lesson Plan items + the motion task's work) as
+`tala-v1-demo.19`. It answers both open questions above at once: deploy (yes) and include the motion work (yes).
+
+- **Lesson Plan release approved** (27 Nov 2026 17:28 Manila, rq_fpm7ghfr): deploy branch
+  `tala-v1-lesson-feedback-motion` at `f3e6f52a9` (plus a docs-only merge of this notes branch) as `tala-v1-demo.19` on
+  top of `tala-v1-demo.18`, through the established window: the single-writer lock, a verified backup, `deploy.sh`
+  (health-checked, rolls itself back) and only the service's own restart. Rollback stays `tala-v1-demo.18`. After the
+  deploy: live identity and health, then signed-in production flows with the retained synthetic test account (no new
+  account; the deleted disposable account is not recreated and the deletion test is not replayed), representative
+  curriculum, upload, forms and multi-grade regressions, and the logs.
+- **Not authorized by this answer:** the long-term pacing quirk, the held subjects, publishing the English draft packs.
+- The six-item-only candidate `0f7b8b38b` is superseded (the combined branch contains it unchanged).
+- **waiting_for_user: both cleared** (the deploy question and the motion inclusion question). No other question is
+  mapped to this answer.
+- **Reconciled before any write (09:30 UTC):** production `tala-v1-demo.18`, healthy, active since 26 Nov 07:08:36 UTC
+  with 0 restarts; deploy lock free; no other agent running; the combined worktree clean at `f3e6f52a9`; the motion
+  branch unchanged at `a1fd881ed` since its hand-off; notes tip `f242d6208`; no production write had started.
