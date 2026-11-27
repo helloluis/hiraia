@@ -551,6 +551,8 @@ async function watchCue(s, path, { ms = 6000, during = null } = {}) {
   const os = frames.map((f) => f[3]);
   return {
     shown: frames.length > 0, firstAt, facts, after,
+    /** Where it was first drawn (left, top), in the viewport. */
+    at: frames.length ? [frames[0][1], frames[0][2]] : null,
     lifetime: frames.length ? frames[frames.length - 1][0] - frames[0][0] : 0,
     travelX: frames.length ? Math.round((Math.max(...xs) - Math.min(...xs)) * 10) / 10 : 0,
     travelY: frames.length ? Math.round((Math.max(...ys) - Math.min(...ys)) * 10) / 10 : 0,
@@ -797,6 +799,64 @@ try {
         c = await watchCue(p2, generate('draftPlain'));
         check(`${view}, ${lang}: the arrow appears clear of the bottom bar, points down, covers no words and no control, and is gone after about two seconds`, c.shown && c.facts.pointing === 'down' && c.facts.words.length === 0 && c.facts.controls.length === 0 && c.facts.inView && c.lifetime >= 1500 && c.lifetime <= 2300 && c.after.left === 0 && !(await p2.page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1)), `${cueBrief(c)}; words ${JSON.stringify(c.facts?.words)}; controls ${JSON.stringify(c.facts?.controls)}`);
         await p2.ctx.close();
+      }
+
+      /* ---- This Week: the first lesson of the next teaching day that has no plan yet ---- */
+      for (const [view, lang] of [['desktop', 'en'], ['phone', 'fil']]) {
+        const wk = await open(view, lang);
+        await forgetCues(wk, true);
+        c = await watchCue(wk, '/week');
+        const first = await wk.page.locator('[data-testid="up-next"] a').filter({ hasText: L(lang)['week.create'] }).first().boundingBox();
+        // Beside THAT button: level with it and within a finger's width of its edge.
+        const beside = !!(c.at && first && c.at[1] + 28 > first.y && c.at[1] < first.y + first.height && Math.min(Math.abs(c.at[0] - (first.x + first.width)), Math.abs(first.x - (c.at[0] + 28))) <= 24);
+        check(`This Week, ${view}, ${lang}: the arrow comes beside “${L(lang)['week.create']}” of the first lesson that has no plan, points at it, and covers nothing`, c.shown && c.facts.key === 'week.plan' && c.facts.place !== 'edge' && beside && c.facts.words.length === 0 && c.facts.controls.length === 0 && c.lifetime >= 1500 && c.lifetime <= 2300 && c.facts.takesTheClick === false, `${cueBrief(c)}; arrow at ${JSON.stringify(c.at)}, button at ${first ? `${Math.round(first.x)},${Math.round(first.y)} ${Math.round(first.width)}×${Math.round(first.height)}` : 'not found'}; words ${JSON.stringify(c.facts?.words)}; controls ${JSON.stringify(c.facts?.controls)}`);
+        if (view === 'desktop') await wk.page.goto(base + '/week', { waitUntil: 'networkidle' });
+        await wk.ctx.close();
+      }
+
+      /* ---- a lesson: Lock, once every required part is filled ---- */
+      for (const view of ['desktop', 'phone']) {
+        const lk = await open(view, 'en');
+        await forgetCues(lk, true);
+        // One required part (Assessment) is still empty: there is no next step to point at yet.
+        c = await watchCue(lk, `/lessons/${acct.plans.procedure.planId}`, { ms: 5000 });
+        check(`lesson, ${view}: while a required part is still empty there is no arrow at Lock`, !c.shown, cueBrief(c));
+        // She writes it. The arrow must wait until she stops typing, must not take the focus, and points up to Lock.
+        const assess = lk.page.locator('section[aria-labelledby="s-assessment"] [contenteditable="true"]').first();
+        await assess.scrollIntoViewIfNeeded();
+        await assess.click();
+        await armCue(lk, 9000);
+        const t0 = Date.now();
+        await lk.page.keyboard.type('Each learner names two things a plant needs.', { delay: 45 });
+        const typedFor = Date.now() - t0;
+        await lk.page.waitForFunction(() => window.__mwx.cue.done, null, { timeout: 20000 });
+        const got = await lk.page.evaluate(() => ({ ...window.__mwx.cue, frames: window.__mwx.cue.frames.length, last: window.__mwx.cue.frames.at(-1)?.[0], focusIsEditor: document.activeElement?.getAttribute('contenteditable') === 'true' }));
+        check(`lesson, ${view}: once the last required part is written the arrow appears only after she has stopped typing, at the top edge pointing up to Lock, and focus stays in her text`, got.frames > 0 && got.firstAt >= typedFor + 1300 && got.facts.key === 'lesson.lock' && got.facts.place === 'edge' && got.facts.pointing === 'up' && got.facts.words.length === 0 && got.facts.controls.length === 0 && got.focusIsEditor, `typed for ${typedFor} ms; arrow at ${got.firstAt} ms (${got.facts?.place} pointing ${got.facts?.pointing}); words ${JSON.stringify(got.facts?.words)}; controls ${JSON.stringify(got.facts?.controls)}; focus in her text: ${got.focusIsEditor}`);
+        await lk.page.waitForTimeout(2500);
+        // A later visit: the lesson can be locked when it opens.
+        await forgetCues(lk);
+        c = await watchCue(lk, `/lessons/${acct.plans.procedure.planId}`);
+        check(`lesson, ${view}: opened when it can already be locked, the arrow sits beside Lock, points at it and covers nothing`, c.shown && c.facts.key === 'lesson.lock' && c.facts.place !== 'edge' && c.facts.words.length === 0 && c.facts.controls.length === 0 && c.facts.takesTheClick === false, `${cueBrief(c)}; words ${JSON.stringify(c.facts?.words)}; controls ${JSON.stringify(c.facts?.controls)}`);
+        if (view === 'desktop') {
+          await shot(lk, 'n3-lock-ready');
+          // A sheet over the page: no arrow at a control behind it.
+          await forgetCues(lk);
+          await lk.page.goto(`${base}/lessons/${acct.plans.procedure.planId}`, { waitUntil: 'domcontentloaded' });
+          await lk.page.getByRole('button', { name: en['editor.moreActions'], exact: true }).click();
+          await armCue(lk, 5000);
+          await lk.page.waitForFunction(() => window.__mwx.cue.done, null, { timeout: 15000 });
+          const behind = await lk.page.evaluate(() => window.__mwx.cue.frames.length);
+          check('lesson, desktop: while a sheet is open over the page no arrow appears at the button behind it', behind === 0 && (await lk.page.locator('dialog[open]').count()) === 1, `frames with an arrow: ${behind}`);
+          await lk.page.keyboard.press('Escape');
+        }
+        // Leave the lesson as it was seeded (Assessment empty).
+        const again = lk.page.locator('section[aria-labelledby="s-assessment"] [contenteditable="true"]').first();
+        await again.scrollIntoViewIfNeeded();
+        await again.click();
+        await lk.page.keyboard.press('Control+A');
+        await lk.page.keyboard.press('Delete');
+        await lk.page.waitForTimeout(3500);
+        await lk.ctx.close();
       }
     }
   }

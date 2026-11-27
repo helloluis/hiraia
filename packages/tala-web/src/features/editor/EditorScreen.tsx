@@ -32,6 +32,7 @@ import { clearFailure, FAILURE_EVENT, listFailures, type QueuedFailure } from '@
 import type { StringKey } from '@/i18n';
 import { PresentationPanel } from './PresentationPanel';
 import { PostSheet } from '@/features/community/PostSheet';
+import { NextStepCue } from '@/components/motion/NextStepCue';
 import { Toast } from '@/components/ui';
 
 export function EditorScreen({ planId }: { planId: string }) {
@@ -189,9 +190,19 @@ export function EditorScreen({ planId }: { planId: string }) {
             {locked ? (
               <Button onClick={() => setUnlockOpen(true)}>{t('editor.unlock')}</Button>
             ) : (
-              <Button variant="primary" onClick={() => setLockOpen(true)}>
-                {t('editor.lock')}
-              </Button>
+              /* Every required part is filled and nothing is waiting on her (an AI draft still to read, a version
+                 to choose, a save that failed): locking is the next step, and a brief arrow says so. */
+              <NextStepCue
+                show={
+                  !plan.aiDraft && ed.problems.length === 0 && conflicts.length === 0 && !ed.saveError
+                }
+                cueKey="lesson.lock"
+                prefer={['right', 'below', 'above', 'left']}
+              >
+                <Button variant="primary" onClick={() => setLockOpen(true)}>
+                  {t('editor.lock')}
+                </Button>
+              </NextStepCue>
             )}
           </div>
         }

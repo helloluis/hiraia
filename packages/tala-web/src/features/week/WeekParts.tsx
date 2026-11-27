@@ -12,6 +12,7 @@ import type { PackSuggestion } from '@/data/recommend';
 import { ArrowLink, Disclosure, Kicker, StatusChip } from '@/components/editorial';
 import { Icon, type IconName } from '@/components/icons';
 import { Button, LinkButton, Placeholder, cx } from '@/components/ui';
+import { NextStepCue } from '@/components/motion/NextStepCue';
 import type { SessionState, SessionView, TopicView, WeekPack } from './sessions';
 import { dayRelation, formatClock } from './upnext';
 
@@ -190,7 +191,7 @@ function Topic({ tp, big, showGrade }: { tp: TopicView; big: boolean; showGrade:
 }
 
 /** One lesson. `big` is the Up next card; the day rows use the calmer size. */
-export function LessonBlock({ view, big, onMark }: { view: SessionView; big: boolean; onMark: () => void }) {
+export function LessonBlock({ view, big, onMark, cue }: { view: SessionView; big: boolean; onMark: () => void; /** This is the lesson to plan next: a brief arrow points at its button. */ cue?: boolean }) {
   const { t, lang } = useT();
   const minutes = t('wk.minutes', { n: view.minutes });
   // Subject first only when the headline below is a topic; otherwise the subject IS the headline.
@@ -253,10 +254,12 @@ export function LessonBlock({ view, big, onMark }: { view: SessionView; big: boo
                 {t('wk.openPlan')}
               </LinkButton>
             ) : (
-              <LinkButton href={view.href} variant={view.over ? 'secondary' : 'primary'}>
-                <Icon name="pencil" size={18} />
-                {t('week.create')}
-              </LinkButton>
+              <NextStepCue show={Boolean(cue) && !view.over} cueKey="week.plan" prefer={['right', 'below', 'above', 'left']}>
+                <LinkButton href={view.href} variant={view.over ? 'secondary' : 'primary'}>
+                  <Icon name="pencil" size={18} />
+                  {t('week.create')}
+                </LinkButton>
+              </NextStepCue>
             ))}
           {view.canMark && (
             <Button variant="quiet" onClick={onMark}>
@@ -281,6 +284,8 @@ export function UpNext({ date, today, sessions, onMark }: { date: string; today:
   const rel = dayRelation(date, today);
   const kicker = rel === 'today' ? t('wk.upNext.today') : rel === 'tomorrow' ? t('wk.upNext.tomorrow') : t('wk.upNext.day', { weekday: formatWeekday(date, lang) });
   const n = sessions.length;
+  // The first lesson of the day that still needs a plan is the next step on this page.
+  const toPlan = sessions.find((s) => s.kind === 'lesson' && !s.entry.planId && !s.over && !s.beforeTala)?.key;
   return (
     <section aria-labelledby="upnext-h" className="overflow-hidden rounded-xl bg-white shadow-card" data-testid="up-next">
       <header className="bg-forest px-5 py-5 text-cream wide:px-7 wide:py-6">
@@ -297,7 +302,7 @@ export function UpNext({ date, today, sessions, onMark }: { date: string; today:
       </header>
       <div className="divide-y divide-hairline">
         {sessions.map((s) => (
-          <LessonBlock key={s.key} view={s} big onMark={() => onMark(s)} />
+          <LessonBlock key={s.key} view={s} big onMark={() => onMark(s)} cue={s.key === toPlan} />
         ))}
       </div>
     </section>
