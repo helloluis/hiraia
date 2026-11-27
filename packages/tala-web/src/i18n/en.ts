@@ -536,6 +536,19 @@ export const en = {
   'gen.regenConfirm': 'Yes, rewrite it',
   'gen.regenDone': 'Part rewritten. The previous version is in History.',
   'gen.aiMark': 'AI draft',
+  // Rewrite with AI, never silent (Nov 27 fix)
+  'gen.failed.empty_output':
+    'Nothing usable came back for this part, so nothing was changed. Try again, or add a short instruction.',
+  'gen.materials.needResources':
+    'Tala lists materials only from what your class has, and this class has none listed yet. Type what your class has, and Tala will choose what this lesson needs.',
+  'gen.materials.fieldLabel': 'Materials your class has',
+  'gen.materials.fieldHint': 'Separate with commas, e.g. chalkboard, manila paper, crayons. Saved to the class.',
+  'gen.materials.saveAndRewrite': 'Save and rewrite',
+  'gen.materials.from': 'Tala chooses only from your class’s materials: {list}.',
+  'gen.materials.sectionHint':
+    'Your class has no materials listed yet, so Tala cannot fill this in. Add them through Rewrite with AI or on the Class page.',
+  'gen.tryAgain': 'Try again',
+  'gen.stillWorking': 'Still rewriting “{section}”. You can start another rewrite when it finishes.',
 
   'roster.title': 'Import learners',
   'roster.intro':

@@ -1,7 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { GenerationInput } from '../contracts';
-import { buildPrefilledDraft, validateGeneratedSections } from './index';
+import {
+  buildPrefilledDraft,
+  classResources,
+  sectionHasContent,
+  validateGeneratedSections,
+} from './index';
 const parsed = GenerationInput.parse({
   kind: 'full',
   templateId: 'tpl.multigrade.v1',
@@ -116,4 +121,17 @@ test('post-class sections stay blank in a prefilled draft and are never required
   }
   const generated = valid().sections.filter((s) => !['results', 'reflection'].includes(s.key));
   assert.deepEqual(validateGeneratedSections(input, generated), []);
+});
+
+test('27 Nov fix: sectionHasContent treats empty lists, blank items, empty text and all-empty groups as nothing', () => {
+  assert.equal(sectionHasContent(undefined), false);
+  assert.equal(sectionHasContent({ type: 'list', items: [] }), false);
+  assert.equal(sectionHasContent({ type: 'list', items: ['  ', ''] }), false);
+  assert.equal(sectionHasContent({ type: 'text', blocks: [] }), false);
+  assert.equal(sectionHasContent({ type: 'text', blocks: [{ t: 'p', spans: [{ text: ' ' }] }] }), false);
+  assert.equal(sectionHasContent({ type: 'pergroup', groups: { a: [], b: [{ t: 'p', spans: [] }] } }), false);
+  assert.equal(sectionHasContent({ type: 'list', items: ['chalkboard'] }), true);
+  assert.equal(sectionHasContent({ type: 'pergroup', groups: { a: [], b: [{ t: 'ul', items: [[{ text: 'crayons' }]] }] } }), true);
+  assert.deepEqual(classResources({ materials: [' chalkboard ', ''], textbooks: ['Science 4 LM'] }), ['chalkboard', 'Science 4 LM']);
+  assert.deepEqual(classResources({ materials: [], textbooks: [] }), []);
 });

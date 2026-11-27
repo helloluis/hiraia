@@ -104,6 +104,8 @@ export const GenerationJob = z.object({
         'budget_exceeded',
         'disabled',
         'invalid_input',
+        /** The model answered, but the requested part came back empty: nothing was written. */
+        'empty_output',
       ]),
       message: z.string(),
     })

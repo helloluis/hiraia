@@ -5,7 +5,12 @@ import {
   type GenerationJob,
   type Template,
 } from '@hiraia/tala-core';
-import { formatCompetencyObjective, validateGeneratedSections } from '@hiraia/tala-core/generation';
+import {
+  classResources,
+  formatCompetencyObjective,
+  sectionHasContent,
+  validateGeneratedSections,
+} from '@hiraia/tala-core/generation';
 import {
   HttpError,
   requireUser,
@@ -60,6 +65,18 @@ function resolveInput(ctx: Ctx, input: GenerationInput) {
       !template.sections.some((s) => s.key === input.sectionKey && !s.outsideLock))
   )
     throw new HttpError('invalid_input', 'Choose a section.');
+  // Materials are written only from what the class has listed (prompt rule and check): with nothing listed the
+  // only possible answer is an empty list, which looked like a silent success (27 Nov 2026). Say so instead.
+  if (
+    input.kind === 'section' &&
+    input.sectionKey === 'materials' &&
+    classResources(input.classProfile).length === 0
+  )
+    throw new HttpError(
+      'invalid_input',
+      'List the materials your class has first. Tala writes materials only from them.',
+      { reason: 'no_class_resources' }
+    );
   if (input.kind === 'translate' && !input.targetLanguage)
     throw new HttpError('invalid_input', 'Choose Filipino or English for the translation.');
   if (input.kind !== 'full' && !input.planId)
@@ -137,7 +154,19 @@ export async function runJob(ctx: Ctx, id: string): Promise<void> {
       .prepare('SELECT status,owner_id FROM generation_jobs WHERE id=?')
       .get(id) as { status: string; owner_id: string } | undefined;
     if (!live || live.owner_id !== ownerId || live.status === 'cancelled') return;
-    if (result.ok) {
+    // A rewrite of one part that comes back empty is not a result: nothing is written, and the teacher is told.
+    const target =
+      result.ok && input.kind === 'section'
+        ? result.data.sections.find((s) => s.key === input.sectionKey)?.content
+        : undefined;
+    if (result.ok && input.kind === 'section' && !sectionHasContent(target)) {
+      job.status = 'failed';
+      job.failure = {
+        reason: 'empty_output',
+        message: 'Nothing usable came back for this part. Nothing was changed.',
+      };
+      ctx.log.warn('generation.empty_output', { kind: input.kind, sectionKey: input.sectionKey ?? null });
+    } else if (result.ok) {
       job.status = 'done';
       job.result = {
         title: result.data.title,

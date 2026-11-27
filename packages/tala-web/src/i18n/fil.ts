@@ -553,6 +553,19 @@ export const fil = {
   'gen.regenConfirm': 'Oo, isulat ulit',
   'gen.regenDone': 'Naisulat ulit ang bahagi. Makikita pa rin ang dating teksto sa mga naunang bersyon.',
   'gen.aiMark': 'Draft mula sa AI',
+  // Rewrite with AI, never silent (Nov 27 fix) — draft wording, for the Filipino owner's pass
+  'gen.failed.empty_output':
+    'Walang nagamit na sagot para sa bahaging ito kaya walang binago. Subukan ulit, o maglagay ng maikling tagubilin.',
+  'gen.materials.needResources':
+    'Naglilista lang ang Tala ng mga kagamitang mayroon ang klase mo, at wala pang nakalista para sa klaseng ito. Isulat ang mga kagamitang mayroon kayo, at pipiliin ng Tala ang kailangan ng araling ito.',
+  'gen.materials.fieldLabel': 'Mga kagamitang mayroon ang klase mo',
+  'gen.materials.fieldHint': 'Paghiwalayin ng kuwit, hal. pisara, manila paper, krayola. Mase-save ito sa klase.',
+  'gen.materials.saveAndRewrite': 'I-save at isulat ulit',
+  'gen.materials.from': 'Pumipili lang ang Tala mula sa mga kagamitan ng klase mo: {list}.',
+  'gen.materials.sectionHint':
+    'Wala pang nakalistang kagamitan ang klase mo kaya hindi ito mapupunan ng Tala. Idagdag ang mga ito sa "Isulat ulit gamit ang AI" o sa pahina ng Klase.',
+  'gen.tryAgain': 'Subukan ulit',
+  'gen.stillWorking': 'Isinusulat pa ulit ang "{section}". Puwede kang magsimula ng iba kapag tapos na ito.',
 
   'roster.title': 'Mag-import ng listahan ng klase',
   'roster.intro':

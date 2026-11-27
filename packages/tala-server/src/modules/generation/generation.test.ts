@@ -21,6 +21,24 @@ const input = () =>
     customObjectives: ['Describe plants.'],
     classProfile: {},
   });
+/** A class that lists what it has: materials may only name these (PRD rule, prompts and check). */
+const withResources = () => ({
+  ...input(),
+  classProfile: { ...input().classProfile, materials: ['chalkboard', 'manila paper'] },
+});
+const sourcePlan = () =>
+  Plan.parse({
+    id: 'source-plan',
+    title: 'Plants',
+    templateId: 'tpl.dlp.v1',
+    language: 'en',
+    subjectName: 'Science',
+    grades: ['2'],
+    gradeGroupIds: ['group-002'],
+    durationMinutes: 30,
+    competencies: {},
+    placements: [],
+  });
 const unavailable: LlmGateway = {
   routeFor: () => 'cloud',
   complete: async () => ({
@@ -247,7 +265,7 @@ test('section generation reads the real owned source and leaves every existing s
         ok: true,
         data: {
           title: 'Plants',
-          sections: [{ key: 'materials', content: { type: 'list', items: [] } }],
+          sections: [{ key: 'materials', content: { type: 'list', items: ['chalkboard'] } }],
         },
         provider: 'qwen',
         model: 'fake',
@@ -283,7 +301,7 @@ test('section generation reads the real owned source and leaves every existing s
     t.services.records.put(teacher.id, 'plan_section', section);
     const before = t.services.records.planSnapshot(teacher.id, plan.id);
     const job = await t.ok('generation.create', {
-      body: { ...input(), kind: 'section', planId: plan.id, sectionKey: 'materials' },
+      body: { ...withResources(), kind: 'section', planId: plan.id, sectionKey: 'materials' },
       token: teacher.token,
     });
     const done = await waitFor(t, teacher.token, job.id, 'done');
@@ -585,5 +603,76 @@ test('generated sections show official codes or stored text while internal compe
     assert.deepEqual(t.errors, []);
   } finally {
     t.close();
+  }
+});
+
+test('27 Nov fix: a Materials rewrite for a class with no listed resources is refused at once (no job, no model call)', async () => {
+  let calls = 0;
+  const counting: LlmGateway = {
+    routeFor: () => 'cloud',
+    complete: async () => {
+      calls++;
+      return { ok: false, reason: 'providers_unavailable', message: 'down' } as never;
+    },
+  };
+  const t = server(counting);
+  try {
+    const teacher = await t.registerUser();
+    t.services.records.put(teacher.id, 'plan', sourcePlan());
+    const refused = await t.call('generation.create', {
+      body: { ...input(), kind: 'section', planId: 'source-plan', sectionKey: 'materials' },
+      token: teacher.token,
+    });
+    assert.equal(refused.status, 400);
+    assert.equal(refused.error?.code, 'invalid_input');
+    assert.equal((refused.error?.details as { reason?: string } | undefined)?.reason, 'no_class_resources');
+    // Other parts need no listed resources and still run.
+    const other = await t.call('generation.create', {
+      body: { ...input(), kind: 'section', planId: 'source-plan', sectionKey: 'content' },
+      token: teacher.token,
+    });
+    assert.equal(other.status, 200);
+    await waitFor(t, teacher.token, other.data!.id, 'failed');
+    assert.equal(calls, 1, 'only the content rewrite reached the model');
+    assert.deepEqual(t.errors, []);
+  } finally {
+    t.close();
+  }
+});
+
+test('27 Nov fix: a rewritten part that comes back empty fails as empty_output and is never offered as a result', async () => {
+  for (const empty of [
+    { type: 'list', items: [] },
+    { type: 'list', items: ['  ', ''] },
+  ] as const) {
+    const blank: LlmGateway = {
+      routeFor: () => 'cloud',
+      complete: async () =>
+        ({
+          ok: true,
+          data: { title: 'Plants', sections: [{ key: 'materials', content: empty }] },
+          provider: 'deepseek',
+          model: 'fake',
+          promptId: 'lesson/section',
+          promptVersion: 4,
+          usage: { inputTokens: 0, outputTokens: 0, costUsd: 0 },
+          fellBack: false,
+        }) as never,
+    };
+    const t = server(blank);
+    try {
+      const teacher = await t.registerUser();
+      t.services.records.put(teacher.id, 'plan', sourcePlan());
+      const job = await t.ok('generation.create', {
+        body: { ...withResources(), kind: 'section', planId: 'source-plan', sectionKey: 'materials' },
+        token: teacher.token,
+      });
+      const failed = await waitFor(t, teacher.token, job.id, 'failed');
+      assert.equal(failed.failure?.reason, 'empty_output');
+      assert.equal(failed.result, null);
+      assert.deepEqual(t.errors, []);
+    } finally {
+      t.close();
+    }
   }
 });

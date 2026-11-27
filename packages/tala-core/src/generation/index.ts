@@ -50,6 +50,21 @@ export function contentText(value: unknown): string {
   return '';
 }
 const rich = (text: string) => [{ t: 'p' as const, spans: [{ text }] }];
+/**
+ * The class resources a materials section may name (PRD rule: materials are ONLY what the class has listed, never
+ * invented). An empty list means a materials rewrite cannot produce anything, so it must not be attempted.
+ */
+export function classResources(profile: Pick<GenerationInput['classProfile'], 'materials' | 'textbooks'>): string[] {
+  return [...(profile.materials ?? []), ...(profile.textbooks ?? [])].map((m) => m.trim()).filter(Boolean);
+}
+/**
+ * Whether generated content says anything at all. An empty list, empty text or groups that are all empty is
+ * nothing: such a result must never replace what the teacher has (Luis, 27 Nov 2026: the Materials rewrite
+ * "finished" with an empty list and silently emptied the section).
+ */
+export function sectionHasContent(content: SectionContent | undefined | null): boolean {
+  return !!content && contentText(content).trim().length > 0;
+}
 export function buildPrefilledDraft(input: DraftInput): {
   title: string;
   sections: DraftSection[];

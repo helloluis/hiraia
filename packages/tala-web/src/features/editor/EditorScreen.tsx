@@ -1,12 +1,13 @@
 'use client';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { LocalRecord, PlanSection, SectionContent } from '@hiraia/tala-core/contracts';
 import { formatDate, formatTime, useT } from '@/i18n';
 import { useSession } from '@/data/session';
 import { planDates } from '@/data/plans';
 import { topicLabel } from '@/data/topics';
 import { blankContent } from '@hiraia/tala-core/plan';
+import { sectionHasContent } from '@hiraia/tala-core/generation';
 import { Sparkle } from '@/components/ui';
 import {
   Badge,
@@ -26,6 +27,7 @@ import { CompetencyPicker } from './CompetencyPicker';
 import { PdfSheet } from './PdfSheet';
 import { MoreSheet } from './MoreSheet';
 import { RegenSheet } from './RegenSheet';
+import { regenBlocker } from './regen-logic';
 import { PostSheet } from '@/features/community/PostSheet';
 import { Toast } from '@/components/ui';
 
@@ -107,6 +109,18 @@ export function EditorScreen({ planId }: { planId: string }) {
     .join(' · ');
   const compCount = Object.values(plan.competencies).flat().length;
 
+  const openRegen = async (
+    key: string,
+    contentType: Parameters<typeof ed.ensureSection>[1],
+    rec: LocalRecord<'plan_section'> | undefined
+  ) => {
+    if (rec) return setRegen(rec);
+    await ed.ensureSection(key, contentType);
+    const created = (await engine?.list('plan_section'))?.find(
+      (s) => s.data.planId === plan.id && s.data.key === key
+    );
+    if (created) setRegen(created);
+  };
   const doLock = async () => {
     setBusy(true);
     const ok = await ed.lock();
@@ -125,39 +139,19 @@ export function EditorScreen({ planId }: { planId: string }) {
       <PageHeader
         title={
           locked ? (
-            <span className="line-clamp-3 break-words [overflow-wrap:anywhere]">
+            <span className="block break-words [overflow-wrap:anywhere]">
               {plan.title || t('lessons.untitled')}
             </span>
           ) : (
-            <label className="block">
-              <span className="sr-only">{t('editor.title')}</span>
-              {/* A wrapping, auto-growing one-field title (an <input> cannot wrap, so long titles were cut off). */}
-              <textarea
-                rows={1}
-                className="w-full resize-none overflow-hidden bg-transparent border-b border-hairline focus:border-talaTeal text-display font-display leading-tight py-1 placeholder:text-forestMuted break-words [overflow-wrap:anywhere]"
-                placeholder={t('editor.titlePlaceholder')}
-                value={title ?? ''}
-                maxLength={200}
-                ref={(el) => {
-                  if (el) {
-                    // Grow with the text up to three lines; beyond that the field scrolls instead of pushing the page.
-                    const lineHeight = parseFloat(getComputedStyle(el).lineHeight) || 34;
-                    const max = Math.round(lineHeight * 3 + 8);
-                    el.style.height = '0px';
-                    el.style.height = `${Math.min(el.scrollHeight, max)}px`;
-                    el.style.overflowY = el.scrollHeight > max ? 'auto' : 'hidden';
-                  }
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') e.preventDefault();
-                }}
-                onChange={(e) => {
-                  const v = e.target.value.replace(/[\r\n]+/g, ' ');
-                  setTitle(v);
-                  ed.savePlan({ title: v });
-                }}
-              />
-            </label>
+            <TitleField
+              label={t('editor.title')}
+              placeholder={t('editor.titlePlaceholder')}
+              value={title ?? ''}
+              onChange={(v) => {
+                setTitle(v);
+                ed.savePlan({ title: v });
+              }}
+            />
           )
         }
         subtitle={subtitle}
@@ -322,6 +316,8 @@ export function EditorScreen({ planId }: { planId: string }) {
                 const created = await ed.ensureSection(ts.key, ts.contentType);
                 if (created) ed.saveSection(created, c);
               };
+              // Every pre-class part can be rewritten (post-class parts are the teacher's own and never drafted).
+              const aiApplies = !readOnly && !ts.outsideLock && canGenerate && !!ed.cls;
               return (
                 <section
                   key={ts.key}
@@ -331,26 +327,42 @@ export function EditorScreen({ planId }: { planId: string }) {
                     missing && !locked ? 'border-yellow' : 'border-hairline'
                   )}
                 >
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h2 id={`s-${ts.key}`} className="text-title">
-                      {ts.label[lang]}
-                    </h2>
-                    <span className="flex gap-2">
+                  <div className="flex flex-wrap items-start gap-x-3 gap-y-2">
+                    <div className="flex flex-wrap items-center gap-2 min-w-0 flex-1 basis-48">
+                      <h2
+                        id={`s-${ts.key}`}
+                        className="text-title min-w-0 break-words [overflow-wrap:anywhere]"
+                      >
+                        {ts.label[lang]}
+                      </h2>
                       {ts.required && <Badge>{t('editor.required')}</Badge>}
-                      {rec?.conflict && (
-                        <Button variant="quiet" onClick={() => setConflict(rec)}>
-                          ⚠ {t('lessons.conflictBadge')}
-                        </Button>
-                      )}
-                    </span>
-                  </div>
-                  {!readOnly && !ts.outsideLock && canGenerate && ed.cls && rec && (
-                    <div>
-                      <Button variant="ai" onClick={() => setRegen(rec)}>
-                        <Sparkle /> {t('gen.regen')}
-                      </Button>
                     </div>
-                  )}
+                    {(rec?.conflict || aiApplies) && (
+                      <div className="flex flex-wrap items-center justify-end gap-2 ml-auto">
+                        {rec?.conflict && (
+                          <Button variant="quiet" onClick={() => setConflict(rec)}>
+                            ⚠ {t('lessons.conflictBadge')}
+                          </Button>
+                        )}
+                        {aiApplies && (
+                          <Button
+                            variant="ai"
+                            aria-label={`${t('gen.regen')}: ${ts.label[lang]}`}
+                            onClick={() => void openRegen(ts.key, ts.contentType, rec)}
+                          >
+                            <Sparkle /> {t('gen.regen')}
+                          </Button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  {ts.key === 'materials' &&
+                    !readOnly &&
+                    canGenerate &&
+                    !sectionHasContent(data.content) &&
+                    regenBlocker('materials', ed.cls) === 'no_class_resources' && (
+                      <p className="text-small text-forestMuted">{t('gen.materials.sectionHint')}</p>
+                    )}
                   <SectionEditor
                     content={data.content}
                     readOnly={readOnly}
@@ -532,6 +544,67 @@ function ConflictVersion({
         />
       </div>
     </div>
+  );
+}
+
+/**
+ * The lesson title: wraps like a heading and grows with its text, at any width or zoom (Luis, 27 Nov 2026: a long
+ * title got its own scrollbar). No height cap, no inner scrollbar, no clipping; Enter is not a line break.
+ */
+function TitleField({
+  label,
+  placeholder,
+  value,
+  onChange,
+}: {
+  label: string;
+  placeholder: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  const ref = useRef<HTMLTextAreaElement | null>(null);
+  const fit = useCallback(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = `${el.scrollHeight}px`;
+  }, []);
+  useLayoutEffect(fit, [value, fit]);
+  useEffect(() => {
+    const el = ref.current;
+    const box = el?.parentElement;
+    if (!el || !box) return;
+    // Re-fit when the available width changes (rotation, foldables, zoom, the sidebar), never on our own height change.
+    let width = box.clientWidth;
+    const ro =
+      typeof ResizeObserver === 'undefined'
+        ? null
+        : new ResizeObserver(() => {
+            if (box.clientWidth !== width) {
+              width = box.clientWidth;
+              fit();
+            }
+          });
+    ro?.observe(box);
+    void document.fonts?.ready.then(fit);
+    return () => ro?.disconnect();
+  }, [fit]);
+  return (
+    <label className="block w-full">
+      <span className="sr-only">{label}</span>
+      <textarea
+        ref={ref}
+        rows={1}
+        className="block w-full resize-none overflow-hidden bg-transparent border-b border-hairline focus:border-talaTeal text-display font-display leading-tight py-1 placeholder:text-forestMuted break-words [overflow-wrap:anywhere]"
+        placeholder={placeholder}
+        value={value}
+        maxLength={200}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') e.preventDefault();
+        }}
+        onChange={(e) => onChange(e.target.value.replace(/[\r\n]+/g, ' '))}
+      />
+    </label>
   );
 }
 

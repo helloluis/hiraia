@@ -480,7 +480,8 @@ export function PageHeader({
         </Link>
       )}
       <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="min-w-0">
+        {/* The title takes the free width and wraps; the actions move below it when the row is too narrow. */}
+        <div className="min-w-0 flex-1 basis-64">
           <h1 className="text-display break-words [overflow-wrap:anywhere] min-w-0">{title}</h1>
           {subtitle && <p className="text-forestMuted">{subtitle}</p>}
         </div>
