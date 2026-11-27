@@ -202,11 +202,11 @@ function SingleLessonSlides({ ed, pres, adopt, reload }: { ed: PlanEditor; pres:
   const ai = useSlidesAi(plan.id, {
     initial: pres.job,
     beforeStart: () => send(plan.id),
-    onApplied: (p) => {
+    onApplied: (p, scope) => {
       adopt(p);
       forgetDecks();
       setSheet(null);
-      setToast(t('pp.ai.applied'));
+      setToast(t(scope === 'new' ? 'pp.ai.appliedNew' : 'pp.ai.applied'));
     },
   });
   // A suggestion that is ready opens by itself (also after a reload); closing it keeps it waiting.
@@ -220,6 +220,8 @@ function SingleLessonSlides({ ed, pres, adopt, reload }: { ed: PlanEditor; pres:
   }, [readyId]);
   const proposal = useMemo(() => proposalView(ai, ls, { grade: plan.grades[0] ?? '', subject: plan.subjectName, title: plan.title }), [ai, ls, plan.grades, plan.subjectName, plan.title]);
   const content = (ls?.slides ?? []).filter(rewritable);
+  // What "all of the lesson's slides" replaces (the server's count): answer slides included, not covers or credits.
+  const lessonCount = (ls?.slides ?? []).filter((s) => s.kind !== 'cover' && s.kind !== 'day' && s.kind !== 'credits').length;
   const firstId = ls?.slides.find((s) => s.kind !== 'credits')?.id ?? ls?.slides[0]?.id ?? '';
   const editHref = deckId ? `/slides/${encodeURIComponent(deckId)}?plan=${encodeURIComponent(plan.id)}${firstId ? `&slide=${encodeURIComponent(firstId)}` : ''}` : '';
 
@@ -448,7 +450,7 @@ function SingleLessonSlides({ ed, pres, adopt, reload }: { ed: PlanEditor; pres:
         view={view}
         slideIds={content.map((s) => s.id)}
         wholeWeek={fromPack && !pres.link?.day}
-        count={content.length}
+        count={lessonCount}
         onAsk={(scope, more) => void ask(scope, more)}
       />
       <AiProposalSheet
@@ -458,6 +460,7 @@ function SingleLessonSlides({ ed, pres, adopt, reload }: { ed: PlanEditor; pres:
         replacing={ai.job?.proposal?.replaces.length ?? 0}
         open={sheet === 'proposal' && (ai.phase === 'ready' || ai.phase === 'applying' || ai.phase === 'conflict')}
         onClose={() => setSheet(null)}
+        current={view && ai.job?.proposal ? { layouts: view.layouts.filter((l) => ai.job!.proposal!.replaces.includes(l.id)), mediaUrl: view.mediaUrl } : null}
       />
       <RevisionsSheet
         deckId={deckId}
@@ -630,7 +633,7 @@ function SessionSlides({ ed, pres, adopt, reload }: { ed: PlanEditor; pres: Less
     { key: 'cover', label: t('pp.session.cover'), first: 0, count: 1 },
     ...assembled.blocks.map((b) => ({ key: b.id, label: `${b.label} · ${t('common.minutes', { n: b.minutes })}`, first: b.first, count: b.count })),
     ...(assembled.layout.slides.some((s) => s.role === 'credits')
-      ? [{ key: 'about', label: t('sl.group.about'), first: assembled.layout.slides.findIndex((s) => s.role === 'credits'), count: assembled.layout.slides.filter((s) => s.role === 'credits').length }]
+      ? [{ key: 'about', label: t('pp.session.about'), first: assembled.layout.slides.findIndex((s) => s.role === 'credits'), count: assembled.layout.slides.filter((s) => s.role === 'credits').length }]
       : []),
   ];
   return (
@@ -708,7 +711,7 @@ function GradePart({
       setSheet(false);
       forgetDecks();
       reload();
-      onToast(t('pp.ai.applied'));
+      onToast(t('pp.ai.appliedNew'));
     },
   });
   useEffect(() => {

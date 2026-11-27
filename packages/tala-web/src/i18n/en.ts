@@ -1064,6 +1064,10 @@ export const en = {
   'pp.session.auto': 'Found by Tala',
   'pp.session.missing': '{n} grades have no slides yet: a plain slide stands in their place.',
   'pp.session.missingOne': '1 grade has no slides yet: a plain slide stands in its place.',
+  'pp.ai.suggested': 'Suggested',
+  'pp.ai.now': 'Now',
+  'pp.ai.appliedNew': 'The slides are in. Change anything you like; they are yours.',
+  'pp.session.about': 'About these slides',
 } as const;
 
 export type StringKey = keyof typeof en;

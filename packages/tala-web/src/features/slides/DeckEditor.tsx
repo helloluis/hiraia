@@ -701,7 +701,9 @@ function DeckEditor({ initial, startSlideId, planId }: { initial: DeckDetail; st
         )}
       </Sheet>
 
-      <Sheet open={sheet === 'more'} onClose={() => setSheet(null)} title={t('sl.ed.more')}>
+      {/* The More sheet hands over to another sheet (start over, delete, earlier versions). Its dialog's own close event
+          arrives after that switch, so it may only clear the sheet while it is still the one showing. */}
+      <Sheet open={sheet === 'more'} onClose={() => setSheet((s) => (s === 'more' ? null : s))} title={t('sl.ed.more')}>
         <div className="flex flex-col gap-2">
           <div className="grid grid-cols-2 gap-2 wide:hidden">
             <Button onClick={ed.undo} disabled={!ed.canUndo}>
@@ -816,7 +818,15 @@ function DeckEditor({ initial, startSlideId, planId }: { initial: DeckDetail; st
           void ed.loadServer().then(() => setToast({ message: t('pp.rev.restored') }));
         }}
       />
-      <AiProposalSheet ai={ai} view={proposalView} scope="slide" replacing={1} open={sheet === 'ai' && (ai.phase === 'ready' || ai.phase === 'applying' || ai.phase === 'conflict')} onClose={() => setSheet(null)} />
+      <AiProposalSheet
+        ai={ai}
+        view={proposalView}
+        scope="slide"
+        replacing={1}
+        open={sheet === 'ai' && (ai.phase === 'ready' || ai.phase === 'applying' || ai.phase === 'conflict')}
+        onClose={() => setSheet(null)}
+        current={ai.job?.proposal ? { layouts: viewOfDeck({ ...deck, slides: ed.slides }, mediaUrl, { baseSlides: ed.detail.baseSlides }).layouts.filter((l) => ai.job!.proposal!.replaces.includes(l.id)), mediaUrl } : null}
+      />
 
       <Toast
         message={toast?.message ?? null}

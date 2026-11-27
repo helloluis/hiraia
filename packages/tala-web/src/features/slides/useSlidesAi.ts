@@ -21,8 +21,8 @@ export function useSlidesAi(
     initial?: SlidesJob | null;
     /** Send the device's edits first; false when they could not reach the server. */
     beforeStart?: () => Promise<boolean>;
-    /** The proposal was applied: the server's new presentation. */
-    onApplied?: (p: LessonPresentation) => void;
+    /** The proposal was applied: the server's new presentation, and what the proposal covered. */
+    onApplied?: (p: LessonPresentation, scope: SlidesAiScope) => void;
   } = {}
 ) {
   const [job, setJob] = useState<SlidesJob | null>(null);
@@ -133,7 +133,7 @@ export function useSlidesAi(
         setJob(null);
         setPhase('idle');
         setTrouble(null);
-        optsRef.current.onApplied?.(p);
+        optsRef.current.onApplied?.(p, job.scope);
         return true;
       } catch (e) {
         const why = slidesAiTrouble(e);

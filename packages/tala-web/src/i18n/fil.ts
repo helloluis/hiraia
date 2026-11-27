@@ -1097,4 +1097,8 @@ export const fil = {
   'pp.session.auto': 'Hinanap ng Tala',
   'pp.session.missing': '{n} baitang ang wala pang slides: may simpleng slide na pumapalit sa mga ito.',
   'pp.session.missingOne': '1 baitang ang wala pang slides: may simpleng slide na pumapalit dito.',
+  'pp.ai.suggested': 'Mungkahi',
+  'pp.ai.now': 'Ngayon',
+  'pp.ai.appliedNew': 'Nandito na ang slides. Baguhin ang kahit ano; sa iyo ang mga ito.',
+  'pp.session.about': 'Tungkol sa mga slide',
 } satisfies Record<StringKey, string>;

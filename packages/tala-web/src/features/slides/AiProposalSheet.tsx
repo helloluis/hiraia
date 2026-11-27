@@ -6,12 +6,14 @@
  */
 import { useState } from 'react';
 import type { SlidesAiScope } from '@hiraia/tala-core/contracts';
+import type { SlideLayout } from '@hiraia/tala-core/decks';
 import { useT } from '@/i18n';
 import { Icon } from '@/components/icons';
 import { Banner, Button, Sheet, Sparkle } from '@/components/ui';
 import type { DeckView } from './deck-model';
 import { Lightbox } from './Lightbox';
-import { SlideThumb } from './SlideThumb';
+import { SlideThumb, slideName } from './SlideThumb';
+import { SlideView } from './SlideView';
 import { TROUBLE_KEY } from './ai-words';
 import type { SlidesAi } from './useSlidesAi';
 
@@ -22,6 +24,7 @@ export function AiProposalSheet({
   replacing,
   open,
   onClose,
+  current,
 }: {
   ai: SlidesAi;
   /** The suggested slides, laid out like the deck. */
@@ -31,6 +34,8 @@ export function AiProposalSheet({
   replacing: number;
   open: boolean;
   onClose: () => void;
+  /** One slide rewritten: the slide as it is now, shown under the suggestion. */
+  current?: { layouts: SlideLayout[]; mediaUrl: (slug: string) => string } | null;
 }) {
   const { t } = useT();
   const [lightbox, setLightbox] = useState<number | null>(null);
@@ -60,13 +65,37 @@ export function AiProposalSheet({
         </p>
         {conflict && <Banner kind="warn">{t('pp.ai.conflict')}</Banner>}
         {ai.trouble && !conflict && <Banner kind="error">{t(TROUBLE_KEY[ai.trouble])}</Banner>}
-        {view && (
+        {view && scope === 'slide' ? (
+          // One slide: large enough to read, with the slide as it is now under it.
+          <div className="flex flex-col gap-3" data-ai-proposal>
+            <figure className="flex flex-col gap-1.5">
+              <figcaption className="kicker text-talaTeal">{t('pp.ai.suggested')}</figcaption>
+              {view.layouts.map((l) => (
+                <div key={l.id} className="overflow-hidden rounded-sm shadow-card ring-1 ring-hairline">
+                  <SlideView layout={l} number={l.index + 1} mediaUrl={view.mediaUrl} eager label={slideName(t, l, view.layouts.length)} />
+                </div>
+              ))}
+            </figure>
+            {current && current.layouts.length > 0 && (
+              <figure className="flex flex-col gap-1.5">
+                <figcaption className="kicker text-forestMuted">{t('pp.ai.now')}</figcaption>
+                <div className="grid grid-cols-2 gap-2">
+                  {current.layouts.map((l) => (
+                    <div key={l.id} className="overflow-hidden rounded-sm opacity-90 ring-1 ring-hairline">
+                      <SlideView layout={l} number={l.index + 1} mediaUrl={current.mediaUrl} decorative />
+                    </div>
+                  ))}
+                </div>
+              </figure>
+            )}
+          </div>
+        ) : view ? (
           <div className="grid grid-cols-2 gap-x-3 gap-y-4 min-[560px]:grid-cols-3" data-ai-proposal>
             {view.layouts.map((l) => (
               <SlideThumb key={l.id} view={view} layout={l} onOpen={setLightbox} />
             ))}
           </div>
-        )}
+        ) : null}
         <p className="text-small text-forestMuted">{t('pp.ai.checkFacts')}</p>
       </Sheet>
       {lightbox !== null && view && <Lightbox view={view} index={lightbox} onIndex={setLightbox} onClose={() => setLightbox(null)} />}
