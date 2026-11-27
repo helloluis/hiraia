@@ -1564,7 +1564,7 @@ empty list passes, is saved over the section as a success ("Part rewritten"), an
 **Ledger:** 1 running (root cause found) · 2 running (worker P) · 3 running (worker P) · 4 running (worker W) ·
 5 running · 6 running.
 
-### 27 Nov 2026 ~13:20 Manila: items 1, 5, 6 built and verified locally (branch `tala-v1-lesson-feedback`, not deployed)
+### 27 Nov 2026 12:18 Manila (04:18 UTC): items 1, 5, 6 built and verified locally (branch `tala-v1-lesson-feedback`, not deployed)
 
 - **Item 1 (Materials "Rewrite with AI" silent failure) — fixed, commits 94039e89c, e2534953d.** Server: a
   Materials rewrite for a class with no listed resources is refused before any job or model call (`invalid_input`,
