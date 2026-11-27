@@ -547,6 +547,7 @@ export const en = {
   'gen.materials.from': 'Tala chooses only from your class’s materials: {list}.',
   'gen.materials.sectionHint':
     'Your class has no materials listed yet, so Tala cannot fill this in. Add them through Rewrite with AI or on the Class page.',
+  'gen.regenShort': 'Rewrite',
   'gen.tryAgain': 'Try again',
   'gen.stillWorking': 'Still rewriting “{section}”. You can start another rewrite when it finishes.',
 

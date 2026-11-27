@@ -564,6 +564,7 @@ export const fil = {
   'gen.materials.from': 'Pumipili lang ang Tala mula sa mga kagamitan ng klase mo: {list}.',
   'gen.materials.sectionHint':
     'Wala pang nakalistang kagamitan ang klase mo kaya hindi ito mapupunan ng Tala. Idagdag ang mga ito sa "Isulat ulit gamit ang AI" o sa pahina ng Klase.',
+  'gen.regenShort': 'Isulat ulit',
   'gen.tryAgain': 'Subukan ulit',
   'gen.stillWorking': 'Isinusulat pa ulit ang "{section}". Puwede kang magsimula ng iba kapag tapos na ito.',
 

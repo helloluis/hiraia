@@ -327,18 +327,19 @@ export function EditorScreen({ planId }: { planId: string }) {
                     missing && !locked ? 'border-yellow' : 'border-hairline'
                   )}
                 >
-                  <div className="flex flex-wrap items-start gap-x-3 gap-y-2">
-                    <div className="flex flex-wrap items-center gap-2 min-w-0 flex-1 basis-48">
-                      <h2
-                        id={`s-${ts.key}`}
-                        className="text-title min-w-0 break-words [overflow-wrap:anywhere]"
-                      >
-                        {ts.label[lang]}
-                      </h2>
-                      {ts.required && <Badge>{t('editor.required')}</Badge>}
-                    </div>
+                  {/* Title with Required right after its last word (they wrap together); the actions stay top right. */}
+                  <div className="flex items-start gap-3">
+                    <h2
+                      id={`s-${ts.key}`}
+                      className="text-title min-w-0 flex-1 break-words [overflow-wrap:anywhere]"
+                    >
+                      <TitleWithPill
+                        text={ts.label[lang]}
+                        pill={ts.required ? t('editor.required') : null}
+                      />
+                    </h2>
                     {(rec?.conflict || aiApplies) && (
-                      <div className="flex flex-wrap items-center justify-end gap-2 ml-auto">
+                      <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
                         {rec?.conflict && (
                           <Button variant="quiet" onClick={() => setConflict(rec)}>
                             ⚠ {t('lessons.conflictBadge')}
@@ -348,9 +349,13 @@ export function EditorScreen({ planId }: { planId: string }) {
                           <Button
                             variant="ai"
                             aria-label={`${t('gen.regen')}: ${ts.label[lang]}`}
+                            title={t('gen.regen')}
                             onClick={() => void openRegen(ts.key, ts.contentType, rec)}
                           >
-                            <Sparkle /> {t('gen.regen')}
+                            <Sparkle />{' '}
+                            {/* A short label on phones keeps the button beside the title, at the top right. */}
+                            <span className="wide:hidden">{t('gen.regenShort')}</span>
+                            <span className="hidden wide:inline">{t('gen.regen')}</span>
                           </Button>
                         )}
                       </div>
@@ -544,6 +549,22 @@ function ConflictVersion({
         />
       </div>
     </div>
+  );
+}
+
+/**
+ * A section title with its Required pill right after the last word. On a narrow phone, when the pill does not fit on
+ * that line, it wraps directly under the title like the next word would (never under the actions on the right).
+ */
+function TitleWithPill({ text, pill }: { text: string; pill: string | null }) {
+  if (!pill) return <>{text}</>;
+  return (
+    <>
+      {text}{' '}
+      <span className="inline-block align-middle font-body font-normal leading-none">
+        <Badge>{pill}</Badge>
+      </span>
+    </>
   );
 }
 
