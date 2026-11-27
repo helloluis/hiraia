@@ -606,3 +606,31 @@ test('stopping: a pack copy stays among her copies, slides made from a lesson go
     w.close();
   }
 });
+
+test('joining two accounts of one teacher: her lessons keep their slides, earlier versions and choices', { skip }, async () => {
+  const llm = createFakeLlm({ answers: { 'slides.rewrite': aiSlide() } });
+  const w = world({ llm });
+  try {
+    const ana = await w.t.registerUser();
+    const ben = await w.t.registerUser();
+    // Ben is her old account: a lesson with its pack slides, one slide rewritten with AI (an earlier version kept).
+    const { plan } = seedLesson(w.t, ben);
+    const p = await link(w.t, ben, plan.id, 2);
+    const slideId = p.slides!.slides.find((s) => s.kind === 'concept')!.id;
+    const job = await settled(w.t, ben, plan.id, (await ask(w.t, ben, plan.id, { scope: 'slide', slideId })).data!.id);
+    await w.t.ok('decks.ai.apply', { params: { planId: plan.id, jobId: job.id }, body: {}, token: ben.token });
+    await w.t.ok('account.merge', {
+      token: ana.token,
+      body: { confirm: 'MERGE', currentPassword: ana.password, email: ben.email, password: ben.password },
+    });
+    const after = await present(w.t, ana, plan.id);
+    assert.equal(after.slides?.deckId, p.slides!.deckId);
+    assert.equal(after.link?.day, 2);
+    assert.equal(after.slides!.slides.find((s) => s.id === slideId)!.title, 'Roots drink water');
+    assert.equal((await w.t.ok('decks.revisions', { params: { deckId: p.slides!.deckId }, token: ana.token })).revisions.length, 1);
+    for (const table of ['decks_plan_links', 'decks_revisions', 'decks_ai_jobs', 'decks_session_sources', 'decks_decks'])
+      assert.equal((w.t.db.prepare(`SELECT COUNT(*) AS n FROM ${table} WHERE owner_id = ?`).get(ben.id) as { n: number }).n, 0, table);
+  } finally {
+    w.close();
+  }
+});
