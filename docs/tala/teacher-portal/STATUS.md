@@ -1835,3 +1835,11 @@ owner integrates; deploying needs Luis's own go-ahead (demo.19's approval does n
   packs for 103 of the 262 weeks (English 103, Filipino 99), every one an AI draft (0 reviewed by a teacher), opened only
   when signed in; Mathematics: six pilot weeks; English teaching packs are not published. Not to be claimed: teacher or
   DepEd review or affiliation, complete coverage, verified opening in Microsoft Office (parser checks only).
+- **27 Nov 22:2x Manila:** the homepage owner's Filipino batch 1 (35 items: new feature lines, the "Ang pangako namin"
+  rewrite, words inside two screenshots) relayed to the Filipino owner (bridge `0250ddbe…`; file published as a 7-day
+  link, sha256 `c98e7c60…`, checked byte for byte). Flagged with it: item 26's proposed Filipino says more about the
+  offline app than the English does.
+- **Pack content note (for the packs lane, not fixed):** `sci26-g5-t2-w10` (Grade 5, Term 2, Week 10) day 1, slide
+  `d1s7`: its title, lines and teacher notes are about dropping a stone (EN "The stone falls without a push", FIL "bato"),
+  but its picture is a falling mango (`falling-mango-gravity`). The science is right; the words and the picture disagree.
+  Found by the homepage owner; its screenshot shows a teacher's corrected copy on a local server, the live pack unchanged.
