@@ -1817,3 +1817,39 @@ draft page, Filipino shell after a reload, This Week empty state, "not on this d
 checks of the new PowerPoint files (parsers only); (4) a teacher's review; (5) the existing pacing quirk, for Luis;
 (6) the test account now holds seven-day rooms and a class without start times: weekday-only checks need their own rooms.
 **Not part of this approval and not done:** the held subjects, publishing the English draft packs, the pacing quirk.
+
+## 27 Nov 2026 21:31 Manila: separate task — the public homepage (owner: Fable agent b11-dev:bea7a699)
+
+Per the owner's scope declaration to the release owner (13:4x UTC, citing Luis's request rq_yrx5hmd6, assigned by
+rq_uvwqkxp7, thread ddb4d22d): improve `/` below the hero (the hero stays as it is): three visual features in this order —
+the multi-grade lesson planner, the slideshow generator, the breadth of DepEd Science curriculum coverage — in place of
+the screenshot carousel and the seven feature cards; rewrite the Filipino of "Ang pangako namin". Branch
+`tala-v1-homepage` (worktree `tala-wt/home`, local), base `f2a154a08`. The owner has no deploy authority; the release
+owner integrates; deploying needs Luis's own go-ahead (demo.19's approval does not cover it). **Nothing deployed.**
+- **Shared files agreed:** only `landing.*` i18n keys (`landing.footerDeped`, the non-affiliation line, unchanged); one
+  additive block at the end of `globals.css` (after the motion block, reduced motion honoured); `PublicShell.tsx`
+  untouched. Nothing else in flight on those files (checked 13:42 UTC: only the two agents running; the arrow and
+  loading-flash follow-ups not started). New Filipino lines go to the Filipino owner through the release owner.
+- **What the page may claim** (live public API, 13:4x UTC): Science curriculum mapped for Grades 3–10 from the DepEd
+  2026 three-term Budget of Work, 322 competencies, each with its document, edition, page and link; Science teaching
+  packs for 103 of the 262 weeks (English 103, Filipino 99), every one an AI draft (0 reviewed by a teacher), opened only
+  when signed in; Mathematics: six pilot weeks; English teaching packs are not published. Not to be claimed: teacher or
+  DepEd review or affiliation, complete coverage, verified opening in Microsoft Office (parser checks only).
+- **27 Nov 22:2x Manila:** the homepage owner's Filipino batch 1 (35 items: new feature lines, the "Ang pangako namin"
+  rewrite, words inside two screenshots) relayed to the Filipino owner (bridge `0250ddbe…`; file published as a 7-day
+  link, sha256 `c98e7c60…`, checked byte for byte). Flagged with it: item 26's proposed Filipino says more about the
+  offline app than the English does.
+- **Pack content note (for the packs lane, not fixed):** `sci26-g5-t2-w10` (Grade 5, Term 2, Week 10) day 1, slide
+  `d1s7`: its title, lines and teacher notes are about dropping a stone (EN "The stone falls without a push", FIL "bato"),
+  but its picture is a falling mango (`falling-mango-gravity`). The science is right; the words and the picture disagree.
+  Found by the homepage owner; its screenshot shows a teacher's corrected copy on a local server, the live pack unchanged.
+- **27 Nov 22:27 Manila:** the Filipino owner answered homepage batch 1 (bridge `4f94a29f…`): 19 items reworded (23
+  lines), 11 flags, the rest OK; relayed verbatim to the homepage owner
+  (`/home/b11/tala-takeover-20261125/bridge/home-fil-batch1-answer.md`, sha256 `258ad4b9…`). Accuracy points kept:
+  "check the Science before class"; a page number, not a page copy; offline named as the Android app, weak signal
+  only (item 26 resolved); learners may record that both balls land together. Item 31's longer line is the copy
+  owner's call; any later Filipino change goes back to the Filipino owner.
+- **27 Nov 23:23 Manila:** homepage batch 1 applied by the homepage owner exactly as answered; batch 2 (one line: the
+  no-number sentence shown until the Library answers) relayed to the Filipino owner (bridge `d12265f1…`). Asked in the
+  same message, for the APP (release owner's lane): should the multi-grade label `carryOn` ("Ituloy ang gawain nang
+  kayo lang:") become the reviewer's "Ituloy ninyo ang sariling gawain:"? A change would ship in a later app release.
