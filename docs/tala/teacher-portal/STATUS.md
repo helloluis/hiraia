@@ -1525,3 +1525,205 @@ posting, account merge, Google sign-in (off), password reset (no mail service), 
 succeeded at once), attempts through the browser UI (the API was used directly), Office application checks. The
 rehearsal-machine results of 24–25 Nov are not counted as production evidence. Evidence (no secrets):
 `/home/b11/tala-takeover-20261125/isolation-20261126/`.
+
+## 27 Nov 2026 11:36 Manila: Luis's six Lesson Plan items (rq_cqeyj7c8; item 1 corrected 11:41, rq_tdngzpga) — implementation started
+
+**Luis, verbatim:** "Couple of feedback that we wanna work on immediately: 1) Lesson Plan - Materials 2) Presentations
+should be displayed prominently in the Lesson Plan view, so the teacher already knows that they need to edit it to
+coincide with their lesson plan. There should be an AI regeneration button on the slides too. 3) Multigrade
+presentations should be dynamically assembled in the Lesson Plan view. 4) Saturday and Sunday classes need to be
+supported because some schools don't have a choice when they will hold their classes. So just make it selectable and
+then just do a best-guess on what they would need to cover on that day. 5) I noticed some weird titlebar issues in the
+Lesson Plan view. A long title will get a scrollbar, when it should just wrap normally as a normal text header. 6) in
+the Lesson Plan view, the REWRITE WITH AI button should be on the top right of each section. The "required" pill
+should be right beside the title of the section." **Item 1 clarified (11:41, verbatim):** "1) Lesson Plan - Materials
+- there was something wrong with the "GENERATE WITH AI" button there but i didnt get an error message" — the task is
+to reproduce and fix that silent failure (the earlier generic materials-list assumption is withdrawn).
+
+**Authority:** implementation and testing now. Deploying this UI release is not covered by the curriculum approvals:
+the candidate will be finished and verified first, then one waiting_for_user question is recorded.
+
+**State at start:** production `tala-v1-demo.18`, healthy; base `tala-v1-filipino` 9abe019ca; no other agent running
+on b11-dev; every Tala owner on b11-002 idle (only an unrelated Let's Read agent running).
+
+**Lanes and edit scope (one integrator):**
+- Release owner, worktree `tala-wt/plan`, branch `tala-v1-lesson-feedback`: items 1, 5, 6 (Lesson Plan editor,
+  section AI sheet, lesson generation checks and prompts) and the integration of the other two lanes.
+- Worker W (internal subagent), worktree `tala-wt/weekend`, branch `tala-v1-weekend-days`: item 4 (setup, class
+  edit, This Week, pacing, plan/timeline/recommend helpers; minimal hunks in the generation input/schedule).
+- Worker P (internal subagent), worktree `tala-wt/slides`, branch `tala-v1-plan-slides`: items 2 and 3 (slide copies
+  module, slide prompts, multi-grade assembly in tala-core, slides UI, a new presentation panel the integrator mounts).
+
+**Item 1, evidence before any fix (production, metadata only, no lesson text or account shown):** all 4 Materials
+rewrites ever run on production (3 multi-grade, 1 single-grade, the latest 27 Nov 03:33 UTC) finished as `done`
+with EMPTY results (0 items; 0 characters per grade), each in about a second, and every one came from a class with no
+listed resources. Cause: every lesson prompt says "materials: ONLY exact names from profile materials/textbooks",
+and the server check rejects any other name, so a class without listed resources can only get an empty list. That
+empty list passes, is saved over the section as a success ("Part rewritten"), and nothing tells the teacher why.
+
+**Ledger:** 1 running (root cause found) · 2 running (worker P) · 3 running (worker P) · 4 running (worker W) ·
+5 running · 6 running.
+
+### 27 Nov 2026 12:18 Manila (04:18 UTC): items 1, 5, 6 built and verified locally (branch `tala-v1-lesson-feedback`, not deployed)
+
+- **Item 1 (Materials "Rewrite with AI" silent failure) — fixed, commits 94039e89c, e2534953d.** Server: a
+  Materials rewrite for a class with no listed resources is refused before any job or model call (`invalid_input`,
+  reason `no_class_resources`); a part that comes back empty fails as the new reason `empty_output`. Sheet: says
+  what is missing and lets the teacher list the class's materials right there (saved to the class), one request at
+  a time, every failure at the top with Try again, an empty answer never applied, cancel reported. A rewrite queued
+  offline that fails is shown in its lesson (never dropped). An empty Materials section in a class without listed
+  materials says why. Local walk with the REAL provider (DeepSeek, same models as production): prerequisite → rewrite
+  in 2.7 s → items only from the class list → two fast clicks = one request → kept after reload and on the server →
+  class materials saved; existing lesson rewritten with the previous version kept in History; provider down (broken
+  keys): the message at the top of the phone sheet, Try again safe, materials unchanged, both jobs failed; offline
+  queued + provider down: the notice in the lesson. Tests: core +1, server +2 (and the old test that expected an
+  empty Materials answer to succeed now uses a class with resources), web +5.
+- **Item 5 (title scrollbar) — fixed, 94039e89c.** The title field grows with its text (the three-line cap and its
+  inner scrollbar are gone; a locked title is no longer clipped); the header gives the title the free width. Measured
+  at phone, foldable, desktop and 200% zoom, English, Filipino and one unbroken 126-letter word: all text visible, no
+  inner scrollbar, no sideways scroll, 28 px type.
+- **Item 6 (section actions) — fixed, 94039e89c + 700bc1fe1.** Every pre-class section: Rewrite with AI at the top
+  right (short "Rewrite"/"Isulat ulit" label below 840 px, full name for screen readers), Required right after the
+  title (on a narrow phone it wraps directly under the title, never under the actions); post-class parts have no AI.
+  Measured at the same widths and languages: no overlap, no sideways scroll, touch-sized; keyboard focus reaches the
+  button, which names its section, and Enter opens that section's sheet.
+- Regression: the English release walk on this branch 34/34. Filipino lines for these items: the Filipino owner's
+  pass applied (bridge 85a08f60: 6 rewordings, 4 OK; one later line still a draft).
+- Items 2, 3 (worker P) and 4 (worker W): running.
+
+## 27 Nov 2026: separate task — interface motion and AI drafting feedback (owner: Fable agent b11-dev:b3a74512)
+
+**Luis, verbatim:** "Assign a separate Fable 5.2 agent to add some interface flourishes across the app to make it
+feel sophisticated and professional. No need to change any of the text content, just add some nice things like a
+transition animation when moving blocks within the lesson plan timetable, or floating arrows the fade in to show where
+you're supposed to go next (and fade out after a second or two). When using AI to draft a plan, there should be
+working animation and some reassuring captions so the user doesnt feel like they're just staring at the page."
+
+- **Owner:** Paseo agent `b11-dev:b3a74512-8775-42ec-95d0-8e28610a05e9` (Fable 5.2, created by the coordinator,
+  "Tala — refined motion, next-step cues and AI drafting feedback"). The release owner stays the single integrator
+  and release gate; this task is NOT part of the six Lesson Plan items and does not hold their release.
+- **Scope (coordinator):** restrained timetable reorder motion, next-step arrows that fade after 1–2 s, real AI
+  drafting loading/status/error feedback with truthful captions (no fake stages, percentages or delays), reduced
+  motion, accessibility, performance; no existing text or lesson content changed; no new features competing with the
+  Materials fix or the slide regeneration. Source and test authorization only; no deploy authority.
+- **Coordination sent (27 Nov, `paseo send`, file `motion-coordination/to-fable-1.md`):** base = `e2534953d` (the
+  integration branch with items 1/5/6); its own worktree/branch; file boundaries — its own: the timetable
+  (`SectionEditors.tsx`, `FlowTimeline.tsx`, `blocks.ts`), the full-draft page (`features/generate/*` except
+  `GenerationRunner.tsx`), new motion/cue/status components, additive animation tokens; the release owner's, worker
+  W's and worker P's files listed; `components/ui.tsx` ask-first; RegenSheet's working state swapped by the
+  integrator (or by it after rebase); next-step cues inside This Week/setup wait for worker W's merge; new captions in
+  one i18n block for the Filipino owner's review. Hand-off: verified branch + commit range to the integrator.
+
+### 27 Nov 2026 13:48 Manila: all six items built, merged and verified locally — candidate `d4ca418e3` (not deployed)
+
+**Candidate:** branch `tala-v1-lesson-feedback` (local), commit `d4ca418e3` on `tala-v1-filipino` 9abe019ca (= demo.18):
+the integrator's items 1/5/6, worker W's item 4 (merge 2c86566cf), worker P's items 2/3 (merge 2599f8ace), and the
+integrator's follow-ups (e2f39aa78, c08a8bbf1, 1453a46d6, d4ca418e3 = the walk script only). Lockfile unchanged; one additive migration
+(`decks:006_lesson_presentations`); two new AI features (`slides.generate`, `slides.rewrite`) on the existing daily
+allowance and monthly budget.
+
+**Ledger:** 1 done in candidate · 2 done in candidate · 3 done in candidate · 4 done in candidate · 5 done in candidate ·
+6 done in candidate. Deployed: none (production `tala-v1-demo.18`).
+
+- **Item 2/3 (worker P):** a lesson's slides in the Lesson Plan view (pack copy for the day, or AI slides for a lesson
+  without a pack), the alignment cue, Present/Edit/Download, AI rewrite with explicit scope (one slide / all) as a
+  suggestion applied only on the teacher's choice, every replaced version kept (Earlier versions, restorable), the
+  stale cue when the lesson changed (never regenerated by itself); multi-grade sessions assembled live in block order
+  from each grade's own lesson, with grade labels, notes and a stand-in slide for a grade without slides; PPTX from the
+  same assembly. Owner-only routes (another account 404, signed out 401; tested), new tables owner-scoped (audited: the
+  one id-only job lookup was unused and is removed).
+- **Item 4 (worker W):** see the merge record above; follow-ups by the integrator: AI week plans keep the scheduled
+  weekdays; a week plan is sized from its own grid (Saturday-only = one session); the offline fallback keeps the plan's
+  days; undated days named by weekday; Library "Use this pack" places a pack's days on the class's own days.
+- **Found and fixed on the way (not in the six, all silent failures):** a failed local save read "Saved"; a full AI draft
+  over a lesson with any teacher-written part was thrown away (foreground "not accepted"; background polled forever).
+  Both found by the motion task owner's probes. Now: "Not saved" + Try again; `applyDraft` keeps her parts and says so.
+- **Filipino:** the Filipino owner reviewed every new Filipino line (bridges 85a08f60, 9a3817c7, 22c46aff); all its
+  wording applied; its audience/behaviour flags led to four corrections (Start over keeps the previous version, so its
+  confirmation no longer says "cannot be undone"; the stand-in slide no longer projects a teacher instruction; the
+  session description says when changes show; the weekend hint says the suggestion can be changed).
+- **Checks on `d4ca418e3`:** clean export as the host builds it: frozen install, 0 type errors, tests core 326 / server 376 + 1 skipped / web 132, production build; lockfile unchanged from the live release. Walks on a local production build (real
+  DeepSeek where marked; broken keys for failure phases): Lesson Plan items 1/5/6 33/33 (real AI: the Materials prerequisite, the rewrite, two fast clicks = one request, reload, an existing lesson with History) · slides 46/46 over six phases (real AI: a slide rewrite, rewrite all, an English deck, a Grade 1 deck made from a session; two- and three-grade sessions; Filipino) · weekend classes 51/51 · English release regression 34/34 · Grade 1 Language/SHS regression 33/33 · broken provider keys: Materials 6/6, queued offline 5/5, slides 4/4 · device full (simulated) 5/5 — 217 checks, all passed; 14 real model calls, $0.067; no secret in any server log. Screenshots (28, 7 days): https://lnj.b11.dev/reports/18d09ae77abdf62e13dc69cd5ce7ae3d0c92e12ba3005e928d0084c2d09365ed.
+- **Not done:** production checks (not deployed); Microsoft Office application checks of the new PowerPoint files;
+  a teacher's review; the existing pacing quirk (early topics resurface late in long terms) left for Luis.
+
+**waiting_for_user (asked once, thread ddb4d22d):** "Deploy the six Lesson Plan changes to tala.hiraia.org now? Candidate `tala-v1-lesson-feedback` @ `d4ca418e3` on top of the live demo.18; it becomes `tala-v1-demo.19`; one additive database change; rollback is demo.18; slides AI uses the existing daily AI allowance and $20 monthly budget." Prepared window (refuses to run without this approval recorded): `release-lesson-feedback/window-lesson.sh`. The separate motion task (Fable b3a74512) is not part of this release.
+
+#### 27 Nov 2026 14:00 Manila: candidate updated to `0f7b8b38b` (one fix in `applyDraft`)
+
+The motion task owner measured on its rebased branch that `applyDraft` treated Tala's own pre-filled template
+(hand-written origin, never edited by the teacher) as her text: after a queued full draft the model's objectives and
+materials were dropped and the lesson said "your own text was kept". Fixed as it suggested: only what she edited is
+hers; pre-filled parts are replaced and never reported as kept (unit test; clean export check green: core 326, server
+376 + 1 skipped, web 132, build). The browser walks of `d4ca418e3` stand for everything else (the change is confined to
+`applyDraft`, used by background full drafts); the motion owner re-runs its queued-draft browser check on the fix.
+The release question above stands, now for `0f7b8b38b`. Its nine status captions went to the Filipino owner (batch 3,
+bridge 2db386b4).
+- **Browser check of the `applyDraft` fix (motion owner, its branch rebased onto `0f7b8b38b`): 8/8** — a draft queued
+  after the pre-filled template is written (one job, one model call; objectives and materials are the model's; no
+  "your own text was kept"); "Queue it" after a failure asks again and writes the draft; a lesson with one objective
+  she wrote keeps it, the rest drafted, the banner names Objectives. Model replaced by a labelled local stand-in;
+  the real-provider runs are those above.
+
+#### 27 Nov 2026: follow-ups logged (pre-existing, outside the six-item release; release owner's lane)
+
+Seen by the motion task owner in its recordings, not caused by any current branch:
+- The draft page's Competencies row shows raw competency ids for a few tenths of a second while the curriculum packs
+  load (GenerateScreen falls back to the id; since 14 Nov, 1429cae0a). Fix: a "still loading" state from the packs
+  hook so the row waits instead of showing ids.
+- After a full page reload an English-language account sees the app shell in Filipino for an instant (the default
+  language applies until the profile loads).
+Both stay open; neither changes saved data. The motion owner was allowed one more real-provider full draft on its
+final build (the earlier three are used, ~US$0.0016 each).
+
+#### 27 Nov 2026 17:04 Manila: motion task hand-off received; combined candidate staged separately
+
+- **Hand-off** from the motion task owner (Fable `b11-dev:b3a74512`): branch `tala-v1-motion`, range
+  `0f7b8b38b..a1fd881ed` (20 commits, fast-forward on the six-item candidate; last app commit c6b5967d5), hand-off
+  note `docs/tala/motion/README.md`. Its checks: unit core 326, server 376 + 1 skipped, web 169; motion walk 149/149
+  on c6b5967d5 (reorder 41, reduced motion 15, cue 31, surfaces 12, AI waiting state with a stand-in model 35,
+  recordings 15); the release owner's no-model walks green on its build; real provider 4 full drafts + 2 rewrites,
+  US$0.0079 answered. Evidence page (unlisted, expires 4 Dec): in the hand-off message.
+- **Review by the release owner:** shared-file hunks exactly as agreed (ui.tsx two data attributes; EditorScreen Lock
+  cue and `settled` prop; WeekParts cue; nine i18n keys with the Filipino owner's wording; one additive CSS block);
+  listeners, timers and animation frames cleaned up; prefers-reduced-motion honoured; no server or core file touched.
+- **Combined branch** `tala-v1-lesson-feedback-motion` (worktree `tala-wt/combined`) = `a1fd881ed` +
+  `f3e6f52a9` (release owner: the section rewrite sheet shows the real waiting state through `<AiStatus>`; the
+  multi-grade walk waits for the blocks). Clean export check green (core 326, server 376 + 1 skipped, web 169, build).
+  Full walk suite running on it.
+- **Approvals stay separate:** the six-item candidate stays `0f7b8b38b` (question asked above); the motion work
+  needs Luis's own go-ahead (asked once, with the verified combined candidate).
+- Four pre-existing loading flashes seen in the motion recordings are logged above as follow-ups (two more added by the
+  hand-off: This Week's empty state for a moment after a reload; "This lesson is not on this device" for a moment
+  before sync).
+- **Combined candidate verified (17:20 Manila): `f3e6f52a9`.** Local production build, one
+  database, real DeepSeek then broken keys: Lesson Plan 33/33, slides 46/46 over six phases, weekend 51/51, English
+  34/34, Language/SHS 33/33, multi-grade 19/19 (race fixed), motion walk 88/88 (reorder 41, reduced motion 15, next-step
+  cue 31, seed 1; the reduced-motion phase's one draft went to the real provider here, not a stand-in), broken keys:
+  Materials 6/6, queued offline 5/5, slides 4/4, device full 5/5 — 324 checks, all passed; 15 real model calls,
+  US$0.069; no secret in either server log. Evidence: the motion owner's page (in its hand-off) and the section sheet's
+  new waiting state https://lnj.b11.dev/reports/d6dca7a73aac9148c82266d2cc4db7f5492b4e04ea52bd0d211c6cd3303ae001
+  (7 days). **waiting_for_user (asked once):** "Include the interface motion work in the release too? If yes, I deploy
+  `f3e6f52a9` (the six items + motion) instead of `0f7b8b38b` (the six items alone)." Both still need Luis's go-ahead
+  to deploy at all.
+
+## 27 Nov 2026 17:28 Manila: Luis answers "Proceed" (rq_fpm7ghfr): the combined Lesson Plan + motion release is approved
+
+Luis's complete answer: "Proceed". The coordinator mapped it (thread ddb4d22d) to an explicit, concrete deployment
+approval for the **combined** candidate `f3e6f52a9` (the six Lesson Plan items + the motion task's work) as
+`tala-v1-demo.19`. It answers both open questions above at once: deploy (yes) and include the motion work (yes).
+
+- **Lesson Plan release approved** (27 Nov 2026 17:28 Manila, rq_fpm7ghfr): deploy branch
+  `tala-v1-lesson-feedback-motion` at `f3e6f52a9` (plus a docs-only merge of this notes branch) as `tala-v1-demo.19` on
+  top of `tala-v1-demo.18`, through the established window: the single-writer lock, a verified backup, `deploy.sh`
+  (health-checked, rolls itself back) and only the service's own restart. Rollback stays `tala-v1-demo.18`. After the
+  deploy: live identity and health, then signed-in production flows with the retained synthetic test account (no new
+  account; the deleted disposable account is not recreated and the deletion test is not replayed), representative
+  curriculum, upload, forms and multi-grade regressions, and the logs.
+- **Not authorized by this answer:** the long-term pacing quirk, the held subjects, publishing the English draft packs.
+- The six-item-only candidate `0f7b8b38b` is superseded (the combined branch contains it unchanged).
+- **waiting_for_user: both cleared** (the deploy question and the motion inclusion question). No other question is
+  mapped to this answer.
+- **Reconciled before any write (09:30 UTC):** production `tala-v1-demo.18`, healthy, active since 26 Nov 07:08:36 UTC
+  with 0 restarts; deploy lock free; no other agent running; the combined worktree clean at `f3e6f52a9`; the motion
+  branch unchanged at `a1fd881ed` since its hand-off; notes tip `f242d6208`; no production write had started.
