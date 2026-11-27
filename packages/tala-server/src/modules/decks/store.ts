@@ -76,6 +76,11 @@ export interface DeckRow {
   rev: number;
   created_at: string;
   updated_at: string;
+  /** Added by decks:006 (lesson presentations). Rows from before are copies of packs. */
+  origin?: 'pack' | 'lesson';
+  subject?: string;
+  /** The lesson plan a deck made from a lesson was made for. */
+  source_plan_id?: string | null;
 }
 
 export const rowToDeck = (row: DeckRow): Deck => ({
@@ -94,6 +99,8 @@ export const rowToDeck = (row: DeckRow): Deck => ({
   rev: row.rev,
   createdAt: row.created_at,
   updatedAt: row.updated_at,
+  origin: row.origin ?? 'pack',
+  subject: row.subject ?? 'Science',
 });
 
 export const rowToSummary = (
@@ -162,11 +169,12 @@ export function createDeckStore(db: Database) {
         .get(id, ownerId) as { media_json: string } | undefined;
       return row ? (JSON.parse(row.media_json) as DeckMedia[]) : null;
     },
+    /** My copies of packs. Slides made from a lesson are reached from that lesson, not listed here. */
     list(ownerId: string): DeckSummary[] {
       return (
         db
           .prepare(
-            `SELECT ${SUMMARY} FROM decks_decks WHERE owner_id = ? ORDER BY updated_at DESC, rowid DESC`
+            `SELECT ${SUMMARY} FROM decks_decks WHERE owner_id = ? AND origin = 'pack' ORDER BY updated_at DESC, rowid DESC`
           )
           .all(ownerId) as DeckRow[]
       ).map(rowToSummary);
@@ -178,11 +186,13 @@ export function createDeckStore(db: Database) {
       language: PackLang;
       seed: DeckSeed;
       now: string;
+      /** A deck made from a lesson (decks:006): its subject and the plan it was made for. */
+      lesson?: { subject: string; planId: string };
     }): void {
       const { seed } = args;
       db.prepare(
-        `INSERT INTO decks_decks (id, owner_id, pack_id, language, title, grade, term, week, source_approved, base_content_sha256, credits_json, slides_json, base_slides_json, media_json, slide_count, changed_slides, rev, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1, ?, ?)`
+        `INSERT INTO decks_decks (id, owner_id, pack_id, language, title, grade, term, week, source_approved, base_content_sha256, credits_json, slides_json, base_slides_json, media_json, slide_count, changed_slides, rev, created_at, updated_at, origin, subject, source_plan_id)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1, ?, ?, ?, ?, ?)`
       ).run(
         args.id,
         args.ownerId,
@@ -200,7 +210,25 @@ export function createDeckStore(db: Database) {
         JSON.stringify(seed.media),
         seed.slides.length,
         args.now,
-        args.now
+        args.now,
+        args.lesson ? 'lesson' : 'pack',
+        args.lesson?.subject ?? 'Science',
+        args.lesson?.planId ?? null
+      );
+    },
+    /**
+     * A deck made from a lesson, rewritten with AI as a whole: the new slides are also its "as made" slides (so the
+     * editor's "changed" marks and "put back" mean: changed by the teacher since). Never used for a copy of a pack,
+     * whose "as copied" slides stay the Hiraia original's.
+     */
+    rebase(args: { ownerId: string; id: string; slides: DeckSlide[]; rev: number; now: string; expectRev: number }): boolean {
+      return (
+        db
+          .prepare(
+            `UPDATE decks_decks SET slides_json = ?, base_slides_json = ?, slide_count = ?, changed_slides = 0, rev = ?, updated_at = ?
+              WHERE id = ? AND owner_id = ? AND origin = 'lesson' AND rev = ?`
+          )
+          .run(JSON.stringify(args.slides), JSON.stringify(args.slides), args.slides.length, args.rev, args.now, args.id, args.ownerId, args.expectRev).changes === 1
       );
     },
     /** Write an edit. With `expectRev` the row changes only if it still has that rev; false means it did not. */

@@ -358,9 +358,9 @@ export function createLlmGateway(
     const day = deps.now().toISOString().slice(0, 10),
       month = day.slice(0, 7);
     const bucket =
-      req.feature === 'lesson.regenerate'
+      req.feature === 'lesson.regenerate' || req.feature === 'slides.rewrite'
         ? 'section'
-        : req.feature.startsWith('lesson.')
+        : req.feature.startsWith('lesson.') || req.feature === 'slides.generate'
           ? 'full'
           : null;
     if (bucket && req.userId) {

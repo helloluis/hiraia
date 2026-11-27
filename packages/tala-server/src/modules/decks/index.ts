@@ -46,6 +46,8 @@ import {
   type DeckStore,
 } from './store';
 import { createUploads, type UploadOptions } from './uploads';
+import { createLessons, lessonStoreFor } from './lessons';
+import { lessonMigrations } from './lesson-store';
 
 /** `uploads`: limits and the picture renderer for a teacher's own uploaded files (uploads.ts). */
 export type DecksOptions = PacksOptions & { uploads?: UploadOptions };
@@ -60,6 +62,7 @@ const MESSAGES = {
   duplicate: 'Two slides have the same id.',
   originalGone:
     'The original of these slides is not in the library right now, so your copy was left as it is.',
+  lessonDeck: 'These slides were made from your lesson, so there is no original to copy again. Earlier versions are kept under "Earlier versions".',
   noDrawing: 'This drawing is not in your copy.',
 } as const;
 
@@ -164,8 +167,10 @@ export function createDecksModule(options: DecksOptions = {}): ServerModule {
   /** How a copy relates to the library as it is now. Never fails: a copy must open whatever happened to its pack. */
   const originalState = (
     ctx: Ctx,
-    row: Pick<DeckRow, 'pack_id' | 'language' | 'base_content_sha256'>
+    row: Pick<DeckRow, 'pack_id' | 'language' | 'base_content_sha256' | 'origin'>
   ): DeckOriginalState => {
+    // Slides made from a lesson have no original in the library.
+    if (row.origin === 'lesson') return { available: false, updated: false };
     try {
       lib.entryFor(ctx, row.pack_id, row.language);
       return {
@@ -222,51 +227,77 @@ export function createDecksModule(options: DecksOptions = {}): ServerModule {
       });
   };
 
+  /** My copy of a pack's deck in a language: the one I have, else a new one made from the library now. */
+  const copyOfPack = (ctx: Ctx, packId: string, lang: PackLang): DeckRow => {
+    const user = requireUser(ctx);
+    if (!PACK_ID.test(packId))
+      throw new HttpError('not_found', 'This teaching pack does not exist.');
+    // The Mathematics pilot is shown from its own checked slide pictures. Tala's slide layout was written for
+    // the Science decks and would draw a mathematics diagram differently, so no copy is made from it here.
+    if (packSubjectOf(packId) !== 'science')
+      throw new HttpError(
+        'not_found',
+        'These slides cannot be copied in Tala yet. Download the PowerPoint file to change them.'
+      );
+    const store = storeFor(ctx.db);
+    // My copy is mine whatever the library does next: it is answered before the library is even looked at.
+    const mine = store.latestCopy(user.id, packId, lang);
+    if (mine) return mine;
+    const { seed, drawings } = seedFromLibrary(ctx, packId, lang);
+    const id = ctx.newId();
+    const now = ctx.now().toISOString();
+    ctx.db.transaction(() => {
+      putDrawings(store, drawings);
+      store.insert({
+        id,
+        ownerId: user.id,
+        packId,
+        language: lang,
+        seed,
+        now,
+      });
+    })();
+    ctx.log.info('deck_copied', {
+      deckId: id,
+      packId,
+      language: lang,
+      slides: seed.slides.length,
+    });
+    return store.get(user.id, id)!;
+  };
+
+  /** A deck and everything kept for it: links to lessons, earlier versions, proposals; then unused drawings. */
+  const removeDeck = (db: Database, ownerId: string, deckId: string): boolean =>
+    db.transaction(() => {
+      const store = storeFor(db);
+      const done = store.remove(ownerId, deckId);
+      if (done) {
+        lessonStoreFor(db).forgetDeck(ownerId, deckId);
+        store.sweepMedia();
+      }
+      return done;
+    })();
+
+  // A lesson's presentation: links, AI proposals, earlier versions, multi-grade sessions (lessons.ts).
+  const lessons = createLessons({ storeFor, copyOfPack, normalise, detail, removeDeck });
+
   return {
     name: 'decks',
-    migrations: [...decksMigrations, ...uploads.migrations],
-    start: uploads.start,
+    migrations: [...decksMigrations, ...uploads.migrations, ...lessonMigrations],
+    start: (deps) => {
+      const stopUploads = uploads.start?.(deps);
+      const stopLessons = lessons.start(deps);
+      return () => {
+        stopLessons();
+        stopUploads?.();
+      };
+    },
     handlers: {
       ...uploads.handlers,
+      ...lessons.handlers,
       'decks.list': (ctx) => ({ decks: storeFor(ctx.db).list(requireUser(ctx).id) }),
 
-      'decks.create': (ctx, { body }) => {
-        const user = requireUser(ctx);
-        if (!PACK_ID.test(body.packId))
-          throw new HttpError('not_found', 'This teaching pack does not exist.');
-        // The Mathematics pilot is shown from its own checked slide pictures. Tala's slide layout was written for
-        // the Science decks and would draw a mathematics diagram differently, so no copy is made from it here.
-        if (packSubjectOf(body.packId) !== 'science')
-          throw new HttpError(
-            'not_found',
-            'These slides cannot be copied in Tala yet. Download the PowerPoint file to change them.'
-          );
-        const store = storeFor(ctx.db);
-        // My copy is mine whatever the library does next: it is answered before the library is even looked at.
-        const mine = store.latestCopy(user.id, body.packId, body.lang);
-        if (mine) return detail(ctx, mine);
-        const { seed, drawings } = seedFromLibrary(ctx, body.packId, body.lang);
-        const id = ctx.newId();
-        const now = ctx.now().toISOString();
-        ctx.db.transaction(() => {
-          putDrawings(store, drawings);
-          store.insert({
-            id,
-            ownerId: user.id,
-            packId: body.packId,
-            language: body.lang,
-            seed,
-            now,
-          });
-        })();
-        ctx.log.info('deck_copied', {
-          deckId: id,
-          packId: body.packId,
-          language: body.lang,
-          slides: seed.slides.length,
-        });
-        return detail(ctx, store.get(user.id, id)!);
-      },
+      'decks.create': (ctx, { body }) => detail(ctx, copyOfPack(ctx, body.packId, body.lang)),
 
       'decks.get': (ctx, { params }) => {
         const row = storeFor(ctx.db).get(requireUser(ctx).id, params.deckId);
@@ -313,6 +344,8 @@ export function createDecksModule(options: DecksOptions = {}): ServerModule {
         const store = storeFor(ctx.db);
         const row = store.get(user.id, params.deckId);
         if (!row) throw notFound();
+        if (row.origin === 'lesson')
+          throw new HttpError('not_found', MESSAGES.lessonDeck, { reason: 'lesson_deck' });
         let fresh: ReturnType<typeof seedFromLibrary>;
         try {
           fresh = seedFromLibrary(ctx, row.pack_id, row.language);
@@ -326,6 +359,17 @@ export function createDecksModule(options: DecksOptions = {}): ServerModule {
         }
         const now = ctx.now().toISOString();
         ctx.db.transaction(() => {
+          // Starting over is undoable: the copy as it was is kept as an earlier version first.
+          lessonStoreFor(ctx.db).addRevision({
+            id: ctx.newId(),
+            ownerId: user.id,
+            deckId: row.id,
+            reason: 'reset',
+            title: row.title,
+            slides: JSON.parse(row.slides_json) as DeckSlide[],
+            deckRev: row.rev,
+            now,
+          });
           putDrawings(store, fresh.drawings);
           store.reseed({ ownerId: user.id, id: row.id, seed: fresh.seed, rev: row.rev + 1, now });
           store.sweepMedia();
@@ -336,12 +380,7 @@ export function createDecksModule(options: DecksOptions = {}): ServerModule {
 
       'decks.delete': (ctx, { params }) => {
         const user = requireUser(ctx);
-        const store = storeFor(ctx.db);
-        const removed = ctx.db.transaction(() => {
-          const done = store.remove(user.id, params.deckId);
-          if (done) store.sweepMedia();
-          return done;
-        })();
+        const removed = removeDeck(ctx.db, user.id, params.deckId);
         if (!removed) throw notFound();
         ctx.log.info('deck_deleted', { deckId: params.deckId });
         return { ok: true as const };
@@ -385,9 +424,12 @@ export function createDecksModule(options: DecksOptions = {}): ServerModule {
                 height: stored.height,
               });
           }
+        const lesson = deck.origin === 'lesson';
         return {
           binary: writeDeckPptx({
-            title: `${deck.title} — Grade ${deck.grade} Science, Term ${deck.term}, Week ${deck.week}`,
+            title: lesson
+              ? `${deck.title} — Grade ${deck.grade} ${deck.subject}`.trim()
+              : `${deck.title} — Grade ${deck.grade} Science, Term ${deck.term}, Week ${deck.week}`,
             language: deck.language,
             slides,
             drawings,
@@ -395,19 +437,23 @@ export function createDecksModule(options: DecksOptions = {}): ServerModule {
             modifiedAt: deck.updatedAt,
           }),
           contentType: PPTX_CONTENT_TYPE,
-          filename: `tala-${deck.packId.replace(/^sci26-/, '')}-${deck.language}-my-copy.pptx`,
+          filename: lesson
+            ? `tala-lesson-${deck.id.replace(/[^A-Za-z0-9-]/g, '').slice(0, 24)}-${deck.language}.pptx`
+            : `tala-${deck.packId.replace(/^sci26-/, '')}-${deck.language}-my-copy.pptx`,
         };
       },
     },
     /** A deleted account takes its copies with it; drawings no copy shows any more go too (PRIV-6). */
     onAccountDeleted: (deps, userId) => {
       const store = storeFor(deps.db);
+      lessonStoreFor(deps.db).removeOwner(userId);
       if (store.removeOwner(userId) > 0) store.sweepMedia();
       uploads.onAccountDeleted?.(deps, userId);
     },
     /** Two accounts of one teacher joined: the copies follow (both are kept when each had one of the same pack). */
     onAccountMerged: (deps, fromUserId, toUserId) => {
       storeFor(deps.db).moveOwner(fromUserId, toUserId);
+      lessonStoreFor(deps.db).moveOwner(fromUserId, toUserId);
       uploads.onAccountMerged?.(deps, fromUserId, toUserId);
     },
   };
