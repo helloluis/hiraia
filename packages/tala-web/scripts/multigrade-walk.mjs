@@ -270,6 +270,9 @@ try {
   await d.page.waitForURL(/\/lessons\/(?!combine|new)[^/]+$/, { timeout: 60000 });
   const plan3 = decodeURIComponent(new URL(d.page.url()).pathname.split('/').pop());
   await d.page.getByLabel(en['editor.sessionNote']).waitFor({ timeout: 60000 });
+  // The note field can be drawn a moment before the blocks (blank stand-in until the section records load): wait for
+  // the last grade's turn itself (race found by the motion task owner, 27 Nov 2026).
+  await d.page.getByText('Grade 5 with the teacher').first().waitFor({ timeout: 60000 });
   const text3 = await allText(d);
   check('three grades: three turns in one session', ['Grade 3 with the teacher', 'Grade 4 with the teacher', 'Grade 5 with the teacher'].every((w) => text3.includes(w)));
   await d.page.waitForTimeout(600);

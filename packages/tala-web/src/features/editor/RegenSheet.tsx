@@ -21,7 +21,9 @@ import {
   pollJob,
 } from '@/data/generation';
 import { errorKey } from '@/data/errors';
-import { Banner, Button, Sheet, TextArea, TextInput, Waiting } from '@/components/ui';
+import { Banner, Button, Sheet, TextArea, TextInput } from '@/components/ui';
+import { AiStatus } from '@/components/motion/AiStatus';
+import type { AiPhase } from '@/components/motion/ai-status';
 import type { PlanEditor } from './usePlanEditor';
 import { parseResources, regenBlocker, regenErrorKey, usableResult } from './regen-logic';
 
@@ -44,6 +46,9 @@ export function RegenSheet({
   const [workingKey, setWorkingKey] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [failedOnce, setFailedOnce] = useState(false);
+  /** The request's real state for the waiting display: sending until the server answers, then the job's own. */
+  const [phase, setPhase] = useState<AiPhase>('sending');
+  const [startedAt, setStartedAt] = useState(0);
   const inFlight = useRef(false);
   const ctrl = useRef<AbortController | null>(null);
   const jobId = useRef<string | null>(null);
@@ -80,6 +85,8 @@ export function RegenSheet({
     inFlight.current = true;
     setWorkingKey(key);
     setError(null);
+    setPhase('sending');
+    setStartedAt(Date.now());
     try {
       let cls: ClassRecord | null = ed.cls;
       if (blocker === 'no_class_resources') {
@@ -122,7 +129,10 @@ export function RegenSheet({
       ctrl.current = c;
       const job = await getClient().call('generation.create', { body: input, signal: c.signal });
       jobId.current = job.id;
-      const finished = await pollJob(getClient(), job.id, c.signal);
+      if (job.status === 'queued' || job.status === 'running') setPhase(job.status);
+      const finished = await pollJob(getClient(), job.id, c.signal, (j) => {
+        if (j.status === 'queued' || j.status === 'running') setPhase(j.status);
+      });
       if (finished.status === 'done') {
         // An answer with nothing in the requested part is not applied: what the teacher has stays.
         if (!usableResult(finished, key)) {
@@ -234,7 +244,15 @@ export function RegenSheet({
         disabled={working}
       />
       <p className="text-small text-forestMuted">{t('gen.notice')}</p>
-      {working && <Waiting label={t('gen.working')} onCancel={() => void cancel()} />}
+      {working && (
+        <AiStatus
+          phase={phase}
+          startedAt={startedAt}
+          label={t('gen.working')}
+          onCancel={() => void cancel()}
+          reachable={online}
+        />
+      )}
     </Sheet>
   );
 }
