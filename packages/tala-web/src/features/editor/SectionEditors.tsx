@@ -40,8 +40,8 @@ type Of<T extends SectionContent['type']> = Extract<SectionContent, { type: T }>
 
 /**
  * A part's editor. When its content is replaced by something the teacher did not type here (an AI rewrite that was
- * applied, an earlier version put back, an edit from her other device) it is ringed for a moment, so she sees where
- * the change landed. Her own typing never sets it off.
+ * applied, an earlier version put back, an edit from her other device) it is marked for a moment, and the part's card
+ * is ringed (globals.css), so she sees where the change landed. Her own typing never sets it off.
  */
 export function SectionEditor(p: Props<SectionContent>) {
   const { changed, mine } = useJustChanged(JSON.stringify(p.content));
@@ -50,7 +50,7 @@ export function SectionEditor(p: Props<SectionContent>) {
     p.onChange(c);
   };
   return (
-    <div data-just-changed={changed ? '' : undefined} className="rounded">
+    <div data-just-changed={changed ? '' : undefined}>
       <SectionBody {...p} onChange={onChange} />
     </div>
   );

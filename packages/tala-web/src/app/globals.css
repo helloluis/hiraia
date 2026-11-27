@@ -196,10 +196,12 @@
     animation: tala-fade-in 160ms var(--tala-ease) both;
   }
   /* A part that was just replaced from outside (AI rewrite, earlier version, other device): the same ring as a
-     block that was just moved. Reduced motion: the ring stays still until the mark is removed. */
-  [data-just-changed] {
+     block that was just moved, drawn around the part's whole card (the mark sits on the editor inside it, and the
+     sticky Session Flow bar would cut a ring drawn there). Reduced motion: the ring stays still until the mark is
+     removed. A browser without :has() shows no ring. */
+  section:has(> [data-just-changed]) {
     outline: 2px solid rgb(var(--c-talaTeal-rgb) / 0.55);
-    outline-offset: 4px;
+    outline-offset: 2px;
     animation: tala-ring-out 900ms var(--tala-ease) 600ms both;
   }
 

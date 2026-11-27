@@ -931,12 +931,14 @@ try {
           await sheet.waitFor({ timeout: 10000 });
           await sheet.getByRole('button', { name: en['gen.regenConfirm'], exact: true }).click();
           await s.page.getByText(en['gen.regenDone']).waitFor({ timeout: 60000 });
-          const marked = await s.page.evaluate(() => [...document.querySelectorAll('[data-just-changed]')].map((el) => { const cs = getComputedStyle(el); return { section: el.closest('section')?.getAttribute('aria-labelledby'), outline: cs.outlineStyle, animation: cs.animationName }; }));
+          // The mark sits on the part's editor; the ring is drawn around the part's whole card.
+          const marked = await s.page.evaluate(() => [...document.querySelectorAll('[data-just-changed]')].map((el) => { const card = el.closest('section'); const cs = getComputedStyle(card ?? el); return { section: card?.getAttribute('aria-labelledby'), outline: cs.outlineStyle, animation: cs.animationName }; }));
           const titles = await s.page.locator('section[aria-labelledby="s-procedure"] input').evaluateAll((els) => els.map((e) => e.value));
           await shot(s, 's2-part-rewritten');
           await s.page.waitForTimeout(2200);
           const after = await s.page.locator('[data-just-changed]').count();
-          judge(`desktop, ${SIM}: when “Rewrite with AI” lands, the rewritten part (and only that part) is ringed for a moment, then the ring is gone`, marked.length === 1 && marked[0].section === 's-procedure' && marked[0].outline === 'solid' && marked[0].animation === 'tala-ring-out' && after === 0 && titles.includes('STAND-IN review'), `${JSON.stringify(marked)}; left after 2.2 s: ${after}; procedure: ${titles.join(' | ')}`);
+          const ringsLeft = await s.page.evaluate(() => [...document.querySelectorAll('section[aria-labelledby]')].filter((x) => getComputedStyle(x).outlineStyle !== 'none').length);
+          judge(`desktop, ${SIM}: when “Rewrite with AI” lands, the rewritten part’s card (and only that one) is ringed for a moment, then the ring is gone`, marked.length === 1 && marked[0].section === 's-procedure' && marked[0].outline === 'solid' && marked[0].animation === 'tala-ring-out' && after === 0 && ringsLeft === 0 && titles.includes('STAND-IN review'), `${JSON.stringify(marked)}; marks left after 2.2 s: ${after}; cards still ringed: ${ringsLeft}; procedure: ${titles.join(' | ')}`);
 
           /* ---- colour changes and loading rows ---- */
           const styles = await s.page.evaluate(() => {
