@@ -80,7 +80,7 @@ export const COMBINE_WORDS: Record<Lang, CombineWords> = {
     prepareInPairs: 'Magpares. Sabihin sa isa’t isa kung ano na ang alam ninyo tungkol sa layunin ng aralin ngayong araw. Pagkatapos, sumulat ng isang tanong na gusto ninyong masagot.',
     goal: 'Layunin ng aralin ngayong araw',
     materials: 'Mga kagamitan',
-    carryOn: 'Ituloy ang gawain nang kayo lang',
+    carryOn: 'Ituloy ang sariling gawain',
     exitTicket: 'Exit ticket',
     checkWithPartner: 'Suriin ang gawa mo kasama ang kapareha. Linawin ang anumang malabo. Pagkatapos, isulat ang isang natutuhan mo ngayong araw.',
     finishedEarly: 'Kung maaga kang natapos',
