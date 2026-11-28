@@ -4,7 +4,7 @@
  * what to do reads as ordinary sentences between them, and bracketed asides (expected answers) are quieter.
  * The words and their order are never changed.
  */
-import { segmentProse, type ProseSegment } from './prose';
+import { segmentProse, type ProseSegment } from './prose-text';
 
 function Inline({ parts }: { parts: ProseSegment[] }) {
   return (

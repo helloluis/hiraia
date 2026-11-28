@@ -19,7 +19,7 @@ import { PackSlidesTab } from '@/features/slides/PackSlidesTab';
 import { PackGuide } from './PackGuide';
 import { PackLessons } from './PackLessons';
 import { UseSheet } from './UseSheet';
-import { leadSentence } from './prose';
+import { leadSentence } from './prose-text';
 
 type Tab = 'lessons' | 'slides' | 'guide';
 const TABS: Tab[] = ['lessons', 'slides', 'guide'];
