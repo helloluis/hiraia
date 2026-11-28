@@ -2,8 +2,10 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-test('production checks require a dedicated manual tag and prior successful native local steps', () => {
-  const yaml = fs.readFileSync(path.resolve(__dirname, '../../../.github/workflows/tala-desktop.yml'), 'utf8');
+for (const eol of ['LF', 'CRLF']) test(`production tag and prior native-local success are required (${eol} checkout)`, () => {
+  const source = fs.readFileSync(path.resolve(__dirname, '../../../.github/workflows/tala-desktop.yml'), 'utf8').replace(/\r\n/g, '\n');
+  const checkout = eol === 'CRLF' ? source.replace(/\n/g, '\r\n') : source;
+  const yaml = checkout.replace(/\r\n/g, '\n');
   const step = yaml.match(/- name: Intentional bounded production synthetic verification\n([\s\S]+?)\n      - name:/)?.[1];
   assert.ok(step);
   assert.match(step, /^        if: startsWith\(github\.ref_name, 'tala-desktop-preview-production-'\)$/m);

@@ -48,15 +48,16 @@ owner will repeat the install in their integration checkout before pushing.
 
 | Check | Windows x64 | Mac arm64 | Mac x64 |
 |---|---|---|---|
-| Installer, launch, relaunch, uninstall | Preview-2 passed | DMG/signature/launch passed; later checks stalled | DMG/signature/launch passed; later checks stalled |
-| Shell isolation/navigation/network recovery | Preview-2 10/10 | Preview-2 first 6 passed, check 7 stalled | Preview-2 first 6 passed, check 7 stalled |
-| Registration/login/logout and session continuity | Unverified | Unverified | Unverified |
-| EN/FIL, timetable, weekends | Unverified | Unverified | Unverified |
-| Lesson creation, real AI success/error, Materials and rewrites | Unverified | Unverified | Unverified |
-| Multigrade, slideshow generation/editing/presentation | Unverified | Unverified | Unverified |
-| Uploads, PDF/DOCX/PPTX save and open | Unverified | Unverified | Unverified |
+| Installer, launch, relaunch, uninstall | Preview-2 passed | Preview-3b passed, ad-hoc signature verified | Preview-3b passed, ad-hoc signature verified |
+| Shell isolation/navigation/network recovery | Preview-2 10/10 | Preview-3b 10/10 | Preview-3b 10/10 |
+| Registration/login/logout and session continuity | Unverified | Actual local server passed | Actual local server passed |
+| EN/FIL, timetable, weekends | Unverified | Actual local server passed | Actual local server passed |
+| Lesson/Materials controls and real missing-provider error | Unverified | Actual local server passed | Actual local server passed |
+| Real AI success, section rewrite and slide generation | Unverified | Unverified | Unverified |
+| Multigrade combining, PPTX editing, session presenting | Unverified | Actual local server passed (placeholder session slides) | Actual local server passed (placeholder session slides) |
+| Uploads and PDF/DOCX/PPTX saved bytes | Unverified | Actual local server passed; Office opening unverified | Actual local server passed; Office opening unverified |
 | Native print dialog and external browser | Unverified | Unverified | Unverified |
-| Resize, keyboard, accessibility | Unverified | Unverified | Unverified |
+| Resize, keyboard, accessibility | Automated shell input passed; accessibility unverified | Automated checks passed; accessibility unverified | Automated checks passed; accessibility unverified |
 | Full pipeline and controlled failure | No complete set; failure gate held | No complete set; failure gate held | No complete set; intentional failure gate held |
 
 ## Dependencies and remaining work
@@ -325,3 +326,20 @@ fails. A negative control supplies a missing library and verifies that early exi
 Nine Node tests pass. On b11-dev, the owner reports missing GTK 3, cups, pango and
 cairo; they own any private dependency prefix under their locked-package policy.
 No package or service changes have been made on that host by this lane.
+
+## Preview-3b: both Macs pass; Windows test-parser defect
+
+Release-owner bridge `65e7b99ef9134ed1ae509950182330ef` confirms both native Mac jobs
+passed all ten shell and fourteen real local-server feature checks. The fullscreen
+transition fix works on both architectures, and persistent secure cookies survive
+relaunch with the cookie-encryption fuse enabled and no Keychain workaround. Installer removal also completed. Windows
+failed before building at `workflow.test.cjs` because its LF-specific regex did not
+find the production step in the Windows checkout. Complete-set was skipped.
+
+Reproduced with Git's actual CRLF checkout conversion:
+`git -c core.autocrlf=true cat-file --filters HEAD:.github/workflows/tala-desktop.yml`.
+The converted bytes contain CRLF; the old regex fails and normalization makes it
+match. The test now normalizes input and runs the full gating assertions against
+both LF and CRLF cases. No workflow condition or application behavior changes.
+A normal preview-3c is required for Windows's first native local feature walk and
+the first complete set. Production execution remains held until that set passes.
