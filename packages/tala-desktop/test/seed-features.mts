@@ -9,6 +9,7 @@ import { createSyncEngine, createMemoryStore } from '../../tala-core/src/sync/in
 import { layoutDeck } from '../../tala-core/src/decks/index.ts';
 import { newPlan, defaultTemplateFor } from '../../tala-web/src/data/plans.ts';
 import { writeDeckPptx } from '../../tala-server/src/modules/decks/pptx-write.ts';
+import { syntheticAiFixture } from './synthetic-ai-fixture.mts';
 
 const [base, dir, nonce] = process.argv.slice(2);
 assert.match(base!, /^http:\/\/127\.0\.0\.1:\d+$/);
@@ -58,6 +59,15 @@ for (const group of cls.gradeGroups) {
 for (let n = 0; n < 20 && (await engine.status()).pending; n++) await engine.sync();
 assert.equal((await engine.status()).pending, 0);
 
+// Exercise the exact production fixture shape entirely locally before it is
+// eligible for an intentional production run. No profile/active-year change.
+const profileBefore = JSON.stringify(await engine.list('profile'));
+const aiFixture = syntheticAiFixture('ephemeral');
+await engine.batch(aiFixture.changes);
+assert.equal((await engine.sync()).ok, true);
+assert.equal((await engine.status()).pending, 0);
+assert.equal(JSON.stringify(await engine.list('profile')), profileBefore);
+
 const slides = [
   { id: 'synthetic-title', day: 1, kind: 'cover' as const, title: 'Synthetic plant lesson', lines: ['Desktop upload fixture'] },
   { id: 'synthetic-content', day: 1, kind: 'concept' as const, title: 'Observe a plant', lines: ['Look at the leaves.', 'Draw what you see.'] },
@@ -65,5 +75,5 @@ const slides = [
 const layout = layoutDeck({ language: 'en', grade: '4', term: 1, week: 1, approved: false, reviewer: null, sourcesLine: '', personalCopy: false, slides });
 const pptx = writeDeckPptx({ title: 'Synthetic desktop upload', language: 'en', slides: layout, drawings: new Map(), createdAt: '2026-11-28T00:00:00Z', modifiedAt: '2026-11-28T00:00:00Z' });
 writeFileSync(join(dir!, 'synthetic.pptx'), pptx);
-writeFileSync(join(dir!, 'features.json'), JSON.stringify({ classId: cls.id, assignmentId: assignment.id, date, sourcePlans }));
+writeFileSync(join(dir!, 'features.json'), JSON.stringify({ classId: cls.id, assignmentId: assignment.id, date, sourcePlans, aiFixturePlanId: aiFixture.plan.id }));
 console.log('Synthetic local multigrade lessons and PowerPoint fixture ready.');

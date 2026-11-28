@@ -400,3 +400,28 @@ declared byte count; it never rewrites data or relaxes server validation. The ac
 packs pass, and a deliberate CRLF conversion fails both independent checks. A normal
 preview-3e is needed for native verification. Production-check execution and publication
 remain held; no complete installer set exists yet.
+
+## Revised production fixture, awaiting review and execution
+
+Owner bridges `1134f96b` and `f0735a0f` confirmed the class requirement and approved
+the stricter write design in principle. Owner mode now requires the private reviewed
+run-2 receipt, reuses its plan/nine section IDs, and creates only two new labelled
+records: a separate year and class. Only that plan's placements/grade-group IDs change
+during seeding. No profile write, existing class edit or account-library copy is allowed.
+The account, lesson and new year/class stay for inspection. Native mode uses the same
+fixture shape and deletes it with its ephemeral account.
+
+Measured offline with the actual web apply helper and sync engine: one Content rewrite
+sends **11 mutations**, including eight unchanged section puts. The guard accepts that
+real payload, requires the eight canonical digests unchanged, exactly one new Content
+revision and the expected AI-marked plan, and forbids a second application or unrelated
+mutation. Fourteen Node tests pass, including negative controls for profile/year/class,
+other sections, altered titles, duplicate/replayed batches and unsuitable resume receipts.
+The real reviewed run-2 receipt passes the offline identity preflight.
+
+The same class-linked fixture passed the real local UI walk here: Content and its Rewrite
+button are visible, all fourteen feature checks pass, the fixture saw 325 requests and
+the Chromium netlog had zero non-loopback connections. This is unpackaged Linux evidence
+with a temporary database and no AI provider, not native or production-success evidence.
+UI failure reports now identify the exact selector step with counts/visibility only.
+There has been no new live attempt from this revision.

@@ -1,6 +1,6 @@
 // Intentional production checks, separately authorized by rq_czqd79ie.
 // NEVER imported by the isolated fixture walks. No uploads, credentials in
-// evidence, existing lesson edits, account reuse across owners, or AI retries.
+// evidence, unrelated lesson edits, account reuse across owners, or AI retries.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -12,6 +12,7 @@ const { _electron: electron } = require('playwright');
 const { bounded, closeElectron, linuxHeadlessArgs } = require('./harness.cjs');
 const { installProductionGuard } = require('./production-guard.cjs');
 const { preflight } = require('./linux-preflight.cjs');
+const { readOwnerResume } = require('./owner-resume.cjs');
 const root = path.resolve(__dirname, '..');
 const web = path.resolve(root, '../tala-web');
 const webRequire = createRequire(path.join(web, 'package.json'));
@@ -20,6 +21,7 @@ assert.equal(process.env.TALA_DESKTOP_PRODUCTION_TEST_APPROVAL, 'rq_czqd79ie');
 assert.equal(base, 'https://tala.hiraia.org');
 assert.ok(mode === 'owner' || mode === 'ephemeral');
 const native = mode === 'ephemeral';
+let resume;
 if (native) {
   assert.match(process.env.TALA_RELEASE_TAG || '', /^tala-desktop-preview-production-[a-zA-Z0-9.-]+$/);
   assert.equal(process.env.GITHUB_RUN_ATTEMPT, '1', 'Never replay production writes by rerunning a job');
@@ -32,6 +34,7 @@ if (native) {
   if (process.platform === 'linux' && !preflight(process.env.TALA_DESKTOP_EXECUTABLE || require('electron'))) process.exit(2);
   assert.ok(process.env.TALA_TEST_EMAIL && process.env.TALA_TEST_PASSWORD);
   assert.equal(process.env.TALA_TEST_EMAIL, 'fable-release-test-20261125@example.com', 'Owner mode is for the retained release account only');
+  resume = readOwnerResume(process.env.TALA_DESKTOP_OWNER_RESUME_REPORT);
 }
 const run = process.env.GITHUB_RUN_ID || process.env.TALA_DESKTOP_PRODUCTION_RUN_ID;
 assert.match(run || '', /^[a-zA-Z0-9-]{1,60}$/, 'Explicit unique production run id required');
@@ -47,8 +50,9 @@ const report = { scope: 'INTENTIONAL PRODUCTION SYNTHETIC CHECK', mode, run,
   release: native ? process.env.TALA_RELEASE_TAG : null,
   displayBackend: !native && linuxHeadlessArgs().length ? 'ozone-headless' : 'system display',
   sourceCommit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(),
-  platform: process.platform, arch: process.arch, account: { email, id: null, ...(native ? { displayName } : {}) },
-  phase: 'planned', checks: [], seed: null, jobs: [], cleanup: native ? 'not registered' : 'owner account retained; labelled lesson retained' };
+  platform: process.platform, arch: process.arch, account: { email, id: resume?.accountId ?? null, ...(native ? { displayName } : {}) },
+  resume: resume ? { priorRun: resume.priorRun, planId: resume.planId } : null,
+  phase: 'planned', checks: [], seed: null, jobs: [], cleanup: native ? 'not registered' : 'owner account retained; existing labelled lesson and new labelled year/class retained' };
 // A reused run id fails before network access. Inspect the prior receipt first.
 fs.writeFileSync(reportPath, JSON.stringify(report, null, 2), { flag: 'wx', mode: 0o600 });
 const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'tala-production-check-'));
@@ -78,6 +82,18 @@ async function check(name, operation) {
   active();
   report.checks.push({ name, status: 'passed' }); persist(); console.log('PASS production:', name);
 }
+async function uiStep(name, locator, operation) {
+  active(); report.phase = name; persist();
+  try {
+    await bounded(operation(), 60000, name);
+  } catch (error) {
+    // Counts only: never capture production text, credentials or a screenshot.
+    report.ui = { step: name, matches: await bounded(locator.count(), 2000, 'selector diagnostic').catch(() => null),
+      visible: await bounded(locator.first().isVisible(), 2000, 'visibility diagnostic').catch(() => null) };
+    persist(); throw error;
+  }
+  active();
+}
 async function pollJob(url, done) {
   for (let n = 0; n < 75; n++) {
     active();
@@ -103,12 +119,21 @@ async function waitMacPresentation(event) {
 }
 async function runChecks() {
   execFileSync(process.execPath, [webRequire.resolve('tsx/cli'), path.join(__dirname, 'production-seed.mts'), '--validate-only'], { cwd: web, stdio: 'pipe', timeout: 15000 });
+  execFileSync(process.execPath, [webRequire.resolve('tsx/cli'), path.join(__dirname, 'production-fixture-check.mts')], { cwd: web, stdio: 'pipe', timeout: 15000 });
   active();
   const args = [...(native ? [] : linuxHeadlessArgs()), '--user-data-dir=' + profile];
   app = await electron.launch({ chromiumSandbox: true,
     ...(process.env.TALA_DESKTOP_EXECUTABLE ? { executablePath: process.env.TALA_DESKTOP_EXECUTABLE, args } : { args: [...args, root] }),
     env: { ...process.env, TALA_DESKTOP_TEST: '0' } });
   page = await app.firstWindow(); page.setDefaultTimeout(20000);
+  page.on('response', async response => {
+    if (new URL(response.url()).pathname !== '/api/v1/sync/push' || response.request().method() !== 'POST') return;
+    try {
+      const body = await response.json();
+      report.syncAcknowledgement = { status: response.status(), results: body.results.map(r => r.status) };
+    } catch { report.syncAcknowledgement = { status: response.status(), invalid: true }; }
+    persist();
+  });
   // Allow only known operations, with a separate reserved cleanup request. This
   // runs in the test's main-process debugger, never in the shipped app/preload.
   await app.evaluate(installProductionGuard, { base, native, email, displayName });
@@ -143,24 +168,39 @@ async function runChecks() {
   });
   active();
   const seed = JSON.parse(fs.readFileSync(seedPath)); report.seed = seed; persist();
-  await app.evaluate((_e, seed) => { global.__productionCheck.planId = seed.planId; global.__productionCheck.sectionIds = seed.sectionIds; }, seed);
+  assert.equal(seed.phase, 'seeded');
+  await app.evaluate((_e, seed) => {
+    for (const key of ['planId', 'sectionIds', 'contentSectionId', 'sectionDigests', 'revisionContentDigest', 'appliedPlanDigest']) global.__productionCheck[key] = seed[key];
+  }, seed);
   await page.goto(base + '/lessons/' + seed.planId);
   await check('one real content-section rewrite', async () => {
     const content = page.getByRole('textbox', { name: 'Content', exact: true });
+    const rewrite = page.getByRole('button', { name: 'Rewrite with AI: Content', exact: true });
+    await uiStep('wait for the labelled lesson Content editor', content, () => content.waitFor({ state: 'visible', timeout: 55000 }));
+    await uiStep('wait for class-linked Content Rewrite control', rewrite, () => rewrite.waitFor({ state: 'visible', timeout: 55000 }));
     const before = await content.innerText();
-    await page.getByRole('button', { name: 'Rewrite with AI: Content', exact: true }).click();
+    await uiStep('open the Content Rewrite confirmation', rewrite, () => rewrite.click());
     const sheet = page.locator('dialog[open]');
+    report.phase = 'submit exactly one Content rewrite'; persist();
     const [response] = await Promise.all([
       page.waitForResponse(r => new URL(r.url()).pathname === '/api/v1/generation/jobs' && r.request().method() === 'POST'),
       sheet.getByRole('button', { name: /^(Rewrite with AI|Yes, rewrite it)$/ }).click(),
     ]);
     assert.ok(response.ok());
     const job = await response.json(); report.jobs.push({ id: job.id, kind: 'section', status: job.status }); persist();
+    report.phase = 'wait for the real Content rewrite job'; persist();
     const finished = await pollJob('/api/v1/generation/jobs/' + job.id, 'done');
     report.jobs[0].status = finished.status;
     await sheet.waitFor({ state: 'hidden' });
     assert.ok((await content.innerText()).trim().length > 20);
     assert.notEqual(await content.innerText(), before);
+    // Wait for the real sync acknowledgement, not just optimistic UI text.
+    report.phase = 'wait for the Content revision and lesson sync'; persist();
+    for (let n = 0; n < 100 && !report.syncAcknowledgement; n++) {
+      active(); await new Promise(resolve => setTimeout(resolve, 100));
+    }
+    assert.equal(report.syncAcknowledgement?.status, 200, 'Rewrite must be durably synced');
+    assert.deepEqual(report.syncAcknowledgement.results, Array(11).fill('applied'));
   });
   if (native) await check('one real slide-generation proposal and application', async () => {
     const [response] = await Promise.all([
@@ -233,7 +273,7 @@ async function runChecks() {
       } else if (page) await bounded(page.evaluate(() => fetch('/api/v1/auth/logout', { method: 'POST' })), 10000, 'owner sign out').catch(() => {});
       report.network = await bounded(app.evaluate(() => {
         const s = global.__productionCheck;
-        return { writes: s.writes, registrations: s.registrations, deletions: s.deletions, sectionRequests: s.sections, slideRequests: s.slides, blocked: s.blocked, statuses: s.statuses };
+        return { writes: s.writes, recordWrites: s.recordWrites, syncApplications: s.syncApplications, registrations: s.registrations, deletions: s.deletions, sectionRequests: s.sections, slideRequests: s.slides, blocked: s.blocked, statuses: s.statuses };
       }), 5000, 'read request counts').catch(() => ({ unavailable: true }));
       const writes = (report.seed?.writes || 0) + (report.network.writes || 0);
       report.totalWriteRequests = writes;

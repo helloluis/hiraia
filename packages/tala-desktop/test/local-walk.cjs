@@ -174,6 +174,9 @@ async function startServer() {
   assert.equal(posted.email === account.email && posted.password === account.password, true, 'UI must submit exact seeded credentials');
   await page.waitForURL(url => url.pathname !== '/sign-in');
   await check('actual lesson editor and Materials rewrite controls', async () => {
+    await page.goto(origin + '/lessons/' + features.aiFixturePlanId);
+    await page.getByRole('textbox', { name: 'Content', exact: true }).waitFor();
+    await page.getByRole('button', { name: 'Rewrite with AI: Content', exact: true }).waitFor();
     await page.goto(origin + '/lessons/' + account.plans.existing.planId);
     await page.getByRole('button', { name: 'Rewrite with AI: Learning Resources', exact: true }).waitFor();
     assert.ok((await page.locator('input[aria-label^="Learning Resources "]').evaluateAll(inputs => inputs.map(input => input.value))).includes('seed packets for each group'));
