@@ -1996,3 +1996,22 @@ this ledger had no entry).
 - **Release-owner follow-up:** before any release containing the desktop package, add the host's install command on
   the FULL tree to the release check (the clean export covers only the build set and would not catch a new workspace
   package).
+- **28 Nov 17:21 Manila — desktop preview 1** (no production change, nothing published): bundle `b768e279…` (68,119
+  B) read back from b11-002 and verified; tip `dbb27f4f0` on base `4736715b5`; 19 files, all in the agreed paths; root
+  `pnpm-lock.yaml` byte-identical; tala-core/server/web/brand trees unchanged. Workflow: tag-only, `contents: read`, no
+  secrets, actions pinned to official release tags (checkout v4.4.0, setup-node v4.4.0, upload-artifact v4.6.2,
+  download-artifact v4.3.0); builder `publish` never, credential discovery off, hardened fuses; the shell is sandboxed
+  and locked to tala.hiraia.org; the npm lock pins 299 packages from registry.npmjs.org with integrity. Release owner's
+  host-folder-set check of `dbb27f4f0` green (pnpm 9.15.9 frozen install, 0 type errors, tests 326 / 376 + 1 / 182,
+  build). Pushed branch `tala-v1-desktop` and tag `tala-desktop-preview-1` (tag object `40fc07fa…`) → Actions run
+  46130068906: Windows x64 and macOS arm64 built, installed and passed the packaged shell checks (8/8 each); macOS Intel
+  built and its DMG, codesign check and ad-hoc signature verified, then the step stopped on the test's own architecture
+  check (`lipo` says `x86_64`, the script looked for `x64`), so its shell checks did not run; the complete set was
+  correctly withheld. The owner fixes the check in its next commit; no unchanged retry. The commit's author line is
+  "Codex <codex@users.noreply.github.com>" (left as reviewed; later commits use a neutral identity).
+- **Correction to the desktop entry above:** "any release containing the package would fail to deploy" is wrong. The
+  production host's repository is a sparse clone holding only the root files, `patches/`, `scripts/fix-qvac-win32.mjs`
+  and packages tala-core, tala-server, tala-web and brand, so `packages/tala-desktop` never reaches it. The exclusion line
+  stays (right for full checkouts). Found at the same time: in a FULL checkout the root frozen install already fails at
+  demo.20 on `packages/tala-mobile/package.json` (existing lockfile drift; not on Tala's host). The owner was told
+  (bridge `8ae66959…`).
