@@ -5,7 +5,7 @@ const { _electron: electron } = require('playwright');
 const { httpsFixture } = require('./https-fixture.cjs');
 const { bounded, captureMacDesktop, closeElectron, linuxHeadlessArgs } = require('./harness.cjs');
 const { startupError } = require('./startup-diagnostics.cjs');
-const http = require('node:http');
+const { proxyLocal } = require('./local-proxy.cjs');
 const { spawn, execFileSync } = require('node:child_process');
 const { createRequire } = require('node:module');
 const fs = require('node:fs');
@@ -66,14 +66,9 @@ async function startServer() {
   await new Promise(resolve => listener.close(resolve));
   base = `http://127.0.0.1:${port}`;
   fixture = await httpsFixture((req, res) => {
-    // This proxy has exactly one fixed loopback destination; it cannot proxy an
-    // absolute URL or CONNECT request to an external host.
-    if (!req.url.startsWith('/') || req.url.startsWith('//')) { res.writeHead(400); return res.end(); }
-    const upstream = http.request(base + req.url, { method: req.method, headers: { ...req.headers, host: new URL(base).host } }, remote => {
-      if (req.url.startsWith('/api/')) apiStatuses.push({ path: req.url.split('?')[0], status: remote.statusCode });
-      res.writeHead(remote.statusCode, remote.headers); remote.pipe(res);
+    proxyLocal(req, res, base, (url, status) => {
+      if (url.startsWith('/api/')) apiStatuses.push({ path: url.split('?')[0], status });
     });
-    upstream.on('error', () => { res.writeHead(502); res.end(); }); req.pipe(upstream);
   });
   origin = process.env.TALA_DESKTOP_EXECUTABLE ? 'https://tala.hiraia.org' : fixture.origin;
   const env = { ...process.env };
@@ -354,15 +349,20 @@ async function startServer() {
   process.exitCode = 1;
 }).finally(async () => {
   const report = { platform: process.platform, arch: process.arch,
+    teardown: 'pending',
     displayBackend: linuxHeadlessArgs().length ? 'ozone-headless' : 'system display',
     startup: startupProbe,
     sourceCommit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(),
     packaged: !!process.env.TALA_DESKTOP_EXECUTABLE, source: 'unmodified local Tala web/server; isolated HTTPS to temporary SQLite database',
     isolation: { fixtureRequests: fixture?.requests.length, allPeersLoopback: fixture?.requests.every(r => r.peer === '127.0.0.1'), healthBuildNonceVerified: healthVerified, ...networkEvidence },
     limits: ['No real AI provider configured', 'No teaching-pack library copied; session presentation uses visible placeholders for missing grade slides', 'Save dialog bypassed to verify downloaded bytes; printToPDF is not native print-dialog evidence', 'DOCX/PPTX archive contents verified; not opened in Microsoft Office'], results };
-  fs.writeFileSync(path.join(output, 'report.json'), JSON.stringify(report, null, 2));
-  fs.writeFileSync(path.join(root, 'test-output', `features-${process.platform}-${process.arch}.json`), JSON.stringify(report, null, 2));
+  const saveReport = () => {
+    fs.writeFileSync(path.join(output, 'report.json'), JSON.stringify(report, null, 2));
+    fs.writeFileSync(path.join(root, 'test-output', `features-${process.platform}-${process.arch}.json`), JSON.stringify(report, null, 2));
+  };
+  saveReport();
   await closeElectron(app);
+  await fixture?.close();
   if (server && server.exitCode === null) {
     await new Promise(resolve => {
       const timer = setTimeout(() => { server.kill('SIGKILL'); resolve(); }, 5000);
@@ -370,7 +370,7 @@ async function startServer() {
       server.kill();
     });
   }
-  await fixture?.close();
   // Retain only screenshots/documents/report in ignored test-output, never credentials/DB.
   fs.rmSync(temp, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
+  report.teardown = 'completed'; saveReport();
 });

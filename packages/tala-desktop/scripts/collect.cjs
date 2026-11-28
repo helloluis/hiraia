@@ -17,7 +17,7 @@ function collect(input, output) {
         evidence.isolation.nonLoopbackConnections !== 0 || evidence.isolation.otherDns !== 'NOTFOUND' ||
         evidence.isolation.productionApiNegativeControl !== '403 from local fixture') throw new Error(`Missing native packaged smoke/isolation checks: ${key}`);
     const features = JSON.parse(fs.readFileSync(path.join(input, `features-${key}.json`)));
-    if (!features.packaged || features.platform !== m.platform || features.arch !== m.arch ||
+    if (!features.packaged || features.teardown !== 'completed' || features.platform !== m.platform || features.arch !== m.arch ||
         features.sourceCommit !== m.sourceCommit || features.results.length < 14 || features.results.some(r => r.status !== 'passed') ||
         !features.isolation?.healthBuildNonceVerified || !features.isolation.allPeersLoopback ||
         features.isolation.fixtureRequests < 30 || features.isolation.nonLoopbackConnections !== 0) {

@@ -48,14 +48,14 @@ owner will repeat the install in their integration checkout before pushing.
 
 | Check | Windows x64 | Mac arm64 | Mac x64 |
 |---|---|---|---|
-| Installer, launch, relaunch, uninstall | Preview-2 passed | Preview-3b passed, ad-hoc signature verified | Preview-3b passed, ad-hoc signature verified |
-| Shell isolation/navigation/network recovery | Preview-2 10/10 | Preview-3b 10/10 | Preview-3b 10/10 |
-| Registration/login/logout and session continuity | Unverified | Actual local server passed | Actual local server passed |
-| EN/FIL, timetable, weekends | Unverified | Actual local server passed | Actual local server passed |
-| Lesson/Materials controls and real missing-provider error | Unverified | Actual local server passed | Actual local server passed |
+| Installer, launch, relaunch, uninstall | Preview-3c passed; 3e test teardown failed | Preview-3e passed, ad-hoc signature verified | Preview-3e passed, ad-hoc signature verified |
+| Shell isolation/navigation/network recovery | Preview-3e 10/10 | Preview-3e 10/10 | Preview-3e 10/10 |
+| Registration/login/logout and session continuity | Actual local server passed, 3e | Actual local server passed | Actual local server passed |
+| EN/FIL, timetable, weekends | Actual local server passed, 3e | Actual local server passed | Actual local server passed |
+| Lesson/Materials controls and real missing-provider error | Actual local server passed, 3e | Actual local server passed | Actual local server passed |
 | Real AI success, section rewrite and slide generation | Unverified | Unverified | Unverified |
-| Multigrade combining, PPTX editing, session presenting | Unverified | Actual local server passed (placeholder session slides) | Actual local server passed (placeholder session slides) |
-| Uploads and PDF/DOCX/PPTX saved bytes | Unverified | Actual local server passed; Office opening unverified | Actual local server passed; Office opening unverified |
+| Multigrade combining, PPTX editing, session presenting | Actual local server passed (placeholder session slides) | Actual local server passed (placeholder session slides) | Actual local server passed (placeholder session slides) |
+| Uploads and PDF/DOCX/PPTX saved bytes | Actual local server passed; Office opening unverified | Actual local server passed; Office opening unverified | Actual local server passed; Office opening unverified |
 | Native print dialog and external browser | Unverified | Unverified | Unverified |
 | Resize, keyboard, accessibility | Automated shell input passed; accessibility unverified | Automated checks passed; accessibility unverified | Automated checks passed; accessibility unverified |
 | Full pipeline and controlled failure | No complete set; failure gate held | No complete set; failure gate held | No complete set; intentional failure gate held |
@@ -66,9 +66,10 @@ owner will repeat the install in their integration checkout before pushing.
   `tala-desktop-preview-*` tags. GitHub-hosted Windows/macOS only; the self-hosted Mac
   `hiraia-luis-mac` is explicitly off-limits. No interactive Windows/Mac route was provided.
 - The release owner's suggested older Mac labels were corrected using current official
-  docs: `macos-15` arm64, `macos-15-intel` x64, `windows-2022`. A real run must verify them.
-- Native installed-app CI smoke, actual local Tala feature walks, downloads and failure
-  exercise remain to run. Production test credentials stay with the release owner.
+  docs: `macos-15` arm64, `macos-15-intel` x64, `windows-2022`. All three now have real
+  installed-app shell and local feature evidence. Windows teardown still blocks collection.
+- Complete-set collection, real-AI checks, artifact read-back/rollback and the manual
+  matrix cells remain open. Production test credentials stay with the release owner.
 - Publication storage choice, stable latest manifest and download-page integration remain
   proposals for the release owner. Workflow only creates 3-day preview artifacts and
   never publishes or advances latest. Production publication approval is **not yet asked**.
@@ -425,3 +426,29 @@ the Chromium netlog had zero non-loopback connections. This is unpackaged Linux 
 with a temporary database and no AI provider, not native or production-success evidence.
 UI failure reports now identify the exact selector step with counts/visibility only.
 There has been no new live attempt from this revision.
+
+## Preview-3e: Windows features pass; teardown failure isolated
+
+Owner bridge `129a239bf995414db0780eeb51aa2c6e`, run
+https://github.com/helloluis/hiraia/actions/runs/46139259436 : both Macs succeed;
+Windows passes its 20-pack byte precheck, ten installed shell checks and all fourteen
+local feature checks for the first time. The Windows receipt shows local health 200
+on attempt 2, 312 fixture requests and zero non-loopback TCP connections.
+Reviewed export independently verified here: 482,531 bytes, SHA256
+`840d1263dbc1a97a6f4f467c43c64eb8f602cb19e5a299d8a810a18260a0a02e`.
+
+Forty-one milliseconds after its last PASS, the test proxy's error handler called
+writeHead(502) after response headers were sent, raising ERR_HTTP_HEADERS_SENT. The run
+failed and complete-set correctly remained skipped. This is teardown evidence, not a
+feature failure and not a successful pipeline. The previously proposed 3f tag was held.
+
+The replacement proxy destroys an incomplete response after headers, sends 502 only
+before headers, handles upstream stream errors and closes upstream requests when the
+client disconnects. Fixture connections now close before the local server is stopped.
+A real loopback socket test deliberately resets upstream before/after headers and
+disconnects the client; all paths finish without an uncaught exception. Reports record
+teardown completion only after cleanup, and collection rejects a pending teardown even
+if every feature result passed. Shipping app, web/server and workflow are unchanged.
+Fifteen Node tests pass. The changed local walk passes fourteen feature checks on
+Linux and exits 0 with teardown=completed, 318 local requests and zero non-loopback
+connections. The replacement still needs the native run; no complete set is claimed.

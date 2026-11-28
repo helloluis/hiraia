@@ -19,7 +19,7 @@ test('complete-set gate rejects missing/tampered/mixed builds before writing a r
       fs.writeFileSync(path.join(dir, `shell-${key}.json`), JSON.stringify({ platform, arch, packaged: true,
         isolation: { allPeersLoopback: true, fixtureRequests: 8, nonLoopbackConnections: 0, otherDns: 'NOTFOUND', productionApiNegativeControl: '403 from local fixture' },
         results: Array.from({ length: 10 }, () => ({ status: 'passed' })) }));
-      fs.writeFileSync(path.join(dir, `features-${key}.json`), JSON.stringify({ platform, arch, packaged: true, sourceCommit: 'a'.repeat(40),
+      fs.writeFileSync(path.join(dir, `features-${key}.json`), JSON.stringify({ platform, arch, packaged: true, teardown: 'completed', sourceCommit: 'a'.repeat(40),
         isolation: { allPeersLoopback: true, fixtureRequests: 60, nonLoopbackConnections: 0, healthBuildNonceVerified: true },
         results: Array.from({ length: 14 }, () => ({ status: 'passed' })) }));
     }
@@ -41,6 +41,9 @@ test('complete-set gate rejects missing/tampered/mixed builds before writing a r
     fs.writeFileSync(featurePath, JSON.stringify({ ...features, results: [{ status: 'failed' }] }));
     assert.throws(() => collect(dir, output), /Missing native local-server feature/);
     assert.equal(fs.existsSync(output), false);
+    fs.writeFileSync(featurePath, JSON.stringify({ ...features, teardown: 'pending' }));
+    assert.throws(() => collect(dir, output), /Missing native local-server feature/);
+    assert.equal(fs.existsSync(output), false, 'Passed checks cannot hide a teardown failure');
     fs.writeFileSync(featurePath, JSON.stringify(features));
     assert.equal(collect(dir, output).artifacts.length, 3);
     assert.throws(() => collect(dir, output), /EEXIST/);
