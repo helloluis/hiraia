@@ -1,0 +1,21 @@
+module.exports = {
+  appId: 'org.hiraia.tala.desktop', productName: 'Tala', asar: true,
+  directories: { output: 'dist', buildResources: 'assets' },
+  files: ['src/**', 'assets/icon.png', 'build-meta.json', 'package.json'],
+  artifactName: 'Tala-${version}-${os}-${arch}.${ext}',
+  publish: null,
+  electronFuses: {
+    runAsNode: false, enableNodeOptionsEnvironmentVariable: false,
+    enableCookieEncryption: true,
+    enableEmbeddedAsarIntegrityValidation: true, onlyLoadAppFromAsar: true,
+  },
+  win: { target: [{ target: 'nsis', arch: ['x64'] }], icon: 'assets/icon.png',
+    signAndEditExecutable: true, signExecutable: false },
+  nsis: { oneClick: false, perMachine: false, allowElevation: false,
+    allowToChangeInstallationDirectory: true, deleteAppDataOnUninstall: false,
+    createDesktopShortcut: true, createStartMenuShortcut: true },
+  mac: { target: ['dmg'], icon: 'assets/icon.png', category: 'public.app-category.education',
+    identity: '-', hardenedRuntime: false, notarize: false,
+    minimumSystemVersion: '12.0' },
+  dmg: { sign: false, title: 'Tala ${version}' },
+};

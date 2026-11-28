@@ -1,0 +1,146 @@
+name: Tala desktop unsigned previews
+
+on:
+  push:
+    tags:
+      - 'tala-desktop-preview-*'
+      - 'tala-v1-demo.*'
+
+# Isolated from Hiraia's native runners/signing keys and from the Tala web deploy.
+# No PR execution, credentials, production release or latest-pointer mutation.
+permissions:
+  contents: read
+concurrency:
+  group: tala-desktop-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  native:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-2022
+            platform: win32
+            arch: x64
+          - os: macos-15
+            platform: darwin
+            arch: arm64
+          - os: macos-15-intel
+            platform: darwin
+            arch: x64
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 35
+    defaults:
+      run:
+        working-directory: packages/tala-desktop
+    env:
+      TALA_RELEASE_TAG: ${{ github.ref_name }}
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            packages/tala-desktop
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24
+      - name: Controlled failure exercise (preview tags only)
+        if: startsWith(github.ref_name, 'tala-desktop-preview-failure-') && matrix.platform == 'darwin' && matrix.arch == 'x64'
+        shell: bash
+        run: echo 'Intentional missing-platform failure; complete-set upload must not run.' >&2; exit 1
+      - run: npm ci --workspaces=false --no-audit --no-fund
+      - name: Install the pinned Electron runtime
+        run: node node_modules/electron/install.js
+      - run: npm test
+      - run: npm run build -- ${{ matrix.platform }} ${{ matrix.arch }}
+      - name: Windows install, packaged shell checks, relaunch and uninstall
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $installer = (Get-ChildItem dist/Tala-*.exe).FullName
+          $install = Join-Path $env:RUNNER_TEMP 'TalaDesktopInstall'
+          $p = Start-Process -FilePath $installer -ArgumentList '/S', "/D=$install" -PassThru -Wait
+          if ($p.ExitCode -ne 0) { throw 'NSIS install failed' }
+          $env:TALA_DESKTOP_EXECUTABLE = Join-Path $install 'Tala.exe'
+          if (!(Test-Path $env:TALA_DESKTOP_EXECUTABLE)) { throw 'Installed executable missing' }
+          try {
+            node test/electron.cjs
+            if ($LASTEXITCODE -ne 0) { throw 'Packaged shell tests failed' }
+          } finally {
+            $uninstall = Join-Path $install 'Uninstall Tala.exe'
+            if (Test-Path $uninstall) { Start-Process -FilePath $uninstall -ArgumentList '/S' -Wait }
+          }
+          Start-Sleep -Seconds 3
+          if (Test-Path $env:TALA_DESKTOP_EXECUTABLE) { throw 'Uninstall left executable behind' }
+      - name: macOS mount, install, verify ad-hoc signature, packaged checks and uninstall
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mount="$RUNNER_TEMP/tala-dmg"
+          install="$RUNNER_TEMP/tala-installed"
+          mkdir -p "$mount" "$install"
+          trap 'hdiutil detach "$mount" >/dev/null 2>&1 || true; rm -rf "$install/Tala.app"' EXIT
+          hdiutil attach dist/Tala-*.dmg -nobrowse -mountpoint "$mount"
+          ditto "$mount/Tala.app" "$install/Tala.app"
+          codesign --verify --deep --strict "$install/Tala.app"
+          codesign -dvv "$install/Tala.app" 2>&1 | tee dist/codesign-${{ matrix.arch }}.txt
+          grep -q 'Signature=adhoc' dist/codesign-${{ matrix.arch }}.txt
+          lipo -archs "$install/Tala.app/Contents/MacOS/Tala" | grep -w '${{ matrix.arch }}'
+          TALA_DESKTOP_EXECUTABLE="$install/Tala.app/Contents/MacOS/Tala" node test/electron.cjs
+          rm -rf "$install/Tala.app"
+          test ! -e "$install/Tala.app"
+      - name: Retain native evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: evidence-${{ matrix.platform }}-${{ matrix.arch }}-${{ github.sha }}
+          path: |
+            packages/tala-desktop/test-output/
+            packages/tala-desktop/dist/codesign-*.txt
+          if-no-files-found: ignore
+          retention-days: 3
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: unsigned-preview-not-for-distribution-${{ matrix.platform }}-${{ matrix.arch }}-${{ github.sha }}
+          path: |
+            packages/tala-desktop/dist/Tala-*.exe
+            packages/tala-desktop/dist/Tala-*.dmg
+            packages/tala-desktop/dist/manifest-*.json
+            packages/tala-desktop/test-output/shell-*.json
+          if-no-files-found: error
+          retention-days: 3
+          compression-level: 0
+  complete-set:
+    needs: native
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout: packages/tala-desktop
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: unsigned-preview-not-for-distribution-*
+          path: incoming
+          merge-multiple: true
+      - name: Flatten artifact directories and verify complete set
+        shell: bash
+        run: |
+          mkdir flat
+          find incoming -type f -exec cp -n '{}' flat/ \;
+          node packages/tala-desktop/scripts/collect.cjs flat complete
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: complete-unsigned-preview-not-for-distribution-${{ github.sha }}
+          path: complete/
+          if-no-files-found: error
+          retention-days: 3
+          compression-level: 0
