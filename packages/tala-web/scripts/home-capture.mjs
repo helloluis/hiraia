@@ -353,7 +353,11 @@ for (const who of people) {
     }, [format(words['editor.block'], { n: 3 }), view === 'phone' ? words['editor.teacherWith'] : '']);
     if (!box) throw new Error(`${who.lang} ${view}: the session flow was not found on the plan page`);
     const [plannerHeight, plannerWidth] = SHOT.planner[view];
-    await save(page, `planner-${view}-${who.lang}`, { x: Math.max(0, box.left), y: Math.max(0, box.stripTop), width: Math.min(VIEW[view].viewport.width, box.right) - Math.max(0, box.left), height: Math.min(plannerHeight, box.viewport - Math.max(0, box.stripTop)) }, plannerWidth);
+    // Wide: the editor's own column. Phone: the whole width of the screen, as the phone shows it (in Filipino the
+    // timeline's end label reaches past the card's edge, and a picture cut at the card would cut the label).
+    const left = view === 'phone' ? 0 : Math.max(0, box.left);
+    const right = view === 'phone' ? VIEW[view].viewport.width : Math.min(VIEW[view].viewport.width, box.right);
+    await save(page, `planner-${view}-${who.lang}`, { x: left, y: Math.max(0, box.stripTop), width: right - left, height: Math.min(plannerHeight, box.viewport - Math.max(0, box.stripTop)) }, plannerWidth);
 
     /* --- her copy of the lesson's slides, with one slide corrected --- */
     await page.goto(`${base}/slides/${who.deckId}?plan=${who.deckPlanId}&slide=${DECK.slideId}`, { waitUntil: 'networkidle', timeout: 120000 });

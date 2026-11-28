@@ -424,6 +424,7 @@ for (const lang of LANGS)
     }));
     check(`${lang} ${view}, no answer from the library: the map stays, no mark and no legend for packs, and no pack number anywhere`, failed.state === 'failed' && failed.text === T['landing.s.cur.packsAsk'] && failed.caps === 0 && failed.legend === 1 && failed.marks === SCIENCE_COVERAGE.weeks && !failed.section.includes(String(SCIENCE_COVERAGE.weeks)), `"${failed.text}" · ${failed.caps} marks · ${failed.legend} legend item(s)`);
     await f.page.locator('#home-cur').scrollIntoViewIfNeeded();
+    await f.page.waitForTimeout(900); // the picture above has just come into view: let it finish coming in
     await f.page.screenshot({ path: join(out, `home-${view}-${lang}-library-unreachable.png`) });
     await f.ctx.close();
   }

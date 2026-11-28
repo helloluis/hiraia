@@ -4,7 +4,7 @@
  * manifest, and that every file exists in both languages, both layouts and both formats.
  */
 export const SHOTS = {
-  planner: { wide: [1320, 1431], phone: [712, 1280] },
+  planner: { wide: [1320, 1431], phone: [780, 1280] },
   slides: { wide: [1860, 1198], phone: [780, 1400] },
 } as const;
 export type ShotName = keyof typeof SHOTS;
