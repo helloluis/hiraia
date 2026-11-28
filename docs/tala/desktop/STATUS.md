@@ -464,3 +464,35 @@ At the owner's suggestion, the production sync acknowledgement wait is raised fr
 10 to 30 seconds before run 3 to accommodate the client's debounce/network delay.
 The per-check/overall deadlines and all request/mutation/AI caps remain unchanged.
 Owner run 3 still requires their invocation and before/after audit; no result is claimed.
+
+## Owner real-AI run 3 passed; native 3f upload race investigated
+
+Owner bridge `69de942bb335453989dbd3a291bb4a39`: run `owner-20261128-3` at
+`f7c043b89`, b11-dev Linux/headless, completed once with exit 0. One real Content
+rewrite, sync 200 with eleven `applied` results, seven total HTTP writes, zero blocked
+requests. Independent receipt read-back: 9,975 bytes, SHA256
+`eb14f3a6761ffcdf32760a74991a4d789d93165a98a0a3899529aa8ad7f541b0`.
+The owner's host audit found one new provider call (DeepSeek, reported US$0.00077),
+one Content revision, exactly the two labelled year/class records, plan linkage/AI flags,
+and only Content data changed. The other eight sections and profile are unchanged.
+The exact fixture inventory remains private; it is consumed and will not be replayed.
+This is Linux production AI evidence, not Windows/Mac AI evidence.
+
+Native preview-3f `46140401357`: Windows and arm64 succeeded, including safe teardown.
+Intel passed ten shell and eleven feature checks, then no upload/navigation followed
+the direct setInputFiles call. Owner bridge `f6a26db9` supplies the 60-second timeout,
+empty My own slides screenshot, healthy sync and completed teardown. A hydration race
+is a supported hypothesis, not a proven app defect. Both requested follow-up tags remain
+held, and complete-set was skipped.
+
+The revised local upload check waits for the page's client-effect list response, clicks
+the real React Upload button and observes its file chooser before selecting once. It
+requires the upload-session response and exactly one begin request, then the existing
+saved-edit/export checks. There is no blind re-selection. The report retains each stage,
+response codes and fixture-side begin count, so a future failure distinguishes readiness,
+no request, server response and navigation. No shipping app or server change is needed.
+The revised Linux walk passes all fourteen checks and completes teardown; the chooser
+was observed, list and begin responses were successful, and exactly one begin request
+reached the fixture. The earlier Windows byte-preservation and proxy fixes are now
+natively proven. This next run changes the upload readiness condition instead of
+repeating those resolved approaches or the same immediate file selection.

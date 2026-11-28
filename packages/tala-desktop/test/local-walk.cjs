@@ -29,6 +29,7 @@ const netlogs = [];
 let healthVerified = false;
 let networkEvidence;
 let startupProbe;
+const uploadTrace = { phase: 'not started', listStatus: null, fileChooserObserved: false, beginStatus: null };
 let currentCheck = 'local server startup';
 async function check(name, fn) {
   currentCheck = name;
@@ -291,9 +292,31 @@ async function startServer() {
   });
   let uploadId, titleField;
   await check('actual PowerPoint upload and saved text edit', async () => {
-    await page.goto(origin + '/library/mine');
-    await page.locator('[data-upload-input]').setInputFiles(path.join(seeded, 'synthetic.pptx'));
+    uploadTrace.phase = 'wait for the upload-list client effect';
+    const [listResponse] = await Promise.all([
+      page.waitForResponse(r => new URL(r.url()).pathname === '/api/v1/deck-uploads' && r.request().method() === 'GET', { timeout: 30000 }),
+      page.goto(origin + '/library/mine'),
+    ]);
+    uploadTrace.listStatus = listResponse.status(); assert.ok(listResponse.ok());
+    // This button invokes input.current.click() through React. Observing its
+    // chooser proves the component's handlers are attached before selecting.
+    uploadTrace.phase = 'open chooser through the React upload button';
+    const [chooser] = await Promise.all([
+      page.waitForEvent('filechooser', { timeout: 15000 }),
+      page.getByRole('button', { name: 'Upload a PowerPoint file', exact: true }).click(),
+    ]);
+    uploadTrace.fileChooserObserved = true;
+    assert.notEqual(await chooser.element().getAttribute('data-upload-input'), null);
+    uploadTrace.phase = 'select once and require upload-session response';
+    const [beginResponse] = await Promise.all([
+      page.waitForResponse(r => new URL(r.url()).pathname === '/api/v1/deck-upload-sessions' && r.request().method() === 'POST', { timeout: 15000 }),
+      chooser.setFiles(path.join(seeded, 'synthetic.pptx')),
+    ]);
+    uploadTrace.beginStatus = beginResponse.status(); assert.ok(beginResponse.ok());
+    assert.equal(fixture.requests.filter(r => r.path === '/api/v1/deck-upload-sessions' && r.method === 'POST').length, 1);
+    uploadTrace.phase = 'wait for uploaded-deck navigation';
     await page.waitForURL(/\/slides\/mine\/[^/]+$/, { timeout: 60000 });
+    uploadTrace.phase = 'edit and save the uploaded deck';
     uploadId = new URL(page.url()).pathname.split('/').pop();
     await page.locator('[data-slide-id]').first().waitFor();
     const deck = await page.evaluate(async id => (await fetch('/api/v1/deck-uploads/' + id)).json(), uploadId);
@@ -308,6 +331,7 @@ async function startServer() {
     await page.locator('[data-save-state="saved"]').waitFor();
     await page.reload();
     assert.equal(await page.locator(titleField).inputValue(), 'Edited synthetic desktop plant lesson');
+    uploadTrace.phase = 'saved edit survived reload';
     await page.screenshot({ path: path.join(output, 'uploaded-pptx-editor.png') });
   });
   await check('actual edited PowerPoint downloads and contains the saved words', async () => {
@@ -352,6 +376,7 @@ async function startServer() {
     teardown: 'pending',
     displayBackend: linuxHeadlessArgs().length ? 'ozone-headless' : 'system display',
     startup: startupProbe,
+    upload: { ...uploadTrace, beginRequests: fixture?.requests.filter(r => r.path === '/api/v1/deck-upload-sessions' && r.method === 'POST').length },
     sourceCommit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(),
     packaged: !!process.env.TALA_DESKTOP_EXECUTABLE, source: 'unmodified local Tala web/server; isolated HTTPS to temporary SQLite database',
     isolation: { fixtureRequests: fixture?.requests.length, allPeersLoopback: fixture?.requests.every(r => r.peer === '127.0.0.1'), healthBuildNonceVerified: healthVerified, ...networkEvidence },
