@@ -2077,3 +2077,12 @@ this ledger had no entry).
   would. The only such pair in core/server/web/brand/desktop. **Fix:** `ee9d02b94` on branch `tala-v1-prose-case`
   (`prose.ts` → `prose-text.ts`, its test renamed, three imports; tsc 0, web tests 182, build ok; no behaviour change),
   pushed to origin and given to the desktop owner as a bridge export; not deployed — it rides the next web release.
+- **28 Nov 18:55 Manila — desktop preview 3b** (`0f550538c`: preview 3 + the production-check code, gated off on this
+  tag + the case fix cherry-picked) tagged `tala-desktop-preview-3b` → run 46135509603: **both Macs passed everything**
+  (24 checks each on arm64: the 10 isolated shell checks including the fixed fullscreen check, and the 14 local
+  feature checks against a local Tala server — registration, English/Filipino, session relaunch, editor, Word, PDF,
+  visible Materials AI failure, Saturday/Sunday timetable, multi-grade, presenting, PowerPoint upload/edit/download,
+  loopback-only); Windows failed in the owner's own unit test of the workflow gating (before any build); the complete
+  set was withheld. The production-check code (`3ad34d112`) is reviewed with no blocking finding; running it still
+  waits for all three platforms to pass. Owner mode on b11-dev: its library preflight (no credentials) exits 2 —
+  missing libcairo, libcups, libgtk-3, libpango, to be unpacked privately before any owner run.
