@@ -2068,3 +2068,12 @@ this ledger had no entry).
   sets were withheld. Preview-3 (`a9ba7c090`, a real-feature walk on a local server inside CI) reviewed and HELD
   untagged until the Mac hang is fixed. Production-walk design (one throwaway synthetic account per platform, two AI
   requests, deletion in the same process, hand-pushed tag only) approved in principle with conditions; nothing run.
+- **28 Nov 18:30 Manila — desktop preview 3** (`0a1b39471`: the isolated real-feature walk on a local server, bounded
+  native checks, macOS fullscreen waits) reviewed and tagged `tala-desktop-preview-3` → run 46134794220: all three
+  native jobs failed while building the unchanged Tala web app on the runner, before any desktop test; the complete
+  set was withheld. **Cause: a latent Tala web defect since 19 Nov** — `features/library` has `Prose.tsx` and
+  `prose.ts`, imported without extensions; on case-insensitive file systems (macOS, Windows) `./Prose` resolves to
+  `prose.ts` and `next build` fails. Linux (the host, every release check) never showed it; a Mac development build
+  would. The only such pair in core/server/web/brand/desktop. **Fix:** `ee9d02b94` on branch `tala-v1-prose-case`
+  (`prose.ts` → `prose-text.ts`, its test renamed, three imports; tsc 0, web tests 182, build ok; no behaviour change),
+  pushed to origin and given to the desktop owner as a bridge export; not deployed — it rides the next web release.
