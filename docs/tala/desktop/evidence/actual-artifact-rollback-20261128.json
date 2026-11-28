@@ -1,0 +1,154 @@
+{
+  "scope": "LOCAL loopback HTTPS transaction with actual installer bytes; not publication or external HTTPS evidence",
+  "sets": [
+    {
+      "schemaVersion": 1,
+      "version": "0.1.0",
+      "release": "tala-desktop-preview-3g",
+      "sourceCommit": "c8d99c04851ea824877975e7f8503974d3382886",
+      "electron": "45.5.0",
+      "hostedOrigin": "https://tala.hiraia.org",
+      "status": "preview-not-for-distribution",
+      "verification": "native packaged shell and local-server feature checks; see parity matrix for remaining checks",
+      "artifacts": [
+        {
+          "schemaVersion": 1,
+          "version": "0.1.0",
+          "release": "tala-desktop-preview-3g",
+          "sourceCommit": "c8d99c04851ea824877975e7f8503974d3382886",
+          "sourceDirty": false,
+          "buildTime": "2026-11-28T11:49:20.581Z",
+          "electron": "45.5.0",
+          "hostedOrigin": "https://tala.hiraia.org",
+          "platform": "win32",
+          "arch": "x64",
+          "signing": "unsigned",
+          "file": "Tala-0.1.0-win-x64.exe",
+          "bytes": 121509315,
+          "sha256": "479e6304ae40248e745f39bf04acac7871c7623917af7e3d6e9942126c65fa76"
+        },
+        {
+          "schemaVersion": 1,
+          "version": "0.1.0",
+          "release": "tala-desktop-preview-3g",
+          "sourceCommit": "c8d99c04851ea824877975e7f8503974d3382886",
+          "sourceDirty": false,
+          "buildTime": "2026-11-28T11:48:39.458Z",
+          "electron": "45.5.0",
+          "hostedOrigin": "https://tala.hiraia.org",
+          "platform": "darwin",
+          "arch": "arm64",
+          "signing": "ad-hoc; not notarized",
+          "file": "Tala-0.1.0-mac-arm64.dmg",
+          "bytes": 120573333,
+          "sha256": "c077e6c5b1d3e99bda6cc9b5e594b0671bd98bb108d5ed6814a60bd7c04a4481"
+        },
+        {
+          "schemaVersion": 1,
+          "version": "0.1.0",
+          "release": "tala-desktop-preview-3g",
+          "sourceCommit": "c8d99c04851ea824877975e7f8503974d3382886",
+          "sourceDirty": false,
+          "buildTime": "2026-11-28T11:51:04.279Z",
+          "electron": "45.5.0",
+          "hostedOrigin": "https://tala.hiraia.org",
+          "platform": "darwin",
+          "arch": "x64",
+          "signing": "ad-hoc; not notarized",
+          "file": "Tala-0.1.0-mac-x64.dmg",
+          "bytes": 126586096,
+          "sha256": "56be4479e4612b241ba9dfc4ec8f2a26d823c374b58c1736565fb2632979c926"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "version": "0.1.0",
+      "release": "tala-desktop-preview-production-1",
+      "sourceCommit": "c8d99c04851ea824877975e7f8503974d3382886",
+      "electron": "45.5.0",
+      "hostedOrigin": "https://tala.hiraia.org",
+      "status": "preview-not-for-distribution",
+      "verification": "native packaged shell and local-server feature checks; see parity matrix for remaining checks",
+      "artifacts": [
+        {
+          "schemaVersion": 1,
+          "version": "0.1.0",
+          "release": "tala-desktop-preview-production-1",
+          "sourceCommit": "c8d99c04851ea824877975e7f8503974d3382886",
+          "sourceDirty": false,
+          "buildTime": "2026-11-28T11:58:03.574Z",
+          "electron": "45.5.0",
+          "hostedOrigin": "https://tala.hiraia.org",
+          "platform": "win32",
+          "arch": "x64",
+          "signing": "unsigned",
+          "file": "Tala-0.1.0-win-x64.exe",
+          "bytes": 121509249,
+          "sha256": "a0e6922e9f321a397b9dd199d6d674191a9652e7c0754374e29ce41c9c241b7c"
+        },
+        {
+          "schemaVersion": 1,
+          "version": "0.1.0",
+          "release": "tala-desktop-preview-production-1",
+          "sourceCommit": "c8d99c04851ea824877975e7f8503974d3382886",
+          "sourceDirty": false,
+          "buildTime": "2026-11-28T11:57:15.689Z",
+          "electron": "45.5.0",
+          "hostedOrigin": "https://tala.hiraia.org",
+          "platform": "darwin",
+          "arch": "arm64",
+          "signing": "ad-hoc; not notarized",
+          "file": "Tala-0.1.0-mac-arm64.dmg",
+          "bytes": 120573315,
+          "sha256": "fb99be74891a89652d28b210a07e2ed104bab0ade1564aaaa7d2fad9103f9274"
+        },
+        {
+          "schemaVersion": 1,
+          "version": "0.1.0",
+          "release": "tala-desktop-preview-production-1",
+          "sourceCommit": "c8d99c04851ea824877975e7f8503974d3382886",
+          "sourceDirty": false,
+          "buildTime": "2026-11-28T11:58:53.688Z",
+          "electron": "45.5.0",
+          "hostedOrigin": "https://tala.hiraia.org",
+          "platform": "darwin",
+          "arch": "x64",
+          "signing": "ad-hoc; not notarized",
+          "file": "Tala-0.1.0-mac-x64.dmg",
+          "bytes": 126586012,
+          "sha256": "04cdc7a069c3ebb071ccdd71cbc83613cfd0edab520fdd03dda2e4528c5e127d"
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "first complete set promoted after full HTTPS hash read-back",
+      "status": "passed",
+      "latestSha256": "29845ba9a43f503b6f0b65c0f21cc82560bbd57b14bb49fd1c6b1e45ca056d2d"
+    },
+    {
+      "name": "failed Mac read-back preserves the complete current set",
+      "status": "passed",
+      "httpStatus": 503,
+      "file": "Tala-0.1.0-mac-x64.dmg",
+      "latestSha256": "29845ba9a43f503b6f0b65c0f21cc82560bbd57b14bb49fd1c6b1e45ca056d2d"
+    },
+    {
+      "name": "stale expected pointer preserves current set",
+      "status": "passed"
+    },
+    {
+      "name": "second complete set promoted together",
+      "status": "passed",
+      "latestSha256": "6dc209a6146a3f2fcd915cbd4290c35608e96d645ac54800861a602f6a99634a"
+    },
+    {
+      "name": "whole-set rollback restores the original pointer byte-for-byte",
+      "status": "passed",
+      "latestSha256": "29845ba9a43f503b6f0b65c0f21cc82560bbd57b14bb49fd1c6b1e45ca056d2d"
+    }
+  ],
+  "httpsRequests": 19
+}

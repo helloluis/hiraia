@@ -11,6 +11,9 @@ export function DesktopDownloads({ manifest }: { manifest: DesktopManifest | nul
     <section aria-labelledby="desktop-title" className="flex flex-col gap-4 border-t border-hairline pt-6">
       <h2 id="desktop-title" className="font-display text-[1.75rem]">{t('download.desktop.title')}</h2>
       <p>{t('download.desktop.online')}</p>
+      <p className="text-small">{t('download.desktop.unsigned')}</p>
+      <p className="text-small">{t('download.desktop.windowsHelp')}</p>
+      <p className="text-small">{t('download.desktop.macHelp')}</p>
       <div className="grid gap-4">
         {manifest.artifacts.map(a => (
           <div key={`${a.platform}-${a.arch}`} className="rounded border border-hairline bg-white p-4">
@@ -22,14 +25,11 @@ export function DesktopDownloads({ manifest }: { manifest: DesktopManifest | nul
               <summary>{t('download.desktop.verify')}</summary>
               <p>{t('download.version')}: {manifest.version}</p>
               <p className="font-mono break-all">SHA256: {a.sha256}</p>
-              <p className="font-mono break-all">{manifest.sourceCommit}</p>
+              <p className="font-mono break-all">{t('download.desktop.sourceCommit')}: {manifest.sourceCommit}</p>
             </details>
           </div>
         ))}
       </div>
-      <p className="text-small">{t('download.desktop.unsigned')}</p>
-      <p className="text-small">{t('download.desktop.windowsHelp')}</p>
-      <p className="text-small">{t('download.desktop.macHelp')}</p>
       <p className="text-small">{t('download.desktop.updates')}</p>
     </section>
   );

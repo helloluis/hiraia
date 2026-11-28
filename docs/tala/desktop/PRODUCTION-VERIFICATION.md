@@ -82,7 +82,13 @@ same job's successful local checks. A normal release tag cannot execute it. Re-r
 a production job is refused (`GITHUB_RUN_ATTEMPT` must be 1). A new attempt requires
 inspection of the prior identities/outcome and a newly reviewed tag, never a blind retry.
 
-Owner invocation after review (credentials already exported privately):
+**Executed once and consumed:** owner run 3 passed on 28 November 2026. The reused
+lesson is now linked and rewritten. Do not replay the invocation below with the run-2
+receipt. Any new owner check requires a new reviewed design. Native production check 1
+also passed on all three OS/architecture combinations; all three ephemeral accounts
+were deleted and audited. See [STATUS.md](STATUS.md) and [CANDIDATE.md](CANDIDATE.md).
+
+Historical owner invocation (credentials remained on b11-dev):
 
 First run `node test/linux-preflight.cjs` without credentials. It inspects the exact
 Electron binary with `ldd`, prints only unresolved library names, and exits 2 if any

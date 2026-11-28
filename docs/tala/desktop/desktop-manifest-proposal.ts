@@ -30,13 +30,18 @@ export function desktopManifest(value: unknown, approvedPrefix: string): Desktop
         m.hostedOrigin !== 'https://tala.hiraia.org' || !Array.isArray(m.artifacts) || m.artifacts.length !== 3) return null;
     const expected = new Set(['win32-x64', 'darwin-arm64', 'darwin-x64']);
     const artifacts: DesktopManifest['artifacts'] = [];
-    for (const a of m.artifacts) {
-      if (!a || typeof a !== 'object' || !expected.delete(`${a.platform}-${a.arch}`) ||
+    for (const value of m.artifacts as unknown[]) {
+      if (!value || typeof value !== 'object') return null;
+      const a = value as Record<string, unknown>;
+      const { platform, arch, bytes, sha256, url } = a;
+      if ((platform !== 'win32' && platform !== 'darwin') || (arch !== 'x64' && arch !== 'arm64') ||
+          !expected.delete(`${platform}-${arch}`) ||
           a.sourceDirty !== false || ['version', 'release', 'sourceCommit', 'electron', 'hostedOrigin'].some(key => a[key] !== m[key]) ||
-          !Number.isSafeInteger(a.bytes) || a.bytes <= 0 || typeof a.sha256 !== 'string' || !/^[0-9a-f]{64}$/.test(a.sha256)) return null;
-      const file = `Tala-${m.version}-${a.platform === 'win32' ? 'win' : 'mac'}-${a.arch}.${a.platform === 'win32' ? 'exe' : 'dmg'}`;
-      if (a.file !== file || a.url !== `${base}/${m.release}/${m.sourceCommit}/${file}`) return null;
-      artifacts.push({ platform: a.platform, arch: a.arch, url: a.url, bytes: a.bytes, sha256: a.sha256 });
+          typeof bytes !== 'number' || !Number.isSafeInteger(bytes) || bytes <= 0 ||
+          typeof sha256 !== 'string' || !/^[0-9a-f]{64}$/.test(sha256) || typeof url !== 'string') return null;
+      const file = `Tala-${m.version}-${platform === 'win32' ? 'win' : 'mac'}-${arch}.${platform === 'win32' ? 'exe' : 'dmg'}`;
+      if (a.file !== file || url !== `${base}/${m.release}/${m.sourceCommit}/${file}`) return null;
+      artifacts.push({ platform, arch, url, bytes, sha256 });
     }
     if (expected.size) return null;
     // Return only display fields; the UI never consumes arbitrary manifest text.

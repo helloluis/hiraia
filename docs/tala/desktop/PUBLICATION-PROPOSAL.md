@@ -2,7 +2,7 @@
 
 Use the existing Tala download host for production, under a separate `/download/desktop/`
 prefix. No new paid service or account. This needs Luis's storage/publication decision with
-the complete verified candidate; it is not covered by demo.20 approval. Preview-1 stays
+the complete verified candidate; it is not covered by demo.20 approval. Verified previews stay
 in GitHub Actions artifacts (3 days, unlisted but accessible to signed-in GitHub users).
 
 Layout under `/var/www/tala-download/desktop/`:
@@ -30,17 +30,28 @@ Release owner integration steps, after approval:
    accepted and Luis approves. It reads every installer and the immutable manifest over
    HTTPS, checks full byte digests, then locks/checks the reviewed previous pointer and
    atomically replaces the **single whole-set manifest**. No per-platform latest pointers.
-4. The `/download` server component reads this latest manifest at request time, validates
+4. The `/download` server component reads
+   `path.join(TALA_DOWNLOAD_DIR, 'desktop', 'desktop-latest.json')` from disk at request
+   time, just like the existing Android manifests. It validates
    status/schema, exactly Windows x64 + Mac arm64 + Mac x64, source/version agreement,
    positive safe byte counts, SHA256 strings, and HTTPS URLs restricted to the chosen
    production prefix. Invalid/incomplete data hides the entire desktop section; it must
    never show a partially updated platform set.
    `desktop-manifest-proposal.ts` supplies this parser; it returns null on any missing,
    duplicate, mismatched, dirty or incorrectly hosted artifact. Use the approved prefix
-   explicitly, and fetch only its `desktop-latest.json` with redirects disabled.
-5. `download-section-proposal.tsx` is the proposed small UI addition. Existing Android
-   content is unchanged. English keys are in `download-strings-en.json`; Filipino wording
-   must go through the release owner's Filipino lane before integration.
+   explicitly. There is no SSR HTTPS self-fetch; HTTPS full-byte verification remains
+   in the separate promotion operation. Before any promote, the owner must restrict
+   the candidate to the exact release tag and source commit Luis approved. The parser
+   accepts valid identity syntax; it does not grant permission to promote any preview.
+5. `download-section-proposal.tsx` is the proposed small UI addition. Warnings/help
+   precede download links, and the source commit has its own label. Existing Android
+   links/content stay intact; when a valid desktop section is present, use the neutral
+   `download.desktop.pageTitle` for the page h1. English keys are in
+   `download-strings-en.json`; Filipino wording goes through the release owner's lane.
+   All twelve Filipino lines are in `download-strings-fil.json`, copied unchanged
+   from the Filipino owner's review relayed by release-owner bridges `7001b495` and
+   `e7bed28b`. The English warning adopts their platform-scope clarification; no other
+   existing English key changed. The page-title/source-label keys are additive.
 
 The tag workflow already automatically builds all editions for relevant release tags.
 It currently produces **artifacts only**. A separate release-owner promotion action can run
@@ -51,27 +62,37 @@ destination and authorization first. This document does not claim it exists.
 Rollback uses the same promote command on the previous immutable directory, with the
 current pointer's digest. Old artifacts stay intact. Failed builds, missing native evidence,
 failed HTTPS reads and stale-pointer conflicts must leave the current release untouched.
-The local publisher tests execute those transaction/rollback paths with synthetic bytes,
-including real loopback HTTPS with an ephemeral certificate trusted only by that test
-process. A deliberately failed DMG read-back (HTTP 503) leaves latest byte-identical;
-promotion of a second complete set and rollback restore the first whole-set pointer.
-This is a transaction fixture, not a production deployment or an installer-artifact
-publication exercise. The latter waits for native complete sets and the approved host.
+The local publisher tests cover transaction failures with synthetic bytes. The stronger
+actual-artifact exercise has now also passed using both verified native complete sets:
+`tala-desktop-preview-3g` and `tala-desktop-preview-production-1`, both at `c8d99c048`.
+The latter is a distinct real release tuple, not a relabelled fixture.
 
-`test/verify-artifact-rollback.py` prepares the next, stronger local check with **two
-actual complete installer sets** from reviewed native runs. It validates every artifact
-hash/size, requires distinct source/tag identities and rejects the text files used by
-unit fixtures. Inputs stay read-only; staging and latest changes are confined to a new
-temporary directory. It reads the actual EXE/DMG bytes over loopback HTTPS, fails one
-Mac read-back with 503, rejects a stale expected pointer, promotes the second complete
-set and rolls back to the first pointer byte-for-byte. Its temporary certificate is
-trusted only by that process. No host, public storage or system trust changes occur.
+`test/verify-artifact-rollback.py` validated all six installers and read the actual
+EXE/DMG and immutable-manifest bytes over loopback HTTPS. All five checks passed:
+first complete promotion; failed Intel read-back (503) preserves latest; stale-pointer
+rejection preserves latest; second complete promotion; whole-set rollback restores
+the original pointer byte-for-byte. The report records 19 HTTPS requests.
+Inputs remained read-only; all staging/latest changes used a temporary directory and
+the ephemeral certificate was trusted only by that process. No production host,
+public storage or system trust changed.
+
+Evidence: [actual-artifact-rollback-20261128.json](evidence/actual-artifact-rollback-20261128.json).
+This proves the local transaction with real installers. Externally verified GitHub
+preview downloads are separate evidence in [CANDIDATE.md](CANDIDATE.md); an actual
+production promotion/read-back still requires the release owner's window and approval.
+
+Reproduce with two reviewed sets and a new report path:
 
 ```
 python3 packages/tala-desktop/test/verify-artifact-rollback.py \
   /reviewed/first-complete-set /reviewed/second-complete-set /private/new-report.json
 ```
 
-This driver is prepared but has **not run with actual installers**: no complete set has
-passed yet. Its eventual result must remain separate from externally verified preview
-downloads and any release-owner-approved production promotion.
+Release-owner integration review `0c071794768a41939d31a7c2166755b5` confirms the
+existing host has sufficient storage and currently serves only allowlisted Android
+files. Desktop URLs therefore do not exist yet. The owner will add strict immutable-file
+and latest-manifest nginx locations, explicit content types, attachment disposition for
+installers, nosniff, immutable/no-cache policies respectively, and no directory listing.
+They will back up the site file, run nginx -t and deploy only in their approved window.
+Promotion is a manual owner operation on that host with a recorded pointer backup;
+there are no CI deployment credentials or automatic promoter.

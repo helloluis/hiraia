@@ -53,7 +53,8 @@ job must remain skipped. Existing web releases/downloads are untouched. Retry by
 the failed job only after fixing its cause, or use a new preview tag for a changed commit.
 Never reuse a production artifact URL for different bytes.
 
-Publication/rollback tooling and hosting are still being prepared. Proposed layout:
+The candidate publication/rollback tool is implemented; production hosting and integration
+remain unapproved. Proposed layout:
 one immutable directory per release tag/full source commit, with all three artifacts and
 `desktop-release.json`; a single atomic `desktop-latest.json` points at the whole set.
 Promotion must verify downloaded bytes first and happen only by the release owner after
@@ -98,8 +99,10 @@ on headless Linux). `TALA_DESKTOP_EXECUTABLE` selects an installed candidate. Te
 their temporary accounts/database/profile/certificate after use. Only synthetic screenshots,
 documents and sanitized JSON reports remain under ignored `test-output/`.
 
-Successful real AI generation, native print/save dialogs, Office opening and manual
-accessibility remain separate checks. `STATUS.md` is the explicit acceptance matrix.
+Real Content rewrite and slide-generation success passed on all three native platforms
+in a separately authorized production check. Native print/save dialogs, Office opening,
+external-browser handoff and manual accessibility remain unverified. [STATUS.md](STATUS.md)
+is the explicit matrix; [CANDIDATE.md](CANDIDATE.md) records exact artifacts and run evidence.
 No test may use real teacher data, copy the production database, or regenerate the library.
 
 `test/owner-auth-check.cjs https://tala.hiraia.org` is a separate, opt-in check requested

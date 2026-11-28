@@ -1,0 +1,255 @@
+{
+  "sourceCommit": "c8d99c04851ea824877975e7f8503974d3382886",
+  "normalNativeRun": 46141524544,
+  "productionNativeRun": 46142209678,
+  "normalNativeChecks": [
+    {
+      "platformArch": "win32-x64",
+      "shellPassed": 10,
+      "featuresPassed": 14,
+      "teardown": "completed",
+      "upload": {
+        "phase": "saved edit survived reload",
+        "listStatus": 200,
+        "fileChooserObserved": true,
+        "beginStatus": 200,
+        "beginRequests": 1
+      },
+      "isolation": {
+        "fixtureRequests": 329,
+        "allPeersLoopback": true,
+        "healthBuildNonceVerified": true,
+        "tcpAttempts": 17,
+        "nonLoopbackConnections": 0
+      },
+      "archiveSha256": "4508c46e74b110dd4d90953e4fc8edcec0913d7e213942690c2fcd0b309ddfc4"
+    },
+    {
+      "platformArch": "darwin-arm64",
+      "shellPassed": 10,
+      "featuresPassed": 14,
+      "teardown": "completed",
+      "upload": {
+        "phase": "saved edit survived reload",
+        "listStatus": 200,
+        "fileChooserObserved": true,
+        "beginStatus": 200,
+        "beginRequests": 1
+      },
+      "isolation": {
+        "fixtureRequests": 337,
+        "allPeersLoopback": true,
+        "healthBuildNonceVerified": true,
+        "tcpAttempts": 22,
+        "nonLoopbackConnections": 0
+      },
+      "archiveSha256": "7684a05b1a22487a02acf3dcb38c475dcc19a0f94dbb2801f63b02d56eb7dfa9"
+    },
+    {
+      "platformArch": "darwin-x64",
+      "shellPassed": 10,
+      "featuresPassed": 14,
+      "teardown": "completed",
+      "upload": {
+        "phase": "saved edit survived reload",
+        "listStatus": 200,
+        "fileChooserObserved": true,
+        "beginStatus": 200,
+        "beginRequests": 1
+      },
+      "isolation": {
+        "fixtureRequests": 330,
+        "allPeersLoopback": true,
+        "healthBuildNonceVerified": true,
+        "tcpAttempts": 21,
+        "nonLoopbackConnections": 0
+      },
+      "archiveSha256": "d6bf264d4a6a3c07a61facd8703371e4a72b46201ddb9816da7bd482d0c5a4c5"
+    }
+  ],
+  "productionChecks": [
+    {
+      "platformArch": "win32-x64",
+      "checks": [
+        {
+          "name": "one real content-section rewrite",
+          "status": "passed"
+        },
+        {
+          "name": "one real slide-generation proposal and application",
+          "status": "passed"
+        }
+      ],
+      "totalWriteRequests": 10,
+      "cleanup": "self-delete 200; auth/me 401",
+      "receiptSha256": "a47b40a7ac3cbf48d8bda668a6afd64163223bbe5cd09d0c13940f517be1c594"
+    },
+    {
+      "platformArch": "darwin-arm64",
+      "checks": [
+        {
+          "name": "one real content-section rewrite",
+          "status": "passed"
+        },
+        {
+          "name": "one real slide-generation proposal and application",
+          "status": "passed"
+        }
+      ],
+      "totalWriteRequests": 10,
+      "cleanup": "self-delete 200; auth/me 401",
+      "receiptSha256": "3efbb9eefb5b706def3a8ff1576704ef6540a53afe4add9a508a1b82e70c6f01"
+    },
+    {
+      "platformArch": "darwin-x64",
+      "checks": [
+        {
+          "name": "one real content-section rewrite",
+          "status": "passed"
+        },
+        {
+          "name": "one real slide-generation proposal and application",
+          "status": "passed"
+        }
+      ],
+      "totalWriteRequests": 10,
+      "cleanup": "self-delete 200; auth/me 401",
+      "receiptSha256": "4699c4062097d408cb3b39d956aef1a1d5e7cf52e923efc9f81b54c3d4f64601"
+    }
+  ],
+  "productionAudit": {
+    "auditor": "Tala release owner on b11-dev",
+    "cohortAccounts": 3,
+    "remainingRowsInEachAuditedTable": 0,
+    "providerCalls": 6,
+    "providerRetries": 0,
+    "deletedSpendDeltaUSD": "0.006358",
+    "noUploadsOrR2Writes": true,
+    "evidenceSource": "bridge 301d01bfe40945e19e0fed8b6d297c2b"
+  },
+  "controlledFailure": {
+    "run": 46142841866,
+    "htmlUrl": "https://github.com/helloluis/hiraia/actions/runs/46142841866",
+    "status": "completed",
+    "conclusion": "failure",
+    "sourceCommit": "c8d99c04851ea824877975e7f8503974d3382886",
+    "tag": "tala-desktop-preview-failure-3g",
+    "jobs": [
+      {
+        "name": "native (macos-15, darwin, arm64)",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Controlled failure exercise (preview tags only)",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Intentional bounded production synthetic verification",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Windows uninstall",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "macOS remove the test installation",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "name": "native (macos-15-intel, darwin, x64)",
+        "conclusion": "failure",
+        "steps": [
+          {
+            "name": "Controlled failure exercise (preview tags only)",
+            "conclusion": "failure"
+          },
+          {
+            "name": "Intentional bounded production synthetic verification",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Windows uninstall",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "macOS remove the test installation",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "name": "native (windows-2022, win32, x64)",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Controlled failure exercise (preview tags only)",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Intentional bounded production synthetic verification",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Windows uninstall",
+            "conclusion": "success"
+          },
+          {
+            "name": "macOS remove the test installation",
+            "conclusion": "skipped"
+          }
+        ]
+      },
+      {
+        "name": "complete-set",
+        "conclusion": "skipped",
+        "steps": []
+      }
+    ],
+    "artifacts": [
+      {
+        "id": 15263090529,
+        "name": "evidence-win32-x64-c8d99c04851ea824877975e7f8503974d3382886",
+        "size_in_bytes": 511236,
+        "digest": "sha256:66d54b00bfda60f9f0ded57597ba62a44598e0eecb7fe895a0e2d18ef56a076f",
+        "expired": false,
+        "expires_at": "2026-12-01T12:08:18Z"
+      },
+      {
+        "id": 15262976270,
+        "name": "evidence-darwin-arm64-c8d99c04851ea824877975e7f8503974d3382886",
+        "size_in_bytes": 671945,
+        "digest": "sha256:5f8082b098f5760d4948a0ec3463d5136eb4cbcf38f01bdc36a51e4b4f608086",
+        "expired": false,
+        "expires_at": "2026-12-01T12:07:31Z"
+      },
+      {
+        "id": 15262263234,
+        "name": "unsigned-preview-not-for-distribution-darwin-arm64-c8d99c04851ea824877975e7f8503974d3382886",
+        "size_in_bytes": 120581109,
+        "digest": "sha256:a54caa2eb830f063d67294218cc1c82b1da0d24b2ebc6fcb32bc3ed52a6ea8ef",
+        "expired": false,
+        "expires_at": "2026-12-01T12:07:33Z"
+      },
+      {
+        "id": 15262033935,
+        "name": "unsigned-preview-not-for-distribution-win32-x64-c8d99c04851ea824877975e7f8503974d3382886",
+        "size_in_bytes": 121517092,
+        "digest": "sha256:343a883a74331a2aadbfce0e3ef9c449a683dfc82e4e54dccb9d94e88a007c36",
+        "expired": false,
+        "expires_at": "2026-12-01T12:08:20Z"
+      }
+    ]
+  },
+  "limits": [
+    "Native hosted CI is not interactive consumer-machine testing",
+    "Save dialog bypassed; printToPDF is not a native print-dialog or physical-print check",
+    "DOCX/PPTX archives inspected, not opened in Microsoft Office",
+    "External dialog/browser calls mocked for policy verification",
+    "Manual accessibility and consumer SmartScreen/Gatekeeper flow unverified",
+    "Multigrade assembly uses placeholder grade slides; real AI deck generation tested separately",
+    "Successful Materials AI rewrite not exercised; real Content rewrite and Materials missing-provider failure exercised",
+    "No publication, stable latest or production download-page integration"
+  ]
+}

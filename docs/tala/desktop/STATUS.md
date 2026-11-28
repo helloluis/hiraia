@@ -44,40 +44,59 @@ owner will repeat the install in their integration checkout before pushing.
   prerequisite. Native Windows CI is the next build route.
 - No native builds or CI run completed at this checkpoint. No installer preview links yet.
 
-## Required matrix — do not replace unverified cells with assumptions
+## Current verification matrix — 28 November 2026
+
+Candidate source: `c8d99c04851ea824877975e7f8503974d3382886`. All three native
+jobs and complete-set passed in preview-3g and production-check-1. These are
+GitHub-hosted native OS checks, not Wine or interactive consumer-machine checks.
+[Candidate links and file verification](CANDIDATE.md) distinguish the two build sets.
 
 | Check | Windows x64 | Mac arm64 | Mac x64 |
 |---|---|---|---|
-| Installer, launch, relaunch, uninstall | Preview-3c passed; 3e test teardown failed | Preview-3e passed, ad-hoc signature verified | Preview-3e passed, ad-hoc signature verified |
-| Shell isolation/navigation/network recovery | Preview-3e 10/10 | Preview-3e 10/10 | Preview-3e 10/10 |
-| Registration/login/logout and session continuity | Actual local server passed, 3e | Actual local server passed | Actual local server passed |
-| EN/FIL, timetable, weekends | Actual local server passed, 3e | Actual local server passed | Actual local server passed |
-| Lesson/Materials controls and real missing-provider error | Actual local server passed, 3e | Actual local server passed | Actual local server passed |
-| Real AI success, section rewrite and slide generation | Unverified | Unverified | Unverified |
-| Multigrade combining, PPTX editing, session presenting | Actual local server passed (placeholder session slides) | Actual local server passed (placeholder session slides) | Actual local server passed (placeholder session slides) |
-| Uploads and PDF/DOCX/PPTX saved bytes | Actual local server passed; Office opening unverified | Actual local server passed; Office opening unverified | Actual local server passed; Office opening unverified |
-| Native print dialog and external browser | Unverified | Unverified | Unverified |
-| Resize, keyboard, accessibility | Automated shell input passed; accessibility unverified | Automated checks passed; accessibility unverified | Automated checks passed; accessibility unverified |
-| Full pipeline and controlled failure | No complete set; failure gate held | No complete set; failure gate held | No complete set; intentional failure gate held |
+| Installer, launch, relaunch, uninstall/removal | Passed | Passed; ad-hoc signature verified | Passed; ad-hoc signature verified |
+| Shell isolation/navigation/network recovery | 10/10 passed | 10/10 passed | 10/10 passed |
+| Actual local-server feature walk and teardown | 14/14; completed | 14/14; completed | 14/14; completed |
+| Registration/login/logout and persistent session | Passed | Passed | Passed |
+| EN/FIL, timetable, Saturday/Sunday persistence | Passed | Passed | Passed |
+| Materials controls and missing-provider error without content loss | Passed | Passed | Passed |
+| Real Content-section AI rewrite and sync | Passed, bounded production | Passed, bounded production | Passed, bounded production |
+| Real slide generation, application, editing and presenting | Passed, bounded production | Passed, bounded production | Passed, bounded production |
+| Multigrade combination/editing/presenting | Passed; missing grade slides use placeholders | Same | Same |
+| PPTX upload/edit/export; PDF/DOCX saved bytes | Passed; archives inspected | Passed; archives inspected | Passed; archives inspected |
+| Resize, keyboard and fullscreen | Passed | Passed | Passed |
+| Complete pipeline and missing-platform withholding | Passed | Passed | Deliberate failure withholds complete set |
+| Native Save/print dialog, external browser, Office opening, accessibility | Unverified manually | Unverified manually | Unverified manually |
+| Consumer SmartScreen/Gatekeeper warning and installation UX | Unverified manually | Unverified manually | Unverified manually |
 
-## Dependencies and remaining work
+The local walk bypasses the Save dialog to inspect downloaded bytes and uses
+printToPDF, not a physical printer. The file chooser is observed through Playwright.
+External-link confirmation is tested with mocked native dialog/browser calls.
+Multigrade assembly and real generated-deck tests are separate; a real generated
+multigrade deck and successful Materials AI rewrite have not been exercised.
+These limitations prevent a claim of exhaustive feature parity.
 
-- Preview source goes as a reviewed git bundle to the release owner, who pushes
-  `tala-desktop-preview-*` tags. GitHub-hosted Windows/macOS only; the self-hosted Mac
-  `hiraia-luis-mac` is explicitly off-limits. No interactive Windows/Mac route was provided.
-- The release owner's suggested older Mac labels were corrected using current official
-  docs: `macos-15` arm64, `macos-15-intel` x64, `windows-2022`. All three now have real
-  installed-app shell and local feature evidence. Windows teardown still blocks collection.
-- Complete-set collection, real-AI checks, artifact read-back/rollback and the manual
-  matrix cells remain open. Production test credentials stay with the release owner.
-- Publication storage choice, stable latest manifest and download-page integration remain
-  proposals for the release owner. Workflow only creates 3-day preview artifacts and
-  never publishes or advances latest. Production publication approval is **not yet asked**.
+## Remaining work and ownership
+
+- No interactive Windows/Mac machine was provided. Consumer installation/warnings,
+  native Save/print dialogs, actual external-browser handoff, Office opening and
+  screen-reader/manual accessibility require that access. The shared self-hosted
+  Mac runner remains off-limits; hosted native CI evidence is recorded separately.
+- All three native builds, isolated feature walks, bounded production AI checks,
+  cleanup audit, controlled missing-platform run and actual-artifact local rollback are
+  complete. Both complete archives and all six installer bytes/hashes are verified.
+- Publication storage, stable latest and the download-page integration remain a
+  release-owner proposal. The reviewed workflow builds on release tags after integration;
+  it creates three-day artifacts only. No production release or latest pointer changed.
+  The release owner asks Luis once about the concrete publication candidate.
+- English download keys and component/parser proposals are ready under this directory;
+  Filipino wording and tala-web integration belong to the release owner and their lane.
 - Camera/microphone/location/notification/device permissions are denied. Camera-based
-  QR enrollment needs a scoped permission implementation/test if desktop parity requires it.
-- Google sign-in is disabled in the live configuration; if enabled later, it needs a
-  system-browser OAuth flow. The hosted app's email/password flow is the current target.
-- Native menus/recovery currently use English. Website EN/FIL remains the existing UI.
+  QR enrollment needs a scoped permission implementation/test if enabled for this site.
+- Google sign-in is disabled in the live configuration; enabling it later requires a
+  system-browser OAuth flow. Current email/password auth is covered.
+- Native menus/recovery use English; website EN/FIL remains the existing UI.
+- The old five-account cleanup question is still open and separate from synthetic-test
+  authorization. The owner real-AI fixture is consumed; do not replay it.
 
 At the initial checkpoint no waiting_for_user decision was pending. Native CI dispatch is owned by the
 release owner after source review; this is coordination, not a request to repeat Luis's
@@ -496,3 +515,77 @@ was observed, list and begin responses were successful, and exactly one begin re
 reached the fixture. The earlier Windows byte-preservation and proxy fixes are now
 natively proven. This next run changes the upload readiness condition instead of
 repeating those resolved approaches or the same immediate file selection.
+
+
+## Preview-3g, native production check and controlled failure — complete
+
+Normal preview [46141524544](https://github.com/helloluis/hiraia/actions/runs/46141524544)
+at `c8d99c048` passed all three native jobs and complete-set. Each packaged app passed
+10 shell and 14 actual local-server checks, with completed teardown and exactly one
+upload-begin request. Fixture counts were Windows 329, arm64 337, Intel 330; every
+Chromium netlog recorded zero non-loopback connections. Release-owner bridge
+`ccc8048453cb485caa5e666e18a541d6` supplied the reviewed complete set and evidence.
+The full archive, all three installer bytes/hashes, and all three native evidence
+archives were independently verified on b11-002. The public GitHub artifact digest
+matches the reviewed HTTPS download and the transferred bytes.
+
+Dedicated production check [46142209678](https://github.com/helloluis/hiraia/actions/runs/46142209678)
+at the same source passed all local checks again, then one real Content rewrite and
+one real slide generation/application per OS. All receipts report 10 total write
+requests, zero blocked requests and self-delete 200 followed by auth/me 401. The owner
+held the deploy lock and audited all three cohort identities afterwards: no user,
+record, session, generation/deck job, deck, upload, usage or quota row remained for them.
+Exactly six provider calls completed, with no retries; deleted-spend delta US$0.006358.
+No upload/R2 write or teacher-data edit occurred. Receipts and host audit were separately
+hash-verified here. Owner bridge `301d01bfe40945e19e0fed8b6d297c2b` is the live audit
+source; no implementation-agent production query or further AI run was made.
+
+The second complete manifest says `tala-desktop-preview-production-1`, while the first
+says `tala-desktop-preview-3g`; source commits match. Owner bridge
+`bc3909a329df4735bf6de5425ce5444c` corrects their earlier unverified statement that these
+were the same release identity. The two real sets have distinct tag/source tuples and
+slightly different installer bytes. Nothing was relabelled for the rollback exercise.
+
+Controlled failure [46142841866](https://github.com/helloluis/hiraia/actions/runs/46142841866)
+at the same source deliberately failed Intel before building. Windows and arm64 passed;
+complete-set and every production-check step were skipped. Public GitHub job/artifact
+metadata independently confirms no Intel or complete artifact. No current web release,
+production pointer or download was changed. No further tag or unchanged retry is pending.
+
+All earlier failed attempts, withdrawn local-only claims and the separate five-account
+cleanup question remain recorded above. Native production-test approval does not rewrite
+that incident history or authorize publication.
+
+
+## Final artifact read-back and local rollback — 28 November 2026
+
+Both reviewed complete archives and their original manifests were independently
+verified on b11-002, along with all six installer hashes/sizes and PE/UDIF headers.
+The second archive is 368,671,271 bytes, SHA256
+`c4a8eca1cce1a8ed9c2ba68c39715ec9a9814b457c5bd6f29f5adc64b57ba521`.
+Its release identity is `tala-desktop-preview-production-1`; it is the candidate because
+those exact packaged binaries also completed the bounded real-AI checks.
+
+The reviewed actual-artifact rollback driver completed with exit 0 and all five checks
+passed. It served the real installer bytes through temporary loopback HTTPS, preserved
+latest on forced Intel HTTP 503 and stale-pointer conflict, promoted the second whole
+set, and restored the first pointer byte-for-byte. Evidence is committed as
+`evidence/actual-artifact-rollback-20261128.json`. This is local transaction evidence,
+not a production promotion. No additional native build or live AI attempt was needed.
+
+Release-owner integration review `0c071794` is reflected in the proposal: disk-based
+latest reads, strict static nginx routes in their window, warnings before links, a neutral
+page title and labelled source commit, explicit TypeScript narrowing, and publication
+restricted to the exact approved release/source identity. All twelve Filipino lines
+were supplied by their existing owner through bridges `7001b495` and `e7bed28b` and
+copied unchanged. Their English-warning scope clarification was adopted. The complete
+candidate report retains all unverified manual checks.
+
+
+Final proposal validation: the strict standalone TypeScript check exits 0; the existing
+manifest-parser negative controls pass. The actual candidate manifest stays hidden while
+its status is preview. An in-memory copy shaped like the publisher's released output is
+accepted with all three exact byte counts/URLs; removing one artifact hides the section.
+The original manifest file is unchanged, and no network/publication action was performed.
+English/Filipino dictionaries have the same twelve keys. No shipping package, workflow,
+web/core/server source or root dependency file changed in this documentation handoff.
