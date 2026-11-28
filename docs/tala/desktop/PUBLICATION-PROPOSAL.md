@@ -57,3 +57,21 @@ process. A deliberately failed DMG read-back (HTTP 503) leaves latest byte-ident
 promotion of a second complete set and rollback restore the first whole-set pointer.
 This is a transaction fixture, not a production deployment or an installer-artifact
 publication exercise. The latter waits for native complete sets and the approved host.
+
+`test/verify-artifact-rollback.py` prepares the next, stronger local check with **two
+actual complete installer sets** from reviewed native runs. It validates every artifact
+hash/size, requires distinct source/tag identities and rejects the text files used by
+unit fixtures. Inputs stay read-only; staging and latest changes are confined to a new
+temporary directory. It reads the actual EXE/DMG bytes over loopback HTTPS, fails one
+Mac read-back with 503, rejects a stale expected pointer, promotes the second complete
+set and rolls back to the first pointer byte-for-byte. Its temporary certificate is
+trusted only by that process. No host, public storage or system trust changes occur.
+
+```
+python3 packages/tala-desktop/test/verify-artifact-rollback.py \
+  /reviewed/first-complete-set /reviewed/second-complete-set /private/new-report.json
+```
+
+This driver is prepared but has **not run with actual installers**: no complete set has
+passed yet. Its eventual result must remain separate from externally verified preview
+downloads and any release-owner-approved production promotion.
