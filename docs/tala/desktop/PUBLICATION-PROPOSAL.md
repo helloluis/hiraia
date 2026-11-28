@@ -35,6 +35,9 @@ Release owner integration steps, after approval:
    positive safe byte counts, SHA256 strings, and HTTPS URLs restricted to the chosen
    production prefix. Invalid/incomplete data hides the entire desktop section; it must
    never show a partially updated platform set.
+   `desktop-manifest-proposal.ts` supplies this parser; it returns null on any missing,
+   duplicate, mismatched, dirty or incorrectly hosted artifact. Use the approved prefix
+   explicitly, and fetch only its `desktop-latest.json` with redirects disabled.
 5. `download-section-proposal.tsx` is the proposed small UI addition. Existing Android
    content is unchanged. English keys are in `download-strings-en.json`; Filipino wording
    must go through the release owner's Filipino lane before integration.

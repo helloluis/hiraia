@@ -2,21 +2,7 @@
 // and adds the reviewed download.desktop.* keys to both dictionaries.
 'use client';
 import { useT } from '@/i18n';
-
-export interface DesktopManifest {
-  schemaVersion: 1;
-  status: 'released';
-  version: string;
-  release: string;
-  sourceCommit: string;
-  artifacts: {
-    platform: 'win32' | 'darwin';
-    arch: 'x64' | 'arm64';
-    url: string;
-    bytes: number;
-    sha256: string;
-  }[];
-}
+import type { DesktopManifest } from './desktop-manifest-proposal';
 
 export function DesktopDownloads({ manifest }: { manifest: DesktopManifest | null }) {
   const { t } = useT();
