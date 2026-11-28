@@ -196,7 +196,7 @@ async function runChecks() {
     assert.notEqual(await content.innerText(), before);
     // Wait for the real sync acknowledgement, not just optimistic UI text.
     report.phase = 'wait for the Content revision and lesson sync'; persist();
-    for (let n = 0; n < 100 && !report.syncAcknowledgement; n++) {
+    for (let n = 0; n < 300 && !report.syncAcknowledgement; n++) {
       active(); await new Promise(resolve => setTimeout(resolve, 100));
     }
     assert.equal(report.syncAcknowledgement?.status, 200, 'Rewrite must be durably synced');

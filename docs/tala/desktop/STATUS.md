@@ -452,3 +452,15 @@ if every feature result passed. Shipping app, web/server and workflow are unchan
 Fifteen Node tests pass. The changed local walk passes fourteen feature checks on
 Linux and exits 0 with teardown=completed, 318 local requests and zero non-loopback
 connections. The replacement still needs the native run; no complete set is claimed.
+
+## Replacement 3f reviewed and running
+
+Owner bridge `e7b52d2006ac4e5c98e716444a695389` accepted all three candidate commits,
+independently passed the 15 Node/offline fixture checks and Linux feature walk, and
+tagged `2078b7f5d` as `tala-desktop-preview-3f`:
+https://github.com/helloluis/hiraia/actions/runs/46140401357 .
+The owner fixture and actual-artifact rollback driver have no blocking review findings.
+At the owner's suggestion, the production sync acknowledgement wait is raised from
+10 to 30 seconds before run 3 to accommodate the client's debounce/network delay.
+The per-check/overall deadlines and all request/mutation/AI caps remain unchanged.
+Owner run 3 still requires their invocation and before/after audit; no result is claimed.
