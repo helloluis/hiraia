@@ -852,7 +852,7 @@ export const fil = {
   'landing.p.simple.b': 'Hindi kailangan ng espesyal na kaalaman sa tech para magamit ang Tala.',
   'landing.p.check.k': 'Draft pa lang ang gawa ng AI',
   'landing.p.check.b':
-    'Format lang ng draft na gawa ng AI ang sinusuri ng Tala. Ikaw ang susuri kung tama ang impormasyon bago mo i-lock ang draft.',
+    'Format lang ng draft na gawa ng AI ang sinusuri ng Tala. Ikaw ang susuri kung tama ang impormasyon bago mo i‑lock ang draft.',
   'landing.getTitle': 'Gamitin sa browser o i-download ang Android app',
   'landing.footerHiraia': 'Proyekto ng Hiraia',
   'landing.footerDeped':
@@ -874,7 +874,7 @@ export const fil = {
     'Palitan ang kahit anong salita, ipasulat ulit sa AI ang isang slide, tapos i‑present o i‑download bilang PowerPoint.',
   'landing.s.sl.draft': 'Draft mula sa AI. Suriin ang Science bago magklase.',
   'landing.s.sl.alt':
-    'Slide editor ng Tala na nagpapakita ng Grade 5 Science slide tungkol sa gravity. May guhit ng bumabagsak na mangga sa slide. Sa tabi, may mga kahon para baguhin ang teksto at teacher notes. May mga button din para ipasulat ulit sa AI ang slide, i-present ito o i-download bilang PowerPoint. May paalala sa ilalim na galing ang slide sa draft na teaching pack na wala pang gurong nagsuri.',
+    'Slide editor ng Tala na nagpapakita ng Grade 5 Science slide tungkol sa gravity. May guhit ng bumabagsak na mangga sa slide. Puwedeng baguhin ng guro ang teksto ng slide sa screen na ito. May paalala na galing ang slide sa draft na teaching pack na wala pang gurong nagsuri.',
   'landing.s.cur.k': 'Kurikulum ng DepEd sa Science',
   'landing.s.cur.h': 'Science para sa Grade {from} hanggang {to}, nakaayos ayon sa linggo.',
   'landing.s.cur.b':

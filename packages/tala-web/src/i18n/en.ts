@@ -832,7 +832,7 @@ export const en = {
     'Change any word, rewrite a slide with AI, then present it or download it as PowerPoint.',
   'landing.s.sl.draft': 'AI draft: check the science before class',
   'landing.s.sl.alt':
-    'Tala’s slide editor showing a Grade 5 Science slide about gravity, with a drawing of a falling mango. Beside the slide are boxes for changing its words and teacher notes, and buttons to rewrite it with AI, present, and download PowerPoint. A line under the slide says it comes from a draft pack no teacher has reviewed yet.',
+    'Tala’s slide editor on a Grade 5 Science slide about gravity, with a drawing of a falling mango. The teacher can change the slide’s words on this screen. A note says the slide comes from a draft pack no teacher has reviewed yet.',
   'landing.s.cur.k': 'DepEd Science curriculum',
   'landing.s.cur.h': 'Science for Grades {from} to {to}, week by week.',
   'landing.s.cur.b':
