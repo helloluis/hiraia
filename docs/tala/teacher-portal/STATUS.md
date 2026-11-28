@@ -2015,3 +2015,25 @@ this ledger had no entry).
   stays (right for full checkouts). Found at the same time: in a FULL checkout the root frozen install already fails at
   demo.20 on `packages/tala-mobile/package.json` (existing lockfile drift; not on Tala's host). The owner was told
   (bridge `8ae66959…`).
+
+## 28 Nov 2026 18:00 Manila: incident — the desktop task's local test wrote to production; waiting_for_user: cleanup
+
+- **What happened** (reported by the desktop owner, bridge `e8b2e85d…`): its local Electron walk relied on request
+  interception (`app.context().route`) to keep it on a local fixture, but the app's windows use the persistent
+  partition `persist:tala`, which the interception did not cover, so the walk talked to the real tala.hiraia.org.
+- **Read-only check by the release owner** (counts and ids only): 5 accounts "Synthetic Desktop Teacher"
+  (`desktop.<uuid>@example.com`), created 09:18:47–09:24:23 UTC, auto-verified; each holds 1 record (made at
+  registration); 1 session still open (on the first account); no plans, AI jobs, model calls, slide copies or uploads;
+  no server errors; each followed register → sign out → sign in → sign out → failed sign-in. No real teacher's data
+  touched; no cost. One unrelated account created at 07:30 UTC was not inspected.
+- **The GitHub preview run** (46130068906) made no sign-in or registration call; its packaged checks serve a fixture
+  through the same interception, so they may have loaded real pages read-only (the fixture-dependent checks passed,
+  which indicates the fixture was served).
+- **Containment:** the owner stopped every walk and retry against the production origin and withdrew its earlier
+  "local sign-in passes" claim; preview-2 (`58138574a`) is held and untagged until fail-closed isolation is proven
+  (local HTTPS test origin with a nonce and a database check before any write; packaged checks under Chromium
+  host-resolver rules mapping tala.hiraia.org to a local TLS fixture, everything else refused, with a negative control).
+- **waiting_for_user (asked once by the release owner, thread ddb4d22d):** "Delete the 5 synthetic desktop-test
+  accounts from production (5 accounts, 5 records, 1 open session; a scoped delete after a verified backup), or leave
+  them in place?" Owner: Luis. Blocked: only that cleanup. Until he answers they stay as they are (they hold nothing
+  else; the open session expires on its own).
