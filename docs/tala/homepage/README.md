@@ -12,6 +12,11 @@ namin" coz it sounds quite clunky."
 
 **Authority:** implementation and testing. NOT a deployment approval; the demo.19 approval does not cover this.
 
+**Released 28 Nov 2026 09:46 Manila as `tala-v1-demo.20`** by the release owner, on Luis's "Yes release it" (09:39
+Manila, rq_amzzvgnq, recorded in `docs/tala/teacher-portal/STATUS.md`). The tag points at `4736715b5`, which is
+`abe80ccac` below plus a docs-only merge of the ledger: the application files are identical. What follows is the
+hand-off as it was written before the release; the "State" and "waiting_for_user" sections say what has changed since.
+
 ## State
 
 - Branch `tala-v1-homepage` (local, not pushed), worktree `/home/b11/code/tala-wt/home`, base `f2a154a08`
@@ -28,8 +33,14 @@ namin" coz it sounds quite clunky."
   - the commit that brings this note up to date (docs only).
 - No migration, no new dependency, lockfile unchanged, no server or core file changed by this task (the one core line
   is the release owner's commit above), no setting, no new route. `/` is still a static page.
-- Not deployed. Nothing was pushed, tagged or written to production; production was only read (the public homepage,
-  `/api/v1/health`, `/api/v1/curriculum/index`, `/api/v1/packs/index`).
+- At hand-off: not deployed; nothing was pushed, tagged or written to production by this task, and production was
+  only read (the public homepage, `/api/v1/health`, `/api/v1/curriculum/index`, `/api/v1/packs/index`).
+- Since the release (deployed 28 Nov 2026 01:46 UTC; backup `/var/backups/tala/20261128T014539Z`; rollback demo.19):
+  the release owner's live checks are in the ledger (hero 8 of 8 pairs with 0 differing pixels against demo.19
+  photographed just before the deploy; this walk on the live site 164 of 164; the Filipino label 7 of 7). The
+  homepage owner's own read of the live site afterwards: health `0.1.0+tala-v1-demo.20`; all 16 pictures served
+  byte for byte as committed; `/` sets no cookie, names no provider and carries no pack count in its HTML; the full
+  page at 1366 px and 390 px in both languages has 0 differing pixels against the candidate's screenshots.
 
 ## What a visitor sees
 
@@ -197,7 +208,8 @@ staged copy of the live Science library), Chromium 145, signed out.
 
 ## Not done, and known limits
 
-- Not deployed, so nothing was checked on production beyond reading the old page.
+- Before the release nothing was checked on production beyond reading the old page; after it, only what "State"
+  lists above (signed out, read-only).
 - Chromium only, with phone and foldable sizes emulated. Not tested: a real Android phone, iOS Safari, Firefox, a
   screen reader, a slow real network.
 - The Filipino was reviewed by the Filipino owner, which is an agent; no Filipino-speaking teacher has read it.
@@ -226,6 +238,9 @@ PLAYWRIGHT_PATH=… CHROMIUM_PATH=… SHARP_PATH=… pnpm exec tsx scripts/home-
 After a deploy the same walk can be pointed at `https://tala.hiraia.org` (it only reads); leave out `--reference`.
 
 ## waiting_for_user
+
+**Cleared 28 Nov 2026 09:39 Manila:** Luis answered "Yes release it" (rq_amzzvgnq). Nothing waits on Luis for this
+task now; the question below must not be asked again. Kept as the record of what was asked.
 
 - **Question (asked once, thread ddb4d22d, by the homepage owner with its report):** "Release the redesigned Tala
   homepage to tala.hiraia.org? It is branch `tala-v1-homepage` on top of the live demo.19 and would become
