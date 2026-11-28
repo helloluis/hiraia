@@ -2086,3 +2086,14 @@ this ledger had no entry).
   set was withheld. The production-check code (`3ad34d112`) is reviewed with no blocking finding; running it still
   waits for all three platforms to pass. Owner mode on b11-dev: its library preflight (no credentials) exits 2 —
   missing libcairo, libcups, libgtk-3, libpango, to be unpacked privately before any owner run.
+- **28 Nov 19:00 Manila — desktop preview 3c** (`d2a3c74a7`: 3b + the owner's line-ending fix for its workflow unit
+  test) tagged `tala-desktop-preview-3c` → run 46136398872: **both Macs passed everything again**; Windows passed its
+  unit tests, the web build, the installer and all 10 isolated shell checks, then the local feature walk stopped at its
+  first check: the local Tala server never answered its health check in 60 tries (the server process stayed up). This
+  is the first run in which Windows reached that walk, so it is not a regression; the server's own log stays private on
+  the runner by design, so the cause is not yet known. Complete set withheld, nothing published, no retry or new tag
+  until the owner identifies the cause; the evidence and a log excerpt went to the owner as a reviewed bridge export.
+- **Owner mode** (the bounded real-AI check from b11-dev with the retained synthetic test account, under Luis's
+  synthetic allowance): it created its one labelled lesson (9 sections), then timed out before asking the AI for the
+  section rewrite. No AI request was sent (usage rows unchanged, no cost) and nothing else was written. Not retried; the
+  owner diagnoses first. The labelled lesson stays in the test account by design.
