@@ -2056,3 +2056,15 @@ this ledger had no entry).
   release owner's retained account, 25 Nov); the five accidental desktop accounts `b2478178…`, `54423778…`, `453135d7…`,
   `22dd3051…`, `ce3a1e2f…` (desktop.<uuid>@example.com, 28 Nov 09:18–09:24 UTC). The other 4 accounts are real and were
   not inspected.
+- **28 Nov 18:15 Manila — desktop preview 2 (isolated)** (no production change, nothing published): the replacement
+  bundle `e33cdad2…` → tip `c6be9cde6` (contains the held `58138574a`) reviewed. Its tests use no request interception:
+  a real local HTTPS fixture with an ephemeral certificate pinned by SPKI only, `--no-proxy-server` and Chromium
+  host-resolver rules (tala.hiraia.org to the fixture, every other name refused) from launch, a health nonce before any
+  check, negative controls and a network-log check of loopback-only connections; the collector requires that evidence
+  from each platform. Pushed branch `tala-v1-desktop` to `c6be9cde6`, tags `tala-desktop-preview-2` (run 46131252524) and
+  `tala-desktop-preview-failure-2` (run 46131283828). Results: Windows passed in both; every Mac job passed six shell
+  checks in about six seconds and then hung inside the seventh ("print iframe, keyboard, fullscreen and resize") until the
+  35-minute bound cancelled it (Intel's architecture check now passes); the deliberate Intel failure worked; both complete
+  sets were withheld. Preview-3 (`a9ba7c090`, a real-feature walk on a local server inside CI) reviewed and HELD
+  untagged until the Mac hang is fixed. Production-walk design (one throwaway synthetic account per platform, two AI
+  requests, deletion in the same process, hand-pushed tag only) approved in principle with conditions; nothing run.
