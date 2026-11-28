@@ -65,7 +65,7 @@ or touching teacher data. This proposal is **not an installed publication pipeli
 - Windows: run the NSIS installer for your user. Unsigned builds may show an unknown
   publisher or SmartScreen warning. Verify the source and hash before choosing the
   per-app “More info” / “Run anyway” option, if your policy permits it.
-- macOS: choose Apple silicon or Intel, mount the DMG, and drag Tala to Applications.
+- macOS 13 or later: choose Apple silicon or Intel, mount the DMG, and drag Tala to Applications.
   An unsigned/unnotarized app may be blocked. After verifying its source/hash, use the
   specific app's “Open Anyway” control in System Settings → Privacy & Security if permitted.
   Do not disable Gatekeeper globally. Ad-hoc signing only makes the binary structurally
@@ -113,6 +113,7 @@ Tool verification on 28 November 2026: Electron 45.5.0, electron-builder 26.18.0
 Playwright 1.65.1 and @electron/fuses 2.1.3 from the npm registry.
 References: [Electron releases](https://releases.electronjs.org/),
 [Electron security](https://www.electronjs.org/docs/latest/tutorial/security),
+[Electron's macOS 13 minimum since v44](https://www.electronjs.org/blog/electron-44-0),
 [GitHub hosted runners](https://docs.github.com/en/actions/reference/runners/github-hosted-runners).
 Brand icon is copied byte-for-byte from `packages/tala-mobile/assets/tala-icon.svg`
 at demo.20, rendered to 1024px PNG using pinned @resvg/resvg-js 2.6.2.

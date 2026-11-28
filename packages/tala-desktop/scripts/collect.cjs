@@ -23,6 +23,20 @@ function collect(input, output) {
         features.isolation.fixtureRequests < 30 || features.isolation.nonLoopbackConnections !== 0) {
       throw new Error(`Missing native local-server feature checks: ${key}`);
     }
+    if (m.release.startsWith('tala-desktop-preview-production-')) {
+      const production = JSON.parse(fs.readFileSync(path.join(input, `production-${key}.json`)));
+      if (production.mode !== 'ephemeral' || production.sourceCommit !== m.sourceCommit || production.release !== m.release ||
+          production.platform !== m.platform || production.arch !== m.arch || production.phase !== 'completed' ||
+          !production.account?.id || !production.account.email?.startsWith(`desktop-native-${production.run}-${key}-`) ||
+          !production.account.email?.endsWith('@example.com') ||
+          production.cleanup !== 'self-delete 200; auth/me 401' || !Number.isInteger(production.totalWriteRequests) ||
+          production.totalWriteRequests < 1 || production.totalWriteRequests > 40 ||
+          production.network?.registrations !== 1 || production.network?.deletions !== 1 || production.network?.sectionRequests !== 1 ||
+          production.network?.slideRequests !== 1 || production.network?.blocked !== 0 ||
+          production.checks?.length !== 2 || production.checks.some(r => r.status !== 'passed')) {
+        throw new Error(`Missing bounded production/cleanup checks: ${key}`);
+      }
+    }
     return m;
   });
   const shared = ['version', 'release', 'sourceCommit', 'electron', 'hostedOrigin'];

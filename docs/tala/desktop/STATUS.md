@@ -257,3 +257,28 @@ their withdrawn local-only results stay withdrawn. Isolated CI continues fail-cl
 Any intentional production checks must be separately labelled with their synthetic identities
 and bounded operations. This approval does not release the held Mac run, weaken sandbox or
 network protections, grant publication approval, or turn unperformed checks into passes.
+
+## Replacement preview-3 and bounded production candidate
+
+Release-owner bridge `49bf6c7a94804bdeaab880bc97e5d536` reviewed the replacement bundle
+(25,230 bytes, SHA256 `ef87f534b4bbe44a959ce4393bc744b6e318905660bf23e38d21b046ec3f1c28`)
+and pushed `tala-desktop-preview-3` at `0a1b394711d6e20018230faa0f2845c67e1ba538`.
+Run: https://github.com/helloluis/hiraia/actions/runs/46134794220 . Native results pending.
+This is a normal isolated run; it contains no production-test invocation.
+
+The separate production design was accepted in principle in bridge
+`46cb8899c51e4bdfa6a642546a2dd28b`. Its implementation is now a review candidate in
+`PRODUCTION-VERIFICATION.md` and `test/production-*.cjs` / `production-seed.mts`.
+It remains unexecuted against production. An owner-reviewed dedicated tag is required
+after all three native local checks pass. Existing synthetic credentials never enter CI.
+The retained-account owner mode creates one new labelled lesson and rewrites Content
+once; native mode creates one bounded cohort account, also generates one new deck,
+then self-deletes in finally. No upload, existing-record edit or production host action.
+
+Offline verification: seven Node tests pass, including adversarial request-guard cases,
+write/AI caps, reserved self-deletion, owner-account protection, production-tag gating
+and complete-set rejection on missing/uncertain production cleanup evidence. The seed's
+ten new records validate against the unchanged Tala schema/sync engine without any
+network call. Two publisher tests pass, including real loopback HTTPS read-back,
+controlled HTTP 503 preservation and whole-set rollback with synthetic bytes. These
+results do not claim real-AI success, a native production walk, or published installers.

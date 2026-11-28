@@ -46,6 +46,7 @@ jobs:
             packages/tala-core
             packages/tala-server
             packages/tala-web
+            .github/workflows
             brand
             patches
             scripts
@@ -72,7 +73,7 @@ jobs:
           npx --yes pnpm@9.15.9 install --frozen-lockfile --filter '@hiraia/tala-web...'
           npx --yes pnpm@9.15.9 --filter @hiraia/tala-web build
       - run: npm run build -- ${{ matrix.platform }} ${{ matrix.arch }}
-      - name: Windows install, packaged shell checks, relaunch and uninstall
+      - name: Windows install and isolated packaged checks
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
@@ -83,18 +84,11 @@ jobs:
           if ($p.ExitCode -ne 0) { throw 'NSIS install failed' }
           $env:TALA_DESKTOP_EXECUTABLE = Join-Path $install 'Tala.exe'
           if (!(Test-Path $env:TALA_DESKTOP_EXECUTABLE)) { throw 'Installed executable missing' }
-          try {
-            node test/electron.cjs
-            if ($LASTEXITCODE -ne 0) { throw 'Packaged shell tests failed' }
-            node test/local-walk.cjs
-            if ($LASTEXITCODE -ne 0) { throw 'Packaged local-server feature tests failed' }
-          } finally {
-            $uninstall = Join-Path $install 'Uninstall Tala.exe'
-            if (Test-Path $uninstall) { Start-Process -FilePath $uninstall -ArgumentList '/S' -Wait }
-          }
-          Start-Sleep -Seconds 3
-          if (Test-Path $env:TALA_DESKTOP_EXECUTABLE) { throw 'Uninstall left executable behind' }
-      - name: macOS mount, install, verify ad-hoc signature, packaged checks and uninstall
+          node test/electron.cjs
+          if ($LASTEXITCODE -ne 0) { throw 'Packaged shell tests failed' }
+          node test/local-walk.cjs
+          if ($LASTEXITCODE -ne 0) { throw 'Packaged local-server feature tests failed' }
+      - name: macOS install, verify ad-hoc signature and isolated packaged checks
         if: runner.os == 'macOS'
         shell: bash
         run: |
@@ -102,7 +96,7 @@ jobs:
           mount="$RUNNER_TEMP/tala-dmg"
           install="$RUNNER_TEMP/tala-installed"
           mkdir -p "$mount" "$install"
-          trap 'hdiutil detach "$mount" >/dev/null 2>&1 || true; rm -rf "$install/Tala.app"' EXIT
+          trap 'hdiutil detach "$mount" >/dev/null 2>&1 || true' EXIT
           hdiutil attach dist/Tala-*.dmg -nobrowse -mountpoint "$mount"
           ditto "$mount/Tala.app" "$install/Tala.app"
           codesign --verify --deep --strict "$install/Tala.app"
@@ -113,6 +107,36 @@ jobs:
           lipo -archs "$install/Tala.app/Contents/MacOS/Tala" | grep -w "$native_arch"
           TALA_DESKTOP_EXECUTABLE="$install/Tala.app/Contents/MacOS/Tala" node test/electron.cjs
           TALA_DESKTOP_EXECUTABLE="$install/Tala.app/Contents/MacOS/Tala" node test/local-walk.cjs
+      - name: Intentional bounded production synthetic verification
+        if: startsWith(github.ref_name, 'tala-desktop-preview-production-')
+        shell: bash
+        timeout-minutes: 7
+        env:
+          TALA_DESKTOP_PRODUCTION_TEST_APPROVAL: rq_czqd79ie
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then
+            export TALA_DESKTOP_EXECUTABLE="$RUNNER_TEMP/TalaDesktopInstall/Tala.exe"
+          else
+            export TALA_DESKTOP_EXECUTABLE="$RUNNER_TEMP/tala-installed/Tala.app/Contents/MacOS/Tala"
+          fi
+          node test/production-ai.cjs ephemeral https://tala.hiraia.org
+      - name: Windows uninstall
+        if: always() && runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $install = Join-Path $env:RUNNER_TEMP 'TalaDesktopInstall'
+          $uninstall = Join-Path $install 'Uninstall Tala.exe'
+          if (Test-Path $uninstall) { Start-Process -FilePath $uninstall -ArgumentList '/S' -Wait }
+          Start-Sleep -Seconds 3
+          if (Test-Path (Join-Path $install 'Tala.exe')) { throw 'Uninstall left executable behind' }
+      - name: macOS remove the test installation
+        if: always() && runner.os == 'macOS'
+        shell: bash
+        run: |
+          set -euo pipefail
+          install="$RUNNER_TEMP/tala-installed"
           rm -rf "$install/Tala.app"
           test ! -e "$install/Tala.app"
       - name: Retain native evidence even on failure
@@ -134,6 +158,7 @@ jobs:
             packages/tala-desktop/dist/manifest-*.json
             packages/tala-desktop/test-output/shell-*.json
             packages/tala-desktop/test-output/features-*.json
+            packages/tala-desktop/test-output/production-*.json
           if-no-files-found: error
           retention-days: 3
           compression-level: 0

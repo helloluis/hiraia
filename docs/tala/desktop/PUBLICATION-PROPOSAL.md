@@ -51,5 +51,9 @@ destination and authorization first. This document does not claim it exists.
 Rollback uses the same promote command on the previous immutable directory, with the
 current pointer's digest. Old artifacts stay intact. Failed builds, missing native evidence,
 failed HTTPS reads and stale-pointer conflicts must leave the current release untouched.
-The local publisher unit test executes those transaction/rollback paths with synthetic bytes;
-it is not a claim that a production deployment or full HTTPS pipeline was exercised.
+The local publisher tests execute those transaction/rollback paths with synthetic bytes,
+including real loopback HTTPS with an ephemeral certificate trusted only by that test
+process. A deliberately failed DMG read-back (HTTP 503) leaves latest byte-identical;
+promotion of a second complete set and rollback restore the first whole-set pointer.
+This is a transaction fixture, not a production deployment or an installer-artifact
+publication exercise. The latter waits for native complete sets and the approved host.

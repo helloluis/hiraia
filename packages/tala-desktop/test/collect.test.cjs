@@ -44,5 +44,32 @@ test('complete-set gate rejects missing/tampered/mixed builds before writing a r
     fs.writeFileSync(featurePath, JSON.stringify(features));
     assert.equal(collect(dir, output).artifacts.length, 3);
     assert.throws(() => collect(dir, output), /EEXIST/);
+    fs.rmSync(output, { recursive: true });
+    const release = 'tala-desktop-preview-production-1';
+    for (const key of required) {
+      const metadata = path.join(dir, `manifest-${key}.json`);
+      fs.writeFileSync(metadata, JSON.stringify({ ...JSON.parse(fs.readFileSync(metadata)), release }));
+    }
+    assert.throws(() => collect(dir, output), /ENOENT/);
+    assert.equal(fs.existsSync(output), false, 'A production tag cannot stage the ordinary local-only receipts');
+    for (const key of required) {
+      const [platform, arch] = key.split('-');
+      fs.writeFileSync(path.join(dir, `production-${key}.json`), JSON.stringify({
+        mode: 'ephemeral', run: 'unit-test', release, sourceCommit: 'a'.repeat(40), platform, arch,
+        account: { id: 'synthetic-unit-test-id', email: `desktop-native-unit-test-${key}-random@example.com` },
+        phase: 'completed', cleanup: 'self-delete 200; auth/me 401', totalWriteRequests: 12,
+        network: { registrations: 1, deletions: 1, sectionRequests: 1, slideRequests: 1, blocked: 0 },
+        checks: [{ status: 'passed' }, { status: 'passed' }],
+      }));
+    }
+    const productionPath = path.join(dir, 'production-darwin-x64.json');
+    const production = JSON.parse(fs.readFileSync(productionPath));
+    for (const change of [{ cleanup: 'uncertain' }, { totalWriteRequests: undefined }, { release: 'another-tag' }]) {
+      fs.writeFileSync(productionPath, JSON.stringify({ ...production, ...change }));
+      assert.throws(() => collect(dir, output), /Missing bounded production/);
+      assert.equal(fs.existsSync(output), false);
+    }
+    fs.writeFileSync(productionPath, JSON.stringify(production));
+    assert.equal(collect(dir, output).artifacts.length, 3);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
