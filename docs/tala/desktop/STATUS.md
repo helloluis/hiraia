@@ -282,3 +282,23 @@ ten new records validate against the unchanged Tala schema/sync engine without a
 network call. Two publisher tests pass, including real loopback HTTPS read-back,
 controlled HTTP 503 preservation and whole-set rollback with synthetic bytes. These
 results do not claim real-AI success, a native production walk, or published installers.
+
+## Preview-3 stopped at the native web build; owner-supplied fix
+
+Release-owner bridge `00fc7f40458f4127b9bdd847cb2f2f4b`: all three native jobs failed
+at the unchanged web build, before packaging or shell tests. `Prose.tsx` and `prose.ts`
+in the web library feature collide during extensionless resolution on case-insensitive
+filesystems. Linux production/build checks did not expose the defect. Complete-set
+was skipped. The Mac fullscreen candidate and native feature walk remain unexercised.
+
+The release owner supplied and explicitly authorized cherry-picking `ee9d02b94` only:
+rename `prose.ts`/its test to `prose-text.ts` and update three imports, with no behavior
+change. Reviewed bridge export SHA256
+`94d021705e78727649361291936e68fb450eedbe03015aaaf69f4bf04d432969`, 14,614 bytes,
+received through request `0c129bcb9c12498ab814fe6186b9000c`. The exact fix was applied
+as `72be6d30d`; the web tree matches the owner's fix commit byte-for-byte. This is an
+owner-supplied exception to the desktop-only edit boundary, not an independent web edit.
+The owner reported 182 web tests, type checking and Next build passing; six renamed
+prose tests also pass here. Root lockfile remains unchanged. A fresh normal preview-3b
+can now reach the native shell/feature checks without repeating the known build failure.
+Production-check tagging and publication remain separately held.
