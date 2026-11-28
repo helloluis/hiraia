@@ -76,9 +76,16 @@ function configureSession(ses) {
     const headers = { ...details.responseHeaders };
     // Next's bootstrap uses inline scripts/styles. There is still no eval, remote
     // script host, plugin content, foreign frame, HTTP content, or Node bridge.
-    if (details.resourceType === 'mainFrame') headers['Content-Security-Policy'] = [
-      "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self'; media-src 'self' blob:; frame-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'",
-    ];
+    if (details.resourceType === 'mainFrame') {
+      const sitePolicies = [];
+      for (const key of Object.keys(headers)) if (key.toLowerCase() === 'content-security-policy') {
+        sitePolicies.push(...headers[key]); delete headers[key];
+      }
+      // Multiple CSP headers intersect: never weaken a future policy from Tala.
+      headers['Content-Security-Policy'] = [...sitePolicies,
+        "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self'; media-src 'self' blob:; frame-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'",
+      ];
+    }
     callback({ responseHeaders: headers });
   });
   ses.setPermissionCheckHandler((wc, permission, requestingOrigin) =>
@@ -92,7 +99,7 @@ function configureSession(ses) {
   ses.on('will-download', (event, item, wc) => {
     const name = policy.filename(item.getFilename());
     if (!wc || !policy.internal(wc.getURL(), origin) || !name ||
-        !item.getURLChain().every(url => policy.download(url, origin))) {
+        !policy.download(item.getURL(), origin) || !item.getURLChain().every(url => policy.download(url, origin))) {
       event.preventDefault();
       return;
     }

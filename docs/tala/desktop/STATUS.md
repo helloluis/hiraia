@@ -80,3 +80,40 @@ owner will repeat the install in their integration checkout before pushing.
 No waiting_for_user decision is currently pending. Native CI dispatch is owned by the
 release owner after source review; this is coordination, not a request to repeat Luis's
 Electron/unsigned decision.
+
+## Preview-1 result, 09:23 UTC
+
+Source `dbb27f4f0f67c50b88788d3708f0544f370d9091`, tag `tala-desktop-preview-1`.
+Run: https://github.com/helloluis/hiraia/actions/runs/46130068906 .
+
+- Windows x64: NSIS build, silent install, all 8 packaged shell checks, relaunch,
+  uninstall and artifact upload **passed** on windows-2022.
+- Mac arm64: DMG build, mount/copy, strict ad-hoc signature check, all 8 packaged
+  shell checks, relaunch, removal and artifact upload **passed** on macos-15.
+- Mac Intel: DMG build, CRC/mount/copy and strict ad-hoc signature check passed.
+  The test incorrectly searched lipo output for `x64` instead of `x86_64`; it stopped
+  before Electron launch. No Intel artifact was uploaded. Corrected in preview-2.
+- Complete-set job skipped, as required. No current release or production pointer changed.
+- Release owner's independent host-folder-set gate passed: core 326 tests,
+  server 376 plus 1 skipped, web 182, type checks and Next build. Their correction:
+  production is sparse and does not see the desktop package; the exclusion protects
+  full checkouts. A separate pre-existing tala-mobile lock mismatch prevents a clean
+  full-repository frozen install at demo.20; it is not introduced by this task.
+
+## Local feature-test routing investigation — evidence withdrawn
+
+An uncommitted local feature walk initially appeared to pass registration/language/session
+checks. A seeded local account then could not log in from Electron although direct API
+login succeeded. Instrumentation found no intercepted API calls. The walk was stopped;
+**its local-only/auth parity claims are withdrawn** until routing is proven fail-closed.
+The release owner was asked in bridge e8b2e85d21714134a6bea3e58f981034 to inspect whether
+synthetic `desktop.*@example.com` / `Synthetic Desktop Teacher` registrations accidentally
+reached production. No real teacher data or AI generation was touched. Do not rerun that
+walk against the production hostname; use a separate local HTTPS origin and verify a unique
+local health marker and local DB account before any writes. Any corrective cleanup belongs
+to the release owner. The script is not part of preview-2 or CI.
+
+Preview-2 also preserves/intersects the site's CSP instead of overwriting it and validates
+the immediate download URL as well as the redirect chain. Publication helper tests cover
+failed read-back, stale-pointer detection and complete-set rollback with synthetic bytes.
+The publication/download-section files remain **proposals**, with no host/web edits.

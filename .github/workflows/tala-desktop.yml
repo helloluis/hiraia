@@ -89,7 +89,9 @@ jobs:
           codesign --verify --deep --strict "$install/Tala.app"
           codesign -dvv "$install/Tala.app" 2>&1 | tee dist/codesign-${{ matrix.arch }}.txt
           grep -q 'Signature=adhoc' dist/codesign-${{ matrix.arch }}.txt
-          lipo -archs "$install/Tala.app/Contents/MacOS/Tala" | grep -w '${{ matrix.arch }}'
+          native_arch='${{ matrix.arch }}'
+          if [ "$native_arch" = x64 ]; then native_arch=x86_64; fi
+          lipo -archs "$install/Tala.app/Contents/MacOS/Tala" | grep -w "$native_arch"
           TALA_DESKTOP_EXECUTABLE="$install/Tala.app/Contents/MacOS/Tala" node test/electron.cjs
           rm -rf "$install/Tala.app"
           test ! -e "$install/Tala.app"
