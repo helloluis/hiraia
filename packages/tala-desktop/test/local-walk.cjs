@@ -4,6 +4,7 @@
 const { _electron: electron } = require('playwright');
 const { httpsFixture } = require('./https-fixture.cjs');
 const { bounded, captureMacDesktop, closeElectron, linuxHeadlessArgs } = require('./harness.cjs');
+const { startupError } = require('./startup-diagnostics.cjs');
 const http = require('node:http');
 const { spawn, execFileSync } = require('node:child_process');
 const { createRequire } = require('node:module');
@@ -27,6 +28,7 @@ let server, app, base, page, fixture;
 const netlogs = [];
 let healthVerified = false;
 let networkEvidence;
+let startupProbe;
 let currentCheck = 'local server startup';
 async function check(name, fn) {
   currentCheck = name;
@@ -76,18 +78,33 @@ async function startServer() {
   origin = process.env.TALA_DESKTOP_EXECUTABLE ? 'https://tala.hiraia.org' : fixture.origin;
   const env = { ...process.env };
   // Use deterministic missing-provider errors, never spend inherited model credits.
-  for (const key of Object.keys(env)) if (/API_KEY|TOKEN|SECRET|^TALA_|^AWS_|^CLOUDFLARE_/.test(key)) delete env[key];
+  for (const key of Object.keys(env)) if (/API_KEY|TOKEN|SECRET|PASSWORD|PASSWD|CREDENTIAL|^TALA_|^AWS_|^CLOUDFLARE_/.test(key)) delete env[key];
   Object.assign(env, { TALA_ENV: 'local', TALA_DB_PATH: path.join(temp, 'tala.sqlite'),
     TALA_PUBLIC_ORIGIN: origin, TALA_BUILD_ID: nonce, TALA_AUTH_AUTO_VERIFY: '1', TALA_LOG_LEVEL: 'error', NEXT_TELEMETRY_DISABLED: '1',
     TALA_PACKS_LIBRARY_DIR: path.join(temp, 'no-library'), TALA_PACKS_ARTIFACTS_DIR: path.join(temp, 'no-artifacts') });
   const log = fs.openSync(path.join(temp, 'server.log'), 'w', 0o600);
   server = spawn(process.execPath, [webRequire.resolve('next/dist/bin/next'), 'start', '--hostname', '127.0.0.1', '--port', String(port)], { cwd: web, env, stdio: ['ignore', log, log] });
   fs.closeSync(log);
-  for (let n = 0; n < 60; n++) {
-    if (server.exitCode !== null) throw new Error('Local Tala server exited; inspect private server log');
-    try { if ((await fetch(base + '/api/v1/health')).ok) return; } catch {}
+  const deadline = Date.now() + 60000;
+  startupProbe = { attempts: 0, lastHealth: null, serverExitCode: null };
+  for (let n = 0; n < 60 && Date.now() < deadline; n++) {
+    if (server.exitCode !== null) break;
+    startupProbe.attempts++;
+    try {
+      const response = await fetch(base + '/api/v1/health', { signal: AbortSignal.timeout(2000) });
+      startupProbe.lastHealth = { status: response.status };
+      await response.body?.cancel();
+      if (response.ok) return;
+    } catch (error) {
+      startupProbe.lastHealth = { error: error.name, code: error.cause?.code || error.code || null };
+    }
     await new Promise(resolve => setTimeout(resolve, 1000));
   }
+  startupProbe.serverExitCode = server.exitCode;
+  const logPath = path.join(temp, 'server.log');
+  Object.assign(startupProbe, startupError(fs.existsSync(logPath) ? fs.readFileSync(logPath, 'utf8') : '', [temp, web, root]));
+  fs.writeFileSync(path.join(output, 'startup.json'), JSON.stringify(startupProbe, null, 2));
+  console.error('Local startup diagnostic:', JSON.stringify(startupProbe));
   throw new Error('Local Tala server failed health check');
 }
 (async () => {
@@ -335,6 +352,7 @@ async function startServer() {
 }).finally(async () => {
   const report = { platform: process.platform, arch: process.arch,
     displayBackend: linuxHeadlessArgs().length ? 'ozone-headless' : 'system display',
+    startup: startupProbe,
     sourceCommit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(),
     packaged: !!process.env.TALA_DESKTOP_EXECUTABLE, source: 'unmodified local Tala web/server; isolated HTTPS to temporary SQLite database',
     isolation: { fixtureRequests: fixture?.requests.length, allPeersLoopback: fixture?.requests.every(r => r.peer === '127.0.0.1'), healthBuildNonceVerified: healthVerified, ...networkEvidence },

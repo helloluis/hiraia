@@ -343,3 +343,43 @@ match. The test now normalizes input and runs the full gating assertions against
 both LF and CRLF cases. No workflow condition or application behavior changes.
 A normal preview-3c is required for Windows's first native local feature walk and
 the first complete set. Production execution remains held until that set passes.
+
+## Preview-3c Windows diagnosis; owner-mode run 2
+
+Run https://github.com/helloluis/hiraia/actions/runs/46136398872 at `d2a3c74a7`:
+both Macs passed again. Release-owner bridge `41960af4598c4974972039a02c8931cf`
+confirms Windows installed, passed all ten packaged shell checks, and uninstalled.
+Its first local feature step failed: sixty health probes did not return OK, while the
+Next process remained running. No Electron feature page launched and no fixture API
+request occurred. The previous harness discarded response/error details and deleted
+its private server log, so the cause is not yet known. No complete set was collected.
+
+The reviewed Windows evidence ZIP was received through bridge request
+`aec08900a8c2466aae9ac8d78b883342`; its 3,294 bytes and SHA256
+`5c567e938bc0fae6515005dcad462cef90000d80632d84cd82c5aa9bbbfc6533` match the
+owner's GitHub export. The actual shell receipt confirms packaged=true, ten passes
+and zero non-loopback TCP connections; the local receipt confirms no health nonce.
+
+The next diagnostic candidate records measured health status/error code, process exit
+code and one bounded, scrubbed startup-error line before any registration. Raw server
+logs and bodies are not retained. Eleven Node tests, including redaction controls, pass;
+the modified startup path and all fourteen local feature checks also pass on Linux.
+This instrumentation supplies missing evidence; it is not a claimed Windows fix.
+
+Owner production mode ran on b11-dev only, 10:45:57–10:46:26 UTC, run
+`owner-20261128-2`, with the retained synthetic account. It created one labelled plan
+and nine sections, then timed out before any AI submission. Five total write requests
+(three seed, login, logout); zero section/slide requests, zero blocked requests and
+no new generation jobs/provider calls/cost, confirmed by the owner's read-only audit.
+The labelled lesson remains for reuse. Run 1 failed in a non-git export before network
+contact; the owner corrected that prerequisite with a sparse worktree for run 2.
+Reviewed receipt SHA256:
+`eb4beefc024245d0262c3bab2e2f3b2b767f58fe5677d6da61c710dcd585f99e`, 13,326 bytes.
+
+Source establishes a necessary correction: `EditorScreen.tsx` renders Rewrite only
+when `ed.cls` exists. The standalone fixture cannot show it, regardless of wait time.
+Owner bridge `1134f96bc4894947b797aef9f75eef7e` accepts a revised bounded fixture for
+review: one separate labelled school year/class, link only the existing test plan,
+no profile change or existing class edit, and consistent grade-group IDs. Owner mode
+retains these test records; ephemeral native mode deletes them with its account.
+The revised production code must be reviewed before another run; no blind retry.
