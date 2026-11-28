@@ -16,6 +16,6 @@ module.exports = {
     createDesktopShortcut: true, createStartMenuShortcut: true },
   mac: { target: ['dmg'], icon: 'assets/icon.png', category: 'public.app-category.education',
     identity: '-', hardenedRuntime: false, notarize: false,
-    minimumSystemVersion: '12.0' },
+    minimumSystemVersion: '13.0' },
   dmg: { sign: false, title: 'Tala ${version}' },
 };

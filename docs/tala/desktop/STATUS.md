@@ -48,8 +48,8 @@ owner will repeat the install in their integration checkout before pushing.
 
 | Check | Windows x64 | Mac arm64 | Mac x64 |
 |---|---|---|---|
-| Installer, launch, relaunch, uninstall | Unverified | Unverified | Unverified |
-| Shell isolation/navigation/network recovery | Unverified | Unverified | Unverified |
+| Installer, launch, relaunch, uninstall | Preview-2 passed | DMG/signature/launch passed; later checks stalled | DMG/signature/launch passed; later checks stalled |
+| Shell isolation/navigation/network recovery | Preview-2 10/10 | Preview-2 first 6 passed, check 7 stalled | Preview-2 first 6 passed, check 7 stalled |
 | Registration/login/logout and session continuity | Unverified | Unverified | Unverified |
 | EN/FIL, timetable, weekends | Unverified | Unverified | Unverified |
 | Lesson creation, real AI success/error, Materials and rewrites | Unverified | Unverified | Unverified |
@@ -57,7 +57,7 @@ owner will repeat the install in their integration checkout before pushing.
 | Uploads, PDF/DOCX/PPTX save and open | Unverified | Unverified | Unverified |
 | Native print dialog and external browser | Unverified | Unverified | Unverified |
 | Resize, keyboard, accessibility | Unverified | Unverified | Unverified |
-| Full pipeline and controlled failure | Unverified | Unverified | Unverified |
+| Full pipeline and controlled failure | No complete set; failure gate held | No complete set; failure gate held | No complete set; intentional failure gate held |
 
 ## Dependencies and remaining work
 
@@ -188,3 +188,72 @@ Authoritative ledger: `docs/tala/teacher-portal/STATUS.md` on `tala-v1-filipino`
 commit `fcd02f14f`, entry “incident — the desktop task's local test wrote to production”.
 No duplicate question from this lane. Publication is separately unrequested until the
 release owner has a concrete verified candidate and its remaining limitations.
+
+## Mac preview-2 wait; preview-3 held
+
+Public GitHub job metadata and release-owner bridge c779b10ad1d04c919aa42e2a1e3be09e
+agree: Windows passed the isolated shell checks in both runs. The deliberate failure
+stopped the Intel job in the failure run as designed. Both normal Mac jobs and the
+failure run's arm64 job remain inside the packaged test step. GitHub's log endpoint
+answers 404 until they finish; the 35-minute job limit is around 10:11–10:12 UTC.
+No complete set is available. The release owner is collecting the final logs/evidence.
+
+`a9ba7c090` (the 14-check feature walk) was reviewed but **not tagged**. Hold request:
+cb8ace1a31014d378f4a75695a4bb7f2. Do not dispatch it unchanged while the common Mac
+shell wait is unexplained. Keychain access for encrypted cookies is a hypothesis only.
+Electron's upstream [test change](https://releases.electronjs.org/pr/53790) documents
+the same class of unsigned-app test wait, but these run logs must establish where it
+stopped before selecting a remedy. App security settings remain unchanged.
+
+Next-test diagnostics add a deadline around every check, progress receipts, bounded
+Electron shutdown and a failure screenshot only on an ephemeral GitHub-hosted Mac.
+Only the Electron subprocess started by the test may be killed. Source Linux shell
+checks pass with that harness. The Mac minimum OS declaration is corrected from 12
+to 13, following [Electron 44's removal of macOS 12](https://www.electronjs.org/blog/electron-44-0).
+No older-OS support is claimed from the previous metadata.
+
+## Mac final diagnosis and replacement candidate, 28 November
+
+Release-owner bridge `34cd72b1b1e24005861682ada8305622` supplied the final logs.
+Normal preview-2's two Mac jobs and failure-2's arm64 job were cancelled at the
+35-minute limit (10:11:43–10:12:07 UTC). DMG verification, mount/copy, strict ad-hoc
+signature and architecture checks passed. All three stopped after the sixth shell
+PASS line, inside check seven: print iframe, keyboard, fullscreen and resize.
+The cookie/relaunch check never began. **The earlier Keychain hypothesis is withdrawn.**
+No mock Keychain or shipping security change was made. Windows passed in both runs;
+complete-set was skipped and no artifacts were promoted.
+
+Check seven creates a print iframe but never invokes a print dialog. Its fullscreen
+exit immediately followed DOM fullscreen entry. Electron documents macOS fullscreen
+transitions as [asynchronous](https://www.electronjs.org/docs/latest/api/browser-window#winsetfullscreenflag):
+the native entry/exit events must precede dependent actions. The replacement waits for
+`enter-full-screen` before exit and `leave-full-screen` before resize on macOS. Other
+platform checks remain in place; resulting window bounds are now also asserted.
+Every substep is logged before execution, bounded, and recorded with native/HTML window
+events. A failure retains partial progress and an ephemeral runner screenshot.
+
+Linux source shell checks pass 10/10 with the new substeps. The bounded local feature
+harness also passed its 14 checks on Linux. This is a candidate fix for the native Mac
+stall, **not yet a confirmed Mac result**. A replacement reviewed preview-3 range is
+required; the earlier `a9ba7c090` range must not be tagged on its own.
+
+## Explicit synthetic-test approval — rq_czqd79ie
+
+Luis, 28 November 2026 17:55 Asia/Manila, thread
+`ddb4d22d-ceed-4509-a864-0d4dfd12f047`, complete message:
+
+> Yeah of course I'm allowing the synthetics
+
+Approval covers synthetic Tala accounts and data for desktop verification, including
+bounded intentional production testing where needed. No general synthetic-data permission
+gate remains and this permission must not be asked again. Prefer existing identified
+synthetics where accessible; never use/edit real teacher accounts, lessons or files, and
+never copy their production records into fixtures. Exact IDs/files must be inventoried
+before cleanup. This is not blanket deletion authority: the separate five-account cleanup
+question above remains with the release owner until Luis resolves it.
+
+The accidental five production registrations/profiles and one session remain an incident;
+their withdrawn local-only results stay withdrawn. Isolated CI continues fail-closed.
+Any intentional production checks must be separately labelled with their synthetic identities
+and bounded operations. This approval does not release the held Mac run, weaken sandbox or
+network protections, grant publication approval, or turn unperformed checks into passes.

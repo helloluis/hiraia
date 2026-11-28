@@ -3,6 +3,7 @@
 // boundary proven in electron.cjs. Both reach exactly one temporary local server.
 const { _electron: electron } = require('playwright');
 const { httpsFixture } = require('./https-fixture.cjs');
+const { bounded, captureMacDesktop, closeElectron } = require('./harness.cjs');
 const http = require('node:http');
 const { spawn, execFileSync } = require('node:child_process');
 const { createRequire } = require('node:module');
@@ -26,7 +27,13 @@ let server, app, base, page, fixture;
 const netlogs = [];
 let healthVerified = false;
 let networkEvidence;
-async function check(name, fn) { await fn(); results.push({ name, status: 'passed' }); console.log('PASS', name); }
+let currentCheck = 'local server startup';
+async function check(name, fn) {
+  currentCheck = name;
+  fs.writeFileSync(path.join(output, 'progress.json'), JSON.stringify({ currentCheck, results }));
+  await bounded(fn(), 90000, name);
+  results.push({ name, status: 'passed' }); console.log('PASS', name);
+}
 async function launch() {
   const profile = path.join(temp, 'profile');
   const log = path.join(temp, `net-${netlogs.length}.json`); netlogs.push(log);
@@ -115,7 +122,7 @@ async function startServer() {
   });
   await check('actual authenticated session survives relaunch', async () => {
     await app.evaluate(async ({ session }) => session.fromPartition('persist:tala').cookies.flushStore());
-    await app.close(); await launch();
+    await closeElectron(app); app = null; await launch();
     await page.goto(origin + '/settings');
     await page.getByRole('heading', { name: 'Settings', exact: true }).waitFor();
     assert.equal(await page.evaluate(async () => (await fetch('/api/v1/auth/me')).status), 200);
@@ -132,9 +139,9 @@ async function startServer() {
   // Existing source-owned seed creates two fictional lessons through the actual
   // API/sync engine. Its credential file stays only in the private temp directory.
   const seeded = path.join(temp, 'seed');
-  execFileSync(process.execPath, [webRequire.resolve('tsx/cli'), 'scripts/lesson-walk.mjs', 'seed', base, seeded, '--db', path.join(temp, 'tala.sqlite')], { cwd: web, stdio: 'pipe' });
+  execFileSync(process.execPath, [webRequire.resolve('tsx/cli'), 'scripts/lesson-walk.mjs', 'seed', base, seeded, '--db', path.join(temp, 'tala.sqlite')], { cwd: web, stdio: 'pipe', timeout: 90000 });
   const account = JSON.parse(fs.readFileSync(path.join(seeded, 'account.json')));
-  execFileSync(process.execPath, [webRequire.resolve('tsx/cli'), path.join(__dirname, 'seed-features.mts'), base, seeded, nonce], { cwd: web, stdio: 'pipe' });
+  execFileSync(process.execPath, [webRequire.resolve('tsx/cli'), path.join(__dirname, 'seed-features.mts'), base, seeded, nonce], { cwd: web, stdio: 'pipe', timeout: 90000 });
   const features = JSON.parse(fs.readFileSync(path.join(seeded, 'features.json')));
   const probe = await fetch(base + '/api/v1/auth/login', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: account.email, password: account.password, deviceLabel: 'desktop local seed check' }) });
   assert.equal(probe.status, 200, 'seeded account must log in directly before browser test');
@@ -304,7 +311,7 @@ async function startServer() {
     const pptx = readZip(fs.readFileSync(downloads[before].path));
     assert.ok(pptx.text('ppt/slides/slide1.xml').includes('Edited synthetic desktop plant lesson'));
   });
-  await app.close(); app = null;
+  await closeElectron(app); app = null;
   await check('actual feature walk made no non-loopback Chromium connection', async () => {
     const connections = [];
     for (const file of netlogs) {
@@ -319,8 +326,10 @@ async function startServer() {
 })().catch(async error => {
   // Playwright call logs can include fill() values. Never retain credentials.
   console.error(error.name + ': ' + error.message.split('\n')[0]);
+  console.error('Check:', currentCheck);
   console.error('Recent local API statuses:', JSON.stringify(apiStatuses.slice(-16)));
-  if (page && !page.isClosed()) { await page.screenshot({ path: path.join(output, 'failure.png') }).catch(() => {}); }
+  captureMacDesktop(output);
+  if (page && !page.isClosed()) { await page.screenshot({ path: path.join(output, 'failure.png'), timeout: 5000 }).catch(() => {}); }
   results.push({ name: 'walk aborted', status: 'failed', error: error.name + ': ' + error.message.split('\n')[0] });
   process.exitCode = 1;
 }).finally(async () => {
@@ -331,7 +340,7 @@ async function startServer() {
     limits: ['No real AI provider configured', 'No teaching-pack library copied; session presentation uses visible placeholders for missing grade slides', 'Save dialog bypassed to verify downloaded bytes; printToPDF is not native print-dialog evidence', 'DOCX/PPTX archive contents verified; not opened in Microsoft Office'], results };
   fs.writeFileSync(path.join(output, 'report.json'), JSON.stringify(report, null, 2));
   fs.writeFileSync(path.join(root, 'test-output', `features-${process.platform}-${process.arch}.json`), JSON.stringify(report, null, 2));
-  await app?.close();
+  await closeElectron(app);
   if (server && server.exitCode === null) {
     await new Promise(resolve => {
       const timer = setTimeout(() => { server.kill('SIGKILL'); resolve(); }, 5000);

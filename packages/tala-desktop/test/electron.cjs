@@ -2,6 +2,7 @@
 // DNS is fail-closed from process launch, including the initial window load.
 const { _electron: electron } = require('playwright');
 const { httpsFixture } = require('./https-fixture.cjs');
+const { bounded, captureMacDesktop, closeElectron } = require('./harness.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -14,6 +15,15 @@ const nonce = crypto.randomUUID();
 let app, fixture, offline = false;
 let negativeStatus, dnsFailure, tcpAttempts = 0, nonLoopbackConnections;
 const results = [], netlogs = [];
+const output = path.join(root, 'test-output');
+let currentCheck = 'starting local HTTPS fixture', currentStep;
+const windowSteps = [];
+function progress(error) {
+  fs.mkdirSync(output, { recursive: true });
+  fs.writeFileSync(path.join(output, `progress-shell-${process.platform}-${process.arch}.json`), JSON.stringify({
+    currentCheck, currentStep, windowSteps, results, ...(error ? { error: error.name + ': ' + error.message.split('\n')[0] } : {}),
+  }, null, 2));
+}
 function serve(req, res) {
   if (offline) return req.socket.destroy();
   if (req.url === '/fixture-health') { res.setHeader('content-type', 'application/json'); return res.end(JSON.stringify({ environment: 'local', nonce })); }
@@ -37,7 +47,29 @@ async function launch() {
   assert.ok(fixture.requests.some(r => r.path === '/fixture-health'));
   return page;
 }
-async function check(name, fn) { await fn(); results.push({ name, status: 'passed' }); console.log('PASS', name); }
+async function check(name, fn) {
+  currentCheck = name; currentStep = undefined; progress();
+  await bounded(fn(), 45000, name);
+  results.push({ name, status: 'passed' }); progress(); console.log('PASS', name);
+}
+async function windowStep(name, fn) {
+  currentStep = name; progress(); console.log('STEP', name);
+  await bounded(fn(), 15000, name);
+  const state = await bounded(app.evaluate(({ BrowserWindow }) => {
+    const win = BrowserWindow.getAllWindows()[0];
+    return { events: global.__windowEvents || [], fullScreen: win.isFullScreen(), size: win.getSize() };
+  }), 2000, name + ' diagnostics');
+  windowSteps.push({ name, status: 'passed', ...state }); progress();
+}
+async function waitWindowEvent(name) {
+  // Poll the recorded event, not a raw unbounded event Promise in app.evaluate.
+  const deadline = Date.now() + 12000;
+  while (Date.now() < deadline) {
+    if (await bounded(app.evaluate((_electron, event) => global.__windowEvents.some(e => e.name === event), name), 2000, name + ' observation')) return;
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+  throw new Error('Timed out: ' + name);
+}
 (async () => {
   fixture = await httpsFixture(serve);
   let page = await launch();
@@ -91,18 +123,42 @@ async function check(name, fn) { await fn(); results.push({ name, status: 'passe
     assert.equal(await page.evaluate(() => new Promise(resolve => navigator.geolocation.getCurrentPosition(() => resolve('allowed'), () => resolve('denied')))), 'denied');
   });
   await check('print iframe, keyboard, fullscreen and resize', async () => {
-    await page.getByRole('textbox', { name: 'Lesson' }).fill('Synthetic lesson');
-    assert.equal(await page.getByRole('textbox', { name: 'Lesson' }).inputValue(), 'Synthetic lesson');
-    assert.equal(await page.evaluate(() => { const frame = document.createElement('iframe'); document.body.appendChild(frame); frame.contentDocument.write('<h1>Printable lesson</h1>'); return frame.contentDocument.body.textContent; }), 'Printable lesson');
-    await page.getByRole('button', { name: 'Present' }).click();
-    await page.waitForFunction(() => !!document.fullscreenElement);
-    await page.evaluate(() => document.exitFullscreen());
-    await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setSize(800, 600));
+    await windowStep('keyboard input and print iframe content (no native print dialog)', async () => {
+      await page.getByRole('textbox', { name: 'Lesson' }).fill('Synthetic lesson');
+      assert.equal(await page.getByRole('textbox', { name: 'Lesson' }).inputValue(), 'Synthetic lesson');
+      assert.equal(await page.evaluate(() => { const frame = document.createElement('iframe'); document.body.appendChild(frame); frame.contentDocument.write('<h1>Printable lesson</h1>'); return frame.contentDocument.body.textContent; }), 'Printable lesson');
+    });
+    await windowStep('observe native and HTML fullscreen events before entry', async () => {
+      await app.evaluate(({ BrowserWindow }) => {
+        const win = BrowserWindow.getAllWindows()[0];
+        global.__windowEvents = [];
+        for (const name of ['enter-full-screen', 'leave-full-screen', 'enter-html-full-screen', 'leave-html-full-screen', 'resize']) {
+          win.on(name, () => global.__windowEvents.push({ name, at: Date.now() }));
+        }
+      });
+    });
+    await windowStep('enter HTML fullscreen and finish the macOS native transition', async () => {
+      await page.getByRole('button', { name: 'Present' }).click();
+      await page.waitForFunction(() => !!document.fullscreenElement, null, { polling: 100 });
+      // macOS uses a native Space animation. DOM fullscreen alone does not mean
+      // that transition has finished; exiting during it can strand Chromium's Promise.
+      if (process.platform === 'darwin') await waitWindowEvent('enter-full-screen');
+    });
+    await windowStep('exit HTML fullscreen and finish the macOS native transition', async () => {
+      await page.evaluate(() => document.exitFullscreen());
+      await page.waitForFunction(() => !document.fullscreenElement, null, { polling: 100 });
+      if (process.platform === 'darwin') await waitWindowEvent('leave-full-screen');
+    });
+    await windowStep('resize after fullscreen exit and verify resulting bounds', async () => {
+      await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setSize(800, 600));
+      assert.deepEqual(await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].getSize()), [800, 600]);
+      assert.equal(await page.evaluate(() => !!document.fullscreenElement), false);
+    });
   });
   await check('persistent secure cookie reaches fixture after relaunch', async () => {
     await page.evaluate(() => fetch('/set-session'));
     await app.evaluate(async ({ session }) => session.fromPartition('persist:tala').cookies.flushStore());
-    await app.close(); page = await launch();
+    await closeElectron(app); app = null; page = await launch();
     assert.equal(await page.evaluate(() => fetch('/check-session').then(r => r.text())), 'present');
   });
   await check('network loss recovery and retry stays local', async () => {
@@ -113,7 +169,7 @@ async function check(name, fn) { await fn(); results.push({ name, status: 'passe
     await page.getByRole('link', { name: 'Try again' }).click();
     await page.getByRole('heading', { name: 'Local fixture' }).waitFor();
   });
-  await app.close(); app = null;
+  await closeElectron(app); app = null;
   await check('network log contains no non-loopback TCP connection', async () => {
     const connections = [];
     for (const file of netlogs) {
@@ -130,8 +186,11 @@ async function check(name, fn) { await fn(); results.push({ name, status: 'passe
     scope: 'local HTTPS synthetic shell integration, not live feature parity', packaged: !!process.env.TALA_DESKTOP_EXECUTABLE,
     platform: process.platform, arch: process.arch,
     isolation: { fixtureRequests: fixture.requests.length, allPeersLoopback: fixture.requests.every(r => r.peer === '127.0.0.1'),
-      productionApiNegativeControl: '403 from local fixture', otherDns: 'NOTFOUND', negativeStatus, dnsFailure, tcpAttempts, nonLoopbackConnections }, results,
+      productionApiNegativeControl: '403 from local fixture', otherDns: 'NOTFOUND', negativeStatus, dnsFailure, tcpAttempts, nonLoopbackConnections }, windowSteps, results,
   }, null, 2));
-})().catch(error => { console.error(error.name + ': ' + error.message.split('\n')[0]); process.exitCode = 1; }).finally(async () => {
-  await app?.close(); await fixture?.close(); fs.rmSync(profile, { recursive: true, force: true });
+})().catch(error => {
+  progress(error); captureMacDesktop(output);
+  console.error(error.name + ': ' + error.message.split('\n')[0]); process.exitCode = 1;
+}).finally(async () => {
+  await closeElectron(app); await fixture?.close(); fs.rmSync(profile, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
 });
