@@ -2135,3 +2135,7 @@ this ledger had no entry).
   slide proposal, applied them, then deleted the account. Read-only check afterwards: all three accounts and everything
   they made are gone, user and session counts unchanged, no other record written; 6 provider calls in total
   (US$0.0064). A deliberate-failure run on the same source followed (run 46142841866). Publishing still needs Luis.
+- **28 Nov 20:15 Manila — desktop deliberate-failure run as designed.** Run 46142841866 (same source): the Intel Mac
+  stopped at its planned failure, Windows and Apple-silicon passed, and the full installer set was correctly withheld
+  (no production step). The production-check run also produced a second complete set of the same source under its own
+  release name; both sets went to the desktop owner as reviewed exports for the rollback rehearsal. Nothing published.
