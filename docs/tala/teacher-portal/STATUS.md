@@ -2116,3 +2116,12 @@ this ledger had no entry).
   run 46140401357. The revised real-AI test reuses the one labelled lesson from run 2, adds one labelled school year and
   class, never touches the profile, and allows exactly the one save the rewrite makes; it has not run. Nothing
   published; the production-check tag stays held.
+- **28 Nov 19:50 Manila — desktop real-AI check passed; preview 3f result.** Owner run 3 (from b11-dev, the retained
+  synthetic test account, `f7c043b89`: 3f + a 30-second save wait) made one real AI rewrite of the labelled lesson's
+  Content part (one provider call, US$0.0008) and saved it; a before/after read-only check of the account showed exactly
+  the planned changes (the lesson linked to one new labelled class in one new labelled school year, only Content
+  rewritten, one history entry, profile untouched, nothing else). That test lesson is now used up. Preview 3f
+  (run 46140401357): **Windows and Apple-silicon Mac passed everything**; the Intel Mac failed one local step (a
+  PowerPoint upload never started — most likely the test picked the file before the page was ready; it passed on Intel
+  in 3c–3e). So the desktop owner's conditional request (the clearly labelled production check on all three platforms,
+  then a deliberate-failure run) stays held until a normal run passes on all three. Nothing published.
