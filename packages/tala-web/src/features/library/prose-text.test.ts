@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { leadSentence, segmentProse } from './prose';
+import { leadSentence, segmentProse } from './prose-text';
 
 const kinds = (s: string) => segmentProse(s).map((x) => `${x.kind}:${x.text}`);
 
