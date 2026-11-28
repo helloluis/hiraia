@@ -1905,3 +1905,63 @@ demo.19.
   with 0 restarts; deploy lock free; running: the release owner and an unrelated Beaniebot agent (`bac224b`, not
   holding the lock); `tala-v1-homepage` and the release worktree both at `abe80ccac`, clean; no `tala-v1-demo.20` tag
   or homepage branch on origin or the host; no deploy or package process on the host.
+
+## The homepage on production: 2026-11-28 01:45–01:57 UTC (09:45–09:57 PHT) — `tala-v1-demo.20`
+
+**Authority.** Luis's "Yes release it" (28 Nov 09:39 Manila, rq_amzzvgnq), recorded above.
+
+**Release.** Branch `tala-v1-homepage-release` at `4736715b5` = the approved candidate `abe80ccac` + a docs-only merge
+of the notes (`af127781a`). The app payload is byte-identical to `abe80ccac` (same tree hash for core, server, web,
+brand, the lockfile and the workspace files; the only differing file is this ledger). Tag `tala-v1-demo.20` (tag object
+`3bdc4407…`, commit `4736715b5d94…`), pushed with the branch. Clean export of `4736715b5`: 0 type errors; tests core 326,
+server 376 + 1 skipped, web 182; production build. Lockfile unchanged; 61 build-set files differ from demo.19 (the
+homepage, its pictures and scripts, one tala-core line). The hiraia deploy lock held 01:45:12–01:56:39 UTC (free
+beforehand; an unrelated Beaniebot agent was running, not holding it).
+- **Backup** `/var/backups/tala/20261128T014539Z` (database with integrity check ok, settings, previous release
+  demo.19, rows per table, library hashes; checksums verified). **Deploy** 01:45:41–01:46:12 UTC, `deploy.sh` exit 0,
+  "healthy on tala-v1-demo.20"; only the service restarted; 0 restarts since. **Rollback:**
+  `sudo -n ssh b11-apps /opt/tala/deploy.sh tala-v1-demo.19` (code only; nothing to undo in data).
+- **Live checks:** health `0.1.0+tala-v1-demo.20`; `/` 200 and no cookie; 10 public pages 200; the contract's 26 private
+  GET routes 401 signed out; `/forms` 123 files identical to the manifest; the curriculum served unchanged; 0
+  migrations; 0 rows changed in any of the 37 tables at the verify step; both teaching libraries unchanged; R2 check
+  passed.
+- **Hero:** photographed on live demo.19 before (twice, identical) and on demo.20 after: 8 of 8 pairs (1366, 768, 390,
+  360 px; English and Filipino) with 0 differing pixels.
+- **Homepage walk on the live site** (the homepage owner's `home-walk.mjs`, signed out, read-only): **164/164** —
+  English and Filipino at 1366, 390, 360, 768 px and 200% zoom; the language switch; the three showcases, their pictures
+  (right file per language and layout, boxes kept) and their links (every on-site link 200 without a cookie; the
+  outside links answer); the curriculum map is the shipped map and its pack marks and sentence are what the Library says
+  now (English 103 of 262 weeks, Filipino 99); a slow and an unreachable Library (simulated in the browser: the no-number
+  line, nothing moves); without script; reduced motion; keyboard, touch sizes, contrast; no sideways scrolling; the
+  promise section and the DepEd disclaimer word for word in both languages.
+- **The Filipino label, signed in with the test account:** a two-grade plan combined in the Filipino interface on the
+  live bundle shows "Ituloy ang sariling gawain:" and the saved plan on the server carries it, the old label nowhere:
+  **7/7** on the second run. The first run (3/5) stopped because the combine screen opened before the browser's first
+  sync had brought the new room (on this large account) and fell back to another room (`CombineScreen` keeps the
+  fallback even after the room arrives; existing behaviour since demo.15, logged below); it had written only the room,
+  its subject and ten pack lessons, which the second run reused (no second room). Changed for the retry: wait for the
+  room on the device and choose it; rehearsed first on the local build (7/7).
+- **Saved plans unchanged:** all 1,141 of the test account's records that existed at the backup are unchanged (0
+  changed, 0 gone). Before the release no record anywhere held the old Filipino label; after it, exactly one does hold
+  the new one (the check's new plan); the English label is in the same 8 records.
+- **Signed-in smoke (the English walk): 33/35.** Its two This Week checks read the home week, which on this Saturday is
+  Nov 23–29 with Up next "Today, Saturday" (the test account has weekend classes), so the new room's weekday lessons are
+  already past. Checked instead on the following week: the Grade 4 English sessions with 13 English-pack topics and the
+  Science sessions with 7 Science-pack topics. Everything else in the walk passed (setup proposals, a new English
+  lesson, the picker, print and Word, a multi-grade plan, Library, Community, phone, Filipino, no browser errors).
+- **Other teachers' data:** every other account's rows identical to the backup in every table, apart from the
+  account-free rate-limit counters and the sync sequence. Logs since the deploy: 0 errors, 0 server errors, one known
+  startup notice, no key-like string; 30 client errors = the 26 signed-out probes plus 4 "no slides yet" lookups for
+  lessons made seconds earlier by the walks.
+
+**Evidence** (7 days, each file verified byte for byte):
+https://lnj.b11.dev/reports/faed4b94cf661bdda5a75a901a534c28bbdb4ea20c860bed22c69d157f486665. The homepage owner's
+pre-release evidence: https://lnj.b11.dev/reports/1357f50335ee1ffbe10513ca0b2a394935599bff3119827b48e7c85da335c2b5.
+Files: `/home/b11/tala-takeover-20261125/release-homepage/`.
+
+**Open follow-ups (release owner's lane, not in this release):** the combine screen should wait for the first sync
+before falling back to another room; the 40 px "Built with QVAC SDK" footer link on phones; the hero's Filipino→English
+swap shift for English readers (with the "Filipino shell after a reload" item); the Filipino phone timeline end label
+running past its card; the next-step arrow on long This Week lists (from demo.19); the loading flashes; Office
+application checks; a teacher's review; the pacing quirk (Luis). Not performed: Microsoft Office checks; a teacher's
+review; any real teacher's account.
