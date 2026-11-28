@@ -63,13 +63,30 @@ inspection of the prior identities/outcome and a newly reviewed tag, never a bli
 
 Owner invocation after review (credentials already exported privately):
 
+First run `node test/linux-preflight.cjs` without credentials. It inspects the exact
+Electron binary with `ldd`, prints only unresolved library names, and exits 2 if any
+are missing (success is silent, exit 0). It makes no network request and honours an
+existing private `LD_LIBRARY_PATH`; it never installs or changes system packages.
+Owner mode runs this preflight itself before reading credentials, creating a profile
+or launching Electron. If `ldd` itself fails, a fixed error is printed, without its
+raw output. A deliberate missing-library control proves owner mode stops there.
+
 ```
 TALA_DESKTOP_PRODUCTION_TEST_APPROVAL=rq_czqd79ie \
 TALA_DESKTOP_OWNER_AI_CHECK=1 \
+TALA_DESKTOP_HEADLESS=1 \
 TALA_DESKTOP_PRODUCTION_RUN_ID=owner-check-20261128-1 \
-node scripts/headless.cjs test/production-ai.cjs owner https://tala.hiraia.org
+node test/production-ai.cjs owner https://tala.hiraia.org
 ```
 
-The wrapper accepts additional script arguments. Choose a unique run ID and inspect an
+On Linux, `TALA_DESKTOP_HEADLESS=1` selects Electron's documented
+[`--ozone-platform=headless`](https://github.com/electron/electron/blob/main/docs/api/command-line-switches.md#--ozone-platformplatform-linux)
+backend at launch, without a display server or sandbox/security changes. This test-only
+option is not added to the shipping app or the Windows/macOS production invocation.
+If a display server is already available, omit that variable. Choose a unique run ID and inspect an
 existing receipt before any retry; the script refuses to overwrite it or repeat that ID.
 This owner check is Linux evidence, never native Windows/Mac evidence.
+
+The server's existing gateway can repair malformed model output internally. The
+harness caps API job submissions and never retries them; the release owner's
+`llm_usage` inspection records actual provider-call counts, including gateway repair.

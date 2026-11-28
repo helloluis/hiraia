@@ -2,7 +2,7 @@
 // DNS is fail-closed from process launch, including the initial window load.
 const { _electron: electron } = require('playwright');
 const { httpsFixture } = require('./https-fixture.cjs');
-const { bounded, captureMacDesktop, closeElectron } = require('./harness.cjs');
+const { bounded, captureMacDesktop, closeElectron, linuxHeadlessArgs } = require('./harness.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -35,7 +35,7 @@ function serve(req, res) {
 }
 async function launch() {
   const log = path.join(profile, `net-${netlogs.length}.json`); netlogs.push(log);
-  const args = [...fixture.args, '--log-net-log=' + log, '--user-data-dir=' + profile];
+  const args = [...linuxHeadlessArgs(), ...fixture.args, '--log-net-log=' + log, '--user-data-dir=' + profile];
   app = await electron.launch({ chromiumSandbox: true,
     ...(process.env.TALA_DESKTOP_EXECUTABLE ? { executablePath: process.env.TALA_DESKTOP_EXECUTABLE, args } : { args: [...args, root] }),
     env: { ...process.env, TALA_DESKTOP_TEST: '1', TALA_DESKTOP_TEST_ORIGIN: origin, TALA_DESKTOP_TEST_PROFILE: profile } });
@@ -184,6 +184,7 @@ async function waitWindowEvent(name) {
   fs.mkdirSync(path.join(root, 'test-output'), { recursive: true });
   fs.writeFileSync(path.join(root, 'test-output', `shell-${process.platform}-${process.arch}.json`), JSON.stringify({
     scope: 'local HTTPS synthetic shell integration, not live feature parity', packaged: !!process.env.TALA_DESKTOP_EXECUTABLE,
+    displayBackend: linuxHeadlessArgs().length ? 'ozone-headless' : 'system display',
     platform: process.platform, arch: process.arch,
     isolation: { fixtureRequests: fixture.requests.length, allPeersLoopback: fixture.requests.every(r => r.peer === '127.0.0.1'),
       productionApiNegativeControl: '403 from local fixture', otherDns: 'NOTFOUND', negativeStatus, dnsFailure, tcpAttempts, nonLoopbackConnections }, windowSteps, results,

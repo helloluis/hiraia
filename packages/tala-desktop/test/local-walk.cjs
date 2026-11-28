@@ -3,7 +3,7 @@
 // boundary proven in electron.cjs. Both reach exactly one temporary local server.
 const { _electron: electron } = require('playwright');
 const { httpsFixture } = require('./https-fixture.cjs');
-const { bounded, captureMacDesktop, closeElectron } = require('./harness.cjs');
+const { bounded, captureMacDesktop, closeElectron, linuxHeadlessArgs } = require('./harness.cjs');
 const http = require('node:http');
 const { spawn, execFileSync } = require('node:child_process');
 const { createRequire } = require('node:module');
@@ -37,7 +37,7 @@ async function check(name, fn) {
 async function launch() {
   const profile = path.join(temp, 'profile');
   const log = path.join(temp, `net-${netlogs.length}.json`); netlogs.push(log);
-  const args = [...fixture.args, '--log-net-log=' + log, '--user-data-dir=' + profile];
+  const args = [...linuxHeadlessArgs(), ...fixture.args, '--log-net-log=' + log, '--user-data-dir=' + profile];
   app = await electron.launch({ chromiumSandbox: true,
     ...(process.env.TALA_DESKTOP_EXECUTABLE ? { executablePath: process.env.TALA_DESKTOP_EXECUTABLE, args } : { args: [...args, root] }),
     env: { ...process.env, TALA_DESKTOP_TEST: '1', TALA_DESKTOP_TEST_ORIGIN: origin, TALA_DESKTOP_TEST_PROFILE: profile } });
@@ -334,6 +334,7 @@ async function startServer() {
   process.exitCode = 1;
 }).finally(async () => {
   const report = { platform: process.platform, arch: process.arch,
+    displayBackend: linuxHeadlessArgs().length ? 'ozone-headless' : 'system display',
     sourceCommit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(),
     packaged: !!process.env.TALA_DESKTOP_EXECUTABLE, source: 'unmodified local Tala web/server; isolated HTTPS to temporary SQLite database',
     isolation: { fixtureRequests: fixture?.requests.length, allPeersLoopback: fixture?.requests.every(r => r.peer === '127.0.0.1'), healthBuildNonceVerified: healthVerified, ...networkEvidence },

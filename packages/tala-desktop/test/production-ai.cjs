@@ -9,8 +9,9 @@ const crypto = require('node:crypto');
 const { execFileSync } = require('node:child_process');
 const { createRequire } = require('node:module');
 const { _electron: electron } = require('playwright');
-const { bounded, closeElectron } = require('./harness.cjs');
+const { bounded, closeElectron, linuxHeadlessArgs } = require('./harness.cjs');
 const { installProductionGuard } = require('./production-guard.cjs');
+const { preflight } = require('./linux-preflight.cjs');
 const root = path.resolve(__dirname, '..');
 const web = path.resolve(root, '../tala-web');
 const webRequire = createRequire(path.join(web, 'package.json'));
@@ -28,6 +29,7 @@ if (native) {
 } else {
   assert.equal(process.env.TALA_DESKTOP_OWNER_AI_CHECK, '1');
   assert.notEqual(process.env.CI, 'true', 'Owner credentials must stay on the owner host');
+  if (process.platform === 'linux' && !preflight(process.env.TALA_DESKTOP_EXECUTABLE || require('electron'))) process.exit(2);
   assert.ok(process.env.TALA_TEST_EMAIL && process.env.TALA_TEST_PASSWORD);
   assert.equal(process.env.TALA_TEST_EMAIL, 'fable-release-test-20261125@example.com', 'Owner mode is for the retained release account only');
 }
@@ -43,6 +45,7 @@ const password = native ? crypto.randomBytes(24).toString('base64url') + 'Aa1!' 
 const displayName = `Synthetic Desktop Native Check (${run}/${process.platform}-${process.arch})`;
 const report = { scope: 'INTENTIONAL PRODUCTION SYNTHETIC CHECK', mode, run,
   release: native ? process.env.TALA_RELEASE_TAG : null,
+  displayBackend: !native && linuxHeadlessArgs().length ? 'ozone-headless' : 'system display',
   sourceCommit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(),
   platform: process.platform, arch: process.arch, account: { email, id: null, ...(native ? { displayName } : {}) },
   phase: 'planned', checks: [], seed: null, jobs: [], cleanup: native ? 'not registered' : 'owner account retained; labelled lesson retained' };
@@ -101,7 +104,7 @@ async function waitMacPresentation(event) {
 async function runChecks() {
   execFileSync(process.execPath, [webRequire.resolve('tsx/cli'), path.join(__dirname, 'production-seed.mts'), '--validate-only'], { cwd: web, stdio: 'pipe', timeout: 15000 });
   active();
-  const args = ['--user-data-dir=' + profile];
+  const args = [...(native ? [] : linuxHeadlessArgs()), '--user-data-dir=' + profile];
   app = await electron.launch({ chromiumSandbox: true,
     ...(process.env.TALA_DESKTOP_EXECUTABLE ? { executablePath: process.env.TALA_DESKTOP_EXECUTABLE, args } : { args: [...args, root] }),
     env: { ...process.env, TALA_DESKTOP_TEST: '0' } });

@@ -302,3 +302,26 @@ The owner reported 182 web tests, type checking and Next build passing; six rena
 prose tests also pass here. Root lockfile remains unchanged. A fresh normal preview-3b
 can now reach the native shell/feature checks without repeating the known build failure.
 Production-check tagging and publication remain separately held.
+
+## Preview-3b running; Linux owner-mode prerequisites
+
+Release-owner bridge `0fb70c2b1b3c479da8d78d8ccb1fef80` reviewed and tagged
+`0f550538c40ce401d8081887eb2154ef9d6fbb7c` as normal `tala-desktop-preview-3b`:
+https://github.com/helloluis/hiraia/actions/runs/46135509603 . They approved the
+bounded production code with no blocking finding; execution still requires all-three
+native local success. No production check from this harness has run.
+
+The release owner's Linux host lacks a display server. Electron 45.5.0's explicit
+`--ozone-platform=headless` passed all ten isolated shell checks and fourteen real
+local feature checks here with DISPLAY and WAYLAND_DISPLAY unset. No sandbox,
+webSecurity, certificate, GPU-security or session-encryption flag was changed.
+Next was rebuilt after the owner's prose rename and passed. This remains Linux
+source evidence, never native Windows/Mac evidence.
+
+Owner bridge `081ae66db6634f84ab37ddb9a806ddc0` requested a library preflight.
+`test/linux-preflight.cjs` runs ldd on the selected Electron binary and reports only
+missing library names; owner mode stops before credentials/profile/network if it
+fails. A negative control supplies a missing library and verifies that early exit.
+Nine Node tests pass. On b11-dev, the owner reports missing GTK 3, cups, pango and
+cairo; they own any private dependency prefix under their locked-package policy.
+No package or service changes have been made on that host by this lane.

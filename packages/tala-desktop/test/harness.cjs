@@ -28,4 +28,10 @@ async function closeElectron(app) {
   }
 }
 
-module.exports = { bounded, captureMacDesktop, closeElectron };
+function linuxHeadlessArgs() {
+  if (process.env.TALA_DESKTOP_HEADLESS !== '1') return [];
+  if (process.platform !== 'linux') throw new Error('TALA_DESKTOP_HEADLESS is a Linux-only test option');
+  return ['--ozone-platform=headless'];
+}
+
+module.exports = { bounded, captureMacDesktop, closeElectron, linuxHeadlessArgs };
