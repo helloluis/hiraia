@@ -2139,3 +2139,14 @@ this ledger had no entry).
   stopped at its planned failure, Windows and Apple-silicon passed, and the full installer set was correctly withheld
   (no production step). The production-check run also produced a second complete set of the same source under its own
   release name; both sets went to the desktop owner as reviewed exports for the rollback rehearsal. Nothing published.
+- **28 Nov 20:30 Manila — desktop publication candidate reviewed; the one publication question goes to Luis.** The
+  desktop owner's documentation-only hand-off (`fc3e57317` on `tala-v1-desktop`: CANDIDATE.md, the rollback report,
+  the hosting proposal with my review applied, English + reviewed Filipino download strings) is reviewed and pushed with
+  no tag and no build. The candidate is the exact set that passed the production check: Tala desktop 0.1.0, unsigned,
+  Windows x64 + Mac Apple silicon + Mac Intel (release name `tala-desktop-preview-production-1`, source `c8d99c048`;
+  installer checksums in CANDIDATE.md). The Filipino download lines match the Filipino owner's two replies exactly.
+  Asked once, in the release owner's report for Luis's thread: publish these installers on tala.hiraia.org/download
+  with a desktop section, or not. Stated plainly: unsigned (Windows/Mac security warnings), no automatic updates, and
+  not yet checked by hand on a real teacher's PC or Mac (warning flow, Save/print dialogs, links to the browser,
+  opening exports in Office, accessibility), multigrade slides only with placeholders, a successful Materials rewrite
+  not yet seen. Nothing published; no host or download change. The earlier five-account question stays separate.
