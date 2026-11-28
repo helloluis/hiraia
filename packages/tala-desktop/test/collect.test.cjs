@@ -16,7 +16,9 @@ test('complete-set gate rejects missing/tampered/mixed builds before writing a r
       const data = Buffer.from('synthetic installer bytes for ' + key);
       fs.writeFileSync(path.join(dir, file), data);
       fs.writeFileSync(path.join(dir, `manifest-${key}.json`), JSON.stringify({ platform, arch, file, bytes: data.length, sha256: hash(data), sourceCommit: 'a'.repeat(40), sourceDirty: false, version: '0.1.0', release: 'test', electron: '45.5.0', hostedOrigin: 'https://tala.hiraia.org' }));
-      fs.writeFileSync(path.join(dir, `shell-${key}.json`), JSON.stringify({ platform, arch, packaged: true, results: Array.from({ length: 8 }, () => ({ status: 'passed' })) }));
+      fs.writeFileSync(path.join(dir, `shell-${key}.json`), JSON.stringify({ platform, arch, packaged: true,
+        isolation: { allPeersLoopback: true, fixtureRequests: 8, nonLoopbackConnections: 0, otherDns: 'NOTFOUND', productionApiNegativeControl: '403 from local fixture' },
+        results: Array.from({ length: 10 }, () => ({ status: 'passed' })) }));
     }
     const badFile = path.join(dir, 'Tala-0.1.0-win32-x64.exe');
     const original = fs.readFileSync(badFile);

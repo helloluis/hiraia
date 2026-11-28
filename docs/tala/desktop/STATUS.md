@@ -117,3 +117,35 @@ Preview-2 also preserves/intersects the site's CSP instead of overwriting it and
 the immediate download URL as well as the redirect chain. Publication helper tests cover
 failed read-back, stale-pointer detection and complete-set rollback with synthetic bytes.
 The publication/download-section files remain **proposals**, with no host/web edits.
+
+## Confirmed test incident and replacement isolation, 09:32 UTC
+
+Release owner bridge 1326ae4c5ede4715861978b4c5237e05 confirmed five synthetic accounts
+were created on production between 09:18 and 09:24 UTC. Footprint: five users, five
+initial profile records and one open session; no plans, AI jobs/calls, uploads, slides
+or changes to real teachers. The predecessor and native CI did not create them.
+The local walk was stopped, its evidence withdrawn, and Luis informed in the task thread.
+Production cleanup is owned solely by release owner 12af59a8 and awaiting their single
+specific approval request (backup + delete exactly those five synthetic accounts, or
+leave them). No cleanup has been performed by this implementation lane.
+
+The first preview-2 bundle at `58138574a` was **held, never tagged**, pending a safe fixture.
+The replacement test does not use `app.context().route` at all:
+
+- A real ephemeral HTTPS fixture runs on 127.0.0.1. Its key is deleted at test end.
+- Before Electron's first load, `--host-resolver-rules` maps tala.hiraia.org to that local
+  fixture port, all other hostnames to NOTFOUND; `--no-proxy-server` prevents proxy bypass.
+- Only the generated certificate's SPKI is pinned for that process. No system trust store,
+  global TLS bypass, sandbox or webSecurity change.
+- Every launch must fetch the local fixture's unique nonce. Requests are counted by the
+  server. A production-API-path POST is deliberately refused with 403 by that local server,
+  and another production hostname cannot resolve. No credentials are submitted.
+- The full-startup Chromium net logs are checked for TCP_CONNECT_ATTEMPT destinations;
+  all must be loopback. Successful Linux run: 11 fixture requests, zero non-loopback TCP
+  connections, 10 checks passed. Receipt: `evidence/isolation-linux-x64.json`.
+- Complete-set collection now requires this isolation evidence from each native platform.
+  Preview-1's native shell evidence is provisional until rerun under the proven boundary.
+
+The source feature walk has separately moved to an actual 127.0.0.1 HTTPS origin, with
+unique local build ID, environment=local, and temporary SQLite checks before registration.
+It is not part of the replacement preview yet. No further production-origin feature walks.

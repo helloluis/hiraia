@@ -12,7 +12,10 @@ function collect(input, output) {
     if (content.length !== m.bytes || hash(content) !== m.sha256) throw new Error(`Digest/size mismatch: ${key}`);
     const evidence = JSON.parse(fs.readFileSync(path.join(input, `shell-${key}.json`)));
     if (!evidence.packaged || evidence.platform !== m.platform || evidence.arch !== m.arch ||
-        evidence.results.length < 8 || evidence.results.some(r => r.status !== 'passed')) throw new Error(`Missing native packaged smoke checks: ${key}`);
+        evidence.results.length < 10 || evidence.results.some(r => r.status !== 'passed') ||
+        !evidence.isolation?.allPeersLoopback || evidence.isolation.fixtureRequests < 5 ||
+        evidence.isolation.nonLoopbackConnections !== 0 || evidence.isolation.otherDns !== 'NOTFOUND' ||
+        evidence.isolation.productionApiNegativeControl !== '403 from local fixture') throw new Error(`Missing native packaged smoke/isolation checks: ${key}`);
     return m;
   });
   const shared = ['version', 'release', 'sourceCommit', 'electron', 'hostedOrigin'];

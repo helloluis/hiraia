@@ -1,0 +1,55 @@
+{
+  "scope": "local HTTPS synthetic shell integration, not live feature parity",
+  "packaged": false,
+  "platform": "linux",
+  "arch": "x64",
+  "isolation": {
+    "fixtureRequests": 11,
+    "allPeersLoopback": true,
+    "productionApiNegativeControl": "403 from local fixture",
+    "otherDns": "NOTFOUND",
+    "nonLoopbackConnections": 0
+  },
+  "results": [
+    {
+      "name": "local HTTPS isolation and production API negative control",
+      "status": "passed"
+    },
+    {
+      "name": "sandbox and renderer isolation",
+      "status": "passed"
+    },
+    {
+      "name": "hostile navigation and popup blocked",
+      "status": "passed"
+    },
+    {
+      "name": "same-origin child inherits protections",
+      "status": "passed"
+    },
+    {
+      "name": "external HTTPS confirmation and other schemes denied",
+      "status": "passed"
+    },
+    {
+      "name": "location and notifications denied",
+      "status": "passed"
+    },
+    {
+      "name": "print iframe, keyboard, fullscreen and resize",
+      "status": "passed"
+    },
+    {
+      "name": "persistent secure cookie reaches fixture after relaunch",
+      "status": "passed"
+    },
+    {
+      "name": "network loss recovery and retry stays local",
+      "status": "passed"
+    },
+    {
+      "name": "network log contains no non-loopback TCP connection",
+      "status": "passed"
+    }
+  ]
+}
