@@ -22,8 +22,10 @@ namin" coz it sounds quite clunky."
   - `f0b3fef87` merge of the release owner's `tala-v1-carryon-fil` (its commit `637d135d9`: ONE Filipino label in the
     app's multi-grade plans, `tala-core/src/plan/combine-words.ts`, plus its docs-only ledger commits), at its request,
     so the Filipino planner picture and the app agree in the same release;
-  - `7a8a820d1` the phone planner picture at full screen width; Filipino planner pictures re-shot (last app commit);
-  - this note (docs only).
+  - `7a8a820d1` the phone planner picture at full screen width; Filipino planner pictures re-shot;
+  - `f49628063` the first version of this note (docs only);
+  - `766ce4b3b` the slide picture's description reworded to fit both pictures (last app commit: two strings);
+  - the commit that brings this note up to date (docs only).
 - No migration, no new dependency, lockfile unchanged, no server or core file changed by this task (the one core line
   is the release owner's commit above), no setting, no new route. `/` is still a static page.
 - Not deployed. Nothing was pushed, tagged or written to production; production was only read (the public homepage,
@@ -108,8 +110,9 @@ English teaching packs, anything about Mathematics, Office application checks, h
 ## The Filipino of "Ang pangako namin": before and after
 
 Every Filipino line on the page was reviewed by the Filipino owner (`b11-002:7964278f`) through the release owner:
-batch 1 (bridge 4f94a29f, 35 items, 19 changed by the reviewer) and batch 2 (bridge 2e41a780, one line, OK as
-written). The English of this section is unchanged.
+batch 1 (bridge 4f94a29f, 35 items, 19 changed by the reviewer), batch 2 (bridge 2e41a780, one line, OK as written)
+and batch 3 (bridge 60a7758f, one picture description, OK as written). No unreviewed Filipino is left. The English
+of this section is unchanged.
 
 | | Before (live) | After |
 |---|---|---|
@@ -160,14 +163,16 @@ Run on a local production build of this branch (`next build`, `next start`, `TAL
 staged copy of the live Science library), Chromium 145, signed out.
 
 - **Clean export, as the host builds it** (`git archive` of the host's folder set plus the pack fixtures the tests
-  read, frozen install, Node 22.23.4), on the last app commit `7a8a820d1`: lockfile identical to demo.19 and no
+  read, frozen install, Node 22.23.4), on the last app commit `766ce4b3b`: lockfile identical to demo.19 and no
   `package.json` changed; 0 type errors in core, server and web; tests core 326, server 376 + 1 skipped, web 182;
-  the curriculum-map check passes; production build ok, `/` static, 7.27 kB / 207 kB First Load JS. The commit that
-  adds this note changes nothing but this file; the same check on it is in the hand-off message. Script:
+  the curriculum-map check passes; production build ok, `/` static, 7.28 kB / 207 kB First Load JS. The same result
+  on `7a8a820d1` and `f49628063` (the release owner's own export of `f49628063` agrees). The commit after `766ce4b3b`
+  changes nothing but this file; the check on it is in the hand-off message. Script:
   `/home/b11/tala-homepage-20261127/bin/export-check.sh`.
 - **Tests:** web 182 (169 on demo.19 + 13 new in `coverage.test.ts` and `showcase.test.ts`); core and server
   unchanged in count.
-- **Browser walk** (`scripts/home-walk.mjs`, read-only): 182 of 182 checks, with the live site as the reference.
+- **Browser walk** (`scripts/home-walk.mjs`, read-only): 182 of 182 checks on the build of `766ce4b3b`, with the
+  live site as the reference.
   - English and Filipino at 1366 × 900, 390 × 844, 360 × 740, 768 × 900 and 200 % zoom: the right words; exactly
     three showcases in order; the shipped curriculum numbers; the pack sentence and the pack marks equal to the
     library's answer at that moment; both pictures the right file for the language and the layout, loaded,
@@ -186,8 +191,9 @@ staged copy of the live Science library), Chromium 145, signed out.
   - Without script: the three showcases, both pictures, the whole map and the links are there; no pack number.
   - Links: `/`, `/sign-in`, `/register`, `/library`, `/download` answer 200 signed out and set no cookie; `/` itself
     sets no cookie; no link points at a pack file or the API; the two outside links answer.
-- Evidence (screenshots, the walk's log and JSON, before and after sets): `/home/b11/tala-homepage-20261127/`
-  (`before/`, `after/`, `walk2/`), and the links in the hand-off message.
+- Evidence (screenshots, clips, the walk's log and JSON, before and after sets):
+  `/home/b11/tala-homepage-20261127/` (`before/`, `after/`, `compare/`, `preview/`, `walk3/`), and the links in the
+  hand-off message.
 
 ## Not done, and known limits
 
@@ -222,10 +228,10 @@ After a deploy the same walk can be pointed at `https://tala.hiraia.org` (it onl
 ## waiting_for_user
 
 - **Question (asked once, thread ddb4d22d, by the homepage owner with its report):** "Release the redesigned Tala
-  homepage to tala.hiraia.org? It is branch `tala-v1-homepage` on top of the live demo.19: the three-showcase section
-  in place of the carousel and the seven feature cards, the reworded Filipino 'Ang pangako namin', and one Filipino
-  label inside the app's multi-grade plans ('Ituloy ang sariling gawain'). No database change, no new setting;
-  rollback is demo.19."
+  homepage to tala.hiraia.org? It is branch `tala-v1-homepage` on top of the live demo.19 and would become
+  `tala-v1-demo.20`: the three-showcase section in place of the carousel and the seven feature cards, the reworded
+  Filipino 'Ang pangako namin', and one Filipino label inside the app's multi-grade plans ('Ituloy ang sariling
+  gawain'). No database change, no new setting; rollback is demo.19."
 - **Owner of the question:** homepage owner `b11-dev:bea7a699` (revisions to the page); the release itself is the
   release owner's `b11-dev:12af59a8`, through its usual window.
 - **Blocked until answered:** push of the branch and tag, and the production deploy. Nothing else waits on it.
