@@ -2037,3 +2037,22 @@ this ledger had no entry).
   accounts from production (5 accounts, 5 records, 1 open session; a scoped delete after a verified backup), or leave
   them in place?" Owner: Luis. Blocked: only that cleanup. Until he answers they stay as they are (they hold nothing
   else; the open session expires on its own).
+
+## 28 Nov 2026 17:55 Manila: Luis allows synthetic test accounts and data (rq_czqd79ie), relayed by the desktop owner
+
+- **His complete words:** "Yeah of course I'm allowing the synthetics" (thread ddb4d22d, rq_czqd79ie), relayed to the
+  release owner by the desktop owner (bridge `bab3d0f1…`) with the coordinator's scope: synthetic Tala accounts and data
+  for desktop verification, including bounded intentional production testing where needed; reuse known synthetic
+  accounts and fixtures; never use or edit a real teacher's account or copy production records as fixtures; the five
+  accidental registrations and the withdrawn local evidence stay exactly as they are (the approval is not retroactive
+  isolation); fail-closed CI stays separate from clearly labelled production checks; no change to the publication
+  gate, the Mac hold or any security protection.
+- **waiting_for_user:** the general question whether synthetic test accounts and data are allowed is cleared. The
+  separate cleanup question (delete the five accidental accounts, their five records and one open session) stays
+  open: his words do not approve that scoped delete. They stay in place meanwhile.
+- **Synthetic inventory on production** (read-only, accounts on the reserved example.com test domain only; full ids
+  kept owner-only on b11-dev and given to the desktop owner over the bridge): `b684d160…`
+  beanie-reg-20261120-1205@example.com (Beanie, 20 Nov); `998655af…` fable-release-test-20261125@example.com (the
+  release owner's retained account, 25 Nov); the five accidental desktop accounts `b2478178…`, `54423778…`, `453135d7…`,
+  `22dd3051…`, `ce3a1e2f…` (desktop.<uuid>@example.com, 28 Nov 09:18–09:24 UTC). The other 4 accounts are real and were
+  not inspected.
