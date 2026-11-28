@@ -1965,3 +1965,34 @@ swap shift for English readers (with the "Filipino shell after a reload" item); 
 running past its card; the next-step arrow on long This Week lists (from demo.19); the loading flashes; Office
 application checks; a teacher's review; the pacing quirk (Luis). Not performed: Microsoft Office checks; a teacher's
 review; any real teacher's account.
+
+## 28 Nov 2026 17:10 Manila: separate task — the Tala desktop app (unsigned Electron, Windows and macOS)
+
+Owner: `b11-002:648960f2` (per its bridge requests `9c04e455…` and `dc6d25f7…`: Luis reassigned the existing task
+to it; predecessor `b50662a3` stopped writing, ACK `af9e2458…`; the owner is the sole writer). Base: demo.20
+`4736715b5` (its worktree is on b11-002). The release owner integrates and releases; **nothing is approved; nothing is
+deployed or published.** No earlier decision exists for a Tala desktop app (the V1 PRD lists it among later items;
+this ledger had no entry).
+- **Agreed boundaries** (release owner's bridges `6cfa6d96…`, `be725678…`): the owner alone changes
+  `packages/tala-desktop/**`, `docs/tala/desktop/**` and one new `.github/workflows/tala-desktop.yml`. Untouched:
+  Hiraia's workflows and its own Electron app (`packages/desktop`), tala-core/server/web, the deploy kit, the host.
+  The root `pnpm-lock.yaml` stays byte-identical; the package keeps its own npm lock **and** one line
+  `!packages/tala-desktop` goes into `pnpm-workspace.yaml`. Tested on a copy of the release tree with the host's own
+  install command: without that line `pnpm install --frozen-lockfile --filter "@hiraia/tala-web..."` fails with
+  ERR_PNPM_OUTDATED_LOCKFILE (any release containing the package would fail to deploy); with it, the lockfile check
+  passes.
+- **Builds:** push-tag triggers only (`tala-desktop-preview-*` tags pushed by the release owner on the owner's branch;
+  `tala-v1-demo.*` builds once the package is in a released commit), never `pull_request`, no self-hosted runner;
+  GitHub-hosted macos-14 / macos-13 / windows-2022. Previews are Actions artifacts kept 3 days, no GitHub Release
+  (the repository is public, so artifacts can be downloaded by any signed-in GitHub user: unlisted, not private).
+  Promotion is a separate manual dispatch by the release owner after Luis approves.
+- **Access:** no interactive Mac or Windows machine is known to the release owner; the self-hosted `hiraia-native`
+  Mac runner belongs to Hiraia's pipeline and is off-limits. Test accounts: a local tala-server with throwaway
+  accounts; production signed-in checks only by the release owner on b11-dev with the retained account; no credential
+  over the bridge or into GitHub secrets.
+- **For Luis with the candidate (not now):** unsigned builds bring macOS Gatekeeper and Windows SmartScreen warnings;
+  signing and notarization costs; where downloads are hosted; the update channel. The /download page's desktop
+  section comes as a separate commit (release owner integrates; new Filipino via the Filipino owner).
+- **Release-owner follow-up:** before any release containing the desktop package, add the host's install command on
+  the FULL tree to the release check (the clean export covers only the build set and would not catch a new workspace
+  package).
