@@ -2107,3 +2107,12 @@ this ledger had no entry).
   review. Nothing published; the production-check tag stays held. The owner also corrected my note on what one AI
   rewrite writes (every section of the lesson is re-saved, not only the rewritten one); the revised production test
   is still local work awaiting review.
+- **28 Nov 19:35 Manila — desktop previews 3e and 3f.** 3e (`b2158605a`: line endings kept as committed on the Windows
+  runner + an early check of the curriculum files' sizes) → run 46139259436: both Macs passed; **Windows passed every
+  check for the first time** (10 shell + 14 local feature checks), then crashed while shutting the test down (the local
+  test proxy wrote an error reply after a reply had already started). 3f (`2078b7f5d`: a safe proxy shutdown and a rule
+  that the full set needs a completed shutdown; the reviewed real-AI test revision, still switched off on preview tags;
+  a local rollback rehearsal script, not run) reviewed with no blocking finding and tagged `tala-desktop-preview-3f` →
+  run 46140401357. The revised real-AI test reuses the one labelled lesson from run 2, adds one labelled school year and
+  class, never touches the profile, and allows exactly the one save the rewrite makes; it has not run. Nothing
+  published; the production-check tag stays held.
