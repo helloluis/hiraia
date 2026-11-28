@@ -1853,3 +1853,55 @@ owner integrates; deploying needs Luis's own go-ahead (demo.19's approval does n
   no-number sentence shown until the Library answers) relayed to the Filipino owner (bridge `d12265f1…`). Asked in the
   same message, for the APP (release owner's lane): should the multi-grade label `carryOn` ("Ituloy ang gawain nang
   kayo lang:") become the reviewer's "Ituloy ninyo ang sariling gawain:"? A change would ship in a later app release.
+- **27 Nov 23:3x Manila:** the Filipino owner answered batch 2 (bridge `2e41a780…`): item 36 OK (the homepage candidate
+  has no unreviewed Filipino line); the APP label `carryOn` becomes "Ituloy ang sariling gawain" (stored without the
+  colon; the combiner adds it). Made by the release owner: `637d135d9` on local branch `tala-v1-carryon-fil` (one line in
+  `tala-core/src/plan/combine-words.ts`; tsc clean, core tests 326/326), to ship with the homepage so its Filipino
+  planner picture matches the app. New combined plans only; teachers' saved plans keep their text. Not deployed.
+
+## 28 Nov 2026 08:40 Manila: homepage hand-off — candidate `abe80ccac` (not deployed)
+
+- **From the homepage owner** (Fable bea7a699): branch `tala-v1-homepage` @ `abe80ccac` (local), base `f2a154a08`, last
+  app commit `766ce4b3b`, including the release owner's `637d135d9` (one Filipino multi-grade label). Its checks: clean
+  export green on `abe80ccac` (core 326, server 376 + 1 skipped, web 182, build; `/` stays static, 7.28 kB / 207 kB first
+  load against 204 kB on demo.19); its walk 182/182 with the live site as reference; the hero pixel-identical to live at
+  four widths in both languages; 29 evidence links verified:
+  https://lnj.b11.dev/reports/1357f50335ee1ffbe10513ca0b2a394935599bff3119827b48e7c85da335c2b5 (7 days). Filipino
+  batches 1–3 applied as the Filipino owner answered (bridges `4f94a29f…`, `2e41a780…`, `60a7758f…`): nothing unreviewed.
+- **Release owner's review:** scope as agreed (only `landing.*` keys, `landing.footerDeped` unchanged; one appended CSS
+  block; `PublicShell.tsx`, the server, the lockfile and migrations untouched; 20 old screenshots deleted and referenced
+  nowhere); the reveal hides nothing without script, with reduced motion or in print; pack counts are asked fresh on
+  each visit (`/api/v1/packs/index`, no-store, about 7 KB compressed) and shown only when the server answered. Own
+  checks: clean export of `abe80ccac` identical; the owner's walk on my build 182/182 (hero against live); a Filipino
+  combine on the release build writes "Ituloy ang sariling gawain:" on screen and on the server, the old label
+  nowhere: 6/6. The live hero photographed beforehand (8 shots, deterministic) for the after-deploy comparison. Window
+  `release-homepage/window-homepage.sh` prepared (refuses without a "- **Homepage release approved" line): it would
+  tag `tala-v1-demo.20`; rollback demo.19.
+- **waiting_for_user (asked once, by the homepage owner, thread ddb4d22d):** "Release the redesigned Tala homepage to
+  tala.hiraia.org? It is branch tala-v1-homepage on top of the live demo.19 and would become tala-v1-demo.20: the
+  three-showcase section in place of the carousel and the seven feature cards, the reworded Filipino 'Ang pangako
+  namin', and one Filipino label inside the app's multi-grade plans ('Ituloy ang sariling gawain'). No database change,
+  no new setting; rollback is demo.19." Blocked on it: push, tag, deploy window.
+- **Follow-ups found by the homepage owner (release owner's lane, not blocking):** the "Built with QVAC SDK" footer
+  link is 40 px tall on phones; English readers see a small shift when the hero's server-rendered Filipino is swapped
+  for English (also live today; grouped with the "Filipino shell after a reload" item); lesson editor, Filipino, phone:
+  the timeline's end label "Pagtatapos ng klase · 60 min" runs past its card; the four editor pictures need a re-shoot
+  if the lesson or slide editor changes before this ships.
+
+## 28 Nov 2026 09:39 Manila: Luis answers "Yes release it" (rq_amzzvgnq): the homepage release is approved
+
+Luis's complete answer: "Yes release it". Mapped by the coordinator (thread ddb4d22d) to the homepage owner's release
+question above: explicit, concrete approval to deploy the verified candidate `abe80ccac` as `tala-v1-demo.20`, rollback
+demo.19.
+
+- **Homepage release approved** (28 Nov 2026 09:39 Manila, rq_amzzvgnq): branch `tala-v1-homepage` at `abe80ccac` (plus
+  a docs-only merge of these notes) as `tala-v1-demo.20` on top of `tala-v1-demo.19`: the three showcases in place of
+  the carousel and the seven feature cards, the reviewed Filipino "Ang pangako namin", and the reviewed Filipino
+  multi-grade label "Ituloy ang sariling gawain:" (new combined plans only; saved plans unchanged). Through the
+  established window: the single-writer lock, a verified backup, `deploy.sh`, only the service's own restart. Rollback
+  `tala-v1-demo.19`. Not covered: unrelated code, content publication, English packs, dependency or host changes.
+- **waiting_for_user: cleared.** No other question is mapped to this answer.
+- **Reconciled before any write (01:41 UTC):** production `tala-v1-demo.19`, healthy, active since 27 Nov 10:07:00 UTC
+  with 0 restarts; deploy lock free; running: the release owner and an unrelated Beaniebot agent (`bac224b`, not
+  holding the lock); `tala-v1-homepage` and the release worktree both at `abe80ccac`, clean; no `tala-v1-demo.20` tag
+  or homepage branch on origin or the host; no deploy or package process on the host.
