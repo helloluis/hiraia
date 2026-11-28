@@ -38,6 +38,11 @@ jobs:
       TALA_RELEASE_TAG: ${{ github.ref_name }}
       CSC_IDENTITY_AUTO_DISCOVERY: 'false'
     steps:
+      - name: Preserve repository bytes on the temporary Windows runner
+        if: runner.os == 'Windows'
+        working-directory: .
+        shell: bash
+        run: git config --global core.autocrlf false
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
@@ -53,6 +58,8 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 24
+      - name: Verify curriculum checkout bytes before installing or building
+        run: node test/check-curriculum-bytes.cjs
       - name: Controlled failure exercise (preview tags only)
         if: startsWith(github.ref_name, 'tala-desktop-preview-failure-') && matrix.platform == 'darwin' && matrix.arch == 'x64'
         shell: bash

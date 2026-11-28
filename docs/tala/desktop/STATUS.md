@@ -383,3 +383,20 @@ review: one separate labelled school year/class, link only the existing test pla
 no profile change or existing class edit, and consistent grade-group IDs. Owner mode
 retains these test records; ephemeral native mode deletes them with its account.
 The revised production code must be reviewed before another run; no blind retry.
+
+## Preview-3d names the Windows startup cause
+
+Release-owner bridge `883a3c96bc6f4bc09c337af6e402d786`: run
+https://github.com/helloluis/hiraia/actions/runs/46138434327 passed both Macs again;
+Windows passed build, install and ten isolated shell checks, then health returned 500.
+The new diagnostic named `Invalid curriculum pack metadata: english-bow-2026-g10.json`.
+The committed pack declares 153,117 bytes. Windows Git checkout adds 2,602 carriage
+returns, yielding 155,719 bytes, and the unchanged server correctly rejects it.
+The desktop app does not contain this server; production Linux uses the original bytes.
+
+The workflow now disables Git CRLF conversion on the temporary Windows runner before
+checkout. An early check compares every curriculum pack to its exact Git blob and its
+declared byte count; it never rewrites data or relaxes server validation. The actual LF
+packs pass, and a deliberate CRLF conversion fails both independent checks. A normal
+preview-3e is needed for native verification. Production-check execution and publication
+remain held; no complete installer set exists yet.
