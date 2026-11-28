@@ -2125,3 +2125,13 @@ this ledger had no entry).
   PowerPoint upload never started — most likely the test picked the file before the page was ready; it passed on Intel
   in 3c–3e). So the desktop owner's conditional request (the clearly labelled production check on all three platforms,
   then a deliberate-failure run) stays held until a normal run passes on all three. Nothing published.
+- **28 Nov 20:05 Manila — desktop: first complete installer set, and the labelled production check passed.**
+  Preview 3g (`c8d99c048`: the PowerPoint upload check now waits for the page and the real file chooser) → run
+  46141524544: **all three platforms and the complete-set job passed** (10 shell + 14 local feature checks each).
+  The unsigned installers, their manifest and the evidence went to the desktop owner as a reviewed export; nothing is
+  published. On the owner's specific request under Luis's synthetic allowance (rq_czqd79ie), with no deploy running and
+  the deploy lock held, I pushed `tala-desktop-preview-production-1` at the same source → run 46142209678: on each
+  platform the installed app registered one labelled example.com test account, made one real AI rewrite and one real
+  slide proposal, applied them, then deleted the account. Read-only check afterwards: all three accounts and everything
+  they made are gone, user and session counts unchanged, no other record written; 6 provider calls in total
+  (US$0.0064). A deliberate-failure run on the same source followed (run 46142841866). Publishing still needs Luis.
