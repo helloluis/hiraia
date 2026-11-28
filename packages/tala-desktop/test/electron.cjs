@@ -12,6 +12,7 @@ const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'tala-shell-test-'));
 const origin = 'https://tala.hiraia.org';
 const nonce = crypto.randomUUID();
 let app, fixture, offline = false;
+let negativeStatus, dnsFailure, tcpAttempts = 0, nonLoopbackConnections;
 const results = [], netlogs = [];
 function serve(req, res) {
   if (offline) return req.socket.destroy();
@@ -41,11 +42,15 @@ async function check(name, fn) { await fn(); results.push({ name, status: 'passe
   fixture = await httpsFixture(serve);
   let page = await launch();
   await check('local HTTPS isolation and production API negative control', async () => {
-    assert.equal(await page.evaluate(() => fetch('/api/v1/auth/register', { method: 'POST' }).then(r => r.status)), 403);
+    negativeStatus = await page.evaluate(() => fetch('/api/v1/auth/register', { method: 'POST' }).then(r => r.status));
+    assert.equal(negativeStatus, 403);
     assert.ok(fixture.requests.some(r => r.path === '/api/v1/auth/register' && r.method === 'POST'));
-    assert.equal(await app.evaluate(async ({ session }) => {
-      try { await session.fromPartition('persist:tala').resolveHost('hiraia.org'); return false; } catch { return true; }
-    }), true);
+    dnsFailure = await app.evaluate(async ({ session }) => {
+      try { await session.fromPartition('persist:tala').resolveHost('hiraia.org'); return null; }
+      catch (error) { return { name: error.name, message: error.message }; }
+    });
+    assert.ok(dnsFailure);
+    assert.match(dnsFailure.message, /ERR_NAME_NOT_RESOLVED/);
   });
   await check('sandbox and renderer isolation', async () => {
     const prefs = await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].webContents.getLastWebPreferences());
@@ -116,13 +121,16 @@ async function check(name, fn) { await fn(); results.push({ name, status: 'passe
       for (const event of log.events) if (event.type === log.constants.logEventTypes.TCP_CONNECT_ATTEMPT && event.params?.address) connections.push(event.params.address);
     }
     assert.ok(connections.length > 0, 'no TCP evidence');
-    assert.ok(connections.every(address => /^(127\.0\.0\.1:|\[::1\]:)/.test(address)), 'non-loopback connection found');
+    tcpAttempts = connections.length;
+    nonLoopbackConnections = connections.filter(address => !/^(127\.0\.0\.1:|\[::1\]:)/.test(address)).length;
+    assert.equal(nonLoopbackConnections, 0, 'non-loopback connection found');
   });
   fs.mkdirSync(path.join(root, 'test-output'), { recursive: true });
   fs.writeFileSync(path.join(root, 'test-output', `shell-${process.platform}-${process.arch}.json`), JSON.stringify({
     scope: 'local HTTPS synthetic shell integration, not live feature parity', packaged: !!process.env.TALA_DESKTOP_EXECUTABLE,
     platform: process.platform, arch: process.arch,
-    isolation: { fixtureRequests: fixture.requests.length, allPeersLoopback: fixture.requests.every(r => r.peer === '127.0.0.1'), productionApiNegativeControl: '403 from local fixture', otherDns: 'NOTFOUND', nonLoopbackConnections: 0 }, results,
+    isolation: { fixtureRequests: fixture.requests.length, allPeersLoopback: fixture.requests.every(r => r.peer === '127.0.0.1'),
+      productionApiNegativeControl: '403 from local fixture', otherDns: 'NOTFOUND', negativeStatus, dnsFailure, tcpAttempts, nonLoopbackConnections }, results,
   }, null, 2));
 })().catch(error => { console.error(error.name + ': ' + error.message.split('\n')[0]); process.exitCode = 1; }).finally(async () => {
   await app?.close(); await fixture?.close(); fs.rmSync(profile, { recursive: true, force: true });

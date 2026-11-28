@@ -29,7 +29,7 @@ passed, exit 0. No source changes to web/server/Android or their release workflo
 This checkout is sparse (the relevant web/core/server source is present); the release
 owner will repeat the install in their integration checkout before pushing.
 
-## Checks executed so far
+## Initial checkpoint (superseded by dated results below)
 
 - Policy tests and complete-set collection failure tests: 3 passing.
 - Electron 45.5.0 on Linux x64, real sandbox enabled (`chromiumSandbox: true`):
@@ -77,7 +77,7 @@ owner will repeat the install in their integration checkout before pushing.
   system-browser OAuth flow. The hosted app's email/password flow is the current target.
 - Native menus/recovery currently use English. Website EN/FIL remains the existing UI.
 
-No waiting_for_user decision is currently pending. Native CI dispatch is owned by the
+At the initial checkpoint no waiting_for_user decision was pending. Native CI dispatch is owned by the
 release owner after source review; this is coordination, not a request to repeat Luis's
 Electron/unsigned decision.
 
@@ -149,3 +149,42 @@ The replacement test does not use `app.context().route` at all:
 The source feature walk has separately moved to an actual 127.0.0.1 HTTPS origin, with
 unique local build ID, environment=local, and temporary SQLite checks before registration.
 It is not part of the replacement preview yet. No further production-origin feature walks.
+
+## Preview-2 accepted; local feature walk, 09:46 UTC
+
+Release owner accepted the replacement isolation review and tagged `c6be9cde6`:
+
+- Normal run: https://github.com/helloluis/hiraia/actions/runs/46131252524
+- Deliberate Intel failure: https://github.com/helloluis/hiraia/actions/runs/46131283828
+
+Await the owner's native result/export. No independent retry, tag or publication.
+
+The replacement local source walk now passes **14 checks** with the unchanged demo.20
+web/server. Receipt: `evidence/features-linux-x64.json`. It verifies local DB registration,
+sign-in/out, relaunch/session continuity, EN/FIL, Materials failure with preserved inputs,
+Saturday/Sunday schedule persistence, multigrade combining and an editable session note,
+actual session presentation and keyboard navigation, DOCX ZIP contents, PDF rendering,
+and synthetic PPTX upload/edit/download with saved text in the resulting archive. The
+session presenter honestly uses the app's placeholders where grade slides are absent;
+this does not demonstrate AI-generated slides. Native dialogs are not automated: the
+test sets the download destination and uses `printToPDF`, and does not open Office.
+
+The feature-walk candidate uses the already proven DNS/SPKI boundary for installed apps,
+builds the original web source on each hosted runner, and requires its native receipts
+before a complete set can be collected. The server refuses inherited model/storage
+settings and live Next environment files. Synthetic upload bytes stay in its temporary
+SQLite database. Nothing adds a backend to the downloadable app. Native execution of
+these feature checks remains unverified until the release owner's next reviewed tag.
+
+### waiting_for_user — cleanup only
+
+Decision owner: Luis. Operation owner: release agent
+`b11-dev:12af59a8-bcb2-4b40-af9b-da62a716244d`. The release owner asked once in thread
+`ddb4d22d-ceed-4509-a864-0d4dfd12f047`; there is no Luis response/request id yet.
+Exact question: **“Delete the 5 synthetic desktop-test accounts from production (5
+accounts, 5 records, 1 open session; a scoped delete after a verified backup), or leave
+them in place?”** Blocked operation: only that cleanup. Default: leave them unchanged.
+Authoritative ledger: `docs/tala/teacher-portal/STATUS.md` on `tala-v1-filipino`,
+commit `fcd02f14f`, entry “incident — the desktop task's local test wrote to production”.
+No duplicate question from this lane. Publication is separately unrequested until the
+release owner has a concrete verified candidate and its remaining limitations.

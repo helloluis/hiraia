@@ -8,6 +8,12 @@
     "allPeersLoopback": true,
     "productionApiNegativeControl": "403 from local fixture",
     "otherDns": "NOTFOUND",
+    "negativeStatus": 403,
+    "dnsFailure": {
+      "name": "Error",
+      "message": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    "tcpAttempts": 4,
     "nonLoopbackConnections": 0
   },
   "results": [

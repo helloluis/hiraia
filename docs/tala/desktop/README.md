@@ -38,7 +38,10 @@ architecture, Electron version, bytes and SHA256. CI refuses dirty package sourc
 pull requests. Every architecture installs its actual produced installer, launches and
 relaunches that copy for shell tests, and uninstalls it from the temporary runner directory.
 The complete-set job requires all three native jobs and independently checks hashes,
-metadata agreement and native shell-test records before collecting artifacts.
+metadata agreement, native shell-test records and local-server feature-walk records
+before collecting artifacts. The feature walk builds the unchanged Tala web source,
+starts it on loopback with a temporary database, and tests the installed desktop app.
+This server and the fixtures are test infrastructure, not part of the installers.
 
 Artifacts are named **unsigned preview, not for distribution**, expire after three days,
 and require a signed-in GitHub user to download. The repo is public; these are unlisted,
@@ -81,9 +84,30 @@ Downloads accept same-origin/blob documents with an allowlisted extension, promp
 save location, and never automatically execute/open bytes. Print is the existing web print
 iframe/native dialog, not a filesystem bridge. Sessions use a separate persistent partition.
 
-`test/electron.cjs` uses a synthetic page intercepted inside Playwright; it is not a
-claim of Tala feature parity. `STATUS.md` is the explicit outstanding acceptance matrix.
+`test/electron.cjs` uses a real local HTTPS fixture with launch-time DNS mapping and
+an ephemeral SPKI pin. There is no Playwright route interception. Unmapped hostnames
+fail resolution, and Chromium network logs must show only loopback TCP connections.
+`test/local-walk.cjs` uses the same boundary for packaged apps, or an explicit loopback
+origin for source apps. It checks a unique local health nonce and the temporary SQLite
+database before registration. It refuses a web checkout containing live `.env` files,
+strips inherited provider/storage settings, and never calls a real model provider.
+
+To run the local feature walk, first install/build the unchanged web app as the workflow
+does, then run `node test/local-walk.cjs` (or `node scripts/headless.cjs test/local-walk.cjs`
+on headless Linux). `TALA_DESKTOP_EXECUTABLE` selects an installed candidate. Tests delete
+their temporary accounts/database/profile/certificate after use. Only synthetic screenshots,
+documents and sanitized JSON reports remain under ignored `test-output/`.
+
+Successful real AI generation, native print/save dialogs, Office opening and manual
+accessibility remain separate checks. `STATUS.md` is the explicit acceptance matrix.
 No test may use real teacher data, copy the production database, or regenerate the library.
+
+`test/owner-auth-check.cjs https://tala.hiraia.org` is a separate, opt-in check requested
+by the release owner for their retained account after a release. It requires
+`TALA_DESKTOP_OWNER_READ_ONLY=1`, `TALA_TEST_EMAIL` and `TALA_TEST_PASSWORD` in that
+owner's environment. It signs in, reads the main screens, signs out and deletes its
+isolated profile. It never runs in CI; no credentials cross the bridge. It has not
+been executed by this implementation lane.
 
 Tool verification on 28 November 2026: Electron 45.5.0, electron-builder 26.18.0,
 Playwright 1.65.1 and @electron/fuses 2.1.3 from the npm registry.

@@ -19,6 +19,9 @@ test('complete-set gate rejects missing/tampered/mixed builds before writing a r
       fs.writeFileSync(path.join(dir, `shell-${key}.json`), JSON.stringify({ platform, arch, packaged: true,
         isolation: { allPeersLoopback: true, fixtureRequests: 8, nonLoopbackConnections: 0, otherDns: 'NOTFOUND', productionApiNegativeControl: '403 from local fixture' },
         results: Array.from({ length: 10 }, () => ({ status: 'passed' })) }));
+      fs.writeFileSync(path.join(dir, `features-${key}.json`), JSON.stringify({ platform, arch, packaged: true, sourceCommit: 'a'.repeat(40),
+        isolation: { allPeersLoopback: true, fixtureRequests: 60, nonLoopbackConnections: 0, healthBuildNonceVerified: true },
+        results: Array.from({ length: 14 }, () => ({ status: 'passed' })) }));
     }
     const badFile = path.join(dir, 'Tala-0.1.0-win32-x64.exe');
     const original = fs.readFileSync(badFile);
@@ -29,8 +32,16 @@ test('complete-set gate rejects missing/tampered/mixed builds before writing a r
     const metaPath = path.join(dir, 'manifest-darwin-x64.json');
     const meta = JSON.parse(fs.readFileSync(metaPath));
     fs.writeFileSync(metaPath, JSON.stringify({ ...meta, sourceCommit: 'b'.repeat(40) }));
+    assert.throws(() => collect(dir, output), /Missing native local-server feature/);
+    const featurePath = path.join(dir, 'features-darwin-x64.json');
+    const features = JSON.parse(fs.readFileSync(featurePath));
+    fs.writeFileSync(featurePath, JSON.stringify({ ...features, sourceCommit: 'b'.repeat(40) }));
     assert.throws(() => collect(dir, output), /Mixed sourceCommit/);
     fs.writeFileSync(metaPath, JSON.stringify(meta));
+    fs.writeFileSync(featurePath, JSON.stringify({ ...features, results: [{ status: 'failed' }] }));
+    assert.throws(() => collect(dir, output), /Missing native local-server feature/);
+    assert.equal(fs.existsSync(output), false);
+    fs.writeFileSync(featurePath, JSON.stringify(features));
     assert.equal(collect(dir, output).artifacts.length, 3);
     assert.throws(() => collect(dir, output), /EEXIST/);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }

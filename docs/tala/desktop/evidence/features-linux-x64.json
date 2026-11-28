@@ -1,0 +1,78 @@
+{
+  "platform": "linux",
+  "arch": "x64",
+  "sourceCommit": "c6be9cde6e334fd0e66a015547918c0265fe2143",
+  "packaged": false,
+  "source": "unmodified local Tala web/server; isolated HTTPS to temporary SQLite database",
+  "isolation": {
+    "fixtureRequests": 315,
+    "allPeersLoopback": true,
+    "healthBuildNonceVerified": true,
+    "tcpAttempts": 16,
+    "nonLoopbackConnections": 0
+  },
+  "limits": [
+    "No real AI provider configured",
+    "No teaching-pack library copied; session presentation uses visible placeholders for missing grade slides",
+    "Save dialog bypassed to verify downloaded bytes; printToPDF is not native print-dialog evidence",
+    "DOCX/PPTX archive contents verified; not opened in Microsoft Office"
+  ],
+  "results": [
+    {
+      "name": "actual registration and authenticated account (temporary local DB)",
+      "status": "passed"
+    },
+    {
+      "name": "actual English and Filipino screens",
+      "status": "passed"
+    },
+    {
+      "name": "actual authenticated session survives relaunch",
+      "status": "passed"
+    },
+    {
+      "name": "actual sign-out and sign-in",
+      "status": "passed"
+    },
+    {
+      "name": "actual lesson editor and Materials rewrite controls",
+      "status": "passed"
+    },
+    {
+      "name": "actual Word export produces a readable ZIP document",
+      "status": "passed"
+    },
+    {
+      "name": "actual printable lesson renders PDF bytes",
+      "status": "passed"
+    },
+    {
+      "name": "actual Materials AI failure is visible and preserves lesson content",
+      "status": "passed"
+    },
+    {
+      "name": "actual timetable saves Saturday and Sunday and survives reload",
+      "status": "passed"
+    },
+    {
+      "name": "actual multigrade combination saves an editable session",
+      "status": "passed"
+    },
+    {
+      "name": "actual assembled session presents and responds to keyboard navigation",
+      "status": "passed"
+    },
+    {
+      "name": "actual PowerPoint upload and saved text edit",
+      "status": "passed"
+    },
+    {
+      "name": "actual edited PowerPoint downloads and contains the saved words",
+      "status": "passed"
+    },
+    {
+      "name": "actual feature walk made no non-loopback Chromium connection",
+      "status": "passed"
+    }
+  ]
+}

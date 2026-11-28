@@ -16,12 +16,19 @@ function collect(input, output) {
         !evidence.isolation?.allPeersLoopback || evidence.isolation.fixtureRequests < 5 ||
         evidence.isolation.nonLoopbackConnections !== 0 || evidence.isolation.otherDns !== 'NOTFOUND' ||
         evidence.isolation.productionApiNegativeControl !== '403 from local fixture') throw new Error(`Missing native packaged smoke/isolation checks: ${key}`);
+    const features = JSON.parse(fs.readFileSync(path.join(input, `features-${key}.json`)));
+    if (!features.packaged || features.platform !== m.platform || features.arch !== m.arch ||
+        features.sourceCommit !== m.sourceCommit || features.results.length < 14 || features.results.some(r => r.status !== 'passed') ||
+        !features.isolation?.healthBuildNonceVerified || !features.isolation.allPeersLoopback ||
+        features.isolation.fixtureRequests < 30 || features.isolation.nonLoopbackConnections !== 0) {
+      throw new Error(`Missing native local-server feature checks: ${key}`);
+    }
     return m;
   });
   const shared = ['version', 'release', 'sourceCommit', 'electron', 'hostedOrigin'];
   for (const key of shared) if (!artifacts.every(m => m[key] === artifacts[0][key])) throw new Error(`Mixed ${key}`);
   const result = { schemaVersion: 1, ...Object.fromEntries(shared.map(key => [key, artifacts[0][key]])),
-    status: 'preview-not-for-distribution', verification: 'native packaged shell smoke; see parity matrix for remaining checks', artifacts };
+    status: 'preview-not-for-distribution', verification: 'native packaged shell and local-server feature checks; see parity matrix for remaining checks', artifacts };
   // Nothing is written until the complete set and every digest/evidence file passes.
   fs.mkdirSync(output, { recursive: true });
   for (const m of artifacts) fs.copyFileSync(path.join(input, m.file), path.join(output, m.file), fs.constants.COPYFILE_EXCL);
