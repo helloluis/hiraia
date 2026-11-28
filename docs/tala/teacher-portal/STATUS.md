@@ -2097,3 +2097,13 @@ this ledger had no entry).
   synthetic allowance): it created its one labelled lesson (9 sections), then timed out before asking the AI for the
   section rewrite. No AI request was sent (usage rows unchanged, no cost) and nothing else was written. Not retried; the
   owner diagnoses first. The labelled lesson stays in the test account by design.
+- **28 Nov 19:20 Manila — desktop preview 3d** (`a41832acb`: startup diagnostics only — the local test now keeps the
+  health status, exit code and one scrubbed error line; no app or workflow change) tagged `tala-desktop-preview-3d` →
+  run 46138434327: both Macs passed again; Windows failed at the same first local step, and **the cause is now known**:
+  GitHub's Windows runner checks files out with Windows line endings, so the server's curriculum packs (which record
+  their own byte size) no longer match, and the server refuses to start its API ("Invalid curriculum pack metadata").
+  A test-environment problem only: production runs Linux, and the desktop app does not include the server. The fix
+  belongs in the desktop owner's own workflow (keep line endings unchanged on checkout); preview 3e follows after
+  review. Nothing published; the production-check tag stays held. The owner also corrected my note on what one AI
+  rewrite writes (every section of the lesson is re-saved, not only the rewritten one); the revised production test
+  is still local work awaiting review.
