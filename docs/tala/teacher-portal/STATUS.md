@@ -1887,3 +1887,21 @@ owner integrates; deploying needs Luis's own go-ahead (demo.19's approval does n
   for English (also live today; grouped with the "Filipino shell after a reload" item); lesson editor, Filipino, phone:
   the timeline's end label "Pagtatapos ng klase · 60 min" runs past its card; the four editor pictures need a re-shoot
   if the lesson or slide editor changes before this ships.
+
+## 28 Nov 2026 09:39 Manila: Luis answers "Yes release it" (rq_amzzvgnq): the homepage release is approved
+
+Luis's complete answer: "Yes release it". Mapped by the coordinator (thread ddb4d22d) to the homepage owner's release
+question above: explicit, concrete approval to deploy the verified candidate `abe80ccac` as `tala-v1-demo.20`, rollback
+demo.19.
+
+- **Homepage release approved** (28 Nov 2026 09:39 Manila, rq_amzzvgnq): branch `tala-v1-homepage` at `abe80ccac` (plus
+  a docs-only merge of these notes) as `tala-v1-demo.20` on top of `tala-v1-demo.19`: the three showcases in place of
+  the carousel and the seven feature cards, the reviewed Filipino "Ang pangako namin", and the reviewed Filipino
+  multi-grade label "Ituloy ang sariling gawain:" (new combined plans only; saved plans unchanged). Through the
+  established window: the single-writer lock, a verified backup, `deploy.sh`, only the service's own restart. Rollback
+  `tala-v1-demo.19`. Not covered: unrelated code, content publication, English packs, dependency or host changes.
+- **waiting_for_user: cleared.** No other question is mapped to this answer.
+- **Reconciled before any write (01:41 UTC):** production `tala-v1-demo.19`, healthy, active since 27 Nov 10:07:00 UTC
+  with 0 restarts; deploy lock free; running: the release owner and an unrelated Beaniebot agent (`bac224b`, not
+  holding the lock); `tala-v1-homepage` and the release worktree both at `abe80ccac`, clean; no `tala-v1-demo.20` tag
+  or homepage branch on origin or the host; no deploy or package process on the host.
